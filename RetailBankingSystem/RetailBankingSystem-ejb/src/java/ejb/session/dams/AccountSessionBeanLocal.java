@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ejb.DAMS;
+package ejb.session.dams;
 
 import entity.Account;
 import java.util.List;
@@ -11,11 +11,10 @@ import javax.ejb.Local;
 
 /**
  *
- * @author leiyang
+ * @author VIN-S
  */
 @Local
 public interface AccountSessionBeanLocal {
-
     void createAccount(Account account);
     
     public List<Account> showAllAccounts();

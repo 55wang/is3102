@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Dashboard.DAMS;
+package staff.dams;
 
-import ejb.DAMS.AccountSessionBeanLocal;
+import ejb.session.dams.AccountSessionBeanLocal;
 import entity.Account;
 import java.io.Serializable;
 import java.util.List;
