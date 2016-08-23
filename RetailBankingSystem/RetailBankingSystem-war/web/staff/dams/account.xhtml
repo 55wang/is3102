@@ -9,38 +9,39 @@
     <f:view>
         <h:head>
             <title>Facelet Title</title>
+            <h:outputStylesheet library="css" name="reset.css"/>
             <h:outputStylesheet library="css" name="theme.css"/>
         </h:head>
         <h:body>
             <em:navBar context="account" userName="lei yang"></em:navBar>
             <em:sideBar>Testing </em:sideBar>
             <div class="container">
-            <h:form id="mainForm">
-                <p:panel header="Accounts Management">
-                    <p:messages id="messagesStatus" redisplay="false" >
+                <h:form id="mainForm">
+                    <p:panel header="Accounts Management">
+                        <p:messages id="messagesStatus" redisplay="false" >
 
 
-                        <p:inputText value="#{accountManagedBean.newAccount.name}" required="true" requiredMessage="Name is required"></p:inputText>
-                        <p:inputText value="#{accountManagedBean.newAccount.type}" required="true" requiredMessage="Type is required"></p:inputText>
-                        <p:commandButton value="Create" icon="ui-icon-plus" actionListener="#{accountManagedBean.createAccount}" update="@form"></p:commandButton>
+                            <p:inputText value="#{accountManagedBean.newAccount.name}" required="true" requiredMessage="Name is required"></p:inputText>
+                            <p:inputText value="#{accountManagedBean.newAccount.type}" required="true" requiredMessage="Type is required"></p:inputText>
+                            <p:commandButton value="Create" icon="ui-icon-plus" actionListener="#{accountManagedBean.createAccount}" update="@form"></p:commandButton>
 
 
-                        <!--talks to managed beans and getter and setter methods-->
-                        <p:dataTable id="dataTableBooks" value="#{accountManagedBean.accounts}" var="account">
-                            <p:column headerText="ID" sortBy="#{account.id}">
-                                <h:outputText value="#{account.id}"></h:outputText>
-                            </p:column>
-                            <p:column headerText="Name" sortBy="#{account.name}">
-                                <h:outputText value="#{account.name}"></h:outputText>
-                            </p:column>
-                            <p:column headerText="Type" sortBy="#{account.type}">
-                                <h:outputText value="#{account.type}"></h:outputText>
-                            </p:column>
-                        </p:dataTable>
-                    </p:messages>
-                </p:panel>
-            </h:form>
-                </div>
+                            <!--talks to managed beans and getter and setter methods-->
+                            <p:dataTable id="dataTableBooks" value="#{accountManagedBean.accounts}" var="account">
+                                <p:column headerText="ID" sortBy="#{account.id}">
+                                    <h:outputText value="#{account.id}"></h:outputText>
+                                </p:column>
+                                <p:column headerText="Name" sortBy="#{account.name}">
+                                    <h:outputText value="#{account.name}"></h:outputText>
+                                </p:column>
+                                <p:column headerText="Type" sortBy="#{account.type}">
+                                    <h:outputText value="#{account.type}"></h:outputText>
+                                </p:column>
+                            </p:dataTable>
+                        </p:messages>
+                    </p:panel>
+                </h:form>
+            </div>
         </h:body>
     </f:view>
 

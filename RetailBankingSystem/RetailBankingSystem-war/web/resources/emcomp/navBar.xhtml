@@ -16,14 +16,14 @@
             <h:outputStylesheet library="css" name="theme.css"/>
             <div id="header">
                 <div id="logo-wrapper" class="header-navigation">
-                    <img id="logo" src="/RetailBankingSystem-war/resources/img/spinner.gif" />
+                    <h:graphicImage url="../../resources/img/merlionLogo3.png" />
                 </div>
                 <ul class="header-navigation">
                     <!--http://stackoverflow.com/questions/7915134/how-to-use-the-spring-security-facelets-tag-library-in-jsf-->
                     <!--sec:authorize access="hasAnyRole('counterStaff')"></sec:authorize-->
                     <!--TODO: wrap menu option with sec tag -->
-                    <li id="header-overview" class="#{cc.attrs.context == 'overview' ? 'active' : 'ac'}" value="overview"><a href="#">Overview</a></li>
-                    <li id="header-overview" class="#{cc.attrs.context == 'account' ? 'active' : 'ac'}" value="account"><a href="#">Accounts</a></li>
+                    <li id="header-overview" class="#{cc.attrs.context == 'overview' ? 'active' : ''}" value="overview"><a href="#">Overview</a></li>
+                    <li id="header-overview" class="#{cc.attrs.context == 'account' ? 'active' : ''}" value="account"><a href="#">Accounts</a></li>
                 </ul>
                 <ul id="header-user"><strong id="user-name">#{cc.attrs.userName}</strong></ul>
             </div>
