@@ -9,14 +9,15 @@ and open the template in the editor.
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:h="http://xmlns.jcp.org/jsf/html">
-    <link type="text/css" rel="stylesheet" href="../layout/css/staff_login.css" />
-    <f:view>
+   
+<f:view>
     <h:head>
         <title>Merlion Internal</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <h:outputStylesheet library="css" name="theme.css"/>
     </h:head>
     <h:body style="background-color: #f9f9f9">
-        <h:graphicImage url="../layout/img/merlionLogoBlack.png" class="horizontal-center-class" style="top:25%; width:200px"/>
+        <h:graphicImage url="../resources/img/merlionLogoBlack.png" class="horizontal-center-class" style="top:25%; width:200px"/>
         <p:layout class="horizontal-center-class" style="width:400px;height:200px;top:55%">
             <p:layoutUnit position="center">
                 <h:form id="login-form">

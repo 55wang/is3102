@@ -89,3 +89,11 @@ and open the template in the editor.
     padding-top: 100px;
     margin-left: 300px;
 }
+
+.horizontal-center-class{
+    position: absolute;
+    top: 0%;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%)
+}
