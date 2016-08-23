@@ -73,28 +73,52 @@ and open the template in the editor.
 }
 /* end of header */
 /* side menu */
-#side-menu-container {
+#side-menu {
     float: left;
     width: 200px;
     height: 100%;
     position: fixed;
+    background: #333;
+    display: block;
+    padding-top: 100px;
+}
+#side-menu-container {
+    margin: 0;
+    padding: 0;
+}
+.side-menu-item {
+    padding: 15px 30px;
+    font-size: 25px;
+    color: #fff;
+    list-style-type: none;
+    cursor: pointer;
+}
+.side-menu-item:hover {
     background: #999;
-    display: box;
-    padding: 80px 30px;
+}
+.side-menu-item.active {
+    border-bottom: 2px #f66 solid;
 }
 
 /* end of side menu */
 /* general */
 .container {
     padding-top: 100px;
-    margin-left: 300px;
+    margin-left: 250px;
     margin-right: 50px;
 }
 
-.horizontal-center-class{
+.h-center {
     position: absolute;
     top: 0%;
     left: 50%;
     margin-right: -50%;
-    transform: translate(-50%, -50%)
+    transform: translate(-50%, -50%);
+}
+
+v-center {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    -webkit-transform: translateY(-50%); 
 }

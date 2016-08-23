@@ -17,11 +17,11 @@ and open the template in the editor.
         <h:outputStylesheet library="css" name="theme.css"/>
     </h:head>
     <h:body style="background-color: #f9f9f9">
-        <h:graphicImage url="../resources/img/merlionLogoBlack.png" class="horizontal-center-class" style="top:25%; width:200px"/>
-        <p:layout class="horizontal-center-class" style="width:400px;height:200px;top:55%">
+        <h:graphicImage url="../resources/img/merlionLogoBlack.png" class="h-center" style="top:25%; width:200px"/>
+        <p:layout class="h-center" style="width:400px;height:200px;top:55%">
             <p:layoutUnit position="center">
                 <h:form id="login-form">
-                    <h:panelGrid columns="2" id="login-panel" cellpadding="5" class="horizontal-center-class" style="top:35%">                   
+                    <h:panelGrid columns="2" id="login-panel" cellpadding="5" class="h-center" style="top:35%">                   
                         <h:outputText value="User ID: " />
                         <p:inputText />
  
@@ -29,7 +29,7 @@ and open the template in the editor.
                         <p:password id="nonFeedback" value="#{passwordView.password1}" />
                     </h:panelGrid>
         
-                    <p:commandButton value="Log in" actionListener="#{buttonView.buttonAction}" class="horizontal-center-class" style="margin-top:35%"/>
+                    <p:commandButton value="Log in" actionListener="#{buttonView.buttonAction}" class="h-center" style="margin-top:35%"/>
                 </h:form>
             </p:layoutUnit>
         </p:layout>
