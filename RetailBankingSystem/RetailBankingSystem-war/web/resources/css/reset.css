@@ -28,6 +28,11 @@ time, mark, audio, video {
     background:transparent;
 }
 
+*{
+    font-family: "Garamond", serif;
+    font-style: normal;
+}
+
 body {
     line-height:1;
 }
