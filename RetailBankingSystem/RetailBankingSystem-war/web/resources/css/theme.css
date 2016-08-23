@@ -1,0 +1,91 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Aug 23, 2016, 4:01:56 PM
+    Author     : leiyang
+*/
+
+/** header **/
+#header {
+    width: 100%;
+    min-height: 40px;
+    padding: 5px 0;
+    background: #333;
+    color: #999;
+    float: left;
+    z-index: 10;
+    position: fixed;
+}
+#header #logo {
+    margin: 0 30px 0 10px;
+}
+#header #menu {
+    float: right;
+    cursor: pointer;
+}
+#header .header-navigation {
+    float: left;
+}
+#header ul {
+    list-style-type: none;
+    position: relative;
+    float: left;
+    margin: 0;
+    padding: 0;
+}
+#header ul a {
+    display: block;
+    color: #fff;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 32px;
+    padding: 0 15px;
+}
+#header ul li {
+    float: left;
+    margin: 8px 10px;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+#header ul li:hover {
+    background:#f66;
+    border-radius: 15px;
+}
+#header ul li.active {
+    color: #fff;
+    background: #f33;
+    border-radius: 15px;
+}
+#header #header-user {
+    text-align: right;
+    float: right;
+    padding: 13px 10px;
+    margin-right: 10px;
+    cursor: pointer;
+}
+#header * {
+    vertical-align: middle;
+    display: inline-block
+}
+/* end of header */
+/* side menu */
+#side-menu-container {
+    float: left;
+    width: 200px;
+    height: 100%;
+    position: fixed;
+    background: #999;
+    display: box;
+    padding: 80px 30px;
+}
+
+/* end of side menu */
+/* general */
+.container {
+    padding-top: 100px;
+    margin-left: 300px;
+}

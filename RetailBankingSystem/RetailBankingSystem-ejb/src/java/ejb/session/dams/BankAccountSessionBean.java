@@ -25,9 +25,9 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
     public void createAccount(BankAccount account) {
         em.persist(account);
     }
-    
+    // TODO: All types of accounts
     public List<BankAccount> showAllAccounts() {
-        Query q = em.createQuery("SELECT a FROM Account a");
+        Query q = em.createQuery("SELECT a FROM DepositAccount a");
         return q.getResultList();
     }
 }
