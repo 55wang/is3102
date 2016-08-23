@@ -5,12 +5,33 @@ To change this template file, choose Tools | Templates
 and open the template in the editor.
 -->
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
-    <head>
-        <title>TODO supply a title</title>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+    <link type="text/css" rel="stylesheet" href="../layout/css/staff_login.css" />
+    <f:view>
+    <h:head>
+        <title>Merlion Internal</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    </head>
-    <body>
-        <div>TODO write content</div>
-    </body>
+    </h:head>
+    <h:body style="background-color: #f9f9f9">
+        <h:graphicImage url="../layout/img/merlionLogoBlack.png" class="horizontal-center-class" style="top:25%; width:200px"/>
+        <p:layout class="horizontal-center-class" style="width:400px;height:200px;top:55%">
+            <p:layoutUnit position="center">
+                <h:form id="login-form">
+                    <h:panelGrid columns="2" id="login-panel" cellpadding="5" class="horizontal-center-class" style="top:35%">                   
+                        <h:outputText value="User ID: " />
+                        <p:inputText />
+ 
+                        <h:outputText value="Password: " />
+                        <p:password id="nonFeedback" value="#{passwordView.password1}" />
+                    </h:panelGrid>
+        
+                    <p:commandButton value="Log in" actionListener="#{buttonView.buttonAction}" class="horizontal-center-class" style="margin-top:35%"/>
+                </h:form>
+            </p:layoutUnit>
+        </p:layout>
+    </h:body>
+</f:view>
 </html>
