@@ -6,6 +6,7 @@
 package entity;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -16,41 +17,12 @@ import javax.persistence.Id;
  * @author leiyang
  */
 @Entity
-public class Account implements Serializable {
+public abstract class Interest implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private String name;
-    private String type;
-
-    /**
-     * @return the name
-     */
-    public String getName() {
-        return name;
-    }
-
-    /**
-     * @param name the name to set
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    /**
-     * @return the type
-     */
-    public String getType() {
-        return type;
-    }
-
-    /**
-     * @param type the type to set
-     */
-    public void setType(String type) {
-        this.setType(type);
-    }
+    private BigDecimal percentage;
 
     public Long getId() {
         return id;
@@ -70,10 +42,10 @@ public class Account implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Account)) {
+        if (!(object instanceof Interest)) {
             return false;
         }
-        Account other = (Account) object;
+        Interest other = (Interest) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -82,7 +54,7 @@ public class Account implements Serializable {
 
     @Override
     public String toString() {
-        return "entity.Account[ id=" + id + " ]";
+        return "entity.Interest[ id=" + id + " ]";
     }
     
 }

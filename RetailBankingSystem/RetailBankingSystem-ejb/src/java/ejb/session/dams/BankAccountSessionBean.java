@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ejb.DAMS;
+package ejb.session.dams;
 
-import entity.Account;
+import entity.BankAccount;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -17,16 +17,16 @@ import javax.persistence.Query;
  * @author leiyang
  */
 @Stateless
-public class AccountSessionBean implements AccountSessionBeanLocal {
+public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
     @PersistenceContext(unitName = "RetailBankingSystem-ejbPU")
     private EntityManager em;
 
     @Override
-    public void createAccount(Account account) {
+    public void createAccount(BankAccount account) {
         em.persist(account);
     }
     
-    public List<Account> showAllAccounts() {
+    public List<BankAccount> showAllAccounts() {
         Query q = em.createQuery("SELECT a FROM Account a");
         return q.getResultList();
     }

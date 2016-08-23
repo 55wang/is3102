@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ejb.DAMS;
+package ejb.session.dams;
 
-import entity.Account;
+import entity.BankAccount;
 import java.util.List;
 import javax.ejb.Local;
 
@@ -14,9 +14,9 @@ import javax.ejb.Local;
  * @author leiyang
  */
 @Local
-public interface AccountSessionBeanLocal {
+public interface BankAccountSessionBeanLocal {
 
-    void createAccount(Account account);
+    void createAccount(BankAccount account);
     
-    public List<Account> showAllAccounts();
+    public List<BankAccount> showAllAccounts();
 }

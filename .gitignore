@@ -10,3 +10,12 @@ hs_err_pid*
 
 **/.DS_Store
 **/.gitignore
+/RetailBankingSystem/nbproject/private/
+/RetailBankingSystem/RetailBankingSystem-war/nbproject/private/
+/RetailBankingSystem/RetailBankingSystem-ejb/nbproject/private/
+/RetailBankingSystem/RetailBankingSystem-ejb/build/
+/RetailBankingSystem/RetailBankingSystem-ejb/dist/
+/RetailBankingSystem/RetailBankingSystem-war/build/
+/RetailBankingSystem/build/
+/RetailBankingSystem/RetailBankingSystem-war/dist/
+/RetailBankingSystem/dist/
