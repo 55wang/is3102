@@ -28,7 +28,7 @@ public class Transaction implements Serializable {
     private String referenceNumber;
     private Boolean credit;
     private BigDecimal amount;
-    private Date date;
+//    private Date date;
 
     public Long getId() {
         return id;

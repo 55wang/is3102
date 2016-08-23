@@ -3,11 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Dashboard.DAMS;
+package staff.dams;
 
 import ejb.session.dams.BankAccountSessionBeanLocal;
-import entity.BankAccount;
 import entity.DepositAccount;
+import entity.BankAccount;
 import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -26,25 +26,24 @@ import javax.faces.view.ViewScoped;
 @ViewScoped
 public class DepositAccountManagedBean implements Serializable {
     @EJB
-    private BankAccountSessionBeanLocal bankAccountSessionBean;
+    private BankAccountSessionBeanLocal accountSessionBean;
 
     private List<BankAccount> accounts;
-    private BankAccount newAccount;
+    private DepositAccount newAccount;
     /**
      * Creates a new instance of AccountManagedBean
      */
     public DepositAccountManagedBean() {
-        // admin need to select the type of accounts here
         newAccount = new DepositAccount();
     }
     
     @PostConstruct
     public void init() {
-        accounts = bankAccountSessionBean.showAllAccounts();
+        accounts = accountSessionBean.showAllAccounts();
     }
     
     public void createAccount(ActionEvent event) {
-        bankAccountSessionBean.createAccount(newAccount);
+        accountSessionBean.createAccount(newAccount);
         accounts.add(newAccount);
         newAccount = new DepositAccount();
         // current context
@@ -75,7 +74,7 @@ public class DepositAccountManagedBean implements Serializable {
     /**
      * @param newAccount the newAccount to set
      */
-    public void setNewAccount(BankAccount newAccount) {
+    public void setNewAccount(DepositAccount newAccount) {
         this.newAccount = newAccount;
     }
     
