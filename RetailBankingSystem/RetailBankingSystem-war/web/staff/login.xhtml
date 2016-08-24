@@ -14,19 +14,20 @@ and open the template in the editor.
     <h:head>
         <title>Merlion Internal</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <h:outputStylesheet library="css" name="reset.css"/>
         <h:outputStylesheet library="css" name="theme.css"/>
     </h:head>
     <h:body style="background-color: #f9f9f9">
         <h:graphicImage url="../resources/img/merlionLogoBlack.png" class="h-center" style="top:25%; width:200px"/>
         <p:layout class="h-center" style="width:400px;height:200px;top:55%">
             <p:layoutUnit position="center">
-                <h:form id="login-form">
-                    <h:panelGrid columns="2" id="login-panel" cellpadding="5" class="h-center" style="top:35%">                   
+                <h:form id="staff-login-form">
+                    <h:panelGrid columns="2" id="staff-login-panel" cellpadding="5" class="h-center" style="top:35%">                   
                         <h:outputText value="User ID: " />
                         <p:inputText />
  
                         <h:outputText value="Password: " />
-                        <p:password id="nonFeedback" value="#{passwordView.password1}" />
+                        <p:password value="#{passwordView.password1}" />
                     </h:panelGrid>
         
                     <p:commandButton value="Log in" actionListener="#{buttonView.buttonAction}" class="h-center" style="margin-top:35%"/>
