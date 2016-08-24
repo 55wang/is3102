@@ -5,12 +5,118 @@ To change this template file, choose Tools | Templates
 and open the template in the editor.
 -->
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
-    <head>
-        <title>TODO supply a title</title>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+    <h:head>
+        <title>Register</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    </head>
-    <body>
-        <div>TODO write content</div>
-    </body>
+    </h:head>
+    <h:body>
+        
+        <h:form>
+        <p:growl id="growl" sticky="true" showDetail="true"/>
+
+        <p:wizard flowListener="#{customerRegisterManagedBean.onFlowProcess}">
+            <p:tab id="personal" title="Personal">
+                <p:panel header="Personal Details">
+                    <p:messages />
+                    <h:panelGrid columns="2" columnClasses="label, value">
+                        <h:outputText value="Firstname: *" />
+                        <p:inputText value="#{customerRegisterManagedBean.customer.firstname}" required="true" label="Firstname"/>
+
+                        <h:outputText value="Lastname: *" />
+                        <p:inputText value="#{customerRegisterManagedBean.customer.lastname}" required="true" label="Lastname"/>
+
+                        <h:outputText value="Age: " />
+                        <p:inputText value="#{customerRegisterManagedBean.customer.age}" />
+
+                        <h:outputText value="Skip to last: " />
+                        <h:selectBooleanCheckbox value="#{customerRegisterManagedBean.skip}" />
+                    </h:panelGrid>
+                </p:panel>
+            </p:tab>
+
+            <p:tab id="address" title="Address">
+                <p:panel header="Address Details">
+                    <p:messages />
+                    <h:panelGrid columns="2" columnClasses="label, value">
+                        <h:outputText value="Street: " />
+                        <p:inputText value="#{customerRegisterManagedBean.customer.street}" />
+
+                        <h:outputText value="Postal Code: " />
+                        <p:inputText value="#{customerRegisterManagedBean.customer.postalCode}" />
+
+                        <h:outputText value="City: " />
+                        <p:inputText value="#{customerRegisterManagedBean.customer.city}" />
+
+                        <h:outputText value="Skip to last: " />
+                        <h:selectBooleanCheckbox value="#{customerRegisterManagedBean.skip}" />
+                    </h:panelGrid>
+                </p:panel>
+            </p:tab>
+
+            <p:tab id="contact" title="Contact">
+                <p:panel header="Contact Information">
+                    <p:messages />
+                    <h:panelGrid columns="2" columnClasses="label, value">
+                        <h:outputText value="Email: *" />
+                        <p:inputText value="#{customerRegisterManagedBean.customer.email}" required="true" label="Email"/>
+
+                        <h:outputText value="Phone: " />
+                        <p:inputText value="#{customerRegisterManagedBean.customer.phone}"/>
+
+                        <h:outputText value="Additional Info: " />
+                        <p:inputText value="#{customerRegisterManagedBean.customer.info}"/>
+                    </h:panelGrid>
+                </p:panel>
+            </p:tab>
+
+            <p:tab id="confirm" title="Confirmation">
+                <p:panel header="Confirmation">
+                    <h:panelGrid id="confirmation" columns="3" columnClasses="grid,grid,grid">
+                        <h:panelGrid columns="2" columnClasses="label, value">
+                            <h:outputText value="Firstname: " />
+                            <h:outputText value="#{customerRegisterManagedBean.customer.firstname}" styleClass="outputLabel"/>
+
+                            <h:outputText value="Lastname: " />
+                            <h:outputText value="#{customerRegisterManagedBean.customer.lastname}" styleClass="outputLabel"/>
+
+                            <h:outputText value="Age: " />
+                            <h:outputText value="#{customerRegisterManagedBean.customer.age}" styleClass="outputLabel"/>
+                        </h:panelGrid>
+
+                        <h:panelGrid columns="2" columnClasses="label, value">
+                            <h:outputText value="Street: " />
+                            <h:outputText value="#{customerRegisterManagedBean.customer.street}" styleClass="outputLabel"/>
+
+                            <h:outputText value="Postal: " />
+                            <h:outputText value="#{customerRegisterManagedBean.customer.postalCode}" styleClass="outputLabel"/>
+
+                            <h:outputText value="City: " />
+                            <h:outputText value="#{customerRegisterManagedBean.customer.city}" styleClass="outputLabel"/>
+                        </h:panelGrid>
+
+                        <h:panelGrid columns="2" columnClasses="label, value">
+                            <h:outputText value="Email: " />
+                            <h:outputText value="#{customerRegisterManagedBean.customer.email}" styleClass="outputLabel"/>
+
+                            <h:outputText value="Phone " />
+                            <h:outputText value="#{customerRegisterManagedBean.customer.phone}" styleClass="outputLabel"/>
+
+                            <h:outputText value="Info: " />
+                            <h:outputText value="#{customerRegisterManagedBean.customer.info}" styleClass="outputLabel"/>
+
+                            <h:outputText />
+                            <h:outputText />
+                        </h:panelGrid>
+                    </h:panelGrid>
+
+                    <p:commandButton value="Submit" actionListener="#{customerRegisterManagedBean.save}" update="growl" process="@this"/>
+                </p:panel>
+            </p:tab>
+        </p:wizard>
+
+        </h:form>
+    </h:body>
 </html>
