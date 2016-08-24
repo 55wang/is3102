@@ -7,6 +7,7 @@ package ejb.session.dams;
 
 import entity.CurrentAccount;
 import entity.Interest;
+import java.math.BigDecimal;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -30,14 +31,7 @@ public class CurrentAccountSessionBean implements CurrentAccountSessionBeanLocal
     }
     
     public CurrentAccount getAccountFromId(Long id) {
-        Query q = em.createQuery("SELECT a FROM CurrentAccount a WHERE a.id = :id");
-        q.setParameter("id", id);
-        if (q.getResultList().isEmpty()) {
-            // no account found
-            return null;
-        } else {
-            return (CurrentAccount) q.getResultList().remove(0);
-        }
+        return em.find(CurrentAccount.class, id);
     }
     
     public long showNumberOfAccounts() {
@@ -49,5 +43,22 @@ public class CurrentAccountSessionBean implements CurrentAccountSessionBeanLocal
     public List<CurrentAccount> showAllAccounts() {
         Query q = em.createQuery("SELECT a FROM CurrentAccount a");
         return q.getResultList();
+    }
+    
+    public String depositIntoAccount(Long accountNumber, BigDecimal depositAmount) {
+        if (accountNumber == null) {
+            return "Account Number Cannot be Empty!";
+        }
+        if (depositAmount == null) {
+            return "Your Deposit Amount is Empty!";
+        }
+        CurrentAccount ca = em.find(CurrentAccount.class, accountNumber);
+        if (ca == null) {
+            return "Account Not Found";
+        } else {
+            ca.addBalance(depositAmount);
+            em.persist(ca);
+            return "Deposit Success!";
+        }
     }
 }

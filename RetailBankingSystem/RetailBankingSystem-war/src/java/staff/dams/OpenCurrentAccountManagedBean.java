@@ -29,9 +29,7 @@ public class OpenCurrentAccountManagedBean implements Serializable {
 
     private List<CurrentAccount> accounts;
     private CurrentAccount newAccount;
-    /**
-     * Creates a new instance of AccountManagedBean
-     */
+ 
     public OpenCurrentAccountManagedBean() {
         newAccount = new CurrentAccount();
     }

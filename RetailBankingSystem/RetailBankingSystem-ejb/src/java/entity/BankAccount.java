@@ -43,6 +43,10 @@ public abstract class BankAccount implements Serializable {
     public void removeInterestRules(Interest i) {
         rules.remove(i);
     }
+    
+    public void addBalance(BigDecimal amount) {
+        balance = balance.add(amount);
+    }
     /**
      * @return the name
      */

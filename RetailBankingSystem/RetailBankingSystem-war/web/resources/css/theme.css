@@ -90,11 +90,16 @@ and open the template in the editor.
 }
 .side-menu-item {
     padding: 15px 30px;
-    font-size: 25px;
-    color: #fff;
     list-style-type: none;
     cursor: pointer;
 }
+
+.side-menu-item a{
+    text-decoration: none;
+    font-size: 20px;
+    color: #fff;
+}
+
 .side-menu-item:hover {
     background: #999;
 }

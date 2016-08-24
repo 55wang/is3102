@@ -14,24 +14,21 @@
         </h:head>
         <h:body>
             <em:staffNavBar context="account" userName="lei yang"></em:staffNavBar>
-            <em:staffSideBar top="account" side="openCurrentAccount">Testing </em:staffSideBar>
+            <em:staffSideBar top="account" side="checkBalanceCurrentAccount"></em:staffSideBar>
             <div class="container">
                 <h:form id="mainForm">
-                    <p:panel header="Opening Current Account">
+                    <p:panel header="Check Balance for Current Account">
                         <p:messages id="messagesStatus" redisplay="false" >
 
                             <h:panelGrid columns="2" cellpadding="5">
-                                <p:outputLabel for="name" value="Name: " />
-                                <p:inputText id="name" value="#{openCurrentAccountManagedBean.newAccount.name}"/>
-                                
-                                <p:outputLabel for="deposit" value="Initial Deposit: " />
-                                <p:inputText id="deposit" value="#{openCurrentAccountManagedBean.newAccount.balance}"/>
+                                <p:outputLabel for="accountNumber" value="Name: " />
+                                <p:inputText id="accountNumber" value="#{checkBalanceCurrentAccountManagedBean.accountNumber}"/>
 
-                                <p:commandButton value="Create" icon="ui-icon-plus" update="@form" actionListener="#{openCurrentAccountManagedBean.createAccount}" />
+                                <p:commandButton value="Find" icon="ui-icon-plus" update="@form" actionListener="#{checkBalanceCurrentAccountManagedBean.checkBalance}" />
                             </h:panelGrid>
                             
                             <!--talks to managed beans and getter and setter methods-->
-                            <p:dataTable id="dataTableBooks" value="#{openCurrentAccountManagedBean.accounts}" var="account">
+                            <p:dataTable id="dataTableBooks" value="#{checkBalanceCurrentAccountManagedBean.accounts}" var="account">
                                 <p:column headerText="ID" sortBy="#{account.id}">
                                     <h:outputText value="#{account.id}"></h:outputText>
                                 </p:column>
