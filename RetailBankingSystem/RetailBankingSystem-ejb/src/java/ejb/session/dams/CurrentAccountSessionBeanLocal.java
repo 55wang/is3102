@@ -27,4 +27,6 @@ public interface CurrentAccountSessionBeanLocal {
     public List<CurrentAccount> showAllAccounts();
     
     public String depositIntoAccount(Long accountNumber, BigDecimal depositAmount);
+    
+    public String withdrawFromAccount(Long accountNumber, BigDecimal depositAmount);
 }
