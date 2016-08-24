@@ -27,6 +27,10 @@
                             <h:link outcome="deposit-currentaccount" value="Deposit Current Account" />
                         </li>
                         
+                        <li class="side-menu-item #{cc.attrs.side == 'withdrawCurrentAccount' ? 'active' : ''}">
+                            <h:link outcome="withdraw-currentaccount" value="Withdraw Current Account" />
+                        </li>
+                        
                         <li class="side-menu-item #{cc.attrs.side == 'checkBalanceCurrentAccount' ? 'active' : ''}">
                             <h:link outcome="checkbalance-currentaccount" value="Check Balance Current Account" />
                         </li>
