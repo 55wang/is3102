@@ -11,15 +11,17 @@ and open the template in the editor.
     <h:head>
         <title>Register</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <h:outputStylesheet library="css" name="reset.css"/>
+        <h:outputStylesheet library="css" name="theme.css"/>
     </h:head>
     <h:body>
-        
+        <div id="register-form-container" class="h-center" style="top:45%; width:60%;">
         <h:form>
         <p:growl id="growl" sticky="true" showDetail="true"/>
 
-        <p:wizard flowListener="#{customerRegisterManagedBean.onFlowProcess}">
-            <p:tab id="personal" title="Personal">
-                <p:panel header="Personal Details">
+        <p:wizard widgetVar="myWizard" showNavBar="false">
+            <p:tab id="personal" title="Personal" >
+                <p:panel>
                     <p:messages />
                     <h:panelGrid columns="2" columnClasses="label, value">
                         <h:outputText value="Firstname: *" />
@@ -30,15 +32,17 @@ and open the template in the editor.
 
                         <h:outputText value="Age: " />
                         <p:inputText value="#{customerRegisterManagedBean.customer.age}" />
-
-                        <h:outputText value="Skip to last: " />
-                        <h:selectBooleanCheckbox value="#{customerRegisterManagedBean.skip}" />
+                        
                     </h:panelGrid>
+                    
+                   <div style="margin-left: 300px">
+                    <p:commandButton value="Next" type="button" onclick="PF('myWizard').next();"/>
+                   </div>
                 </p:panel>
             </p:tab>
 
             <p:tab id="address" title="Address">
-                <p:panel header="Address Details">
+                <p:panel>
                     <p:messages />
                     <h:panelGrid columns="2" columnClasses="label, value">
                         <h:outputText value="Street: " />
@@ -49,15 +53,19 @@ and open the template in the editor.
 
                         <h:outputText value="City: " />
                         <p:inputText value="#{customerRegisterManagedBean.customer.city}" />
-
-                        <h:outputText value="Skip to last: " />
-                        <h:selectBooleanCheckbox value="#{customerRegisterManagedBean.skip}" />
+                        
+                        
                     </h:panelGrid>
+                    
+                    <div class="register-form-button">
+                    <p:commandButton value="Back" type="button" onclick="PF('myWizard').back();" />
+                    <p:commandButton  value="Next" type="button" onclick="PF('myWizard').next();"  />
+                    </div>
                 </p:panel>
             </p:tab>
 
             <p:tab id="contact" title="Contact">
-                <p:panel header="Contact Information">
+                <p:panel>
                     <p:messages />
                     <h:panelGrid columns="2" columnClasses="label, value">
                         <h:outputText value="Email: *" />
@@ -68,12 +76,18 @@ and open the template in the editor.
 
                         <h:outputText value="Additional Info: " />
                         <p:inputText value="#{customerRegisterManagedBean.customer.info}"/>
+                        
                     </h:panelGrid>
+                    
+                    <div class="register-form-button">
+                    <p:commandButton value="Back" type="button" onclick="PF('myWizard').back();" />
+                    <p:commandButton  value="Next" type="button" onclick="PF('myWizard').next();" />
+                    </div>
                 </p:panel>
             </p:tab>
 
             <p:tab id="confirm" title="Confirmation">
-                <p:panel header="Confirmation">
+                <p:panel>
                     <h:panelGrid id="confirmation" columns="3" columnClasses="grid,grid,grid">
                         <h:panelGrid columns="2" columnClasses="label, value">
                             <h:outputText value="Firstname: " />
@@ -112,11 +126,15 @@ and open the template in the editor.
                         </h:panelGrid>
                     </h:panelGrid>
 
+                    <div class="register-form-button">
+                    <p:commandButton value="Back" type="button" onclick="PF('myWizard').back();" />
                     <p:commandButton value="Submit" actionListener="#{customerRegisterManagedBean.save}" update="growl" process="@this"/>
+                    </div>
                 </p:panel>
             </p:tab>
         </p:wizard>
 
         </h:form>
+        </div>
     </h:body>
 </html>
