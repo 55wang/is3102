@@ -19,7 +19,9 @@
                     <h:graphicImage library="img" name="merlionLogo3.png" style="width:150px" />
                 </div>
 
-                <ul id="header-user"><strong id="user-name">#{cc.attrs.userName}</strong></ul>
+                <ul id="header-user">
+                    <h:link outcome="customer_web/customer_login" value="Log in" />
+                </ul>
             </div>
         </f:view>
     </cc:implementation>
