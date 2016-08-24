@@ -5,54 +5,93 @@
  */
 package entity;
 
-import java.io.Serializable;
+import java.math.BigDecimal;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 
 /**
  *
  * @author leiyang
  */
 @Entity
+@Inheritance(strategy=InheritanceType.JOINED)
 public class CurrentAccount extends BankAccount {
-    private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    // Iinit default limit, User can reset
+    private final String type = "CURRENT";
+    private BigDecimal dailyWithdrawLimit = new BigDecimal(3000);
+    private BigDecimal dailyLocalTransferLimit = new BigDecimal(3000);
+    private BigDecimal dailyOverseasTransferLimit = new BigDecimal(10000);
+    private BigDecimal minBalance = new BigDecimal(1000);
+    private BigDecimal charges = new BigDecimal(2);
 
-    public Long getId() {
-        return id;
+    /**
+     * @return the dailyWithdrawLimit
+     */
+    public BigDecimal getDailyWithdrawLimit() {
+        return dailyWithdrawLimit;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    /**
+     * @param dailyWithdrawLimit the dailyWithdrawLimit to set
+     */
+    public void setDailyWithdrawLimit(BigDecimal dailyWithdrawLimit) {
+        this.dailyWithdrawLimit = dailyWithdrawLimit;
     }
 
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
-        return hash;
+    /**
+     * @return the dailyLocalTransferLimit
+     */
+    public BigDecimal getDailyLocalTransferLimit() {
+        return dailyLocalTransferLimit;
     }
 
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof CurrentAccount)) {
-            return false;
-        }
-        CurrentAccount other = (CurrentAccount) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
-            return false;
-        }
-        return true;
+    /**
+     * @param dailyLocalTransferLimit the dailyLocalTransferLimit to set
+     */
+    public void setDailyLocalTransferLimit(BigDecimal dailyLocalTransferLimit) {
+        this.dailyLocalTransferLimit = dailyLocalTransferLimit;
     }
 
-    @Override
-    public String toString() {
-        return "entity.CurrentAccount[ id=" + id + " ]";
+    /**
+     * @return the dailyOverseasTransferLimit
+     */
+    public BigDecimal getDailyOverseasTransferLimit() {
+        return dailyOverseasTransferLimit;
     }
-    
+
+    /**
+     * @param dailyOverseasTransferLimit the dailyOverseasTransferLimit to set
+     */
+    public void setDailyOverseasTransferLimit(BigDecimal dailyOverseasTransferLimit) {
+        this.dailyOverseasTransferLimit = dailyOverseasTransferLimit;
+    }
+
+    /**
+     * @return the minBalance
+     */
+    public BigDecimal getMinBalance() {
+        return minBalance;
+    }
+
+    /**
+     * @param minBalance the minBalance to set
+     */
+    public void setMinBalance(BigDecimal minBalance) {
+        this.minBalance = minBalance;
+    }
+
+    /**
+     * @return the charges
+     */
+    public BigDecimal getCharges() {
+        return charges;
+    }
+
+    /**
+     * @param charges the charges to set
+     */
+    public void setCharges(BigDecimal charges) {
+        this.charges = charges;
+    }
 }

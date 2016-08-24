@@ -1,0 +1,12 @@
+<job id="InterestJob" xmlns=http://xmlns.jcp.org/xml/ns/javaee version="1.0">
+    <step id="process">
+        <chunk item-count="2">
+            <reader ref="interestReader/>
+            <processor ref="interestProcessor/>
+            <writer ref="interestWriter/>
+        </chunk>
+        <partition>
+            <mapper ref="InterestPartitionMapper" />
+        </partition>
+    </step>
+</job>

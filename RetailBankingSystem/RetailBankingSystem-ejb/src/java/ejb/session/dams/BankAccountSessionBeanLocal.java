@@ -5,8 +5,6 @@
  */
 package ejb.session.dams;
 
-import entity.BankAccount;
-import java.util.List;
 import javax.ejb.Local;
 
 /**
@@ -15,8 +13,5 @@ import javax.ejb.Local;
  */
 @Local
 public interface BankAccountSessionBeanLocal {
-
-    void createAccount(BankAccount account);
-    
-    public List<BankAccount> showAllAccounts();
+//TODO: Empty for now, maybe used for later
 }

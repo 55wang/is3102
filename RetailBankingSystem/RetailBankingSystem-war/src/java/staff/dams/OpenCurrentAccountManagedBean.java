@@ -5,9 +5,8 @@
  */
 package staff.dams;
 
-import ejb.session.dams.BankAccountSessionBeanLocal;
-import entity.DepositAccount;
-import entity.BankAccount;
+import ejb.session.dams.CurrentAccountSessionBeanLocal;
+import entity.CurrentAccount;
 import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -22,30 +21,30 @@ import javax.faces.view.ViewScoped;
  *
  * @author leiyang
  */
-@Named(value = "accountManagedBean")
+@Named(value = "openCurrentAccountManagedBean")
 @ViewScoped
-public class DepositAccountManagedBean implements Serializable {
+public class OpenCurrentAccountManagedBean implements Serializable {
     @EJB
-    private BankAccountSessionBeanLocal accountSessionBean;
+    private CurrentAccountSessionBeanLocal currentAccountSessionBean;
 
-    private List<BankAccount> accounts;
-    private DepositAccount newAccount;
+    private List<CurrentAccount> accounts;
+    private CurrentAccount newAccount;
     /**
      * Creates a new instance of AccountManagedBean
      */
-    public DepositAccountManagedBean() {
-        newAccount = new DepositAccount();
+    public OpenCurrentAccountManagedBean() {
+        newAccount = new CurrentAccount();
     }
     
     @PostConstruct
     public void init() {
-        accounts = accountSessionBean.showAllAccounts();
+        accounts = currentAccountSessionBean.showAllAccounts();
     }
     
     public void createAccount(ActionEvent event) {
-        accountSessionBean.createAccount(newAccount);
+        currentAccountSessionBean.createAccount(newAccount);
         accounts.add(newAccount);
-        newAccount = new DepositAccount();
+        newAccount = new CurrentAccount();
         // current context
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New Account Created!", ""));
     }
@@ -53,28 +52,28 @@ public class DepositAccountManagedBean implements Serializable {
     /**
      * @return the accounts
      */
-    public List<BankAccount> getAccounts() {
+    public List<CurrentAccount> getAccounts() {
         return accounts;
     }
 
     /**
      * @param accounts the accounts to set
      */
-    public void setAccounts(List<BankAccount> accounts) {
+    public void setAccounts(List<CurrentAccount> accounts) {
         this.accounts = accounts;
     }
 
     /**
      * @return the newAccount
      */
-    public BankAccount getNewAccount() {
+    public CurrentAccount getNewAccount() {
         return newAccount;
     }
 
     /**
      * @param newAccount the newAccount to set
      */
-    public void setNewAccount(DepositAccount newAccount) {
+    public void setNewAccount(CurrentAccount newAccount) {
         this.newAccount = newAccount;
     }
     

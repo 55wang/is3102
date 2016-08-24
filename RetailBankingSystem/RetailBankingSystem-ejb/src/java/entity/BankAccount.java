@@ -7,11 +7,14 @@ package entity;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 /**
  *
@@ -22,11 +25,24 @@ public abstract class BankAccount implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private Long id;// generated
     private String name;
-    private String type;
-    private BigDecimal amount;
-    private List<Interest> rules;
+    private String type; // CURRENT, SAVING, FIXED, MOBILE, LOAN
+    private BigDecimal balance;
+    @OneToMany(cascade = CascadeType.PERSIST)
+    private List<Interest> rules = new ArrayList<Interest>();
+    // TODO: Other likely fields
+    // billing address 
+    // transaction history
+    // payment history
+    // 
+    
+    public void addInterestRules(Interest i) {
+        rules.add(i);
+    }
+    public void removeInterestRules(Interest i) {
+        rules.remove(i);
+    }
     /**
      * @return the name
      */
@@ -63,43 +79,18 @@ public abstract class BankAccount implements Serializable {
         this.id = id;
     }
 
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof BankAccount)) {
-            return false;
-        }
-        BankAccount other = (BankAccount) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        return "entity.Account[ id=" + id + " ]";
+    /**
+     * @return the balance
+     */
+    public BigDecimal getBalance() {
+        return balance;
     }
 
     /**
-     * @return the amount
+     * @param balance the balance to set
      */
-    public BigDecimal getAmount() {
-        return amount;
-    }
-
-    /**
-     * @param amount the amount to set
-     */
-    public void setAmount(BigDecimal amount) {
-        this.amount = amount;
+    public void setBalance(BigDecimal balance) {
+        this.balance = balance;
     }
 
     /**
