@@ -31,14 +31,7 @@ public class CurrentAccountSessionBean implements CurrentAccountSessionBeanLocal
     }
     
     public CurrentAccount getAccountFromId(Long id) {
-        Query q = em.createQuery("SELECT a FROM CurrentAccount a WHERE a.id = :id");
-        q.setParameter("id", id);
-        if (q.getResultList().isEmpty()) {
-            // no account found
-            return null;
-        } else {
-            return (CurrentAccount) q.getResultList().remove(0);
-        }
+        return em.find(CurrentAccount.class, id);
     }
     
     public long showNumberOfAccounts() {

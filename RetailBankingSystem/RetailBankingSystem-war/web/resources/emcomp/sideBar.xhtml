@@ -26,6 +26,10 @@
                         <li class="side-menu-item #{cc.attrs.side == 'depositCurrentAccount' ? 'active' : ''}">
                             <h:link outcome="deposit-currentaccount" value="Deposit Current Account" />
                         </li>
+                        
+                        <li class="side-menu-item #{cc.attrs.side == 'checkBalanceCurrentAccount' ? 'active' : ''}">
+                            <h:link outcome="checkbalance-currentaccount" value="Check Balance Current Account" />
+                        </li>
                     </c:if>
                 </ul>
             </div>

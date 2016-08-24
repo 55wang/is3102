@@ -1,0 +1,51 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:em="http://xmlns.jcp.org/jsf/composite/emcomp">
+    <!--shift + ctrl + F, format-->
+    <f:view>
+        <h:head>
+            <title>Facelet Title</title>
+            <h:outputStylesheet library="css" name="reset.css"/>
+            <h:outputStylesheet library="css" name="theme.css"/>
+        </h:head>
+        <h:body>
+            <em:navBar context="account" userName="lei yang"></em:navBar>
+            <em:sideBar top="account" side="checkBalanceCurrentAccount"></em:sideBar>
+            <div class="container">
+                <h:form id="mainForm">
+                    <p:panel header="Check Balance for Current Account">
+                        <p:messages id="messagesStatus" redisplay="false" >
+
+                            <h:panelGrid columns="2" cellpadding="5">
+                                <p:outputLabel for="accountNumber" value="Name: " />
+                                <p:inputText id="accountNumber" value="#{checkBalanceCurrentAccountManagedBean.accountNumber}"/>
+
+                                <p:commandButton value="Find" icon="ui-icon-plus" update="@form" actionListener="#{checkBalanceCurrentAccountManagedBean.checkBalance}" />
+                            </h:panelGrid>
+                            
+                            <!--talks to managed beans and getter and setter methods-->
+                            <p:dataTable id="dataTableBooks" value="#{checkBalanceCurrentAccountManagedBean.accounts}" var="account">
+                                <p:column headerText="ID" sortBy="#{account.id}">
+                                    <h:outputText value="#{account.id}"></h:outputText>
+                                </p:column>
+                                <p:column headerText="Name" sortBy="#{account.name}">
+                                    <h:outputText value="#{account.name}"></h:outputText>
+                                </p:column>
+                                <p:column headerText="Balance" sortBy="#{account.balance}">
+                                    <h:outputText value="#{account.balance}"></h:outputText>
+                                </p:column>
+                            </p:dataTable>
+                        </p:messages>
+                    </p:panel>
+                </h:form>
+            </div>
+        </h:body>
+    </f:view>
+
+
+</html>
+
