@@ -4,9 +4,13 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:cc="http://xmlns.jcp.org/jsf/composite"
-      xmlns:jsf="http://xmlns.jcp.org/jsf">
+      xmlns:jsf="http://xmlns.jcp.org/jsf"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
 
     <cc:interface>
+        <cc:attribute name="top" required="true"/>
+        <cc:attribute name="side" required="true"/>
     </cc:interface>
 
     <cc:implementation>
@@ -14,9 +18,10 @@
             <h:outputStylesheet library="css" name="theme.css"/>
             <div id="side-menu">
                 <ul id="side-menu-container">
-                    <li class="side-menu-item active">Item 1</li>
-                    <li class="side-menu-item">Item 2</li>
-                    <li class="side-menu-item">Item 3</li>
+                    <c:if test="#{cc.attrs.top == 'account'}">
+                    <li class="side-menu-item #{cc.attrs.side == 'openCurrentAccount' ? 'active' : ''}"><a href="staff/dams/open-currentaccount">Open Current Account</a></li>
+                    </c:if>
+                    
                 </ul>
             </div>
             <!--TODO: Fillin all the sub menus here -->
