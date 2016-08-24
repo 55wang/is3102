@@ -19,7 +19,8 @@ and open the template in the editor.
     z-index: 10;
     position: fixed;
 }
-#header #logo {
+
+#header #logo{
     margin: 0px 30px 0 30px;
 }
 #header #menu {
@@ -29,6 +30,7 @@ and open the template in the editor.
 #header .header-navigation {
     float: left;
 }
+
 #header ul {
     list-style-type: none;
     position: relative;
@@ -101,6 +103,75 @@ and open the template in the editor.
 }
 
 /* end of side menu */
+/* customer navbar */
+#customer-navbar{
+    width: 90%;
+    height: 60px;
+    padding: 5px 0;
+    background: #fff;
+    color: #999;
+    float: left;
+    z-index: 10;
+    position: fixed;
+    border: 2px solid #333;
+    top:121px;
+}
+
+#customer-navbar ul {
+    list-style-type: none;
+    position: relative;
+    float: left;
+    margin: 0;
+    padding: 0;
+}
+#customer-navbar ul a {
+    display: block;
+    color: #333;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 32px;
+    padding: 0 15px;
+}
+#customer-navbar ul li {
+    text-align: center;
+    width: 120px;
+    float: left;
+    margin: 8px 10px;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+#customer-navbar ul li:hover {
+    background:#f66;
+    border-radius: 15px;
+}
+#customer-navbar ul li.active {
+    color: #fff;
+    background: #f33;
+    border-radius: 15px;
+}
+
+/* customer navbar */
+/* customer slideshow */
+#customer-slideshow{
+    height:500px;
+    top:200px;
+    width: 90%;
+    min-height: 100px;
+    padding: 5px 0;
+    background: #fff;
+    color: #999;
+    float: left;
+    z-index: 10;
+    position: fixed;
+    top:420px;
+}
+
+#customer-slideshow img{
+    width:600px;
+    height: 300px;
+}
+/* end of customer slideshow */
 /* general */
 .container {
     padding-top: 100px;
