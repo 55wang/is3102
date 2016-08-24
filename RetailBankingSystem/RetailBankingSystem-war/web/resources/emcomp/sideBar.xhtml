@@ -19,9 +19,14 @@
             <div id="side-menu">
                 <ul id="side-menu-container">
                     <c:if test="#{cc.attrs.top == 'account'}">
-                    <li class="side-menu-item #{cc.attrs.side == 'openCurrentAccount' ? 'active' : ''}"><a href="staff/dams/open-currentaccount">Open Current Account</a></li>
+                        <li class="side-menu-item #{cc.attrs.side == 'openCurrentAccount' ? 'active' : ''}">
+                            <h:link outcome="open-currentaccount" value="Open Current Account" />
+                        </li>
+                        
+                        <li class="side-menu-item #{cc.attrs.side == 'depositCurrentAccount' ? 'active' : ''}">
+                            <h:link outcome="deposit-currentaccount" value="Deposit Current Account" />
+                        </li>
                     </c:if>
-                    
                 </ul>
             </div>
             <!--TODO: Fillin all the sub menus here -->

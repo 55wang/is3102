@@ -6,6 +6,7 @@
 package ejb.session.dams;
 
 import entity.CurrentAccount;
+import java.math.BigDecimal;
 import java.util.List;
 import javax.ejb.Local;
 
@@ -24,4 +25,6 @@ public interface CurrentAccountSessionBeanLocal {
     
     // TODO: For internal testing only, not for demo
     public List<CurrentAccount> showAllAccounts();
+    
+    public String depositIntoAccount(Long accountNumber, BigDecimal depositAmount);
 }
