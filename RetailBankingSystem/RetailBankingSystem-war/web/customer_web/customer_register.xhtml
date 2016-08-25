@@ -7,6 +7,7 @@ and open the template in the editor.
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:h="http://xmlns.jcp.org/jsf/html">
     <h:head>
         <title>Register</title>
@@ -15,24 +16,34 @@ and open the template in the editor.
         <h:outputStylesheet library="css" name="theme.css"/>
     </h:head>
     <h:body>
-        <div id="register-form-container" class="h-center" style="top:45%; width:60%;">
+        <div id="register-form-container" class="h-center">
         <h:form>
         <p:growl id="growl" sticky="true" showDetail="true"/>
 
         <p:wizard widgetVar="myWizard" showNavBar="false">
-            <p:tab id="personal" title="Personal" >
+            <p:tab id="identify" title="1.Identify" >
                 <p:panel>
                     <p:messages />
                     <h:panelGrid columns="2" columnClasses="label, value">
-                        <h:outputText value="Firstname: *" />
-                        <p:inputText value="#{customerRegisterManagedBean.customer.firstname}" required="true" label="Firstname"/>
-
-                        <h:outputText value="Lastname: *" />
-                        <p:inputText value="#{customerRegisterManagedBean.customer.lastname}" required="true" label="Lastname"/>
-
-                        <h:outputText value="Age: " />
-                        <p:inputText value="#{customerRegisterManagedBean.customer.age}" />
                         
+                        <h:outputText value="Identity Type: " />
+                        <p:selectOneMenu value="#{customerRegisterManagedBean.customer.identityType}" style="width:187px; height: 31px; line-height: 21px; top:8px" rendered="true" label="identityType" required="true">
+                            <f:selectItem itemLabel="Please Select..." itemValue="" />
+                            <f:selectItem itemLabel="Singaporean/PR NRIC" itemValue="Singaporean/PR NRIC" />
+                            <f:selectItem itemLabel="Passport" itemValue="Passport" />
+                        </p:selectOneMenu>
+
+                        <h:outputText value="Identity Number: " />
+                        <p:inputText value="#{customerRegisterManagedBean.customer.identityNumber}" required="true" label="identityNUmber"/>
+
+                        <h:outputText value="Last Name: " />
+                        <p:inputText value="#{customerRegisterManagedBean.customer.lastname}" required="true" label="lastName"/>
+                        
+                        <h:outputText value="First Name: " />
+                        <p:inputText value="#{customerRegisterManagedBean.customer.firstname}" required="true" label="firstName"/>
+                        
+                        <h:outputText value="Date of Birth: " />
+                        <p:calendar value="#{customerRegisterManagedBean.customer.birthDay}" navigator="true" required="true" pattern="yyyy-MM-dd" />
                     </h:panelGrid>
                     
                    <div class="register-form-button">
@@ -41,52 +52,62 @@ and open the template in the editor.
                 </p:panel>
             </p:tab>
 
-            <p:tab id="address" title="Address">
+            <p:tab id="contact" title="2.Contact">
                 <p:panel>
                     <p:messages />
                     <h:panelGrid columns="2" columnClasses="label, value">
-                        <h:outputText value="Street: " />
-                        <p:inputText value="#{customerRegisterManagedBean.customer.street}" />
+                        <h:outputText value="Email: " />
+                        <p:inputText value="#{customerRegisterManagedBean.customer.email}" required="true" label="Email"/>
 
-                        <h:outputText value="Postal Code: " />
-                        <p:inputText value="#{customerRegisterManagedBean.customer.postalCode}" />
-
-                        <h:outputText value="City: " />
-                        <p:inputText value="#{customerRegisterManagedBean.customer.city}" />
+                        <h:outputText value="Phone: " />
+                        <p:inputText value="#{customerRegisterManagedBean.customer.phone}" required="true"/>
                         
+                        <h:outputText value="Postal Code: " />
+                        <p:inputText value="#{customerRegisterManagedBean.customer.postalCode}" required="true"/>
+                        
+                        <h:outputText value="Address: " />
+                        <p:inputText value="#{customerRegisterManagedBean.customer.street}" required="true"/>
+
                         
                     </h:panelGrid>
                     
-                    <div class="register-form-button">
+                    <div class="register-form-button" style="margin-top: 52px">
                     <p:commandButton value="Back" type="button" onclick="PF('myWizard').back();" />
                     <p:commandButton  value="Next" type="button" onclick="PF('myWizard').next();"  />
                     </div>
                 </p:panel>
             </p:tab>
 
-            <p:tab id="contact" title="Contact">
+            <p:tab id="account" title="3.Account">
                 <p:panel>
                     <p:messages />
                     <h:panelGrid columns="2" columnClasses="label, value">
-                        <h:outputText value="Email: *" />
+                        <h:outputText value="User ID: " />
                         <p:inputText value="#{customerRegisterManagedBean.customer.email}" required="true" label="Email"/>
 
-                        <h:outputText value="Phone: " />
-                        <p:inputText value="#{customerRegisterManagedBean.customer.phone}"/>
+                        <h:outputText value="Pin: " />
+                        <p:inputText value="#{customerRegisterManagedBean.customer.phone}" required="true"/>
 
-                        <h:outputText value="Additional Info: " />
+                        <h:outputText value="Confirm Pin: " />
                         <p:inputText value="#{customerRegisterManagedBean.customer.info}"/>
+                      
+                        <h:outputText value="Initial Deposit Account: " />
+                        <p:selectOneMenu value="#{customerRegisterManagedBean.customer.identityType}" style="width:187px; height: 31px; line-height: 21px; top:8px" rendered="true" label="identityType" required="true">
+                            <f:selectItem itemLabel="Please Select..." itemValue="" />
+                            <f:selectItem itemLabel="MBS Current Account" itemValue="Singaporean/PR NRIC" />
+                            <f:selectItem itemLabel="MBS Savings" itemValue="Passport" />
+                        </p:selectOneMenu>
                         
                     </h:panelGrid>
                     
-                    <div class="register-form-button">
+                    <div class="register-form-button" style="margin-top: 52px">
                     <p:commandButton value="Back" type="button" onclick="PF('myWizard').back();" />
                     <p:commandButton  value="Next" type="button" onclick="PF('myWizard').next();" />
                     </div>
                 </p:panel>
             </p:tab>
 
-            <p:tab id="confirm" title="Confirmation">
+            <p:tab id="confirm" title="4.Confirmation">
                 <p:panel>
                     <h:panelGrid id="confirmation" columns="3" columnClasses="grid,grid,grid">
                         <h:panelGrid columns="2" columnClasses="label, value">

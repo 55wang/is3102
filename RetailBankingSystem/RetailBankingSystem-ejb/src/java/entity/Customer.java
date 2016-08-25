@@ -6,10 +6,12 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Temporal;
 
 /**
  *
@@ -21,6 +23,13 @@ public class Customer implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    
+    private String identityType;
+    
+    private String identityNumber;
+    
+    @Temporal(javax.persistence.TemporalType.DATE)
+    private Date birthDay;
     
     private String firstname;
      
@@ -46,6 +55,30 @@ public class Customer implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+    
+    public String getIdentityType() {
+        return identityType;
+    }
+
+    public void setIdentityType(String identityType) {
+        this.identityType = identityType;
+    }
+
+    public String getIdentityNumber() {
+        return identityNumber;
+    }
+
+    public void setIdentityNumber(String identityNumber) {
+        this.identityNumber = identityNumber;
+    }
+
+    public Date getBirthDay() {
+        return birthDay;
+    }
+
+    public void setBirthDay(Date birthDay) {
+        this.birthDay = birthDay;
     }
  
     public String getFirstname() {
