@@ -177,6 +177,48 @@ and open the template in the editor.
     height: 300px;
 }
 /* end of customer slideshow */
+/* wizard overwrite */
+.ui-wizard-step-title {
+    font-size: 18px;
+    /* margin: 0 3px 0 0; */
+    padding: .4em;
+    float: left;
+    width: 172px;
+    border: none;
+    border-radius: initial;
+    background-color: #fff;
+}
+
+#register-form-container .ui-state-highlight{
+    text-align: center;
+    background: #aaa -webkit-gradient(linear,left top,left bottom,from(rgba(0,0,0,0.55)),to(rgba(0,0,0,0)));
+}
+
+#register-form-container .ui-wizard-step-title{
+    text-align: center;
+}
+
+#register-form-container table{
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#register-form-container tr{
+    line-height: 50px;
+}
+
+#register-form-container .ui-button{
+    width:100px;
+    margin-left: 10px;
+}
+
+#register-form-container .register-form-button{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width:fit-content;
+}
+/* end of wizard overwrite */
 /* general */
 .container {
     padding-top: 100px;
