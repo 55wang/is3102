@@ -6,11 +6,14 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.ManyToMany;
 
 /**
  *
@@ -32,8 +35,8 @@ public class Role implements Serializable {
     private Boolean wealthAccessRight;
     private Boolean portfolioAccessRight;
     private Boolean analyticsAccessRight;
-    @ManyToOne
-    private MainAccount mainAccount = new MainAccount();
+    @ManyToMany(cascade={CascadeType.PERSIST})
+    private Set<StaffAccount> staffAccounts = new HashSet<StaffAccount>();
     
     
 
@@ -150,12 +153,12 @@ public class Role implements Serializable {
         this.analyticsAccessRight = analyticsAccessRight;
     }
 
-    public MainAccount getMainAccount() {
-        return mainAccount;
+    public Set<StaffAccount> getStaffAccounts() {
+        return staffAccounts;
     }
 
-    public void setMainAccount(MainAccount mainAccount) {
-        this.mainAccount = mainAccount;
+    public void setStaffAccounts(Set<StaffAccount> staffAccounts) {
+        this.staffAccounts = staffAccounts;
     }
-    
+   
 }

@@ -15,6 +15,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 /**
  *
@@ -23,14 +24,21 @@ import javax.persistence.OneToMany;
 @Entity
 public class MainAccount implements Serializable {
 
-    public List<Role> getRoles() {
-        return roles;
+    public List<BankAccount> getBankAcounts() {
+        return bankAcounts;
     }
 
-    public void setRoles(List<Role> roles) {
-        this.roles = roles;
+    public void setBankAcounts(List<BankAccount> bankAcounts) {
+        this.bankAcounts = bankAcounts;
     }
 
+    public List<AuditLog> getAuditLog() {
+        return auditLog;
+    }
+
+    public void setAuditLog(List<AuditLog> auditLog) {
+        this.auditLog = auditLog;
+    }
 
     public enum StatusType {
         ACTIVE, PENDING, FREEZE, CLOSED
@@ -40,13 +48,17 @@ public class MainAccount implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(unique=true)
+    @Column(unique = true)
     private String username;
     private String password;
     private StatusType status;
-    private Integer numPasswd;
-    @OneToMany(cascade={CascadeType.PERSIST}, mappedBy="mainAccount")
-    private List<Role> roles = new ArrayList<Role>();
+    private Integer numPasswd; //2nd authentication code
+    @OneToOne(cascade = {CascadeType.PERSIST}, mappedBy = "mainAccount")
+    private Customer customer;
+    @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "mainAccount")
+    private List<BankAccount> bankAcounts = new ArrayList<BankAccount>(); 
+    @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "mainAccount")
+    private List<AuditLog> auditLog = new ArrayList<AuditLog>();
 
     public Integer getNumPasswd() {
         return numPasswd;
@@ -98,6 +110,14 @@ public class MainAccount implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
     }
 
     @Override

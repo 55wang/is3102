@@ -14,6 +14,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 /**
@@ -31,6 +32,8 @@ public abstract class BankAccount implements Serializable {
     private BigDecimal balance;
     @OneToMany(cascade = CascadeType.PERSIST)
     private List<Interest> rules = new ArrayList<Interest>();
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    private MainAccount mainAccount = new MainAccount();
     // TODO: Other likely fields
     // billing address 
     // transaction history
@@ -115,5 +118,15 @@ public abstract class BankAccount implements Serializable {
     public void setRules(List<Interest> rules) {
         this.rules = rules;
     }
-    
+
+    public MainAccount getMainAccount() {
+        return mainAccount;
+    }
+
+    public void setMainAccount(MainAccount mainAccount) {
+        this.mainAccount = mainAccount;
+    }
+
+
+
 }

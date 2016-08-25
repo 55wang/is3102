@@ -6,10 +6,12 @@
 package entity;
 
 import java.io.Serializable;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 
 /**
  *
@@ -39,6 +41,9 @@ public class Customer implements Serializable {
     private String email;
      
     private String phone;
+    
+    @OneToOne(cascade = {CascadeType.PERSIST})
+    private MainAccount mainAccount;
     
     public Long getId() {
         return id;
@@ -143,6 +148,14 @@ public class Customer implements Serializable {
     @Override
     public String toString() {
         return "entity.Customer[ id=" + id + " ]";
+    }
+
+    public MainAccount getMainAccount() {
+        return mainAccount;
+    }
+
+    public void setMainAccount(MainAccount mainAccount) {
+        this.mainAccount = mainAccount;
     }
     
 }
