@@ -143,6 +143,9 @@ input, select {
 }
 
 #register-form-container .register-form-button{
-    margin-left: 250px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width:fit-content;
 }
 /* end of wizard overwrite */
