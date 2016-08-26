@@ -29,12 +29,12 @@ public class AuditLog implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     @Temporal(value = TemporalType.TIMESTAMP)
-    private Date timestamp;
+    private Date creationDate;
     private String activityLog;
     @ManyToOne(cascade={CascadeType.PERSIST})
-    private StaffAccount staffAccount = new StaffAccount();
+    private StaffAccount staffAccount;
     @ManyToOne(cascade={CascadeType.PERSIST})
-    private MainAccount mainAccount = new MainAccount();
+    private MainAccount mainAccount;
 
     public Long getId() {
         return id;
@@ -42,31 +42,6 @@ public class AuditLog implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof AuditLog)) {
-            return false;
-        }
-        AuditLog other = (AuditLog) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        return "entity.AuditLog[ id=" + id + " ]";
     }
 
     public String getActivityLog() {
@@ -91,6 +66,20 @@ public class AuditLog implements Serializable {
 
     public void setMainAccount(MainAccount mainAccount) {
         this.mainAccount = mainAccount;
+    }
+
+    /**
+     * @return the creationDate
+     */
+    public Date getCreationDate() {
+        return creationDate;
+    }
+
+    /**
+     * @param creationDate the creationDate to set
+     */
+    public void setCreationDate(Date creationDate) {
+        this.creationDate = creationDate;
     }
     
 }
