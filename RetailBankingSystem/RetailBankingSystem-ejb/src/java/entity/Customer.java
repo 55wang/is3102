@@ -7,11 +7,13 @@ package entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Temporal;
+import javax.persistence.OneToOne;
 
 /**
  *
@@ -35,19 +37,16 @@ public class Customer implements Serializable {
      
     private String lastname;
      
-    private Integer age;
-     
-    private String street;
-     
-    private String city;
+    private String address;
      
     private String postalCode;
-     
-    private String info;
      
     private String email;
      
     private String phone;
+    
+    @OneToOne(cascade = {CascadeType.PERSIST})
+    private MainAccount mainAccount;
     
     public Long getId() {
         return id;
@@ -96,29 +95,13 @@ public class Customer implements Serializable {
     public void setLastname(String lastname) {
         this.lastname = lastname;
     }
- 
-    public Integer getAge() {
-        return age;
+
+    public String getAddress() {
+        return address;
     }
- 
-    public void setAge(Integer age) {
-        this.age = age;
-    }
- 
-    public String getStreet() {
-        return street;
-    }
- 
-    public void setStreet(String street) {
-        this.street = street;
-    }
- 
-    public String getCity() {
-        return city;
-    }
- 
-    public void setCity(String city) {
-        this.city = city;
+
+    public void setAddress(String address) {
+        this.address = address;
     }
  
     public String getPostalCode() {
@@ -127,14 +110,6 @@ public class Customer implements Serializable {
  
     public void setPostalCode(String postalCode) {
         this.postalCode = postalCode;
-    }
- 
-    public String getInfo() {
-        return info;
-    }
- 
-    public void setInfo(String info) {
-        this.info = info;
     }
      
     public String getEmail() {
@@ -176,6 +151,14 @@ public class Customer implements Serializable {
     @Override
     public String toString() {
         return "entity.Customer[ id=" + id + " ]";
+    }
+
+    public MainAccount getMainAccount() {
+        return mainAccount;
+    }
+
+    public void setMainAccount(MainAccount mainAccount) {
+        this.mainAccount = mainAccount;
     }
     
 }

@@ -15,6 +15,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 /**
  *
@@ -23,38 +24,59 @@ import javax.persistence.OneToMany;
 @Entity
 public class MainAccount implements Serializable {
 
-    public List<Role> getRoles() {
-        return roles;
+    public List<BankAccount> getBankAcounts() {
+        return bankAcounts;
     }
 
-    public void setRoles(List<Role> roles) {
-        this.roles = roles;
+    public void setBankAcounts(List<BankAccount> bankAcounts) {
+        this.bankAcounts = bankAcounts;
     }
 
+    public List<AuditLog> getAuditLog() {
+        return auditLog;
+    }
+
+    public void setAuditLog(List<AuditLog> auditLog) {
+        this.auditLog = auditLog;
+    }
 
     public enum StatusType {
-        ACTIVE, PENDING, FREEZE, CLOSED
+        ACTIVE{
+            public String toString() {
+                return "ACTIVE";
+            }
+        }, 
+        PENDING{
+            public String toString() {
+                return "PENDING";
+            }
+        }, 
+        FREEZE{
+            public String toString() {
+                return "FREEZE";
+            }
+        }, 
+        CLOSED{
+            public String toString() {
+                return "CLOSED";
+            }
+        }
     }
 
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(unique=true)
-    private String username;
+    @Column(unique = true)
+    private String userID;
     private String password;
     private StatusType status;
-    private Integer numPasswd;
-    @OneToMany(cascade={CascadeType.PERSIST}, mappedBy="mainAccount")
-    private List<Role> roles = new ArrayList<Role>();
-
-    public Integer getNumPasswd() {
-        return numPasswd;
-    }
-
-    public void setNumPasswd(Integer numPasswd) {
-        this.numPasswd = numPasswd;
-    }
+    @OneToOne(cascade = {CascadeType.PERSIST}, mappedBy = "mainAccount")
+    private Customer customer;
+    @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "mainAccount")
+    private List<BankAccount> bankAcounts = new ArrayList<BankAccount>(); 
+    @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "mainAccount")
+    private List<AuditLog> auditLog = new ArrayList<AuditLog>();
 
     public StatusType getStatus() {
         return status;
@@ -64,30 +86,18 @@ public class MainAccount implements Serializable {
         this.status = status;
     }
 
-    /**
-     * @return the username
-     */
-    public String getUsername() {
-        return username;
+    public String getUserID() {
+        return userID;
     }
 
-    /**
-     * @param username the username to set
-     */
-    public void setUsername(String username) {
-        this.username = username;
+    public void setUserID(String userID) {
+        this.userID = userID;
     }
 
-    /**
-     * @return the password
-     */
     public String getPassword() {
         return password;
     }
 
-    /**
-     * @param password the password to set
-     */
     public void setPassword(String password) {
         this.password = password;
     }
@@ -98,6 +108,14 @@ public class MainAccount implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
     }
 
     @Override
