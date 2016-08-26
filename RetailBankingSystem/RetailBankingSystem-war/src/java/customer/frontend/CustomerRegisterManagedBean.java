@@ -5,8 +5,13 @@
  */
 package customer.frontend;
 
+import ejb.session.common.NewCustomerSessionBeanLocal;
+import entity.BankAccount;
 import entity.Customer;
+import entity.MainAccount;
+import entity.MainAccount.StatusType;
 import java.io.Serializable;
+import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
@@ -20,7 +25,12 @@ import org.primefaces.event.FlowEvent;
 @Named(value = "customerRegisterManagedBean")
 @ViewScoped
 public class CustomerRegisterManagedBean implements Serializable {
+    @EJB
+    private NewCustomerSessionBeanLocal newCustomerSessionBean;
+    
     private Customer customer = new Customer();
+    private MainAccount mainAccount = new MainAccount();
+    private String initialDepositAccount;
      
 
     /**
@@ -36,8 +46,28 @@ public class CustomerRegisterManagedBean implements Serializable {
     public void setCustomer(Customer customer) {
         this.customer = customer;
     }
+
+    public String getInitialDepositAccount() {
+        return initialDepositAccount;
+    }
+
+    public void setInitialDepositAccount(String initialDepositAccount) {
+        this.initialDepositAccount = initialDepositAccount;
+    }
+
+    public MainAccount getMainAccount() {
+        return mainAccount;
+    }
+
+    public void setMainAccount(MainAccount mainAccount) {
+        this.mainAccount = mainAccount;
+    }
      
-    public void save() {        
+    public void save() {  
+        mainAccount.setStatus(StatusType.PENDING);
+        System.out.println("!!!"+mainAccount.getUserID()+mainAccount.getPassword()+mainAccount.getStatus());
+        newCustomerSessionBean.createCustomer(customer, mainAccount);
+        
         FacesMessage msg = new FacesMessage("Successful", "Welcome :" + customer.getFirstname());
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }

@@ -41,7 +41,26 @@ public class MainAccount implements Serializable {
     }
 
     public enum StatusType {
-        ACTIVE, PENDING, FREEZE, CLOSED
+        ACTIVE{
+            public String toString() {
+                return "ACTIVE";
+            }
+        }, 
+        PENDING{
+            public String toString() {
+                return "PENDING";
+            }
+        }, 
+        FREEZE{
+            public String toString() {
+                return "FREEZE";
+            }
+        }, 
+        CLOSED{
+            public String toString() {
+                return "CLOSED";
+            }
+        }
     }
 
     private static final long serialVersionUID = 1L;
@@ -49,24 +68,15 @@ public class MainAccount implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(unique = true)
-    private String username;
+    private String userID;
     private String password;
     private StatusType status;
-    private Integer numPasswd; //2nd authentication code
     @OneToOne(cascade = {CascadeType.PERSIST}, mappedBy = "mainAccount")
     private Customer customer;
     @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "mainAccount")
     private List<BankAccount> bankAcounts = new ArrayList<BankAccount>(); 
     @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "mainAccount")
     private List<AuditLog> auditLog = new ArrayList<AuditLog>();
-
-    public Integer getNumPasswd() {
-        return numPasswd;
-    }
-
-    public void setNumPasswd(Integer numPasswd) {
-        this.numPasswd = numPasswd;
-    }
 
     public StatusType getStatus() {
         return status;
@@ -76,30 +86,18 @@ public class MainAccount implements Serializable {
         this.status = status;
     }
 
-    /**
-     * @return the username
-     */
-    public String getUsername() {
-        return username;
+    public String getUserID() {
+        return userID;
     }
 
-    /**
-     * @param username the username to set
-     */
-    public void setUsername(String username) {
-        this.username = username;
+    public void setUserID(String userID) {
+        this.userID = userID;
     }
 
-    /**
-     * @return the password
-     */
     public String getPassword() {
         return password;
     }
 
-    /**
-     * @param password the password to set
-     */
     public void setPassword(String password) {
         this.password = password;
     }

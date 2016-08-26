@@ -6,11 +6,13 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Temporal;
 import javax.persistence.OneToOne;
 
 /**
@@ -24,19 +26,20 @@ public class Customer implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     
+    private String identityType;
+    
+    private String identityNumber;
+    
+    @Temporal(javax.persistence.TemporalType.DATE)
+    private Date birthDay;
+    
     private String firstname;
      
     private String lastname;
      
-    private Integer age;
-     
-    private String street;
-     
-    private String city;
+    private String address;
      
     private String postalCode;
-     
-    private String info;
      
     private String email;
      
@@ -51,6 +54,30 @@ public class Customer implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+    
+    public String getIdentityType() {
+        return identityType;
+    }
+
+    public void setIdentityType(String identityType) {
+        this.identityType = identityType;
+    }
+
+    public String getIdentityNumber() {
+        return identityNumber;
+    }
+
+    public void setIdentityNumber(String identityNumber) {
+        this.identityNumber = identityNumber;
+    }
+
+    public Date getBirthDay() {
+        return birthDay;
+    }
+
+    public void setBirthDay(Date birthDay) {
+        this.birthDay = birthDay;
     }
  
     public String getFirstname() {
@@ -68,29 +95,13 @@ public class Customer implements Serializable {
     public void setLastname(String lastname) {
         this.lastname = lastname;
     }
- 
-    public Integer getAge() {
-        return age;
+
+    public String getAddress() {
+        return address;
     }
- 
-    public void setAge(Integer age) {
-        this.age = age;
-    }
- 
-    public String getStreet() {
-        return street;
-    }
- 
-    public void setStreet(String street) {
-        this.street = street;
-    }
- 
-    public String getCity() {
-        return city;
-    }
- 
-    public void setCity(String city) {
-        this.city = city;
+
+    public void setAddress(String address) {
+        this.address = address;
     }
  
     public String getPostalCode() {
@@ -99,14 +110,6 @@ public class Customer implements Serializable {
  
     public void setPostalCode(String postalCode) {
         this.postalCode = postalCode;
-    }
- 
-    public String getInfo() {
-        return info;
-    }
- 
-    public void setInfo(String info) {
-        this.info = info;
     }
      
     public String getEmail() {
