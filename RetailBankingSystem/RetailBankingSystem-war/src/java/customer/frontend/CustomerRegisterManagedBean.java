@@ -5,12 +5,17 @@
  */
 package customer.frontend;
 
+import ejb.session.common.EmailServiceSessionBeanLocal;
 import ejb.session.common.NewCustomerSessionBeanLocal;
 import entity.BankAccount;
+import entity.CurrentAccount;
 import entity.Customer;
 import entity.MainAccount;
 import entity.MainAccount.StatusType;
+import entity.SavingAccount;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
@@ -25,6 +30,8 @@ import org.primefaces.event.FlowEvent;
 @Named(value = "customerRegisterManagedBean")
 @ViewScoped
 public class CustomerRegisterManagedBean implements Serializable {
+    @EJB
+    private EmailServiceSessionBeanLocal emailServiceSessionBean;
     @EJB
     private NewCustomerSessionBeanLocal newCustomerSessionBean;
     
@@ -65,11 +72,27 @@ public class CustomerRegisterManagedBean implements Serializable {
      
     public void save() {  
         mainAccount.setStatus(StatusType.PENDING);
-        System.out.println("!!!"+mainAccount.getUserID()+mainAccount.getPassword()+mainAccount.getStatus());
+        
+        List<BankAccount> bankAccounts = new ArrayList<BankAccount>();
+        switch(initialDepositAccount){
+            case "MBS Current Account":
+                CurrentAccount currentAccount = new CurrentAccount();
+                bankAccounts.add(currentAccount);
+                mainAccount.setBankAcounts(bankAccounts);
+                break;
+            case "MBS Savings":
+                SavingAccount savingAccount = new SavingAccount();
+                bankAccounts.add(savingAccount);
+                mainAccount.setBankAcounts(bankAccounts);
+                break;
+        };
+        
         newCustomerSessionBean.createCustomer(customer, mainAccount);
         
         FacesMessage msg = new FacesMessage("Successful", "Welcome :" + customer.getFirstname());
         FacesContext.getCurrentInstance().addMessage(null, msg);
+        
+        emailServiceSessionBean.sendActivationEmailForNewCustomer();
     }
         
     public String onFlowProcess(FlowEvent event) {
