@@ -4,10 +4,7 @@
         <param-name>javax.faces.PROJECT_STAGE</param-name>
         <param-value>Development</param-value>
     </context-param>
-    <!--context-param>
-        <param-name>javax.faces.FACELETS_LIBRARIES</param-name>
-        <param-value>/WEB-INF/springsecurity.taglib.xml</param-value>
-    </context-param-->
+    <!-- Start of Filter-->
     <filter>
         <filter-name>StaffFilter</filter-name>
         <filter-class>filters.StaffFilter</filter-class>
@@ -24,6 +21,7 @@
         <filter-name>Authentication</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
+    <!-- End of Filter-->
     <servlet>
         <servlet-name>Faces Servlet</servlet-name>
         <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
@@ -41,6 +39,7 @@
     <welcome-file-list>
         <welcome-file>index.xhtml</welcome-file>
     </welcome-file-list>
+    <!-- Start of SSL/HTTPS security constraint -->
     <security-constraint>
         <display-name>Constraint1</display-name>
         <web-resource-collection>
@@ -53,4 +52,5 @@
             <transport-guarantee>CONFIDENTIAL</transport-guarantee>
         </user-data-constraint>
     </security-constraint>
+    <!-- End of SSL/HTTPS security constraint -->
 </web-app>

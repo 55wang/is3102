@@ -21,16 +21,14 @@ and open the template in the editor.
         <h:graphicImage url="../resources/img/merlionLogoBlack.png" class="h-center" style="top:25%; width:200px"/>
         <p:layout class="h-center" style="width:400px;height:200px;top:55%">
             <p:layoutUnit position="center">
-                <h:form id="staff-login-form">
+                <h:form id="staff-login-form" >
                     <h:panelGrid columns="2" id="staff-login-panel" cellpadding="5" class="h-center" style="top:35%">                   
-                        <h:outputText value="User ID: " />
-                        <p:inputText />
- 
-                        <h:outputText value="Password: " />
-                        <p:password value="#{passwordView.password1}" />
+                        <h:outputLabel value="Username: " />
+                        <h:inputText value="#{staffLoginManagedBean.username}" styleClass="outputLabel"/>
+                        <h:outputLabel value="Password: " />
+                        <h:inputSecret value="#{staffLoginManagedBean.password}" styleClass="outputLabel"/>
                     </h:panelGrid>
-        
-                    <p:commandButton value="Log in" actionListener="#{buttonView.buttonAction}" class="h-center" style="margin-top:35%"/>
+                    <p:commandButton id="submit" value="Login" actionListener="#{staffLoginManagedBean.loginStaff}" class="h-center" style="margin-top:35%"/>
                 </h:form>
             </p:layoutUnit>
         </p:layout>

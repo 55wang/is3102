@@ -21,6 +21,18 @@ import javax.persistence.ManyToMany;
  */
 @Entity
 public class Role implements Serializable {
+    
+    public enum Permission {
+        SUPERUSER, 
+        CUSTOMER,
+        DEPOSIT,
+        CARD,
+        LOAN,
+        BILL,
+        WEALTH,
+        PORTFOLIO,
+        ANALYTICS
+    }
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,8 +47,8 @@ public class Role implements Serializable {
     private Boolean wealthAccessRight;
     private Boolean portfolioAccessRight;
     private Boolean analyticsAccessRight;
-    @ManyToMany(cascade={CascadeType.PERSIST})
-    private Set<StaffAccount> staffAccounts = new HashSet<StaffAccount>();
+//    @ManyToMany(cascade={CascadeType.PERSIST})
+//    private Set<StaffAccount> staffAccounts = new HashSet<StaffAccount>();
     
     
 
@@ -153,12 +165,12 @@ public class Role implements Serializable {
         this.analyticsAccessRight = analyticsAccessRight;
     }
 
-    public Set<StaffAccount> getStaffAccounts() {
-        return staffAccounts;
-    }
-
-    public void setStaffAccounts(Set<StaffAccount> staffAccounts) {
-        this.staffAccounts = staffAccounts;
-    }
+//    public Set<StaffAccount> getStaffAccounts() {
+//        return staffAccounts;
+//    }
+//
+//    public void setStaffAccounts(Set<StaffAccount> staffAccounts) {
+//        this.staffAccounts = staffAccounts;
+//    }
    
 }

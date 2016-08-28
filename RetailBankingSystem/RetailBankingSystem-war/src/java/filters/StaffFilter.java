@@ -25,7 +25,7 @@ import javax.servlet.http.HttpSession;
  */
 public class StaffFilter implements Filter {
 
-    private static final boolean debug = true;
+    private static final boolean debug = false;
 
     // The filter configuration object we are associated with.  If
     // this value is null, this filter instance is not currently
@@ -116,10 +116,9 @@ public class StaffFilter implements Filter {
             String reqURI = reqt.getRequestURI();
             System.out.println(reqURI);
             if (reqURI.contains("/staff/login.xhtml")
-                    || (ses != null && ses.getAttribute("staffUsername") != null)) {
+                    || (ses != null && ses.getAttribute("StaffAccount") != null)) {
                 chain.doFilter(request, response);
             } else {
-                
                 resp.sendRedirect(reqt.getContextPath() + "/staff/login.xhtml");
             }
         } catch (Throwable t) {
