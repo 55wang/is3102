@@ -25,12 +25,12 @@ import javax.persistence.OneToMany;
 public abstract class BankAccount implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;// generated
     private String name;
     private String type; // CURRENT, SAVING, FIXED, MOBILE, LOAN
     private BigDecimal balance;
-    @OneToMany(cascade = CascadeType.PERSIST)
+    @OneToMany(cascade = CascadeType.MERGE)
     private List<Interest> rules = new ArrayList<Interest>();
     @ManyToOne(cascade = CascadeType.PERSIST)
     private MainAccount mainAccount = new MainAccount();

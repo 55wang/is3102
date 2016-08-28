@@ -35,6 +35,11 @@
                             <h:link outcome="checkbalance-currentaccount" value="Check Balance Current Account" />
                         </li>
                     </c:if>
+                    <c:if test="#{cc.attrs.top == 'others'}">
+                        <li class="side-menu-item #{cc.attrs.side == 'createInterest' ? 'active' : ''}">
+                            <h:link outcome="create-interest" value="Create Interest" />
+                        </li>
+                    </c:if>
                 </ul>
             </div>
             <!--TODO: Fillin all the sub menus here -->

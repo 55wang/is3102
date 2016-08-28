@@ -5,31 +5,46 @@
  */
 package entity;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 
 /**
  *
  * @author leiyang
  */
 @Entity
+@Inheritance(strategy=InheritanceType.JOINED)
 public class RangeInterest extends Interest {
-    private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
     private BigDecimal minimum;
     private BigDecimal maximum;
 
-    public Long getId() {
-        return id;
+    /**
+     * @return the minimum
+     */
+    public BigDecimal getMinimum() {
+        return minimum;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    /**
+     * @param minimum the minimum to set
+     */
+    public void setMinimum(BigDecimal minimum) {
+        this.minimum = minimum;
+    }
+
+    /**
+     * @return the maximum
+     */
+    public BigDecimal getMaximum() {
+        return maximum;
+    }
+
+    /**
+     * @param maximum the maximum to set
+     */
+    public void setMaximum(BigDecimal maximum) {
+        this.maximum = maximum;
     }
 }

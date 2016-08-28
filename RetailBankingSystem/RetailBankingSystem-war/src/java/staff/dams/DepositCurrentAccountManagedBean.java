@@ -16,6 +16,7 @@ import javax.inject.Named;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
+import utils.MessageUtils;
 
 /**
  *
@@ -43,7 +44,7 @@ public class DepositCurrentAccountManagedBean implements Serializable {
     
     public void depositIntoAccount() {
         String message = currentAccountSessionBean.depositIntoAccount(getAccountNumber(), getDepositAmount());
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, message, ""));
+        MessageUtils.displayInfo(message);
     }
 
     /**

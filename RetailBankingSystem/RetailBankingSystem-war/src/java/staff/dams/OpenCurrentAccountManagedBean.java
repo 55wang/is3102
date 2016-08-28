@@ -16,6 +16,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
+import utils.MessageUtils;
 
 /**
  *
@@ -43,8 +44,7 @@ public class OpenCurrentAccountManagedBean implements Serializable {
         currentAccountSessionBean.createAccount(newAccount);
         accounts.add(newAccount);
         newAccount = new CurrentAccount();
-        // current context
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New Account Created!", ""));
+        MessageUtils.displayInfo("New Account Created!");
     }
 
     /**

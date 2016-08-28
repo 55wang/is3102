@@ -1,0 +1,144 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:em="http://xmlns.jcp.org/jsf/composite/emcomp"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:a4j="http://richfaces.org/a4j">
+    <!--shift + ctrl + F, format-->
+    <f:view>
+        <h:head>
+            <title>Facelet Title</title>
+            <h:outputStylesheet library="css" name="reset.css"/>
+            <h:outputStylesheet library="css" name="theme.css"/>
+        </h:head>
+        <h:body>
+            <em:staffNavBar context="others" userName="lei yang"></em:staffNavBar>
+            <em:staffSideBar top="others" side="createInterest"></em:staffSideBar>
+            <div class="container">
+                <h:form id="mainForm">
+                    <p:panel header="Create Interest">
+                        <p:messages id="messagesStatus" redisplay="false" >
+                            <h:panelGrid columns="2" cellpadding="5">
+                                <p:outputLabel for="interestType" value="Interest Type: " />
+                                <p:selectOneButton id="interestType" value="#{createInterestManagedBean.interestType}">
+                                    <f:selectItem itemLabel="Normal Interest" itemValue="#{createInterestManagedBean.INTEREST_TYPE_NORMAL}" />
+                                    <f:selectItem itemLabel="Range Interest" itemValue="#{createInterestManagedBean.INTEREST_TYPE_RANGE}" />
+                                    <f:selectItem itemLabel="Conditional Interest" itemValue="#{createInterestManagedBean.INTEREST_TYPE_CONDITION}" />
+                                    <f:ajax render="@form" />
+                                </p:selectOneButton>
+
+                                <c:if test="#{createInterestManagedBean.interestType == createInterestManagedBean.INTEREST_TYPE_NORMAL}">
+                                    <p:outputLabel for="normalInterestName" value="Interest Name: " />
+                                    <p:inputText id="normalInterestName" value="#{createInterestManagedBean.normalInterest.name}"/>
+                                    <p:outputLabel for="normalInterestPercentage" value="Interest Percentage: " />
+                                    <p:inputText id="normalInterestPercentage" value="#{createInterestManagedBean.normalInterest.percentage}">
+                                        <f:convertNumber pattern="#,###,##0.00"/>
+                                    </p:inputText>
+                                </c:if>
+                                <c:if test="#{createInterestManagedBean.interestType == createInterestManagedBean.INTEREST_TYPE_RANGE}">
+                                    <p:outputLabel for="rangeInterestName" value="Interest Name: " />
+                                    <p:inputText id="rangeInterestName" value="#{createInterestManagedBean.rangeInterest.name}"/>
+                                    <p:outputLabel for="rangeInterestPercentage" value="Interest Percentage: " />
+                                    <p:inputText id="rangeInterestPercentage" value="#{createInterestManagedBean.rangeInterest.percentage}">
+                                        <f:convertNumber pattern="#,###,##0.00"/>
+                                    </p:inputText>
+                                    <p:outputLabel for="rangeInterestMinimum" value="Minimum Deposit Amount: " />
+                                    <p:inputText id="rangeInterestMinimum" value="#{createInterestManagedBean.rangeInterest.minimum}"/>
+                                    <p:outputLabel for="rangeInterestMaximum" value="Maximum Deposit Amount: " />
+                                    <p:inputText id="rangeInterestMaximum" value="#{createInterestManagedBean.rangeInterest.maximum}"/>
+                                </c:if>
+                                <c:if test="#{createInterestManagedBean.interestType == createInterestManagedBean.INTEREST_TYPE_CONDITION}">
+                                    <p:outputLabel for="conditionType" value="Condition Type: " />
+                                    <p:selectOneButton id="conditionType" value="#{createInterestManagedBean.conditionInterest.conditionType}">
+                                        <f:selectItem itemLabel="Credit Salary" itemValue="#{createInterestManagedBean.CONDITION_TYPE_SALARY}" />
+                                        <f:selectItem itemLabel="Pay Bills" itemValue="#{createInterestManagedBean.CONDITION_TYPE_BILL}" />
+                                        <f:selectItem itemLabel="CC Spending" itemValue="#{createInterestManagedBean.CONDITION_TYPE_CCSPENDING}" />
+                                        <f:selectItem itemLabel="Insure or Invest" itemValue="#{createInterestManagedBean.CONDITION_TYPE_INVEST}" />
+                                        <f:ajax render="@form" />
+                                    </p:selectOneButton>
+                                    <p:outputLabel for="contitionInterestName" value="Interest Name: " />
+                                    <p:inputText id="contitionInterestName" value="#{createInterestManagedBean.conditionInterest.name}"/>
+                                    <p:outputLabel for="contitionInterestPercentage" value="Interest Percentage: " />
+                                    <p:inputText id="contitionInterestPercentage" value="#{createInterestManagedBean.conditionInterest.percentage}">
+                                        <f:convertNumber pattern="#,###,##0.00"/>
+                                    </p:inputText>
+                                    <p:outputLabel for="contitionInterestCeiling" value="Deposit Ceiling: " />
+                                    <p:inputText id="contitionInterestCeiling" value="#{createInterestManagedBean.conditionInterest.ceiling}"/>
+                                    <c:if test="#{createInterestManagedBean.conditionInterest.conditionType == createInterestManagedBean.CONDITION_TYPE_SALARY}">
+                                        <p:outputLabel for="contitionInterestSalary" value="Minimum salary crediting: " />
+                                        <p:inputText id="contitionInterestSalary" value="#{createInterestManagedBean.conditionInterest.amount}"/>
+                                    </c:if>
+                                    <c:if test="#{createInterestManagedBean.conditionInterest.conditionType == createInterestManagedBean.CONDITION_TYPE_BILL}">
+                                        <p:outputLabel for="contitionInterestBill" value="Minimum Bill Payment times: " />
+                                        <p:inputText id="contitionInterestBill" value="#{createInterestManagedBean.conditionInterest.amount}"/>
+                                    </c:if>
+                                    <c:if test="#{createInterestManagedBean.conditionInterest.conditionType == createInterestManagedBean.CONDITION_TYPE_CCSPENDING}">
+                                        <p:outputLabel for="contitionInterestCCSpending" value="Minimum Credit Card Spending: " />
+                                        <p:inputText id="contitionInterestCCSpending" value="#{createInterestManagedBean.conditionInterest.amount}"/>
+                                    </c:if>
+                                    <c:if test="#{createInterestManagedBean.conditionInterest.conditionType == createInterestManagedBean.CONDITION_TYPE_INVEST}">
+                                        <p:outputLabel for="contitionInterestInvest" value="Minimum Insue or Investment amount: " />
+                                        <p:inputText id="contitionInterestInvest" value="#{createInterestManagedBean.conditionInterest.amount}"/>
+                                    </c:if>
+                                </c:if>
+
+                                <p:commandButton value="Create" icon="ui-icon-plus" update="@form" actionListener="#{createInterestManagedBean.addInterest}" />
+                            </h:panelGrid>
+                        </p:messages>
+                    </p:panel>
+                    <p:panel header="Normal Interests">
+                        <p:dataTable id="normalInterests" value="#{createInterestManagedBean.normalInterests}" var="interest">
+                            <p:column headerText="Name" sortBy="#{interest.name}">
+                                <h:outputText value="#{interest.name}"></h:outputText>
+                            </p:column>
+                            <p:column headerText="Percentage" sortBy="#{interest.percentage}">
+                                <h:outputText value="#{interest.percentage}"></h:outputText>
+                            </p:column>
+                        </p:dataTable>
+                    </p:panel>
+                    <p:panel header="Range Interests">
+                        <p:dataTable id="rangeInterests" value="#{createInterestManagedBean.rangeInterests}" var="interest">
+                            <p:column headerText="Name" sortBy="#{interest.name}">
+                                <h:outputText value="#{interest.name}"></h:outputText>
+                            </p:column>
+                            <p:column headerText="Percentage" sortBy="#{interest.percentage}">
+                                <h:outputText value="#{interest.percentage}"></h:outputText>
+                            </p:column>
+                            <p:column headerText="Minimum" sortBy="#{interest.minimum}">
+                                <h:outputText value="#{interest.minimum}"></h:outputText>
+                            </p:column>
+                            <p:column headerText="Maximum" sortBy="#{interest.maximum}">
+                                <h:outputText value="#{interest.maximum}"></h:outputText>
+                            </p:column>
+                        </p:dataTable>
+                    </p:panel>
+                    <p:panel header="Condition Interests">
+                        <p:dataTable id="conditionInterests" value="#{createInterestManagedBean.conditionInterests}" var="interest">
+                            <p:column headerText="Name" sortBy="#{interest.name}">
+                                <h:outputText value="#{interest.name}"></h:outputText>
+                            </p:column>
+                            <p:column headerText="Percentage" sortBy="#{interest.percentage}">
+                                <h:outputText value="#{interest.percentage}"></h:outputText>
+                            </p:column>
+                            <p:column headerText="Amount" sortBy="#{interest.amount}">
+                                <h:outputText value="#{interest.amount}"></h:outputText>
+                            </p:column>
+                            <p:column headerText="Type" sortBy="#{interest.conditionType}">
+                                <h:outputText value="#{interest.conditionType}"></h:outputText>
+                            </p:column>
+                            <p:column headerText="Ceiling" sortBy="#{interest.ceiling}">
+                                <h:outputText value="#{interest.ceiling}"></h:outputText>
+                            </p:column>
+                        </p:dataTable>
+                    </p:panel>
+                </h:form>
+            </div>
+        </h:body>
+    </f:view>
+
+
+</html>
+
