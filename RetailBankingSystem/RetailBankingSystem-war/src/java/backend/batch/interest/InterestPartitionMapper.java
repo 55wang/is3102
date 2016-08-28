@@ -5,7 +5,7 @@
  */
 package backend.batch.interest;
 
-import ejb.session.dams.CurrentAccountSessionBeanLocal;
+import ejb.session.dams.BankAccountSessionBeanLocal;
 import java.util.Properties;
 import javax.batch.api.partition.PartitionMapper;
 import javax.batch.api.partition.PartitionPlan;
@@ -28,7 +28,7 @@ public class InterestPartitionMapper implements PartitionMapper {
 //    EntityManager em;
     
     @EJB
-    private CurrentAccountSessionBeanLocal accountSessionBean;
+    private BankAccountSessionBeanLocal accountSessionBean;
     
     @Override
     public PartitionPlan mapPartitions() throws Exception {

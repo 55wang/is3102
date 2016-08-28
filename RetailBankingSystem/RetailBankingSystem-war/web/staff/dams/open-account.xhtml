@@ -21,7 +21,7 @@
                     <p:panel header="Opening Current Account">
                         <p:messages id="messagesStatus" redisplay="false" >
                             <h:panelGrid columns="2" cellpadding="5">
-                                <p:outputLabel for="accountType" value="Interest Type: " />
+                                <p:outputLabel for="accountType" value="Account Type: " />
                                 <p:selectOneButton id="accountType" value="#{openAccountManagedBean.accountType}">
                                     <f:selectItem itemLabel="Current Account" itemValue="#{openAccountManagedBean.ACCOUNT_TYPE_CURRENT}" />
                                     <f:selectItem itemLabel="Fixed Deposit Account" itemValue="#{openAccountManagedBean.ACCOUNT_TYPE_FIXED}" />
@@ -30,7 +30,7 @@
                                 </p:selectOneButton>
                                 
                                 <c:if test="#{openAccountManagedBean.accountType == openAccountManagedBean.ACCOUNT_TYPE_CURRENT}">
-                                    <p:outputLabel for="currentAccountName" value="Interest Name: " />
+                                    <p:outputLabel for="currentAccountName" value="Account Name: " />
                                     <p:inputText id="currentAccountName" value="#{openAccountManagedBean.newCurrentAccount.name}"/>
                                     <p:outputLabel for="currentAccountBalance" value="Initial Deposit: " />
                                     <p:inputText id="currentAccountBalance" value="#{openAccountManagedBean.newCurrentAccount.balance}">
@@ -39,7 +39,7 @@
                                 </c:if>
                                 
                                 <c:if test="#{openAccountManagedBean.accountType == openAccountManagedBean.ACCOUNT_TYPE_FIXED}">
-                                    <p:outputLabel for="fixedDepositAccountName" value="Interest Name: " />
+                                    <p:outputLabel for="fixedDepositAccountName" value="Account Name: " />
                                     <p:inputText id="fixedDepositAccountName" value="#{openAccountManagedBean.newFixedDepositAccount.name}"/>
                                     <p:outputLabel for="fixedDepositAccountBalance" value="Initial Deposit: " />
                                     <p:inputText id="fixedDepositAccountBalance" value="#{openAccountManagedBean.newFixedDepositAccount.balance}">
@@ -48,7 +48,7 @@
                                 </c:if>
                                 
                                 <c:if test="#{openAccountManagedBean.accountType == openAccountManagedBean.ACCOUNT_TYPE_SAVING}">
-                                    <p:outputLabel for="savingAccountName" value="Interest Name: " />
+                                    <p:outputLabel for="savingAccountName" value="Account Name: " />
                                     <p:inputText id="savingAccountName" value="#{openAccountManagedBean.newSavingAccount.name}"/>
                                     <p:outputLabel for="savingAccountBalance" value="Initial Deposit: " />
                                     <p:inputText id="savingAccountBalance" value="#{openAccountManagedBean.newSavingAccount.balance}">

@@ -14,7 +14,7 @@
         </h:head>
         <h:body>
             <em:staffNavBar context="account" userName="lei yang"></em:staffNavBar>
-            <em:staffSideBar top="account" side="checkBalanceCurrentAccount"></em:staffSideBar>
+            <em:staffSideBar top="account" side="checkAccountBalance"></em:staffSideBar>
             <div class="container">
                 <h:form id="mainForm">
                     <p:panel header="Check Balance for Current Account">
@@ -22,13 +22,13 @@
 
                             <h:panelGrid columns="2" cellpadding="5">
                                 <p:outputLabel for="accountNumber" value="Name: " />
-                                <p:inputText id="accountNumber" value="#{checkBalanceCurrentAccountManagedBean.accountNumber}"/>
+                                <p:inputText id="accountNumber" value="#{checkAccountBalanceManagedBean.accountNumber}"/>
 
-                                <p:commandButton value="Find" icon="ui-icon-plus" update="@form" actionListener="#{checkBalanceCurrentAccountManagedBean.checkBalance}" />
+                                <p:commandButton value="Find" icon="ui-icon-plus" update="@form" actionListener="#{checkAccountBalanceManagedBean.checkBalance}" />
                             </h:panelGrid>
                             
                             <!--talks to managed beans and getter and setter methods-->
-                            <p:dataTable id="dataTableBooks" value="#{checkBalanceCurrentAccountManagedBean.accounts}" var="account">
+                            <p:dataTable id="dataTableBooks" value="#{checkAccountBalanceManagedBean.accounts}" var="account">
                                 <p:column headerText="ID" sortBy="#{account.id}">
                                     <h:outputText value="#{account.id}"></h:outputText>
                                 </p:column>

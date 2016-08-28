@@ -31,12 +31,12 @@ public class CreateInterestManagedBean implements Serializable {
     private InterestSessionBeanLocal interestSessionBean;
 
     private String interestType;
-    private Interest normalInterest;
-    private RangeInterest rangeInterest;
-    private ConditionInterest conditionInterest;
-    private List<Interest> normalInterests;
-    private List<RangeInterest> rangeInterests;
-    private List<ConditionInterest> conditionInterests;
+    private Interest normalInterest = new Interest();
+    private RangeInterest rangeInterest = new RangeInterest();
+    private ConditionInterest conditionInterest = new ConditionInterest();
+    private List<Interest> normalInterests = new ArrayList<>();
+    private List<RangeInterest> rangeInterests = new ArrayList<>();
+    private List<ConditionInterest> conditionInterests = new ArrayList<>();
     private String INTEREST_TYPE_NORMAL = Interest.InterestType.NORMAL.toString();
     private String INTEREST_TYPE_RANGE = Interest.InterestType.RANGE.toString();
     private String INTEREST_TYPE_CONDITION = Interest.InterestType.CONDITION.toString();
@@ -47,18 +47,11 @@ public class CreateInterestManagedBean implements Serializable {
     /**
      * Creates a new instance of CreateInterestManagedBean
      */
-    public CreateInterestManagedBean() {
-        normalInterest = new Interest();
-        rangeInterest = new RangeInterest();
-        conditionInterest = new ConditionInterest();
-        normalInterests = new ArrayList<>();
-        rangeInterests = new ArrayList<>();
-        conditionInterests = new ArrayList<>();
-        interestType = INTEREST_TYPE_NORMAL;
-    }
+    public CreateInterestManagedBean() {}
     
     @PostConstruct
     public void init() {
+        interestType = INTEREST_TYPE_NORMAL;
         List<Interest> interests = interestSessionBean.showAllInterests();
         for (Interest i : interests) {
             if (i instanceof RangeInterest) {
