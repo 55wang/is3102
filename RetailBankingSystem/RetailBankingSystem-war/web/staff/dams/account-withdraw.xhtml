@@ -22,16 +22,16 @@
 
                             <h:panelGrid columns="2" cellpadding="5">
                                 <p:outputLabel for="accountNumber" value="Account Number: " />
-                                <p:inputText id="accountNumber" value="#{withdrawCurrentAccountManagedBean.accountNumber}"/>
+                                <p:inputText id="accountNumber" value="#{accountWithdrawManagedBean.accountNumber}"/>
                                 
                                 <p:outputLabel for="withdraw" value="Withdraw Amount: " />
-                                <p:inputText id="withdraw" value="#{withdrawCurrentAccountManagedBean.withdrawAmount}" converterMessage="Please enter digits only."/>
+                                <p:inputText id="withdraw" value="#{accountWithdrawManagedBean.withdrawAmount}" converterMessage="Please enter digits only."/>
 
-                                <p:commandButton value="Withdraw" icon="ui-icon-plus" update="@form" actionListener="#{withdrawCurrentAccountManagedBean.withdrawFromAccount}" />
+                                <p:commandButton value="Withdraw" icon="ui-icon-plus" update="@form" actionListener="#{accountWithdrawManagedBean.withdrawFromAccount}" />
                             </h:panelGrid>
                             
                             <!--TODO: Remove later talks to managed beans and getter and setter methods-->
-                            <p:dataTable id="dataTableBooks" value="#{withdrawCurrentAccountManagedBean.accounts}" var="account">
+                            <p:dataTable id="dataTableBooks" value="#{accountWithdrawManagedBean.accounts}" var="account">
                                 <p:column headerText="ID" sortBy="#{account.id}">
                                     <h:outputText value="#{account.id}"></h:outputText>
                                 </p:column>

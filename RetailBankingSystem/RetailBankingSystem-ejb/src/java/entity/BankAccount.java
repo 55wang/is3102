@@ -69,7 +69,7 @@ public abstract class BankAccount implements Serializable {
     // billing address 
     // transaction history
     // payment history
-    // 
+    // Cheque
     
     public void addInterestRules(Interest i) {
         rules.add(i);

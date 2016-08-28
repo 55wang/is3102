@@ -5,16 +5,13 @@
  */
 package staff.dams;
 
-import ejb.session.dams.CurrentAccountSessionBeanLocal;
+import ejb.session.dams.BankAccountSessionBeanLocal;
 import entity.CurrentAccount;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
-import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import utils.MessageUtils;
 
@@ -22,28 +19,25 @@ import utils.MessageUtils;
  *
  * @author leiyang
  */
-@Named(value = "depositCurrentAccountManagedBean")
+@Named(value = "accountWithdrawManagedBean")
 @ViewScoped
-public class DepositCurrentAccountManagedBean implements Serializable {
+public class AccountWithdrawManagedBean implements Serializable {
 
     @EJB
-    private CurrentAccountSessionBeanLocal currentAccountSessionBean;
+    private BankAccountSessionBeanLocal bankAccountSessionBean;
     
     private List<CurrentAccount> accounts;
     private Long accountNumber;
-    private BigDecimal depositAmount;
+    private BigDecimal withdrawAmount;
     
-    public DepositCurrentAccountManagedBean() {
+    /**
+     * Creates a new instance of WithdrawCurrentAccountManagedBean
+     */
+    public AccountWithdrawManagedBean() {
     }
     
-    @PostConstruct
-    public void init() {
-        // For testing
-        setAccounts(currentAccountSessionBean.showAllAccounts());
-    }
-    
-    public void depositIntoAccount() {
-        String message = currentAccountSessionBean.depositIntoAccount(getAccountNumber(), getDepositAmount());
+    public void withdrawFromAccount() {
+        String message = bankAccountSessionBean.withdrawFromAccount(getAccountNumber(), getWithdrawAmount());
         MessageUtils.displayInfo(message);
     }
 
@@ -76,17 +70,16 @@ public class DepositCurrentAccountManagedBean implements Serializable {
     }
 
     /**
-     * @return the depositAmount
+     * @return the withdrawAmount
      */
-    public BigDecimal getDepositAmount() {
-        return depositAmount;
+    public BigDecimal getWithdrawAmount() {
+        return withdrawAmount;
     }
 
     /**
-     * @param depositAmount the depositAmount to set
+     * @param withdrawAmount the withdrawAmount to set
      */
-    public void setDepositAmount(BigDecimal depositAmount) {
-        this.depositAmount = depositAmount;
+    public void setWithdrawAmount(BigDecimal withdrawAmount) {
+        this.withdrawAmount = withdrawAmount;
     }
-
 }

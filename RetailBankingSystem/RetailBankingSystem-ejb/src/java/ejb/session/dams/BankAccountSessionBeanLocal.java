@@ -6,6 +6,7 @@
 package ejb.session.dams;
 
 import entity.BankAccount;
+import java.math.BigDecimal;
 import java.util.List;
 import javax.ejb.Local;
 
@@ -15,6 +16,10 @@ import javax.ejb.Local;
  */
 @Local
 public interface BankAccountSessionBeanLocal {
+    public long showNumberOfAccounts();
+    public BankAccount getAccountFromId(Long accountNumber);
     public void addAccount(BankAccount account);
     public List<BankAccount> showAllAccounts();
+    public String depositIntoAccount(Long accountNumber, BigDecimal depositAmount);
+    public String withdrawFromAccount(Long accountNumber, BigDecimal depositAmount);
 }

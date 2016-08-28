@@ -99,6 +99,7 @@ public class OpenAccountManagedBean implements Serializable {
         Transaction t = new Transaction();
         t.setAmount(getAccount().getBalance());
         t.setFromAccount(getAccount());
+        t.setCredit(Boolean.TRUE);
         t.setAction(Transaction.ActionType.DEPOSIT.toString());
         if (accountType.equals(getACCOUNT_TYPE_CURRENT())) {
             getNewCurrentAccount().addTransaction(t);

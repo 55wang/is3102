@@ -5,14 +5,13 @@
  */
 package staff.dams;
 
-import ejb.session.dams.CurrentAccountSessionBeanLocal;
+import ejb.session.dams.BankAccountSessionBeanLocal;
+import entity.BankAccount;
 import entity.CurrentAccount;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
@@ -22,23 +21,23 @@ import utils.MessageUtils;
  *
  * @author leiyang
  */
-@Named(value = "checkBalanceCurrentAccountManagedBean")
+@Named(value = "checkAccountBalanceManagedBean")
 @ViewScoped
-public class CheckBalanceCurrentAccountManagedBean implements Serializable {
+public class CheckAccountBalanceManagedBean implements Serializable {
 
     @EJB
-    private CurrentAccountSessionBeanLocal currentAccountSessionBean;
+    private BankAccountSessionBeanLocal bankAccountSessionBean;
     /**
      * Creates a new instance of CheckBalanceCurrentAccountManagedBean
      */
-    public CheckBalanceCurrentAccountManagedBean() {
+    public CheckAccountBalanceManagedBean() {
     }
     
     private Long accountNumber;
-    private List<CurrentAccount> accounts = new ArrayList<>();
+    private List<BankAccount> accounts = new ArrayList<>();
     
     public void checkBalance(ActionEvent event) {
-        CurrentAccount newAccount = currentAccountSessionBean.getAccountFromId(getAccountNumber());
+        BankAccount newAccount = bankAccountSessionBean.getAccountFromId(getAccountNumber());
         if (newAccount == null) {
             MessageUtils.displayError("Account Not Found!");
         } else {
@@ -65,14 +64,14 @@ public class CheckBalanceCurrentAccountManagedBean implements Serializable {
     /**
      * @return the accounts
      */
-    public List<CurrentAccount> getAccounts() {
+    public List<BankAccount> getAccounts() {
         return accounts;
     }
 
     /**
      * @param accounts the accounts to set
      */
-    public void setAccounts(List<CurrentAccount> accounts) {
+    public void setAccounts(List<BankAccount> accounts) {
         this.accounts = accounts;
     }
 }

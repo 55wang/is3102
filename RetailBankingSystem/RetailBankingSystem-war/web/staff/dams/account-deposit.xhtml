@@ -1,0 +1,41 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:em="http://xmlns.jcp.org/jsf/composite/emcomp">
+    <!--shift + ctrl + F, format-->
+    <f:view>
+        <h:head>
+            <title>Facelet Title</title>
+            <h:outputStylesheet library="css" name="reset.css"/>
+            <h:outputStylesheet library="css" name="theme.css"/>
+        </h:head>
+        <h:body>
+            <em:staffNavBar context="account" userName="lei yang"></em:staffNavBar>
+            <em:staffSideBar top="account" side="accountDeposit"></em:staffSideBar>
+            <div class="container">
+                <h:form id="mainForm">
+                    <p:panel header="Deposit Current Account">
+                        <p:messages id="messagesStatus" redisplay="false" >
+
+                            <h:panelGrid columns="2" cellpadding="5">
+                                <p:outputLabel for="accountNumber" value="Account Number: " />
+                                <p:inputText id="accountNumber" value="#{accountDepositManagedBean.accountNumber}"/>
+                                
+                                <p:outputLabel for="depositAmount" value="Deposit Amount: " />
+                                <p:inputText id="depositAmount" value="#{accountDepositManagedBean.depositAmount}"/>
+
+                                <p:commandButton value="Deposit" icon="ui-icon-plus" update="@form" actionListener="#{accountDepositManagedBean.depositIntoAccount}" />
+                            </h:panelGrid>
+                        </p:messages>
+                    </p:panel>
+                </h:form>
+            </div>
+        </h:body>
+    </f:view>
+
+
+</html>
+
