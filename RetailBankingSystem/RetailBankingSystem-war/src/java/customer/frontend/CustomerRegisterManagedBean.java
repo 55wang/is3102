@@ -118,7 +118,9 @@ public class CustomerRegisterManagedBean implements Serializable {
     public void loginCustomer() {
         try {
             Long userID = newMainAccountSessionBean.loginAccount(loginAccount.getUserID(), loginAccount.getPassword()).getId();
+            String userName = newMainAccountSessionBean.loginAccount(loginAccount.getUserID(), loginAccount.getPassword()).getUserID();
             SessionUtils.setUserId(userID);
+            SessionUtils.setUserName(userName);
             RedirectUtils.redirect("success.xhtml");
         } catch (NullPointerException e) {
             RedirectUtils.redirect("fail.xhtml");

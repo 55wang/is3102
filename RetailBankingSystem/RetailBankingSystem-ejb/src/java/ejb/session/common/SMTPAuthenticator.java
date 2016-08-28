@@ -29,7 +29,7 @@ public class SMTPAuthenticator extends javax.mail.Authenticator {
         InputStream input = null;
 
         try {
-            input = new FileInputStream("/Users/wang/is3102/RetailBankingSystem/RetailBankingSystem-ejb/src/java/ejb/session/common/config.properties");
+            input = new FileInputStream("/Users/Shared/config.properties");
 
             // load a properties file
             prop.load(input);

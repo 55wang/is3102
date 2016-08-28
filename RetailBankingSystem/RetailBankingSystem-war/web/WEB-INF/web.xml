@@ -8,6 +8,22 @@
         <param-name>javax.faces.FACELETS_LIBRARIES</param-name>
         <param-value>/WEB-INF/springsecurity.taglib.xml</param-value>
     </context-param-->
+    <filter>
+        <filter-name>StaffFilter</filter-name>
+        <filter-class>filters.StaffFilter</filter-class>
+    </filter>
+    <filter>
+        <filter-name>Authentication</filter-name>
+        <filter-class>filters.Authentication</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>StaffFilter</filter-name>
+        <url-pattern>/staff/*</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>Authentication</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
     <servlet>
         <servlet-name>Faces Servlet</servlet-name>
         <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>

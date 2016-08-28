@@ -31,6 +31,11 @@ public class SessionUtils {
         return session.getAttribute("username").toString();
     }
 
+    public static void setUserName(String userName) {
+        HttpSession session = getSession();
+        session.setAttribute("username", userName);
+    }
+
     public static String getUserId() {
         HttpSession session = getSession();
         if (session != null) {
