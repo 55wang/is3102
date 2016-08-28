@@ -20,10 +20,6 @@ public class NewCustomerSessionBean implements NewCustomerSessionBeanLocal {
     @PersistenceContext(unitName = "RetailBankingSystem-ejbPU")
     private EntityManager em;
 
-    public void persist(Object object) {
-        em.persist(object);
-    }
-
     @Override
     public void createCustomer(Customer customer, MainAccount mainAccount){
         customer.setMainAccount(mainAccount);

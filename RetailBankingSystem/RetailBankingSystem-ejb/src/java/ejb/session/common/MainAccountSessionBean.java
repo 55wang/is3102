@@ -19,29 +19,26 @@ import javax.persistence.Query;
  */
 @Stateless
 public class MainAccountSessionBean implements MainAccountSessionBeanLocal {
+
     @PersistenceContext(unitName = "RetailBankingSystem-ejbPU")
     private EntityManager em;
 
-    public void loginAccount(String username, String password) {
-        Query q = em.createQuery("SELECT a FROM MainAccount a WHERE a.username = :inUserName "
-                + "AND u.password = :inPassword");
+    public MainAccount loginAccount(String username, String password) {
+        Query q = em.createQuery("SELECT a FROM MainAccount a WHERE a.userID = :inUserName "
+                + "AND a.password = :inPassword");
         q.setParameter("inUserName", username);
         q.setParameter("inPassword", password);
-        
+
         MainAccount user = null;
-        
+
         try {
             user = (MainAccount) q.getSingleResult();
-        } catch(NoResultException ex) {
-            ex.printStackTrace();
+            return user;
+        } catch (NoResultException ex) {
+            return null;
         }
-        
     }
-    
-    public void createAccount(MainAccount account) {
-        em.persist(account);
-    }
-    
+
     public List<MainAccount> showAllAccounts() {
         Query q = em.createQuery("SELECT a FROM MainAccount a");
         return q.getResultList();

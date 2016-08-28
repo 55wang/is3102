@@ -26,20 +26,20 @@ import javax.persistence.OneToMany;
  */
 @Entity
 public class StaffAccount implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(unique=true)
+    @Column(unique = true)
     private String username;
     private String password;
-    @ManyToMany(cascade={CascadeType.PERSIST})
-    @JoinTable(name="STAFF_ROLE")
+    @ManyToMany(cascade = {CascadeType.PERSIST})
+    @JoinTable(name = "STAFF_ROLE")
     private Set<Role> roles = new HashSet<Role>();
     @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "staffAccount")
     private List<AuditLog> auditLog = new ArrayList<AuditLog>();
-    
-    
+
     public Long getId() {
         return id;
     }
@@ -97,6 +97,4 @@ public class StaffAccount implements Serializable {
         this.roles = roles;
     }
 
-
-    
 }

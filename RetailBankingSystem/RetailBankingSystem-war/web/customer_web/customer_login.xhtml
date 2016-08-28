@@ -24,13 +24,15 @@ and open the template in the editor.
                 <h:form id="customer-login-form">
                     <h:panelGrid columns="2" id="customer-login-panel" cellpadding="5" class="h-center" style="top:25%">                   
                         <h:outputText value="User ID: " />
-                        <p:inputText />
+                        <h:inputText value="#{customerRegisterManagedBean.loginAccount.userID}" styleClass="outputLabel"/>
+
  
                         <h:outputText value="Password: " />
-                        <p:password value="#{passwordView.password1}" />
+                        <h:inputText value="#{customerRegisterManagedBean.loginAccount.password}" styleClass="outputLabel"/>
+
                     </h:panelGrid>
         
-                    <p:commandButton value="Log in" actionListener="#{buttonView.buttonAction}" class="h-center" style="margin-top:35%"/>
+                    <p:commandButton value="Log in" actionListener="#{customerRegisterManagedBean.loginCustomer}" class="h-center" style="margin-top:35%"/>
                 </h:form>
                 <div id="customer-login-service">
                     <div id="forgot-password-holder">

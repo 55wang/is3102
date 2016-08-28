@@ -5,6 +5,7 @@
  */
 package ejb.session.common;
 
+import entity.MainAccount;
 import javax.ejb.Local;
 
 /**
@@ -13,5 +14,5 @@ import javax.ejb.Local;
  */
 @Local
 public interface MainAccountSessionBeanLocal {
-    
+    public MainAccount loginAccount(String username, String password); 
 }
