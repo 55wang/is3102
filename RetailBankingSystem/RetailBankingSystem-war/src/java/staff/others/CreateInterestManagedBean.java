@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.event.ActionEvent;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import utils.MessageUtils;
@@ -29,13 +30,13 @@ public class CreateInterestManagedBean implements Serializable {
     @EJB
     private InterestSessionBeanLocal interestSessionBean;
 
-    private List<Interest> normalInterests = new ArrayList<>();
-    private List<RangeInterest> rangeInterests = new ArrayList<>();
-    private List<ConditionInterest> conditionInterests = new ArrayList<>();
     private String interestType;
     private Interest normalInterest;
     private RangeInterest rangeInterest;
     private ConditionInterest conditionInterest;
+    private List<Interest> normalInterests;
+    private List<RangeInterest> rangeInterests;
+    private List<ConditionInterest> conditionInterests;
     private String INTEREST_TYPE_NORMAL = Interest.InterestType.NORMAL.toString();
     private String INTEREST_TYPE_RANGE = Interest.InterestType.RANGE.toString();
     private String INTEREST_TYPE_CONDITION = Interest.InterestType.CONDITION.toString();
@@ -46,14 +47,18 @@ public class CreateInterestManagedBean implements Serializable {
     /**
      * Creates a new instance of CreateInterestManagedBean
      */
-    public CreateInterestManagedBean() {}
-    
-    @PostConstruct
-    public void init() {
+    public CreateInterestManagedBean() {
         normalInterest = new Interest();
         rangeInterest = new RangeInterest();
         conditionInterest = new ConditionInterest();
+        normalInterests = new ArrayList<>();
+        rangeInterests = new ArrayList<>();
+        conditionInterests = new ArrayList<>();
         interestType = INTEREST_TYPE_NORMAL;
+    }
+    
+    @PostConstruct
+    public void init() {
         List<Interest> interests = interestSessionBean.showAllInterests();
         for (Interest i : interests) {
             if (i instanceof RangeInterest) {
@@ -66,7 +71,7 @@ public class CreateInterestManagedBean implements Serializable {
         }
     }
     
-    public void addInterest() {
+    public void addInterest(ActionEvent event) {
         if (interestType.equals(INTEREST_TYPE_NORMAL)) {
             interestSessionBean.addInterest(normalInterest);
             normalInterests.add(normalInterest);

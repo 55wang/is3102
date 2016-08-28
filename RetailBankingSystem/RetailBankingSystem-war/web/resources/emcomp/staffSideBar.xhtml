@@ -19,8 +19,8 @@
             <div id="side-menu">
                 <ul id="side-menu-container">
                     <c:if test="#{cc.attrs.top == 'account'}">
-                        <li class="side-menu-item #{cc.attrs.side == 'openCurrentAccount' ? 'active' : ''}">
-                            <h:link outcome="open-currentaccount" value="Open Current Account" />
+                        <li class="side-menu-item #{cc.attrs.side == 'openCurrent' ? 'active' : ''}">
+                            <h:link outcome="open-account" value="Open Current Account" />
                         </li>
                         
                         <li class="side-menu-item #{cc.attrs.side == 'depositCurrentAccount' ? 'active' : ''}">
