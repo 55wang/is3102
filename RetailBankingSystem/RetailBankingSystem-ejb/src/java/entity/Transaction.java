@@ -86,9 +86,9 @@ public class Transaction implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     @ManyToOne(cascade={CascadeType.PERSIST})
-    private BankAccount payer;
+    private BankAccount fromAccount;
     @ManyToOne(cascade={CascadeType.PERSIST})
-    private BankAccount payee;// can be null
+    private BankAccount toAccount;// can be null
     private String referenceNumber;
     private String actionType;
     private Boolean credit;
@@ -105,31 +105,31 @@ public class Transaction implements Serializable {
     }
     
     /**
-     * @return the payer
+     * @return the fromAccount
      */
-    public BankAccount getPayer() {
-        return payer;
+    public BankAccount getFromAccount() {
+        return fromAccount;
     }
 
     /**
-     * @param payer the payer to set
+     * @param fromAccount the fromAccount to set
      */
-    public void setPayer(BankAccount payer) {
-        this.payer = payer;
+    public void setFromAccount(BankAccount fromAccount) {
+        this.fromAccount = fromAccount;
     }
 
     /**
-     * @return the payee
+     * @return the toAccount
      */
-    public BankAccount getPayee() {
-        return payee;
+    public BankAccount getToAccount() {
+        return toAccount;
     }
 
     /**
-     * @param payee the payee to set
+     * @param toAccount the toAccount to set
      */
-    public void setPayee(BankAccount payee) {
-        this.payee = payee;
+    public void setToAccount(BankAccount toAccount) {
+        this.toAccount = toAccount;
     }
 
     /**
@@ -140,7 +140,7 @@ public class Transaction implements Serializable {
     }
 
     /**
-     * @param referenceNumber the referenceNumber to set
+     * @param referenceNumber the referenceNumber toAccount set
      */
     public void setReferenceNumber(String referenceNumber) {
         this.referenceNumber = referenceNumber;
@@ -154,7 +154,7 @@ public class Transaction implements Serializable {
     }
 
     /**
-     * @param actionType the actionType to set
+     * @param actionType the actionType toAccount set
      */
     public void setAction(String actionType) {
         this.actionType = actionType;
@@ -168,7 +168,7 @@ public class Transaction implements Serializable {
     }
 
     /**
-     * @param credit the credit to set
+     * @param credit the credit toAccount set
      */
     public void setCredit(Boolean credit) {
         this.credit = credit;
@@ -182,23 +182,23 @@ public class Transaction implements Serializable {
     }
 
     /**
-     * @param amount the amount to set
+     * @param amount the amount toAccount set
      */
     public void setAmount(BigDecimal amount) {
         this.amount = amount;
     }
-
+    
     /**
-     * @return the timestamp
+     * @return the creationDate
      */
-    public Date getTimestamp() {
+    public Date getCreationDate() {
         return creationDate;
     }
 
     /**
-     * @param timestamp the timestamp to set
+     * @param creationDate the creationDate to set
      */
-    public void setTimestamp(Date creationDate) {
+    public void setCreationDate(Date creationDate) {
         this.creationDate = creationDate;
     }
 }

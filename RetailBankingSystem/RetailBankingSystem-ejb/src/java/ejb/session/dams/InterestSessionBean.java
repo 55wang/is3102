@@ -5,7 +5,7 @@
  */
 package ejb.session.dams;
 
-import entity.BankAccount;
+import entity.Interest;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -17,18 +17,18 @@ import javax.persistence.Query;
  * @author leiyang
  */
 @Stateless
-public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
+public class InterestSessionBean implements InterestSessionBeanLocal {
     @PersistenceContext(unitName = "RetailBankingSystem-ejbPU")
     private EntityManager em;
     
     @Override
-    public void addAccount(BankAccount account) {
-        em.persist(account);
+    public void addInterest(Interest interest) {
+        em.persist(interest);
     }
     
     @Override
-    public List<BankAccount> showAllAccounts() {
-        Query q = em.createQuery("SELECT ba FROM BankAccount ba");
+    public List<Interest> showAllInterests() {
+        Query q = em.createQuery("SELECT i FROM Interest i");
         return q.getResultList();
     }
 }

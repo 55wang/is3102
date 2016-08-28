@@ -26,7 +26,7 @@ public class CurrentAccountSessionBean implements CurrentAccountSessionBeanLocal
 
     @Override
     public void createAccount(CurrentAccount account) {
-        account.addInterestRules(new Interest());
+//        account.addInterestRules(new Interest());
         em.persist(account);
     }
     

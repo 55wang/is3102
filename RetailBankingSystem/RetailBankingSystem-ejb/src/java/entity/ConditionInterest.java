@@ -5,28 +5,88 @@
  */
 package entity;
 
-import java.io.Serializable;
+import java.math.BigDecimal;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 
 /**
  *
  * @author leiyang
  */
 @Entity
+@Inheritance(strategy=InheritanceType.JOINED)
 public class ConditionInterest extends Interest {
-    private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
 
-    public Long getId() {
-        return id;
+    public enum ConditionType {
+        BILL {
+            @Override
+            public String toString() {
+                return "BILL";
+            }
+        },
+        CCSPENDING {
+            @Override
+            public String toString() {
+                return "CCSPENDING";
+            }
+        },
+        SALARY {
+            @Override
+            public String toString() {
+                return "SALARY";
+            }
+        },
+        INVEST {
+            @Override
+            public String toString() {
+                return "INVEST";
+            }
+        },
+    }
+    private String conditionType = "";
+    private BigDecimal ceiling = new BigDecimal("60000");
+    private BigDecimal amount;
+
+    /**
+     * @return the ceiling
+     */
+    public BigDecimal getCeiling() {
+        return ceiling;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    /**
+     * @param ceiling the ceiling to set
+     */
+    public void setCeiling(BigDecimal ceiling) {
+        this.ceiling = ceiling;
+    }
+    
+    /**
+     * @return the amount
+     */
+    public BigDecimal getAmount() {
+        return amount;
+    }
+
+    /**
+     * @param amount the amount to set
+     */
+    public void setAmount(BigDecimal amount) {
+        this.amount = amount;
+    }
+    
+    /**
+     * @return the conditionType
+     */
+    public String getConditionType() {
+        return conditionType;
+    }
+
+    /**
+     * @param conditionType the conditionType to set
+     */
+    public void setConditionType(String conditionType) {
+        this.conditionType = conditionType;
     }
 }

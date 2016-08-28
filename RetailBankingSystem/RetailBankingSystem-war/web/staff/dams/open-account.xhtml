@@ -1,0 +1,116 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:em="http://xmlns.jcp.org/jsf/composite/emcomp"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <!--shift + ctrl + F, format-->
+    <f:view>
+        <h:head>
+            <title>Facelet Title</title>
+            <h:outputStylesheet library="css" name="reset.css"/>
+            <h:outputStylesheet library="css" name="theme.css"/>
+        </h:head>
+        <h:body>
+            <em:staffNavBar context="account" userName="lei yang"></em:staffNavBar>
+            <em:staffSideBar top="account" side="openAccount">Testing </em:staffSideBar>
+            <div class="container">
+                <h:form id="mainForm">
+                    <p:panel header="Opening Current Account">
+                        <p:messages id="messagesStatus" redisplay="false" >
+                            <h:panelGrid columns="2" cellpadding="5">
+                                <p:outputLabel for="accountType" value="Interest Type: " />
+                                <p:selectOneButton id="accountType" value="#{openAccountManagedBean.accountType}">
+                                    <f:selectItem itemLabel="Current Account" itemValue="#{openAccountManagedBean.ACCOUNT_TYPE_CURRENT}" />
+                                    <f:selectItem itemLabel="Fixed Deposit Account" itemValue="#{openAccountManagedBean.ACCOUNT_TYPE_FIXED}" />
+                                    <f:selectItem itemLabel="Savings Account" itemValue="#{openAccountManagedBean.ACCOUNT_TYPE_SAVING}" />
+                                    <f:ajax render="@form" />
+                                </p:selectOneButton>
+                                
+                                <c:if test="#{openAccountManagedBean.accountType == openAccountManagedBean.ACCOUNT_TYPE_CURRENT}">
+                                    <p:outputLabel for="currentAccountName" value="Interest Name: " />
+                                    <p:inputText id="currentAccountName" value="#{openAccountManagedBean.newCurrentAccount.name}"/>
+                                    <p:outputLabel for="currentAccountBalance" value="Initial Deposit: " />
+                                    <p:inputText id="currentAccountBalance" value="#{openAccountManagedBean.newCurrentAccount.balance}">
+                                        <f:convertNumber pattern="#,###,##0.00"/>
+                                    </p:inputText>
+                                </c:if>
+                                
+                                <c:if test="#{openAccountManagedBean.accountType == openAccountManagedBean.ACCOUNT_TYPE_FIXED}">
+                                    <p:outputLabel for="fixedDepositAccountName" value="Interest Name: " />
+                                    <p:inputText id="fixedDepositAccountName" value="#{openAccountManagedBean.newFixedDepositAccount.name}"/>
+                                    <p:outputLabel for="fixedDepositAccountBalance" value="Initial Deposit: " />
+                                    <p:inputText id="fixedDepositAccountBalance" value="#{openAccountManagedBean.newFixedDepositAccount.balance}">
+                                        <f:convertNumber pattern="#,###,##0.00"/>
+                                    </p:inputText>
+                                </c:if>
+                                
+                                <c:if test="#{openAccountManagedBean.accountType == openAccountManagedBean.ACCOUNT_TYPE_SAVING}">
+                                    <p:outputLabel for="savingAccountName" value="Interest Name: " />
+                                    <p:inputText id="savingAccountName" value="#{openAccountManagedBean.newSavingAccount.name}"/>
+                                    <p:outputLabel for="savingAccountBalance" value="Initial Deposit: " />
+                                    <p:inputText id="savingAccountBalance" value="#{openAccountManagedBean.newSavingAccount.balance}">
+                                        <f:convertNumber pattern="#,###,##0.00"/>
+                                    </p:inputText>
+                                </c:if>
+
+                                <p:commandButton value="Create" icon="ui-icon-plus" update="@form" actionListener="#{openAccountManagedBean.addAccount}" />
+                            </h:panelGrid>
+                        </p:messages>
+                    </p:panel>
+                    <!-- TODO: Need to remove, this is for testing -->
+                    <p:panel header="Current Accounts">
+                        <p:dataTable id="currentAccounts" value="#{openAccountManagedBean.currentAccounts}" var="account">
+                            <p:column headerText="ID" sortBy="#{account.id}">
+                                <h:outputText value="#{account.id}"></h:outputText>
+                            </p:column>
+                            <p:column headerText="Name" sortBy="#{account.name}">
+                                <h:outputText value="#{account.name}"></h:outputText>
+                            </p:column>
+                            <p:column headerText="Balance" sortBy="#{account.balance}">
+                                <h:outputText value="#{account.balance}">
+                                    <f:convertNumber pattern="#,###,##0.00"/>
+                                </h:outputText>
+                            </p:column>
+                        </p:dataTable>
+                    </p:panel>
+                    <p:panel header="Fixed Deposit Accounts">
+                        <p:dataTable id="fixedDepositAccounts" value="#{openAccountManagedBean.fixedDepositAccounts}" var="account">
+                            <p:column headerText="ID" sortBy="#{account.id}">
+                                <h:outputText value="#{account.id}"></h:outputText>
+                            </p:column>
+                            <p:column headerText="Name" sortBy="#{account.name}">
+                                <h:outputText value="#{account.name}"></h:outputText>
+                            </p:column>
+                            <p:column headerText="Balance" sortBy="#{account.balance}">
+                                <h:outputText value="#{account.balance}">
+                                    <f:convertNumber pattern="#,###,##0.00"/>
+                                </h:outputText>
+                            </p:column>
+                        </p:dataTable>
+                    </p:panel>
+                    <p:panel header="Savings Accounts">
+                        <p:dataTable id="savingAccounts" value="#{openAccountManagedBean.savingAccounts}" var="account">
+                            <p:column headerText="ID" sortBy="#{account.id}">
+                                <h:outputText value="#{account.id}"></h:outputText>
+                            </p:column>
+                            <p:column headerText="Name" sortBy="#{account.name}">
+                                <h:outputText value="#{account.name}"></h:outputText>
+                            </p:column>
+                            <p:column headerText="Balance" sortBy="#{account.balance}">
+                                <h:outputText value="#{account.balance}">
+                                    <f:convertNumber pattern="#,###,##0.00"/>
+                                </h:outputText>
+                            </p:column>
+                        </p:dataTable>
+                    </p:panel>
+                </h:form>
+            </div>
+        </h:body>
+    </f:view>
+
+
+</html>
+

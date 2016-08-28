@@ -10,6 +10,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -23,15 +24,45 @@ import javax.persistence.OneToMany;
  */
 @Entity
 public abstract class BankAccount implements Serializable {
+    public enum AccountType {
+        CURRENT {
+            public String toString() {
+                return "CURRENT";
+            }
+        },
+        SAVING {
+            public String toString() {
+                return "SAVING";
+            }
+        },
+        FIXED {
+            public String toString() {
+                return "FIXED";
+            }
+        },
+        MOBILE {
+            public String toString() {
+                return "MOBILE";
+            }
+        },
+        LOAN {
+            public String toString() {
+                return "LOAN";
+            }
+        }
+    }
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;// generated
     private String name;
     private String type; // CURRENT, SAVING, FIXED, MOBILE, LOAN
-    private BigDecimal balance;
-    @OneToMany(cascade = CascadeType.PERSIST)
+    @Column(precision=12, scale=2)
+    private BigDecimal balance = new BigDecimal(0);
+    @OneToMany(cascade = CascadeType.MERGE)
     private List<Interest> rules = new ArrayList<Interest>();
+    @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "fromAccount")
+    private List<Transaction> transactions = new ArrayList<Transaction>();
     @ManyToOne(cascade = CascadeType.PERSIST)
     private MainAccount mainAccount = new MainAccount();
     // TODO: Other likely fields
@@ -126,7 +157,5 @@ public abstract class BankAccount implements Serializable {
     public void setMainAccount(MainAccount mainAccount) {
         this.mainAccount = mainAccount;
     }
-
-
 
 }

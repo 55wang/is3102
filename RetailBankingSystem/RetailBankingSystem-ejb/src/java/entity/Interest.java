@@ -7,9 +7,8 @@ package entity;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 /**
@@ -18,17 +17,53 @@ import javax.persistence.Id;
  */
 @Entity
 public class Interest implements Serializable {
-    private static final long serialVersionUID = 1L;
+    
+    public enum InterestType {
+        NORMAL {
+            public String toString() {
+                return "NORMAL";
+            }
+        },
+        RANGE {
+            public String toString() {
+                return "RANGE";
+            }
+        },
+        CONDITION {
+            public String toString() {
+                return "CONDITION";
+            }
+        }
+    }
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private String name;
+    @Column(precision=12, scale=2)
     private BigDecimal percentage = new BigDecimal(0.01);
-
-    public Long getId() {
-        return id;
+    /**
+     * @return the percentage
+     */
+    public BigDecimal getPercentage() {
+        return percentage;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    /**
+     * @param percentage the percentage to set
+     */
+    public void setPercentage(BigDecimal percentage) {
+        this.percentage = percentage;
+    }
+
+    /**
+     * @return the name
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * @param name the name to set
+     */
+    public void setName(String name) {
+        this.name = name;
     }
 }

@@ -16,6 +16,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
+import utils.MessageUtils;
 
 /**
  *
@@ -46,7 +47,7 @@ public class WithdrawCurrentAccountManagedBean implements Serializable {
     
     public void withdrawFromAccount() {
         String message = currentAccountSessionBean.withdrawFromAccount(getAccountNumber(), getWithdrawAmount());
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, message, ""));
+        MessageUtils.displayInfo(message);
     }
 
     /**

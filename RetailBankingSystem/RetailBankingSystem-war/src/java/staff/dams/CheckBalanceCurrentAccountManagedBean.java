@@ -16,6 +16,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
+import utils.MessageUtils;
 
 /**
  *
@@ -39,10 +40,10 @@ public class CheckBalanceCurrentAccountManagedBean implements Serializable {
     public void checkBalance(ActionEvent event) {
         CurrentAccount newAccount = currentAccountSessionBean.getAccountFromId(getAccountNumber());
         if (newAccount == null) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Account Not Found!", ""));
+            MessageUtils.displayError("Account Not Found!");
         } else {
             getAccounts().add(newAccount);
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Account Retrieved!", ""));
+            MessageUtils.displayInfo("Account Retrieved!");
         }
         
     }
