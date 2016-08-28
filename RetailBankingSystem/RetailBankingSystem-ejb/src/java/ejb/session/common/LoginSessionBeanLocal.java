@@ -5,6 +5,7 @@
  */
 package ejb.session.common;
 
+import entity.Customer;
 import entity.MainAccount;
 import javax.ejb.Local;
 
@@ -13,6 +14,7 @@ import javax.ejb.Local;
  * @author wang
  */
 @Local
-public interface MainAccountSessionBeanLocal {
+public interface LoginSessionBeanLocal {
     public MainAccount loginAccount(String username, String password); 
+    public Customer getCustomerByUserID(String userID);
 }

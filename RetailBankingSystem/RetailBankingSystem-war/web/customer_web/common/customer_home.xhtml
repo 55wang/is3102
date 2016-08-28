@@ -12,9 +12,7 @@
             <h:outputStylesheet library="css" name="theme.css"/>
         </h:head>
         <h:body>
-            <em:customerHeader context="home" userName="Log in"></em:customerHeader>
-            <em:customerNavBar context="navbar"></em:customerNavBar>
-            <em:customerSlideshow context="slideshow"></em:customerSlideshow>
+            <em:customerHeader context="customer_login_home" userName="#{customerHomeManagedBean.customer.firstname}"></em:customerHeader>
         </h:body>
     </f:view>
 
