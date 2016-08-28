@@ -27,7 +27,7 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
     @Override
     public Boolean sendActivationEmailForNewCustomer(){
         String activationCode = "123456";
-        String recipient = "a0119657@u.nus.edu";
+        String recipient = "wangzhe.lynx@gmail.com";
 
         try {
             Properties props = new Properties();
@@ -43,12 +43,12 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
             
             MimeMessage msg = new MimeMessage(session);
             if(msg!=null){   
-                msg.setFrom(InternetAddress.parse("a0119657@comp.nus.edu.sg", false)[0]);
+                msg.setFrom(InternetAddress.parse("wangzhe@comp.nus.edu.sg", false)[0]);
                 msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(recipient, false));
                 msg.setSubject("Merlion Bank Account Activation");
                 String messageText = "hello";
                 msg.setText(messageText);
-                msg.setHeader("Merlion Mail", mailer);
+                msg.setHeader("X-Mailer", mailer);
                 Date timeStamp = new Date();
                 msg.setSentDate(timeStamp);
                 Transport.send(msg);
