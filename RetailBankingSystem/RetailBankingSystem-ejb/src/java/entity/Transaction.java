@@ -94,7 +94,7 @@ public class Transaction implements Serializable {
     private Boolean credit;
     private BigDecimal amount;
     @Temporal(value = TemporalType.TIMESTAMP)
-    private Date creationDate;
+    private Date creationDate = new Date();
 
     public Long getId() {
         return id;

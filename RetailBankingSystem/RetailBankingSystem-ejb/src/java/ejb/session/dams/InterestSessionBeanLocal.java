@@ -17,6 +17,10 @@ import javax.ejb.Local;
 public interface InterestSessionBeanLocal {
     // create new or update interest
     public void addInterest(Interest interest);
-    
     public List<Interest> showAllInterests();
+    public List<Interest> getCurrentAccountDefaultInterests();
+    public List<Interest> getFixedDepositAccountDefaultInterests();
+    public List<Interest> getSavingccountDefaultInterests();
+    public List<Interest> getLoanAccountDefaultInterests();
+    public List<Interest> getMobileAccountDefaultInterests();
 }

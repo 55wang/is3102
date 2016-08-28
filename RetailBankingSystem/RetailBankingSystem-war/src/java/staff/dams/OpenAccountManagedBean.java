@@ -6,10 +6,12 @@
 package staff.dams;
 
 import ejb.session.dams.BankAccountSessionBeanLocal;
+import ejb.session.dams.InterestSessionBeanLocal;
 import entity.BankAccount;
 import entity.CurrentAccount;
 import entity.FixedDepositAccount;
 import entity.SavingAccount;
+import entity.Transaction;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,31 +31,26 @@ import utils.MessageUtils;
 public class OpenAccountManagedBean implements Serializable {
     @EJB
     private BankAccountSessionBeanLocal bankAccountSessionBean;
+    @EJB
+    private InterestSessionBeanLocal interestSessionBean;
 
     private String accountType;
-    private CurrentAccount newCurrentAccount;
-    private FixedDepositAccount newFixedDepositAccount;
-    private SavingAccount newSavingAccount;
+    private CurrentAccount newCurrentAccount = new CurrentAccount();
+    private FixedDepositAccount newFixedDepositAccount = new FixedDepositAccount();
+    private SavingAccount newSavingAccount = new SavingAccount();
     //LoanAccount and MobileAccount will be opened by other means
-    private List<CurrentAccount> currentAccounts;
-    private List<FixedDepositAccount> fixedDepositAccounts;
-    private List<SavingAccount> savingAccounts;
+    private List<CurrentAccount> currentAccounts = new ArrayList<>();
+    private List<FixedDepositAccount> fixedDepositAccounts = new ArrayList<>();
+    private List<SavingAccount> savingAccounts = new ArrayList<>();
     private String ACCOUNT_TYPE_CURRENT = BankAccount.AccountType.CURRENT.toString();
     private String ACCOUNT_TYPE_FIXED = BankAccount.AccountType.FIXED.toString();
     private String ACCOUNT_TYPE_SAVING = BankAccount.AccountType.SAVING.toString();
  
-    public OpenAccountManagedBean() {
-        newCurrentAccount = new CurrentAccount();
-        newFixedDepositAccount = new FixedDepositAccount();
-        newSavingAccount = new SavingAccount();
-        currentAccounts = new ArrayList<>();
-        fixedDepositAccounts = new ArrayList<>();
-        savingAccounts = new ArrayList<>();
-        accountType = ACCOUNT_TYPE_CURRENT;
-    }
+    public OpenAccountManagedBean() {}
     
     @PostConstruct
     public void init() {
+        accountType = ACCOUNT_TYPE_CURRENT;
         List<BankAccount> accounts = bankAccountSessionBean.showAllAccounts();
         for (BankAccount ba : accounts) {
             if (ba instanceof CurrentAccount) {
@@ -67,6 +64,8 @@ public class OpenAccountManagedBean implements Serializable {
     }
     
     public void addAccount(ActionEvent event) {
+        addTransaction();
+        addDefaultInterest();
         if (getAccountType().equals(getACCOUNT_TYPE_CURRENT())) {
             bankAccountSessionBean.addAccount(getNewCurrentAccount());
             getCurrentAccounts().add(getNewCurrentAccount());
@@ -81,6 +80,44 @@ public class OpenAccountManagedBean implements Serializable {
             MessageUtils.displayInfo("Savings Account Created");
         } else {
             MessageUtils.displayError("There's some error when creating account");
+        }
+    }
+    
+    private BankAccount getAccount() {
+        if (accountType.equals(getACCOUNT_TYPE_CURRENT())) {
+            return getNewCurrentAccount();
+        } else if (accountType.equals(getACCOUNT_TYPE_FIXED())) {
+            return getNewFixedDepositAccount();
+        } else if (accountType.equals(getACCOUNT_TYPE_SAVING())) {
+            return getNewSavingAccount();
+        } else {
+            return null;
+        }
+    }
+    
+    private void addTransaction() {
+        Transaction t = new Transaction();
+        t.setAmount(getAccount().getBalance());
+        t.setFromAccount(getAccount());
+        t.setAction(Transaction.ActionType.DEPOSIT.toString());
+        if (accountType.equals(getACCOUNT_TYPE_CURRENT())) {
+            getNewCurrentAccount().addTransaction(t);
+        } else if (accountType.equals(getACCOUNT_TYPE_FIXED())) {
+            getNewFixedDepositAccount().addTransaction(t);
+        } else if (accountType.equals(getACCOUNT_TYPE_SAVING())) {
+            getNewSavingAccount().addTransaction(t);
+        } else {
+        }
+    }
+    
+    private void addDefaultInterest() {
+        if (accountType.equals(getACCOUNT_TYPE_CURRENT())) {
+            getNewCurrentAccount().addInterestsRules(interestSessionBean.getCurrentAccountDefaultInterests());
+        } else if (accountType.equals(getACCOUNT_TYPE_FIXED())) {
+            getNewFixedDepositAccount().addInterestsRules(interestSessionBean.getFixedDepositAccountDefaultInterests());
+        } else if (accountType.equals(getACCOUNT_TYPE_SAVING())) {
+            getNewSavingAccount().addInterestsRules(interestSessionBean.getSavingccountDefaultInterests());
+        } else {
         }
     }
 

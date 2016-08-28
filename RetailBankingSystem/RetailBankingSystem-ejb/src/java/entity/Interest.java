@@ -17,7 +17,7 @@ import javax.persistence.Id;
  */
 @Entity
 public class Interest implements Serializable {
-    
+
     public enum InterestType {
         NORMAL {
             public String toString() {
@@ -39,6 +39,11 @@ public class Interest implements Serializable {
     private String name;
     @Column(precision=12, scale=2)
     private BigDecimal percentage = new BigDecimal(0.01);
+    private Boolean defaultCurrentAccount;
+    private Boolean defaultFixedDepositAccount;
+    private Boolean defaultSavingAccount;
+    private Boolean defaultMobileAccount;
+    private Boolean defaultLoanAccount;
     /**
      * @return the percentage
      */
@@ -66,4 +71,75 @@ public class Interest implements Serializable {
     public void setName(String name) {
         this.name = name;
     }
+    
+    /**
+     * @return the defaultCurrentAccount
+     */
+    public Boolean getDefaultCurrentAccount() {
+        return defaultCurrentAccount;
+    }
+
+    /**
+     * @param defaultCurrentAccount the defaultCurrentAccount to set
+     */
+    public void setDefaultCurrentAccount(Boolean defaultCurrentAccount) {
+        this.defaultCurrentAccount = defaultCurrentAccount;
+    }
+
+    /**
+     * @return the defaultFixedDepositAccount
+     */
+    public Boolean getDefaultFixedDepositAccount() {
+        return defaultFixedDepositAccount;
+    }
+
+    /**
+     * @param defaultFixedDepositAccount the defaultFixedDepositAccount to set
+     */
+    public void setDefaultFixedDepositAccount(Boolean defaultFixedDepositAccount) {
+        this.defaultFixedDepositAccount = defaultFixedDepositAccount;
+    }
+
+    /**
+     * @return the defaultSavingAccount
+     */
+    public Boolean getDefaultSavingAccount() {
+        return defaultSavingAccount;
+    }
+
+    /**
+     * @param defaultSavingAccount the defaultSavingAccount to set
+     */
+    public void setDefaultSavingAccount(Boolean defaultSavingAccount) {
+        this.defaultSavingAccount = defaultSavingAccount;
+    }
+
+    /**
+     * @return the defaultMobileAccount
+     */
+    public Boolean getDefaultMobileAccount() {
+        return defaultMobileAccount;
+    }
+
+    /**
+     * @param defaultMobileAccount the defaultMobileAccount to set
+     */
+    public void setDefaultMobileAccount(Boolean defaultMobileAccount) {
+        this.defaultMobileAccount = defaultMobileAccount;
+    }
+
+    /**
+     * @return the defaultLoanAccount
+     */
+    public Boolean getDefaultLoanAccount() {
+        return defaultLoanAccount;
+    }
+
+    /**
+     * @param defaultLoanAccount the defaultLoanAccount to set
+     */
+    public void setDefaultLoanAccount(Boolean defaultLoanAccount) {
+        this.defaultLoanAccount = defaultLoanAccount;
+    }
+    
 }

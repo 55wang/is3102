@@ -31,4 +31,30 @@ public class InterestSessionBean implements InterestSessionBeanLocal {
         Query q = em.createQuery("SELECT i FROM Interest i");
         return q.getResultList();
     }
+    
+    @Override
+    public List<Interest> getCurrentAccountDefaultInterests() {
+        Query q = em.createQuery("SELECT i FROM Interest i WHERE i.defaultCurrentAccount = true");
+        return q.getResultList();
+    }
+    @Override
+    public List<Interest> getFixedDepositAccountDefaultInterests() {
+        Query q = em.createQuery("SELECT i FROM Interest i WHERE i.defaultFixedDepositAccount = true");
+        return q.getResultList();
+    }
+    @Override
+    public List<Interest> getSavingccountDefaultInterests() {
+        Query q = em.createQuery("SELECT i FROM Interest i WHERE i.defaultSavingAccount = true");
+        return q.getResultList();
+    }
+    @Override
+    public List<Interest> getLoanAccountDefaultInterests() {
+        Query q = em.createQuery("SELECT i FROM Interest i WHERE i.defaultLoanAccount = true");
+        return q.getResultList();
+    }
+    @Override
+    public List<Interest> getMobileAccountDefaultInterests() {
+        Query q = em.createQuery("SELECT i FROM Interest i WHERE i.defaultMobileAccount = true");
+        return q.getResultList();
+    }
 }

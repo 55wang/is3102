@@ -74,8 +74,17 @@ public abstract class BankAccount implements Serializable {
     public void addInterestRules(Interest i) {
         rules.add(i);
     }
+    
     public void removeInterestRules(Interest i) {
         rules.remove(i);
+    }
+    
+    public void addInterestsRules(List<Interest> interests) {
+        rules.addAll(interests);
+    }
+    
+    public void removeInterestsRules(List<Interest> interests) {
+        rules.removeAll(interests);
     }
     
     public void addBalance(BigDecimal amount) {
@@ -84,6 +93,10 @@ public abstract class BankAccount implements Serializable {
     
     public void removeBalance(BigDecimal amount) {
         balance = balance.subtract(amount);
+    }
+    
+    public void addTransaction(Transaction t) {
+        transactions.add(t);
     }
     
     /**

@@ -36,6 +36,16 @@
                                     <p:inputText id="normalInterestPercentage" value="#{createInterestManagedBean.normalInterest.percentage}">
                                         <f:convertNumber pattern="#,###,##0.00"/>
                                     </p:inputText>
+                                    <h:outputText value="Default Current Account:" />
+                                    <p:selectBooleanCheckbox value="#{createInterestManagedBean.normalInterest.defaultCurrentAccount}" />
+                                    <h:outputText value="Default Fixed Deposit Account:" />
+                                    <p:selectBooleanCheckbox value="#{createInterestManagedBean.normalInterest.defaultFixedDepositAccount}" />
+                                    <h:outputText value="Default Saving Account " />
+                                    <p:selectBooleanCheckbox value="#{createInterestManagedBean.normalInterest.defaultSavingAccount}" />
+                                    <h:outputText value="Default Loan Account " />
+                                    <p:selectBooleanCheckbox value="#{createInterestManagedBean.normalInterest.defaultLoanAccount}" />
+                                    <h:outputText value="Default Mobile Account " />
+                                    <p:selectBooleanCheckbox value="#{createInterestManagedBean.normalInterest.defaultMobileAccount}" />
                                 </c:if>
                                 <c:if test="#{createInterestManagedBean.interestType == createInterestManagedBean.INTEREST_TYPE_RANGE}">
                                     <p:outputLabel for="rangeInterestName" value="Interest Name: " />
@@ -48,6 +58,16 @@
                                     <p:inputText id="rangeInterestMinimum" value="#{createInterestManagedBean.rangeInterest.minimum}"/>
                                     <p:outputLabel for="rangeInterestMaximum" value="Maximum Deposit Amount: " />
                                     <p:inputText id="rangeInterestMaximum" value="#{createInterestManagedBean.rangeInterest.maximum}"/>
+                                    <h:outputText value="Default Current Account:" />
+                                    <p:selectBooleanCheckbox value="#{createInterestManagedBean.rangeInterest.defaultCurrentAccount}" />
+                                    <h:outputText value="Default Fixed Deposit Account:" />
+                                    <p:selectBooleanCheckbox value="#{createInterestManagedBean.rangeInterest.defaultFixedDepositAccount}" />
+                                    <h:outputText value="Default Saving Account " />
+                                    <p:selectBooleanCheckbox value="#{createInterestManagedBean.rangeInterest.defaultSavingAccount}" />
+                                    <h:outputText value="Default Loan Account " />
+                                    <p:selectBooleanCheckbox value="#{createInterestManagedBean.rangeInterest.defaultLoanAccount}" />
+                                    <h:outputText value="Default Mobile Account " />
+                                    <p:selectBooleanCheckbox value="#{createInterestManagedBean.rangeInterest.defaultMobileAccount}" />
                                 </c:if>
                                 <c:if test="#{createInterestManagedBean.interestType == createInterestManagedBean.INTEREST_TYPE_CONDITION}">
                                     <p:outputLabel for="conditionType" value="Condition Type: " />
@@ -82,6 +102,16 @@
                                         <p:outputLabel for="contitionInterestInvest" value="Minimum Insue or Investment amount: " />
                                         <p:inputText id="contitionInterestInvest" value="#{createInterestManagedBean.conditionInterest.amount}"/>
                                     </c:if>
+                                    <h:outputText value="Default Current Account:" />
+                                    <p:selectBooleanCheckbox value="#{createInterestManagedBean.conditionInterest.defaultCurrentAccount}" />
+                                    <h:outputText value="Default Fixed Deposit Account:" />
+                                    <p:selectBooleanCheckbox value="#{createInterestManagedBean.conditionInterest.defaultFixedDepositAccount}" />
+                                    <h:outputText value="Default Saving Account " />
+                                    <p:selectBooleanCheckbox value="#{createInterestManagedBean.conditionInterest.defaultSavingAccount}" />
+                                    <h:outputText value="Default Loan Account " />
+                                    <p:selectBooleanCheckbox value="#{createInterestManagedBean.conditionInterest.defaultLoanAccount}" />
+                                    <h:outputText value="Default Mobile Account " />
+                                    <p:selectBooleanCheckbox value="#{createInterestManagedBean.conditionInterest.defaultMobileAccount}" />
                                 </c:if>
 
                                 <p:commandButton value="Create" icon="ui-icon-plus" update="@form" actionListener="#{createInterestManagedBean.addInterest}" />
