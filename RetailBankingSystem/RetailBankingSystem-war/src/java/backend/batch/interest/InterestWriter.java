@@ -7,7 +7,7 @@ package backend.batch.interest;
 
 import java.io.Serializable;
 import java.util.List;
-import javax.batch.api.chunk.ItemWriter;
+import javax.batch.api.chunk.AbstractItemWriter;
 import javax.enterprise.context.Dependent;
 import javax.inject.Named;
 
@@ -17,7 +17,7 @@ import javax.inject.Named;
  */
 @Dependent
 @Named("InterestWriter")
-public class InterestWriter implements ItemWriter {
+public class InterestWriter extends AbstractItemWriter {
 
     @Override
     public void open(Serializable checkpoint) throws Exception {}

@@ -6,14 +6,8 @@
 package entity;
 
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
 
 /**
  *
@@ -23,66 +17,73 @@ import javax.persistence.ManyToMany;
 public class Role implements Serializable {
     
     public enum Permission {
-        SUPERUSER, 
-        CUSTOMER,
-        DEPOSIT,
-        CARD,
-        LOAN,
-        BILL,
-        WEALTH,
-        PORTFOLIO,
-        ANALYTICS
+        SUPERUSER {
+            public String toString() {
+                return "SUPERUSER";
+            }
+        }, 
+        CUSTOMER{
+            public String toString() {
+                return "CUSTOMER";
+            }
+        },
+        DEPOSIT{
+            public String toString() {
+                return "DEPOSIT";
+            }
+        },
+        CARD{
+            public String toString() {
+                return "CARD";
+            }
+        },
+        LOAN{
+            public String toString() {
+                return "LOAN";
+            }
+        },
+        BILL{
+            public String toString() {
+                return "BILL";
+            }
+        },
+        WEALTH{
+            public String toString() {
+                return "WEALTH";
+            }
+        },
+        PORTFOLIO{
+            public String toString() {
+                return "PORTFOLIO";
+            }
+        },
+        ANALYTICS{
+            public String toString() {
+                return "ANALYTICS";
+            }
+        }
     }
-    private static final long serialVersionUID = 1L;
+    
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
     private String roleName;
-    private Boolean superUserRight;
-    private Boolean customerAccessRight;
-    private Boolean depositAccessRight;
-    private Boolean cardAccessRight;
-    private Boolean loanAccessRight;
-    private Boolean billAccessRight;
-    private Boolean wealthAccessRight;
-    private Boolean portfolioAccessRight;
-    private Boolean analyticsAccessRight;
-//    @ManyToMany(cascade={CascadeType.PERSIST})
+    private Boolean superUserRight = false;
+    private Boolean customerAccessRight = false;
+    private Boolean depositAccessRight = false;
+    private Boolean cardAccessRight = false;
+    private Boolean loanAccessRight = false;
+    private Boolean billAccessRight = false;
+    private Boolean wealthAccessRight = false;
+    private Boolean portfolioAccessRight = false;
+    private Boolean analyticsAccessRight = false;
+//    @ManyToMany(cascade={CascadeType.MERGE})
 //    private Set<StaffAccount> staffAccounts = new HashSet<StaffAccount>();
     
+    public Role() {
+        
+    }
     
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Role)) {
-            return false;
-        }
-        Role other = (Role) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        return "entity.Role[ id=" + id + " ]";
+    public Role(String name) {
+        this.roleName = name;
     }
 
     public String getRoleName() {
@@ -172,5 +173,12 @@ public class Role implements Serializable {
 //    public void setStaffAccounts(Set<StaffAccount> staffAccounts) {
 //        this.staffAccounts = staffAccounts;
 //    }
-   
+//    
+//    public void addStaffAccount(StaffAccount sa) {
+//        this.staffAccounts.add(sa);
+//    }
+//   
+//    public void removeStaffAccount(StaffAccount sa) {
+//        this.staffAccounts.remove(sa);
+//    }
 }

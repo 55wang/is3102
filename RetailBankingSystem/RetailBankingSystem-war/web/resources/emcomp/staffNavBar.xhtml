@@ -23,8 +23,8 @@
                     <!--sec:authorize access="hasAnyRole('counterStaff')"></sec:authorize-->
                     <!--TODO: wrap menu option with sec tag -->
                     <li id="header-overview" class="#{cc.attrs.context == 'overview' ? 'active' : ''}" value="overview"><a href="#">Overview</a></li>
-                    <li id="header-overview" class="#{cc.attrs.context == 'account' ? 'active' : ''}" value="account"><a href="#">Accounts</a></li>
-                    <li id="header-overview" class="#{cc.attrs.context == 'others' ? 'active' : ''}" value="others"><a href="#">Others</a></li>
+                    <li id="header-overview" class="#{cc.attrs.context == 'account' ? 'active' : ''}" value="account"><a href="../dams/open-account.xhtml">Accounts</a></li>
+                    <li id="header-overview" class="#{cc.attrs.context == 'others' ? 'active' : ''}" value="others"><a href="../others/create-interest.xhtml">Others</a></li>
                 </ul>
                 <ul id="header-user"><strong id="user-name">#{cc.attrs.userName}</strong></ul>
             </div>
