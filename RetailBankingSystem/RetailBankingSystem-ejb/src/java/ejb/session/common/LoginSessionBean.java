@@ -5,6 +5,7 @@
  */
 package ejb.session.common;
 
+import entity.Customer;
 import entity.MainAccount;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -18,11 +19,12 @@ import javax.persistence.Query;
  * @author wang
  */
 @Stateless
-public class MainAccountSessionBean implements MainAccountSessionBeanLocal {
+public class LoginSessionBean implements LoginSessionBeanLocal {
 
     @PersistenceContext(unitName = "RetailBankingSystem-ejbPU")
     private EntityManager em;
 
+    @Override
     public MainAccount loginAccount(String username, String password) {
         Query q = em.createQuery("SELECT a FROM MainAccount a WHERE a.userID = :inUserName "
                 + "AND a.password = :inPassword");
@@ -38,6 +40,26 @@ public class MainAccountSessionBean implements MainAccountSessionBeanLocal {
             return null;
         }
     }
+    
+    @Override
+    public Customer getCustomerByUserID(String userID){
+        Query q = em.createQuery("SELECT a FROM MainAccount a WHERE a.userID = :sessionUserID");
+        
+        q.setParameter("sessionUserID", userID);
+        
+        MainAccount mainAccount = null;
+        
+        
+        
+        try {
+            mainAccount = (MainAccount) q.getSingleResult();
+            return mainAccount.getCustomer();
+        } catch (NoResultException ex) {
+            return null;
+        }
+    }
+    
+    
 
     public List<MainAccount> showAllAccounts() {
         Query q = em.createQuery("SELECT a FROM MainAccount a");

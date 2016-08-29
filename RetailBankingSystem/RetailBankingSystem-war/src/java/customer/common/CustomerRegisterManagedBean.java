@@ -6,7 +6,7 @@
 package customer.common;
 
 import ejb.session.common.EmailServiceSessionBeanLocal;
-import ejb.session.common.MainAccountSessionBeanLocal;
+import ejb.session.common.LoginSessionBeanLocal;
 import ejb.session.common.NewCustomerSessionBeanLocal;
 import entity.BankAccount;
 import entity.CurrentAccount;
@@ -38,13 +38,10 @@ public class CustomerRegisterManagedBean implements Serializable {
     private EmailServiceSessionBeanLocal emailServiceSessionBean;
     @EJB
     private NewCustomerSessionBeanLocal newCustomerSessionBean;
-    @EJB
-    private MainAccountSessionBeanLocal newMainAccountSessionBean;
 
     private Customer customer = new Customer();
     private MainAccount mainAccount = new MainAccount();
     private String initialDepositAccount;
-    private MainAccount loginAccount = new MainAccount();
 
     /**
      * Creates a new instance of CustomerRegisterManagedBean
@@ -107,24 +104,5 @@ public class CustomerRegisterManagedBean implements Serializable {
         return event.getNewStep();
     }
 
-    public MainAccount getLoginAccount() {
-        return loginAccount;
-    }
 
-    public void setLoginAccount(MainAccount loginAccount) {
-        this.loginAccount = loginAccount;
-    }
-
-    public void loginCustomer() {
-        try {
-            Long userID = newMainAccountSessionBean.loginAccount(loginAccount.getUserID(), loginAccount.getPassword()).getId();
-            String userName = newMainAccountSessionBean.loginAccount(loginAccount.getUserID(), loginAccount.getPassword()).getUserID();
-            SessionUtils.setUserId(userID);
-            SessionUtils.setUserName(userName);
-            RedirectUtils.redirect("success.xhtml");
-        } catch (NullPointerException e) {
-            RedirectUtils.redirect("fail.xhtml");
-        }
-
-    }
 }

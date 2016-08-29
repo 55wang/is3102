@@ -4,7 +4,7 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:cc="http://xmlns.jcp.org/jsf/composite"
-      xmlns:jsf="http://xmlns.jcp.org/jsf">
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
 
     <cc:interface>
         <cc:attribute name="context" required="true"/>
@@ -19,9 +19,16 @@
                     <h:graphicImage library="img" name="merlionLogo3.png" style="width:150px" />
                 </div>
 
-                <ul id="header-user">
-                    <h:link outcome="customer_web/common/customer_login" value="Log in" />
-                </ul>
+                <c:if test="#{cc.attrs.context == 'home'}">
+                    <ul id="header-user">
+                        <h:link outcome="customer_web/common/customer_login" value="Log in"></h:link>
+                    </ul>
+                </c:if>
+                <c:if test="#{cc.attrs.context == 'customer_login_home'}">
+                    <ul id="header-user">
+                        <h:link value="#{cc.attrs.userName}"></h:link>
+                    </ul>
+                </c:if>
             </div>
         </f:view>
     </cc:implementation>
