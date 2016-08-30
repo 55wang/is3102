@@ -23,6 +23,7 @@ public class NewCustomerSessionBean implements NewCustomerSessionBeanLocal {
     @Override
     public void createCustomer(Customer customer, MainAccount mainAccount){
         customer.setMainAccount(mainAccount);
+        mainAccount.setCustomer(customer);
         em.persist(customer);
     }
     // Add business logic below. (Right-click in editor and choose
