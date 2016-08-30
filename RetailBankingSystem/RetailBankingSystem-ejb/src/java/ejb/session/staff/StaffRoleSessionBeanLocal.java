@@ -6,7 +6,6 @@
 package ejb.session.staff;
 
 import entity.Role;
-import entity.StaffAccount;
 import java.util.List;
 import javax.ejb.Local;
 
@@ -19,5 +18,7 @@ public interface StaffRoleSessionBeanLocal {
     public Role getSuperAdminRole();
     public List<Role> getAllRoles();
     public Boolean addRole(Role r);
+    public Boolean updateRole(Role r);
+    public Role findRoleByName(String roleName);
 //    public void addUserToRole(StaffAccount sa, Role r);
 }

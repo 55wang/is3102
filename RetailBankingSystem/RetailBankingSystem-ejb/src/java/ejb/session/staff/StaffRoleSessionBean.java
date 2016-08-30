@@ -58,6 +58,21 @@ public class StaffRoleSessionBean implements StaffRoleSessionBeanLocal {
         }
     }
     
+    @Override
+    public Boolean updateRole(Role r) {
+        try {
+            em.merge(r);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+    
+    @Override
+    public Role findRoleByName(String roleName) {
+        return em.find(Role.class, roleName);
+    }
+    
 //    @Override 
 //    public void addUserToRole(StaffAccount sa, Role r) {
 //        try {

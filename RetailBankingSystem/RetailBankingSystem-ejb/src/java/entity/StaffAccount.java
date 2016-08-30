@@ -11,8 +11,8 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 
 /**
  *
@@ -24,7 +24,8 @@ public class StaffAccount implements Serializable {
     @Id
     private String username;
     private String password;
-    @OneToOne(cascade = {CascadeType.MERGE})
+    // TODO: Do we need more information? like email and handphone
+    @ManyToOne(cascade = {CascadeType.MERGE})
     private Role role; // Role already consist of list of permissions
     @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "staffAccount")
     private List<AuditLog> auditLog = new ArrayList<AuditLog>();

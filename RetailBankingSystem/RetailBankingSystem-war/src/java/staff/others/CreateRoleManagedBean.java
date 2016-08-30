@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.event.ActionEvent;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import utils.MessageUtils;
@@ -38,7 +39,7 @@ public class CreateRoleManagedBean implements Serializable {
         setRoles(staffRoleSessionBean.getAllRoles());
     }
     
-    public void addRole() {
+    public void addRole(ActionEvent event) {
         if (staffRoleSessionBean.addRole(newRole)) {
             roles.add(newRole);
             newRole = new Role();

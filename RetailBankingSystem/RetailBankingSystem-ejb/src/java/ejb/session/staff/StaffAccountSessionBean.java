@@ -6,28 +6,19 @@
 package ejb.session.staff;
 
 import entity.StaffAccount;
-import javax.annotation.security.DeclareRoles;
+import java.util.List;
 import javax.ejb.Stateless;
+import javax.persistence.EntityExistsException;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
  * @author leiyang
  */
 @Stateless
-//@DeclareRoles({
-//    "superUserRight", 
-//    "customerAccessRight", 
-//    "depositAccessRight",
-//    "cardAccessRight",
-//    "loanAccessRight",
-//    "billAccessRight",
-//    "wealthAccessRight",
-//    "portfolioAccessRight",
-//    "analyticsAccessRight"
-//})
 public class StaffAccountSessionBean implements StaffAccountSessionBeanLocal {
     @PersistenceContext(unitName = "RetailBankingSystem-ejbPU")
     private EntityManager em;
@@ -46,7 +37,18 @@ public class StaffAccountSessionBean implements StaffAccountSessionBeanLocal {
     }
     
     @Override
-    public void createAccount(StaffAccount sa) {
-        em.persist(sa);
+    public Boolean createAccount(StaffAccount sa) {
+        try {
+            em.persist(sa);
+            return true;
+        } catch (EntityExistsException e) {
+            return false;
+        }
+    }
+    
+    @Override
+    public List<StaffAccount> getAllStaffs() {
+        Query q = em.createQuery("SELECT sa FROM StaffAccount sa");
+        return q.getResultList();
     }
 }

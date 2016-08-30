@@ -6,8 +6,12 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 /**
  *
@@ -75,8 +79,8 @@ public class Role implements Serializable {
     private Boolean wealthAccessRight = false;
     private Boolean portfolioAccessRight = false;
     private Boolean analyticsAccessRight = false;
-//    @ManyToMany(cascade={CascadeType.MERGE})
-//    private Set<StaffAccount> staffAccounts = new HashSet<StaffAccount>();
+//    @OneToMany(cascade={CascadeType.MERGE}, mappedBy="role")
+//    private List<StaffAccount> staffAccounts = new ArrayList<>();
     
     public Role() {
         
@@ -166,11 +170,11 @@ public class Role implements Serializable {
         this.analyticsAccessRight = analyticsAccessRight;
     }
 
-//    public Set<StaffAccount> getStaffAccounts() {
+//    public List<StaffAccount> getStaffAccounts() {
 //        return staffAccounts;
 //    }
 //
-//    public void setStaffAccounts(Set<StaffAccount> staffAccounts) {
+//    public void setStaffAccounts(List<StaffAccount> staffAccounts) {
 //        this.staffAccounts = staffAccounts;
 //    }
 //    
