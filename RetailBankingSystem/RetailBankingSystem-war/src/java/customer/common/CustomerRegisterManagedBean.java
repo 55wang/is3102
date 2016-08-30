@@ -6,7 +6,6 @@
 package customer.common;
 
 import ejb.session.common.EmailServiceSessionBeanLocal;
-import ejb.session.common.LoginSessionBeanLocal;
 import ejb.session.common.NewCustomerSessionBeanLocal;
 import entity.BankAccount;
 import entity.CurrentAccount;
@@ -23,8 +22,6 @@ import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import org.primefaces.event.FlowEvent;
-import utils.RedirectUtils;
-import utils.SessionUtils;
 
 /**
  *

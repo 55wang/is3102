@@ -38,7 +38,7 @@ public class CustomerHomeManagedBean implements Serializable{
 
     @PostConstruct
     public void setCustomer() {
-        this.customer = loginSessionBean.getCustomerByUserID(SessionUtils.getUserName());;
+        this.customer = loginSessionBean.getCustomerByUserID(SessionUtils.getUserName());
     }
     
     

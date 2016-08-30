@@ -42,25 +42,21 @@ public class LoginSessionBean implements LoginSessionBeanLocal {
     }
     
     @Override
-    public Customer getCustomerByUserID(String userID){
-        Query q = em.createQuery("SELECT a FROM MainAccount a WHERE a.userID = :sessionUserID");
+    public Customer getCustomerByUserID(String userID){    
+        Query q = em.createQuery("SELECT a FROM MainAccount a WHERE a.userID = :userID");
         
-        q.setParameter("sessionUserID", userID);
+        q.setParameter("userID", userID);
         
         MainAccount mainAccount = null;
-        
-        
-        
+          
         try {
-            mainAccount = (MainAccount) q.getSingleResult();
+            mainAccount = (MainAccount) q.getSingleResult();       
             return mainAccount.getCustomer();
         } catch (NoResultException ex) {
             return null;
         }
     }
     
-    
-
     public List<MainAccount> showAllAccounts() {
         Query q = em.createQuery("SELECT a FROM MainAccount a");
         return q.getResultList();
