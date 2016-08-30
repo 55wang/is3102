@@ -5,6 +5,7 @@
  */
 package ejb.session.common;
 
+import SMSMessaging.SendTextMessage;
 import entity.Customer;
 import entity.MainAccount;
 import javax.ejb.Stateless;
@@ -17,16 +18,18 @@ import javax.persistence.PersistenceContext;
  */
 @Stateless
 public class NewCustomerSessionBean implements NewCustomerSessionBeanLocal {
+
     @PersistenceContext(unitName = "RetailBankingSystem-ejbPU")
     private EntityManager em;
 
     @Override
-    public void createCustomer(Customer customer, MainAccount mainAccount){
+    public void createCustomer(Customer customer, MainAccount mainAccount) {
         customer.setMainAccount(mainAccount);
         mainAccount.setCustomer(customer);
         em.persist(customer);
+        SendTextMessage.sendText("6581567758", "testing2");
     }
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")
-    
+
 }

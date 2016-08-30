@@ -8,6 +8,7 @@ package ejb.session.dams;
 import entity.Interest;
 import java.util.List;
 import javax.ejb.Stateless;
+import javax.persistence.EntityExistsException;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
@@ -22,8 +23,13 @@ public class InterestSessionBean implements InterestSessionBeanLocal {
     private EntityManager em;
     
     @Override
-    public void addInterest(Interest interest) {
-        em.persist(interest);
+    public Boolean addInterest(Interest interest) {
+        try {
+            em.persist(interest);
+            return true;
+        } catch (EntityExistsException e) {
+            return false;
+        }
     }
     
     @Override

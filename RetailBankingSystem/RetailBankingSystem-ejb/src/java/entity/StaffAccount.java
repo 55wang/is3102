@@ -7,17 +7,10 @@ package entity;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
@@ -31,7 +24,7 @@ public class StaffAccount implements Serializable {
     @Id
     private String username;
     private String password;
-    @OneToOne(cascade = {CascadeType.PERSIST})
+    @OneToOne(cascade = {CascadeType.MERGE})
     private Role role; // Role already consist of list of permissions
     @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "staffAccount")
     private List<AuditLog> auditLog = new ArrayList<AuditLog>();
