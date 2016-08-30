@@ -8,6 +8,7 @@ package staff.others;
 import ejb.session.staff.StaffAccountSessionBeanLocal;
 import ejb.session.staff.StaffRoleSessionBeanLocal;
 import entity.Role;
+import entity.Role.Permission;
 import entity.StaffAccount;
 import java.io.Serializable;
 import javax.annotation.PostConstruct;
@@ -18,6 +19,7 @@ import javax.faces.view.ViewScoped;
 import utils.MessageUtils;
 import utils.RedirectUtils;
 import utils.SessionUtils;
+import utils.UserUtils;
 
 /**
  *
@@ -59,7 +61,11 @@ public class StaffLoginManagedBean implements Serializable {
             MessageUtils.displayError("Either username or password is wrong");
         } else {
             SessionUtils.setStaffAccount(sa);
-            RedirectUtils.redirect(SessionUtils.getContextPath() + "/staff/others/create-interest.xhtml");
+            if (UserUtils.isUserInRole(Permission.SUPERUSER)) {
+                RedirectUtils.redirect(SessionUtils.getContextPath() + "/staff/others/create-interest.xhtml");
+            } else if (UserUtils.isUserInRole(Permission.DEPOSIT)) {
+                RedirectUtils.redirect(SessionUtils.getContextPath() + "/staff/dams/open-account.xhtml");
+            }
         }
     }
     /**

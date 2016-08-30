@@ -4,11 +4,11 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:cc="http://xmlns.jcp.org/jsf/composite"
-      xmlns:jsf="http://xmlns.jcp.org/jsf">
+      xmlns:jsf="http://xmlns.jcp.org/jsf"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
 
     <cc:interface>
         <cc:attribute name="context" required="true"/>
-        <cc:attribute name="userName" required="true"/>
     </cc:interface>
 
     <cc:implementation>
@@ -24,9 +24,11 @@
                     <!--TODO: wrap menu option with sec tag -->
                     <li id="header-overview" class="#{cc.attrs.context == 'overview' ? 'active' : ''}" value="overview"><a href="#">Overview</a></li>
                     <li id="header-overview" class="#{cc.attrs.context == 'account' ? 'active' : ''}" value="account"><a href="../dams/open-account.xhtml">Accounts</a></li>
-                    <li id="header-overview" class="#{cc.attrs.context == 'others' ? 'active' : ''}" value="others"><a href="../others/create-interest.xhtml">Others</a></li>
+                    <c:if test="#{staffUserManagedBean.isUserInRole(staffUserManagedBean.PERMISSION_SUPERUSER)}">
+                        <li id="header-overview" class="#{cc.attrs.context == 'others' ? 'active' : ''}" value="others"><a href="../others/create-interest.xhtml">Others</a></li>
+                    </c:if>
                 </ul>
-                <ul id="header-user"><strong id="user-name">#{cc.attrs.userName}</strong></ul>
+                <ul id="header-user"><strong id="user-name">#{staffUserManagedBean.getUserName()}</strong></ul>
             </div>
         </f:view>
     </cc:implementation>

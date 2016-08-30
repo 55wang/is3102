@@ -53,9 +53,6 @@ public class CreateInterestManagedBean implements Serializable {
     
     @PostConstruct
     public void init() {
-        if (SessionUtils.isUserInRole(Role.Permission.SUPERUSER)) {
-            MessageUtils.displayInfo("Super User Logged in");
-        }
         interestType = INTEREST_TYPE_NORMAL;
         List<Interest> interests = interestSessionBean.showAllInterests();
         for (Interest i : interests) {
