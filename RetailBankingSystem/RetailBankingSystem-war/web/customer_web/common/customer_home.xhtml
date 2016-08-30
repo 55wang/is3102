@@ -3,7 +3,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:em="http://xmlns.jcp.org/jsf/composite/emcomp">
+      xmlns:em="http://xmlns.jcp.org/jsf/composite/emcomp"
+      xmlns:p="http://primefaces.org/ui">
     <!--shift + ctrl + F, format-->
     <f:view>
         <h:head>
@@ -12,7 +13,11 @@
             <h:outputStylesheet library="css" name="theme.css"/>
         </h:head>
         <h:body>
-            <em:customerHeader context="customer_login_home" userName="#{customerHomeManagedBean.customer.firstname }"></em:customerHeader>
+            <em:customerHeader context="customer_home" userName="#{customerHomeManagedBean.customer.firstname }"></em:customerHeader>
+            <em:customerNavBar context="customer_home" pageName="customer_home"></em:customerNavBar>
+            <div class="customer_main_container">
+                <p:outputLabel>My Home</p:outputLabel>
+            </div>
         </h:body>
     </f:view>
 

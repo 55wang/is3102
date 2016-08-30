@@ -125,7 +125,7 @@ public class Authentication implements Filter {
                 chain.doFilter(request, response);
             } else {
                 System.out.println("blocked");
-                resp.sendRedirect(reqt.getContextPath() + "/customer_web/customer_login.xhtml");
+                resp.sendRedirect(reqt.getContextPath() + "/customer_web/common/customer_login.xhtml");
             }
         } catch (Throwable t) {
             // If an exception is thrown somewhere down the filter chain,

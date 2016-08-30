@@ -13,11 +13,12 @@ and open the template in the editor.
     width: 100%;
     min-height: 40px;
     padding: 5px 0;
-    background: #333;
+    background: #222;
     color: #999;
     float: left;
     z-index: 10;
     position: fixed;
+    border-bottom: 10px solid #c00;
 }
 
 #header #logo{
@@ -112,14 +113,12 @@ and open the template in the editor.
 #customer-navbar{
     width: 90%;
     height: 60px;
-    padding: 5px 0;
     background: #fff;
     color: #999;
     float: left;
     z-index: 10;
     position: fixed;
-    border: 2px solid #333;
-    top:121px;
+    top:125px;
 }
 
 #customer-navbar ul {
@@ -128,6 +127,7 @@ and open the template in the editor.
     float: left;
     margin: 0;
     padding: 0;
+    width:100%;
 }
 #customer-navbar ul a {
     display: block;
@@ -139,28 +139,34 @@ and open the template in the editor.
     padding: 0 15px;
 }
 #customer-navbar ul li {
-    text-align: center;
-    width: 120px;
+    width: 14.2857%;
+    height: 77px;
+    background-color: #fcfcfc;
+    display: inline;
+    list-style-type: none;
     float: left;
-    margin: 8px 10px;
-    padding: 5px 10px;
+    text-align: center;
+    padding-top: 20px;
+    padding-bottom: 15px;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    cursor: hand;
     cursor: pointer;
+    box-sizing: border-box;
+    background-image: url("../resources/img/nav-background.png");
 }
 #customer-navbar ul li:hover {
-    background:#f66;
-    border-radius: 15px;
+    background: rgba(180,180,180,0.25);
 }
 #customer-navbar ul li.active {
-    color: #fff;
-    background: #f33;
-    border-radius: 15px;
+    background: rgba(180,180,180,0.25);
+    border-bottom: 5px solid #c00;
 }
 
 /* customer navbar */
 /* customer slideshow */
 #customer-slideshow{
     height:500px;
-    top:200px;
     width: 90%;
     min-height: 100px;
     padding: 5px 0;
@@ -169,7 +175,7 @@ and open the template in the editor.
     float: left;
     z-index: 10;
     position: fixed;
-    top:420px;
+    top:440px;
 }
 
 #customer-slideshow img{
@@ -238,6 +244,13 @@ and open the template in the editor.
     padding-top: 100px;
     margin-left: 250px;
     margin-right: 50px;
+}
+
+.customer_main_container{
+    margin-left: auto;
+    margin-right: auto;
+    width:90%;
+    padding-top:220px;
 }
 
 .h-center {
