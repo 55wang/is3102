@@ -25,6 +25,7 @@ public class NewCustomerSessionBean implements NewCustomerSessionBeanLocal {
     @Override
     public void createCustomer(Customer customer, MainAccount mainAccount) {
         customer.setMainAccount(mainAccount);
+        mainAccount.setCustomer(customer);
         em.persist(customer);
         SendTextMessage.sendText("6581567758", "testing2");
     }

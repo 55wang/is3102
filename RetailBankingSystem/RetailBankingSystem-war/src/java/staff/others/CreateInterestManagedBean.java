@@ -71,17 +71,26 @@ public class CreateInterestManagedBean implements Serializable {
     
     public void addInterest(ActionEvent event) {
         if (interestType.equals(INTEREST_TYPE_NORMAL)) {
-            interestSessionBean.addInterest(normalInterest);
-            normalInterests.add(normalInterest);
-            MessageUtils.displayInfo("Normal Interest Created");
+            if (interestSessionBean.addInterest(normalInterest)) {
+                normalInterests.add(normalInterest);
+                MessageUtils.displayInfo("Normal Interest Created");
+            } else {
+                MessageUtils.displayError("This Interest Exists");
+            }
         } else if (interestType.equals(INTEREST_TYPE_RANGE)) {
-            interestSessionBean.addInterest(rangeInterest);
-            rangeInterests.add(rangeInterest);
-            MessageUtils.displayInfo("Range Interest Created");
+            if (interestSessionBean.addInterest(rangeInterest)) {
+                rangeInterests.add(rangeInterest);
+                MessageUtils.displayInfo("Range Interest Created");
+            } else {
+                MessageUtils.displayError("This Interest Exists");
+            }
         } else if (interestType.equals(INTEREST_TYPE_CONDITION)) {
-            interestSessionBean.addInterest(conditionInterest);
-            conditionInterests.add(conditionInterest);
-            MessageUtils.displayInfo("Condition Interest Created");
+            if (interestSessionBean.addInterest(conditionInterest)) {
+                conditionInterests.add(conditionInterest);
+                MessageUtils.displayInfo("Condition Interest Created");
+            } else {
+                MessageUtils.displayError("This Interest Exists");
+            }
         } else {
             MessageUtils.displayError("There's some error when creating interest");
         }

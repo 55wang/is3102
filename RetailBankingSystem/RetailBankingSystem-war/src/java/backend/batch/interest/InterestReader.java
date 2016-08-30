@@ -6,12 +6,12 @@
 package backend.batch.interest;
 
 import java.io.Serializable;
-import javax.batch.api.chunk.ItemReader;
 import javax.enterprise.context.Dependent;
 import javax.inject.Named;
-import backend.batch.interest.ItemNumberCheckPoint;
 import java.util.Iterator;
 import java.util.Properties;
+import javax.batch.api.chunk.AbstractItemReader;
+import javax.batch.api.chunk.ItemReader;
 import javax.batch.operations.JobOperator;
 import javax.batch.runtime.BatchRuntime;
 import javax.batch.runtime.context.JobContext;
@@ -62,7 +62,7 @@ public class InterestReader implements ItemReader {
         long numItems = numItems0 - (firstItem - firstItem0);
         
         // Obtain an iterator for the account in this partition
-//        String query = "SELECT a FROM CurrentAccount a";
+//        String query = "SELECT a FROM BankAccount a";
 //        Query q = em.createQuery(query)
 //                .setFirstResult((int) firstItem).setMaxResults((int) numItems);
 //        iterator = q.getResultList().iterator();
