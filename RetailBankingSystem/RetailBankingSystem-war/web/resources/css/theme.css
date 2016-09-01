@@ -39,6 +39,42 @@ and open the template in the editor.
     margin: 0;
     padding: 0;
 }
+#customer-header-nav{
+    width: 85%;
+    height:67px;
+    min-height: 40px;
+}
+#header #customer-header-nav ul{
+    list-style-type: none;
+    position: relative;
+    float: right;
+    margin: 0;
+    height:100%;
+    padding-right: 30px;
+}
+#header #customer-header-nav ul li{
+    color: white;
+    text-align: center;
+    display: inline-block;
+    width:120px;
+    float: left;
+    cursor:pointer;
+    box-sizing: border-box;
+    height:67px;
+    border-right: 1px solid #555555;
+    padding:0;
+    margin:0;
+    }
+#header #customer-header-nav ul label{
+    padding-top:30px;
+    height:40px;
+    cursor:pointer;
+    width:100px;
+    }
+#header #customer-header-nav ul li:hover{
+    background: none;
+    border-radius: 0;
+    }
 #header ul a {
     display: block;
     color: #fff;
@@ -266,4 +302,19 @@ v-center {
     top: 50%;
     transform: translateY(-50%);
     -webkit-transform: translateY(-50%); 
+}
+
+.ui-menu{
+    background:none;
+    background-color: white;
+}
+.ui-menu li:hover{
+    background:none;
+}
+.ui-menu li a:hover{
+    background:none;
+    background-color: #ddd;
+}
+.ui-menu .ui-widget-header{
+    display:none;
 }

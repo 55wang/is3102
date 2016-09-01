@@ -25,9 +25,8 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
     String mailer = "JavaMailer";
     
     @Override
-    public Boolean sendActivationEmailForNewCustomer(){
+    public Boolean sendActivationEmailForNewCustomer(String recipient){
         String activationCode = "123456";
-        String recipient = "wangzhe.lynx@gmail.com";
 
         try {
             Properties props = new Properties();

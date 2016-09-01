@@ -94,7 +94,7 @@ public class CustomerRegisterManagedBean implements Serializable {
         FacesMessage msg = new FacesMessage("Successful", "Welcome :" + customer.getFirstname() + " " + customer.getLastname());
         FacesContext.getCurrentInstance().addMessage(null, msg);
 
-        emailServiceSessionBean.sendActivationEmailForNewCustomer();
+        emailServiceSessionBean.sendActivationEmailForNewCustomer(customer.getEmail());
     }
 
     public String onFlowProcess(FlowEvent event) {
