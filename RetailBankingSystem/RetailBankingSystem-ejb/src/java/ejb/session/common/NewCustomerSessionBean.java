@@ -27,7 +27,8 @@ public class NewCustomerSessionBean implements NewCustomerSessionBeanLocal {
         customer.setMainAccount(mainAccount);
         mainAccount.setCustomer(customer);
         em.persist(customer);
-        SendTextMessage.sendText("6581567758", "testing2");
+        //temporary comment the sms away to save credit
+        //SendTextMessage.sendText("6581567758", "testing2");
     }
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")

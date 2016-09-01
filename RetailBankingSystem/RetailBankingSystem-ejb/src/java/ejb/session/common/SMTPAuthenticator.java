@@ -29,8 +29,8 @@ public class SMTPAuthenticator extends javax.mail.Authenticator {
         InputStream input = null;
 
         try {
-            input = new FileInputStream("/Users/Shared/config.properties");
-
+            String filename = "config/config.properties";
+            input = this.getClass().getClassLoader().getResourceAsStream(filename);
             // load a properties file
             prop.load(input);
 
@@ -39,7 +39,6 @@ public class SMTPAuthenticator extends javax.mail.Authenticator {
             System.out.println(prop.getProperty("SMTP_AUTH_PWD"));
             SMTP_AUTH_USER = prop.getProperty("SMTP_AUTH_USER");
             SMTP_AUTH_PWD = prop.getProperty("SMTP_AUTH_PWD");
-            
 
         } catch (IOException ex) {
             ex.printStackTrace();
