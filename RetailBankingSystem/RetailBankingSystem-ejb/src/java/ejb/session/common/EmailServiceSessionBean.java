@@ -14,6 +14,8 @@ import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 /**
  *
@@ -21,11 +23,15 @@ import javax.mail.internet.MimeMessage;
  */
 @Stateless
 public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
+
+    @PersistenceContext(unitName = "RetailBankingSystem-ejbPU")
+    private EntityManager em;
+
     String emailServerName = "mailauth.comp.nus.edu.sg";
     String mailer = "JavaMailer";
-    
+
     @Override
-    public Boolean sendActivationEmailForNewCustomer(String recipient){
+    public Boolean sendActivationEmailForNewCustomer(String recipient) {
         String activationCode = "123456";
 
         try {
@@ -39,9 +45,9 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
             javax.mail.Authenticator auth = new SMTPAuthenticator();
             Session session = Session.getInstance(props, auth);
             session.setDebug(true);
-            
+
             MimeMessage msg = new MimeMessage(session);
-            if(msg!=null){   
+            if (msg != null) {
                 msg.setFrom(InternetAddress.parse("wangzhe@comp.nus.edu.sg", false)[0]);
                 msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(recipient, false));
                 msg.setSubject("Merlion Bank Account Activation");
@@ -58,6 +64,44 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
             return false;
         }
     }
-    // Add business logic below. (Right-click in editor and choose
-    // "Insert Code > Add Business Method")
+
+    public Boolean sendActivationGmailForNewCustomer(String recipient) {
+
+        String activationCode = "123456";
+        Properties props = new Properties();
+        props.put("mail.smtp.host", "smtp.gmail.com");
+        props.put("mail.smtp.socketFactory.port", "465");
+        props.put("mail.smtp.socketFactory.class",
+                "javax.net.ssl.SSLSocketFactory");
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.port", "465");
+
+        Session session = Session.getDefaultInstance(props,
+                new javax.mail.Authenticator() {
+                    protected javax.mail.PasswordAuthentication getPasswordAuthentication() {
+                        return new javax.mail.PasswordAuthentication("merlionbanking", "p@ssword1");
+                    }
+                });
+
+        try {
+
+            Message message = new MimeMessage(session);
+            message.setFrom(new InternetAddress("merlionbanking@gmail.com"));
+            message.setRecipients(Message.RecipientType.TO,
+                    InternetAddress.parse(recipient));
+            message.setSubject("Welcome to Merlion Banking");
+            message.setText("Dear Customer, Thank you to register merionlion banking.\n You activiation code is " + activationCode);
+
+            Transport.send(message);
+
+            System.out.println("Email send out successfully");
+            return (true);
+
+        } catch (MessagingException e) {
+            System.out.println(e);;
+            return (false);
+        }
+
+    }
+
 }

@@ -14,4 +14,5 @@ import javax.ejb.Local;
 @Local
 public interface EmailServiceSessionBeanLocal {
     public Boolean sendActivationEmailForNewCustomer(String recipient);
+    public Boolean sendActivationGmailForNewCustomer(String recipient);
 }
