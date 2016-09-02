@@ -120,7 +120,7 @@ public class Authentication implements Filter {
                     || reqURI.contains("/resources/")
                     || reqURI.contains("/javax.faces.resource/")
                     || reqURI.contains("/index.xhtml")
-                    || reqURI.equals("/RetailBankingSystem-war/")
+                    || reqURI.equals("/InternetBankingSystem/")
                     || (ses != null && ses.getAttribute("username") != null)) {
                 chain.doFilter(request, response);
             } else {
