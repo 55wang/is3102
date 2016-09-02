@@ -115,17 +115,17 @@ public class Authentication implements Filter {
 
             String reqURI = reqt.getRequestURI();
             System.out.println(reqURI);
-            if (reqURI.contains("/common/")
-                    || reqURI.contains("/customer_dams/")
-                    || reqURI.contains("/resources/")
+            if (    reqURI.contains("/resources/")
                     || reqURI.contains("/javax.faces.resource/")
                     || reqURI.contains("/index.xhtml")
-                    || reqURI.equals("/RetailBankingSystem-war/")
+                    || reqURI.equals("/StaffInternalSystem/")
+                    || reqURI.contains("/dams/")
+                    || reqURI.contains("/others/")
                     || (ses != null && ses.getAttribute("username") != null)) {
                 chain.doFilter(request, response);
             } else {
                 System.out.println("blocked");
-                resp.sendRedirect(reqt.getContextPath() + "/common/customer_login.xhtml");
+                resp.sendRedirect(reqt.getContextPath() + "/index.xhtml");
             }
         } catch (Throwable t) {
             // If an exception is thrown somewhere down the filter chain,

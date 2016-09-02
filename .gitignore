@@ -24,3 +24,10 @@ hs_err_pid*
 /RetailBankingSystem/RetailBankingSystem-war/nbproject/genfiles.properties
 /RetailBankingSystem/RetailBankingSystem-war/nbproject/project.properties
 /RetailBankingSystem/RetailBankingSystem-war/nbproject/project.xml
+/RetailBankingSystem/StaffInternalSystem/nbproject/private/
+/RetailBankingSystem/StaffInternalSystem/build/
+/RetailBankingSystem/StaffInternalSystem/dist/
+/RetailBankingSystem/CustomerMobileSystem/nbproject/private/
+/RetailBankingSystem/CustomerMobileSystem/build/
+/RetailBankingSystem/CustomerMobileSystem/dist/
+/RetailBankingSystem/CustomerIntegratedSystem/nbproject/private/

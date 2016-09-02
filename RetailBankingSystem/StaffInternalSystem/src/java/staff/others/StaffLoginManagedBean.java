@@ -62,9 +62,9 @@ public class StaffLoginManagedBean implements Serializable {
         } else {
             SessionUtils.setStaffAccount(sa);
             if (UserUtils.isUserInRole(Permission.SUPERUSER)) {
-                RedirectUtils.redirect(SessionUtils.getContextPath() + "/staff/others/create-interest.xhtml");
+                RedirectUtils.redirect(SessionUtils.getContextPath() + "/others/create-interest.xhtml");
             } else if (UserUtils.isUserInRole(Permission.DEPOSIT)) {
-                RedirectUtils.redirect(SessionUtils.getContextPath() + "/staff/dams/open-account.xhtml");
+                RedirectUtils.redirect(SessionUtils.getContextPath() + "/dams/open-account.xhtml");
             }
         }
     }

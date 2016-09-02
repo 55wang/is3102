@@ -1,0 +1,320 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Aug 23, 2016, 4:01:56 PM
+    Author     : leiyang
+*/
+
+/** header **/
+#header {
+    width: 100%;
+    min-height: 40px;
+    padding: 5px 0;
+    background: #222;
+    color: #999;
+    float: left;
+    z-index: 10;
+    position: fixed;
+    border-bottom: 10px solid #c00;
+}
+
+#header #logo{
+    margin: 0px 30px 0 30px;
+}
+#header #menu {
+    float: right;
+    cursor: pointer;
+}
+#header .header-navigation {
+    float: left;
+}
+
+#header ul {
+    list-style-type: none;
+    position: relative;
+    float: left;
+    margin: 0;
+    padding: 0;
+}
+#customer-header-nav{
+    width: 85%;
+    height:67px;
+    min-height: 40px;
+}
+#header #customer-header-nav ul{
+    list-style-type: none;
+    position: relative;
+    float: right;
+    margin: 0;
+    height:100%;
+    padding-right: 30px;
+}
+#header #customer-header-nav ul li{
+    color: white;
+    text-align: center;
+    display: inline-block;
+    width:120px;
+    float: left;
+    cursor:pointer;
+    box-sizing: border-box;
+    height:67px;
+    border-right: 1px solid #555555;
+    padding:0;
+    margin:0;
+    }
+#header #customer-header-nav ul label{
+    padding-top:30px;
+    height:40px;
+    cursor:pointer;
+    width:100px;
+    }
+#header #customer-header-nav ul li:hover{
+    background: none;
+    border-radius: 0;
+    }
+#header ul a {
+    display: block;
+    color: #fff;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 32px;
+    padding: 0 15px;
+}
+#header ul li {
+    float: left;
+    margin: 8px 10px;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+#header ul li:hover {
+    background:#f66;
+    border-radius: 15px;
+}
+#header ul li.active {
+    color: #fff;
+    background: #f33;
+    border-radius: 15px;
+}
+#header #header-user {
+    text-align: right;
+    float: right;
+    padding: 13px 10px;
+    margin-right: 10px;
+    cursor: pointer;
+}
+#header * {
+    vertical-align: middle;
+    display: inline-block
+}
+/* end of header */
+/* side menu */
+#side-menu {
+    float: left;
+    width: 200px;
+    height: 100%;
+    position: fixed;
+    background: #333;
+    display: block;
+    padding-top: 100px;
+}
+#side-menu-container {
+    margin: 0;
+    padding: 0;
+}
+.side-menu-item {
+    padding: 15px 30px;
+    list-style-type: none;
+    cursor: pointer;
+}
+
+.side-menu-item a{
+    text-decoration: none;
+    font-size: 20px;
+    color: #fff;
+}
+
+.side-menu-item:hover {
+    background: #999;
+}
+.side-menu-item.active {
+    border-bottom: 2px #f66 solid;
+}
+
+/* end of side menu */
+/* customer navbar */
+#customer-navbar{
+    width: 90%;
+    height: 60px;
+    background: #fff;
+    color: #999;
+    float: left;
+    z-index: 10;
+    position: fixed;
+    top:125px;
+}
+
+#customer-navbar ul {
+    list-style-type: none;
+    position: relative;
+    float: left;
+    margin: 0;
+    padding: 0;
+    width:100%;
+}
+#customer-navbar ul a {
+    display: block;
+    color: #333;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 32px;
+    padding: 0 15px;
+}
+#customer-navbar ul li {
+    width: 14.2857%;
+    height: 77px;
+    background-color: #fcfcfc;
+    display: inline;
+    list-style-type: none;
+    float: left;
+    text-align: center;
+    padding-top: 20px;
+    padding-bottom: 15px;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    cursor: hand;
+    cursor: pointer;
+    box-sizing: border-box;
+    background-image: url("../resources/img/nav-background.png");
+}
+#customer-navbar ul li:hover {
+    background: rgba(180,180,180,0.25);
+}
+#customer-navbar ul li.active {
+    background: rgba(180,180,180,0.25);
+    border-bottom: 5px solid #c00;
+}
+
+/* customer navbar */
+/* customer slideshow */
+#customer-slideshow{
+    height:500px;
+    width: 90%;
+    min-height: 100px;
+    padding: 5px 0;
+    background: #fff;
+    color: #999;
+    float: left;
+    z-index: 10;
+    position: fixed;
+    top:440px;
+}
+
+#customer-slideshow img{
+    width:600px;
+    height: 300px;
+}
+/* end of customer slideshow */
+/* wizard overwrite */
+.ui-wizard-step-title {
+    font-size: 18px;
+    /* margin: 0 3px 0 0; */
+    padding: .4em;
+    float: left;
+    width: 172px;
+    border: none;
+    border-radius: initial;
+    background-color: #fff;
+}
+
+#register-form-container{
+    min-width: 200px;
+    top:55%; 
+
+}
+
+#register-form-container .ui-state-highlight{
+    text-align: center;
+    background: #aaa -webkit-gradient(linear,left top,left bottom,from(rgba(0,0,0,0.55)),to(rgba(0,0,0,0)));
+}
+
+#register-form-container .ui-wizard-step-title{
+    text-align: center;
+}
+
+#register-form-container table{
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#register-form-container tr{
+    line-height: 50px;
+}
+
+#register-form-container .ui-button{
+    width:100px;
+    margin-left: 10px;
+}
+
+#register-form-container .ui-datepicker-trigger{
+    width:26px;
+    height:25px;
+    margin-left: 0px;
+    border: none;
+    border-radius: 0;
+}
+
+#register-form-container .register-form-button{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width:fit-content;
+}
+/* end of wizard overwrite */
+/* general */
+.container {
+    padding-top: 100px;
+    margin-left: 250px;
+    margin-right: 50px;
+}
+
+.customer_main_container{
+    margin-left: auto;
+    margin-right: auto;
+    width:90%;
+    padding-top:220px;
+}
+
+.h-center {
+    position: absolute;
+    top: 0%;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%);
+}
+
+v-center {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    -webkit-transform: translateY(-50%); 
+}
+
+.ui-menu{
+    background:none;
+    background-color: white;
+}
+.ui-menu li:hover{
+    background:none;
+}
+.ui-menu li a:hover{
+    background:none;
+    background-color: #ddd;
+}
+.ui-menu .ui-widget-header{
+    display:none;
+}

@@ -23,7 +23,7 @@ import javax.servlet.http.HttpSession;
  *
  * @author wang
  */
-public class Authentication implements Filter {
+public class StaffFilter implements Filter {
 
     private static final boolean debug = false;
 
@@ -32,16 +32,16 @@ public class Authentication implements Filter {
     // configured. 
     private FilterConfig filterConfig = null;
 
-    public Authentication() {
+    public StaffFilter() {
     }
 
     private void doBeforeProcessing(ServletRequest request, ServletResponse response)
             throws IOException, ServletException {
         if (debug) {
-            log("Authentication:DoBeforeProcessing");
+            log("StaffFilter:DoBeforeProcessing");
         }
 
-	// Write code here to process the request and/or response before
+        // Write code here to process the request and/or response before
         // the rest of the filter chain is invoked.
         // For example, a logging filter might log items on the request object,
         // such as the parameters.
@@ -66,7 +66,7 @@ public class Authentication implements Filter {
     private void doAfterProcessing(ServletRequest request, ServletResponse response)
             throws IOException, ServletException {
         if (debug) {
-            log("Authentication:DoAfterProcessing");
+            log("StaffFilter:DoAfterProcessing");
         }
 
 	// Write code here to process the request and/or response after
@@ -102,7 +102,7 @@ public class Authentication implements Filter {
             throws IOException, ServletException {
 
         if (debug) {
-            log("Authentication:doFilter()");
+            log("StaffFilter:doFilter()");
         }
 
         doBeforeProcessing(request, response);
@@ -115,17 +115,11 @@ public class Authentication implements Filter {
 
             String reqURI = reqt.getRequestURI();
             System.out.println(reqURI);
-            if (reqURI.contains("/common/")
-                    || reqURI.contains("/customer_dams/")
-                    || reqURI.contains("/resources/")
-                    || reqURI.contains("/javax.faces.resource/")
-                    || reqURI.contains("/index.xhtml")
-                    || reqURI.equals("/RetailBankingSystem-war/")
-                    || (ses != null && ses.getAttribute("username") != null)) {
+            if (reqURI.contains("/index.xhtml")
+                    || (ses != null && ses.getAttribute("StaffAccount") != null)) {
                 chain.doFilter(request, response);
             } else {
-                System.out.println("blocked");
-                resp.sendRedirect(reqt.getContextPath() + "/common/customer_login.xhtml");
+                resp.sendRedirect(reqt.getContextPath() + "/index.xhtml");
             }
         } catch (Throwable t) {
             // If an exception is thrown somewhere down the filter chain,
@@ -179,7 +173,7 @@ public class Authentication implements Filter {
         this.filterConfig = filterConfig;
         if (filterConfig != null) {
             if (debug) {
-                log("Authentication:Initializing filter");
+                log("StaffFilter:Initializing filter");
             }
         }
     }
@@ -190,9 +184,9 @@ public class Authentication implements Filter {
     @Override
     public String toString() {
         if (filterConfig == null) {
-            return ("Authentication()");
+            return ("StaffFilter()");
         }
-        StringBuffer sb = new StringBuffer("Authentication(");
+        StringBuffer sb = new StringBuffer("StaffFilter(");
         sb.append(filterConfig);
         sb.append(")");
         return (sb.toString());
