@@ -106,3 +106,13 @@ hr {
 input, select {
     vertical-align:middle;
 }
+
+tr:focus, th:focus, td:focus{
+    outline: none;
+}
+
+tr, th, td{
+    outline: none;
+}
+
+
