@@ -154,7 +154,7 @@ and open the template in the editor.
     float: left;
     z-index: 10;
     position: fixed;
-    top:125px;
+    top:117px;
 }
 
 #customer-navbar ul {
@@ -186,10 +186,10 @@ and open the template in the editor.
     padding-bottom: 15px;
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
-    cursor: hand;
     cursor: pointer;
     box-sizing: border-box;
     background-image: url("../resources/img/nav-background.png");
+    border-bottom:1px solid #eee;
 }
 #customer-navbar ul li:hover {
     background: rgba(180,180,180,0.25);
@@ -239,7 +239,7 @@ and open the template in the editor.
 
 #register-form-container .ui-state-highlight{
     text-align: center;
-    background: #aaa -webkit-gradient(linear,left top,left bottom,from(rgba(0,0,0,0.55)),to(rgba(0,0,0,0)));
+    background: #c00 -webkit-gradient(linear,left top,left bottom,from(rgba(244,0,0,0.55)),to(rgba(0,0,0,0)));
 }
 
 #register-form-container .ui-wizard-step-title{
@@ -304,7 +304,6 @@ v-center {
     -webkit-transform: translateY(-50%); 
 }
 
-
 /*css overwrite*/
 .ui-menu{
     background:none;
@@ -315,7 +314,7 @@ v-center {
 }
 .ui-menu li a:hover{
     background:none;
-    background-color: #ddd;
+    background-color: white;
 }
 .ui-menu .ui-widget-header{
     display:none;
@@ -382,4 +381,17 @@ v-center {
     z-index: 999;
 }
 
+.ui-panel{
+    border: 1px solid #111;
+}
+
+.ui-datepicker, .ui-carousel{
+    border: 1px solid #aaa;
+}
+
+.ui-state-highlight, .ui-widget-content .ui-state-highlight, .ui-widget-header .ui-state-highlight {
+    background: #c00 -webkit-gradient(linear,left top,left bottom,from(rgba(244,0,0,0.25)),to(rgba(0,0,0,0)));
+    color: #fff;
+    text-shadow: 1px 1px 1px #333;
+}
 /*end of css overwrite*/

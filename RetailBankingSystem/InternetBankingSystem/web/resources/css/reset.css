@@ -35,6 +35,7 @@ time, mark, audio, video {
 
 body {
     line-height:1;
+    margin: 0;
 }
 
 article,aside,details,figcaption,figure,
@@ -107,7 +108,7 @@ input, select {
     vertical-align:middle;
 }
 
-tr:focus, th:focus, td:focus{
+tr:focus, th:focus, td:focus, button:focus{
     outline: none;
 }
 
@@ -115,4 +116,8 @@ tr, th, td{
     outline: none;
 }
 
+input:focus{
+    outline-color: #c00;
+    outline-width: 2px;
+}
 
