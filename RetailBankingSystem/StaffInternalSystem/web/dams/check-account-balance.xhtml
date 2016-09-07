@@ -9,11 +9,10 @@
     <f:view>
         <h:head>
             <title>Facelet Title</title>
-            <h:outputStylesheet library="css" name="reset.css"/>
-            <h:outputStylesheet library="css" name="theme.css"/>
+            <em:cssImport></em:cssImport>
         </h:head>
         <h:body>
-            <em:staffNavBar context="account" userName="lei yang"></em:staffNavBar>
+            <em:staffNavBar context="account"></em:staffNavBar>
             <em:staffSideBar top="account" side="checkAccountBalance"></em:staffSideBar>
             <div class="container">
                 <h:form id="mainForm">
