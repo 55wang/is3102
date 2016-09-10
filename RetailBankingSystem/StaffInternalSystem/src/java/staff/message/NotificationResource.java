@@ -6,7 +6,11 @@
 package staff.message;
 
 import javax.faces.application.FacesMessage;
+import org.primefaces.push.EventBus;
+import org.primefaces.push.RemoteEndpoint;
+import org.primefaces.push.annotation.OnClose;
 import org.primefaces.push.annotation.OnMessage;
+import org.primefaces.push.annotation.OnOpen;
 import org.primefaces.push.annotation.PushEndpoint;
 import org.primefaces.push.impl.JSONEncoder;
 /**
@@ -15,6 +19,18 @@ import org.primefaces.push.impl.JSONEncoder;
  */
 @PushEndpoint("/notify")
 public class NotificationResource {
+    @OnOpen
+    public void onOpen(RemoteEndpoint r, EventBus eventBus) {
+        // User Online
+        System.out.println("NotificationResource: @OnOpen:");
+    }
+ 
+    @OnClose
+    public void onClose(RemoteEndpoint r, EventBus eventBus) {
+        // User Offline
+        System.out.println("NotificationResource: @OnClose:");
+    }
+    
     @OnMessage(encoders = {JSONEncoder.class})
     public FacesMessage onMessage(FacesMessage message) {
         return message;
