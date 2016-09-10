@@ -5,14 +5,24 @@
  */
 package staff.message;
 
+import ejb.session.message.AnnouncementSessionBeanLocal;
+import entity.Announcement;
+import entity.StaffAccount;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 
 import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.RequestScoped;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.primefaces.push.EventBus;
 import org.primefaces.push.EventBusFactory;
+import utils.MessageUtils;
 
 /**
  *
@@ -21,35 +31,64 @@ import org.primefaces.push.EventBusFactory;
 @Named(value = "notificationViewManagedBean")
 @ViewScoped
 public class NotificationViewManagedBean  implements Serializable {
+    
+    @EJB
+    private AnnouncementSessionBeanLocal announcementBean;
 
     private final static String CHANNEL = "/notify";
      
-    private String summary;
-     
-    private String detail;
+    private Announcement newAnnouncement = new Announcement();
+    private List<Announcement> announcements = new ArrayList<>();
     /**
      * Creates a new instance of NotificationViewManagedBean
      */
     public NotificationViewManagedBean() {
     }
+    
+    @PostConstruct
+    public void init() {
+        announcements = announcementBean.getAllAnnouncements();
+    }
      
     public void send() {
+        if (announcementBean.createAnnouncement(getNewAnnouncement())) {
+            MessageUtils.displayInfo("New Announcement Added");
+        } else {
+            MessageUtils.displayInfo("Announcement already Added");
+        }
+        
         EventBus eventBus = EventBusFactory.getDefault().eventBus();
-        eventBus.publish(CHANNEL, new FacesMessage(StringEscapeUtils.escapeHtml(summary), StringEscapeUtils.escapeHtml(detail)));
+        eventBus.publish(CHANNEL, new FacesMessage(StringEscapeUtils.escapeHtml("New Annoucement: " + newAnnouncement.getTitle()), StringEscapeUtils.escapeHtml(newAnnouncement.getContent())));
+        setNewAnnouncement(new Announcement());
     }
     
     // Getter and Setters
-    public String getSummary() {
-        return summary;
+
+    /**
+     * @return the announcements
+     */
+    public List<Announcement> getAnnouncements() {
+        return announcements;
     }
-    public void setSummary(String summary) {
-        this.summary = summary;
+
+    /**
+     * @param announcements the announcements to set
+     */
+    public void setAnnouncements(List<Announcement> announcements) {
+        this.announcements = announcements;
     }
-     
-    public String getDetail() {
-        return detail;
+
+    /**
+     * @return the newAnnouncement
+     */
+    public Announcement getNewAnnouncement() {
+        return newAnnouncement;
     }
-    public void setDetail(String detail) {
-        this.detail = detail;
+
+    /**
+     * @param newAnnouncement the newAnnouncement to set
+     */
+    public void setNewAnnouncement(Announcement newAnnouncement) {
+        this.newAnnouncement = newAnnouncement;
     }
 }

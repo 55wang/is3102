@@ -17,28 +17,35 @@
             <em:staffSideBar top="message" side="notification"></em:staffSideBar>
             <div class="container">
                 <p:growl widgetVar="growl" showDetail="true" />
-
                 <h:form>
-                    <h:panelGrid columns="2">
-                        <p:outputLabel for="summary" value="Summary: " /> 
-                        <p:inputText id="summary" value="#{notificationViewManagedBean.summary}" required="true" />
+                    <p:messages id="messagesStatus" redisplay="false" >
+                        <h:panelGrid columns="2">
+                            <p:outputLabel for="title" value="Title: " /> 
+                            <p:inputText id="title" value="#{notificationViewManagedBean.newAnnouncement.title}" required="true" />
 
-                        <p:outputLabel for="detail" value="Detail: " /> 
-                        <p:inputText id="detail" value="#{notificationViewManagedBean.detail}" required="true" />
-                    </h:panelGrid>
-
-                    <p:commandButton value="Send" actionListener="#{notificationViewManagedBean.send}" />
+                            <p:outputLabel for="content" value="Content: " /> 
+                            <p:inputText id="content" value="#{notificationViewManagedBean.newAnnouncement.content}" required="true" />
+                        </h:panelGrid>
+                        <p:commandButton value="Send" actionListener="#{notificationViewManagedBean.send}" />
+                    </p:messages>
+                    <p:panel header="Announcements">
+                        <div id="output">
+                            <c:forEach items="#{notificationViewManagedBean.announcements}" var="accouncement">
+                                <div class="table-cell border-bottom" onclick="showModal('#{accouncement.title}', '#{accouncement.content}');">
+                                    <span class="v-center absolute-left">#{accouncement.title}</span>
+                                    <span class="v-center absolute-right">#{accouncement.creationDate}</span>
+                                </div>
+                            </c:forEach>
+                        </div>
+                    </p:panel>
                 </h:form>
-
                 <p:socket onMessage="handleMessage" channel="/notify" />
-
-                <script type="text/javascript">
-                    function handleMessage(facesmessage) {
-                        facesmessage.severity = 'info';
-                        PF('growl').show([facesmessage]);
-                    }
-                </script>
             </div>
+            <p:dialog id="modal" header="" widgetVar="notificationModal" modal="true" height="100">
+                <h:outputText id="modal-content" value="" />
+            </p:dialog>
+            <h:outputScript library="primefaces" name="jquery/jquery.js" />
+            <script type="text/javascript" src="notify.js"></script>
         </h:body>
     </f:view>
 </html>

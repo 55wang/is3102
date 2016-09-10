@@ -323,3 +323,16 @@ and open the template in the editor.
 .no-padding {
     padding:0;
 }
+.absolute-left{
+    left: 0;
+}
+.absolute-right{
+    right:0;
+}
+.border-bottom {
+    border-bottom: 1px solid gray;
+}
+.table-cell {
+    position: relative;
+    height: 50px;
+}
