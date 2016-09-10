@@ -1,0 +1,56 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:em="http://xmlns.jcp.org/jsf/composite/emcomp">
+
+    <cc:interface>
+        <cc:attribute name="context" required="true"/>
+        <cc:attribute name="userName" required="true"/>
+    </cc:interface>
+
+    <cc:implementation>
+        <f:view>
+            <em:cssImport></em:cssImport>
+            <div id="customer-header-nav">
+                <c:if test="#{cc.attrs.context == 'index'}">
+                    <ul>
+                        <li>
+                            <h:link outcome="common/customer_login" value="Log in"></h:link>
+                        </li>
+                    </ul> 
+                </c:if>
+                <c:if test="#{cc.attrs.context == 'customer_home'}">
+                    <ul>
+                        <h:form>
+                        <li>
+                            <p:outputLabel id="header-nav-message" value="message"/>
+                            <p:menu overlay="true" trigger="header-nav-message" my="left top" at="left bottom">
+                                <p:submenu label="Navigations">
+                                    <p:menuitem value="nav1" url="http://www.primefaces.org"/>
+                                    <p:menuitem value="nav2" />
+                                    <p:menuitem value="nav3" url="http://www.primefaces.org"/>
+                                    <p:menuitem value="nav4"/>
+                                </p:submenu>
+                            </p:menu>
+                        </li>
+                        <li>    
+                            <p:outputLabel id="header-nav-profile" value="#{cc.attrs.userName}"/>
+                            <p:menu overlay="true" trigger="header-nav-profile" my="left top" at="left bottom">
+                                <p:submenu label="Navigations">
+                                    <p:menuitem value="nav1" url="http://www.primefaces.org" />
+                                    <p:menuitem value="nav2" />
+                                </p:submenu>
+                            </p:menu>
+                        </li>
+                        </h:form>
+                    </ul> 
+                </c:if>
+            </div>
+        </f:view>   
+    </cc:implementation>
+</html>

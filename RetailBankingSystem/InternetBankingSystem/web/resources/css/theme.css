@@ -62,6 +62,7 @@ and open the template in the editor.
     box-sizing: border-box;
     height:67px;
     border-right: 1px solid #555555;
+    border-left: 1px solid #555555;
     padding:0;
     margin:0;
     }
@@ -80,9 +81,9 @@ and open the template in the editor.
     color: #fff;
     text-decoration: none;
     font-weight: 700;
-    font-size: 20px;
+    font-size: 1.1em;
     line-height: 32px;
-    padding: 0 15px;
+    padding: 20px 15px;
 }
 #header ul li {
     float: left;

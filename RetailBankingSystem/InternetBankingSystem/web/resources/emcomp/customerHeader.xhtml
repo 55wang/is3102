@@ -5,7 +5,8 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:cc="http://xmlns.jcp.org/jsf/composite"
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:em="http://xmlns.jcp.org/jsf/composite/emcomp">
 
     <cc:interface>
         <cc:attribute name="context" required="true"/>
@@ -24,34 +25,10 @@
                     <ul id="header-user">
                         <h:link outcome="common/customer_login" value="Log in"></h:link>
                     </ul>
+                    <em:headerMenu context="#{cc.attrs.context}" userName="Log in"></em:headerMenu>
                 </c:if>
                 <c:if test="#{cc.attrs.context == 'customer_home'}">
-                    <div id="customer-header-nav">
-                    <ul>
-                        <h:form>
-                        <li>
-                            <p:outputLabel id="header-nav-message" value="message"/>
-                            <p:menu overlay="true" trigger="header-nav-message" my="left top" at="left bottom">
-                                <p:submenu label="Navigations">
-                                    <p:menuitem value="nav1" url="http://www.primefaces.org" icon="ui-icon-home"/>
-                                    <p:menuitem value="nav2" icon="ui-icon-star"/>
-                                    <p:menuitem value="nav3" url="http://www.primefaces.org" icon="ui-icon-home"/>
-                                    <p:menuitem value="nav4" icon="ui-icon-star"/>
-                                </p:submenu>
-                            </p:menu>
-                        </li>
-                        <li>    
-                            <p:outputLabel id="header-nav-profile" value="#{cc.attrs.userName}"/>
-                            <p:menu overlay="true" trigger="header-nav-profile" my="left top" at="left bottom">
-                                <p:submenu label="Navigations">
-                                    <p:menuitem value="nav1" url="http://www.primefaces.org" icon="ui-icon-home"/>
-                                    <p:menuitem value="nav2" icon="ui-icon-star"/>
-                                </p:submenu>
-                            </p:menu>
-                        </li>
-                        </h:form>
-                    </ul> 
-                    </div>
+                    <em:headerMenu context="#{cc.attrs.context}" userName="#{cc.attrs.userName}"></em:headerMenu>
                 </c:if>
             </div>
         </f:view>
