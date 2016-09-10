@@ -200,6 +200,48 @@ and open the template in the editor.
     border-bottom: 5px solid #c00;
 }
 
+#customer-navbar .ui-overlaypanel-content{
+    padding: 0;
+}
+
+#customer-navbar .nav-overlay-panel-home{
+    top:78px !important;left: 0 !important;
+}
+
+#customer-navbar .nav-overlay-panel-account{
+    top:78px !important;left: 165px !important;
+}
+
+#customer-navbar .ui-overlaypanel .ui-menu{
+    width: 165px !important;
+}
+
+#customer-navbar .ui-overlaypanel-content ul li{
+    width: 165px;
+    height: 45px;
+    background-image: none;
+    background: none;
+    font-size: 1.1em;
+    font-weight: 100;
+    padding: 0 !important;
+}
+
+#customer-navbar .ui-overlaypanel-content ul li a{
+    padding: 10px 0 10px 0;
+    font-size: 17px;
+    font-weight: 100;
+}
+
+#customer-navbar .ui-overlaypanel-content ul li a:hover{
+    box-shadow: none;
+    width: 120px;
+}
+
+#customer-navbar .ui-widget {
+    font-family: "Garamond", serif;
+    font-weight: 700;
+    font-size: 18px;
+}
 /* customer navbar */
 /* customer slideshow */
 #customer-slideshow{
@@ -287,7 +329,7 @@ and open the template in the editor.
     margin-left: auto;
     margin-right: auto;
     width:90%;
-    padding-top:220px;
+    padding-top:200px;
 }
 
 .h-center {
