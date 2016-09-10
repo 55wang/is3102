@@ -5,7 +5,8 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:cc="http://xmlns.jcp.org/jsf/composite"
       xmlns:jsf="http://xmlns.jcp.org/jsf"
-      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:emcomp="http://xmlns.jcp.org/jsf/composite/emcomp">
 
     <cc:interface>
         <cc:attribute name="context" required="true"/>
@@ -28,7 +29,7 @@
                     </c:if>
                     <li id="header-overview" class="#{cc.attrs.context == 'message' ? 'active' : ''}" value="message"><a href="../message/chat.xhtml">Message</a></li>
                 </ul>
-                <ul id="header-user"><strong id="user-name">#{staffUserManagedBean.getUserName()}</strong></ul>
+                <emcomp:headerMenu context="staff_home" userName="#{staffUserManagedBean.getUserName()}"></emcomp:headerMenu>
             </div>
         </f:view>
     </cc:implementation>

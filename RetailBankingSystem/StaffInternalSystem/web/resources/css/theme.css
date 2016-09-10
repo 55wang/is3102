@@ -40,9 +40,11 @@ and open the template in the editor.
     padding: 0;
 }
 #customer-header-nav{
-    width: 85%;
-    height:67px;
+    width: 35%;
+    height: 67px;
     min-height: 40px;
+    float: right;
+    margin-right: 22px;
 }
 #header #customer-header-nav ul{
     list-style-type: none;
@@ -62,6 +64,7 @@ and open the template in the editor.
     box-sizing: border-box;
     height:67px;
     border-right: 1px solid #555555;
+    border-left: 1px solid #555555;
     padding:0;
     margin:0;
     }
