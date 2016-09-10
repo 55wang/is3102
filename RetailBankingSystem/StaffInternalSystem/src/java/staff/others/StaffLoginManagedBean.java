@@ -34,7 +34,9 @@ public class StaffLoginManagedBean implements Serializable {
     @EJB
     private StaffRoleSessionBeanLocal staffRoleSessionBean;
     
-    public StaffLoginManagedBean() {}
+    public StaffLoginManagedBean() {
+        System.out.println("StaffLoginManagedBean() Created!!");
+    }
     
     @PostConstruct
     public void init() {

@@ -1,0 +1,117 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:em="http://xmlns.jcp.org/jsf/composite/emcomp"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <!--shift + ctrl + F, format-->
+    <f:view>
+        <h:head>
+            <title>Facelet Title</title>
+            <em:cssImport></em:cssImport>
+            <link type="text/css" rel="stylesheet" href="chat.css"/>
+        </h:head>
+        <h:body>
+            <em:staffNavBar context="message"></em:staffNavBar>
+            <em:staffSideBar top="message" side="chat"></em:staffSideBar>
+            <div class="container">
+                <p:growl id="growl" showDetail="true" />
+                <!-- Write My Own Logic -->
+
+                <!--receive event from channel-->
+                <!--onMessage="handleMessage" This calls a js function-->
+                <p:socket channel="/{room}" widgetVar='subscriber' />
+
+                <div id="conversations-container">
+                    <div class="conversation active">
+                        <div class="user-icon">
+                            <div class="icon-text">
+                                LY
+                            </div>
+                        </div>
+                        <div class="conversation-text">
+                            <div class="conversation-username">
+                                <b>Lei Yang</b>
+                            </div>
+                            <div class="conversation-preview">
+                                How are you?
+                            </div>
+                        </div>
+                    </div>
+                    <div class="conversation">
+                    </div>
+                    <div class="conversation">
+                    </div>
+                    <div class="conversation">
+                    </div>
+                </div>
+                <div id="messages-container">
+                    <div id="messages">
+                        <div class="message float-right">
+                            <div class="left-profile-pic">
+                                <div class="user-icon">
+                                    <div class="icon-text">
+                                        LY
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="panel panel-quote panel-quote-flush no-margin" >
+                                <div class="panel-body">
+                                    <div class="message-text">
+                                        <p>This is a text message</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="time-container">
+                                <span>
+                                    1:30pm
+                                </span>
+                            </div>
+                        </div>
+                        <div class="message float-left">
+                            <div class="right-profile-pic">
+                                <div class="user-icon">
+                                    <div class="icon-text">
+                                        LY
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="panel panel-quote panel-quote-flush no-margin panel-quote-right" >
+                                <div class="panel-body">
+                                    <div class="message-text">
+                                        <p>This is a text message</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="time-container">
+                                <span>
+                                    1:30pm
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="outbox">
+                        <h:form id="form">
+                            <p:inputTextarea id="newmessage" class="width-80" value="#{chatViewManagedBean.newMessage}"/>
+                            <br></br>
+                            <p:commandButton value="Send" update="@form" actionListener="#{chatViewManagedBean.sendMessage}" />
+                        </h:form>
+                    </div>
+                </div>
+            </div>
+            <div id="output"></div>
+
+            <!--To use jquery with javascript here-->
+            <h:outputScript library="primefaces" name="jquery/jquery.js" />
+            <!--style src="chat.js"></style-->
+        </h:body>
+    </f:view>
+</html>
+

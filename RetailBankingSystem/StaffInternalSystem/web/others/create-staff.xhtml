@@ -26,6 +26,12 @@
 
                                 <p:outputLabel for="password" value="Password " />
                                 <p:inputText id="password" value="#{createStaffManagedBean.newStaff.password}" required="true"/>
+                                
+                                <p:outputLabel for="firstname" value="First Name " />
+                                <p:inputText id="firstname" value="#{createStaffManagedBean.newStaff.firstName}" required="true"/>
+                                
+                                <p:outputLabel for="lastname" value="Last Name " />
+                                <p:inputText id="lastname" value="#{createStaffManagedBean.newStaff.lastName}" required="true"/>
 
                                 <p:outputLabel for="staffrole" value="Select Role:" />
                                 <p:selectOneMenu id="staffrole" value="#{createStaffManagedBean.selectedRoleName}" style="width:125px">

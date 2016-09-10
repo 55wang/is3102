@@ -26,6 +26,7 @@
                     <c:if test="#{staffUserManagedBean.isUserInRole(staffUserManagedBean.PERMISSION_SUPERUSER)}">
                         <li id="header-overview" class="#{cc.attrs.context == 'others' ? 'active' : ''}" value="others"><a href="../others/create-interest.xhtml">Others</a></li>
                     </c:if>
+                    <li id="header-overview" class="#{cc.attrs.context == 'message' ? 'active' : ''}" value="message"><a href="../message/chat.xhtml">Message</a></li>
                 </ul>
                 <ul id="header-user"><strong id="user-name">#{staffUserManagedBean.getUserName()}</strong></ul>
             </div>

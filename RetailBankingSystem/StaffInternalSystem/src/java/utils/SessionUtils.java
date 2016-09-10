@@ -25,25 +25,10 @@ public class SessionUtils {
         return (HttpServletRequest) FacesContext.getCurrentInstance()
                 .getExternalContext().getRequest();
     }
-
-    public static String getUserName() {
-        HttpSession session = (HttpSession) FacesContext.getCurrentInstance()
-                .getExternalContext().getSession(false);
-        return session.getAttribute("username").toString();
-    }
-
-    public static void setUserName(String userName) {
+    
+    public static Boolean loggedIn() {
         HttpSession session = getSession();
-        session.setAttribute("username", userName);
-    }
-
-    public static String getUserId() {
-        HttpSession session = getSession();
-        if (session != null) {
-            return (String) session.getAttribute("userid");
-        } else {
-            return null;
-        }
+        return session.getAttribute("StaffAccount") != null;
     }
 
     public static void setUserId(Long userID) {

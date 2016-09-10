@@ -46,6 +46,14 @@
                             <h:link outcome="create-staff" value="Create Staff" />
                         </li>
                     </c:if>
+                    <c:if test="#{cc.attrs.top == 'message'}">
+                        <li class="side-menu-item #{cc.attrs.side == 'chat' ? 'active' : ''}">
+                            <h:link outcome="chat" value="Chat" />
+                        </li>
+                        <li class="side-menu-item #{cc.attrs.side == 'notification' ? 'active' : ''}">
+                            <h:link outcome="notification" value="Notification" />
+                        </li>
+                    </c:if>
                 </ul>
             </div>
             <!--TODO: Fillin all the sub menus here -->

@@ -23,6 +23,8 @@ public class StaffAccount implements Serializable {
 
     @Id
     private String username;
+    private String firstName;
+    private String lastName;
     private String password;
     // TODO: Do we need more information? like email and handphone
     @ManyToOne(cascade = {CascadeType.MERGE})
@@ -58,6 +60,34 @@ public class StaffAccount implements Serializable {
      */
     public void setRole(Role role) {
         this.role = role;
+    }
+
+    /**
+     * @return the firstName
+     */
+    public String getFirstName() {
+        return firstName;
+    }
+
+    /**
+     * @param firstName the firstName to set
+     */
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    /**
+     * @return the lastName
+     */
+    public String getLastName() {
+        return lastName;
+    }
+
+    /**
+     * @param lastName the lastName to set
+     */
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
 }

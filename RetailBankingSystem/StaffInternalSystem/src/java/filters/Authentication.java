@@ -117,11 +117,8 @@ public class Authentication implements Filter {
             System.out.println(reqURI);
             if (    reqURI.contains("/resources/")
                     || reqURI.contains("/javax.faces.resource/")
-                    || reqURI.contains("/index.xhtml")
-                    || reqURI.equals("/StaffInternalSystem/")
-                    || reqURI.contains("/dams/")
-                    || reqURI.contains("/others/")
-                    || (ses != null && ses.getAttribute("username") != null)) {
+                    || reqURI.contains("/index.xhtml") // login page is ignored
+                    || (ses != null && ses.getAttribute("StaffAccount") != null)) { // check if it is already loged in
                 chain.doFilter(request, response);
             } else {
                 System.out.println("blocked");

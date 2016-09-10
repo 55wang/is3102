@@ -46,7 +46,9 @@ public class OpenAccountManagedBean implements Serializable {
     private String ACCOUNT_TYPE_FIXED = BankAccount.AccountType.FIXED.toString();
     private String ACCOUNT_TYPE_SAVING = BankAccount.AccountType.SAVING.toString();
  
-    public OpenAccountManagedBean() {}
+    public OpenAccountManagedBean() {
+        System.out.println("OpenAccountManagedBean() Created!!");
+    }
     
     @PostConstruct
     public void init() {

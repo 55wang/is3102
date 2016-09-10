@@ -280,6 +280,7 @@ and open the template in the editor.
     padding-top: 100px;
     margin-left: 250px;
     margin-right: 50px;
+    overflow: auto;
 }
 
 .customer_main_container{
@@ -297,9 +298,28 @@ and open the template in the editor.
     transform: translate(-50%, -50%);
 }
 
-v-center {
+.v-center {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
     -webkit-transform: translateY(-50%); 
+}
+
+.no-margin {
+    margin:0;
+}
+.float-left {
+    float: left;
+}
+.float-right {
+    float: right;
+}
+.full-width {
+    width:100%;
+}
+.width-80 {
+    width: 80%;
+}
+.no-padding {
+    padding:0;
 }
