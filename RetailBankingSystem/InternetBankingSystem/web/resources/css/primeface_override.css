@@ -8,7 +8,6 @@ and open the template in the editor.
     Author     : leiyang
 */
 
-
 /*css overwrite*/
 .ui-menu{
     background:none;
@@ -103,10 +102,6 @@ and open the template in the editor.
     z-index: 999;
 }
 
-.ui-panel{
-    border: 1px solid #111;
-}
-
 .ui-datepicker, .ui-carousel{
     border: 1px solid #aaa;
 }
@@ -115,5 +110,18 @@ and open the template in the editor.
     background: #c00 -webkit-gradient(linear,left top,left bottom,from(rgba(244,0,0,0.25)),to(rgba(0,0,0,0)));
     color: #fff;
     text-shadow: 1px 1px 1px #333;
+}
+
+.ui-growl-item-container{
+    background: #999;
+}
+
+.ui-scrollpanel .ui-scrollpanel-drag{
+    background: #333;
+}
+
+.ui-menu ul li a:hover{
+    box-shadow: none;
+    width: 120px;
 }
 /*end of css overwrite*/

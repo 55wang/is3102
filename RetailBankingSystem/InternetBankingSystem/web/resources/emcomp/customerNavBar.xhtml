@@ -5,7 +5,8 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:cc="http://xmlns.jcp.org/jsf/composite"
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
-      xmlns:jsf="http://xmlns.jcp.org/jsf">
+      xmlns:jsf="http://xmlns.jcp.org/jsf"
+      xmlns:p="http://primefaces.org/ui">
 
     <cc:interface>
         <cc:attribute name="context" required="true"/>
@@ -29,16 +30,35 @@
                         <li id="header-overview" class="#{cc.attrs.context == 'button' ? 'active' : ''}" value="button"><a href="#">button</a></li>
                     </c:if>
                     <c:if test="#{cc.attrs.context == 'customer_home'}">
+                        <h:form>
                         <!--http://stackoverflow.com/questions/7915134/how-to-use-the-spring-security-facelets-tag-library-in-jsf-->
                         <!--sec:authorize access="hasAnyRole('counterStaff')"></sec:authorize-->
                         <!--TODO: wrap menu option with sec tag -->
-                        <li id="header-overview" class="#{cc.attrs.pageName == 'customer_home' ? 'active' : ''}" value="myhome"><a href="../common/customer_home.xhtml">My Home</a></li>
-                        <li id="header-overview" class="#{cc.attrs.pageName == 'dams_home' ? 'active' : ''}" value="button"><a href="../customer_dams/dams_home.xhtml">Accounts</a></li>
+                        <li id="navbar-myhome-tab" class="#{cc.attrs.pageName == 'customer_home' ? 'active' : ''}" value="myhome"><a href="../common/customer_home.xhtml"><p:outputLabel id="tab-myHome" value="My Home"/></a></li>
+                        <p:overlayPanel class="nav-overlay-panel-home" for="tab-myHome" showEvent="mouseover" hideEvent="mousedown" dismissable="true">
+                            <p:menu>
+                                <p:submenu style="display:none">
+                                    <p:menuitem value="Profile" url="../customer_cms/view_profile.xhtml" />
+                                    <p:menuitem value="ABCDE" />
+                                </p:submenu>
+                            </p:menu>
+                        </p:overlayPanel>
+                        
+                        <li id="navbar-myaccount-tab" class="#{cc.attrs.pageName == 'dams_home' ? 'active' : ''}" value="myAccount"><a href="../customer_dams/dams_home.xhtml"><p:outputLabel id="tab-myAccount" value="Accounts"/></a></li>
+                        <p:overlayPanel class="nav-overlay-panel-account" for="tab-myAccount" showEvent="mouseover" hideEvent="mousedown" dismissable="true">
+                            <p:menu>
+                                <p:submenu style="display:none">
+                                    <p:menuitem value="Account" url="../customer_cms/view_profile.xhtml" />
+                                    <p:menuitem value="Account" />
+                                </p:submenu>
+                            </p:menu>
+                        </p:overlayPanel>
                         <li id="header-overview" class="#{cc.attrs.pageName == 'button' ? 'active' : ''}" value="button"><a href="#">button</a></li>
                         <li id="header-overview" class="#{cc.attrs.pageName == 'button' ? 'active' : ''}" value="button"><a href="#">button</a></li>
                         <li id="header-overview" class="#{cc.attrs.pageName == 'button' ? 'active' : ''}" value="button"><a href="#">button</a></li>
                         <li id="header-overview" class="#{cc.attrs.pageName == 'button' ? 'active' : ''}" value="button"><a href="#">button</a></li>
                         <li id="header-overview" class="#{cc.attrs.pageName == 'button' ? 'active' : ''}" value="button"><a href="#">button</a></li>
+                        </h:form>
                     </c:if>
                 </ul>
             </div>

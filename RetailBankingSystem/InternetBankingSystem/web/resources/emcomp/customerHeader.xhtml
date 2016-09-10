@@ -20,16 +20,8 @@
                 <div id="logo-wrapper" class="header-navigation">
                     <h:graphicImage library="img" name="merlionLogo3.png" style="width:150px" />
                 </div>
-
-                <c:if test="#{cc.attrs.context == 'index'}">
-                    <ul id="header-user">
-                        <h:link outcome="common/customer_login" value="Log in"></h:link>
-                    </ul>
-                    <em:headerMenu context="#{cc.attrs.context}" userName="Log in"></em:headerMenu>
-                </c:if>
-                <c:if test="#{cc.attrs.context == 'customer_home'}">
-                    <em:headerMenu context="#{cc.attrs.context}" userName="#{cc.attrs.userName}"></em:headerMenu>
-                </c:if>
+                
+                <em:headerMenu context="#{cc.attrs.context}" userName="#{cc.attrs.userName}"></em:headerMenu>
             </div>
         </f:view>
     </cc:implementation>
