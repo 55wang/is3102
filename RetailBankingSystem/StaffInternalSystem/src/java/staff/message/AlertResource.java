@@ -14,23 +14,24 @@ import org.primefaces.push.annotation.OnOpen;
 import org.primefaces.push.annotation.PushEndpoint;
 import org.primefaces.push.annotation.Singleton;
 import org.primefaces.push.impl.JSONEncoder;
+
 /**
  *
  * @author leiyang
  */
-@PushEndpoint("/notify")
+@PushEndpoint("/alert")
 @Singleton
-public class NotificationResource {
+public class AlertResource {
     @OnOpen
     public void onOpen(RemoteEndpoint r, EventBus eventBus) {
         // User Online
-        System.out.println("NotificationResource: @OnOpen:");
+        System.out.println("AlertResource: @OnOpen:");
     }
  
     @OnClose
     public void onClose(RemoteEndpoint r, EventBus eventBus) {
         // User Offline
-        System.out.println("NotificationResource: @OnClose:");
+        System.out.println("AlertResource: @OnClose:");
     }
     
     @OnMessage(encoders = {JSONEncoder.class})

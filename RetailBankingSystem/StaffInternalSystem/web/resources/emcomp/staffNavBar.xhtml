@@ -14,7 +14,7 @@
 
     <cc:implementation>
         <f:view>
-            <p:growl widgetVar="growl" showDetail="true" />
+            <p:growl widgetVar="growl" showDetail="true" sticky="true"/>
             <div id="header">
                 <div id="logo-wrapper" class="header-navigation">
                     <h:graphicImage library="img" name="merlionLogo3.png" style="width:150px" />
@@ -33,10 +33,9 @@
                 <emcomp:headerMenu context="staff_home" userName="#{staffUserManagedBean.getUserName()}"></emcomp:headerMenu>
             </div>
             <!-- Global Notification -->
-            <p:socket onMessage="handleMessage" channel="/notify" />
+            <p:socket onMessage="updateAlert" channel="/alert"/>
             <script type="text/javascript">
-                function handleMessage(facesmessage) {
-                    facesmessage.severity = 'info';
+                function updateAlert(facesmessage) {
                     PF('growl').show([facesmessage]);
                 }
             </script>

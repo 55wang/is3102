@@ -3,9 +3,8 @@ $(document).ready(function () {
 
 });
 
-function handleMessage(facesmessage) {
-    facesmessage.severity = 'info';
-    PF('growl').show([facesmessage]);
+function handleAnnouncement(facesmessage) {
+    console.log("Receiving message");
     var announcement = new Announcement(facesmessage.summary, facesmessage.detail);
     announcement.init();
 }
