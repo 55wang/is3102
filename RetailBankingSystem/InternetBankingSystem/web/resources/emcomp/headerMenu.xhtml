@@ -20,7 +20,14 @@
                 <c:if test="#{cc.attrs.context == 'index'}">
                     <ul>
                         <li>
-                            <h:link outcome="common/customer_login" value="Log in"></h:link>
+                            <a href="common/customer_login.xhtml">Log in</a>
+                        </li>
+                    </ul> 
+                </c:if>
+                <c:if test="#{cc.attrs.context.contains('index_')}">
+                    <ul>
+                        <li>
+                            <a href="../common/customer_login.xhtml">Log in</a>
                         </li>
                     </ul> 
                 </c:if>

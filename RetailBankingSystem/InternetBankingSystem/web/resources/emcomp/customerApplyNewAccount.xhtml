@@ -1,0 +1,183 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:jsf="http://xmlns.jcp.org/jsf"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:em="http://xmlns.jcp.org/jsf/composite/emcomp">
+
+    <cc:interface>
+        <cc:attribute name="context" required="true"/>
+    </cc:interface>
+
+    <cc:implementation>
+        <f:view>
+            <em:cssImport></em:cssImport>
+            <div id="register-form-container" class="h-center">
+                <h:form>
+                <p:growl id="growl" sticky="true" showDetail="true"/>
+             
+                <p:wizard widgetVar="myWizard" showNavBar="false">
+                    <c:if test="#{cc.attrs.context == 'apply_deposit_account'}">
+                    <p:tab id="account" title="1.Deposit Account">
+                        <p:panel>
+                            <p:messages />
+                            <h:panelGrid columns="2" columnClasses="label, value">
+                                <h:outputText value="Choose Your Initial Deposit Account: " />
+                                <p:selectOneMenu value="#{customerApplicationManagedBean.initialDepositAccount}" style="width:187px; height: 31px; line-height: 21px; top:8px" rendered="true" required="true">
+                                    <f:selectItem itemLabel="Please Select..." itemValue="" />
+                                    <f:selectItem itemLabel="MBS Current Account" itemValue="MBS Current Account" />
+                                    <f:selectItem itemLabel="MBS Savings" itemValue="MBS Savings" />
+                                </p:selectOneMenu>
+                            </h:panelGrid>
+
+                            <div class="register-form-button" style="margin-top: 52px">
+                            <p:commandButton  value="Next" type="button" onclick="PF('myWizard').next();" />
+                            </div>
+                        </p:panel>
+                    </p:tab>
+                    </c:if>
+                    
+                    <p:tab id="identity" title="2.Identity" >
+                        <p:panel>
+                            <p:messages />
+                            <h:panelGrid columns="2" columnClasses="label, value">
+
+                                <h:outputText value="Identity Type: " />
+                                <p:selectOneMenu value="#{customerApplicationManagedBean.customer.identityType}" style="width:187px; height: 31px; line-height: 21px; top:8px" rendered="true" label="identityType" required="true">
+                                    <f:selectItem itemLabel="Please Select..." />
+                                    <f:selectItem itemLabel="Singaporean/PR NRIC" itemValue="Singaporean/PR NRIC" />
+                                    <f:selectItem itemLabel="Passport" itemValue="Passport" />
+                                </p:selectOneMenu>
+
+                                <h:outputText value="Identity Number: " />
+                                <p:inputText value="#{customerApplicationManagedBean.customer.identityNumber}" required="true"/>
+                                
+                                <h:outputText value="Nationality: " />
+                                <p:inputText value="#{customerApplicationManagedBean.customer.nationality}" required="true"/>
+
+                                <h:outputText value="Last Name: " />
+                                <p:inputText value="#{customerApplicationManagedBean.customer.lastname}" required="true"/>
+
+                                <h:outputText value="First Name: " />
+                                <p:inputText value="#{customerApplicationManagedBean.customer.firstname}" required="true"/>
+
+                                <h:outputText value="Date of Birth: " />
+                                <p:calendar value="#{customerApplicationManagedBean.customer.birthDay}" navigator="true" yearRange="c-100:c+0" required="true" pattern="yyyy-MM-dd"/>
+                            </h:panelGrid>
+
+                           <div class="register-form-button">
+                            <p:commandButton value="Back" type="button" onclick="PF('myWizard').back();" />
+                            <p:commandButton value="Next" type="button" onclick="PF('myWizard').next();"/>
+                           </div>
+                        </p:panel>
+                    </p:tab>
+
+                    <p:tab id="contact" title="3.Personal">
+                        <p:panel>
+                            <p:messages />
+                            <h:panelGrid columns="2" columnClasses="label, value">
+                                <h:outputText value="Gender " />
+                                <p:selectOneMenu value="#{customerApplicationManagedBean.customer.gender}" style="width:187px; height: 31px; line-height: 21px; top:8px" rendered="true" label="income" required="true">
+                                    <f:selectItem itemLabel="Please Select..." />
+                                    <f:selectItem itemLabel="Male" itemValue="Male" />
+                                    <f:selectItem itemLabel="Female" itemValue="Female" />
+                                    <f:selectItem itemLabel="Not willing to disclose..." itemValue="Not willing to disclose..." />     
+                                </p:selectOneMenu>
+                                
+                                <h:outputText value="Occupation: " />
+                                <p:inputText value="#{customerApplicationManagedBean.customer.occupation}" required="true"/>
+                                
+                                <h:outputText value="Income " />
+                                <p:inputText value="#{customerApplicationManagedBean.customer.income}" required="true"/>
+                                
+                                <h:outputText value="Email: " />
+                                <p:inputText value="#{customerApplicationManagedBean.customer.email}" required="true"/>
+
+                                <h:outputText value="Phone: " />
+                                <p:inputText value="#{customerApplicationManagedBean.customer.phone}" required="true"/>
+
+                                <h:outputText value="Postal Code: " />
+                                <p:inputText value="#{customerApplicationManagedBean.customer.postalCode}" required="true"/>
+
+                                <h:outputText value="Address: " />
+                                <p:inputText value="#{customerApplicationManagedBean.customer.address}" required="true"/>
+
+
+                            </h:panelGrid>
+
+                            <div class="register-form-button">
+                            <p:commandButton value="Back" type="button" onclick="PF('myWizard').back();" />
+                            <p:commandButton  value="Next" type="button" onclick="PF('myWizard').next();"  />
+                            </div>
+                        </p:panel>
+                    </p:tab>
+
+                    <p:tab id="confirm" title="4.Confirmation">
+                        <p:panel>
+                            <p:scrollPanel id="confirmation" style="height:238px">
+                                <h:panelGrid columns="2" columnClasses="label, value">
+                                    <h:outputText value="Initial Deposit Account: " />
+                                    <h:outputText value="#{customerApplicationManagedBean.initialDepositAccount}" styleClass="outputLabel"/>
+                                    
+                                    <h:outputText value="Identity Type: " />
+                                    <h:outputText value="#{customerApplicationManagedBean.customer.identityType}" styleClass="outputLabel"/>
+
+                                    <h:outputText value="Identity Number: " />
+                                    <h:outputText value="#{customerApplicationManagedBean.customer.identityNumber}" styleClass="outputLabel"/>
+                                    
+                                    <h:outputText value="Nationality: " />
+                                    <h:outputText value="#{customerApplicationManagedBean.customer.nationality}" styleClass="outputLabel"/>
+
+                                    <h:outputText value="Last Name: " />
+                                    <h:outputText value="#{customerApplicationManagedBean.customer.lastname}" styleClass="outputLabel"/>
+
+                                    <h:outputText value="First Name: " />
+                                    <h:outputText value="#{customerApplicationManagedBean.customer.firstname}" styleClass="outputLabel"/>
+
+                                    <h:outputText value="Date of Birth: " />
+                                    <h:outputText value="#{customerApplicationManagedBean.customer.birthDay}" styleClass="outputLabel">
+                                        <f:convertDateTime type="date" pattern="dd-MM-yyyy"/>
+                                    </h:outputText>
+                                    
+                                    <h:outputText value="Gender: " />
+                                    <h:outputText value="#{customerApplicationManagedBean.customer.gender}" styleClass="outputLabel"/>
+                                    
+                                    <h:outputText value="Occupation " />
+                                    <h:outputText value="#{customerApplicationManagedBean.customer.occupation}" styleClass="outputLabel"/>
+                                    
+                                    <h:outputText value="Income " />
+                                    <h:outputText value="#{customerApplicationManagedBean.customer.income}" styleClass="outputLabel"/>
+
+                                    <h:outputText value="Email: " />
+                                    <h:outputText value="#{customerApplicationManagedBean.customer.email}" styleClass="outputLabel"/>
+
+                                    <h:outputText value="Phone: " />
+                                    <h:outputText value="#{customerApplicationManagedBean.customer.phone}" styleClass="outputLabel"/>
+
+                                    <h:outputText value="Postal Code: " />
+                                    <h:outputText value="#{customerApplicationManagedBean.customer.postalCode}" styleClass="outputLabel"/>
+
+                                    <h:outputText value="Address: " />
+                                    <h:outputText value="#{customerApplicationManagedBean.customer.address}" styleClass="outputLabel"/>
+                                </h:panelGrid>
+
+
+                            </p:scrollPanel>
+
+                            <div class="register-form-button" style="margin-top: 20px">
+                            <p:commandButton value="Back" type="button" onclick="PF('myWizard').back();" />
+                            <p:commandButton value="Confirm" actionListener="#{customerApplicationManagedBean.save}" update="growl" process="@this"/>
+                            </div>
+                        </p:panel>
+                    </p:tab>
+                </p:wizard>
+
+                </h:form>
+            </div>
+        </f:view>
+    </cc:implementation>
+</html>

@@ -117,6 +117,7 @@ public class Authentication implements Filter {
             System.out.println(reqURI);
             if (reqURI.contains("/common/")
                     || reqURI.contains("/customer_dams/")
+                    || reqURI.contains("/index_subpages/")
                     || reqURI.contains("/resources/")
                     || reqURI.contains("/javax.faces.resource/")
                     || reqURI.contains("/index.xhtml")

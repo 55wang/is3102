@@ -14,6 +14,7 @@ import entity.MainAccount;
 import entity.MainAccount.StatusType;
 import entity.SavingAccount;
 import java.io.Serializable;
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
@@ -27,9 +28,9 @@ import org.primefaces.event.FlowEvent;
  *
  * @author VIN-S
  */
-@Named(value = "customerRegisterManagedBean")
+@Named(value = "customerApplicationManagedBean")
 @ViewScoped
-public class CustomerRegisterManagedBean implements Serializable {
+public class CustomerApplicationManagedBean implements Serializable {
 
     @EJB
     private EmailServiceSessionBeanLocal emailServiceSessionBean;
@@ -41,9 +42,9 @@ public class CustomerRegisterManagedBean implements Serializable {
     private String initialDepositAccount;
 
     /**
-     * Creates a new instance of CustomerRegisterManagedBean
+     * Creates a new instance of customerApplicationManagedBean
      */
-    public CustomerRegisterManagedBean() {
+    public CustomerApplicationManagedBean() {
     }
 
     public Customer getCustomer() {
@@ -72,6 +73,9 @@ public class CustomerRegisterManagedBean implements Serializable {
 
     public void save() {
         mainAccount.setStatus(StatusType.PENDING);
+        
+        mainAccount.setUserID(generateUserID(customer.getIdentityType(), customer.getIdentityNumber()));
+        mainAccount.setPassword(generatePwd());
 
         List<BankAccount> bankAccounts = new ArrayList<BankAccount>();
         switch (initialDepositAccount) {
@@ -101,6 +105,26 @@ public class CustomerRegisterManagedBean implements Serializable {
     public String onFlowProcess(FlowEvent event) {
         return event.getNewStep();
     }
+    
+    public String generateUserID(String identityType, String identityNum){
+        if(identityType.equals("Singaporean/PR NRIC")){
+            return "c"+identityNum.substring(1, identityNum.length());
+        }
+        else if(identityType.equals("Passport")){
+            return "c"+identityNum.substring(1);
+        }
+        else 
+            return "error";
+    }
+    
+    public String generatePwd(){
+        int pwdLen = 10;
+        SecureRandom rnd = new SecureRandom();
 
-
+        String AB = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+        StringBuilder sb = new StringBuilder(pwdLen);
+        for( int i = 0; i < pwdLen; i++ ) 
+            sb.append( AB.charAt( rnd.nextInt(AB.length()) ) );
+        return sb.toString();
+    }
 }
