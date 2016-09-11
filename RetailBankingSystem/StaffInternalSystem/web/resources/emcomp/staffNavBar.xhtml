@@ -33,7 +33,7 @@
                 <emcomp:headerMenu context="staff_home" userName="#{staffUserManagedBean.getUserName()}"></emcomp:headerMenu>
             </div>
             <!-- Global Notification -->
-            <p:socket onMessage="updateAlert" channel="/alert"/>
+            <p:socket onMessage="updateAlert" channel="/notify"/>
             <script type="text/javascript">
                 function updateAlert(facesmessage) {
                     PF('growl').show([facesmessage]);

@@ -6,7 +6,9 @@
 package staff.message;
 
 import ejb.session.message.AnnouncementSessionBeanLocal;
+import ejb.session.staff.StaffAccountSessionBeanLocal;
 import entity.Announcement;
+import entity.StaffAccount;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -37,10 +39,10 @@ public class NotificationViewManagedBean implements Serializable {
     private AnnouncementSessionBeanLocal announcementBean;
 
     private final static String NOTIFY_CHANNEL = "/notify";
-    private final static String ALERT_CHANNEL = "/alert";
 
     private Announcement newAnnouncement = new Announcement();
     private List<Announcement> announcements = new ArrayList<>();
+    
 
     /**
      * Creates a new instance of NotificationViewManagedBean
@@ -62,7 +64,6 @@ public class NotificationViewManagedBean implements Serializable {
         EventBus eventBus = EventBusFactory.getDefault().eventBus();
         FacesMessage m = new FacesMessage(StringEscapeUtils.escapeHtml(newAnnouncement.getTitle()), StringEscapeUtils.escapeHtml(newAnnouncement.getContent()));
         eventBus.publish(NOTIFY_CHANNEL, m);
-        eventBus.publish(ALERT_CHANNEL, m);
 
         setNewAnnouncement(new Announcement());
     }
