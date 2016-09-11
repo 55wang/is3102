@@ -34,7 +34,7 @@
                         <!--http://stackoverflow.com/questions/7915134/how-to-use-the-spring-security-facelets-tag-library-in-jsf-->
                         <!--sec:authorize access="hasAnyRole('counterStaff')"></sec:authorize-->
                         <!--TODO: wrap menu option with sec tag -->
-                        <li id="navbar-myhome-tab" class="#{cc.attrs.pageName == 'customer_home' ? 'active' : ''}" value="myhome"><a href="../common/customer_home.xhtml"><p:outputLabel id="tab-myHome" value="My Home"/></a></li>
+                        <li id="navbar-myhome-tab" class="#{cc.attrs.pageName == 'customer_home' ? 'active' : ''}" value="myhome"><a href="../common/customer_home.xhtml"><p:outputLabel id="tab-myHome" value="My Home" style="cursor: pointer"/></a></li>
                         <p:overlayPanel class="nav-overlay-panel-home" for="tab-myHome" showEvent="mouseover" hideEvent="mousedown" dismissable="true">
                             <p:menu>
                                 <p:submenu style="display:none">
@@ -44,7 +44,7 @@
                             </p:menu>
                         </p:overlayPanel>
                         
-                        <li id="navbar-myaccount-tab" class="#{cc.attrs.pageName == 'dams_home' ? 'active' : ''}" value="myAccount"><a href="../customer_dams/dams_home.xhtml"><p:outputLabel id="tab-myAccount" value="Accounts"/></a></li>
+                        <li id="navbar-myaccount-tab" class="#{cc.attrs.pageName == 'dams_home' ? 'active' : ''}" value="myAccount"><a href="../customer_dams/dams_home.xhtml"><p:outputLabel id="tab-myAccount" value="Accounts" style="cursor: pointer"/></a></li>
                         <p:overlayPanel class="nav-overlay-panel-account" for="tab-myAccount" showEvent="mouseover" hideEvent="mousedown" dismissable="true">
                             <p:menu>
                                 <p:submenu style="display:none">
