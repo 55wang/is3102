@@ -16,7 +16,7 @@ and open the template in the editor.
     border: 1px solid black;
     float:left;
 }
-.conversation {
+.conversation, #new-conversation {
     width: 190px;
     background: white;
     height: 60px;
@@ -24,7 +24,7 @@ and open the template in the editor.
     padding: 5px;
     border-bottom: 1px solid black;
 }
-.conversation.active {
+.conversation.active, #new-conversation.active {
     background: lightgray;
 }
 .user-icon {
@@ -63,7 +63,7 @@ and open the template in the editor.
     max-height: 30px;
 }
 
-#messages-container {
+#messages-container, #staff-list-container {
     height: 500px;
     width: 500px;
     float: left;

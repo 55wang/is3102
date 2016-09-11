@@ -41,6 +41,7 @@ public class StaffLoginManagedBean implements Serializable {
     @PostConstruct
     public void init() {
         // Set a default super account
+        System.out.println("StaffLoginManagedBean @PostConstruct");
         String u = "adminadmin";
         String p = "password";
         StaffAccount sa = staffAccountSessionBean.loginAccount(u, p);

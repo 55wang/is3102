@@ -9,9 +9,14 @@ package staff.message;
  *
  * @author leiyang
  */
+import ejb.session.staff.StaffAccountSessionBeanLocal;
+import entity.StaffAccount;
 import javax.inject.Named;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
 import org.primefaces.push.EventBus;
 import org.primefaces.push.EventBusFactory;
 import javax.faces.view.ViewScoped;
@@ -21,9 +26,17 @@ import utils.SessionUtils;
 @ViewScoped
 public class ChatViewManagedBean implements Serializable {
 
-    /**
-     * Creates a new instance of ChatViewManagedBean
-     */
+    @EJB
+    private StaffAccountSessionBeanLocal staffBean;
+    
+    private final EventBus eventBus = EventBusFactory.getDefault().eventBus();
+    private String newMessage;
+    private String searchText;
+    private String username = SessionUtils.getStaffUsername();
+    private final boolean loggedIn = SessionUtils.loggedIn();
+    private final static String CHANNEL = "/{room}/";
+    private List<StaffAccount> staffs = new ArrayList<>();
+    
     public ChatViewManagedBean() {
         System.out.println("ChatViewManagedBean() Created");
     }
@@ -31,24 +44,17 @@ public class ChatViewManagedBean implements Serializable {
     @PostConstruct
     public void init() {
         System.out.println("@PostConstruct init() Created");
+        setStaffs(staffBean.getAllStaffs());
+        // conversation list
     }
     
-    // TODO: PushContext for observer pattern
-    //private final PushContext pushContext = PushContextFactory.getDefault().getPushContext();
- 
-//    private final EventBus eventBus = EventBusFactory.getDefault().eventBus();
- 
-    // TODO: Conversations list
-    // Current messages list
-    // current new message
-    // Get update
-    private String newMessage;
-     
-    private String username = SessionUtils.getStaffUsername();
-     
-    private final boolean loggedIn = SessionUtils.loggedIn();
-     
-    private final static String CHANNEL = "/{room}/";
+    public void search() {
+        // TODO:
+    }
+    
+    public void newConversation(StaffAccount staff) {
+        System.out.println("New Conversation with staff " + staff.getUsername());
+    }
     
     public void sendMessage() {
         // Send message action
@@ -82,5 +88,33 @@ public class ChatViewManagedBean implements Serializable {
      */
     public void setNewMessage(String newMessage) {
         this.newMessage = newMessage;
+    }
+
+    /**
+     * @return the staffs
+     */
+    public List<StaffAccount> getStaffs() {
+        return staffs;
+    }
+
+    /**
+     * @param staffs the staffs to set
+     */
+    public void setStaffs(List<StaffAccount> staffs) {
+        this.staffs = staffs;
+    }
+
+    /**
+     * @return the searchText
+     */
+    public String getSearchText() {
+        return searchText;
+    }
+
+    /**
+     * @param searchText the searchText to set
+     */
+    public void setSearchText(String searchText) {
+        this.searchText = searchText;
     }
 }

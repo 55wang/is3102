@@ -7,7 +7,6 @@ package staff.dams;
 
 import ejb.session.dams.BankAccountSessionBeanLocal;
 import entity.BankAccount;
-import entity.CurrentAccount;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;

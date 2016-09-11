@@ -31,6 +31,10 @@ public class StaffAccount implements Serializable {
     private Role role; // Role already consist of list of permissions
     @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "staffAccount")
     private List<AuditLog> auditLog = new ArrayList<AuditLog>();
+    @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "sender")
+    private List<Conversation> outgoingConversation = new ArrayList<Conversation>();
+    @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "receiver")
+    private List<Conversation> incomingConversation = new ArrayList<Conversation>();
 
     public String getUsername() {
         return username;
@@ -88,6 +92,34 @@ public class StaffAccount implements Serializable {
      */
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    /**
+     * @return the outgoingConversation
+     */
+    public List<Conversation> getOutgoingConversation() {
+        return outgoingConversation;
+    }
+
+    /**
+     * @param outgoingConversation the outgoingConversation to set
+     */
+    public void setOutgoingConversation(List<Conversation> outgoingConversation) {
+        this.outgoingConversation = outgoingConversation;
+    }
+
+    /**
+     * @return the incomingConversation
+     */
+    public List<Conversation> getIncomingConversation() {
+        return incomingConversation;
+    }
+
+    /**
+     * @param incomingConversation the incomingConversation to set
+     */
+    public void setIncomingConversation(List<Conversation> incomingConversation) {
+        this.incomingConversation = incomingConversation;
     }
 
 }

@@ -18,6 +18,7 @@
             <div class="container">
                 <p:growl widgetVar="growl" showDetail="true" />
                 <h:form>
+                    <!-- TODO: This Function is only accessable to Some Role -->
                     <p:messages id="messagesStatus" redisplay="false" >
                         <h:panelGrid columns="2">
                             <p:outputLabel for="title" value="Title: " /> 
@@ -39,7 +40,7 @@
                         </div>
                     </p:panel>
                 </h:form>
-                <p:socket onMessage="handleMessage" channel="/notify" />
+                <p:socket onMessage="handleAnnouncement" channel="/notify" />
             </div>
             <p:dialog id="modal" header="" widgetVar="notificationModal" modal="true" height="100">
                 <h:outputText id="modal-content" value="" />

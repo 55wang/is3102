@@ -25,6 +25,11 @@
                 <p:socket channel="/{room}" widgetVar='subscriber' />
 
                 <div id="conversations-container">
+                    <div id="new-conversation">
+                        <div class="v-center text-center full-width font-20">
+                            Add new Conversation
+                        </div>
+                    </div>
                     <div class="conversation active">
                         <div class="user-icon">
                             <div class="icon-text">
@@ -46,6 +51,31 @@
                     </div>
                     <div class="conversation">
                     </div>
+                </div>
+                <div id="staff-list-container">
+                    <h:form>
+                        <p:outputLabel value="Search:" for="search-staff" />
+                        <p:inputText id="search-staff" value="#{chatViewManagedBean.searchText}" required="true" />
+                        <p:commandButton value="Send" actionListener="#{chatViewManagedBean.search}"/>
+                    </h:form>
+                    <p:panel header="Staffs">
+                        <p:dataTable id="staff-list" value="#{chatViewManagedBean.staffs}" var="staff">
+                            <p:column headerText="Name" sortBy="#{staff.username}">
+                                <h:outputText value="#{staff.username}"></h:outputText>
+                            </p:column>
+                            <p:column headerText="First" sortBy="#{staff.firstName}">
+                                <h:outputText value="#{staff.firstName}"></h:outputText>
+                            </p:column>
+                            <p:column headerText="Last" sortBy="#{staff.lastName}">
+                                <h:outputText value="#{staff.lastName}"></h:outputText>
+                            </p:column>
+                            <p:column headerText="" sortBy="#{staff.username}">
+                                <h:form>
+                                    <p:commandButton value="New Message" actionListener="#{chatViewManagedBean.newConversation(staff)}"/>
+                                </h:form>
+                            </p:column>
+                        </p:dataTable>
+                    </p:panel>
                 </div>
                 <div id="messages-container">
                     <div id="messages">

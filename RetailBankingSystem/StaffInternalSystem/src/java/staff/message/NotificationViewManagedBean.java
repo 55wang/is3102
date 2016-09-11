@@ -6,19 +6,22 @@
 package staff.message;
 
 import ejb.session.message.AnnouncementSessionBeanLocal;
+import ejb.session.staff.StaffAccountSessionBeanLocal;
 import entity.Announcement;
 import entity.StaffAccount;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.ejb.Singleton;
 import javax.inject.Named;
-import javax.faces.view.ViewScoped;
 
 import javax.faces.application.FacesMessage;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
+import javax.faces.bean.ApplicationScoped;
+import javax.faces.view.ViewScoped;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.primefaces.push.EventBus;
 import org.primefaces.push.EventBusFactory;
@@ -30,40 +33,42 @@ import utils.MessageUtils;
  */
 @Named(value = "notificationViewManagedBean")
 @ViewScoped
-public class NotificationViewManagedBean  implements Serializable {
-    
+public class NotificationViewManagedBean implements Serializable {
+
     @EJB
     private AnnouncementSessionBeanLocal announcementBean;
 
-    private final static String CHANNEL = "/notify";
-     
+    private final static String NOTIFY_CHANNEL = "/notify";
+
     private Announcement newAnnouncement = new Announcement();
     private List<Announcement> announcements = new ArrayList<>();
+    
+
     /**
      * Creates a new instance of NotificationViewManagedBean
      */
     public NotificationViewManagedBean() {
     }
-    
+
     @PostConstruct
     public void init() {
         announcements = announcementBean.getAllAnnouncements();
     }
-     
+
     public void send() {
         if (announcementBean.createAnnouncement(getNewAnnouncement())) {
             MessageUtils.displayInfo("New Announcement Added");
         } else {
             MessageUtils.displayInfo("Announcement already Added");
         }
-        
         EventBus eventBus = EventBusFactory.getDefault().eventBus();
-        eventBus.publish(CHANNEL, new FacesMessage(StringEscapeUtils.escapeHtml("New Annoucement: " + newAnnouncement.getTitle()), StringEscapeUtils.escapeHtml(newAnnouncement.getContent())));
+        FacesMessage m = new FacesMessage(StringEscapeUtils.escapeHtml(newAnnouncement.getTitle()), StringEscapeUtils.escapeHtml(newAnnouncement.getContent()));
+        eventBus.publish(NOTIFY_CHANNEL, m);
+
         setNewAnnouncement(new Announcement());
     }
-    
-    // Getter and Setters
 
+    // Getter and Setters
     /**
      * @return the announcements
      */
