@@ -6,21 +6,15 @@
 package staff.message;
 
 import ejb.session.message.AnnouncementSessionBeanLocal;
-import ejb.session.staff.StaffAccountSessionBeanLocal;
 import entity.Announcement;
-import entity.StaffAccount;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import javax.ejb.Singleton;
 import javax.inject.Named;
 
 import javax.faces.application.FacesMessage;
-import javax.faces.bean.ApplicationScoped;
 import javax.faces.view.ViewScoped;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.primefaces.push.EventBus;

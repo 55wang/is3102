@@ -51,4 +51,13 @@ public class StaffAccountSessionBean implements StaffAccountSessionBeanLocal {
         Query q = em.createQuery("SELECT sa FROM StaffAccount sa");
         return q.getResultList();
     }
+    
+    @Override
+    public StaffAccount getStaffById(String id) {
+        if (id != null) {
+            return em.find(StaffAccount.class, id);
+        } else {
+            return null;
+        }
+    }
 }

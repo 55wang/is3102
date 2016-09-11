@@ -24,7 +24,7 @@ import javax.persistence.TemporalType;
  * @author leiyang
  */
 @Entity
-public class Conversation implements Serializable {
+public class Conversation implements Serializable, Comparable<Conversation> {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -34,14 +34,21 @@ public class Conversation implements Serializable {
     private Date createDate = new Date();
     @Temporal(value = TemporalType.TIMESTAMP)
     private Date updateDate = new Date();
-    @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "conversation")
+    @OneToMany(cascade = {CascadeType.ALL}, mappedBy = "conversation")
     private List<Message> messages = new ArrayList<Message>();
-    @ManyToOne(cascade={CascadeType.PERSIST})
+    @ManyToOne(cascade = {CascadeType.MERGE})
     private StaffAccount sender;
-    @ManyToOne(cascade={CascadeType.PERSIST})
+    @ManyToOne(cascade = {CascadeType.MERGE})
     private StaffAccount receiver;
-    private Boolean readBySender = false;
-    private Boolean readByReceiver = false;
+    
+    @Override
+    public int compareTo(Conversation c) {
+        return this.updateDate.compareTo(c.updateDate);
+    }
+    
+    public void addMessage(Message m) {
+        messages.add(m);
+    }
 
     public Long getId() {
         return id;
@@ -83,6 +90,9 @@ public class Conversation implements Serializable {
      * @return the messages
      */
     public List<Message> getMessages() {
+        if (messages == null) {
+            return new ArrayList<>();
+        }
         return messages;
     }
 
@@ -121,32 +131,4 @@ public class Conversation implements Serializable {
         this.receiver = receiver;
     }
 
-    /**
-     * @return the readBySender
-     */
-    public Boolean getReadBySender() {
-        return readBySender;
-    }
-
-    /**
-     * @param readBySender the readBySender to set
-     */
-    public void setReadBySender(Boolean readBySender) {
-        this.readBySender = readBySender;
-    }
-
-    /**
-     * @return the readByReceiver
-     */
-    public Boolean getReadByReceiver() {
-        return readByReceiver;
-    }
-
-    /**
-     * @param readByReceiver the readByReceiver to set
-     */
-    public void setReadByReceiver(Boolean readByReceiver) {
-        this.readByReceiver = readByReceiver;
-    }
-    
 }

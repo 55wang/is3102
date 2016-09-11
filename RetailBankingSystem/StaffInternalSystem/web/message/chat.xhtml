@@ -22,34 +22,33 @@
 
                 <!--receive event from channel-->
                 <!--onMessage="handleMessage" This calls a js function-->
-                <p:socket channel="/{room}" widgetVar='subscriber' />
-
+                <p:socket channel="/chat/#{staffUserManagedBean.userName}" widgetVar='subscriber' onMessage="handleConversation" />
+                <!--Add socket here maybe just one channel for self-->
                 <div id="conversations-container">
                     <div id="new-conversation">
                         <div class="v-center text-center full-width font-20">
                             Add new Conversation
                         </div>
                     </div>
-                    <div class="conversation active">
-                        <div class="user-icon">
-                            <div class="icon-text">
-                                LY
+                    <div id="old-conversations">
+                        <c:forEach items="#{chatViewManagedBean.conversations}" var="conversation">
+                            <!-- Can be modeled by jQuery -->
+                            <div class="conversation" onclick="redirect(#{conversation.id})">
+                                <div class="user-icon">
+                                    <div class="icon-text">
+                                        #{conversation.receiver.nameLabel}
+                                    </div>
+                                </div>
+                                <div class="conversation-text">
+                                    <div class="conversation-username">
+                                        <b>#{conversation.receiver.fullName}</b>
+                                    </div>
+                                    <div class="conversation-preview">
+                                        #{conversation.messages[0].message}
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                        <div class="conversation-text">
-                            <div class="conversation-username">
-                                <b>Lei Yang</b>
-                            </div>
-                            <div class="conversation-preview">
-                                How are you?
-                            </div>
-                        </div>
-                    </div>
-                    <div class="conversation">
-                    </div>
-                    <div class="conversation">
-                    </div>
-                    <div class="conversation">
+                        </c:forEach>
                     </div>
                 </div>
                 <div id="staff-list-container">
@@ -77,70 +76,12 @@
                         </p:dataTable>
                     </p:panel>
                 </div>
-                <div id="messages-container">
-                    <div id="messages">
-                        <div class="message float-right">
-                            <div class="left-profile-pic">
-                                <div class="user-icon">
-                                    <div class="icon-text">
-                                        LY
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="panel panel-quote panel-quote-flush no-margin" >
-                                <div class="panel-body">
-                                    <div class="message-text">
-                                        <p>This is a text message</p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="time-container">
-                                <span>
-                                    1:30pm
-                                </span>
-                            </div>
-                        </div>
-                        <div class="message float-left">
-                            <div class="right-profile-pic">
-                                <div class="user-icon">
-                                    <div class="icon-text">
-                                        LY
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="panel panel-quote panel-quote-flush no-margin panel-quote-right" >
-                                <div class="panel-body">
-                                    <div class="message-text">
-                                        <p>This is a text message</p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="time-container">
-                                <span>
-                                    1:30pm
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div id="outbox">
-                        <h:form id="form">
-                            <p:inputTextarea id="newmessage" class="width-80" value="#{chatViewManagedBean.newMessage}"/>
-                            <br></br>
-                            <p:commandButton value="Send" update="@form" actionListener="#{chatViewManagedBean.sendMessage}" />
-                        </h:form>
-                    </div>
-                </div>
             </div>
             <div id="output"></div>
 
             <!--To use jquery with javascript here-->
             <h:outputScript library="primefaces" name="jquery/jquery.js" />
-            <!--style src="chat.js"></style-->
+            <script type="text/javascript" src="chat.js"></script>
         </h:body>
     </f:view>
 </html>

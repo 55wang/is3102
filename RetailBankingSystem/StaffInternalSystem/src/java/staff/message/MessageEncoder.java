@@ -9,16 +9,19 @@ package staff.message;
  *
  * @author leiyang
  */
+import entity.Message;
 import org.primefaces.json.JSONObject;
-import utils.Encoder;
+import org.primefaces.push.Encoder;
+import utils.LoggingUtil;
  
 /**
- * A Simple {@link org.primefaces.push.Encoder} that decode a {@link Message} into a simple JSON object.
+ * A Simple {@link org.primefaces.push.Encoder} that decode a {@link MessageDTO} into a simple JSON object.
  */
 public final class MessageEncoder implements Encoder<Message, String> {
  
     @Override
     public String encode(Message message) {
+        LoggingUtil.StaffMessageLog(MessageViewManagedBean.class, new JSONObject(message).toString());
         return new JSONObject(message).toString();
     }
 }

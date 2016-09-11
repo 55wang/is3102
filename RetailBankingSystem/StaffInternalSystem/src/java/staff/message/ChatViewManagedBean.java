@@ -9,17 +9,22 @@ package staff.message;
  *
  * @author leiyang
  */
+import ejb.session.message.ConversationSessionBeanLocal;
 import ejb.session.staff.StaffAccountSessionBeanLocal;
+import entity.Conversation;
 import entity.StaffAccount;
 import javax.inject.Named;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import javax.ejb.EJB;
-import org.primefaces.push.EventBus;
-import org.primefaces.push.EventBusFactory;
 import javax.faces.view.ViewScoped;
+import utils.LoggingUtil;
+import utils.RedirectUtils;
 import utils.SessionUtils;
 
 @Named(value = "chatViewManagedBean")
@@ -28,24 +33,31 @@ public class ChatViewManagedBean implements Serializable {
 
     @EJB
     private StaffAccountSessionBeanLocal staffBean;
+    @EJB
+    private ConversationSessionBeanLocal conversationBean;
     
-    private final EventBus eventBus = EventBusFactory.getDefault().eventBus();
-    private String newMessage;
+    
     private String searchText;
-    private String username = SessionUtils.getStaffUsername();
-    private final boolean loggedIn = SessionUtils.loggedIn();
-    private final static String CHANNEL = "/{room}/";
+    private String conversationId;
     private List<StaffAccount> staffs = new ArrayList<>();
+    private List<Conversation> conversations = new ArrayList<>();
+    private Conversation currentConversation;
     
     public ChatViewManagedBean() {
-        System.out.println("ChatViewManagedBean() Created");
+        LoggingUtil.StaffMessageLog(ChatViewManagedBean.class, "ChatViewManagedBean() Created");
     }
     
     @PostConstruct
     public void init() {
-        System.out.println("@PostConstruct init() Created");
+        LoggingUtil.StaffMessageLog(ChatViewManagedBean.class, "@PostConstruct init() Created");
         setStaffs(staffBean.getAllStaffs());
-        // conversation list
+        setConversations(conversationBean.getAllConversationForStaff(SessionUtils.getStaffUsername()));
+        LoggingUtil.StaffMessageLog(ChatViewManagedBean.class, "Conversations: " + conversations.size());
+    }
+    
+    @PreDestroy 
+    public void deinit() {
+        LoggingUtil.StaffMessageLog(ChatViewManagedBean.class, "@PreDestroy deinit() Called");
     }
     
     public void search() {
@@ -53,43 +65,35 @@ public class ChatViewManagedBean implements Serializable {
     }
     
     public void newConversation(StaffAccount staff) {
-        System.out.println("New Conversation with staff " + staff.getUsername());
+        LoggingUtil.StaffMessageLog(ChatViewManagedBean.class, "New Conversation with staff " + staff.getUsername());
+        StaffAccount sa = SessionUtils.getStaff();
+        Conversation conversation = checkIfSenderConversationExists(sa);
+        if (conversation == null) {
+            conversation = new Conversation();
+            conversation.setReceiver(staff);
+            conversation.setSender(SessionUtils.getStaff());
+            conversationBean.createConversation(conversation);
+        }
+        setCurrentConversation(conversation);
+        // Go to Message View
+        Map<String, String> map = new HashMap<>();
+        map.put("conversationId", conversation.getId().toString());
+        String params = RedirectUtils.generateParameters(map);
+        RedirectUtils.redirect("message.xhtml" + params);
     }
     
-    public void sendMessage() {
-        // Send message action
-        System.out.println(String.format("ChatViewManagedBean: SendMessage(): User is %s and newMessage is %s", username, newMessage));
-//        if (eventBus != null) {
-//            eventBus.publish(CHANNEL + "Conversation_ID", "[PM] " + username + ": " + newMessage);
-//        }
+    private Conversation checkIfSenderConversationExists(StaffAccount sa) {
+        List<Conversation> cs = sa.getSenderConversation();
+        for (Conversation c : cs) {
+            if (c.getSender().equals(sa)) {
+                LoggingUtil.StaffMessageLog(ChatViewManagedBean.class, "Found Existing Conversation, not creating new one");
+                return c;
+            }
+        }
+        return null;
     }
      
     // Getter and Setters
-    public String getUsername() {
-        return username;
-    }
-    public void setUsername(String username) {
-        this.username = username;
-    }
-     
-    public boolean isLoggedIn() {
-        return loggedIn;
-    }
-
-    /**
-     * @return the newMessage
-     */
-    public String getNewMessage() {
-        return newMessage;
-    }
-
-    /**
-     * @param newMessage the newMessage to set
-     */
-    public void setNewMessage(String newMessage) {
-        this.newMessage = newMessage;
-    }
-
     /**
      * @return the staffs
      */
@@ -116,5 +120,47 @@ public class ChatViewManagedBean implements Serializable {
      */
     public void setSearchText(String searchText) {
         this.searchText = searchText;
+    }
+
+    /**
+     * @return the conversations
+     */
+    public List<Conversation> getConversations() {
+        return conversations;
+    }
+
+    /**
+     * @param conversations the conversations to set
+     */
+    public void setConversations(List<Conversation> conversations) {
+        this.conversations = conversations;
+    }
+
+    /**
+     * @return the currentConversation
+     */
+    public Conversation getCurrentConversation() {
+        return currentConversation;
+    }
+
+    /**
+     * @param currentConversation the currentConversation to set
+     */
+    public void setCurrentConversation(Conversation currentConversation) {
+        this.currentConversation = currentConversation;
+    }
+
+    /**
+     * @return the conversationId
+     */
+    public String getConversationId() {
+        return conversationId;
+    }
+
+    /**
+     * @param conversationId the conversationId to set
+     */
+    public void setConversationId(String conversationId) {
+        this.conversationId = conversationId;
     }
 }

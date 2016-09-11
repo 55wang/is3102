@@ -29,8 +29,10 @@ public class Message implements Serializable {
     private String message;
     @Temporal(value = TemporalType.TIMESTAMP)
     private Date createDate = new Date();
-    @ManyToOne(cascade={CascadeType.PERSIST})
+    @ManyToOne
     private Conversation conversation;
+    private String receiver;
+    private String sender;
 
     public Long getId() {
         return id;
@@ -80,5 +82,33 @@ public class Message implements Serializable {
      */
     public void setConversation(Conversation conversation) {
         this.conversation = conversation;
+    }
+
+    /**
+     * @return the receiver
+     */
+    public String getReceiver() {
+        return receiver;
+    }
+
+    /**
+     * @param receiver the receiver to set
+     */
+    public void setReceiver(String receiver) {
+        this.receiver = receiver;
+    }
+
+    /**
+     * @return the sender
+     */
+    public String getSender() {
+        return sender;
+    }
+
+    /**
+     * @param sender the sender to set
+     */
+    public void setSender(String sender) {
+        this.sender = sender;
     }
 }

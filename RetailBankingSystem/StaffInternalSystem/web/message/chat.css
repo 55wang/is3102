@@ -62,10 +62,16 @@ and open the template in the editor.
     line-height: 15px;
     max-height: 30px;
 }
-
-#messages-container, #staff-list-container {
+#staff-list-container {
     height: 500px;
     width: 500px;
+    float: left;
+    background: lightblue;
+    border: 1px solid black;
+}
+#messages-container {
+    height: 500px;
+    width: 700px;
     float: left;
     background: lightblue;
     border: 1px solid black;

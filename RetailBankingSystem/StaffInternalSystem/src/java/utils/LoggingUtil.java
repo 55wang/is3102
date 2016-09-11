@@ -18,7 +18,6 @@ public class LoggingUtil {
     
     public static void StaffMessageLog(Class c, String m) {
         if (logStaffMessage) {
-            // TODO: Replace this with proper logger
             Logger.getLogger(c.getName()).log(Level.INFO, m);
         }
     }
