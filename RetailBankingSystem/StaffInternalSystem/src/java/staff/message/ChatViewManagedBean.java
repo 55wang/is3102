@@ -23,6 +23,7 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.ejb.EJB;
 import javax.faces.view.ViewScoped;
+import utils.JSUtils;
 import utils.LoggingUtil;
 import utils.RedirectUtils;
 import utils.SessionUtils;
@@ -91,6 +92,16 @@ public class ChatViewManagedBean implements Serializable {
             }
         }
         return null;
+    }
+    
+    public Boolean isReceiver(Conversation conversation) {
+        StaffAccount sa = SessionUtils.getStaff();
+        for (Conversation c : sa.getReceiverConversation()) {
+            if (c.equals(conversation)) {
+                return true;
+            }
+        }
+        return false;
     }
      
     // Getter and Setters

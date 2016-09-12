@@ -20,8 +20,10 @@ import org.primefaces.push.annotation.PushEndpoint;
  
 import javax.inject.Inject;
 import javax.servlet.ServletContext;
+import org.atmosphere.config.service.Singleton;
  
 @PushEndpoint("/chat/{receiver}")
+@Singleton
 public class ChatResource {
  
     @PathParam("receiver")
@@ -44,7 +46,7 @@ public class ChatResource {
  
     // Decoder/Encoder Intercept
     @OnMessage(decoders = {MessageDecoder.class}, encoders = {MessageEncoder.class})
-    public Message onMessage(Message message) {
+    public MessageDTO onMessage(MessageDTO message) {
         // In the middle of sending message
         System.out.println(String.format("ChatResource: @OnMessage: Receiver is %s", receiver));
         System.out.println(String.format("ChatResource: @OnMessage: Message is %s", message.getMessage()));

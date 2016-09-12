@@ -32,13 +32,29 @@
                 </ul>
                 <emcomp:headerMenu context="staff_home" userName="#{staffUserManagedBean.getUserName()}"></emcomp:headerMenu>
             </div>
+            <!--receive event from channel-->
+            <!--onMessage="handleMessage" This calls a js function-->
+            <p:socket channel="/chat/#{staffUserManagedBean.userName}" widgetVar='subscriber' onMessage="handleMessage" autoConnect="true" />
             <!-- Global Notification -->
-            <p:socket onMessage="updateAlert" channel="/notify"/>
+            <p:socket onMessage="handleAnnouncement" channel="/notify"/>
+            <!--This js function will be replace at notification.xhtml page-->
             <script type="text/javascript">
-                function updateAlert(facesmessage) {
+                function handleAnnouncement(facesmessage) {
+                    console.log(facesmessage);
+                    PF('growl').show([facesmessage]);
+                }
+                
+                function handleMessage(message) {
+                    console.log(message);
+                    facesmessage = {};
+                    facesmessage.rendered = false;
+                    facesmessage.severity = "INFO"
+                    facesmessage.summary = message.senderName;
+                    facesmessage.detail = message.message;
                     PF('growl').show([facesmessage]);
                 }
             </script>
+            
         </f:view>
     </cc:implementation>
 </html>

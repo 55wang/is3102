@@ -8,14 +8,15 @@ package staff.message;
 import ejb.session.message.ConversationSessionBeanLocal;
 import entity.Conversation;
 import entity.Message;
+import entity.StaffAccount;
 import java.io.Serializable;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
-import org.primefaces.json.JSONObject;
 import org.primefaces.push.EventBus;
 import org.primefaces.push.EventBusFactory;
 import utils.LoggingUtil;
+import utils.SessionUtils;
 
 /**
  *
@@ -24,37 +25,63 @@ import utils.LoggingUtil;
 @Named(value = "messageViewManagedBean")
 @ViewScoped
 public class MessageViewManagedBean implements Serializable {
-    
+
     @EJB
     private ConversationSessionBeanLocal conversationBean;
 
     private final EventBus eventBus = EventBusFactory.getDefault().eventBus();
     private final static String CHANNEL = "/chat/";
-    
+
     private String conversationId;
     private Conversation currentConversation;
     private Message newMessage = new Message();
-    
-    public MessageViewManagedBean() {}
-    
+
+    public MessageViewManagedBean() {
+    }
+
     public void init() {
         LoggingUtil.StaffMessageLog(MessageViewManagedBean.class, "@PostConstruct, retriving conversation from id:" + conversationId);
         setCurrentConversation(conversationBean.getConversationById(Long.parseLong(conversationId)));
     }
-    
+
     public void sendMessage() {
         // Send message action
-        LoggingUtil.StaffMessageLog(MessageViewManagedBean.class, String.format("ChatViewManagedBean: SendMessage(): newMessage is %s",getNewMessage()));
-        newMessage.setReceiver(currentConversation.getReceiver().getUsername());
-        newMessage.setSender(currentConversation.getSender().getUsername());
+        newMessage.setReceiver(getReceiverUsername());
+        newMessage.setSender(SessionUtils.getStaffUsername());
+        LoggingUtil.StaffMessageLog(MessageViewManagedBean.class, String.format("MessageViewManagedBean: SendMessage(): newMessage is %s", getNewMessage()));
         if (conversationBean.addMessage(currentConversation, newMessage)) {
-            LoggingUtil.StaffMessageLog(MessageViewManagedBean.class, "Created New Message:" + newMessage.getMessage());
+            LoggingUtil.StaffMessageLog(MessageViewManagedBean.class, "Created New Message:" + newMessage.getMessage() + " And send to channel: " + CHANNEL + getReceiverUsername());
+            MessageDTO mDTO = new MessageDTO();
+            mDTO.setCreateDate(newMessage.getCreateDate().toString());
+            mDTO.setLabel(getMessageLabel(newMessage));
+            mDTO.setMessage(newMessage.getMessage());
+            mDTO.setSenderName(SessionUtils.getStaff().getFullName());
+            eventBus.publish(CHANNEL + getReceiverUsername(), mDTO);
             newMessage = new Message();
         } else {
             LoggingUtil.StaffMessageLog(MessageViewManagedBean.class, "Created New Message FAILED");
         }
-        LoggingUtil.StaffMessageLog(MessageViewManagedBean.class, new JSONObject(newMessage).toString());
-        eventBus.publish(CHANNEL + currentConversation.getReceiver().getUsername(), newMessage);
+    }
+
+    public String getReceiverUsername() {
+        if (currentConversation.getReceiver().getUsername().equals(SessionUtils.getStaffUsername())) {
+            return currentConversation.getSender().getUsername();
+        } else {
+            return currentConversation.getReceiver().getUsername();
+        }
+    }
+
+    public String getMessageLabel(Message m) {
+        if (currentConversation.getReceiver().getUsername().equals(SessionUtils.getStaffUsername())) {
+            return isReceiver(m) ? currentConversation.getSender().getNameLabel() : currentConversation.getReceiver().getNameLabel();
+        } else {
+            return isReceiver(m) ? currentConversation.getReceiver().getNameLabel() : currentConversation.getSender().getNameLabel();
+        }
+    }
+
+    public Boolean isReceiver(Message m) {
+        StaffAccount sa = SessionUtils.getStaff();
+        return sa.getUsername().equals(m.getReceiver());
     }
 
     /**
@@ -98,5 +125,5 @@ public class MessageViewManagedBean implements Serializable {
     public void setCurrentConversation(Conversation currentConversation) {
         this.currentConversation = currentConversation;
     }
-    
+
 }
