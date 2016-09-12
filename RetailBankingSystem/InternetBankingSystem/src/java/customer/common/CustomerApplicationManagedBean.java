@@ -72,6 +72,8 @@ public class CustomerApplicationManagedBean implements Serializable {
     }
 
     public void save() {
+        Boolean emailSuccessFlag = true;
+        
         mainAccount.setStatus(StatusType.PENDING);
         
         mainAccount.setUserID(generateUserID(customer.getIdentityType(), customer.getIdentityNumber()));
@@ -93,13 +95,25 @@ public class CustomerApplicationManagedBean implements Serializable {
                 break;
         };
 
-        newCustomerSessionBean.createCustomer(customer, mainAccount);
-
-        FacesMessage msg = new FacesMessage("Successful", "Welcome :" + customer.getFirstname() + " " + customer.getLastname());
-        FacesContext.getCurrentInstance().addMessage(null, msg);
+        try{
+            emailServiceSessionBean.sendActivationGmailForNewCustomer(customer.getEmail());
+        }catch(Exception ex){
+            emailSuccessFlag = false;
+        }
+        
+        if(emailSuccessFlag){
+            newCustomerSessionBean.createCustomer(customer, mainAccount);
+            FacesMessage msg = new FacesMessage("Successful", "Welcome :" + customer.getFirstname() + " " + customer.getLastname());
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+        }
+        else{
+            FacesMessage msg = new FacesMessage("Fail!");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+        }
+        
 
 //        emailServiceSessionBean.sendActivationEmailForNewCustomer(customer.getEmail());
-        emailServiceSessionBean.sendActivationGmailForNewCustomer(customer.getEmail());
+        
     }
 
     public String onFlowProcess(FlowEvent event) {

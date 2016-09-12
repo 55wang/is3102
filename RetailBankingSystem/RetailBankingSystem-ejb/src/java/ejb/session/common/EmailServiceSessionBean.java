@@ -65,6 +65,7 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
         }
     }
 
+    @Override
     public Boolean sendActivationGmailForNewCustomer(String recipient) {
 
         String activationCode = "123456";
@@ -76,7 +77,7 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
         props.put("mail.smtp.auth", "true");
         props.put("mail.smtp.port", "465");
 
-        Session session = Session.getDefaultInstance(props,
+        Session session = Session.getInstance(props,
                 new javax.mail.Authenticator() {
                     protected javax.mail.PasswordAuthentication getPasswordAuthentication() {
                         return new javax.mail.PasswordAuthentication("merlionbanking", "p@ssword1");
@@ -91,6 +92,7 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
                     InternetAddress.parse(recipient));
             message.setSubject("Welcome to Merlion Banking");
             message.setText("Dear Customer, Thank you to register merionlion banking.\n You activiation code is " + activationCode);
+            message.setText("Link to activate your member account: https://localhost:8181/InternetBankingSystem/common/customer_activate_account.xhtml?email=" + recipient);
 
             Transport.send(message);
 
