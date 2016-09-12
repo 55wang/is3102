@@ -6,6 +6,7 @@
 package customer.common;
 
 import ejb.session.common.CustomerActivationSessionBeanLocal;
+import ejb.session.common.LoginSessionBeanLocal;
 import entity.MainAccount;
 import java.io.Serializable;
 import javax.annotation.PostConstruct;
@@ -14,6 +15,7 @@ import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.context.FacesContext;
+import utils.SessionUtils;
 
 /**
  *
@@ -22,6 +24,8 @@ import javax.faces.context.FacesContext;
 @Named(value = "customerActivationManagedBean")
 @RequestScoped
 public class CustomerActivationManagedBean implements Serializable {
+    @EJB
+    private LoginSessionBeanLocal loginSessionBean;
     @EJB
     private CustomerActivationSessionBeanLocal customerActivationSessionBean;
     
@@ -37,7 +41,15 @@ public class CustomerActivationManagedBean implements Serializable {
         mainAccount = customerActivationSessionBean.getMainAccountByEmail(email);
         if(mainAccount.getStatus().equals(MainAccount.StatusType.PENDING)){
             valid = true; // And auto-login if valid?
-            customerActivationSessionBean.updateAccountStatus(mainAccount);
+            try{
+                customerActivationSessionBean.updateAccountStatus(mainAccount);
+                loginSessionBean.loginAccount(mainAccount.getUserID(), mainAccount.getPassword());
+                SessionUtils.setUserId(mainAccount.getId());
+                SessionUtils.setUserName(mainAccount.getUserID());
+            }
+            catch(Exception ex){
+                
+            }
         }
         else
             valid = false;
@@ -48,12 +60,6 @@ public class CustomerActivationManagedBean implements Serializable {
      */
     public CustomerActivationManagedBean() {
     }
-    
-//    public void changeInitialPwd(){
-//        if(!newPwd.equals(mainAccount.getPassword())){
-//            customerActivationSessionBean.changeInitialPwd(newPwd, mainAccount.getUserID());
-//        }
-//    }
 
     public String getEmail() {
         return email;

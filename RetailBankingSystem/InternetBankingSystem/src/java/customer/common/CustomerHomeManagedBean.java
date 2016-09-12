@@ -5,6 +5,7 @@
  */
 package customer.common;
 
+import ejb.session.common.ChangePasswordSessionBeanLocal;
 import ejb.session.common.LoginSessionBeanLocal;
 import entity.Customer;
 import java.io.Serializable;
@@ -12,6 +13,7 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
+import utils.MessageUtils;
 import utils.SessionUtils;
 
 /**
@@ -22,14 +24,31 @@ import utils.SessionUtils;
 @ViewScoped
 public class CustomerHomeManagedBean implements Serializable{
     @EJB
+    private ChangePasswordSessionBeanLocal changePasswordSessionBean;
+    @EJB
     private LoginSessionBeanLocal loginSessionBean;
     private Customer customer = new Customer();
+    private String newPwd;
     
     
     /**
      * Creates a new instance of CustomerHomeManagedBean
      */
     public CustomerHomeManagedBean() {
+    }
+    
+    public Boolean changePwd(){
+        try{
+            changePasswordSessionBean.changePwd(newPwd, customer.getMainAccount());
+            String msg = "Successful! You have reset your password. ";
+            MessageUtils.displayInfo(msg);
+            return true;
+        }
+        catch(Exception ex){
+            String msg = "Something went wrong.";
+            MessageUtils.displayError(msg);
+            return false;
+        }
     }
 
     public Customer getCustomer() {
@@ -40,7 +59,12 @@ public class CustomerHomeManagedBean implements Serializable{
     public void setCustomer() {
         this.customer = loginSessionBean.getCustomerByUserID(SessionUtils.getUserName());
     }
-    
-    
-    
+
+    public String getNewPwd() {
+        return newPwd;
+    }
+
+    public void setNewPwd(String newPwd) {
+        this.newPwd = newPwd;
+    } 
 }

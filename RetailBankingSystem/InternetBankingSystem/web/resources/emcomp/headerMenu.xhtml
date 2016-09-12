@@ -50,7 +50,8 @@
                             <p:menu overlay="true" trigger="header-nav-profile" my="left top" at="left bottom">
                                 <p:submenu label="Navigations">
                                     <p:menuitem value="Profile" url="../customer_cms/view_profile.xhtml" />
-                                    <p:menuitem value="Logout" />
+                                    <p:menuitem value="Reset Password" url="../common/customer_reset_pwd.xhtml" />
+                                    <p:menuitem value="Logout" actionListener="#{customerLogoutManagedBean.logout}" />
                                 </p:submenu>
                             </p:menu>
                         </li>

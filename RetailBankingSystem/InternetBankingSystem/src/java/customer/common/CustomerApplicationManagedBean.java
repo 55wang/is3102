@@ -122,7 +122,7 @@ public class CustomerApplicationManagedBean implements Serializable {
     
     public String generateUserID(String identityType, String identityNum){
         if(identityType.equals("Singaporean/PR NRIC")){
-            return "c"+identityNum.substring(1, identityNum.length());
+            return "c"+identityNum.substring(1, identityNum.length()-1);
         }
         else if(identityType.equals("Passport")){
             return "c"+identityNum.substring(1);

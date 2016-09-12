@@ -11,6 +11,7 @@ import java.io.Serializable;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
+import utils.MessageUtils;
 import utils.RedirectUtils;
 import utils.SessionUtils;
 
@@ -44,11 +45,22 @@ public class CustomerLoginManagedBean implements Serializable{
     
     public void loginCustomer() {
         try {
-            Long userID = loginSessionBean.loginAccount(loginAccount.getUserID(), loginAccount.getPassword()).getId();
-            String userName = loginSessionBean.loginAccount(loginAccount.getUserID(), loginAccount.getPassword()).getUserID();
-            SessionUtils.setUserId(userID);
-            SessionUtils.setUserName(userName);
-            RedirectUtils.redirect("customer_home.xhtml");
+            MainAccount attemptLogin = loginSessionBean.getCustomerByUserID(loginAccount.getUserID()).getMainAccount();
+            if(attemptLogin.getStatus().equals(MainAccount.StatusType.PENDING)){
+                String msg = "Check your email and activate the account";
+                MessageUtils.displayInfo(msg);
+            }
+            else if(attemptLogin.getStatus().equals(MainAccount.StatusType.FREEZE)){
+                String msg = "Your account has been freezed.";
+                MessageUtils.displayInfo(msg);
+            }
+            else if(attemptLogin.getStatus().equals(MainAccount.StatusType.ACTIVE)){
+                Long userID = loginSessionBean.loginAccount(loginAccount.getUserID(), loginAccount.getPassword()).getId();
+                String userName = loginSessionBean.loginAccount(loginAccount.getUserID(), loginAccount.getPassword()).getUserID();
+                SessionUtils.setUserId(userID);
+                SessionUtils.setUserName(userName);
+                RedirectUtils.redirect("customer_home.xhtml");
+            }
         } catch (NullPointerException e) {
             RedirectUtils.redirect("fail.xhtml");
         }
