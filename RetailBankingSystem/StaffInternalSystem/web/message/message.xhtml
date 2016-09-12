@@ -21,28 +21,22 @@
             <em:staffNavBar context="message"></em:staffNavBar>
             <em:staffSideBar top="message" side="chat"></em:staffSideBar>
             <div class="container">
-                <p:growl id="growl" showDetail="true" />
-                <!-- Write My Own Logic -->
-
-                <!--receive event from channel-->
-                <!--onMessage="handleMessage" This calls a js function-->
-                <p:socket channel="/chat/#{staffUserManagedBean.userName}" widgetVar='subscriber' onMessage="handleMessage" />
                 <!--Add socket here maybe just one channel for self-->
                 <h:form id="form">
                     <div id="messages-container">
                         <div id="messages">
 
                             <c:forEach items="#{messageViewManagedBean.currentConversation.messages}" var="message">
-                                <div class="message #{message.receiver == messageViewManagedBean.currentConversation.receiver.username ? 'float-right' : 'float-left'}">
-                                    <div class="#{message.receiver == messageViewManagedBean.currentConversation.receiver.username ? 'right-profile-pic' : 'left-profile-pic'}">
+                                <div class="message #{messageViewManagedBean.isReceiver(message) ? 'float-left' : 'float-right'}">
+                                    <div class="#{messageViewManagedBean.isReceiver(message) ? 'left-profile-pic' : 'right-profile-pic'}">
                                         <div class="user-icon">
                                             <div class="icon-text">
-                                                #{message.receiver == messageViewManagedBean.currentConversation.receiver.username ? messageViewManagedBean.currentConversation.receiver.nameLabel : messageViewManagedBean.currentConversation.sender.nameLabel}
+                                                #{messageViewManagedBean.getMessageLabel(message)}
                                             </div>
                                         </div>
                                     </div>
 
-                                    <div class="panel panel-quote panel-quote-flush no-margin #{message.receiver == messageViewManagedBean.currentConversation.receiver.username ? 'panel-quote-right' : ''}" >
+                                    <div class="panel panel-quote panel-quote-flush no-margin #{messageViewManagedBean.isReceiver(message) ? '' : 'panel-quote-right'}" >
                                         <div class="panel-body">
                                             <div class="message-text">
                                                 <p>#{message.message}</p>

@@ -17,11 +17,11 @@ import utils.LoggingUtil;
 /**
  * A Simple {@link org.primefaces.push.Encoder} that decode a {@link MessageDTO} into a simple JSON object.
  */
-public final class MessageEncoder implements Encoder<Message, String> {
+public final class MessageEncoder implements Encoder<MessageDTO, String> {
  
     @Override
-    public String encode(Message message) {
-        LoggingUtil.StaffMessageLog(MessageViewManagedBean.class, new JSONObject(message).toString());
-        return new JSONObject(message).toString();
+    public String encode(MessageDTO m) {
+        LoggingUtil.StaffMessageLog(MessageViewManagedBean.class, "MessageDTO Encoding with message: " + new JSONObject(m).toString());
+        return new JSONObject(m).toString();
     }
 }

@@ -7,7 +7,6 @@ package entity;
 
 import java.io.Serializable;
 import java.util.Date;
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -110,5 +109,14 @@ public class Message implements Serializable {
      */
     public void setSender(String sender) {
         this.sender = sender;
+    }
+    
+    @Override
+    public String toString() {
+        return "entity.Message[ id=" + id 
+                + " ] message:" + this.message 
+                + " createDate:" + this.createDate 
+                + " sender:" + this.sender
+                + " receiver:" + this.receiver;
     }
 }

@@ -36,12 +36,12 @@
                             <div class="conversation" onclick="redirect(#{conversation.id})">
                                 <div class="user-icon">
                                     <div class="icon-text">
-                                        #{conversation.receiver.nameLabel}
+                                        #{chatViewManagedBean.isReceiver(conversation) ? conversation.sender.nameLabel : conversation.receiver.nameLabel}
                                     </div>
                                 </div>
                                 <div class="conversation-text">
                                     <div class="conversation-username">
-                                        <b>#{conversation.receiver.fullName}</b>
+                                        <b>#{chatViewManagedBean.isReceiver(conversation) ? conversation.sender.fullName : conversation.receiver.fullName}</b>
                                     </div>
                                     <div class="conversation-preview">
                                         #{conversation.messages[0].message}
