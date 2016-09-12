@@ -56,6 +56,7 @@ public class MessageViewManagedBean implements Serializable {
             mDTO.setLabel(getMessageLabel(newMessage));
             mDTO.setMessage(newMessage.getMessage());
             mDTO.setSenderName(SessionUtils.getStaff().getFullName());
+            mDTO.setConversationId(conversationId);
             eventBus.publish(CHANNEL + getReceiverUsername(), mDTO);
             newMessage = new Message();
         } else {

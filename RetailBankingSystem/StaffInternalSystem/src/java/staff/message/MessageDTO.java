@@ -11,6 +11,7 @@ package staff.message;
  * @author leiyang
  */
 public class MessageDTO {
+    private String conversationId;
     private String message;
     private String createDate;
     private String label;
@@ -73,5 +74,19 @@ public class MessageDTO {
      */
     public void setSenderName(String senderName) {
         this.senderName = senderName;
+    }
+
+    /**
+     * @return the conversationId
+     */
+    public String getConversationId() {
+        return conversationId;
+    }
+
+    /**
+     * @param conversationId the conversationId to set
+     */
+    public void setConversationId(String conversationId) {
+        this.conversationId = conversationId;
     }
 }

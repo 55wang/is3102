@@ -23,7 +23,6 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.ejb.EJB;
 import javax.faces.view.ViewScoped;
-import utils.JSUtils;
 import utils.LoggingUtil;
 import utils.RedirectUtils;
 import utils.SessionUtils;
@@ -86,7 +85,7 @@ public class ChatViewManagedBean implements Serializable {
     private Conversation checkIfSenderConversationExists(StaffAccount sa) {
         List<Conversation> cs = sa.getSenderConversation();
         for (Conversation c : cs) {
-            if (c.getSender().equals(sa)) {
+            if (c.getSender().equals(SessionUtils.getStaff()) && c.getReceiver().equals(sa)) {
                 LoggingUtil.StaffMessageLog(ChatViewManagedBean.class, "Found Existing Conversation, not creating new one");
                 return c;
             }
