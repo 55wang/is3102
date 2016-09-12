@@ -185,4 +185,8 @@ public class Role implements Serializable {
 //    public void removeStaffAccount(StaffAccount sa) {
 //        this.staffAccounts.remove(sa);
 //    }
+    @Override
+    public String toString() {
+        return this.roleName;
+    }
 }

@@ -50,7 +50,8 @@ public class ChatViewManagedBean implements Serializable {
     @PostConstruct
     public void init() {
         LoggingUtil.StaffMessageLog(ChatViewManagedBean.class, "@PostConstruct init() Created");
-        setStaffs(staffBean.getAllStaffs());
+        showall();
+        removeSelf();
         setConversations(conversationBean.getAllConversationForStaff(SessionUtils.getStaffUsername()));
         LoggingUtil.StaffMessageLog(ChatViewManagedBean.class, "Conversations: " + conversations.size());
     }
@@ -61,7 +62,13 @@ public class ChatViewManagedBean implements Serializable {
     }
     
     public void search() {
-        // TODO:
+        staffs = staffBean.searchStaffByUsernameOrName(searchText);
+        removeSelf();
+    }
+    
+    public void showall() {
+        setStaffs(staffBean.getAllStaffs());
+        removeSelf();
     }
     
     public void newConversation(StaffAccount staff) {
@@ -101,6 +108,17 @@ public class ChatViewManagedBean implements Serializable {
             }
         }
         return false;
+    }
+    
+    public void removeSelf() {
+        List<StaffAccount> result = new ArrayList<>();
+        StaffAccount self = SessionUtils.getStaff();
+        for (StaffAccount sa : staffs) {
+            if (!sa.equals(self)) {
+                result.add(sa);
+            }
+        }
+        staffs = result;
     }
      
     // Getter and Setters

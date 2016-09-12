@@ -49,6 +49,8 @@ public class MessageViewManagedBean implements Serializable {
         newMessage.setReceiver(getReceiverUsername());
         newMessage.setSender(SessionUtils.getStaffUsername());
         LoggingUtil.StaffMessageLog(MessageViewManagedBean.class, String.format("MessageViewManagedBean: SendMessage(): newMessage is %s", getNewMessage()));
+        currentConversation.setUnread(Boolean.TRUE);
+        currentConversation.setLastMessage(newMessage.getMessage());
         if (conversationBean.addMessage(currentConversation, newMessage)) {
             LoggingUtil.StaffMessageLog(MessageViewManagedBean.class, "Created New Message:" + newMessage.getMessage() + " And send to channel: " + CHANNEL + getReceiverUsername());
             MessageDTO mDTO = new MessageDTO();

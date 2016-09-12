@@ -40,6 +40,8 @@ public class Conversation implements Serializable, Comparable<Conversation> {
     private StaffAccount sender;
     @ManyToOne(cascade = {CascadeType.MERGE})
     private StaffAccount receiver;
+    private String lastMessage;
+    private Boolean unread;
     
     @Override
     public int compareTo(Conversation c) {
@@ -142,5 +144,33 @@ public class Conversation implements Serializable, Comparable<Conversation> {
             return false;
         }
         return true;
+    }
+
+    /**
+     * @return the lastMessage
+     */
+    public String getLastMessage() {
+        return lastMessage;
+    }
+
+    /**
+     * @param lastMessage the lastMessage to set
+     */
+    public void setLastMessage(String lastMessage) {
+        this.lastMessage = lastMessage;
+    }
+
+    /**
+     * @return the unread
+     */
+    public Boolean getUnread() {
+        return unread;
+    }
+
+    /**
+     * @param unread the unread to set
+     */
+    public void setUnread(Boolean unread) {
+        this.unread = unread;
     }
 }

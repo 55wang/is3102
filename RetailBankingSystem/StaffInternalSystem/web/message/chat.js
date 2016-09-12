@@ -23,7 +23,7 @@ function Conversation(message) {
     this.senderName = message.senderName;
     this.message = message.message;
     this.conversationId = message.conversationId;
-    this.view = $("<div class='conversation' onclick='redirect(" + this.conversationId + ")'>"
+    this.view = $("<div class='conversation' id='"+this.conversationId+"' onclick='redirect(" + this.conversationId + ")'>"
                 +   "<div class='user-icon'>"
                 +       "<div class='icon-text'>"
                 +           this.label
