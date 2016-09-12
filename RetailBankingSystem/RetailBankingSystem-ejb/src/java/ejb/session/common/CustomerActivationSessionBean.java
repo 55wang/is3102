@@ -41,22 +41,6 @@ public class CustomerActivationSessionBean implements CustomerActivationSessionB
     }
     
     @Override
-    public Boolean changeInitialPwd(String newPwd, String userID){
-        MainAccount ma = (MainAccount) em.find(MainAccount.class , 1); 
-        Query q = em.createQuery("update MainAccount set password = '\" + newPwd + '\" where userID=:userID");
-        
-        q.setParameter("userID", userID);
-        
-        try{
-            q.executeUpdate();
-            return true;
-        }
-        catch (Exception ex) {
-            return false;
-        }
-    }
-    
-    @Override
     public Boolean updateAccountStatus(MainAccount mainAccount){
         Long id = mainAccount.getId();
        

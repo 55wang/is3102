@@ -13,7 +13,6 @@ import javax.ejb.Local;
  * @author VIN-S
  */
 @Local
-public interface CustomerActivationSessionBeanLocal {
-    public MainAccount getMainAccountByEmail(String email);
-    public Boolean updateAccountStatus(MainAccount mainAccount);
+public interface ChangePasswordSessionBeanLocal {
+    public Boolean changePwd(String newPwd, MainAccount mainAccount);
 }
