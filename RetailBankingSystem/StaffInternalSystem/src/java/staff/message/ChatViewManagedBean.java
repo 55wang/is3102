@@ -23,6 +23,7 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.ejb.EJB;
 import javax.faces.view.ViewScoped;
+import utils.ColorUtils;
 import utils.LoggingUtil;
 import utils.RedirectUtils;
 import utils.SessionUtils;
@@ -119,6 +120,10 @@ public class ChatViewManagedBean implements Serializable {
             }
         }
         staffs = result;
+    }
+    
+    public String randColor() {
+        return ColorUtils.randomColor();
     }
      
     // Getter and Setters

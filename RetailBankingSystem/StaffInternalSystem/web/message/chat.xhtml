@@ -33,7 +33,7 @@
                         <c:forEach items="#{chatViewManagedBean.conversations}" var="conversation">
                             <!-- Can be modeled by jQuery -->
                             <div class="conversation" id="#{conversation.id}" onclick="redirect(#{conversation.id})">
-                                <div class="user-icon">
+                                <div class="user-icon" style="background-color:#{chatViewManagedBean.randColor()}">
                                     <div class="icon-text">
                                         #{chatViewManagedBean.isReceiver(conversation) ? conversation.sender.nameLabel : conversation.receiver.nameLabel}
                                     </div>

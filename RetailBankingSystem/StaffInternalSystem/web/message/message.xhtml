@@ -13,7 +13,7 @@
             <f:viewAction action="#{messageViewManagedBean.init()}"></f:viewAction>
         </f:metadata>
         <h:head>
-            <title>#{messageViewManagedBean.conversationId}</title>
+            <title>Conversation</title>
             <em:cssImport></em:cssImport>
             <link type="text/css" rel="stylesheet" href="chat.css"/>
         </h:head>
@@ -29,7 +29,7 @@
                             <c:forEach items="#{messageViewManagedBean.currentConversation.messages}" var="message">
                                 <div class="message #{messageViewManagedBean.isReceiver(message) ? 'float-left' : 'float-right'}">
                                     <div class="#{messageViewManagedBean.isReceiver(message) ? 'left-profile-pic' : 'right-profile-pic'}">
-                                        <div class="user-icon">
+                                        <div class="user-icon" style="background-color:#{messageViewManagedBean.isReceiver(message) ? messageViewManagedBean.receiverColor : messageViewManagedBean.senderColor};">
                                             <div class="icon-text">
                                                 #{messageViewManagedBean.getMessageLabel(message)}
                                             </div>

@@ -15,6 +15,7 @@ import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import org.primefaces.push.EventBus;
 import org.primefaces.push.EventBusFactory;
+import utils.ColorUtils;
 import utils.LoggingUtil;
 import utils.SessionUtils;
 
@@ -35,6 +36,8 @@ public class MessageViewManagedBean implements Serializable {
     private String conversationId;
     private Conversation currentConversation;
     private Message newMessage = new Message();
+    private String senderColor = randColor();
+    private String receiverColor = randColor();
 
     public MessageViewManagedBean() {
     }
@@ -86,6 +89,10 @@ public class MessageViewManagedBean implements Serializable {
         StaffAccount sa = SessionUtils.getStaff();
         return sa.getUsername().equals(m.getReceiver());
     }
+    
+    public String randColor() {
+        return ColorUtils.randomColor();
+    }
 
     /**
      * @return the conversationId
@@ -127,6 +134,34 @@ public class MessageViewManagedBean implements Serializable {
      */
     public void setCurrentConversation(Conversation currentConversation) {
         this.currentConversation = currentConversation;
+    }
+
+    /**
+     * @return the senderColor
+     */
+    public String getSenderColor() {
+        return senderColor;
+    }
+
+    /**
+     * @param senderColor the senderColor to set
+     */
+    public void setSenderColor(String senderColor) {
+        this.senderColor = senderColor;
+    }
+
+    /**
+     * @return the receiverColor
+     */
+    public String getReceiverColor() {
+        return receiverColor;
+    }
+
+    /**
+     * @param receiverColor the receiverColor to set
+     */
+    public void setReceiverColor(String receiverColor) {
+        this.receiverColor = receiverColor;
     }
 
 }

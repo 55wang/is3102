@@ -41,6 +41,6 @@ function Conversation(message) {
 }
 Conversation.prototype.init = function() {
     console.log("Prepending view");
-    $("#old-conversations").append(this.view);
+    $("#old-conversations").prepend(this.view);
     $("#old-conversations").scrollTop(0);
 }
