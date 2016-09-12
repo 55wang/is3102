@@ -21,7 +21,7 @@ function Message(message) {
     this.message = message.message;
     this.view = $("<div class='message float-left'>"
                     +   "<div class='left-profile-pic'>"
-                    +       "<div class='user-icon'>"
+                    +       "<div class='user-icon' style='background-color:" + $("#receiver-color").val() + ";'>"
                     +           "<div class='icon-text'>"
                     +               this.label
                     +           "</div>"

@@ -22,6 +22,8 @@
             <em:staffSideBar top="message" side="chat"></em:staffSideBar>
             <div class="container">
                 <!--Add socket here maybe just one channel for self-->
+                <input id="receiver-color" class="hidden" value="#{messageViewManagedBean.receiverColor}" />
+                <input id="sender-color" class="hidden" value="#{messageViewManagedBean.senderColor}" />
                 <h:form id="form">
                     <div id="messages-container">
                         <div id="messages">
