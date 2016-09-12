@@ -8,8 +8,11 @@ package ejb.session.message;
 import entity.Conversation;
 import entity.Message;
 import entity.StaffAccount;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.ejb.Stateless;
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityManager;
@@ -75,11 +78,22 @@ public class ConversationSessionBean implements ConversationSessionBeanLocal {
             System.out.println("Found StaffAccount: with receiver conversations: " + conversations.size());
             conversations.addAll(sa.getSenderConversation());
             System.out.println("Found StaffAccount: with sender conversations: " + sa.getSenderConversation().size());
+            conversations = dedupConversation(conversations);
             Collections.sort(conversations);
             System.out.println("Found StaffAccount: with conversations: " + conversations.size());
             return conversations;
         } else {
             return null;
         }
+    }
+    
+    private List<Conversation> dedupConversation(List<Conversation> conversations) {
+        Map<Long, Conversation> map = new HashMap<>();
+        for (Conversation c : conversations) {
+            System.out.println("dedup: puting c.id:" + c.getId());
+            map.put(c.getId(), c);
+        }
+        System.out.println("dedup: map size:" + map.size());
+        return new ArrayList<Conversation>(map.values());
     }
 }
