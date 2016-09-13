@@ -23,7 +23,10 @@ import utils.SessionUtils;
 public class CustomerProfileManagedBean implements Serializable {
     @EJB
     private CustomerProfileSessionBeanLocal customerProfileSessionBean;
-    private Customer customer;    
+    private Customer customer; 
+    
+    private Boolean editingPage = false;
+    private Boolean profileEdited = false;
 
     
     /**
@@ -31,6 +34,19 @@ public class CustomerProfileManagedBean implements Serializable {
      */
     public CustomerProfileManagedBean() {
        
+    }
+    
+    public void goToEditPage (){
+        editingPage = true;
+    }
+    
+    public void goToConfirmPage(){
+        editingPage = false;
+        profileEdited = true;
+    }
+    
+    public Boolean save(){
+        return customerProfileSessionBean.saveProfile(customer);
     }
 
     public Customer getCustomer() {
@@ -41,6 +57,35 @@ public class CustomerProfileManagedBean implements Serializable {
     public void setCustomer() {
         this.customer = customerProfileSessionBean.getCustomerByUserID(SessionUtils.getUserName());
     }
+
+    /**
+     * @return the editingPage
+     */
+    public Boolean getEditingPage() {
+        return editingPage;
+    }
+
+    /**
+     * @param editingPage the editingPage to set
+     */
+    public void setEditingPage(Boolean editingPage) {
+        this.editingPage = editingPage;
+    }
+
+    /**
+     * @return the profileEdited
+     */
+    public Boolean getProfileEdited() {
+        return profileEdited;
+    }
+
+    /**
+     * @param profileEdited the profileEdited to set
+     */
+    public void setProfileEdited(Boolean profileEdited) {
+        this.profileEdited = profileEdited;
+    }
+
    
        
     

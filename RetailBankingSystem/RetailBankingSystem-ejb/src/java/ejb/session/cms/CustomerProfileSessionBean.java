@@ -38,6 +38,19 @@ public class CustomerProfileSessionBean implements CustomerProfileSessionBeanLoc
             return null;
         }
     }
+    
+    public Boolean saveProfile(Customer customer){
+        try{
+            
+            em.merge(customer);
+            em.flush();
+            
+            return true;
+        }
+        catch (Exception ex) {
+            return false;
+        }
+    }
 
     
     
