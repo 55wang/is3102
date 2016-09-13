@@ -17,12 +17,17 @@
         <f:view>
             <div id="customer-navbar" class="h-center">
                 <ul class="header-navigation">
-                    <c:if test="#{cc.attrs.context == 'index'}">
+                    <c:if test="#{cc.attrs.context.contains('index')}">
                         <!--http://stackoverflow.com/questions/7915134/how-to-use-the-spring-security-facelets-tag-library-in-jsf-->
                         <!--sec:authorize access="hasAnyRole('counterStaff')"></sec:authorize-->
                         <!--TODO: wrap menu option with sec tag -->
-                        <li id="header-overview" class="#{cc.attrs.context == 'index' ? 'active' : ''}" value="Home"><a href=".">Home</a></li>
-                        <li id="header-overview" class="#{cc.attrs.context == 'button' ? 'active' : ''}" value="button"><a href="#">Accounts</a></li>
+                        <c:if test="#{cc.attrs.context == 'index'}">
+                            <li id="header-overview" class="#{cc.attrs.pageName == 'index' ? 'active' : ''}" value="Home"><a href=".">Home</a></li>
+                        </c:if>
+                        <c:if test="#{cc.attrs.context.contains('index_')}">
+                            <li id="header-overview" class="#{cc.attrs.pageName == 'index' ? 'active' : ''}" value="Home"><a href="../index.xhtml">Home</a></li>
+                        </c:if>
+                        <li id="header-overview" class="#{cc.attrs.pageName == 'index_deposit' ? 'active' : ''}" value="Deposit"><a href="index_subpages/index_deposit.xhtml">Deposit</a></li>
                         <li id="header-overview" class="#{cc.attrs.context == 'button' ? 'active' : ''}" value="button"><a href="#">button</a></li>
                         <li id="header-overview" class="#{cc.attrs.context == 'button' ? 'active' : ''}" value="button"><a href="#">button</a></li>
                         <li id="header-overview" class="#{cc.attrs.context == 'button' ? 'active' : ''}" value="button"><a href="#">button</a></li>

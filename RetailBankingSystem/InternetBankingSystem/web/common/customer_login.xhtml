@@ -22,29 +22,33 @@ and open the template in the editor.
         <p:layout class="h-center" style="width:400px;height:300px;top:55%">
             <p:layoutUnit position="center">
                 <h:form id="customer-login-form">
+                    <p:messages id="messagesStatus" redisplay="false">
                     <h:panelGrid columns="2" id="customer-login-panel" cellpadding="5" class="h-center" style="top:25%">                   
                         <h:outputText value="User ID: " />
-                        <h:inputText value="#{customerLoginManagedBean.loginAccount.userID}" styleClass="outputLabel"/>
+                        <p:inputText value="#{customerLoginManagedBean.loginAccount.userID}" styleClass="outputLabel"/>
 
  
                         <h:outputText value="Password: " />
-                        <h:inputText value="#{customerLoginManagedBean.loginAccount.password}" styleClass="outputLabel"/>
+                        <p:password value="#{customerLoginManagedBean.loginAccount.password}" styleClass="outputLabel"/>
 
                     </h:panelGrid>
         
-                    <p:commandButton value="Log in" actionListener="#{customerLoginManagedBean.loginCustomer}" class="h-center" style="margin-top:35%"/>
+                    <p:commandButton value="Log in" actionListener="#{customerLoginManagedBean.loginCustomer}" class="h-center" style="margin-top:35%" update="@form"/>
+                    </p:messages>
                 </h:form>
-                <div id="customer-login-service">
-                    <div id="forgot-password-holder">
-                        <h:outputText value="Forgot " />
-                            <h:link outcome="customer_find_password" value="password" />
-                        <h:outputText value="?" />
-                    </div>
-                    <div id="new-user-holder">
-                        <h:outputText value="New to merlion bank?" />
-                        <h:button outcome="customer_register" value="Get Started" />
-                    </div>
-                </div>
+                <h:form>
+                    <p:messages id="messagesStatus" redisplay="false">
+                        <div id="customer-login-service">
+                            <div id="forgot-username-password-holder" class="h-center" style="margin-top:65%">
+                                <h:outputText value="Forgot " />
+                                <h:link value="User ID" outcome="customer_find_username"/>
+                                <h:outputText value=" or " />
+                                <h:link value="Password" outcome="customer_find_password"/>
+                                <h:outputText value="?" />
+                            </div>
+                        </div>
+                    </p:messages>
+                </h:form>
             </p:layoutUnit>
         </p:layout>
     </h:body>

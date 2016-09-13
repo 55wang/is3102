@@ -5,6 +5,7 @@
  */
 package ejb.session.common;
 
+import entity.MainAccount;
 import java.util.Date;
 import java.util.Properties;
 import javax.ejb.Stateless;
@@ -65,6 +66,7 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
         }
     }
 
+    @Override
     public Boolean sendActivationGmailForNewCustomer(String recipient) {
 
         String activationCode = "123456";
@@ -76,7 +78,7 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
         props.put("mail.smtp.auth", "true");
         props.put("mail.smtp.port", "465");
 
-        Session session = Session.getDefaultInstance(props,
+        Session session = Session.getInstance(props,
                 new javax.mail.Authenticator() {
                     protected javax.mail.PasswordAuthentication getPasswordAuthentication() {
                         return new javax.mail.PasswordAuthentication("merlionbanking", "p@ssword1");
@@ -91,6 +93,7 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
                     InternetAddress.parse(recipient));
             message.setSubject("Welcome to Merlion Banking");
             message.setText("Dear Customer, Thank you to register merionlion banking.\n You activiation code is " + activationCode);
+            message.setText("Link to activate your member account: https://localhost:8181/InternetBankingSystem/common/customer_activate_account.xhtml?email=" + recipient);
 
             Transport.send(message);
 
@@ -102,6 +105,80 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
             return (false);
         }
 
+    }
+    
+    @Override
+    public Boolean sendUserIDforForgottenCustomer(String recipient, MainAccount forgotAccount){
+        Properties props = new Properties();
+        props.put("mail.smtp.host", "smtp.gmail.com");
+        props.put("mail.smtp.socketFactory.port", "465");
+        props.put("mail.smtp.socketFactory.class",
+                "javax.net.ssl.SSLSocketFactory");
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.port", "465");
+
+        Session session = Session.getInstance(props,
+                new javax.mail.Authenticator() {
+                    protected javax.mail.PasswordAuthentication getPasswordAuthentication() {
+                        return new javax.mail.PasswordAuthentication("merlionbanking", "p@ssword1");
+                    }
+                });
+
+        try {
+
+            Message message = new MimeMessage(session);
+            message.setFrom(new InternetAddress("merlionbanking@gmail.com"));
+            message.setRecipients(Message.RecipientType.TO,
+                    InternetAddress.parse(recipient));
+            message.setSubject("Please check your User ID");
+            message.setText("Dear Customer, your User ID is: " + forgotAccount.getUserID());
+
+            Transport.send(message);
+
+            System.out.println("Email send out successfully");
+            return (true);
+
+        } catch (MessagingException e) {
+            System.out.println(e);;
+            return (false);
+        }
+    }
+    
+    @Override
+    public Boolean sendResetPwdLinkforForgottenCustomer(String recipient, MainAccount forgotAccount){
+        Properties props = new Properties();
+        props.put("mail.smtp.host", "smtp.gmail.com");
+        props.put("mail.smtp.socketFactory.port", "465");
+        props.put("mail.smtp.socketFactory.class",
+                "javax.net.ssl.SSLSocketFactory");
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.port", "465");
+
+        Session session = Session.getInstance(props,
+                new javax.mail.Authenticator() {
+                    protected javax.mail.PasswordAuthentication getPasswordAuthentication() {
+                        return new javax.mail.PasswordAuthentication("merlionbanking", "p@ssword1");
+                    }
+                });
+
+        try {
+
+            Message message = new MimeMessage(session);
+            message.setFrom(new InternetAddress("merlionbanking@gmail.com"));
+            message.setRecipients(Message.RecipientType.TO,
+                    InternetAddress.parse(recipient));
+            message.setSubject("Reset your password");
+            message.setText("Dear Customer, please go to following link to reset your password: ");
+
+            Transport.send(message);
+
+            System.out.println("Email send out successfully");
+            return (true);
+
+        } catch (MessagingException e) {
+            System.out.println(e);;
+            return (false);
+        }
     }
 
 }

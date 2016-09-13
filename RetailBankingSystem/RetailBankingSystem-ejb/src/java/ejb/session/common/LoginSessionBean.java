@@ -57,6 +57,25 @@ public class LoginSessionBean implements LoginSessionBeanLocal {
         }
     }
     
+    @Override
+    public MainAccount getMainAccountByEmail(String email){
+        Query q = em.createQuery("SELECT a FROM Customer a WHERE a.email = :email");
+        
+        q.setParameter("email", email);
+        
+        Customer customer = null;
+          
+        try {
+            customer = (Customer) q.getSingleResult(); 
+            if(customer != null)
+                return customer.getMainAccount();
+            else
+                return null;
+        } catch (NoResultException ex) {
+            return null;
+        }
+    }
+    
     public List<MainAccount> showAllAccounts() {
         Query q = em.createQuery("SELECT a FROM MainAccount a");
         return q.getResultList();

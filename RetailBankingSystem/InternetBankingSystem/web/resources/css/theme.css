@@ -317,6 +317,10 @@ and open the template in the editor.
     margin-right: auto;
     width:fit-content;
 }
+
+#register-form-container .ui-scrollpanel .ui-scrollpanel-drag{
+    background: #aaa !important;
+}
 /* end of wizard overwrite */
 /* general */
 .container {

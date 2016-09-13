@@ -42,8 +42,16 @@ public class Customer implements Serializable {
     private String postalCode;
      
     private String email;
-     
+    
     private String phone;
+    
+    private String occupation;
+    
+    private String income;
+    
+    private String nationality;
+    
+    private String gender;
     
     @OneToOne(cascade = {CascadeType.PERSIST})
     private MainAccount mainAccount;
@@ -126,6 +134,38 @@ public class Customer implements Serializable {
  
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public String getOccupation() {
+        return occupation;
+    }
+
+    public void setOccupation(String occupation) {
+        this.occupation = occupation;
+    }
+
+    public String getIncome() {
+        return income;
+    }
+
+    public void setIncome(String income) {
+        this.income = income;
+    }
+
+    public String getNationality() {
+        return nationality;
+    }
+
+    public void setNationality(String nationality) {
+        this.nationality = nationality;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
     }
 
     @Override

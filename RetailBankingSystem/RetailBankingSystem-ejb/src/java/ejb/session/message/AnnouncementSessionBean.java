@@ -32,6 +32,7 @@ public class AnnouncementSessionBean implements AnnouncementSessionBeanLocal {
             return false;
         }
     }
+    
     @Override
     public List<Announcement> getAllAnnouncements() {
         Query q = em.createQuery("SELECT a FROM Announcement a ORDER BY a.creationDate DESC");

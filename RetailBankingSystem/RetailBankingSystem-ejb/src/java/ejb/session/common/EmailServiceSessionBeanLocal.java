@@ -5,6 +5,7 @@
  */
 package ejb.session.common;
 
+import entity.MainAccount;
 import javax.ejb.Local;
 
 /**
@@ -15,4 +16,6 @@ import javax.ejb.Local;
 public interface EmailServiceSessionBeanLocal {
     public Boolean sendActivationEmailForNewCustomer(String recipient);
     public Boolean sendActivationGmailForNewCustomer(String recipient);
+    public Boolean sendUserIDforForgottenCustomer(String recipient, MainAccount forgotAccount);
+    public Boolean sendResetPwdLinkforForgottenCustomer(String recipient, MainAccount forgotAccount);
 }

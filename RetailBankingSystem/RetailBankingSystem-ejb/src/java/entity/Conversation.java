@@ -24,7 +24,7 @@ import javax.persistence.TemporalType;
  * @author leiyang
  */
 @Entity
-public class Conversation implements Serializable {
+public class Conversation implements Serializable, Comparable<Conversation> {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -34,14 +34,23 @@ public class Conversation implements Serializable {
     private Date createDate = new Date();
     @Temporal(value = TemporalType.TIMESTAMP)
     private Date updateDate = new Date();
-    @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "conversation")
+    @OneToMany(cascade = {CascadeType.ALL}, mappedBy = "conversation")
     private List<Message> messages = new ArrayList<Message>();
-    @ManyToOne(cascade={CascadeType.PERSIST})
+    @ManyToOne(cascade = {CascadeType.MERGE})
     private StaffAccount sender;
-    @ManyToOne(cascade={CascadeType.PERSIST})
+    @ManyToOne(cascade = {CascadeType.MERGE})
     private StaffAccount receiver;
-    private Boolean readBySender = false;
-    private Boolean readByReceiver = false;
+    private String lastMessage;
+    private Boolean unread;
+    
+    @Override
+    public int compareTo(Conversation c) {
+        return this.updateDate.compareTo(c.updateDate);
+    }
+    
+    public void addMessage(Message m) {
+        messages.add(m);
+    }
 
     public Long getId() {
         return id;
@@ -83,6 +92,9 @@ public class Conversation implements Serializable {
      * @return the messages
      */
     public List<Message> getMessages() {
+        if (messages == null) {
+            return new ArrayList<>();
+        }
         return messages;
     }
 
@@ -121,32 +133,44 @@ public class Conversation implements Serializable {
         this.receiver = receiver;
     }
 
-    /**
-     * @return the readBySender
-     */
-    public Boolean getReadBySender() {
-        return readBySender;
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof Conversation)) {
+            return false;
+        }
+        Conversation other = (Conversation) object;
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+            return false;
+        }
+        return true;
     }
 
     /**
-     * @param readBySender the readBySender to set
+     * @return the lastMessage
      */
-    public void setReadBySender(Boolean readBySender) {
-        this.readBySender = readBySender;
+    public String getLastMessage() {
+        return lastMessage;
     }
 
     /**
-     * @return the readByReceiver
+     * @param lastMessage the lastMessage to set
      */
-    public Boolean getReadByReceiver() {
-        return readByReceiver;
+    public void setLastMessage(String lastMessage) {
+        this.lastMessage = lastMessage;
     }
 
     /**
-     * @param readByReceiver the readByReceiver to set
+     * @return the unread
      */
-    public void setReadByReceiver(Boolean readByReceiver) {
-        this.readByReceiver = readByReceiver;
+    public Boolean getUnread() {
+        return unread;
     }
-    
+
+    /**
+     * @param unread the unread to set
+     */
+    public void setUnread(Boolean unread) {
+        this.unread = unread;
+    }
 }

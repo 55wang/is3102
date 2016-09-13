@@ -5,10 +5,14 @@
  */
 package utils;
 
+import org.primefaces.context.RequestContext;
+
 /**
  *
  * @author leiyang
  */
-public interface Encoder<U, T> {
-    T encode(U s);
+public class JSUtils {
+    public static void callJSMethod(String s) {
+        RequestContext.getCurrentInstance().execute(s);
+    }
 }

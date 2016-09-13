@@ -49,6 +49,8 @@ public class StaffLoginManagedBean implements Serializable {
             StaffAccount superAccount = new StaffAccount();
             superAccount.setUsername(u);
             superAccount.setPassword(p);
+            superAccount.setFirstName("Super");
+            superAccount.setLastName("Account");
             Role r = staffRoleSessionBean.getSuperAdminRole();
             superAccount.setRole(r);
             staffAccountSessionBean.createAccount(superAccount);
