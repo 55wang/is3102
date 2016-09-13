@@ -5,7 +5,8 @@
  */
 package staff.message;
 
-import utils.Decoder;
+import org.primefaces.push.Decoder;
+import utils.LoggingUtil;
 
 /**
  *
@@ -13,18 +14,20 @@ import utils.Decoder;
  */
  
 /**
- * A Simple {@link org.primefaces.push.Decoder} that decode a String into a {@link Message} object.
+ * A Simple {@link org.primefaces.push.Decoder} that decode a String into a {@link MessageDTO} object.
  */
-public class MessageDecoder implements Decoder<String,Message> {
+public class MessageDecoder implements Decoder<String,MessageDTO> {
  
     @Override
-    public Message decode(String s) {
+    public MessageDTO decode(String s) {
+        LoggingUtil.StaffMessageLog(MessageDecoder.class, "MessageDecoder with string: " + s);
         String[] userAndMessage = s.split(":");
+        System.out.println(userAndMessage);
         if (userAndMessage.length >= 2) {
-            return new Message().setUser(userAndMessage[0]).setText(userAndMessage[1]);
+            return new MessageDTO();
         } 
         else {
-            return new Message(s);
+            return new MessageDTO();
         }
     }
 }

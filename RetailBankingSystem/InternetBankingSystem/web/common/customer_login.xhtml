@@ -22,22 +22,29 @@ and open the template in the editor.
         <p:layout class="h-center" style="width:400px;height:300px;top:55%">
             <p:layoutUnit position="center">
                 <h:form id="customer-login-form">
+                    <p:messages id="messagesStatus" redisplay="false">
                     <h:panelGrid columns="2" id="customer-login-panel" cellpadding="5" class="h-center" style="top:25%">                   
                         <h:outputText value="User ID: " />
-                        <h:inputText value="#{customerLoginManagedBean.loginAccount.userID}" styleClass="outputLabel"/>
+                        <p:inputText value="#{customerLoginManagedBean.loginAccount.userID}" styleClass="outputLabel"/>
 
  
                         <h:outputText value="Password: " />
-                        <h:inputText value="#{customerLoginManagedBean.loginAccount.password}" styleClass="outputLabel"/>
+                        <p:password value="#{customerLoginManagedBean.loginAccount.password}" styleClass="outputLabel"/>
 
                     </h:panelGrid>
         
-                    <p:commandButton value="Log in" actionListener="#{customerLoginManagedBean.loginCustomer}" class="h-center" style="margin-top:35%"/>
+                    <p:commandButton value="Log in" actionListener="#{customerLoginManagedBean.loginCustomer}" class="h-center" style="margin-top:35%" update="@form"/>
+                    </p:messages>
                 </h:form>
                 <div id="customer-login-service">
                     <div id="forgot-password-holder">
                         <h:outputText value="Forgot " />
                             <h:link outcome="customer_find_password" value="password" />
+                        <h:outputText value="?" />
+                    </div>
+                    <div id="forgot-username-holder">
+                        <h:outputText value="Forgot " />
+                            <h:link outcome="customer_find_username" value="username" />
                         <h:outputText value="?" />
                     </div>
                 </div>

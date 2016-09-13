@@ -5,12 +5,15 @@
  */
 package staff.others;
 
-import entity.Role;
 import entity.Role.Permission;
+import entity.StaffAccount;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
 import java.util.List;
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
+import utils.LoggingUtil;
 import utils.SessionUtils;
 import utils.UserUtils;
 
@@ -32,6 +35,14 @@ public class StaffUserManagedBean implements Serializable {
     private Permission PERMISSION_PORTFOLIO = Permission.PORTFOLIO;
     private Permission PERMISSION_ANALYTICS = Permission.ANALYTICS;
 
+    @PostConstruct
+    public void init() {
+        LoggingUtil.StaffMessageLog(StaffUserManagedBean.class, "StaffUserManagedBean @PostConstruct init");
+    }
+    @PreDestroy
+    public void deinit() {
+        LoggingUtil.StaffMessageLog(StaffUserManagedBean.class, "StaffUserManagedBean @PostConstruct deinit");
+    }
     /**
      * Creates a new instance of StaffUserManagedBean
      */
@@ -39,6 +50,10 @@ public class StaffUserManagedBean implements Serializable {
     
     public String getUserName() {
         return SessionUtils.getStaffUsername();
+    }
+    
+    public StaffAccount getStaff() {
+        return SessionUtils.getStaff();
     }
     
     public Boolean isUserInRole(Permission p) {
@@ -159,5 +174,19 @@ public class StaffUserManagedBean implements Serializable {
      */
     public void setPERMISSION_PORTFOLIO(Permission PERMISSION_PORTFOLIO) {
         this.PERMISSION_PORTFOLIO = PERMISSION_PORTFOLIO;
+    }
+
+    /**
+     * @return the PERMISSION_ANALYTICS
+     */
+    public Permission getPERMISSION_ANALYTICS() {
+        return PERMISSION_ANALYTICS;
+    }
+
+    /**
+     * @param PERMISSION_ANALYTICS the PERMISSION_ANALYTICS to set
+     */
+    public void setPERMISSION_ANALYTICS(Permission PERMISSION_ANALYTICS) {
+        this.PERMISSION_ANALYTICS = PERMISSION_ANALYTICS;
     }
 }

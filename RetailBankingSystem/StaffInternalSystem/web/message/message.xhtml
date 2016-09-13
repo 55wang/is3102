@@ -1,0 +1,77 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:em="http://xmlns.jcp.org/jsf/composite/emcomp"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <!--shift + ctrl + F, format-->
+    <f:view>
+        <f:metadata>
+            <f:viewParam name="conversationId" value="#{messageViewManagedBean.conversationId}" />
+            <f:viewAction action="#{messageViewManagedBean.init()}"></f:viewAction>
+        </f:metadata>
+        <h:head>
+            <title>Conversation</title>
+            <em:cssImport></em:cssImport>
+            <link type="text/css" rel="stylesheet" href="chat.css"/>
+        </h:head>
+        <h:body>
+            <em:staffNavBar context="message"></em:staffNavBar>
+            <em:staffSideBar top="message" side="chat"></em:staffSideBar>
+            <div class="container">
+                <!--Add socket here maybe just one channel for self-->
+                <input id="receiver-color" class="hidden" value="#{messageViewManagedBean.receiverColor}" />
+                <input id="sender-color" class="hidden" value="#{messageViewManagedBean.senderColor}" />
+                <h:form id="form">
+                    <div id="messages-container">
+                        <div id="messages">
+
+                            <c:forEach items="#{messageViewManagedBean.currentConversation.messages}" var="message">
+                                <div class="message #{messageViewManagedBean.isReceiver(message) ? 'float-left' : 'float-right'}">
+                                    <div class="#{messageViewManagedBean.isReceiver(message) ? 'left-profile-pic' : 'right-profile-pic'}">
+                                        <div class="user-icon" style="background-color:#{messageViewManagedBean.isReceiver(message) ? messageViewManagedBean.receiverColor : messageViewManagedBean.senderColor};">
+                                            <div class="icon-text">
+                                                #{messageViewManagedBean.getMessageLabel(message)}
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="panel panel-quote panel-quote-flush no-margin #{messageViewManagedBean.isReceiver(message) ? '' : 'panel-quote-right'}" >
+                                        <div class="panel-body">
+                                            <div class="message-text">
+                                                <p>#{message.message}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="time-container">
+                                        <span>
+                                            #{message.createDate}
+                                        </span>
+                                    </div>
+                                </div>
+                            </c:forEach>
+                        </div>
+
+                        <div id="outbox">
+
+                            <p:inputTextarea id="newmessage" class="width-80" value="#{messageViewManagedBean.newMessage.message}"/>
+                            <br></br>
+                            <p:commandButton value="Send" update="@form" actionListener="#{messageViewManagedBean.sendMessage}" />
+
+                        </div>
+                    </div>
+                </h:form>
+            </div>
+
+            <div id="output"></div>
+
+            <!--To use jquery with javascript here-->
+            <h:outputScript library="primefaces" name="jquery/jquery.js" />
+            <script type="text/javascript" src="message.js"></script>
+        </h:body>
+    </f:view>
+</html>
+

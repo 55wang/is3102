@@ -32,10 +32,18 @@ public class StaffAccount implements Serializable {
     @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "staffAccount")
     private List<AuditLog> auditLog = new ArrayList<AuditLog>();
     @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "sender")
-    private List<Conversation> outgoingConversation = new ArrayList<Conversation>();
+    private List<Conversation> senderConversation = new ArrayList<Conversation>();
     @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "receiver")
-    private List<Conversation> incomingConversation = new ArrayList<Conversation>();
+    private List<Conversation> receiverConversation = new ArrayList<Conversation>();
 
+    public String getNameLabel() {
+        return this.getFirstName().substring(0, 1).toUpperCase() + this.getLastName().substring(0, 1).toUpperCase();
+    }
+    
+    public String getFullName() {
+        return this.getFirstName() + " " + this.getLastName();
+    }
+    
     public String getUsername() {
         return username;
     }
@@ -95,31 +103,57 @@ public class StaffAccount implements Serializable {
     }
 
     /**
-     * @return the outgoingConversation
+     * @return the senderConversation
      */
-    public List<Conversation> getOutgoingConversation() {
-        return outgoingConversation;
+    public List<Conversation> getSenderConversation() {
+        return senderConversation;
     }
 
     /**
-     * @param outgoingConversation the outgoingConversation to set
+     * @param senderConversation the senderConversation to set
      */
-    public void setOutgoingConversation(List<Conversation> outgoingConversation) {
-        this.outgoingConversation = outgoingConversation;
+    public void setSenderConversation(List<Conversation> senderConversation) {
+        this.senderConversation = senderConversation;
     }
 
     /**
-     * @return the incomingConversation
+     * @return the receiverConversation
      */
-    public List<Conversation> getIncomingConversation() {
-        return incomingConversation;
+    public List<Conversation> getReceiverConversation() {
+        return receiverConversation;
     }
 
     /**
-     * @param incomingConversation the incomingConversation to set
+     * @param receiverConversation the receiverConversation to set
      */
-    public void setIncomingConversation(List<Conversation> incomingConversation) {
-        this.incomingConversation = incomingConversation;
+    public void setReceiverConversation(List<Conversation> receiverConversation) {
+        this.receiverConversation = receiverConversation;
     }
 
+    /**
+     * @return the auditLog
+     */
+    public List<AuditLog> getAuditLog() {
+        return auditLog;
+    }
+
+    /**
+     * @param auditLog the auditLog to set
+     */
+    public void setAuditLog(List<AuditLog> auditLog) {
+        this.auditLog = auditLog;
+    }
+    
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof StaffAccount)) {
+            return false;
+        }
+        StaffAccount other = (StaffAccount) object;
+        if ((this.username == null && other.username != null) || (this.username != null && !this.username.equals(other.username))) {
+            return false;
+        }
+        return true;
+    }
 }
