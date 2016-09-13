@@ -28,12 +28,12 @@ and open the template in the editor.
                         </h:panelGrid>
                         <h:panelGrid columns="2" id="customer-login-panel" cellpadding="5" class="h-center" style="top:50%">                   
                             <h:outputText value="Registered email: " />
-                            <p:inputText value="#{customerLoginManagedBean.findPasswordEmail}" styleClass="outputLabel"/>
+                            <p:inputText value="#{customerLoginManagedBean.findUsernameEmail}" styleClass="outputLabel"/>
                         </h:panelGrid>
         
                         <h:panelGrid columns="2" cellpadding="5" class="h-center" style="margin-top:60%">
                             <p:commandButton value="Back" actionListener="#{customerLoginManagedBean.backtoLogin}"/>
-                            <p:commandButton value="Submit" actionListener="#{customerLoginManagedBean.forgotPassword}"  update="@form"/>
+                            <p:commandButton value="Submit" actionListener="#{customerLoginManagedBean.forgotUserID}"  update="@form"/>
                         </h:panelGrid>
                     </p:messages>
                 </h:form>

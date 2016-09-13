@@ -36,13 +36,19 @@ and open the template in the editor.
                     <p:commandButton value="Log in" actionListener="#{customerLoginManagedBean.loginCustomer}" class="h-center" style="margin-top:35%" update="@form"/>
                     </p:messages>
                 </h:form>
-                <div id="customer-login-service">
-                    <div id="forgot-password-holder">
-                        <h:outputText value="Forgot " />
-                            <h:link outcome="customer_find_password" value="password" />
-                        <h:outputText value="?" />
-                    </div>
-                </div>
+                <h:form>
+                    <p:messages id="messagesStatus" redisplay="false">
+                        <div id="customer-login-service">
+                            <div id="forgot-username-password-holder" class="h-center" style="margin-top:65%">
+                                <h:outputText value="Forgot " />
+                                <h:link value="User ID" outcome="customer_find_username"/>
+                                <h:outputText value=" or " />
+                                <h:link value="Password" outcome="customer_find_password"/>
+                                <h:outputText value="?" />
+                            </div>
+                        </div>
+                    </p:messages>
+                </h:form>
             </p:layoutUnit>
         </p:layout>
     </h:body>

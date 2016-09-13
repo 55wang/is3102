@@ -5,6 +5,7 @@
  */
 package customer.common;
 
+import ejb.session.common.EmailServiceSessionBeanLocal;
 import ejb.session.common.LoginSessionBeanLocal;
 import entity.MainAccount;
 import java.io.Serializable;
@@ -24,9 +25,14 @@ import utils.SessionUtils;
 @ViewScoped
 public class CustomerLoginManagedBean implements Serializable{
     @EJB
+    private EmailServiceSessionBeanLocal emailServiceSessionBean;
+    @EJB
     private LoginSessionBeanLocal loginSessionBean;
     
     private MainAccount loginAccount = new MainAccount();
+    
+    private String findUsernameEmail;
+    private String findPasswordEmail;
     
 
     /**
@@ -62,9 +68,69 @@ public class CustomerLoginManagedBean implements Serializable{
                 RedirectUtils.redirect("customer_home.xhtml");
             }
         } catch (NullPointerException e) {
-            RedirectUtils.redirect("fail.xhtml");
+            String msg = "Account not exists or password incorrect.";
+            MessageUtils.displayError(msg);
         }
 
     }
+    
+    public void forgotUserID(){
+        MainAccount forgotAccount = null;
+        forgotAccount = loginSessionBean.getMainAccountByEmail(findUsernameEmail);
+        if(forgotAccount != null){
+            if(emailServiceSessionBean.sendUserIDforForgottenCustomer(findUsernameEmail, forgotAccount)){
+                String msg = "User ID has been sent to your email.";
+                MessageUtils.displayInfo(msg);
+            }
+            else{
+                String msg = "Email sent fail. Please try again";
+                MessageUtils.displayError(msg);
+            }
+        }
+        else{
+            String msg = "The email is not registered.";
+            MessageUtils.displayError(msg);
+        }
+    }
+    
+    public void forgotPassword(){
+        MainAccount forgotAccount = null;
+        forgotAccount = loginSessionBean.getMainAccountByEmail(findPasswordEmail);
+        if(forgotAccount != null){
+            if(emailServiceSessionBean.sendResetPwdLinkforForgottenCustomer(findPasswordEmail, forgotAccount)){
+                String msg = "Check your email and reset password.";
+                MessageUtils.displayInfo(msg);
+            }
+            else{
+                String msg = "Email sent fail. Please try again";
+                MessageUtils.displayError(msg);
+            }
+        }
+        else{
+            String msg = "The email is not registered.";
+            MessageUtils.displayError(msg);
+        }
+    }
+    
+    public void backtoLogin(){
+        RedirectUtils.redirect("customer_login.xhtml");
+    }
+
+    public String getFindUsernameEmail() {
+        return findUsernameEmail;
+    }
+
+    public void setFindUsernameEmail(String findUsernameEmail) {
+        this.findUsernameEmail = findUsernameEmail;
+    }
+
+    public String getFindPasswordEmail() {
+        return findPasswordEmail;
+    }
+
+    public void setFindPasswordEmail(String findPasswordEmail) {
+        this.findPasswordEmail = findPasswordEmail;
+    }
+    
     
 }

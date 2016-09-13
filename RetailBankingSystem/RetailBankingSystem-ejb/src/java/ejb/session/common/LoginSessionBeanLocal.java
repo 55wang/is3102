@@ -17,4 +17,5 @@ import javax.ejb.Local;
 public interface LoginSessionBeanLocal {
     public MainAccount loginAccount(String username, String password); 
     public Customer getCustomerByUserID(String userID);
+    public MainAccount getMainAccountByEmail(String email);
 }
