@@ -19,7 +19,38 @@
                     <p:panel header="Profile">
                         <p:messages id="messagesStatus" redisplay="false" >
                             <h:panelGrid columns="2" cellpadding="5">
-                               
+
+                                <h:outputLabel for="name" value="Name: " />
+                                <h:outputText value="#{customerProfileManagedBean.customer.lastname}  #{customerProfileManagedBean.customer.firstname}"/>
+                                
+                                <h:outputLabel for="name" value="Gender: " />
+                                <h:outputText value="#{customerProfileManagedBean.customer.gender}"/>                               
+                                
+                                <h:outputLabel for="name" value="Nationality: " />
+                                <h:outputText value="#{customerProfileManagedBean.customer.nationality}"/>
+                             
+                                <h:outputLabel for="name" value="Mobile number (for OTP): " />
+                                <h:outputText value="#{customerProfileManagedBean.customer.phone}"/>
+
+                                <h:outputLabel for="name" value="Email: " />
+                                <h:outputText value="#{customerProfileManagedBean.customer.email}"/>
+
+                                <h:outputLabel for="name" value="Address: " />
+                                <h:outputText value="#{customerProfileManagedBean.customer.address}"/>
+                                
+                                <h:outputLabel for="name" value="Postal Code: " />
+                                <h:outputText value="#{customerProfileManagedBean.customer.postalCode}"/>
+
+                                <h:outputLabel for="name" value="Occupation: " />
+                                <h:outputText value="#{customerProfileManagedBean.customer.occupation}"/>
+
+                                <h:outputLabel for="name" value="DOB: "/> 
+
+                                <h:outputText value="#{customerProfileManagedBean.customer.birthDay}">  <f:convertDateTime pattern="dd/MM/yyyy" />    </h:outputText>
+                                 
+                                <h:outputLabel for="name" value="Income: " />
+                                <h:outputText value="#{customerProfileManagedBean.customer.income}"/>
+
                             </h:panelGrid>
                         </p:messages>
                     </p:panel>
