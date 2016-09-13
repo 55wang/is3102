@@ -62,7 +62,8 @@ public class CustomerLoginManagedBean implements Serializable{
                 RedirectUtils.redirect("customer_home.xhtml");
             }
         } catch (NullPointerException e) {
-            RedirectUtils.redirect("fail.xhtml");
+            String msg = "Account not exists or password incorrect.";
+            MessageUtils.displayError(msg);
         }
 
     }
