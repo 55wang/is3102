@@ -13,7 +13,7 @@
             <f:viewAction action="#{messageViewManagedBean.init()}"></f:viewAction>
         </f:metadata>
         <h:head>
-            <title>#{messageViewManagedBean.conversationId}</title>
+            <title>Conversation</title>
             <em:cssImport></em:cssImport>
             <link type="text/css" rel="stylesheet" href="chat.css"/>
         </h:head>
@@ -22,6 +22,8 @@
             <em:staffSideBar top="message" side="chat"></em:staffSideBar>
             <div class="container">
                 <!--Add socket here maybe just one channel for self-->
+                <input id="receiver-color" class="hidden" value="#{messageViewManagedBean.receiverColor}" />
+                <input id="sender-color" class="hidden" value="#{messageViewManagedBean.senderColor}" />
                 <h:form id="form">
                     <div id="messages-container">
                         <div id="messages">
@@ -29,7 +31,7 @@
                             <c:forEach items="#{messageViewManagedBean.currentConversation.messages}" var="message">
                                 <div class="message #{messageViewManagedBean.isReceiver(message) ? 'float-left' : 'float-right'}">
                                     <div class="#{messageViewManagedBean.isReceiver(message) ? 'left-profile-pic' : 'right-profile-pic'}">
-                                        <div class="user-icon">
+                                        <div class="user-icon" style="background-color:#{messageViewManagedBean.isReceiver(message) ? messageViewManagedBean.receiverColor : messageViewManagedBean.senderColor};">
                                             <div class="icon-text">
                                                 #{messageViewManagedBean.getMessageLabel(message)}
                                             </div>

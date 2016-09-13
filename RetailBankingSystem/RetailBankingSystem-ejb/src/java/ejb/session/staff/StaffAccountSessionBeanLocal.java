@@ -19,4 +19,5 @@ public interface StaffAccountSessionBeanLocal {
     public Boolean createAccount(StaffAccount sa);
     public List<StaffAccount> getAllStaffs();
     public StaffAccount getStaffById(String id);
+    public List<StaffAccount> searchStaffByUsernameOrName(String searchText);
 }

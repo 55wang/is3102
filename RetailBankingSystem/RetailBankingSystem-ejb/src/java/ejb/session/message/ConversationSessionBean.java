@@ -31,6 +31,10 @@ public class ConversationSessionBean implements ConversationSessionBeanLocal {
     public Boolean createConversation(Conversation c) {
         try {
             em.persist(c);
+            StaffAccount sender = c.getSender();
+            StaffAccount receiver = c.getReceiver();
+            em.merge(sender);
+            em.merge(receiver);
             return true;
         } catch (EntityExistsException e) {
             return false;

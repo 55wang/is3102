@@ -15,6 +15,7 @@ import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import org.primefaces.push.EventBus;
 import org.primefaces.push.EventBusFactory;
+import utils.ColorUtils;
 import utils.LoggingUtil;
 import utils.SessionUtils;
 
@@ -35,6 +36,8 @@ public class MessageViewManagedBean implements Serializable {
     private String conversationId;
     private Conversation currentConversation;
     private Message newMessage = new Message();
+    private String senderColor = randColor();
+    private String receiverColor = randColor();
 
     public MessageViewManagedBean() {
     }
@@ -49,6 +52,8 @@ public class MessageViewManagedBean implements Serializable {
         newMessage.setReceiver(getReceiverUsername());
         newMessage.setSender(SessionUtils.getStaffUsername());
         LoggingUtil.StaffMessageLog(MessageViewManagedBean.class, String.format("MessageViewManagedBean: SendMessage(): newMessage is %s", getNewMessage()));
+        currentConversation.setUnread(Boolean.TRUE);
+        currentConversation.setLastMessage(newMessage.getMessage());
         if (conversationBean.addMessage(currentConversation, newMessage)) {
             LoggingUtil.StaffMessageLog(MessageViewManagedBean.class, "Created New Message:" + newMessage.getMessage() + " And send to channel: " + CHANNEL + getReceiverUsername());
             MessageDTO mDTO = new MessageDTO();
@@ -56,6 +61,7 @@ public class MessageViewManagedBean implements Serializable {
             mDTO.setLabel(getMessageLabel(newMessage));
             mDTO.setMessage(newMessage.getMessage());
             mDTO.setSenderName(SessionUtils.getStaff().getFullName());
+            mDTO.setConversationId(conversationId);
             eventBus.publish(CHANNEL + getReceiverUsername(), mDTO);
             newMessage = new Message();
         } else {
@@ -82,6 +88,10 @@ public class MessageViewManagedBean implements Serializable {
     public Boolean isReceiver(Message m) {
         StaffAccount sa = SessionUtils.getStaff();
         return sa.getUsername().equals(m.getReceiver());
+    }
+    
+    public String randColor() {
+        return ColorUtils.randomColor();
     }
 
     /**
@@ -124,6 +134,34 @@ public class MessageViewManagedBean implements Serializable {
      */
     public void setCurrentConversation(Conversation currentConversation) {
         this.currentConversation = currentConversation;
+    }
+
+    /**
+     * @return the senderColor
+     */
+    public String getSenderColor() {
+        return senderColor;
+    }
+
+    /**
+     * @param senderColor the senderColor to set
+     */
+    public void setSenderColor(String senderColor) {
+        this.senderColor = senderColor;
+    }
+
+    /**
+     * @return the receiverColor
+     */
+    public String getReceiverColor() {
+        return receiverColor;
+    }
+
+    /**
+     * @param receiverColor the receiverColor to set
+     */
+    public void setReceiverColor(String receiverColor) {
+        this.receiverColor = receiverColor;
     }
 
 }
