@@ -53,6 +53,7 @@ public class HOTP {
 	 }
 
 	// rfc4226
+         //input: key is the customer uid, pincode is the one display to customer
 	public static ArrayList<String> generateTokens(String key, int pinCode) {
 		ArrayList<String> results = new ArrayList<String>();
 		// key is the unique customer id
