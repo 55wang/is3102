@@ -3,12 +3,18 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package utils;
+package ejb.session.timer;
+
+import javax.ejb.Local;
 
 /**
  *
- * @author leiyang
+ * @author litong
  */
-public interface Encoder<U, T> {
-    T encode(U s);
+@Local
+public interface TimerSessionBeanLocal {
+    
+    public void EODTimeout();
+
+   
 }
