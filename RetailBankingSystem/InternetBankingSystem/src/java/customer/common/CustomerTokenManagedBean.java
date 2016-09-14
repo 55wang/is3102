@@ -6,6 +6,7 @@
 package customer.common;
 
 import ejb.session.token.TokenSecurityLocal;
+import java.io.Serializable;
 import java.util.ArrayList;
 import javax.ejb.EJB;
 import javax.inject.Named;
@@ -19,7 +20,7 @@ import utils.TokenUtils;
  */
 @Named(value = "customerTokenManagedBean")
 @ViewScoped
-public class CustomerTokenManagedBean {
+public class CustomerTokenManagedBean implements Serializable{
 
     @EJB
     private TokenSecurityLocal tokenSessionBean;
