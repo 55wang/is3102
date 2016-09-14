@@ -14,6 +14,8 @@ import entity.MainAccount;
 import entity.MainAccount.StatusType;
 import entity.SavingAccount;
 import java.io.Serializable;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +25,7 @@ import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import org.primefaces.event.FlowEvent;
+import utils.RedirectUtils;
 
 /**
  *
@@ -77,7 +80,8 @@ public class CustomerApplicationManagedBean implements Serializable {
         mainAccount.setStatus(StatusType.PENDING);
         
         mainAccount.setUserID(generateUserID(customer.getIdentityType(), customer.getIdentityNumber()));
-        mainAccount.setPassword(generatePwd());
+        String randomPwd = generatePwd();
+        mainAccount.setPassword(randomPwd);
 
         List<BankAccount> bankAccounts = new ArrayList<BankAccount>();
         switch (initialDepositAccount) {
@@ -96,15 +100,14 @@ public class CustomerApplicationManagedBean implements Serializable {
         };
 
         try{
-            emailServiceSessionBean.sendActivationGmailForNewCustomer(customer.getEmail());
+            emailServiceSessionBean.sendActivationGmailForNewCustomer(customer.getEmail(), randomPwd);
         }catch(Exception ex){
             emailSuccessFlag = false;
         }
         
         if(emailSuccessFlag){
             newCustomerSessionBean.createCustomer(customer, mainAccount);
-            FacesMessage msg = new FacesMessage("Successful", "Welcome :" + customer.getFirstname() + " " + customer.getLastname());
-            FacesContext.getCurrentInstance().addMessage(null, msg);
+            RedirectUtils.redirect("../common/register_successful.xhtml");
         }
         else{
             FacesMessage msg = new FacesMessage("Fail!");
@@ -140,5 +143,25 @@ public class CustomerApplicationManagedBean implements Serializable {
         for( int i = 0; i < pwdLen; i++ ) 
             sb.append( AB.charAt( rnd.nextInt(AB.length()) ) );
         return sb.toString();
+    }
+    
+    public String hashPwd(String pwd){
+        try{
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            md.update(pwd.getBytes());
+
+            byte byteData[] = md.digest();
+
+            //convert the byte to hex format method 1
+            StringBuffer sb = new StringBuffer();
+            for (int i = 0; i < byteData.length; i++) {
+             sb.append(Integer.toString((byteData[i] & 0xff) + 0x100, 16).substring(1));
+            }
+
+            return sb.toString();
+        }
+        catch(NoSuchAlgorithmException ex){
+            return pwd;
+        }
     }
 }
