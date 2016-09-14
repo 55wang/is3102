@@ -4,58 +4,112 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:em="http://xmlns.jcp.org/jsf/composite/emcomp">
+      xmlns:em="http://xmlns.jcp.org/jsf/composite/emcomp"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     <!--shift + ctrl + F, format-->
     <f:view>
         <h:head>
-            <title>Facelet Title</title>
+            <title>Customer Profile</title>
             <em:cssImport></em:cssImport>
         </h:head>
         <h:body>
             <em:customerHeader context="customer_home" userName="#{customerHomeManagedBean.customer.firstname }"></em:customerHeader>
             <em:customerNavBar context="customer_home" pageName="customer_home" ></em:customerNavBar>
             <div class="customer_main_container">
-                <h:form id="mainForm">
-                    <p:panel header="Profile">
-                        <p:messages id="messagesStatus" redisplay="false" >
-                            <h:panelGrid columns="2" cellpadding="5">
+                <c:choose>
 
-                                <h:outputLabel for="name" value="Name: " />
-                                <h:outputText value="#{customerProfileManagedBean.customer.lastname}  #{customerProfileManagedBean.customer.firstname}"/>
-                                
-                                <h:outputLabel for="name" value="Gender: " />
-                                <h:outputText value="#{customerProfileManagedBean.customer.gender}"/>                               
-                                
-                                <h:outputLabel for="name" value="Nationality: " />
-                                <h:outputText value="#{customerProfileManagedBean.customer.nationality}"/>
-                             
-                                <h:outputLabel for="name" value="Mobile number (for OTP): " />
-                                <h:outputText value="#{customerProfileManagedBean.customer.phone}"/>
+                    <c:when test="#{customerProfileManagedBean.editingPage == false}">
+                        <h:form id="mainForm">
+                            <p:panel header="Profile">
+                                <p:messages id="messagesStatus" redisplay="false" >
+                                    <h:panelGrid columns="2" cellpadding="5">
 
-                                <h:outputLabel for="name" value="Email: " />
-                                <h:outputText value="#{customerProfileManagedBean.customer.email}"/>
+                                        <h:outputLabel for="name" value="Name: " />
+                                        <h:outputText id="name" value="#{customerProfileManagedBean.customer.lastname}  #{customerProfileManagedBean.customer.firstname}"/>
 
-                                <h:outputLabel for="name" value="Address: " />
-                                <h:outputText value="#{customerProfileManagedBean.customer.address}"/>
-                                
-                                <h:outputLabel for="name" value="Postal Code: " />
-                                <h:outputText value="#{customerProfileManagedBean.customer.postalCode}"/>
+                                        <h:outputLabel for="gender" value="Gender: " />
+                                        <h:outputText id="gender" value="#{customerProfileManagedBean.customer.gender}"/>                               
 
-                                <h:outputLabel for="name" value="Occupation: " />
-                                <h:outputText value="#{customerProfileManagedBean.customer.occupation}"/>
+                                        <h:outputLabel for="natioanlity" value="Nationality: " />
+                                        <h:outputText id="nationality" value="#{customerProfileManagedBean.customer.nationality}"/>
 
-                                <h:outputLabel for="name" value="DOB: "/> 
+                                        <h:outputLabel for="mobileNumber" value="Mobile number (for OTP): " />
+                                        <h:outputText id="mobileNumber" value="#{customerProfileManagedBean.customer.phone}"/>
 
-                                <h:outputText value="#{customerProfileManagedBean.customer.birthDay}">  <f:convertDateTime pattern="dd/MM/yyyy" />    </h:outputText>
-                                 
-                                <h:outputLabel for="name" value="Income: " />
-                                <h:outputText value="#{customerProfileManagedBean.customer.income}"/>
+                                        <h:outputLabel for="email" value="Email: " />
+                                        <h:outputText id="email" value="#{customerProfileManagedBean.customer.email}"/>
 
-                            </h:panelGrid>
-                        </p:messages>
-                    </p:panel>
-                </h:form>
+                                        <h:outputLabel for="address" value="Address: " />
+                                        <h:outputText id="address" value="#{customerProfileManagedBean.customer.address}"/>
+
+                                        <h:outputLabel for="postalCode" value="Postal Code: " />
+                                        <h:outputText id="postalCode" value="#{customerProfileManagedBean.customer.postalCode}"/>
+
+                                        <h:outputLabel for="occupation" value="Occupation: " />
+                                        <h:outputText id="occupation" value="#{customerProfileManagedBean.customer.occupation}"/>
+
+                                        <h:outputLabel for="birthday" value="DOB: "/> 
+                                        <h:outputText id="birthday" value="#{customerProfileManagedBean.customer.birthDay}">  <f:convertDateTime pattern="dd/MM/yyyy" />    </h:outputText>
+
+                                        <h:outputLabel for="income" value="Income: " />
+                                        <h:outputText id="income" value="#{customerProfileManagedBean.customer.income}"/>
+
+                                        <p:commandButton value="Edit" action="#{customerProfileManagedBean.goToEditPage}" update="@form"/>
+                                        <c:if test="#{customerProfileManagedBean.profileEdited == true}">
+                                            <p:commandButton value="Submit" action="#{customerProfileManagedBean.save}"/>
+                                        </c:if>
+                                    </h:panelGrid>
+                                </p:messages>
+                            </p:panel>
+                        </h:form>
+                    </c:when>
+                    <c:otherwise>
+                        <h:form id="mainForm">
+                            <p:panel header="Profile">
+                                <p:messages id="messagesStatus" redisplay="false" >
+                                    <h:panelGrid columns="2" cellpadding="5">
+
+                                        <h:outputLabel for="name" value="Name: " />
+                                        <h:outputText id="name" value="#{customerProfileManagedBean.customer.lastname}  #{customerProfileManagedBean.customer.firstname}"/>
+
+                                        <h:outputLabel for="gender" value="Gender: " />
+                                        <h:outputText id="gender" value="#{customerProfileManagedBean.customer.gender}"/>                               
+
+                                        <h:outputLabel for="natioanlity" value="Nationality: " />
+                                        <h:outputText id="nationality" value="#{customerProfileManagedBean.customer.nationality}"/>
+
+                                        <h:outputLabel for="mobileNumber" value="Mobile number (for OTP): " />
+                                        <p:inputText id="mobileNumber" value="#{customerProfileManagedBean.customer.phone}" required="true"/>
+
+                                        <h:outputLabel for="email" value="Email: " />
+                                        <p:inputText id="email" value="#{customerProfileManagedBean.customer.email}" required ="true"/>
+
+                                        <h:outputLabel for="address" value="Address: " />
+                                        <p:inputTextarea id="address" value="#{customerProfileManagedBean.customer.address}" required ="true"/>
+
+                                        <h:outputLabel for="postalCode" value="Postal Code: " />
+                                        <p:inputText id="postalCode" value="#{customerProfileManagedBean.customer.postalCode}" required ="true"/>
+
+                                        <h:outputLabel for="occupation" value="Occupation: " />
+                                        <p:inputText id="occupation" value="#{customerProfileManagedBean.customer.occupation}" required ="true"/>
+
+                                        <h:outputLabel for="birthday" value="DOB: "/> 
+                                        <h:outputText id="birthday" value="#{customerProfileManagedBean.customer.birthDay}">  <f:convertDateTime pattern="dd/MM/yyyy" />  </h:outputText>
+
+                                        <h:outputLabel for="income" value="Income: " />
+                                        <p:inputText id="income" value="#{customerProfileManagedBean.customer.income}" required ="true"/>
+
+                                        <p:commandButton value="Next" action="#{customerProfileManagedBean.goToConfirmPage}" update="@form"/>
+
+
+                                    </h:panelGrid>
+                                </p:messages>
+                            </p:panel>
+                        </h:form>
+                    </c:otherwise>
+                </c:choose>
             </div>
+
         </h:body>
     </f:view>
 
