@@ -66,7 +66,7 @@ public class CustomerLoginManagedBean implements Serializable{
                 String userName = loginSessionBean.loginAccount(loginAccount.getUserID(), HashPwdUtils.hashPwd(loginAccount.getPassword())).getUserID();
                 SessionUtils.setUserId(userID);
                 SessionUtils.setUserName(userName);
-                RedirectUtils.redirect("customer_home.xhtml");
+                RedirectUtils.redirect("../customer_cms/customer_home.xhtml");
             }
         } catch (NullPointerException e) {
             String msg = "Account not exists or password incorrect.";
