@@ -53,4 +53,14 @@
         </user-data-constraint>
     </security-constraint>
     <!-- End of SSL/HTTPS security constraint -->
+    
+    <context-param>
+        <param-name>primefaces.PRIVATE_CAPTCHA_KEY</param-name>
+        <param-value>6Ldv3QYUAAAAAIcKBUlXOdx9-C7GIpjMeULVbJMp</param-value>
+    </context-param>
+    <context-param>
+        <param-name>primefaces.PUBLIC_CAPTCHA_KEY</param-name>
+        <param-value>6Ldv3QYUAAAAAF_XqszyDGYJlUSPF_ydtAaaI44L</param-value>
+    </context-param>
+    
 </web-app>

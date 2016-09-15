@@ -10,12 +10,13 @@ import ejb.session.common.LoginSessionBeanLocal;
 import entity.MainAccount;
 import java.io.Serializable;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import utils.MessageUtils;
 import utils.RedirectUtils;
 import utils.SessionUtils;
-
 
 /**
  *
@@ -23,24 +24,24 @@ import utils.SessionUtils;
  */
 @Named(value = "customerLoginManagedBean")
 @ViewScoped
-public class CustomerLoginManagedBean implements Serializable{
+public class CustomerLoginManagedBean implements Serializable {
+
     @EJB
     private EmailServiceSessionBeanLocal emailServiceSessionBean;
     @EJB
     private LoginSessionBeanLocal loginSessionBean;
-    
+
     private MainAccount loginAccount = new MainAccount();
-    
+
     private String findUsernameEmail;
     private String findPasswordEmail;
-    
 
     /**
      * Creates a new instance of CustomerLoginManagedBean
      */
     public CustomerLoginManagedBean() {
     }
-    
+
     public MainAccount getLoginAccount() {
         return loginAccount;
     }
@@ -48,19 +49,21 @@ public class CustomerLoginManagedBean implements Serializable{
     public void setLoginAccount(MainAccount loginAccount) {
         this.loginAccount = loginAccount;
     }
-    
+
     public void loginCustomer() {
+
+        FacesMessage msgCaptcha = new FacesMessage(FacesMessage.SEVERITY_INFO, "Correct", "Correct");
+        FacesContext.getCurrentInstance().addMessage(null, msgCaptcha);
+
         try {
             MainAccount attemptLogin = loginSessionBean.getCustomerByUserID(loginAccount.getUserID()).getMainAccount();
-            if(attemptLogin.getStatus().equals(MainAccount.StatusType.PENDING)){
+            if (attemptLogin.getStatus().equals(MainAccount.StatusType.PENDING)) {
                 String msg = "Check your email and activate the account";
                 MessageUtils.displayInfo(msg);
-            }
-            else if(attemptLogin.getStatus().equals(MainAccount.StatusType.FREEZE)){
+            } else if (attemptLogin.getStatus().equals(MainAccount.StatusType.FREEZE)) {
                 String msg = "Your account has been freezed.";
                 MessageUtils.displayInfo(msg);
-            }
-            else if(attemptLogin.getStatus().equals(MainAccount.StatusType.ACTIVE)){
+            } else if (attemptLogin.getStatus().equals(MainAccount.StatusType.ACTIVE)) {
                 Long userID = loginSessionBean.loginAccount(loginAccount.getUserID(), loginAccount.getPassword()).getId();
                 String userName = loginSessionBean.loginAccount(loginAccount.getUserID(), loginAccount.getPassword()).getUserID();
                 SessionUtils.setUserId(userID);
@@ -73,46 +76,42 @@ public class CustomerLoginManagedBean implements Serializable{
         }
 
     }
-    
-    public void forgotUserID(){
+
+    public void forgotUserID() {
         MainAccount forgotAccount = null;
         forgotAccount = loginSessionBean.getMainAccountByEmail(findUsernameEmail);
-        if(forgotAccount != null){
-            if(emailServiceSessionBean.sendUserIDforForgottenCustomer(findUsernameEmail, forgotAccount)){
+        if (forgotAccount != null) {
+            if (emailServiceSessionBean.sendUserIDforForgottenCustomer(findUsernameEmail, forgotAccount)) {
                 String msg = "User ID has been sent to your email.";
                 MessageUtils.displayInfo(msg);
-            }
-            else{
+            } else {
                 String msg = "Email sent fail. Please try again";
                 MessageUtils.displayError(msg);
             }
-        }
-        else{
+        } else {
             String msg = "The email is not registered.";
             MessageUtils.displayError(msg);
         }
     }
-    
-    public void forgotPassword(){
+
+    public void forgotPassword() {
         MainAccount forgotAccount = null;
         forgotAccount = loginSessionBean.getMainAccountByEmail(findPasswordEmail);
-        if(forgotAccount != null){
-            if(emailServiceSessionBean.sendResetPwdLinkforForgottenCustomer(findPasswordEmail, forgotAccount)){
+        if (forgotAccount != null) {
+            if (emailServiceSessionBean.sendResetPwdLinkforForgottenCustomer(findPasswordEmail, forgotAccount)) {
                 String msg = "Check your email and reset password.";
                 MessageUtils.displayInfo(msg);
-            }
-            else{
+            } else {
                 String msg = "Email sent fail. Please try again";
                 MessageUtils.displayError(msg);
             }
-        }
-        else{
+        } else {
             String msg = "The email is not registered.";
             MessageUtils.displayError(msg);
         }
     }
-    
-    public void backtoLogin(){
+
+    public void backtoLogin() {
         RedirectUtils.redirect("customer_login.xhtml");
     }
 
@@ -131,6 +130,5 @@ public class CustomerLoginManagedBean implements Serializable{
     public void setFindPasswordEmail(String findPasswordEmail) {
         this.findPasswordEmail = findPasswordEmail;
     }
-    
-    
+
 }
