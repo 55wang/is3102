@@ -19,6 +19,7 @@ import javax.ejb.EJB;
 import javax.faces.event.ActionEvent;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
+import utils.HashPwdUtils;
 import utils.MessageUtils;
 
 /**
@@ -58,6 +59,7 @@ public class CreateStaffManagedBean implements Serializable {
 //            System.out.println("Staff added to Role");
 //        }
         newStaff.setRole(r);
+        newStaff.setPassword(HashPwdUtils.hashPwd(newStaff.getPassword()));
         if (staffAccountSessionBean.createAccount(newStaff)) {
             staffs.add(newStaff);
             newStaff = new StaffAccount();

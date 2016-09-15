@@ -16,6 +16,7 @@ import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.faces.event.ActionEvent;
 import javax.faces.view.ViewScoped;
+import utils.HashPwdUtils;
 import utils.MessageUtils;
 import utils.RedirectUtils;
 import utils.SessionUtils;
@@ -43,7 +44,7 @@ public class StaffLoginManagedBean implements Serializable {
         // Set a default super account
         System.out.println("StaffLoginManagedBean @PostConstruct");
         String u = "adminadmin";
-        String p = "password";
+        String p = HashPwdUtils.hashPwd("password");
         StaffAccount sa = staffAccountSessionBean.loginAccount(u, p);
         if (sa == null) {
             StaffAccount superAccount = new StaffAccount();
@@ -61,7 +62,7 @@ public class StaffLoginManagedBean implements Serializable {
     private String password;
 
     public void loginStaff(ActionEvent event) {
-        StaffAccount sa = staffAccountSessionBean.loginAccount(username, password);
+        StaffAccount sa = staffAccountSessionBean.loginAccount(username, HashPwdUtils.hashPwd(password));
         if (sa == null) {
             MessageUtils.displayError("Either username or password is wrong");
         } else {

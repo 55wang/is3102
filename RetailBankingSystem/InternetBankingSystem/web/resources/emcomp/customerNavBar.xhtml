@@ -6,7 +6,8 @@
       xmlns:cc="http://xmlns.jcp.org/jsf/composite"
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
       xmlns:jsf="http://xmlns.jcp.org/jsf"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:em="http://xmlns.jcp.org/jsf/composite/emcomp">
 
     <cc:interface>
         <cc:attribute name="context" required="true"/>
@@ -36,10 +37,11 @@
                     </c:if>
                     <c:if test="#{cc.attrs.context == 'customer_home'}">
                         <h:form>
+                        <em:sessionTimeoutNotification></em:sessionTimeoutNotification>
                         <!--http://stackoverflow.com/questions/7915134/how-to-use-the-spring-security-facelets-tag-library-in-jsf-->
                         <!--sec:authorize access="hasAnyRole('counterStaff')"></sec:authorize-->
                         <!--TODO: wrap menu option with sec tag -->
-                        <li id="navbar-myhome-tab" class="#{cc.attrs.pageName == 'customer_home' ? 'active' : ''}" value="myhome"><a href="../common/customer_home.xhtml"><p:outputLabel id="tab-myHome" value="My Home" style="cursor: pointer"/></a></li>
+                        <li id="navbar-myhome-tab" class="#{cc.attrs.pageName == 'customer_home' ? 'active' : ''}" value="myhome"><a href="../customer_cms/customer_home.xhtml"><p:outputLabel id="tab-myHome" value="My Home" style="cursor: pointer"/></a></li>
                         <p:overlayPanel class="nav-overlay-panel-home" for="tab-myHome" showEvent="mouseover" hideEvent="mousedown" dismissable="true">
                             <p:menu>
                                 <p:submenu style="display:none">

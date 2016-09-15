@@ -20,7 +20,11 @@ import utils.TokenUtils;
  */
 @Named(value = "customerTokenManagedBean")
 @ViewScoped
+<<<<<<< HEAD
 public class CustomerTokenManagedBean implements Serializable {
+=======
+public class CustomerTokenManagedBean implements Serializable{
+>>>>>>> faf09d3993cf3018c31535650910a603ebb49c6e
 
     @EJB
     private TokenSecurityLocal tokenSessionBean;
