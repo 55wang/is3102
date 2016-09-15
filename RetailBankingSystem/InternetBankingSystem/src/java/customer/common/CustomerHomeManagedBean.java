@@ -9,10 +9,13 @@ import ejb.session.common.ChangePasswordSessionBeanLocal;
 import ejb.session.common.LoginSessionBeanLocal;
 import entity.Customer;
 import java.io.Serializable;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
+import utils.HashPwdUtils;
 import utils.MessageUtils;
 import utils.SessionUtils;
 
@@ -39,7 +42,7 @@ public class CustomerHomeManagedBean implements Serializable{
     
     public Boolean changePwd(){
         try{
-            changePasswordSessionBean.changePwd(newPwd, customer.getMainAccount());
+            changePasswordSessionBean.changePwd(HashPwdUtils.hashPwd(newPwd), customer.getMainAccount());
             String msg = "Successful! You have reset your password. ";
             MessageUtils.displayInfo(msg);
             return true;
