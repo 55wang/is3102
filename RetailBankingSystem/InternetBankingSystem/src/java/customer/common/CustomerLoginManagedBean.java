@@ -19,6 +19,7 @@ import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import utils.Audit;
 import utils.AuditUtils;
+import utils.HashPwdUtils;
 import utils.MessageUtils;
 import utils.RedirectUtils;
 import utils.SessionUtils;
@@ -94,7 +95,7 @@ public class CustomerLoginManagedBean implements Serializable {
                 al = AuditUtils.createAuditLog(activityLog, functionName, input, output, ma, sa);
                 auditSessionBean.insertAuditLog(al);
 
-                RedirectUtils.redirect("customer_home.xhtml");
+                RedirectUtils.redirect("../customer_cms/customer_home.xhtml");
             }
         } catch (NullPointerException e) {
             String msg = "Account not exists or password incorrect.";

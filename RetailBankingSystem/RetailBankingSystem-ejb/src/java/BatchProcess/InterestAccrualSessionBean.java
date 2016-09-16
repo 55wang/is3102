@@ -5,10 +5,7 @@
  */
 package BatchProcess;
 
-import entity.BankAccount;
-import entity.ConditionInterest;
-import entity.Interest;
-import entity.RangeInterest;
+import entity.DepositAccount;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
@@ -27,7 +24,7 @@ public class InterestAccrualSessionBean implements InterestAccrualSessionBeanLoc
     
     private EntityManager em;
     
-    public List<BankAccount> getAccountList() {
+    public List<DepositAccount> getAccountList() {
         Query q = em.createQuery("SELECT DISTINCT * FROM BankAccount");
         return q.getResultList();
     }
@@ -48,33 +45,13 @@ public class InterestAccrualSessionBean implements InterestAccrualSessionBeanLoc
     }
     
     
-    public void calculateAccruedInterest(BankAccount ba) {
-        switch (ba.getType()) {
-            case "CURRENT":
-                // cailculate interest
-                break;
-            case "SAVING":
-                // calculate
-                break;
-              
-        }
-        List<Interest> rules = ba.getRules();
-        for (Interest i : rules) {
-            if (i instanceof ConditionInterest) {
-                
-            } else if (i instanceof RangeInterest) {
-                
-            } else {
-                
-            }
-        }
+    public void calculateAccruedInterest(DepositAccount ba) {
+        
     }
     
     public void interestAccrualBatchProcess() {
-        List<BankAccount> accountList = getAccountList();
-        for (BankAccount ba : accountList)
+        List<DepositAccount> accountList = getAccountList();
+        for (DepositAccount ba : accountList)
             calculateAccruedInterest(ba);
     }
-    
-    
 }

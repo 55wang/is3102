@@ -24,11 +24,11 @@ import javax.persistence.OneToOne;
 @Entity
 public class MainAccount implements Serializable {
 
-    public List<BankAccount> getBankAcounts() {
+    public List<DepositAccount> getBankAcounts() {
         return bankAcounts;
     }
 
-    public void setBankAcounts(List<BankAccount> bankAcounts) {
+    public void setBankAcounts(List<DepositAccount> bankAcounts) {
         this.bankAcounts = bankAcounts;
     }
 
@@ -74,7 +74,7 @@ public class MainAccount implements Serializable {
     @OneToOne(cascade = {CascadeType.PERSIST}, mappedBy = "mainAccount")
     private Customer customer;
     @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "mainAccount")
-    private List<BankAccount> bankAcounts = new ArrayList<BankAccount>(); 
+    private List<DepositAccount> bankAcounts = new ArrayList<DepositAccount>(); 
     @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "mainAccount")
     private List<AuditLog> auditLog = new ArrayList<AuditLog>();
 

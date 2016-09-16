@@ -8,44 +8,57 @@ package entity;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 /**
- *
+ *  http://www.moneysense.gov.sg/Understanding-Financial-Products/Banking-and-Cash/Banking.aspx
  * @author leiyang
  */
 @Entity
-public abstract class BankAccount implements Serializable {
+@Inheritance(strategy=InheritanceType.JOINED)
+public abstract class DepositAccount implements Serializable {
+    
     public enum AccountType {
         CURRENT {
+            @Override
             public String toString() {
                 return "CURRENT";
             }
         },
         SAVING {
+            @Override
             public String toString() {
                 return "SAVING";
             }
         },
         FIXED {
+            @Override
             public String toString() {
                 return "FIXED";
             }
         },
         MOBILE {
+            @Override
             public String toString() {
                 return "MOBILE";
             }
         },
-        LOAN {
+        LOAN {// maybe need to seperate this from deposit account
+            @Override
             public String toString() {
                 return "LOAN";
             }
@@ -54,15 +67,19 @@ public abstract class BankAccount implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;// generated
+    private Long id;// TODO: Need to generate our own account number
     private String name;
     private String type; // CURRENT, SAVING, FIXED, MOBILE, LOAN
+    @Temporal(value = TemporalType.TIMESTAMP)
+    private final Date creationDate = new Date();
+    @Embedded
+    private CumulatedInterest cumulatedInterest;
     @Column(precision=12, scale=2)
     private BigDecimal balance = new BigDecimal(0);
-    @OneToMany(cascade = CascadeType.MERGE)
-    private List<Interest> rules = new ArrayList<Interest>();
+    
     @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "fromAccount")
-    private List<Transaction> transactions = new ArrayList<Transaction>();
+    private List<Transaction> transactions = new ArrayList<>();
+    
     @ManyToOne(cascade = CascadeType.PERSIST)
     private MainAccount mainAccount = new MainAccount();
     // TODO: Other likely fields
@@ -70,22 +87,6 @@ public abstract class BankAccount implements Serializable {
     // transaction history
     // payment history
     // Cheque
-    
-    public void addInterestRules(Interest i) {
-        rules.add(i);
-    }
-    
-    public void removeInterestRules(Interest i) {
-        rules.remove(i);
-    }
-    
-    public void addInterestsRules(List<Interest> interests) {
-        rules.addAll(interests);
-    }
-    
-    public void removeInterestsRules(List<Interest> interests) {
-        rules.removeAll(interests);
-    }
     
     public void addBalance(BigDecimal amount) {
         balance = balance.add(amount);
@@ -96,7 +97,7 @@ public abstract class BankAccount implements Serializable {
     }
     
     public void addTransaction(Transaction t) {
-        transactions.add(t);
+        getTransactions().add(t);
     }
     
     /**
@@ -149,20 +150,6 @@ public abstract class BankAccount implements Serializable {
         this.balance = balance;
     }
 
-    /**
-     * @return the rules
-     */
-    public List<Interest> getRules() {
-        return rules;
-    }
-
-    /**
-     * @param rules the rules to set
-     */
-    public void setRules(List<Interest> rules) {
-        this.rules = rules;
-    }
-
     public MainAccount getMainAccount() {
         return mainAccount;
     }
@@ -170,5 +157,38 @@ public abstract class BankAccount implements Serializable {
     public void setMainAccount(MainAccount mainAccount) {
         this.mainAccount = mainAccount;
     }
+    /**
+     * @return the cumulatedInterest
+     */
+    public CumulatedInterest getCumulatedInterest() {
+        return cumulatedInterest;
+    }
 
+    /**
+     * @param cumulatedInterest the cumulatedInterest to set
+     */
+    public void setCumulatedInterest(CumulatedInterest cumulatedInterest) {
+        this.cumulatedInterest = cumulatedInterest;
+    }
+    
+    /**
+     * @return the creationDate
+     */
+    public Date getCreationDate() {
+        return creationDate;
+    }
+    
+    /**
+     * @return the transactions
+     */
+    public List<Transaction> getTransactions() {
+        return transactions;
+    }
+
+    /**
+     * @param transactions the transactions to set
+     */
+    public void setTransactions(List<Transaction> transactions) {
+        this.transactions = transactions;
+    }
 }

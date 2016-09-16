@@ -33,6 +33,16 @@ public class InterestSessionBean implements InterestSessionBeanLocal {
     }
     
     @Override
+    public Boolean updateInterest(Interest interest) {
+        try {
+            em.merge(interest);
+            return true;
+        } catch (EntityExistsException e) {
+            return false;
+        }
+    }
+    
+    @Override
     public List<Interest> showAllInterests() {
         Query q = em.createQuery("SELECT i FROM Interest i");
         return q.getResultList();

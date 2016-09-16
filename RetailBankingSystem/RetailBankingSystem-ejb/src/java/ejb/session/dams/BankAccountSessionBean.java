@@ -5,7 +5,7 @@
  */
 package ejb.session.dams;
 
-import entity.BankAccount;
+import entity.DepositAccount;
 import entity.Transaction;
 import java.math.BigDecimal;
 import java.util.List;
@@ -31,17 +31,17 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
     }
     
     @Override 
-    public BankAccount getAccountFromId(Long accountNumber) {
-        return em.find(BankAccount.class, accountNumber);
+    public DepositAccount getAccountFromId(Long accountNumber) {
+        return em.find(DepositAccount.class, accountNumber);
     }
 
     @Override
-    public void addAccount(BankAccount account) {
+    public void addAccount(DepositAccount account) {
         em.persist(account);
     }
 
     @Override
-    public List<BankAccount> showAllAccounts() {
+    public List<DepositAccount> showAllAccounts() {
         Query q = em.createQuery("SELECT ba FROM BankAccount ba");
         return q.getResultList();
     }
@@ -54,7 +54,7 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
         if (depositAmount == null) {
             return "Your Deposit Amount is Empty!";
         }
-        BankAccount ba = em.find(BankAccount.class, accountNumber);
+        DepositAccount ba = em.find(DepositAccount.class, accountNumber);
         if (ba == null) {
             return "Account Not Found";
         } else {
@@ -78,7 +78,7 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
         if (withdrawAmount == null) {
             return "Your Withdraw Amount is Empty!";
         }
-        BankAccount ba = em.find(BankAccount.class, accountNumber);
+        DepositAccount ba = em.find(DepositAccount.class, accountNumber);
         if (ba == null) {
             return "Account Not Found";
         } else {

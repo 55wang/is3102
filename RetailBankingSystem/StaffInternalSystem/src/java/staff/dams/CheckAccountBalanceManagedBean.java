@@ -6,7 +6,7 @@
 package staff.dams;
 
 import ejb.session.dams.BankAccountSessionBeanLocal;
-import entity.BankAccount;
+import entity.DepositAccount;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,10 +33,10 @@ public class CheckAccountBalanceManagedBean implements Serializable {
     }
     
     private Long accountNumber;
-    private List<BankAccount> accounts = new ArrayList<>();
+    private List<DepositAccount> accounts = new ArrayList<>();
     
     public void checkBalance(ActionEvent event) {
-        BankAccount newAccount = bankAccountSessionBean.getAccountFromId(getAccountNumber());
+        DepositAccount newAccount = bankAccountSessionBean.getAccountFromId(getAccountNumber());
         if (newAccount == null) {
             MessageUtils.displayError("Account Not Found!");
         } else {
@@ -63,14 +63,14 @@ public class CheckAccountBalanceManagedBean implements Serializable {
     /**
      * @return the accounts
      */
-    public List<BankAccount> getAccounts() {
+    public List<DepositAccount> getAccounts() {
         return accounts;
     }
 
     /**
      * @param accounts the accounts to set
      */
-    public void setAccounts(List<BankAccount> accounts) {
+    public void setAccounts(List<DepositAccount> accounts) {
         this.accounts = accounts;
     }
 }

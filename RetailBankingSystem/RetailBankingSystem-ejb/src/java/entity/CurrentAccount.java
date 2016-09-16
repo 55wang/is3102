@@ -6,27 +6,22 @@
 package entity;
 
 import java.math.BigDecimal;
+import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
 
 /**
  *
  * @author leiyang
  */
 @Entity
-@Inheritance(strategy=InheritanceType.JOINED)
-public class CurrentAccount extends BankAccount {
-    // Iinit default limit, User can reset
-    private final String type = "CURRENT";
+public class CurrentAccount extends DepositAccount {
+    // Iinit default limit, User can reset    
+    @Column(precision=12, scale=2)
     private BigDecimal dailyWithdrawLimit = new BigDecimal(3000);
+    @Column(precision=12, scale=2)
     private BigDecimal dailyLocalTransferLimit = new BigDecimal(3000);
+    @Column(precision=12, scale=2)
     private BigDecimal dailyOverseasTransferLimit = new BigDecimal(10000);
-    private BigDecimal minBalance = new BigDecimal(1000);
-    private BigDecimal charges = new BigDecimal(2);
 
     /**
      * @return the dailyWithdrawLimit
@@ -68,33 +63,5 @@ public class CurrentAccount extends BankAccount {
      */
     public void setDailyOverseasTransferLimit(BigDecimal dailyOverseasTransferLimit) {
         this.dailyOverseasTransferLimit = dailyOverseasTransferLimit;
-    }
-
-    /**
-     * @return the minBalance
-     */
-    public BigDecimal getMinBalance() {
-        return minBalance;
-    }
-
-    /**
-     * @param minBalance the minBalance to set
-     */
-    public void setMinBalance(BigDecimal minBalance) {
-        this.minBalance = minBalance;
-    }
-
-    /**
-     * @return the charges
-     */
-    public BigDecimal getCharges() {
-        return charges;
-    }
-
-    /**
-     * @param charges the charges to set
-     */
-    public void setCharges(BigDecimal charges) {
-        this.charges = charges;
     }
 }

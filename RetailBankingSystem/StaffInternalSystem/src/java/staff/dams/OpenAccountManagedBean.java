@@ -7,7 +7,7 @@ package staff.dams;
 
 import ejb.session.dams.BankAccountSessionBeanLocal;
 import ejb.session.dams.InterestSessionBeanLocal;
-import entity.BankAccount;
+import entity.DepositAccount;
 import entity.CurrentAccount;
 import entity.FixedDepositAccount;
 import entity.SavingAccount;
@@ -42,9 +42,9 @@ public class OpenAccountManagedBean implements Serializable {
     private List<CurrentAccount> currentAccounts = new ArrayList<>();
     private List<FixedDepositAccount> fixedDepositAccounts = new ArrayList<>();
     private List<SavingAccount> savingAccounts = new ArrayList<>();
-    private String ACCOUNT_TYPE_CURRENT = BankAccount.AccountType.CURRENT.toString();
-    private String ACCOUNT_TYPE_FIXED = BankAccount.AccountType.FIXED.toString();
-    private String ACCOUNT_TYPE_SAVING = BankAccount.AccountType.SAVING.toString();
+    private String ACCOUNT_TYPE_CURRENT = DepositAccount.AccountType.CURRENT.toString();
+    private String ACCOUNT_TYPE_FIXED = DepositAccount.AccountType.FIXED.toString();
+    private String ACCOUNT_TYPE_SAVING = DepositAccount.AccountType.SAVING.toString();
  
     public OpenAccountManagedBean() {
         System.out.println("OpenAccountManagedBean() Created!!");
@@ -53,8 +53,8 @@ public class OpenAccountManagedBean implements Serializable {
     @PostConstruct
     public void init() {
         accountType = ACCOUNT_TYPE_CURRENT;
-        List<BankAccount> accounts = bankAccountSessionBean.showAllAccounts();
-        for (BankAccount ba : accounts) {
+        List<DepositAccount> accounts = bankAccountSessionBean.showAllAccounts();
+        for (DepositAccount ba : accounts) {
             if (ba instanceof CurrentAccount) {
                 getCurrentAccounts().add((CurrentAccount) ba);
             } else if (ba instanceof FixedDepositAccount) {
@@ -85,7 +85,7 @@ public class OpenAccountManagedBean implements Serializable {
         }
     }
     
-    private BankAccount getAccount() {
+    private DepositAccount getAccount() {
         if (accountType.equals(getACCOUNT_TYPE_CURRENT())) {
             return getNewCurrentAccount();
         } else if (accountType.equals(getACCOUNT_TYPE_FIXED())) {
@@ -114,13 +114,11 @@ public class OpenAccountManagedBean implements Serializable {
     }
     
     private void addDefaultInterest() {
-        if (accountType.equals(getACCOUNT_TYPE_CURRENT())) {
-            getNewCurrentAccount().addInterestsRules(interestSessionBean.getCurrentAccountDefaultInterests());
-        } else if (accountType.equals(getACCOUNT_TYPE_FIXED())) {
+        if (accountType.equals(getACCOUNT_TYPE_FIXED())) {
+            // Only fixed deposit account will save interest, save a new Interest object, with id account id + interest name
             getNewFixedDepositAccount().addInterestsRules(interestSessionBean.getFixedDepositAccountDefaultInterests());
-        } else if (accountType.equals(getACCOUNT_TYPE_SAVING())) {
-            getNewSavingAccount().addInterestsRules(interestSessionBean.getSavingccountDefaultInterests());
         } else {
+            
         }
     }
 

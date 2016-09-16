@@ -5,7 +5,7 @@
  */
 package BatchProcess;
 
-import entity.BankAccount;
+import entity.DepositAccount;
 import javax.ejb.Local;
 import java.util.List;
 
@@ -15,5 +15,5 @@ import java.util.List;
  */
 @Local
 public interface InterestAccrualSessionBeanLocal {
-    public List<BankAccount> getAccountList();
+    public List<DepositAccount> getAccountList();
 }

@@ -6,18 +6,19 @@
 package entity;
 
 import java.math.BigDecimal;
+import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
 
 /**
  *
  * @author leiyang
  */
 @Entity
-@Inheritance(strategy=InheritanceType.JOINED)
 public class RangeInterest extends Interest {
+    
+    @Column(precision=12, scale=2)
     private BigDecimal minimum;
+    @Column(precision=12, scale=2)
     private BigDecimal maximum;
 
     /**

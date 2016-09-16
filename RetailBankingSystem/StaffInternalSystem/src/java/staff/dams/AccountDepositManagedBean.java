@@ -6,7 +6,7 @@
 package staff.dams;
 
 import ejb.session.dams.BankAccountSessionBeanLocal;
-import entity.BankAccount;
+import entity.DepositAccount;
 import entity.CurrentAccount;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -30,10 +30,10 @@ public class AccountDepositManagedBean implements Serializable {
     private BankAccountSessionBeanLocal bankAccountSessionBean;
     
     private String accountType;
-    private String ACCOUNT_TYPE_CURRENT = BankAccount.AccountType.CURRENT.toString();
-    private String ACCOUNT_TYPE_FIXED = BankAccount.AccountType.FIXED.toString();
-    private String ACCOUNT_TYPE_SAVING = BankAccount.AccountType.SAVING.toString();
-    private String ACCOUNT_TYPE_LOAN = BankAccount.AccountType.LOAN.toString();
+    private String ACCOUNT_TYPE_CURRENT = DepositAccount.AccountType.CURRENT.toString();
+    private String ACCOUNT_TYPE_FIXED = DepositAccount.AccountType.FIXED.toString();
+    private String ACCOUNT_TYPE_SAVING = DepositAccount.AccountType.SAVING.toString();
+    private String ACCOUNT_TYPE_LOAN = DepositAccount.AccountType.LOAN.toString();
     private List<CurrentAccount> accounts;
     private Long accountNumber;
     private BigDecimal depositAmount;

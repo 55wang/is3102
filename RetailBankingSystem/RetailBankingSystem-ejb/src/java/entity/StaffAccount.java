@@ -30,11 +30,11 @@ public class StaffAccount implements Serializable {
     @ManyToOne(cascade = {CascadeType.MERGE})
     private Role role; // Role already consist of list of permissions
     @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "staffAccount")
-    private List<AuditLog> auditLog = new ArrayList<AuditLog>();
+    private List<AuditLog> auditLog = new ArrayList<>();
     @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "sender")
-    private List<Conversation> senderConversation = new ArrayList<Conversation>();
+    private List<Conversation> senderConversation = new ArrayList<>();
     @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "receiver")
-    private List<Conversation> receiverConversation = new ArrayList<Conversation>();
+    private List<Conversation> receiverConversation = new ArrayList<>();
 
     public String getNameLabel() {
         return this.getFirstName().substring(0, 1).toUpperCase() + this.getLastName().substring(0, 1).toUpperCase();

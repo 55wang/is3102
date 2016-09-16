@@ -9,7 +9,7 @@ import ejb.session.dams.InterestSessionBeanLocal;
 import entity.ConditionInterest;
 import entity.Interest;
 import entity.RangeInterest;
-import entity.Role;
+import entity.TimeRangeInterest;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,8 +18,8 @@ import javax.ejb.EJB;
 import javax.faces.event.ActionEvent;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
+import org.primefaces.event.CellEditEvent;
 import utils.MessageUtils;
-import utils.SessionUtils;
 
 /**
  *
@@ -28,35 +28,43 @@ import utils.SessionUtils;
 @Named(value = "createInterestManagedBean")
 @ViewScoped
 public class CreateInterestManagedBean implements Serializable {
-    
+
     @EJB
     private InterestSessionBeanLocal interestSessionBean;
 
     private String interestType;
     private Interest normalInterest = new Interest();
     private RangeInterest rangeInterest = new RangeInterest();
+    private TimeRangeInterest timeRangeInterest = new TimeRangeInterest();
     private ConditionInterest conditionInterest = new ConditionInterest();
     private List<Interest> normalInterests = new ArrayList<>();
     private List<RangeInterest> rangeInterests = new ArrayList<>();
+    private List<TimeRangeInterest> timeRangeInterests = new ArrayList<>();
     private List<ConditionInterest> conditionInterests = new ArrayList<>();
     private String INTEREST_TYPE_NORMAL = Interest.InterestType.NORMAL.toString();
     private String INTEREST_TYPE_RANGE = Interest.InterestType.RANGE.toString();
+    private String INTEREST_TYPE_TIME_RANGE = Interest.InterestType.TIMERANGE.toString();
     private String INTEREST_TYPE_CONDITION = Interest.InterestType.CONDITION.toString();
     private String CONDITION_TYPE_BILL = ConditionInterest.ConditionType.BILL.toString();
     private String CONDITION_TYPE_CCSPENDING = ConditionInterest.ConditionType.CCSPENDING.toString();
     private String CONDITION_TYPE_SALARY = ConditionInterest.ConditionType.SALARY.toString();
     private String CONDITION_TYPE_INVEST = ConditionInterest.ConditionType.INVEST.toString();
+    private String CONDITION_TYPE_INCREASE = ConditionInterest.ConditionType.INCREASE.toString();
+
     /**
      * Creates a new instance of CreateInterestManagedBean
      */
-    public CreateInterestManagedBean() {}
-    
+    public CreateInterestManagedBean() {
+    }
+
     @PostConstruct
     public void init() {
         interestType = INTEREST_TYPE_NORMAL;
         List<Interest> interests = interestSessionBean.showAllInterests();
         for (Interest i : interests) {
-            if (i instanceof RangeInterest) {
+            if (i instanceof TimeRangeInterest) {
+                timeRangeInterests.add((TimeRangeInterest) i);
+            } else if (i instanceof RangeInterest) {
                 rangeInterests.add((RangeInterest) i);
             } else if (i instanceof ConditionInterest) {
                 conditionInterests.add((ConditionInterest) i);
@@ -65,7 +73,7 @@ public class CreateInterestManagedBean implements Serializable {
             }
         }
     }
-    
+
     public void addInterest(ActionEvent event) {
         if (interestType.equals(INTEREST_TYPE_NORMAL)) {
             if (interestSessionBean.addInterest(normalInterest)) {
@@ -81,6 +89,13 @@ public class CreateInterestManagedBean implements Serializable {
             } else {
                 MessageUtils.displayError("This Interest Exists");
             }
+        } else if (interestType.equals(INTEREST_TYPE_TIME_RANGE)) {
+            if (interestSessionBean.addInterest(timeRangeInterest)) {
+                timeRangeInterests.add(timeRangeInterest);
+                MessageUtils.displayInfo("Time Range Interest Created");
+            } else {
+                MessageUtils.displayError("This Interest Exists");
+            }
         } else if (interestType.equals(INTEREST_TYPE_CONDITION)) {
             if (interestSessionBean.addInterest(conditionInterest)) {
                 conditionInterests.add(conditionInterest);
@@ -88,6 +103,14 @@ public class CreateInterestManagedBean implements Serializable {
             } else {
                 MessageUtils.displayError("This Interest Exists");
             }
+        } else {
+            MessageUtils.displayError("There's some error when creating interest");
+        }
+    }
+
+    public void onInterestCellEdit(Interest i) {
+        if (interestSessionBean.updateInterest(i)) {
+            MessageUtils.displayInfo(i.getName() + " Changed!");
         } else {
             MessageUtils.displayError("There's some error when creating interest");
         }
@@ -287,5 +310,61 @@ public class CreateInterestManagedBean implements Serializable {
      */
     public void setConditionInterests(List<ConditionInterest> conditionInterests) {
         this.conditionInterests = conditionInterests;
+    }
+
+    /**
+     * @return the INTEREST_TYPE_TIME_RANGE
+     */
+    public String getINTEREST_TYPE_TIME_RANGE() {
+        return INTEREST_TYPE_TIME_RANGE;
+    }
+
+    /**
+     * @param INTEREST_TYPE_TIME_RANGE the INTEREST_TYPE_TIME_RANGE to set
+     */
+    public void setINTEREST_TYPE_TIME_RANGE(String INTEREST_TYPE_TIME_RANGE) {
+        this.INTEREST_TYPE_TIME_RANGE = INTEREST_TYPE_TIME_RANGE;
+    }
+
+    /**
+     * @return the timeRangeInterests
+     */
+    public List<TimeRangeInterest> getTimeRangeInterests() {
+        return timeRangeInterests;
+    }
+
+    /**
+     * @param timeRangeInterests the timeRangeInterests to set
+     */
+    public void setTimeRangeInterests(List<TimeRangeInterest> timeRangeInterests) {
+        this.timeRangeInterests = timeRangeInterests;
+    }
+
+    /**
+     * @return the timeRangeInterest
+     */
+    public TimeRangeInterest getTimeRangeInterest() {
+        return timeRangeInterest;
+    }
+
+    /**
+     * @param timeRangeInterest the timeRangeInterest to set
+     */
+    public void setTimeRangeInterest(TimeRangeInterest timeRangeInterest) {
+        this.timeRangeInterest = timeRangeInterest;
+    }
+
+    /**
+     * @return the CONDITION_TYPE_INCREASE
+     */
+    public String getCONDITION_TYPE_INCREASE() {
+        return CONDITION_TYPE_INCREASE;
+    }
+
+    /**
+     * @param CONDITION_TYPE_INCREASE the CONDITION_TYPE_INCREASE to set
+     */
+    public void setCONDITION_TYPE_INCREASE(String CONDITION_TYPE_INCREASE) {
+        this.CONDITION_TYPE_INCREASE = CONDITION_TYPE_INCREASE;
     }
 }
