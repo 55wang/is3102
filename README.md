@@ -5,4 +5,5 @@ A+, A-, B+, B, B-
 
 How to import data?
 run this in cmdline
+mysql -u root --password=password < RecreateDatabase.sql
 mysql -u root --password=password < DataManipulator.sql

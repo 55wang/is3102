@@ -1,7 +1,3 @@
-DROP DATABASE IF EXISTS RetailBankingSystem;
-CREATE DATABASE RetailBankingSystem;
-
-
 #example, pls change to correct value, such as hashed password
 insert into mainaccount (password, status, userid) values ("abcpassword", "1", "2");
 insert into mainaccount (password, status, userid) values ("abcpassword", "1", "2");

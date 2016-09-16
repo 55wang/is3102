@@ -39,11 +39,11 @@ public class StaffAccount implements Serializable {
     public String getNameLabel() {
         return this.getFirstName().substring(0, 1).toUpperCase() + this.getLastName().substring(0, 1).toUpperCase();
     }
-    
+
     public String getFullName() {
         return this.getFirstName() + " " + this.getLastName();
     }
-    
+
     public String getUsername() {
         return username;
     }
@@ -143,7 +143,7 @@ public class StaffAccount implements Serializable {
     public void setAuditLog(List<AuditLog> auditLog) {
         this.auditLog = auditLog;
     }
-    
+
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
@@ -156,4 +156,10 @@ public class StaffAccount implements Serializable {
         }
         return true;
     }
+
+    @Override
+    public String toString() {
+        return "staff.Account[ id=" + username + " ]";
+    }
+
 }

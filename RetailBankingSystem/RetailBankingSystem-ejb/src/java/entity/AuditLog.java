@@ -26,11 +26,15 @@ import javax.persistence.TemporalType;
 public class AuditLog implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Temporal(value = TemporalType.TIMESTAMP)
     private Date creationDate;
-    private String activityLog;
+    private String activityLog; //readable function name
+    private String functionName;
+    private String input;
+    private String output;
+    private String ipAddress;
     @ManyToOne(cascade={CascadeType.PERSIST})
     private StaffAccount staffAccount;
     @ManyToOne(cascade={CascadeType.PERSIST})
@@ -80,6 +84,38 @@ public class AuditLog implements Serializable {
      */
     public void setCreationDate(Date creationDate) {
         this.creationDate = creationDate;
+    }
+
+    public String getFunctionName() {
+        return functionName;
+    }
+
+    public void setFunctionName(String functionName) {
+        this.functionName = functionName;
+    }
+
+    public String getInput() {
+        return input;
+    }
+
+    public void setInput(String input) {
+        this.input = input;
+    }
+
+    public String getOutput() {
+        return output;
+    }
+
+    public void setOutput(String output) {
+        this.output = output;
+    }
+
+    public String getIpAddress() {
+        return ipAddress;
+    }
+
+    public void setIpAddress(String ipAddress) {
+        this.ipAddress = ipAddress;
     }
     
 }

@@ -16,6 +16,12 @@ import javax.servlet.http.HttpSession;
  */
 public class SessionUtils {
 
+    public static String getIpAddress() {
+        HttpServletRequest httpServletRequest = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+        String ip = httpServletRequest.getRemoteAddr();
+        return ip;
+    }
+
     public static HttpSession getSession() {
         return (HttpSession) FacesContext.getCurrentInstance()
                 .getExternalContext().getSession(false);
@@ -55,13 +61,13 @@ public class SessionUtils {
         HttpSession session = getSession();
         session.setAttribute("StaffAccount", sa);
     }
-    
+
     public static String getStaffUsername() {
         HttpSession session = getSession();
-        StaffAccount sa = (StaffAccount)session.getAttribute("StaffAccount");
+        StaffAccount sa = (StaffAccount) session.getAttribute("StaffAccount");
         return sa.getUsername();
     }
-    
+
     public static String getContextPath() {
         return FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath();
     }
