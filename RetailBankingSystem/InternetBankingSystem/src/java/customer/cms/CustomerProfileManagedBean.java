@@ -12,6 +12,7 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
+import utils.RedirectUtils;
 import utils.SessionUtils;
 
 /**
@@ -46,7 +47,10 @@ public class CustomerProfileManagedBean implements Serializable {
     }
     
     public Boolean save(){
-        return customerProfileSessionBean.saveProfile(customer);
+        
+        Boolean result = customerProfileSessionBean.saveProfile(customer);
+        RedirectUtils.redirect("view_profile.xhtml");
+        return result;
     }
 
     public Customer getCustomer() {

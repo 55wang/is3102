@@ -5,8 +5,11 @@
  */
 package ejb.session.cms;
 
+import com.sun.faces.util.MessageUtils;
+import ejb.session.common.EmailServiceSessionBeanLocal;
 import entity.Customer;
 import entity.MainAccount;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -19,11 +22,13 @@ import javax.persistence.Query;
  */
 @Stateless
 public class CustomerProfileSessionBean implements CustomerProfileSessionBeanLocal {
+    @EJB
+    private EmailServiceSessionBeanLocal emailServiceSessionBean;
     
     @PersistenceContext(unitName = "RetailBankingSystem-ejbPU")
     private EntityManager em;
-
-   
+    
+    
     @Override
     public Customer getCustomerByUserID(String userID){    
         Query q = em.createQuery("SELECT a FROM MainAccount a WHERE a.userID = :inUserID");
@@ -42,11 +47,13 @@ public class CustomerProfileSessionBean implements CustomerProfileSessionBeanLoc
     
     @Override
     public Boolean saveProfile(Customer customer){
+        
         try{
             
             em.merge(customer);
             em.flush();
             
+            emailServiceSessionBean.sendUpdatedProfile(customer.getEmail());
             return true;
         }
         catch (Exception ex) {

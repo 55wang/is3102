@@ -53,9 +53,11 @@
 
                                         <h:outputLabel for="income" value="Income: " />
                                         <h:outputText id="income" value="#{customerProfileManagedBean.customer.income}"/>
-
+                                    </h:panelGrid>
+                                        <h:panelGrid columns="3" cellpadding="5">
                                         <p:commandButton value="Edit" action="#{customerProfileManagedBean.goToEditPage}" update="@form"/>
                                         <c:if test="#{customerProfileManagedBean.profileEdited == true}">
+                                            <p:commandButton value="Cancel" onclick="window.location.replace(window.location.href);"/>
                                             <p:commandButton value="Submit" action="#{customerProfileManagedBean.save}"/>
                                         </c:if>
                                     </h:panelGrid>

@@ -100,7 +100,7 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
             return (true);
 
         } catch (MessagingException e) {
-            System.out.println(e);;
+            System.out.println(e);
             return (false);
         }
 
@@ -175,9 +175,50 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
             return (true);
 
         } catch (MessagingException e) {
-            System.out.println(e);;
+            System.out.println(e);
             return (false);
         }
     }
+    
+    
+   @Override
+    public void sendUpdatedProfile(String recipient){
+        Properties props = new Properties();
+        props.put("mail.smtp.host", "smtp.gmail.com");
+        props.put("mail.smtp.socketFactory.port", "465");
+        props.put("mail.smtp.socketFactory.class",
+                "javax.net.ssl.SSLSocketFactory");
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.port", "465");
+
+        Session session = Session.getInstance(props,
+                new javax.mail.Authenticator() {
+                    protected javax.mail.PasswordAuthentication getPasswordAuthentication() {
+                        return new javax.mail.PasswordAuthentication("merlionbanking", "p@ssword1");
+                    }
+                });
+
+        try {
+
+            Message message = new MimeMessage(session);
+            message.setFrom(new InternetAddress("merlionbanking@gmail.com"));
+            message.setRecipients(Message.RecipientType.TO,
+                    InternetAddress.parse(recipient));
+            message.setSubject("Your profile is updated - Merlion Bank");
+            message.setText("Dear Customer, \n You have updated your profile. "
+                    + "Click the link to check updated profile: "
+                    + "https://localhost:8181/InternetBankingSystem/customer_cms/view_profile.xhtml .");
+
+            Transport.send(message);
+
+            System.out.println("Email send out successfully");
+            return;
+
+        } catch (MessagingException e) {
+            System.out.println(e);
+            return;
+        }
+    }
+    
 
 }
