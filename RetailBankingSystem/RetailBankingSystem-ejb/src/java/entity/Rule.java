@@ -20,7 +20,8 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Inheritance(strategy=InheritanceType.JOINED)
-public class Rule implements Serializable {
+public abstract class Rule implements Serializable {
+    // cannot be instantiated
     @Id
     private String name;
     private Boolean saved;

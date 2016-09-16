@@ -27,6 +27,11 @@ public class Interest extends Rule {
                 return "RANGE";
             }
         },
+        TIMERANGE {
+            public String toString() {
+                return "TIMERANGE";
+            }
+        },
         CONDITION {
             public String toString() {
                 return "CONDITION";
