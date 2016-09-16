@@ -16,8 +16,8 @@ import javax.ejb.Local;
 @Local
 public interface CustomerProfileSessionBeanLocal {
 
-    Customer getCustomerByUserID(String userID);
-    Boolean saveProfile(Customer customer);
+    public Customer getCustomerByUserID(String userID);
+    public Boolean saveProfile(Customer customer);
     
 }
 

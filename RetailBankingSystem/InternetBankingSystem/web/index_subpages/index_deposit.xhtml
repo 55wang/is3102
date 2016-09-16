@@ -8,13 +8,15 @@
     <!--shift + ctrl + F, format-->
     <f:view>
         <h:head>
-            <title>MerlionBank</title>
-            <em:cssImport></em:cssImport>
+            <title>Merlion Bank</title>
+            <h:outputStylesheet library="css" name="reset.css"/>
+            <h:outputStylesheet library="css" name="theme.css"/>
         </h:head>
         <h:body>
             <em:customerHeader context="index_deposit" userName="Log in"></em:customerHeader>
             <em:customerNavBar context="index_deposit" pageName="index_deposit" ></em:customerNavBar>
-            <div class="customer_main_container">
+            <em:accountTypes context="index_deposit"></em:accountTypes>
+            <div style="margin-left: 100px">
                  <a href="../customer_dams/apply_deposit_account.xhtml">Apply for a Deposit Account</a>
             </div>
         </h:body>

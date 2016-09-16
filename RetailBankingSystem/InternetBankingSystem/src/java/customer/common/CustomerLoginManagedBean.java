@@ -12,6 +12,7 @@ import java.io.Serializable;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
+import utils.HashPwdUtils;
 import utils.MessageUtils;
 import utils.RedirectUtils;
 import utils.SessionUtils;
@@ -61,11 +62,11 @@ public class CustomerLoginManagedBean implements Serializable{
                 MessageUtils.displayInfo(msg);
             }
             else if(attemptLogin.getStatus().equals(MainAccount.StatusType.ACTIVE)){
-                Long userID = loginSessionBean.loginAccount(loginAccount.getUserID(), loginAccount.getPassword()).getId();
-                String userName = loginSessionBean.loginAccount(loginAccount.getUserID(), loginAccount.getPassword()).getUserID();
+                Long userID = loginSessionBean.loginAccount(loginAccount.getUserID(), HashPwdUtils.hashPwd(loginAccount.getPassword())).getId();
+                String userName = loginSessionBean.loginAccount(loginAccount.getUserID(), HashPwdUtils.hashPwd(loginAccount.getPassword())).getUserID();
                 SessionUtils.setUserId(userID);
                 SessionUtils.setUserName(userName);
-                RedirectUtils.redirect("customer_home.xhtml");
+                RedirectUtils.redirect("../customer_cms/customer_home.xhtml");
             }
         } catch (NullPointerException e) {
             String msg = "Account not exists or password incorrect.";

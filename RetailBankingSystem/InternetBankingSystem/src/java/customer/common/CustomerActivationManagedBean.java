@@ -38,8 +38,9 @@ public class CustomerActivationManagedBean implements Serializable {
     @PostConstruct
     public void init() {
         email = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("email");
+        String randomPwd = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("code");
         mainAccount = customerActivationSessionBean.getMainAccountByEmail(email);
-        if(mainAccount.getStatus().equals(MainAccount.StatusType.PENDING)){
+        if(mainAccount.getStatus().equals(MainAccount.StatusType.PENDING) && randomPwd.equals(mainAccount.getPassword())){
             valid = true; // And auto-login if valid?
             try{
                 customerActivationSessionBean.updateAccountStatus(mainAccount);

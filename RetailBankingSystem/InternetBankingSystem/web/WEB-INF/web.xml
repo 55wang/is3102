@@ -6,17 +6,9 @@
     </context-param>
     <!-- Start of Filter-->
     <filter>
-        <filter-name>StaffFilter</filter-name>
-        <filter-class>filters.StaffFilter</filter-class>
-    </filter>
-    <filter>
         <filter-name>Authentication</filter-name>
         <filter-class>filters.Authentication</filter-class>
     </filter>
-    <filter-mapping>
-        <filter-name>StaffFilter</filter-name>
-        <url-pattern>/staff/*</url-pattern>
-    </filter-mapping>
     <filter-mapping>
         <filter-name>Authentication</filter-name>
         <url-pattern>/*</url-pattern>
@@ -33,7 +25,7 @@
     </servlet-mapping>
     <session-config>
         <session-timeout>
-            30
+            1
         </session-timeout>
     </session-config>
     <welcome-file-list>

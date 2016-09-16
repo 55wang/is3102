@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+      xmlns:p="http://primefaces.org/ui">
+    
+    <cc:interface>
+        <cc:attribute name="context" required="true"/>
+    </cc:interface>
+
+    <cc:implementation>
+   
+<!--    <h:form>
+    <p:growl id="msgs" showDetail="true" />
+    <p></p>-->
+    <p:panel> 
+    </p:panel>
+<table align="center">
+    <tr>
+    <td><p:panel id="Currentaccount" header="Current Account" footer="View Details" style="margin-top:200px;margin-bottom:20px">
+        <h:panelGrid columns="2" cellpadding="10">
+            <p:graphicImage name="demo/images/godfather/godfather1.jpg" />
+            <h:outputText
+                value="Current account is suitable for your daily banking needs." />
+        </h:panelGrid>
+    </p:panel></td>
+    <td style="column-width: 20px"></td>
+    <td><p:panel id="Savingsaccount" header="Savings Account" footer="View Details" style="margin-top:200px;margin-bottom:20px">
+        <h:panelGrid columns="2" cellpadding="10">
+            <p:graphicImage name="demo/images/godfather/godfather1.jpg" />
+            <h:outputText
+                value="Grow your savings with these accounts." />
+        </h:panelGrid>
+    </p:panel></td>
+        </tr>
+    
+    <tr>
+    <td><p:panel id="Timedeposit" header="Time Deposit" footer="View Details" style="margin-bottom:20px">
+        <h:panelGrid columns="2" cellpadding="10">
+            <p:graphicImage name="demo/images/godfather/godfather1.jpg" />
+            <h:outputText
+                value="Stand a chance to earn 0.8% return." />
+        </h:panelGrid>
+    </p:panel></td>
+    <td style="column-width: 20px"></td>
+    <td><p:panel id="Merlionuniqueaccount" header="Merlion Unique Account" footer="View Details" style="margin-bottom:20px">
+        <h:panelGrid columns="2" cellpadding="10">
+            <p:graphicImage name="demo/images/godfather/godfather1.jpg" />
+            <h:outputText
+                value="Enjoy exclusive bonus Merlion deposit customers." />
+        </h:panelGrid>
+    </p:panel></td>
+        </tr>
+    </table>
+            
+            <!--</h:form>-->   
+            
+    </cc:implementation>  
+</html>

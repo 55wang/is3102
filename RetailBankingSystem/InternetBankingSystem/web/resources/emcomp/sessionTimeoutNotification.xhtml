@@ -1,0 +1,31 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+      xmlns:p="http://primefaces.org/ui"
+          
+      xmlns:emcomp="http://xmlns.jcp.org/jsf/composite/emcomp">
+
+    <cc:interface>
+    </cc:interface>
+
+    <cc:implementation>
+        <f:view>
+            <p:idleMonitor onidle="PF('idleDialog').show(); countdownBegin();" timeout="40000">
+                <p:confirmDialog header="Session Timeout Notification" widgetVar="idleDialog" message="You will be logged out in " global="true">
+                    <h:form>
+                    <div style="text-align: center">
+                        <span id="logout-timer">20 seconds</span>
+                        <h:outputScript library="js" name="session_countdown.js" />
+                        <div><p:commandButton value="Ok" icon="ui-icon-check" onclick="window.location.replace(window.location.href);"/></div>         
+                    </div>
+                    </h:form>
+                </p:confirmDialog>
+            </p:idleMonitor>
+        </f:view>
+        
+    </cc:implementation>
+
+</html>

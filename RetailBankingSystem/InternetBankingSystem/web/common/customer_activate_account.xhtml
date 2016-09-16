@@ -1,39 +1,36 @@
-<?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:em="http://xmlns.jcp.org/jsf/composite/emcomp"
-      xmlns:p="http://primefaces.org/ui">
-    <!--shift + ctrl + F, format-->
-    <f:view>
-        <h:head>
-            <title>Merlion Bank</title>
-            <em:cssImport></em:cssImport>
-        </h:head>
-        <h:body>
-            <div class="customer_main_container">
-                <h:panelGroup layout="block" rendered="#{customerActivationManagedBean.valid}">
-                    <p:outputLabel>Your account is successfully activated! Please find your account detail: </p:outputLabel>
-                    <ul>
-                        <li>
-                            <p:outputLabel>User ID: #{customerActivationManagedBean.mainAccount.userID}</p:outputLabel>
-                        </li>
-                        <li>
-                            <p:outputLabel>Initial Password: #{customerActivationManagedBean.mainAccount.password}</p:outputLabel>
-                        </li>
-                    </ul>
-                    <p:outputLabel>Now you can change your initial password!</p:outputLabel>
-                    <p><h:link outcome="customer_reset_pwd">Go to home page and reset password</h:link></p>
-                 </h:panelGroup>
-                
-                 <h:panelGroup layout="block" rendered="#{!customerActivationManagedBean.valid}">
-                    <p>Activation failed! Please enter your email address to try once again.</p> 
-                 </h:panelGroup>
-            </div>
-        </h:body>
-    </f:view>
-
-
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:em="http://xmlns.jcp.org/jsf/composite/emcomp">
+   
+<f:view>
+    <h:head>
+        <title>Merlion Bank Login</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <em:cssImport></em:cssImport>
+    </h:head>
+    <h:body>
+        <p:layout class="h-center" style="width:800px;height:400px;top:55%;font-size: 22px">
+            <p:layoutUnit position="center">
+                <h:panelGrid columns="1" cellpadding="5" class="h-center" style="top:35%;text-align: center;" rendered="#{customerActivationManagedBean.valid}">
+                    <h:outputText value="Your account is successfully activated!"/>
+                    <h:outputText value="Your User ID(used for Login) is:"/>
+                    <h:outputText value="#{customerActivationManagedBean.mainAccount.userID}" style="font-size:32px; color: black" />
+                    <h:link outcome="/customer_cms/customer_reset_pwd" value="Reset your password now!"></h:link>
+                </h:panelGrid>    
+                <h:panelGrid columns="1" cellpadding="5" class="h-center" style="top:35%;text-align: center;" rendered="#{!customerActivationManagedBean.valid}">
+                    <p>The account has been activated or freezed!</p> 
+                </h:panelGrid>
+            </p:layoutUnit>
+        </p:layout>
+    </h:body>
+</f:view>
 </html>
-

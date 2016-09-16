@@ -24,6 +24,7 @@ public class CustomerProfileSessionBean implements CustomerProfileSessionBeanLoc
     private EntityManager em;
 
    
+    @Override
     public Customer getCustomerByUserID(String userID){    
         Query q = em.createQuery("SELECT a FROM MainAccount a WHERE a.userID = :inUserID");
         
@@ -39,6 +40,7 @@ public class CustomerProfileSessionBean implements CustomerProfileSessionBeanLoc
         }
     }
     
+    @Override
     public Boolean saveProfile(Customer customer){
         try{
             
