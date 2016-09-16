@@ -86,9 +86,9 @@ public class Transaction implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     @ManyToOne(cascade={CascadeType.PERSIST})
-    private BankAccount fromAccount;
+    private DepositAccount fromAccount;
     @ManyToOne(cascade={CascadeType.PERSIST})
-    private BankAccount toAccount;// can be null
+    private DepositAccount toAccount;// can be null
     private String referenceNumber;
     private String actionType;
     private Boolean credit;
@@ -107,28 +107,28 @@ public class Transaction implements Serializable {
     /**
      * @return the fromAccount
      */
-    public BankAccount getFromAccount() {
+    public DepositAccount getFromAccount() {
         return fromAccount;
     }
 
     /**
      * @param fromAccount the fromAccount to set
      */
-    public void setFromAccount(BankAccount fromAccount) {
+    public void setFromAccount(DepositAccount fromAccount) {
         this.fromAccount = fromAccount;
     }
 
     /**
      * @return the toAccount
      */
-    public BankAccount getToAccount() {
+    public DepositAccount getToAccount() {
         return toAccount;
     }
 
     /**
      * @param toAccount the toAccount to set
      */
-    public void setToAccount(BankAccount toAccount) {
+    public void setToAccount(DepositAccount toAccount) {
         this.toAccount = toAccount;
     }
 

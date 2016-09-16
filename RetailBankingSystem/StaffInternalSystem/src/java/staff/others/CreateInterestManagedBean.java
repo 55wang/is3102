@@ -9,7 +9,6 @@ import ejb.session.dams.InterestSessionBeanLocal;
 import entity.ConditionInterest;
 import entity.Interest;
 import entity.RangeInterest;
-import entity.Role;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +18,6 @@ import javax.faces.event.ActionEvent;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import utils.MessageUtils;
-import utils.SessionUtils;
 
 /**
  *

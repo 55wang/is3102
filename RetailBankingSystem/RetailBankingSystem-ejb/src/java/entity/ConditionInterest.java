@@ -7,16 +7,27 @@ package entity;
 
 import java.math.BigDecimal;
 import javax.persistence.Entity;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
 
 /**
  *
  * @author leiyang
  */
 @Entity
-@Inheritance(strategy=InheritanceType.JOINED)
 public class ConditionInterest extends Interest {
+
+    /**
+     * @return the stack
+     */
+    public Boolean getStack() {
+        return stack;
+    }
+
+    /**
+     * @param stack the stack to set
+     */
+    public void setStack(Boolean stack) {
+        this.stack = stack;
+    }
 
     public enum ConditionType {
         BILL {
@@ -43,10 +54,17 @@ public class ConditionInterest extends Interest {
                 return "INVEST";
             }
         },
+        INCREASE {
+            @Override
+            public String toString() {
+                return "INCREASE";
+            }
+        }
     }
     private String conditionType = "";
     private BigDecimal ceiling = new BigDecimal("60000");
     private BigDecimal amount;
+    private Boolean stack;
 
     /**
      * @return the ceiling

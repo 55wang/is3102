@@ -7,7 +7,7 @@ package customer.common;
 
 import ejb.session.common.EmailServiceSessionBeanLocal;
 import ejb.session.common.NewCustomerSessionBeanLocal;
-import entity.BankAccount;
+import entity.DepositAccount;
 import entity.CurrentAccount;
 import entity.Customer;
 import entity.MainAccount;
@@ -79,7 +79,7 @@ public class CustomerApplicationManagedBean implements Serializable {
         mainAccount.setUserID(generateUserID(customer.getIdentityType(), customer.getIdentityNumber()));
         mainAccount.setPassword(generatePwd());
 
-        List<BankAccount> bankAccounts = new ArrayList<BankAccount>();
+        List<DepositAccount> bankAccounts = new ArrayList<DepositAccount>();
         switch (initialDepositAccount) {
             case "MBS Current Account":
                 CurrentAccount currentAccount = new CurrentAccount();
