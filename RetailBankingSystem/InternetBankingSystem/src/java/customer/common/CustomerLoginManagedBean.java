@@ -58,7 +58,8 @@ public class CustomerLoginManagedBean implements Serializable {
 
     public void loginCustomer() {
         String activityLog = "Login Customer Account";
-        String functionName = new Object() {}.getClass().getEnclosingMethod().toString();
+        String functionName = new Object() {
+        }.getClass().getEnclosingMethod().toString();
         String input = loginAccount.getUserID() + ", " + AuditUtils.hiddenFullString(loginAccount.getPassword());
         String output = "INITIATING";
         MainAccount ma = null;
@@ -72,9 +73,11 @@ public class CustomerLoginManagedBean implements Serializable {
         try {
             MainAccount attemptLogin = loginSessionBean.getCustomerByUserID(loginAccount.getUserID()).getMainAccount();
             if (attemptLogin.getStatus().equals(MainAccount.StatusType.PENDING)) {
+                output = "FAIL";
                 String msg = "Check your email and activate the account";
                 MessageUtils.displayInfo(msg);
             } else if (attemptLogin.getStatus().equals(MainAccount.StatusType.FREEZE)) {
+                output = "FAIL";
                 String msg = "Your account has been freezed.";
                 MessageUtils.displayInfo(msg);
             } else if (attemptLogin.getStatus().equals(MainAccount.StatusType.ACTIVE)) {
@@ -85,18 +88,16 @@ public class CustomerLoginManagedBean implements Serializable {
                 SessionUtils.setUserName(userName);
 
                 output = "SUCCESS";
-                al = AuditUtils.createAuditLog(activityLog, functionName, input, output, ma, sa);
-                auditSessionBean.insertAuditLog(al);
-
                 RedirectUtils.redirect("../customer_cms/customer_home.xhtml");
             }
         } catch (NullPointerException e) {
+            output = "FAIL";
             String msg = "Account not exists or password incorrect.";
             MessageUtils.displayError(msg);
+        } finally {
+            al = AuditUtils.createAuditLog(activityLog, functionName, input, output, ma, sa);
+            auditSessionBean.insertAuditLog(al);
         }
-        output = "FAIL";
-        al = AuditUtils.createAuditLog(activityLog, functionName, input, output, ma, sa);
-        auditSessionBean.insertAuditLog(al);
 
     }
 
