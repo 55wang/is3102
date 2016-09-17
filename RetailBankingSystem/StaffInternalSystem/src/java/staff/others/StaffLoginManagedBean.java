@@ -5,6 +5,7 @@
  */
 package staff.others;
 
+import annotation.Audit;
 import ejb.session.staff.StaffAccountSessionBeanLocal;
 import ejb.session.staff.StaffRoleSessionBeanLocal;
 import entity.Role;
@@ -16,6 +17,7 @@ import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.faces.event.ActionEvent;
 import javax.faces.view.ViewScoped;
+import utils.AuditUtils;
 import utils.HashPwdUtils;
 import utils.MessageUtils;
 import utils.RedirectUtils;
@@ -61,11 +63,14 @@ public class StaffLoginManagedBean implements Serializable {
     private String username;
     private String password;
 
+    @Audit( activtyLog = "Login Staff Account" )
     public void loginStaff(ActionEvent event) {
         StaffAccount sa = staffAccountSessionBean.loginAccount(username, HashPwdUtils.hashPwd(password));
         if (sa == null) {
+//            AuditUtils.testAuditAnnotation();
             MessageUtils.displayError("Either username or password is wrong");
         } else {
+//            AuditUtils.testAuditAnnotation();
             SessionUtils.setStaffAccount(sa);
             if (UserUtils.isUserInRole(Permission.SUPERUSER)) {
                 RedirectUtils.redirect(SessionUtils.getContextPath() + "/others/create-interest.xhtml");

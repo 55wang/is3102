@@ -17,6 +17,9 @@ import static utils.SessionUtils.getSession;
  */
 public class UserUtils {
     
+    // TODO: Method permissions can be used as annotation.
+    // https://www.mkyong.com/java/java-custom-annotations-example/
+    // http://www.journaldev.com/1789/java-reflection-example-tutorial
     public static Boolean isUserInRole(Role.Permission r) {
         HttpSession session = getSession();
         if (session != null) {

@@ -16,7 +16,7 @@ import javax.faces.view.ViewScoped;
 import org.primefaces.push.EventBus;
 import org.primefaces.push.EventBusFactory;
 import utils.ColorUtils;
-import utils.LoggingUtil;
+import utils.LoggingUtils;
 import utils.SessionUtils;
 
 /**
@@ -43,7 +43,7 @@ public class MessageViewManagedBean implements Serializable {
     }
 
     public void init() {
-        LoggingUtil.StaffMessageLog(MessageViewManagedBean.class, "@PostConstruct, retriving conversation from id:" + conversationId);
+        LoggingUtils.StaffMessageLog(MessageViewManagedBean.class, "@PostConstruct, retriving conversation from id:" + conversationId);
         setCurrentConversation(conversationBean.getConversationById(Long.parseLong(conversationId)));
     }
 
@@ -51,11 +51,11 @@ public class MessageViewManagedBean implements Serializable {
         // Send message action
         newMessage.setReceiver(getReceiverUsername());
         newMessage.setSender(SessionUtils.getStaffUsername());
-        LoggingUtil.StaffMessageLog(MessageViewManagedBean.class, String.format("MessageViewManagedBean: SendMessage(): newMessage is %s", getNewMessage()));
+        LoggingUtils.StaffMessageLog(MessageViewManagedBean.class, String.format("MessageViewManagedBean: SendMessage(): newMessage is %s", getNewMessage()));
         currentConversation.setUnread(Boolean.TRUE);
         currentConversation.setLastMessage(newMessage.getMessage());
         if (conversationBean.addMessage(currentConversation, newMessage)) {
-            LoggingUtil.StaffMessageLog(MessageViewManagedBean.class, "Created New Message:" + newMessage.getMessage() + " And send to channel: " + CHANNEL + getReceiverUsername());
+            LoggingUtils.StaffMessageLog(MessageViewManagedBean.class, "Created New Message:" + newMessage.getMessage() + " And send to channel: " + CHANNEL + getReceiverUsername());
             MessageDTO mDTO = new MessageDTO();
             mDTO.setCreateDate(newMessage.getCreateDate().toString());
             mDTO.setLabel(getMessageLabel(newMessage));
@@ -65,7 +65,7 @@ public class MessageViewManagedBean implements Serializable {
             eventBus.publish(CHANNEL + getReceiverUsername(), mDTO);
             newMessage = new Message();
         } else {
-            LoggingUtil.StaffMessageLog(MessageViewManagedBean.class, "Created New Message FAILED");
+            LoggingUtils.StaffMessageLog(MessageViewManagedBean.class, "Created New Message FAILED");
         }
     }
 

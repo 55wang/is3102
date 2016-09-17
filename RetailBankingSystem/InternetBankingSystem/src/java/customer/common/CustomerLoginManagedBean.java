@@ -13,11 +13,9 @@ import entity.MainAccount;
 import entity.StaffAccount;
 import java.io.Serializable;
 import javax.ejb.EJB;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
-import utils.Audit;
+import annotation.Audit;
 import utils.AuditUtils;
 import utils.HashPwdUtils;
 import utils.MessageUtils;
@@ -73,8 +71,7 @@ public class CustomerLoginManagedBean implements Serializable {
         AuditLog al = AuditUtils.createAuditLog(activityLog, functionName, input, output, ma, sa);
         auditSessionBean.insertAuditLog(al);
 
-        FacesMessage msgCaptcha = new FacesMessage(FacesMessage.SEVERITY_INFO, "Correct", "Correct");
-        FacesContext.getCurrentInstance().addMessage(null, msgCaptcha);
+        MessageUtils.displayDetailedInfo("Correct", "Correct");
 
         try {
             MainAccount attemptLogin = loginSessionBean.getCustomerByUserID(loginAccount.getUserID()).getMainAccount();
@@ -85,13 +82,13 @@ public class CustomerLoginManagedBean implements Serializable {
                 String msg = "Your account has been freezed.";
                 MessageUtils.displayInfo(msg);
             } else if (attemptLogin.getStatus().equals(MainAccount.StatusType.ACTIVE)) {
-                Long userID = loginSessionBean.loginAccount(loginAccount.getUserID(), loginAccount.getPassword()).getId();
-                String userName = loginSessionBean.loginAccount(loginAccount.getUserID(), loginAccount.getPassword()).getUserID();
+                ma = loginSessionBean.loginAccount(loginAccount.getUserID(), HashPwdUtils.hashPwd(loginAccount.getPassword()));
+                Long userID = ma.getId();
+                String userName = ma.getUserID();
                 SessionUtils.setUserId(userID);
                 SessionUtils.setUserName(userName);
 
                 output = "SUCCESS";
-                ma = loginSessionBean.loginAccount(loginAccount.getUserID(), loginAccount.getPassword());
                 al = AuditUtils.createAuditLog(activityLog, functionName, input, output, ma, sa);
                 auditSessionBean.insertAuditLog(al);
 

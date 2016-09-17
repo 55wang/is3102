@@ -16,6 +16,9 @@ public class MessageUtils {
     public static void displayInfo(String message) {
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, message, ""));
     }
+    public static void displayDetailedInfo(String title, String message) {
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, title, message));
+    }
     public static void displayError(String message) {
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, message, ""));
     }

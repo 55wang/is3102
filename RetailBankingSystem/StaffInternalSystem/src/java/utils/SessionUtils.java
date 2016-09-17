@@ -15,6 +15,12 @@ import javax.servlet.http.HttpSession;
  * @author leiyang
  */
 public class SessionUtils {
+    
+    public static String getIpAddress() {
+        HttpServletRequest httpServletRequest = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+        String ip = httpServletRequest.getRemoteAddr();
+        return ip;
+    }
 
     public static HttpSession getSession() {
         return (HttpSession) FacesContext.getCurrentInstance()

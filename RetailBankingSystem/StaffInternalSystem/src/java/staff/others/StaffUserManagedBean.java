@@ -13,7 +13,7 @@ import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
-import utils.LoggingUtil;
+import utils.LoggingUtils;
 import utils.SessionUtils;
 import utils.UserUtils;
 
@@ -37,11 +37,11 @@ public class StaffUserManagedBean implements Serializable {
 
     @PostConstruct
     public void init() {
-        LoggingUtil.StaffMessageLog(StaffUserManagedBean.class, "StaffUserManagedBean @PostConstruct init");
+        LoggingUtils.StaffMessageLog(StaffUserManagedBean.class, "StaffUserManagedBean @PostConstruct init");
     }
     @PreDestroy
     public void deinit() {
-        LoggingUtil.StaffMessageLog(StaffUserManagedBean.class, "StaffUserManagedBean @PostConstruct deinit");
+        LoggingUtils.StaffMessageLog(StaffUserManagedBean.class, "StaffUserManagedBean @PostConstruct deinit");
     }
     /**
      * Creates a new instance of StaffUserManagedBean

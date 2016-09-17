@@ -15,7 +15,7 @@ import javax.ejb.EJB;
 import javax.faces.event.ActionEvent;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
-import utils.LoggingUtil;
+import utils.LoggingUtils;
 import utils.MessageUtils;
 
 /**

@@ -13,7 +13,7 @@ import java.util.Date;
 
 /**
  *
- * @author wang
+ * @author leiyang
  */
 public class AuditUtils implements Serializable {
 

@@ -12,7 +12,7 @@ import java.util.logging.Logger;
  *
  * @author leiyang
  */
-public class LoggingUtil {
+public class LoggingUtils {
     
     private static final Boolean logStaffMessage = true;
     

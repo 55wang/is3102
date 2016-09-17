@@ -24,7 +24,7 @@ import javax.annotation.PreDestroy;
 import javax.ejb.EJB;
 import javax.faces.view.ViewScoped;
 import utils.ColorUtils;
-import utils.LoggingUtil;
+import utils.LoggingUtils;
 import utils.RedirectUtils;
 import utils.SessionUtils;
 
@@ -45,21 +45,21 @@ public class ChatViewManagedBean implements Serializable {
     private Conversation currentConversation;
     
     public ChatViewManagedBean() {
-        LoggingUtil.StaffMessageLog(ChatViewManagedBean.class, "ChatViewManagedBean() Created");
+        LoggingUtils.StaffMessageLog(ChatViewManagedBean.class, "ChatViewManagedBean() Created");
     }
     
     @PostConstruct
     public void init() {
-        LoggingUtil.StaffMessageLog(ChatViewManagedBean.class, "@PostConstruct init() Created");
+        LoggingUtils.StaffMessageLog(ChatViewManagedBean.class, "@PostConstruct init() Created");
         showall();
         removeSelf();
         setConversations(conversationBean.getAllConversationForStaff(SessionUtils.getStaffUsername()));
-        LoggingUtil.StaffMessageLog(ChatViewManagedBean.class, "Conversations: " + conversations.size());
+        LoggingUtils.StaffMessageLog(ChatViewManagedBean.class, "Conversations: " + conversations.size());
     }
     
     @PreDestroy 
     public void deinit() {
-        LoggingUtil.StaffMessageLog(ChatViewManagedBean.class, "@PreDestroy deinit() Called");
+        LoggingUtils.StaffMessageLog(ChatViewManagedBean.class, "@PreDestroy deinit() Called");
     }
     
     public void search() {
@@ -73,7 +73,7 @@ public class ChatViewManagedBean implements Serializable {
     }
     
     public void newConversation(StaffAccount staff) {
-        LoggingUtil.StaffMessageLog(ChatViewManagedBean.class, "New Conversation with staff " + staff.getUsername());
+        LoggingUtils.StaffMessageLog(ChatViewManagedBean.class, "New Conversation with staff " + staff.getUsername());
         StaffAccount sa = SessionUtils.getStaff();
         Conversation conversation = checkIfSenderConversationExists(sa);
         if (conversation == null) {
@@ -94,7 +94,7 @@ public class ChatViewManagedBean implements Serializable {
         List<Conversation> cs = sa.getSenderConversation();
         for (Conversation c : cs) {
             if (c.getSender().equals(SessionUtils.getStaff()) && c.getReceiver().equals(sa)) {
-                LoggingUtil.StaffMessageLog(ChatViewManagedBean.class, "Found Existing Conversation, not creating new one");
+                LoggingUtils.StaffMessageLog(ChatViewManagedBean.class, "Found Existing Conversation, not creating new one");
                 return c;
             }
         }

@@ -6,7 +6,7 @@
 package staff.message;
 
 import org.primefaces.push.Decoder;
-import utils.LoggingUtil;
+import utils.LoggingUtils;
 
 /**
  *
@@ -20,7 +20,7 @@ public class MessageDecoder implements Decoder<String,MessageDTO> {
  
     @Override
     public MessageDTO decode(String s) {
-        LoggingUtil.StaffMessageLog(MessageDecoder.class, "MessageDecoder with string: " + s);
+        LoggingUtils.StaffMessageLog(MessageDecoder.class, "MessageDecoder with string: " + s);
         String[] userAndMessage = s.split(":");
         System.out.println(userAndMessage);
         if (userAndMessage.length >= 2) {
