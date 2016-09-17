@@ -13,11 +13,11 @@
 
     <cc:implementation>
         <f:view>
-            <p:idleMonitor onidle="PF('idleDialog').show(); countdownBegin();" timeout="40000">
+            <p:idleMonitor onidle="PF('idleDialog').show(); countdownBegin();" timeout="60000">
                 <p:confirmDialog header="Session Timeout Notification" widgetVar="idleDialog" message="You will be logged out in " global="true">
                     <h:form>
                     <div style="text-align: center">
-                        <span id="logout-timer">20 seconds</span>
+                        <span id="logout-timer">60 seconds</span>
                         <h:outputScript library="js" name="session_countdown.js" />
                         <div><p:commandButton value="Ok" icon="ui-icon-check" onclick="window.location.replace(window.location.href);"/></div>         
                     </div>

@@ -43,7 +43,7 @@ public class AuditUtils implements Serializable {
     }
 
     //only show first 4 character
-    public static String hiddenString(String text) {
+    public static String hiddenFourString(String text) {
         String output;
         if (text.length() >= 4) {
             output = text.substring(0, 4);
@@ -55,6 +55,11 @@ public class AuditUtils implements Serializable {
             }
         }
         return output;
+    }
+
+    //hide all string only show ********
+    public static String hiddenFullString(String text) {
+        return "********";
     }
 
 }
