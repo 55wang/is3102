@@ -5,9 +5,12 @@
  */
 package customer.cms;
 
+import ejb.session.audit.AuditSessionBeanLocal;
 import ejb.session.cms.CustomerProfileSessionBeanLocal;
+import entity.AuditLog;
 import entity.Customer;
 import java.io.Serializable;
+import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
@@ -24,8 +27,11 @@ import utils.SessionUtils;
 public class CustomerProfileManagedBean implements Serializable {
     @EJB
     private CustomerProfileSessionBeanLocal customerProfileSessionBean;
-    private Customer customer; 
+    @EJB
+    private AuditSessionBeanLocal auditSessionBean;
     
+    private Customer customer; 
+    private List<AuditLog> auditLogs;
     private Boolean editingPage = false;
     private Boolean profileEdited = false;
 
@@ -60,6 +66,7 @@ public class CustomerProfileManagedBean implements Serializable {
     @PostConstruct
     public void setCustomer() {
         this.customer = customerProfileSessionBean.getCustomerByUserID(SessionUtils.getUserName());
+        this.auditLogs = auditSessionBean.getAuditLogByCustomerID(SessionUtils.getUserName());
     }
 
     /**
@@ -88,9 +95,14 @@ public class CustomerProfileManagedBean implements Serializable {
      */
     public void setProfileEdited(Boolean profileEdited) {
         this.profileEdited = profileEdited;
+    }  
+
+    public List<AuditLog> getAuditLogs() {
+        return auditLogs;
     }
 
-   
-       
+    public void setAuditLogs(List<AuditLog> auditLogs) {
+        this.auditLogs = auditLogs;
+    }
     
 }
