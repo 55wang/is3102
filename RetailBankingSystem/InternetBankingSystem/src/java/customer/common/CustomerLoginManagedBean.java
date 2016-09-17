@@ -15,7 +15,6 @@ import java.io.Serializable;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
-import annotation.Audit;
 import utils.AuditUtils;
 import utils.HashPwdUtils;
 import utils.MessageUtils;
@@ -57,13 +56,10 @@ public class CustomerLoginManagedBean implements Serializable {
         this.loginAccount = loginAccount;
     }
 
-    @Audit(activtyLog = "Login Customer Account")
     public void loginCustomer() {
-        String activityLog = new Object() {
-        }.getClass().getEnclosingMethod().getAnnotation(Audit.class).activtyLog();
-        String functionName = new Object() {
-        }.getClass().getEnclosingMethod().toString();
-        String input = loginAccount.getUserID() + ", " + AuditUtils.hiddenString(loginAccount.getPassword());
+        String activityLog = "Login Customer Account";
+        String functionName = new Object() {}.getClass().getEnclosingMethod().toString();
+        String input = loginAccount.getUserID() + ", " + AuditUtils.hiddenFullString(loginAccount.getPassword());
         String output = "INITIATING";
         MainAccount ma = null;
         StaffAccount sa = null;
@@ -104,7 +100,6 @@ public class CustomerLoginManagedBean implements Serializable {
 
     }
 
-    @Audit
     public void forgotUserID() {
         MainAccount forgotAccount = null;
         forgotAccount = loginSessionBean.getMainAccountByEmail(findUsernameEmail);

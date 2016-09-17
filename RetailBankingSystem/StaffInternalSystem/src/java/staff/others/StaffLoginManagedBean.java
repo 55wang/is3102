@@ -5,7 +5,6 @@
  */
 package staff.others;
 
-import annotation.Audit;
 import ejb.session.staff.StaffAccountSessionBeanLocal;
 import ejb.session.staff.StaffRoleSessionBeanLocal;
 import entity.Role.Permission;
@@ -48,7 +47,6 @@ public class StaffLoginManagedBean implements Serializable {
     private String username;
     private String password;
 
-    @Audit( activtyLog = "Login Staff Account" )
     public void loginStaff(ActionEvent event) {
         StaffAccount sa = staffAccountSessionBean.loginAccount(username, HashPwdUtils.hashPwd(password));
         if (sa == null) {
