@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:em="http://xmlns.jcp.org/jsf/composite/emcomp">
+    <f:view>
+        <h:head>
+            <title>Merlion Bank</title>
+            <h:outputStylesheet library="css" name="reset.css"/>
+            <h:outputStylesheet library="css" name="theme.css"/>
+        </h:head>
+
+        <h:body>
+<!--            <em:customerHeader context="index_deposit" userName="Log in"></em:customerHeader>-->
+            <em:customerNavBar context="index_deposit" pageName="index_deposit" ></em:customerNavBar>
+
+<div style="margin-top: 200px">
+    <h:form>
+        <p:growl id="msgs" showDetail="true" />
+ 
+        <p:layout style="min-width:250px;min-height:250px;margin-left: 100px;border: none">
+            <p:layoutUnit position="west" resizable="true" size="100" minSize="200" maxSize="200" style="border: none">
+<!--        <p:panelGrid columns="1" style="width:150px;margin_left:300px;border:none">-->
+            <p:panel id="base" header="0.05% base interest ">
+                <h:outputText value="Merlion Unique Account customer earns at least 0.05% interest rate per year."/>
+            </p:panel>
+        <!--</p:panelGrid>-->
+    </p:layoutUnit>
+            <p:layoutUnit position="center" style="border: none">
+        <p:panelGrid columns="3" style="width: 750px;margin-left: 50px; border: none">
+        <p:panel id="bonus1" header="1.2% bonus" >
+                <h:outputText value="Credit salary of at least S$3000 through GIRO" />
+            </p:panel>
+ 
+         <p:panel id="bonus2" header="0.5% bonus">
+                <h:outputText value="Pay at least three bills online" />
+            </p:panel>
+ 
+            <p:panel id="bonus3" header="0.5% bonus" >
+                <h:outputText value="Spend at least S$600 on Merlion credit card"  />
+            </p:panel>
+        </p:panelGrid>
+  <p:panelGrid columns="2" style="width: 500px;margin-top: 30px; margin-left: 100px;border: none">
+            <p:panel id="bonus4" header="1% bonus" >
+                <h:outputText value="Invest in our financial products for 12 months" />
+            </p:panel>
+ 
+            <p:panel id="bonus5" header="1% bonus" >
+                <h:outputText value="Increase amount from the previous month’s balance" />
+            </p:panel>
+  </p:panelGrid>
+                
+                <div style="margin-top: 30px">
+                            <button style="margin-left: 130px" type="button" onclick="window.location.href = '../customer_dams/apply_deposit_account.xhtml'">New Customer Apply</button>
+                            <button style="margin-left: 50px" type="button" onclick="window.location.href = '.../common/customer_login.xhtml'">Existing customer Login</button>
+                        </div>
+            </p:layoutUnit>
+        </p:layout>
+ 
+       
+    </h:form>
+        
+        </div></h:body></f:view>
+</html>
