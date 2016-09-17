@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:em="http://xmlns.jcp.org/jsf/composite/emcomp">
+    <f:view>
+        <h:head>
+            <title>Merlion Bank</title>
+            <h:outputStylesheet library="css" name="reset.css"/>
+            <h:outputStylesheet library="css" name="theme.css"/>
+        </h:head>
+
+        <h:body>
+<!--            <em:customerHeader context="index_deposit" userName="Log in"></em:customerHeader>-->
+            <em:customerNavBar context="index_deposit" pageName="index_deposit" ></em:customerNavBar>
+
+            <div style="margin-top: 200px;margin-left: 200px"> 
+                <p:panel style="width: 750px">
+                        <p:panelGrid columns="8">
+                            <f:facet name="header">
+                                <p:row>
+                                    <p:column colspan="7">Time Deposit Interest Rate</p:column>
+                                </p:row>
+                            </f:facet>
+                            <h:outputText value="" />
+                            <h:outputText value="1-2 mth" />
+                            <h:outputText value="3-5 mth" />
+                            <h:outputText value="6-8 mth" />
+                            <h:outputText value="9-12 mth" />
+                            <h:outputText value="18 mth" />
+                            <h:outputText value="24 mth" />
+                            <h:outputText value="36 mth" />
+
+
+                            <h:outputText value="5,000~20,000" />
+                            <h:outputText value="0.05%" />
+                            <h:outputText value="0.1%" />
+                            <h:outputText value="0.15%" />
+                            <h:outputText value="0.2%" />
+                            <h:outputText value="0.4%" />
+                            <h:outputText value="0.6%" />
+                            <h:outputText value="0.8%" />
+
+                            <h:outputText value="20,001~50,000" />
+                            <h:outputText value="0.05%" />
+                            <h:outputText value="0.1%" />
+                            <h:outputText value="0.15%" />
+                            <h:outputText value="0.2%" />
+                            <h:outputText value="0.4%" />
+                            <h:outputText value="0.6%" />
+                            <h:outputText value="0.8%" />
+
+                            <h:outputText value="50,001~100,000" />
+                            <h:outputText value="0.05%" />
+                            <h:outputText value="0.1%" />
+                            <h:outputText value="0.15%" />
+                            <h:outputText value="0.2%" />
+                            <h:outputText value="0.4%" />
+                            <h:outputText value="0.6%" />
+                            <h:outputText value="0.8%" />
+
+                            <h:outputText value="100,001~250,000" />
+                            <h:outputText value="0.05%" />
+                            <h:outputText value="0.1%" />
+                            <h:outputText value="0.15%" />
+                            <h:outputText value="0.2%" />
+                            <h:outputText value="0.4%" />
+                            <h:outputText value="0.6%" />
+                            <h:outputText value="0.8%" />
+
+                            <h:outputText value="250,001~500,000" />
+                            <h:outputText value="0.05%" />
+                            <h:outputText value="0.1%" />
+                            <h:outputText value="0.15%" />
+                            <h:outputText value="0.2%" />
+                            <h:outputText value="0.4%" />
+                            <h:outputText value="0.6%" />
+                            <h:outputText value="0.8%" />
+
+                            <h:outputText value="20,001~50,000" />
+                            <h:outputText value="0.05%" />
+                            <h:outputText value="0.1%" />
+                            <h:outputText value="0.15%" />
+                            <h:outputText value="0.2%" />
+                            <h:outputText value="0.4%" />
+                            <h:outputText value="0.6%" />
+                            <h:outputText value="0.8%" />
+
+
+
+                        </p:panelGrid>
+                   
+
+                    <div style="margin-top: 20px">
+                            <button style="margin-left: 100px" type="button" onclick="window.location.href = '../customer_dams/apply_deposit_account.xhtml'">New Customer Apply</button>
+                            <button style="margin-left: 50px" type="button" onclick="window.location.href = '.../common/customer_login.xhtml'">Existing customer Login</button>
+                        </div>
+                   
+                </p:panel></div>
+
+
+
+        </h:body>
+    </f:view>
+</html>
