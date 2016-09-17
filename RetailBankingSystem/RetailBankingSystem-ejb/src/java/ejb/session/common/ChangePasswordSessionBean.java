@@ -5,7 +5,7 @@
  */
 package ejb.session.common;
 
-import entity.MainAccount;
+import entity.customer.MainAccount;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;

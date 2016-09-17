@@ -5,8 +5,8 @@
  */
 package utils;
 
-import entity.Role;
-import entity.StaffAccount;
+import entity.staff.Role;
+import entity.staff.StaffAccount;
 import java.util.List;
 import javax.servlet.http.HttpSession;
 import static utils.SessionUtils.getSession;

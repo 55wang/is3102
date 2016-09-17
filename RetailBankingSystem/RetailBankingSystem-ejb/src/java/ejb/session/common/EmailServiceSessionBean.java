@@ -5,9 +5,11 @@
  */
 package ejb.session.common;
 
-import entity.MainAccount;
+import ejb.session.staff.StaffAccountSessionBeanLocal;
+import entity.customer.MainAccount;
 import java.util.Date;
 import java.util.Properties;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -27,12 +29,12 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
 
     @PersistenceContext(unitName = "RetailBankingSystem-ejbPU")
     private EntityManager em;
-
+    
     String emailServerName = "mailauth.comp.nus.edu.sg";
     String mailer = "JavaMailer";
 
     @Override
-    public Boolean sendActivationEmailForNewCustomer(String recipient) {
+    public Boolean sendActivationEmailForCustomer(String recipient) {
         String activationCode = "123456";
 
         try {
@@ -67,16 +69,9 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
     }
 
     @Override
-    public Boolean sendActivationGmailForNewCustomer(String recipient, String pwd) {
+    public Boolean sendActivationGmailForCustomer(String recipient, String pwd) {
 
-        Properties props = getGmailProperties();
-
-        Session session = Session.getInstance(props,
-                new javax.mail.Authenticator() {
-                    protected javax.mail.PasswordAuthentication getPasswordAuthentication() {
-                        return new javax.mail.PasswordAuthentication("merlionbanking", "p@ssword1");
-                    }
-                });
+        Session session = getSession();
 
         try {
 
@@ -101,15 +96,35 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
     }
     
     @Override
-    public Boolean sendUserIDforForgottenCustomer(String recipient, MainAccount forgotAccount){
-        Properties props = getGmailProperties();
+    public Boolean sendActivationGmailForStaff(String recipient, String pwd) {
 
-        Session session = Session.getInstance(props,
-                new javax.mail.Authenticator() {
-                    protected javax.mail.PasswordAuthentication getPasswordAuthentication() {
-                        return new javax.mail.PasswordAuthentication("merlionbanking", "p@ssword1");
-                    }
-                });
+        Session session = getSession();
+
+        try {
+
+            Message message = new MimeMessage(session);
+            message.setFrom(new InternetAddress("merlionbanking@gmail.com"));
+            message.setRecipients(Message.RecipientType.TO,
+                    InternetAddress.parse(recipient));
+            message.setSubject("Welcome to Merlion Banking");
+            message.setText("Dear Staff, Thank you to work for merionlion banking.\n");
+            message.setText("Link to activate your staff account: https://localhost:8181/StaffInternalSystem/common/staff_activate_account.xhtml?email=" + recipient + "&code=" + pwd);
+
+            Transport.send(message);
+
+            System.out.println("Email send out successfully");
+            return (true);
+
+        } catch (MessagingException e) {
+            System.out.println(e);
+            return (false);
+        }
+
+    }
+    
+    @Override
+    public Boolean sendUserIDforForgottenCustomer(String recipient, MainAccount forgotAccount){
+        Session session = getSession();
 
         try {
 
@@ -132,15 +147,32 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
     }
     
     @Override
-    public Boolean sendResetPwdLinkforForgottenCustomer(String recipient, MainAccount forgotAccount){
-        Properties props = getGmailProperties();
+    public Boolean sendUserNameforForgottenStaff(String recipient, String username){
+        Session session = getSession();
 
-        Session session = Session.getInstance(props,
-                new javax.mail.Authenticator() {
-                    protected javax.mail.PasswordAuthentication getPasswordAuthentication() {
-                        return new javax.mail.PasswordAuthentication("merlionbanking", "p@ssword1");
-                    }
-                });
+        try {
+
+            Message message = new MimeMessage(session);
+            message.setFrom(new InternetAddress("merlionbanking@gmail.com"));
+            message.setRecipients(Message.RecipientType.TO,
+                    InternetAddress.parse(recipient));
+            message.setSubject("Please check your User Name");
+            message.setText("Dear Customer, your User Name is: " + username);
+
+            Transport.send(message);
+
+            System.out.println("Email send out successfully");
+            return (true);
+
+        } catch (MessagingException e) {
+            System.out.println(e);;
+            return (false);
+        }
+    }
+    
+    @Override
+    public Boolean sendResetPwdLinkforForgottenCustomer(String recipient, MainAccount forgotAccount){
+        Session session = getSession();
 
         try {
 
@@ -162,17 +194,34 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
         }
     }
     
-    
-   @Override
-    public void sendUpdatedProfile(String recipient){
-        Properties props = getGmailProperties();
+    @Override
+    public Boolean sendResetPwdLinkforForgottenStaff(String recipient){
+        Session session = getSession();
 
-        Session session = Session.getInstance(props,
-                new javax.mail.Authenticator() {
-                    protected javax.mail.PasswordAuthentication getPasswordAuthentication() {
-                        return new javax.mail.PasswordAuthentication("merlionbanking", "p@ssword1");
-                    }
-                });
+        try {
+
+            Message message = new MimeMessage(session);
+            message.setFrom(new InternetAddress("merlionbanking@gmail.com"));
+            message.setRecipients(Message.RecipientType.TO,
+                    InternetAddress.parse(recipient));
+            message.setSubject("Reset your password");
+            message.setText("Dear Staff, please go to following link to reset your password: ");
+
+            Transport.send(message);
+
+            System.out.println("Email send out successfully");
+            return (true);
+
+        } catch (MessagingException e) {
+            System.out.println(e);
+            return (false);
+        }
+    }
+    
+    
+    @Override
+    public void sendUpdatedProfile(String recipient){
+        Session session = getSession();
 
         try {
 
@@ -205,5 +254,14 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
         props.put("mail.smtp.auth", "true");
         props.put("mail.smtp.port", "465");
         return props;
+    }
+    
+    private Session getSession() {
+        return Session.getInstance(getGmailProperties(),
+                new javax.mail.Authenticator() {
+                    protected javax.mail.PasswordAuthentication getPasswordAuthentication() {
+                        return new javax.mail.PasswordAuthentication("merlionbanking", "p@ssword1");
+                    }
+                });
     }
 }

@@ -6,7 +6,7 @@
 package staff.others;
 
 import ejb.session.staff.StaffRoleSessionBeanLocal;
-import entity.Role;
+import entity.staff.Role;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;

@@ -11,8 +11,8 @@ package staff.message;
  */
 import ejb.session.message.ConversationSessionBeanLocal;
 import ejb.session.staff.StaffAccountSessionBeanLocal;
-import entity.Conversation;
-import entity.StaffAccount;
+import entity.staff.Conversation;
+import entity.staff.StaffAccount;
 import javax.inject.Named;
 import java.io.Serializable;
 import java.util.ArrayList;

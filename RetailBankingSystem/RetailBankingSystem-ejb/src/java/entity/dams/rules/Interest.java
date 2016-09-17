@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package entity;
+package entity.dams.rules;
 
 import java.math.BigDecimal;
 import javax.persistence.Column;
@@ -18,21 +18,25 @@ public class Interest extends Rule {
     
     public enum InterestType {
         NORMAL {
+            @Override
             public String toString() {
                 return "NORMAL";
             }
         },
         RANGE {
+            @Override
             public String toString() {
                 return "RANGE";
             }
         },
         TIMERANGE {
+            @Override
             public String toString() {
                 return "TIMERANGE";
             }
         },
         CONDITION {
+            @Override
             public String toString() {
                 return "CONDITION";
             }

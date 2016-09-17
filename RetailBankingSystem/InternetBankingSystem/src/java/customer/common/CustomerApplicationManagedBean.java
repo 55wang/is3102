@@ -7,22 +7,21 @@ package customer.common;
 
 import ejb.session.common.EmailServiceSessionBeanLocal;
 import ejb.session.common.NewCustomerSessionBeanLocal;
-import entity.DepositAccount;
-import entity.CurrentAccount;
-import entity.Customer;
-import entity.MainAccount;
-import entity.MainAccount.StatusType;
-import entity.SavingAccount;
+import entity.dams.account.DepositAccount;
+import entity.dams.account.CurrentAccount;
+import entity.customer.Customer;
+import entity.customer.MainAccount;
+import entity.customer.MainAccount.StatusType;
+import entity.dams.account.SavingAccount;
 import java.io.Serializable;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import org.primefaces.event.FlowEvent;
+import utils.MessageUtils;
 import utils.RedirectUtils;
 
 /**
@@ -98,7 +97,7 @@ public class CustomerApplicationManagedBean implements Serializable {
         };
 
         try{
-            emailServiceSessionBean.sendActivationGmailForNewCustomer(customer.getEmail(), randomPwd);
+            emailServiceSessionBean.sendActivationGmailForCustomer(customer.getEmail(), randomPwd);
         }catch(Exception ex){
             emailSuccessFlag = false;
         }
@@ -108,12 +107,11 @@ public class CustomerApplicationManagedBean implements Serializable {
             RedirectUtils.redirect("../common/register_successful.xhtml");
         }
         else{
-            FacesMessage msg = new FacesMessage("Fail!");
-            FacesContext.getCurrentInstance().addMessage(null, msg);
+            MessageUtils.displayInfo("Fail!");
         }
         
 
-//        emailServiceSessionBean.sendActivationEmailForNewCustomer(customer.getEmail());
+//        emailServiceSessionBean.sendActivationEmailForCustomer(customer.getEmail());
         
     }
 
@@ -132,7 +130,7 @@ public class CustomerApplicationManagedBean implements Serializable {
             return "error";
     }
     
-    public String generatePwd(){
+    private String generatePwd(){
         int pwdLen = 10;
         SecureRandom rnd = new SecureRandom();
 

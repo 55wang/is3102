@@ -9,7 +9,7 @@ package staff.message;
  *
  * @author leiyang
  */
-import entity.Message;
+import entity.staff.Message;
 import org.primefaces.push.EventBus;
 import org.primefaces.push.RemoteEndpoint;
 import org.primefaces.push.annotation.OnClose;

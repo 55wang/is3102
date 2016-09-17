@@ -6,8 +6,8 @@
 package ejb.session.common;
 
 import SMSMessaging.SendTextMessage;
-import entity.Customer;
-import entity.MainAccount;
+import entity.customer.Customer;
+import entity.customer.MainAccount;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;

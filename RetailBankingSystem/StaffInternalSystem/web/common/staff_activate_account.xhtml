@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:em="http://xmlns.jcp.org/jsf/composite/emcomp">
+   
+<f:view>
+    <h:head>
+        <title>Merlion Bank Login</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <em:cssImport></em:cssImport>
+    </h:head>
+    <h:body>
+        <p:layout class="h-center" style="width:800px;height:400px;top:55%;font-size: 22px">
+            <p:layoutUnit position="center">
+                <h:panelGrid columns="1" cellpadding="5" class="h-center" style="top:35%;text-align: center;" rendered="#{staffActivationManagedBean.valid}">
+                    <h:outputText value="Your account is successfully activated!"/>
+                    <h:outputText value="Your User Name(used for Login) is:"/>
+                    <h:outputText value="#{staffActivationManagedBean.staff.username}" style="font-size:32px; color: black" />
+                    <h:link outcome="/common/staff_reset_pwd" value="Reset your password now!"></h:link>
+                </h:panelGrid>    
+                <h:panelGrid columns="1" cellpadding="5" class="h-center" style="top:35%;text-align: center;" rendered="#{!staffActivationManagedBean.valid}">
+                    <p>The account has been activated or freezed!</p> 
+                </h:panelGrid>
+            </p:layoutUnit>
+        </p:layout>
+    </h:body>
+</f:view>
+</html>

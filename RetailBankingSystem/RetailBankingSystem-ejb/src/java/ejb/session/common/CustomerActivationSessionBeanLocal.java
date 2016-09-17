@@ -5,7 +5,7 @@
  */
 package ejb.session.common;
 
-import entity.MainAccount;
+import entity.customer.MainAccount;
 import javax.ejb.Local;
 
 /**

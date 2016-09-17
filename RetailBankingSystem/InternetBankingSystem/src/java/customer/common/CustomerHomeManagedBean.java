@@ -7,10 +7,8 @@ package customer.common;
 
 import ejb.session.common.ChangePasswordSessionBeanLocal;
 import ejb.session.common.LoginSessionBeanLocal;
-import entity.Customer;
+import entity.customer.Customer;
 import java.io.Serializable;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;

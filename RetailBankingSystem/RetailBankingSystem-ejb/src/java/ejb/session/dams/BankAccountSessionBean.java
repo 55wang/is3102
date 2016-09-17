@@ -5,8 +5,8 @@
  */
 package ejb.session.dams;
 
-import entity.DepositAccount;
-import entity.Transaction;
+import entity.dams.account.DepositAccount;
+import entity.common.Transaction;
 import java.math.BigDecimal;
 import java.util.List;
 import javax.ejb.Stateless;

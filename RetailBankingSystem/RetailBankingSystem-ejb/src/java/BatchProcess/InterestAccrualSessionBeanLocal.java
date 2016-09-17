@@ -5,7 +5,7 @@
  */
 package BatchProcess;
 
-import entity.DepositAccount;
+import entity.dams.account.DepositAccount;
 import javax.ejb.Local;
 import java.util.List;
 

@@ -6,7 +6,7 @@
 package staff.dams;
 
 import ejb.session.dams.BankAccountSessionBeanLocal;
-import entity.DepositAccount;
+import entity.dams.account.DepositAccount;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;

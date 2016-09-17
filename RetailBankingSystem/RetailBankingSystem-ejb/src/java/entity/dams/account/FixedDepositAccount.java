@@ -3,8 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package entity;
+package entity.dams.account;
 
+import entity.dams.rules.Rule;
+import entity.dams.rules.Interest;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;

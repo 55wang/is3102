@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package entity;
+package entity.dams.account;
 
 import javax.persistence.Entity;
 
@@ -12,6 +12,7 @@ import javax.persistence.Entity;
  * @author leiyang
  */
 @Entity
-public class LoanAccount extends DepositAccount {
-    // TODO: Maybe need to seperate from deposit account
+public class CustomizedDepositAccount extends DepositAccount {
+    // Bank is able to create new deposit account product
+    // Interest is applied accross accounts, only certain account has interest memory
 }

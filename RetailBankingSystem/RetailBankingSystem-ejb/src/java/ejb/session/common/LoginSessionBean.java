@@ -5,8 +5,8 @@
  */
 package ejb.session.common;
 
-import entity.Customer;
-import entity.MainAccount;
+import entity.customer.Customer;
+import entity.customer.MainAccount;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -59,6 +59,7 @@ public class LoginSessionBean implements LoginSessionBeanLocal {
     
     @Override
     public MainAccount getMainAccountByEmail(String email){
+        
         Query q = em.createQuery("SELECT a FROM Customer a WHERE a.email = :email");
         
         q.setParameter("email", email);

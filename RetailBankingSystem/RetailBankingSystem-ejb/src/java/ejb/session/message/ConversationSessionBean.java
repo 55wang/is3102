@@ -5,9 +5,9 @@
  */
 package ejb.session.message;
 
-import entity.Conversation;
-import entity.Message;
-import entity.StaffAccount;
+import entity.staff.Conversation;
+import entity.staff.Message;
+import entity.staff.StaffAccount;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;

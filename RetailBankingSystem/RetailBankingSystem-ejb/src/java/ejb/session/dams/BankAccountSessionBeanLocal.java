@@ -5,7 +5,7 @@
  */
 package ejb.session.dams;
 
-import entity.DepositAccount;
+import entity.dams.account.DepositAccount;
 import java.math.BigDecimal;
 import java.util.List;
 import javax.ejb.Local;

@@ -6,9 +6,9 @@
 package staff.message;
 
 import ejb.session.message.ConversationSessionBeanLocal;
-import entity.Conversation;
-import entity.Message;
-import entity.StaffAccount;
+import entity.staff.Conversation;
+import entity.staff.Message;
+import entity.staff.StaffAccount;
 import java.io.Serializable;
 import javax.ejb.EJB;
 import javax.inject.Named;

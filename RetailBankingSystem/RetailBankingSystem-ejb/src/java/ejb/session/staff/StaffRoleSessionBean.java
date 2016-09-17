@@ -5,8 +5,8 @@
  */
 package ejb.session.staff;
 
-import entity.Role;
-import entity.StaffAccount;
+import entity.staff.Role;
+import entity.staff.StaffAccount;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityExistsException;

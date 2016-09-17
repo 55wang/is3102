@@ -7,11 +7,11 @@ package staff.dams;
 
 import ejb.session.dams.BankAccountSessionBeanLocal;
 import ejb.session.dams.InterestSessionBeanLocal;
-import entity.DepositAccount;
-import entity.CurrentAccount;
-import entity.FixedDepositAccount;
-import entity.SavingAccount;
-import entity.Transaction;
+import entity.dams.account.DepositAccount;
+import entity.dams.account.CurrentAccount;
+import entity.dams.account.FixedDepositAccount;
+import entity.dams.account.SavingAccount;
+import entity.common.Transaction;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;

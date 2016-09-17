@@ -5,8 +5,8 @@
  */
 package ejb.session.common;
 
-import entity.Customer;
-import entity.MainAccount;
+import entity.customer.Customer;
+import entity.customer.MainAccount;
 import javax.ejb.Local;
 
 /**

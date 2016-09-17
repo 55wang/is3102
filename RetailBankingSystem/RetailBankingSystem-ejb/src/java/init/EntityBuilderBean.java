@@ -8,10 +8,10 @@ package init;
 import ejb.session.common.NewCustomerSessionBeanLocal;
 import ejb.session.staff.StaffAccountSessionBeanLocal;
 import ejb.session.staff.StaffRoleSessionBeanLocal;
-import entity.Customer;
-import entity.MainAccount;
-import entity.Role;
-import entity.StaffAccount;
+import entity.customer.Customer;
+import entity.customer.MainAccount;
+import entity.staff.Role;
+import entity.staff.StaffAccount;
 import java.util.Date;
 //import java.io.File;
 //import java.io.FileInputStream;
@@ -73,6 +73,7 @@ public class EntityBuilderBean {
 
     private void buildEntities() {
         // TODO: init other entities here
+        // TODO: init with an organized flow structure
         // these are just temporary data for emergency use.
         // Yifan pls help edit for me on top of these.
         String u = "c1234567";

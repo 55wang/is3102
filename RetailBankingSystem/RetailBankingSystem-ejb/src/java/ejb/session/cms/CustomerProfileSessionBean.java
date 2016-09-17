@@ -7,8 +7,8 @@ package ejb.session.cms;
 
 import com.sun.faces.util.MessageUtils;
 import ejb.session.common.EmailServiceSessionBeanLocal;
-import entity.Customer;
-import entity.MainAccount;
+import entity.customer.Customer;
+import entity.customer.MainAccount;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;

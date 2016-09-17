@@ -5,11 +5,13 @@
  */
 package staff.others;
 
+import ejb.session.common.EmailServiceSessionBeanLocal;
 import ejb.session.staff.StaffAccountSessionBeanLocal;
 import ejb.session.staff.StaffRoleSessionBeanLocal;
-import entity.Role;
-import entity.StaffAccount;
+import entity.staff.Role;
+import entity.staff.StaffAccount;
 import java.io.Serializable;
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -34,6 +36,8 @@ public class CreateStaffManagedBean implements Serializable {
     private StaffAccountSessionBeanLocal staffAccountSessionBean;
     @EJB
     private StaffRoleSessionBeanLocal staffRoleSessionBean;
+    @EJB
+    private EmailServiceSessionBeanLocal emailServiceSessionBean;
     
     private StaffAccount newStaff = new StaffAccount();
     private List<StaffAccount> staffs = new ArrayList<>();
@@ -53,13 +57,27 @@ public class CreateStaffManagedBean implements Serializable {
     }
     
     public void addStaff(ActionEvent event) {
-        Role r = staffRoleSessionBean.findRoleByName(selectedRoleName);
-//        r.addStaffAccount(newStaff);
-//        if (staffRoleSessionBean.updateRole(r)) {
-//            System.out.println("Staff added to Role");
-//        }
-        newStaff.setRole(r);
-        newStaff.setPassword(HashPwdUtils.hashPwd(newStaff.getPassword()));
+        Boolean emailSuccessFlag = true;
+        String randomPwd = HashPwdUtils.hashPwd(generatePwd());
+        
+        try{
+            emailServiceSessionBean.sendActivationGmailForStaff(newStaff.getEmail(), randomPwd);
+        }catch(Exception ex){
+            emailSuccessFlag = false;
+        } finally {
+            if (emailSuccessFlag) {
+                Role r = staffRoleSessionBean.findRoleByName(selectedRoleName);
+                newStaff.setRole(r);
+                newStaff.setPassword(randomPwd);
+                createAccount();
+            } else {
+                MessageUtils.displayInfo("Add Staff Failed");
+            }
+        }
+    }
+    
+    // private function helper
+    private void createAccount() {
         if (staffAccountSessionBean.createAccount(newStaff)) {
             staffs.add(newStaff);
             newStaff = new StaffAccount();
@@ -68,6 +86,18 @@ public class CreateStaffManagedBean implements Serializable {
             MessageUtils.displayInfo("Staff already Added");
         }
     }
+    private String generatePwd(){
+        int pwdLen = 10;
+        SecureRandom rnd = new SecureRandom();
+
+        String AB = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+        StringBuilder sb = new StringBuilder(pwdLen);
+        for( int i = 0; i < pwdLen; i++ ) 
+            sb.append( AB.charAt( rnd.nextInt(AB.length()) ) );
+        return sb.toString();
+    }
+    
+    // Getter and Setter
 
     /**
      * @return the newStaff

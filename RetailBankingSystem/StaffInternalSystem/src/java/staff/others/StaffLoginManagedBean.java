@@ -5,10 +5,11 @@
  */
 package staff.others;
 
+import ejb.session.common.EmailServiceSessionBeanLocal;
 import ejb.session.staff.StaffAccountSessionBeanLocal;
 import ejb.session.staff.StaffRoleSessionBeanLocal;
-import entity.Role.Permission;
-import entity.StaffAccount;
+import entity.staff.Role.Permission;
+import entity.staff.StaffAccount;
 import java.io.Serializable;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -30,9 +31,16 @@ import utils.UserUtils;
 public class StaffLoginManagedBean implements Serializable {
 
     @EJB
-    private StaffAccountSessionBeanLocal staffAccountSessionBean;
+    private StaffAccountSessionBeanLocal staffBean;
     @EJB
-    private StaffRoleSessionBeanLocal staffRoleSessionBean;
+    private StaffRoleSessionBeanLocal roleBean;
+    @EJB
+    private EmailServiceSessionBeanLocal emailBean;
+    
+    private String username;
+    private String password;
+    private String findPasswordEmail;
+    private String findUsernameEmail;
     
     public StaffLoginManagedBean() {
         System.out.println("StaffLoginManagedBean() Created!!");
@@ -43,12 +51,9 @@ public class StaffLoginManagedBean implements Serializable {
         // Set a default super account
         System.out.println("StaffLoginManagedBean @PostConstruct");
     }
-    
-    private String username;
-    private String password;
 
     public void loginStaff(ActionEvent event) {
-        StaffAccount sa = staffAccountSessionBean.loginAccount(username, HashPwdUtils.hashPwd(password));
+        StaffAccount sa = staffBean.loginAccount(username, HashPwdUtils.hashPwd(password));
         if (sa == null) {
 //            AuditUtils.testAuditAnnotation();
             MessageUtils.displayError("Either username or password is wrong");
@@ -62,6 +67,43 @@ public class StaffLoginManagedBean implements Serializable {
             }
         }
     }
+    
+    public void forgotPassword() {
+        StaffAccount forgotAccount = staffBean.getAccountByEmail(findPasswordEmail);
+        if (forgotAccount != null) {
+            if (emailBean.sendResetPwdLinkforForgottenStaff(findPasswordEmail)) {
+                String msg = "Check your email and reset password.";
+                MessageUtils.displayInfo(msg);
+            } else {
+                String msg = "Email sent fail. Please try again";
+                MessageUtils.displayError(msg);
+            }
+        } else {
+            String msg = "The email is not registered.";
+            MessageUtils.displayError(msg);
+        }
+    }
+    
+    public void forgotUserID() {
+        StaffAccount forgotAccount = staffBean.getAccountByEmail(findPasswordEmail);
+        if (forgotAccount != null) {
+            if (emailBean.sendUserNameforForgottenStaff(findUsernameEmail, forgotAccount.getUsername())) {
+                String msg = "User ID has been sent to your email.";
+                MessageUtils.displayInfo(msg);
+            } else {
+                String msg = "Email sent fail. Please try again";
+                MessageUtils.displayError(msg);
+            }
+        } else {
+            String msg = "The email is not registered.";
+            MessageUtils.displayError(msg);
+        }
+    }
+    
+    public void backtoLogin() {
+        RedirectUtils.redirect("../index.xhtml");
+    }
+    
     /**
      * @return the username
      */
@@ -88,6 +130,34 @@ public class StaffLoginManagedBean implements Serializable {
      */
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    /**
+     * @return the findPasswordEmail
+     */
+    public String getFindPasswordEmail() {
+        return findPasswordEmail;
+    }
+
+    /**
+     * @param findPasswordEmail the findPasswordEmail to set
+     */
+    public void setFindPasswordEmail(String findPasswordEmail) {
+        this.findPasswordEmail = findPasswordEmail;
+    }
+
+    /**
+     * @return the findUsernameEmail
+     */
+    public String getFindUsernameEmail() {
+        return findUsernameEmail;
+    }
+
+    /**
+     * @param findUsernameEmail the findUsernameEmail to set
+     */
+    public void setFindUsernameEmail(String findUsernameEmail) {
+        this.findUsernameEmail = findUsernameEmail;
     }
     
 }

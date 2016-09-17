@@ -5,8 +5,8 @@
  */
 package ejb.session.message;
 
-import entity.Conversation;
-import entity.Message;
+import entity.staff.Conversation;
+import entity.staff.Message;
 import java.util.List;
 import javax.ejb.Local;
 

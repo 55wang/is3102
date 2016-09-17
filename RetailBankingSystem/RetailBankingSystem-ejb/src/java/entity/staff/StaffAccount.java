@@ -3,12 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package entity;
+package entity.staff;
 
+import entity.common.AuditLog;
+import entity.embedded.StaffInfo;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
@@ -20,12 +23,40 @@ import javax.persistence.OneToMany;
  */
 @Entity
 public class StaffAccount implements Serializable {
+    
+    public enum StatusType {
+        ACTIVE{
+            public String toString() {
+                return "ACTIVE";
+            }
+        }, 
+        PENDING{
+            public String toString() {
+                return "PENDING";
+            }
+        }, 
+        FREEZE{
+            public String toString() {
+                return "FREEZE";
+            }
+        }, 
+        CLOSED{
+            public String toString() {
+                return "CLOSED";
+            }
+        }
+    }
 
     @Id
     private String username;
     private String firstName;
     private String lastName;
     private String password;
+    // TODO: Need to make this a unique attributes
+    private String email;
+    private String status = StatusType.PENDING.toString();
+    @Embedded
+    private StaffInfo staffInfo;
     // TODO: Do we need more information? like email and handphone
     @ManyToOne(cascade = {CascadeType.MERGE})
     private Role role; // Role already consist of list of permissions
@@ -43,6 +74,26 @@ public class StaffAccount implements Serializable {
     public String getFullName() {
         return this.getFirstName() + " " + this.getLastName();
     }
+    
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof StaffAccount)) {
+            return false;
+        }
+        StaffAccount other = (StaffAccount) object;
+        if ((this.username == null && other.username != null) || (this.username != null && !this.username.equals(other.username))) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "staff.Account[ id=" + username + " ]";
+    }
+    
+    // Getter and Setter
 
     public String getUsername() {
         return username;
@@ -144,22 +195,45 @@ public class StaffAccount implements Serializable {
         this.auditLog = auditLog;
     }
 
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof StaffAccount)) {
-            return false;
-        }
-        StaffAccount other = (StaffAccount) object;
-        if ((this.username == null && other.username != null) || (this.username != null && !this.username.equals(other.username))) {
-            return false;
-        }
-        return true;
+    /**
+     * @return the email
+     */
+    public String getEmail() {
+        return email;
     }
 
-    @Override
-    public String toString() {
-        return "staff.Account[ id=" + username + " ]";
+    /**
+     * @param email the email to set
+     */
+    public void setEmail(String email) {
+        this.email = email;
     }
 
+    /**
+     * @return the staffInfo
+     */
+    public StaffInfo getStaffInfo() {
+        return staffInfo;
+    }
+
+    /**
+     * @param staffInfo the staffInfo to set
+     */
+    public void setStaffInfo(StaffInfo staffInfo) {
+        this.staffInfo = staffInfo;
+    }
+
+    /**
+     * @return the status
+     */
+    public String getStatus() {
+        return status;
+    }
+
+    /**
+     * @param status the status to set
+     */
+    public void setStatus(String status) {
+        this.status = status;
+    }
 }

@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package entity;
+package entity.customer;
 
+import entity.customer.MainAccount;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.CascadeType;
@@ -40,7 +41,7 @@ public class Customer implements Serializable {
     private String address;
      
     private String postalCode;
-     
+    // TODO: Need to make this a unique attributes
     private String email;
     
     private String phone;

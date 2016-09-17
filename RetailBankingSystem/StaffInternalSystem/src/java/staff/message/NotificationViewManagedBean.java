@@ -6,7 +6,7 @@
 package staff.message;
 
 import ejb.session.message.AnnouncementSessionBeanLocal;
-import entity.Announcement;
+import entity.staff.Announcement;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;

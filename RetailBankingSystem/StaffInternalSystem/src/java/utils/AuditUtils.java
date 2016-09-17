@@ -5,9 +5,9 @@
  */
 package utils;
 
-import entity.AuditLog;
-import entity.MainAccount;
-import entity.StaffAccount;
+import entity.common.AuditLog;
+import entity.customer.MainAccount;
+import entity.staff.StaffAccount;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -57,4 +57,8 @@ public class AuditUtils implements Serializable {
         return output;
     }
 
+    //hide all string only show ********
+    public static String hiddenFullString(String text) {
+        return "********";
+    }
 }

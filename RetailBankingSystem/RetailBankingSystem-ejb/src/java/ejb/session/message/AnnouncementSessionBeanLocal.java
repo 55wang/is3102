@@ -5,7 +5,7 @@
  */
 package ejb.session.message;
 
-import entity.Announcement;
+import entity.staff.Announcement;
 import java.util.List;
 import javax.ejb.Local;
 

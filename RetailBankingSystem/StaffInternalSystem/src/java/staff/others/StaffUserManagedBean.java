@@ -5,8 +5,8 @@
  */
 package staff.others;
 
-import entity.Role.Permission;
-import entity.StaffAccount;
+import entity.staff.Role.Permission;
+import entity.staff.StaffAccount;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;

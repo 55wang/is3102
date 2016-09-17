@@ -5,7 +5,7 @@
  */
 package ejb.session.audit;
 
-import entity.AuditLog;
+import entity.common.AuditLog;
 import java.util.List;
 import javax.ejb.Local;
 

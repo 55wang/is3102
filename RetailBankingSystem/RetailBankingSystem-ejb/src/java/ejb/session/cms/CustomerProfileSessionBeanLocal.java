@@ -5,7 +5,7 @@
  */
 package ejb.session.cms;
 
-import entity.Customer;
+import entity.customer.Customer;
 import java.util.List;
 import javax.ejb.Local;
 

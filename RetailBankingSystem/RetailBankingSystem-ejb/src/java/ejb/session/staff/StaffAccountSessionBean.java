@@ -5,7 +5,7 @@
  */
 package ejb.session.staff;
 
-import entity.StaffAccount;
+import entity.staff.StaffAccount;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityExistsException;
@@ -37,9 +37,50 @@ public class StaffAccountSessionBean implements StaffAccountSessionBeanLocal {
     }
     
     @Override
+    public StaffAccount getAccountByUsername(String username) {
+        try {
+            StaffAccount user = em.find(StaffAccount.class, username);
+            return user;
+        } catch (NoResultException ex) {
+            return null;
+        }
+    }
+    
+    @Override
+    public StaffAccount getAccountByEmail(String email) {
+        Query q = em.createQuery("SELECT sa FROM StaffAccount sa WHERE sa.email = :email");
+        
+        q.setParameter("email", email);
+        
+        StaffAccount sa = null;
+          
+        try {
+            // TODO: Email need to be unique
+            List<StaffAccount> accounts = q.getResultList();
+            if (accounts != null && !accounts.isEmpty() && accounts.size() == 1) {
+                return accounts.get(0);
+            } else {
+                return null;
+            }
+        } catch (NoResultException ex) {
+            return null;
+        }
+    }
+    
+    @Override
     public Boolean createAccount(StaffAccount sa) {
         try {
             em.persist(sa);
+            return true;
+        } catch (EntityExistsException e) {
+            return false;
+        }
+    }
+    
+    @Override
+    public Boolean updateAccount(StaffAccount sa) {
+        try {
+            em.merge(sa);
             return true;
         } catch (EntityExistsException e) {
             return false;

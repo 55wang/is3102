@@ -9,7 +9,7 @@ package staff.message;
  *
  * @author leiyang
  */
-import entity.Message;
+import entity.staff.Message;
 import org.primefaces.json.JSONObject;
 import org.primefaces.push.Encoder;
 import utils.LoggingUtils;

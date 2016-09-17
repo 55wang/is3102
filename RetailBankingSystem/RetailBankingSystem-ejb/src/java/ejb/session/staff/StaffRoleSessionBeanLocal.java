@@ -5,7 +5,7 @@
  */
 package ejb.session.staff;
 
-import entity.Role;
+import entity.staff.Role;
 import java.util.List;
 import javax.ejb.Local;
 

@@ -6,7 +6,7 @@
 package customer.cms;
 
 import ejb.session.cms.CustomerProfileSessionBeanLocal;
-import entity.Customer;
+import entity.customer.Customer;
 import java.io.Serializable;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;

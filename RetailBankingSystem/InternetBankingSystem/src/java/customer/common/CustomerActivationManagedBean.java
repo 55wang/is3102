@@ -7,7 +7,7 @@ package customer.common;
 
 import ejb.session.common.CustomerActivationSessionBeanLocal;
 import ejb.session.common.LoginSessionBeanLocal;
-import entity.MainAccount;
+import entity.customer.MainAccount;
 import java.io.Serializable;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;

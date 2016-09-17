@@ -5,7 +5,7 @@
  */
 package ejb.session.staff;
 
-import entity.StaffAccount;
+import entity.staff.StaffAccount;
 import java.util.List;
 import javax.ejb.Local;
 
@@ -16,7 +16,10 @@ import javax.ejb.Local;
 @Local
 public interface StaffAccountSessionBeanLocal {
     public StaffAccount loginAccount(String username, String password);
+    public StaffAccount getAccountByUsername(String username);
+    public StaffAccount getAccountByEmail(String email);
     public Boolean createAccount(StaffAccount sa);
+    public Boolean updateAccount(StaffAccount sa);
     public List<StaffAccount> getAllStaffs();
     public StaffAccount getStaffById(String id);
     public List<StaffAccount> searchStaffByUsernameOrName(String searchText);

@@ -6,7 +6,7 @@
 package staff.dams;
 
 import ejb.session.dams.BankAccountSessionBeanLocal;
-import entity.CurrentAccount;
+import entity.dams.account.CurrentAccount;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;

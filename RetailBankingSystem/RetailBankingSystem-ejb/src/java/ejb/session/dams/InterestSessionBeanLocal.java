@@ -5,7 +5,7 @@
  */
 package ejb.session.dams;
 
-import entity.Interest;
+import entity.dams.rules.Interest;
 import java.util.List;
 import javax.ejb.Local;
 

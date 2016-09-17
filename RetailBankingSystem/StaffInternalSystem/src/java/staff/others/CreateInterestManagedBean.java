@@ -6,10 +6,10 @@
 package staff.others;
 
 import ejb.session.dams.InterestSessionBeanLocal;
-import entity.ConditionInterest;
-import entity.Interest;
-import entity.RangeInterest;
-import entity.TimeRangeInterest;
+import entity.dams.rules.ConditionInterest;
+import entity.dams.rules.Interest;
+import entity.dams.rules.RangeInterest;
+import entity.dams.rules.TimeRangeInterest;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
