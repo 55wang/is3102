@@ -5,10 +5,14 @@
  */
 package init;
 
+import ejb.session.common.NewCustomerSessionBeanLocal;
 import ejb.session.staff.StaffAccountSessionBeanLocal;
 import ejb.session.staff.StaffRoleSessionBeanLocal;
+import entity.Customer;
+import entity.MainAccount;
 import entity.Role;
 import entity.StaffAccount;
+import java.util.Date;
 //import java.io.File;
 //import java.io.FileInputStream;
 //import java.io.FileOutputStream;
@@ -36,6 +40,8 @@ public class EntityBuilderBean {
     private StaffAccountSessionBeanLocal staffAccountSessionBean;
     @EJB
     private StaffRoleSessionBeanLocal staffRoleSessionBean;
+    @EJB
+    private NewCustomerSessionBeanLocal newCustomerSessionBean;
 
     @PostConstruct
     public void init() {
@@ -44,7 +50,7 @@ public class EntityBuilderBean {
             buildEntities();
         }// else skip this.
     }
-    
+
     // Use Super Admin Account as a flag
     private Boolean needInit() {
         String u = "adminadmin";
@@ -64,9 +70,37 @@ public class EntityBuilderBean {
             return false;
         }
     }
-    
+
     private void buildEntities() {
         // TODO: init other entities here
+        // these are just temporary data for emergency use.
+        // Yifan pls help edit for me on top of these.
+        String u = "c1234567";
+        String p = HashPwdUtils.hashPwd("password");
+        
+        MainAccount ma = null;
+        Customer c = new Customer();
+        c.setAddress("some fake address"); //make it a bit more real
+        c.setBirthDay(new Date()); //make some real birthday.
+        c.setEmail("wangzhe.lynx@gmail.com");
+        c.setFirstname("Yifan");
+        c.setGender("MALE"); // pls modify gender to enum type
+        c.setIdentityNumber("S1234567Z");
+        c.setIdentityType("CITIZEN"); // same for this to enum type
+        c.setIncome("5000");
+        c.setLastname("Chen");
+        c.setNationality("Singaporean"); //enum type if possible
+        c.setOccupation("programmer");
+        c.setPhone("81567758"); //must use real phone number as we need sms code
+        c.setPostalCode("654321");
+        c.setMainAccount(ma);
+        ma = new MainAccount();
+        ma.setUserID(u);
+        ma.setPassword(p);
+        ma.setStatus(MainAccount.StatusType.ACTIVE);
+        ma.setCustomer(c);
+        
+        newCustomerSessionBean.createCustomer(c, ma);
     }
 
 //    private void mark(String mark) {
