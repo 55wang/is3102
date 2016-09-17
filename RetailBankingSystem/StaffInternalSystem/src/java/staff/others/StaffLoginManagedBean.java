@@ -8,7 +8,6 @@ package staff.others;
 import annotation.Audit;
 import ejb.session.staff.StaffAccountSessionBeanLocal;
 import ejb.session.staff.StaffRoleSessionBeanLocal;
-import entity.Role;
 import entity.Role.Permission;
 import entity.StaffAccount;
 import java.io.Serializable;
@@ -17,7 +16,6 @@ import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.faces.event.ActionEvent;
 import javax.faces.view.ViewScoped;
-import utils.AuditUtils;
 import utils.HashPwdUtils;
 import utils.MessageUtils;
 import utils.RedirectUtils;
@@ -45,19 +43,6 @@ public class StaffLoginManagedBean implements Serializable {
     public void init() {
         // Set a default super account
         System.out.println("StaffLoginManagedBean @PostConstruct");
-        String u = "adminadmin";
-        String p = HashPwdUtils.hashPwd("password");
-        StaffAccount sa = staffAccountSessionBean.loginAccount(u, p);
-        if (sa == null) {
-            StaffAccount superAccount = new StaffAccount();
-            superAccount.setUsername(u);
-            superAccount.setPassword(p);
-            superAccount.setFirstName("Super");
-            superAccount.setLastName("Account");
-            Role r = staffRoleSessionBean.getSuperAdminRole();
-            superAccount.setRole(r);
-            staffAccountSessionBean.createAccount(superAccount);
-        }
     }
     
     private String username;

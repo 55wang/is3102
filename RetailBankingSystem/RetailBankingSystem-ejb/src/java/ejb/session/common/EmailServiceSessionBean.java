@@ -69,13 +69,7 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
     @Override
     public Boolean sendActivationGmailForNewCustomer(String recipient, String pwd) {
 
-        Properties props = new Properties();
-        props.put("mail.smtp.host", "smtp.gmail.com");
-        props.put("mail.smtp.socketFactory.port", "465");
-        props.put("mail.smtp.socketFactory.class",
-                "javax.net.ssl.SSLSocketFactory");
-        props.put("mail.smtp.auth", "true");
-        props.put("mail.smtp.port", "465");
+        Properties props = getGmailProperties();
 
         Session session = Session.getInstance(props,
                 new javax.mail.Authenticator() {
@@ -108,13 +102,7 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
     
     @Override
     public Boolean sendUserIDforForgottenCustomer(String recipient, MainAccount forgotAccount){
-        Properties props = new Properties();
-        props.put("mail.smtp.host", "smtp.gmail.com");
-        props.put("mail.smtp.socketFactory.port", "465");
-        props.put("mail.smtp.socketFactory.class",
-                "javax.net.ssl.SSLSocketFactory");
-        props.put("mail.smtp.auth", "true");
-        props.put("mail.smtp.port", "465");
+        Properties props = getGmailProperties();
 
         Session session = Session.getInstance(props,
                 new javax.mail.Authenticator() {
@@ -145,13 +133,7 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
     
     @Override
     public Boolean sendResetPwdLinkforForgottenCustomer(String recipient, MainAccount forgotAccount){
-        Properties props = new Properties();
-        props.put("mail.smtp.host", "smtp.gmail.com");
-        props.put("mail.smtp.socketFactory.port", "465");
-        props.put("mail.smtp.socketFactory.class",
-                "javax.net.ssl.SSLSocketFactory");
-        props.put("mail.smtp.auth", "true");
-        props.put("mail.smtp.port", "465");
+        Properties props = getGmailProperties();
 
         Session session = Session.getInstance(props,
                 new javax.mail.Authenticator() {
@@ -183,13 +165,7 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
     
    @Override
     public void sendUpdatedProfile(String recipient){
-        Properties props = new Properties();
-        props.put("mail.smtp.host", "smtp.gmail.com");
-        props.put("mail.smtp.socketFactory.port", "465");
-        props.put("mail.smtp.socketFactory.class",
-                "javax.net.ssl.SSLSocketFactory");
-        props.put("mail.smtp.auth", "true");
-        props.put("mail.smtp.port", "465");
+        Properties props = getGmailProperties();
 
         Session session = Session.getInstance(props,
                 new javax.mail.Authenticator() {
@@ -220,5 +196,14 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
         }
     }
     
-
+    private Properties getGmailProperties() {
+        Properties props = new Properties();
+        props.put("mail.smtp.host", "smtp.gmail.com");
+        props.put("mail.smtp.socketFactory.port", "465");
+        props.put("mail.smtp.socketFactory.class",
+                "javax.net.ssl.SSLSocketFactory");
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.port", "465");
+        return props;
+    }
 }
