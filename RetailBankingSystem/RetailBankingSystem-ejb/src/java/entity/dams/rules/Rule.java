@@ -31,10 +31,11 @@ public abstract class Rule implements Serializable {
     private Boolean defaultMobileAccount;
     private Boolean defaultLoanAccount;
     private String defaultCustomizedAccountName;
+    private Integer version = 0;
     @Temporal(value = TemporalType.TIMESTAMP)
-    private final Date createDate = new Date();
+    private Date createDate = new Date();
     @Temporal(value = TemporalType.TIMESTAMP)
-    private final Date updateDate = new Date();
+    private Date updateDate = new Date();
 
     /**
      * @return the name
@@ -160,6 +161,34 @@ public abstract class Rule implements Serializable {
      */
     public void setDefaultCustomizedAccountName(String defaultCustomizedAccountName) {
         this.defaultCustomizedAccountName = defaultCustomizedAccountName;
+    }
+
+    /**
+     * @param createDate the createDate to set
+     */
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
+    }
+
+    /**
+     * @param updateDate the updateDate to set
+     */
+    public void setUpdateDate(Date updateDate) {
+        this.updateDate = updateDate;
+    }
+
+    /**
+     * @return the version
+     */
+    public Integer getVersion() {
+        return version;
+    }
+
+    /**
+     * @param version the version to set
+     */
+    public void setVersion(Integer version) {
+        this.version = version;
     }
 
 }

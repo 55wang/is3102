@@ -6,12 +6,15 @@
 package init;
 
 import ejb.session.common.NewCustomerSessionBeanLocal;
+import ejb.session.dams.InterestSessionBeanLocal;
 import ejb.session.staff.StaffAccountSessionBeanLocal;
 import ejb.session.staff.StaffRoleSessionBeanLocal;
 import entity.customer.Customer;
 import entity.customer.MainAccount;
+import entity.dams.rules.TimeRangeInterest;
 import entity.staff.Role;
 import entity.staff.StaffAccount;
+import java.math.BigDecimal;
 import java.util.Date;
 //import java.io.File;
 //import java.io.FileInputStream;
@@ -42,6 +45,8 @@ public class EntityBuilderBean {
     private StaffRoleSessionBeanLocal staffRoleSessionBean;
     @EJB
     private NewCustomerSessionBeanLocal newCustomerSessionBean;
+    @EJB
+    private InterestSessionBeanLocal interestSessionBean;
 
     @PostConstruct
     public void init() {
@@ -76,6 +81,29 @@ public class EntityBuilderBean {
         // TODO: init with an organized flow structure
         // these are just temporary data for emergency use.
         // Yifan pls help edit for me on top of these.
+        initCustomer();
+        initInterest();
+    }
+    
+    private void initInterest() {
+        initTimeRangeInterest();
+    }
+    
+    private void initTimeRangeInterest() {
+        // Add to a fixedDepositAccount
+        // https://www.bankbazaar.sg/fixed-deposit/ocbc-fixed-deposit-rate.html
+        TimeRangeInterest i = new TimeRangeInterest();
+        i.setName("1month-2month-$5000-$20000-0.05%");
+        i.setDefaultFixedDepositAccount(Boolean.FALSE);
+        i.setStartMonth(1);
+        i.setEndMonth(2);
+        i.setMinimum(new BigDecimal(5000));
+        i.setMaximum(new BigDecimal(20000));
+        i.setPercentage(new BigDecimal(0.0005));
+        interestSessionBean.addInterest(i);
+    }
+    
+    private void initCustomer() {
         String u = "c1234567";
         String p = HashPwdUtils.hashPwd("password");
         

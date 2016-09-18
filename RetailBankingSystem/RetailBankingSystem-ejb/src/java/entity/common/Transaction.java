@@ -86,9 +86,9 @@ public class Transaction implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @ManyToOne(cascade={CascadeType.PERSIST})
+    @ManyToOne(cascade={CascadeType.MERGE})
     private DepositAccount fromAccount;
-    @ManyToOne(cascade={CascadeType.PERSIST})
+    @ManyToOne(cascade={CascadeType.MERGE})
     private DepositAccount toAccount;// can be null
     private String referenceNumber;
     private String actionType;

@@ -26,22 +26,6 @@ import javax.persistence.OneToOne;
 @Entity
 public class MainAccount implements Serializable {
 
-    public List<DepositAccount> getBankAcounts() {
-        return bankAcounts;
-    }
-
-    public void setBankAcounts(List<DepositAccount> bankAcounts) {
-        this.bankAcounts = bankAcounts;
-    }
-
-    public List<AuditLog> getAuditLog() {
-        return auditLog;
-    }
-
-    public void setAuditLog(List<AuditLog> auditLog) {
-        this.auditLog = auditLog;
-    }
-
     public enum StatusType {
         ACTIVE{
             public String toString() {
@@ -79,6 +63,10 @@ public class MainAccount implements Serializable {
     private List<DepositAccount> bankAcounts = new ArrayList<DepositAccount>(); 
     @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "mainAccount")
     private List<AuditLog> auditLog = new ArrayList<AuditLog>();
+    
+    public void addDepositAccount(DepositAccount da) {
+        this.bankAcounts.add(da);
+    }
 
     public StatusType getStatus() {
         return status;
@@ -145,4 +133,19 @@ public class MainAccount implements Serializable {
         return "entity.Account[ id=" + id + " ]";
     }
 
+    public List<DepositAccount> getBankAcounts() {
+        return bankAcounts;
+    }
+
+    public void setBankAcounts(List<DepositAccount> bankAcounts) {
+        this.bankAcounts = bankAcounts;
+    }
+
+    public List<AuditLog> getAuditLog() {
+        return auditLog;
+    }
+
+    public void setAuditLog(List<AuditLog> auditLog) {
+        this.auditLog = auditLog;
+    }
 }
