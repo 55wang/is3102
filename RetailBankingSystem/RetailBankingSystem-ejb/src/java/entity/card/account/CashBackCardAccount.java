@@ -5,7 +5,6 @@
  */
 package entity.card.account;
 
-import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -16,7 +15,7 @@ import javax.persistence.Id;
  * @author wang
  */
 @Entity
-public class CashBackCreditCardAccount extends CreditCardAccount {
+public class CashBackCardAccount extends CreditCardAccount {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -47,10 +46,10 @@ public class CashBackCreditCardAccount extends CreditCardAccount {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof CashBackCreditCardAccount)) {
+        if (!(object instanceof CashBackCardAccount)) {
             return false;
         }
-        CashBackCreditCardAccount other = (CashBackCreditCardAccount) object;
+        CashBackCardAccount other = (CashBackCardAccount) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }

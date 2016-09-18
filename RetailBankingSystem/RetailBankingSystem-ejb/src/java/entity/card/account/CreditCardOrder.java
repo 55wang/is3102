@@ -43,6 +43,14 @@ public class CreditCardOrder implements Serializable {
         this.numOfDependents = numOfDependents;
     }
 
+    public String getResultNotes() {
+        return resultNotes;
+    }
+
+    public void setResultNotes(String resultNotes) {
+        this.resultNotes = resultNotes;
+    }
+
     public enum salutation {
 
         DR {
@@ -426,6 +434,34 @@ public class CreditCardOrder implements Serializable {
     private Blob incomeTax;
     @Lob
     private Blob otherCert; //for anything else
+    private String resultNotes; //for staff to reply to customer
+    public enum applicationStatus {
+
+        PENDING {
+                    @Override
+                    public String toString() {
+                        return "PENDING";
+                    }
+                },
+        EDITABLE {
+                    @Override
+                    public String toString() {
+                        return "EDITABLE";
+                    }
+                },
+        REJECT {
+                    @Override
+                    public String toString() {
+                        return "REJECT";
+                    }
+                },
+        APPROVED {
+                    @Override
+                    public String toString() {
+                        return "APPROVED";
+                    }
+                }
+    }
 
     public Long getId() {
         return id;
