@@ -322,6 +322,23 @@ and open the template in the editor.
     background: #aaa !important;
 }
 /* end of wizard overwrite */
+/* toggleable */
+.issue-toggleable{
+    border: 1px solid #aaa !important;
+    background: #eee !important;
+}
+
+.issue-toggleable .ui-panel-titlebar{
+    border-bottom: none !important;
+}
+
+.issue-toggleable .ui-panel-title{
+    background: none !important;
+    color:black !important;
+    border:none !important;
+    
+}
+/* end of toggleable */
 /* general */
 .container {
     padding-top: 100px;

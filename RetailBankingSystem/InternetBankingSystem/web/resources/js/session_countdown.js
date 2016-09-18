@@ -1,6 +1,6 @@
  function countdownBegin(){
       var timer = document.getElementById("logout-timer");
-      countdown = 20;
+      countdown = 60;
       setInterval(function () {
         if (--countdown > -1) {
             if(countdown > 1)

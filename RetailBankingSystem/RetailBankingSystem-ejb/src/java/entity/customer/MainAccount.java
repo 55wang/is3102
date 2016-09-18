@@ -63,6 +63,8 @@ public class MainAccount implements Serializable {
     private List<DepositAccount> bankAcounts = new ArrayList<DepositAccount>(); 
     @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "mainAccount")
     private List<AuditLog> auditLog = new ArrayList<AuditLog>();
+    @OneToMany(cascade = {CascadeType.ALL}, mappedBy = "mainAccount")
+    private List<CustomerCase> cases = new ArrayList<CustomerCase>();
     
     public void addDepositAccount(DepositAccount da) {
         this.bankAcounts.add(da);
@@ -147,5 +149,13 @@ public class MainAccount implements Serializable {
 
     public void setAuditLog(List<AuditLog> auditLog) {
         this.auditLog = auditLog;
+    }
+
+    public List<CustomerCase> getCases() {
+        return cases;
+    }
+
+    public void setCases(List<CustomerCase> cases) {
+        this.cases = cases;
     }
 }

@@ -6,6 +6,7 @@
 package entity.staff;
 
 import entity.common.AuditLog;
+import entity.customer.CustomerCase;
 import entity.embedded.StaffInfo;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -66,6 +67,8 @@ public class StaffAccount implements Serializable {
     private List<Conversation> senderConversation = new ArrayList<>();
     @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "receiver")
     private List<Conversation> receiverConversation = new ArrayList<>();
+    @OneToMany(mappedBy = "staffAccount")
+    private List<CustomerCase> cases = new ArrayList<>();
 
     public String getNameLabel() {
         return this.getFirstName().substring(0, 1).toUpperCase() + this.getLastName().substring(0, 1).toUpperCase();
@@ -235,5 +238,13 @@ public class StaffAccount implements Serializable {
      */
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public List<CustomerCase> getCases() {
+        return cases;
+    }
+
+    public void setCases(List<CustomerCase> cases) {
+        this.cases = cases;
     }
 }
