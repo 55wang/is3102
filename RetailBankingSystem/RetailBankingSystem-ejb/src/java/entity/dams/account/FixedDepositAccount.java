@@ -26,7 +26,7 @@ public class FixedDepositAccount extends DepositAccount {
     // I
     private Boolean earlyWithdrewed = false;
     private Integer periodInMonth;
-    @Temporal(value = TemporalType.TIMESTAMP)
+    @Temporal(value = TemporalType.DATE) //precision by date is sufficient
     private final Date maturityDate = new Date();
     //Assume interest will be calculated at the maturity date
     @OneToMany(cascade = CascadeType.MERGE)

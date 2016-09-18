@@ -116,9 +116,9 @@ public class EntityBuilderBean {
         c.setGender("MALE"); // pls modify gender to enum type
         c.setIdentityNumber("S1234567Z");
         c.setIdentityType("CITIZEN"); // same for this to enum type
-        c.setIncome("5000");
+        c.setIncome(5000);
         c.setLastname("Chen");
-        c.setNationality("Singaporean"); //enum type if possible
+        c.setNationality("Singapore"); //enum type if possible
         c.setOccupation("programmer");
         c.setPhone("81567758"); //must use real phone number as we need sms code
         c.setPostalCode("654321");

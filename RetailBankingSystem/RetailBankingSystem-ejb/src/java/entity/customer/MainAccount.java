@@ -5,6 +5,7 @@
  */
 package entity.customer;
 
+import entity.card.account.CreditCardAccount;
 import entity.common.AuditLog;
 import entity.dams.account.DepositAccount;
 import java.io.Serializable;
@@ -61,6 +62,8 @@ public class MainAccount implements Serializable {
     private Customer customer;
     @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "mainAccount")
     private List<DepositAccount> bankAcounts = new ArrayList<DepositAccount>(); 
+    @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "mainAccount")
+    private List<CreditCardAccount> creditCardAccounts= new ArrayList<CreditCardAccount>(); 
     @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "mainAccount")
     private List<AuditLog> auditLog = new ArrayList<AuditLog>();
     @OneToMany(cascade = {CascadeType.ALL}, mappedBy = "mainAccount")

@@ -5,7 +5,6 @@
  */
 package entity.customer;
 
-import entity.customer.MainAccount;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.CascadeType;
@@ -48,11 +47,13 @@ public class Customer implements Serializable {
     
     private String occupation;
     
-    private String income;
+    private double income;
     
     private String nationality;
     
     private String gender;
+    
+    private double CreditScore; //0-1000
     
     @OneToOne(cascade = {CascadeType.PERSIST})
     private MainAccount mainAccount;
@@ -145,11 +146,11 @@ public class Customer implements Serializable {
         this.occupation = occupation;
     }
 
-    public String getIncome() {
+    public double getIncome() {
         return income;
     }
 
-    public void setIncome(String income) {
+    public void setIncome(double income) {
         this.income = income;
     }
 
@@ -200,6 +201,14 @@ public class Customer implements Serializable {
 
     public void setMainAccount(MainAccount mainAccount) {
         this.mainAccount = mainAccount;
+    }
+
+    public double getCreditScore() {
+        return CreditScore;
+    }
+
+    public void setCreditScore(double CreditScore) {
+        this.CreditScore = CreditScore;
     }
     
 }
