@@ -34,7 +34,7 @@
                                     <p:inputText id="normalInterestName" value="#{createInterestManagedBean.normalInterest.name}"/>
                                     <p:outputLabel for="normalInterestPercentage" value="Interest Percentage: " />
                                     <p:inputText id="normalInterestPercentage" value="#{createInterestManagedBean.normalInterest.percentage}">
-                                        <f:convertNumber pattern="#,###,##0.00"/>
+                                        <f:convertNumber type="percent"/>
                                     </p:inputText>
                                     <h:outputText value="Default Current Account:" />
                                     <p:selectBooleanCheckbox value="#{createInterestManagedBean.normalInterest.defaultCurrentAccount}" />
@@ -52,7 +52,7 @@
                                     <p:inputText id="rangeInterestName" value="#{createInterestManagedBean.rangeInterest.name}"/>
                                     <p:outputLabel for="rangeInterestPercentage" value="Interest Percentage: " />
                                     <p:inputText id="rangeInterestPercentage" value="#{createInterestManagedBean.rangeInterest.percentage}">
-                                        <f:convertNumber pattern="#,###,##0.00"/>
+                                        <f:convertNumber type="percent"/>
                                     </p:inputText>
                                     <p:outputLabel for="rangeInterestMinimum" value="Minimum Deposit Amount: " />
                                     <p:inputText id="rangeInterestMinimum" value="#{createInterestManagedBean.rangeInterest.minimum}"/>
@@ -74,7 +74,7 @@
                                     <p:inputText id="rangeInterestName" value="#{createInterestManagedBean.timeRangeInterest.name}"/>
                                     <p:outputLabel for="rangeInterestPercentage" value="Interest Percentage: " />
                                     <p:inputText id="rangeInterestPercentage" value="#{createInterestManagedBean.timeRangeInterest.percentage}">
-                                        <f:convertNumber pattern="#,###,##0.00"/>
+                                        <f:convertNumber type="percent"/>
                                     </p:inputText>
                                     <p:outputLabel for="rangeInterestMinimum" value="Minimum Deposit Amount: " />
                                     <p:inputText id="rangeInterestMinimum" value="#{createInterestManagedBean.timeRangeInterest.minimum}"/>
@@ -109,7 +109,7 @@
                                     <p:inputText id="contitionInterestName" value="#{createInterestManagedBean.conditionInterest.name}"/>
                                     <p:outputLabel for="contitionInterestPercentage" value="Interest Percentage: " />
                                     <p:inputText id="contitionInterestPercentage" value="#{createInterestManagedBean.conditionInterest.percentage}">
-                                        <f:convertNumber pattern="#,###,##0.00"/>
+                                        <f:convertNumber type="percent"/>
                                     </p:inputText>
                                     <p:outputLabel for="contitionInterestCeiling" value="Deposit Ceiling: " />
                                     <p:inputText id="contitionInterestCeiling" value="#{createInterestManagedBean.conditionInterest.ceiling}"/>
@@ -162,8 +162,16 @@
                                 </p:cellEditor>                            </p:column>
                             <p:column headerText="Percentage" sortBy="#{interest.percentage}">
                                 <p:cellEditor>
-                                    <f:facet name="output"><h:outputText value="#{interest.percentage}"/></f:facet>
-                                    <f:facet name="input"><p:inputText value="#{interest.percentage}" style="width:96%"/></f:facet>
+                                    <f:facet name="output">
+                                        <h:outputText value="#{interest.percentage}">
+                                            <f:convertNumber pattern="#0.00%"/>
+                                        </h:outputText>
+                                    </f:facet>
+                                    <f:facet name="input">
+                                        <p:inputText value="#{interest.percentage}" style="width:96%">
+                                            <f:convertNumber type="percent"/>
+                                        </p:inputText>
+                                    </f:facet>
                                 </p:cellEditor>
                             </p:column>
                         </p:dataTable>

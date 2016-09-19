@@ -37,13 +37,12 @@ import utils.EnumUtils.DepositAccountType;
 @Entity
 @Inheritance(strategy=InheritanceType.JOINED)
 // instanceof must place at the very end
-public class DepositAccount implements Serializable {
+public abstract class DepositAccount implements Serializable {
     
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;// TODO: Need to generate our own account number
-    private String name = null;// Only Customized Account has a name
     private String description;
     private String terms;
     private DepositAccountType type;
@@ -52,11 +51,13 @@ public class DepositAccount implements Serializable {
     @Embedded
     private TransferLimits transferLimits = new TransferLimits();
     @Embedded
-    private CumulatedInterest cumulatedInterest;
+    private CumulatedInterest cumulatedInterest = new CumulatedInterest();
     @Column(precision=12, scale=2)
     private BigDecimal balance = new BigDecimal(0);
+    @Column(precision=12, scale=2)
+    private BigDecimal previousBalance = new BigDecimal(0);
     
-    @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "fromAccount")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "fromAccount")
     private List<Transaction> transactions = new ArrayList<>();
     
     @ManyToOne(cascade = CascadeType.MERGE)
@@ -82,20 +83,6 @@ public class DepositAccount implements Serializable {
     
     public void addTransaction(Transaction t) {
         getTransactions().add(t);
-    }
-    
-    /**
-     * @return the name
-     */
-    public String getName() {
-        return name;
-    }
-
-    /**
-     * @param name the name to set
-     */
-    public void setName(String name) {
-        this.name = name;
     }
 
     public Long getId() {
@@ -230,5 +217,19 @@ public class DepositAccount implements Serializable {
      */
     public void setType(DepositAccountType type) {
         this.type = type;
+    }
+
+    /**
+     * @return the previousBalance
+     */
+    public BigDecimal getPreviousBalance() {
+        return previousBalance;
+    }
+
+    /**
+     * @param previousBalance the previousBalance to set
+     */
+    public void setPreviousBalance(BigDecimal previousBalance) {
+        this.previousBalance = previousBalance;
     }
 }

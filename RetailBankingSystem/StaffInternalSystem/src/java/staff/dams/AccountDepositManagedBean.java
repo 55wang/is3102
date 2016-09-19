@@ -5,7 +5,7 @@
  */
 package staff.dams;
 
-import ejb.session.dams.BankAccountSessionBeanLocal;
+import ejb.session.dams.DepositAccountSessionBeanLocal;
 import entity.dams.account.DepositAccount;
 import entity.dams.account.CurrentAccount;
 import java.io.Serializable;
@@ -27,7 +27,7 @@ import utils.MessageUtils;
 public class AccountDepositManagedBean implements Serializable {
 
     @EJB
-    private BankAccountSessionBeanLocal bankAccountSessionBean;
+    private DepositAccountSessionBeanLocal bankAccountSessionBean;
     
     private String accountType;
     private String ACCOUNT_TYPE_CURRENT = EnumUtils.DepositAccountType.CURRENT.toString();

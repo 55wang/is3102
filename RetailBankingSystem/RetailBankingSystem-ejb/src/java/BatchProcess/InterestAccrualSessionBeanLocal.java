@@ -6,8 +6,8 @@
 package BatchProcess;
 
 import entity.dams.account.DepositAccount;
+import entity.dams.rules.ConditionInterest;
 import javax.ejb.Local;
-import java.util.List;
 
 /**
  *
@@ -15,5 +15,5 @@ import java.util.List;
  */
 @Local
 public interface InterestAccrualSessionBeanLocal {
-    public List<DepositAccount> getAccountList();
+    public Boolean isAccountMeetCondition(DepositAccount a, ConditionInterest i);
 }

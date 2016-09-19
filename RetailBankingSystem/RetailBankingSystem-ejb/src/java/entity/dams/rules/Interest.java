@@ -5,6 +5,7 @@
  */
 package entity.dams.rules;
 
+import entity.staff.Conversation;
 import java.math.BigDecimal;
 import javax.persistence.Column;
 import javax.persistence.Entity;

@@ -15,5 +15,5 @@ import javax.persistence.Entity;
  */
 @Entity
 public class CurrentAccount extends DepositAccount {
-    // TODO: Add check
+    // TODO: Add checkque
 }

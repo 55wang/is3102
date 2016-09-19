@@ -5,7 +5,7 @@
  */
 package staff.dams;
 
-import ejb.session.dams.BankAccountSessionBeanLocal;
+import ejb.session.dams.DepositAccountSessionBeanLocal;
 import entity.dams.account.DepositAccount;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -25,7 +25,7 @@ import utils.MessageUtils;
 public class CheckAccountBalanceManagedBean implements Serializable {
 
     @EJB
-    private BankAccountSessionBeanLocal bankAccountSessionBean;
+    private DepositAccountSessionBeanLocal bankAccountSessionBean;
     /**
      * Creates a new instance of CheckBalanceCurrentAccountManagedBean
      */

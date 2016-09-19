@@ -574,6 +574,24 @@ public class EnumUtils {
                     public String toString() {
                         return "BILL";
                     }
+                },
+        CCSPENDING {
+                    @Override
+                    public String toString() {
+                        return "CCSPENDING";
+                    }
+                },
+        INVEST {
+                    @Override
+                    public String toString() {
+                        return "INVEST";
+                    }
+                },
+        SALARY {
+                    @Override
+                    public String toString() {
+                        return "SALARY";
+                    }
                 }
     }
 

@@ -5,7 +5,7 @@
  */
 package staff.dams;
 
-import ejb.session.dams.BankAccountSessionBeanLocal;
+import ejb.session.dams.DepositAccountSessionBeanLocal;
 import ejb.session.dams.AccountRuleSessionBeanLocal;
 import entity.dams.account.DepositAccount;
 import entity.dams.account.CurrentAccount;
@@ -31,7 +31,7 @@ import utils.MessageUtils;
 @ViewScoped
 public class OpenAccountManagedBean implements Serializable {
     @EJB
-    private BankAccountSessionBeanLocal bankAccountSessionBean;
+    private DepositAccountSessionBeanLocal bankAccountSessionBean;
     @EJB
     private AccountRuleSessionBeanLocal interestSessionBean;
 
@@ -70,21 +70,21 @@ public class OpenAccountManagedBean implements Serializable {
         addTransaction();
         addDefaultInterest();
         if (getAccountType().equals(getACCOUNT_TYPE_CURRENT())) {
-            if (bankAccountSessionBean.createAccount(getNewCurrentAccount())) {
+            if (bankAccountSessionBean.createAccount(getNewCurrentAccount()) != null) {
                 getCurrentAccounts().add(getNewCurrentAccount());
                 MessageUtils.displayInfo("Current Account Created");
             } else {
                 MessageUtils.displayError("There's some error when creating account");
             }
         } else if (getAccountType().equals(getACCOUNT_TYPE_FIXED())) {
-            if (bankAccountSessionBean.createAccount(getNewFixedDepositAccount())) {
+            if (bankAccountSessionBean.createAccount(getNewFixedDepositAccount()) != null) {
                 getFixedDepositAccounts().add(getNewFixedDepositAccount());
                 MessageUtils.displayInfo("Fixed Deposit Account Created");
             } else {
                 MessageUtils.displayError("There's some error when creating account");
             }
         } else if (getAccountType().equals(getACCOUNT_TYPE_SAVING())) {
-            if (bankAccountSessionBean.createAccount(getNewSavingAccount())) {
+            if (bankAccountSessionBean.createAccount(getNewSavingAccount()) != null) {
                 getSavingAccounts().add(getNewSavingAccount());
                 MessageUtils.displayInfo("Savings Account Created");
             } else {

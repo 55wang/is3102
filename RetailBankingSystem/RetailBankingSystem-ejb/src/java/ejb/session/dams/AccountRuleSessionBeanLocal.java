@@ -20,6 +20,7 @@ public interface AccountRuleSessionBeanLocal {
     public Boolean addInterest(Interest interest);
     public Boolean updateInterest(Interest interest);
     public List<Interest> showAllInterests();
+    public List<Interest> getCustomAccountDefaultInterests();
     public List<Interest> getCurrentAccountDefaultInterests();
     public List<Interest> getFixedDepositAccountDefaultInterests();
     public List<Interest> getSavingccountDefaultInterests();

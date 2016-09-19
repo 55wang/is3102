@@ -71,6 +71,15 @@ public class AccountRuleSessionBean implements AccountRuleSessionBeanLocal {
     }
     
     @Override
+    public List<Interest> getCustomAccountDefaultInterests() {
+        Query q = em.createQuery("SELECT i FROM Interest i WHERE "
+                + "i.defaultCustomAccount = true AND "
+                + "i.isHistory = false"
+        );
+        return q.getResultList();
+    }
+    
+    @Override
     public List<Interest> getCurrentAccountDefaultInterests() {
         Query q = em.createQuery("SELECT i FROM Interest i WHERE "
                 + "i.defaultCurrentAccount = true AND "
@@ -114,7 +123,7 @@ public class AccountRuleSessionBean implements AccountRuleSessionBeanLocal {
     @Override// For Custom Account
     public List<Interest> getDefaultInterestsByAccountName(String accountName) {
         Query q = em.createQuery("SELECT i FROM Interest i WHERE "
-                + "i.defaultCustomizedAccountName = :accountName"
+                + "i.defaultCustomizedAccountName = :accountName AND "
                 + "i.isHistory = false"
         );
         q.setParameter("accountName", accountName);

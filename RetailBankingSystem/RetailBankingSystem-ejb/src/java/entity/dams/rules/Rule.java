@@ -5,6 +5,7 @@
  */
 package entity.dams.rules;
 
+import entity.staff.Conversation;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Entity;
@@ -38,11 +39,12 @@ public abstract class Rule implements Serializable {
     private Boolean defaultSavingAccount = Boolean.FALSE;
     private Boolean defaultMobileAccount = Boolean.FALSE;
     private Boolean defaultLoanAccount = Boolean.FALSE;
+    private Boolean defaultCustomAccount = Boolean.FALSE;
     private String defaultCustomizedAccountName;
     
     @Temporal(value = TemporalType.TIMESTAMP)
     private Date createDate = new Date();
-
+    
     // Getters and Setters
     /**
      * @return the name
@@ -210,6 +212,20 @@ public abstract class Rule implements Serializable {
      */
     public void setId(Long id) {
         this.id = id;
+    }
+
+    /**
+     * @return the defaultCustomAccount
+     */
+    public Boolean getDefaultCustomAccount() {
+        return defaultCustomAccount;
+    }
+
+    /**
+     * @param defaultCustomAccount the defaultCustomAccount to set
+     */
+    public void setDefaultCustomAccount(Boolean defaultCustomAccount) {
+        this.defaultCustomAccount = defaultCustomAccount;
     }
 
 }

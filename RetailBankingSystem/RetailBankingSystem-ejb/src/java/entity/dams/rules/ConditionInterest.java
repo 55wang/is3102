@@ -6,6 +6,7 @@
 package entity.dams.rules;
 
 import java.math.BigDecimal;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import utils.EnumUtils.InterestConditionType;
 
@@ -18,6 +19,7 @@ public class ConditionInterest extends Interest {
     
     private InterestConditionType conditionType;
     private BigDecimal ceiling = new BigDecimal(60000);
+    @Column(precision=12, scale=2)
     private BigDecimal amount = BigDecimal.ZERO;
     private Boolean stack = Boolean.TRUE;
     private Integer benefitMonths = 1;

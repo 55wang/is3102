@@ -5,23 +5,27 @@
  */
 package init;
 
+import BatchProcess.InterestAccrualSessionBeanLocal;
 import ejb.session.common.NewCustomerSessionBeanLocal;
 import ejb.session.dams.AccountRuleSessionBeanLocal;
-import ejb.session.dams.BankAccountSessionBeanLocal;
+import ejb.session.dams.DepositAccountSessionBeanLocal;
 import ejb.session.staff.StaffAccountSessionBeanLocal;
 import ejb.session.staff.StaffRoleSessionBeanLocal;
 import entity.common.Transaction;
 import entity.customer.Customer;
 import entity.customer.MainAccount;
+import entity.dams.account.CustomAccount;
 import entity.dams.account.DepositAccount;
 import entity.dams.rules.ConditionInterest;
 import entity.dams.rules.DepositRule;
 import entity.dams.rules.Interest;
+import entity.dams.rules.RangeInterest;
 import entity.dams.rules.TimeRangeInterest;
 import entity.staff.Role;
 import entity.staff.StaffAccount;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.ejb.Singleton;
@@ -48,14 +52,24 @@ public class EntityBuilderBean {
     @EJB
     private AccountRuleSessionBeanLocal accountRuleSessionBean;
     @EJB
-    private BankAccountSessionBeanLocal bankAccountSessionBean;
+    private DepositAccountSessionBeanLocal bankAccountSessionBean;
+    @EJB
+    private InterestAccrualSessionBeanLocal interestAccrualSessionBean;
 
     @PostConstruct
     public void init() {
         System.out.println("EntityInitilzationBean @PostConstruct");
         if (needInit()) {
             buildEntities();
-        }// else skip this.
+        } else {
+            DepositAccount da = bankAccountSessionBean.getAccountFromId(1L);
+            List<Interest> interests = accountRuleSessionBean.getDefaultInterestsByAccountName(((CustomAccount) da).getName());
+            for (Interest i : interests) {
+                if (i instanceof ConditionInterest) {
+                    System.out.print(interestAccrualSessionBean.isAccountMeetCondition(da, (ConditionInterest)i));
+                }
+            }
+        }
     }
 
     // Use Super Admin Account as a flag
@@ -88,11 +102,11 @@ public class EntityBuilderBean {
         initDepositRules();
         initDepositAccounts();
     }
-    
+
     private void initCustomer() {
         String u = "c1234567";
         String p = HashPwdUtils.hashPwd("password");
-        
+
         MainAccount ma = null;
         Customer c = new Customer();
         c.setAddress("some fake address"); //make it a bit more real
@@ -114,22 +128,25 @@ public class EntityBuilderBean {
         ma.setPassword(p);
         ma.setStatus(EnumUtils.StatusType.ACTIVE);
         ma.setCustomer(c);
-        
+
         newCustomerSessionBean.createCustomer(c, ma);
     }
-    
+
     private void initInterest() {
         Interest i = new Interest();
         i.setName("Normal Interest");
         i.setVersion(0);
         i.setPercentage(new BigDecimal(0.0001));// 0.01%
+        i.setDefaultCurrentAccount(Boolean.TRUE);
+        i.setDefaultCustomAccount(Boolean.TRUE);
+        i.setDefaultSavingAccount(Boolean.TRUE);
         accountRuleSessionBean.addInterest(i);
-        
+
         // Init other interests
         initTimeRangeInterest();
         initConditionalInterest();
     }
-    
+
     private void initTimeRangeInterest() {
         // Add to a fixedDepositAccount
         // https://www.bankbazaar.sg/fixed-deposit/ocbc-fixed-deposit-rate.html
@@ -144,7 +161,7 @@ public class EntityBuilderBean {
         i.setPercentage(new BigDecimal(0.0005));
         accountRuleSessionBean.addInterest(i);
     }
-    
+
     private void initConditionalInterest() {
         // Credit your salary of at least $2,000 through GIRO
         ConditionInterest ci = new ConditionInterest();
@@ -177,7 +194,7 @@ public class EntityBuilderBean {
         ci = new ConditionInterest();
         ci.setName("OCBC 360 Invest");
         ci.setVersion(0);
-        ci.setConditionType(EnumUtils.InterestConditionType.CCSPENDING);
+        ci.setConditionType(EnumUtils.InterestConditionType.INVEST);
         ci.setDefaultCustomizedAccountName("OCBC 360");
         ci.setPercentage(new BigDecimal(0.01));
         ci.setBenefitMonths(12);
@@ -191,7 +208,7 @@ public class EntityBuilderBean {
         ci.setPercentage(new BigDecimal(0.01));
         accountRuleSessionBean.addInterest(ci);
     }
-    
+
     private void initDepositRules() {
         DepositRule dr = new DepositRule();
         dr.setName("OCBC 360 Deposit Rules");
@@ -204,34 +221,53 @@ public class EntityBuilderBean {
         dr.setWaivedFeesCounter(12);
         accountRuleSessionBean.addDepositRule(dr);
     }
-    
+
     private void initDepositAccounts() {
         initCustomAccount();
         initCurrentAccount();
         initSavingAccount();
         initFixedDepositAccount();
     }
-    
+
+    // custom account for demo
     private void initCustomAccount() {
-        DepositAccount da = new DepositAccount();
+        CustomAccount da = new CustomAccount();
         da.setName("OCBC 360");
         da.setDescription("Earn bonus interest when you do all or any of these");
         da.setType(EnumUtils.DepositAccountType.CUSTOM);
         da.setBalance(new BigDecimal(1000));
         da.setDepositRule(accountRuleSessionBean.getDepositRuleByAccountName(da.getName()));
-        
-        bankAccountSessionBean.createAccount(da);
+
+        da = (CustomAccount) bankAccountSessionBean.createAccount(da);
+        initTransactions(da);
     }
-    
+
     private void initCurrentAccount() {
-            
+
     }
-    
+
     private void initSavingAccount() {
-            
+
     }
-    
+
     private void initFixedDepositAccount() {
-            
+
+    }
+
+    private void initTransactions(DepositAccount account) {
+        DepositAccount da = account;
+        for (int i = 1; i < 20; i++) {
+            da = bankAccountSessionBean.depositIntoAccount(da, new BigDecimal(500 * i));
+        }
+        // credit salary of at least 2000
+        da = bankAccountSessionBean.creditSalaryIntoAccount(da, new BigDecimal(2000));
+        // pay 3 bills
+        da = bankAccountSessionBean.payBillFromAccount(da, new BigDecimal(45));
+        da = bankAccountSessionBean.payBillFromAccount(da, new BigDecimal(45));
+        da = bankAccountSessionBean.payBillFromAccount(da, new BigDecimal(45));
+        // credit card spending at least 500
+        da = bankAccountSessionBean.ccSpendingFromAccount(da, new BigDecimal(500));
+        // invest once and for a year
+        da = bankAccountSessionBean.investFromAccount(da, new BigDecimal(5000));
     }
 }

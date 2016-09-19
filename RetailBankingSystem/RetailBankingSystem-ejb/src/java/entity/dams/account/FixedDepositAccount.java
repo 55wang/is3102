@@ -5,7 +5,6 @@
  */
 package entity.dams.account;
 
-import entity.dams.rules.Rule;
 import entity.dams.rules.Interest;
 import java.util.ArrayList;
 import java.util.Date;
@@ -30,7 +29,7 @@ public class FixedDepositAccount extends DepositAccount {
     private final Date maturityDate = new Date();
     //Assume interest will be calculated at the maturity date
     @OneToMany(cascade = CascadeType.MERGE)
-    private List<Rule> interests = new ArrayList<>();
+    private List<Interest> interests = new ArrayList<>();
     
     public void addInterestsRules(List<Interest> interests) {
         interests.addAll(interests);
@@ -43,14 +42,14 @@ public class FixedDepositAccount extends DepositAccount {
     /**
      * @return the interests
      */
-    public List<Rule> getInterests() {
+    public List<Interest> getInterests() {
         return interests;
     }
 
     /**
      * @param interests the interests to set
      */
-    public void setInterests(List<Rule> interests) {
+    public void setInterests(List<Interest> interests) {
         this.interests = interests;
     }
 
