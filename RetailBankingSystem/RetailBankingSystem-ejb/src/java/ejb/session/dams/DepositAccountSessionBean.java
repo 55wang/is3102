@@ -28,7 +28,7 @@ public class DepositAccountSessionBean implements DepositAccountSessionBeanLocal
 
     @Override 
     public long showNumberOfAccounts() {
-        Query q = em.createQuery("SELECT COUNT(*) FROM BankAccount");
+        Query q = em.createQuery("SELECT COUNT(*) FROM DepositAccount");
         return ((Long)q.getSingleResult()).longValue();
     }
     
@@ -67,7 +67,7 @@ public class DepositAccountSessionBean implements DepositAccountSessionBeanLocal
 
     @Override
     public List<DepositAccount> showAllAccounts() {
-        Query q = em.createQuery("SELECT ba FROM BankAccount ba");
+        Query q = em.createQuery("SELECT ba FROM DepositAccount ba");
         return q.getResultList();
     }
 
