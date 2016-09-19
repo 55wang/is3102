@@ -5,17 +5,17 @@
  */
 package customer.common;
 
+import Interceptor.Audit;
+import Interceptor.FullHidden;
+import Interceptor.HalfHidden;
 import ejb.session.audit.AuditSessionBeanLocal;
 import ejb.session.common.EmailServiceSessionBeanLocal;
 import ejb.session.common.LoginSessionBeanLocal;
-import entity.common.AuditLog;
 import entity.customer.MainAccount;
-import entity.staff.StaffAccount;
 import java.io.Serializable;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
-import utils.AuditUtils;
 import utils.EnumUtils;
 import utils.HashPwdUtils;
 import utils.MessageUtils;
@@ -57,47 +57,34 @@ public class CustomerLoginManagedBean implements Serializable {
         this.loginAccount = loginAccount;
     }
 
-    public void loginCustomer() {
-        String activityLog = "Login Customer Account";
-        String functionName = new Object() {
-        }.getClass().getEnclosingMethod().toString();
-        String input = loginAccount.getUserID() + ", " + AuditUtils.hiddenFullString(loginAccount.getPassword());
-        String output = "INITIATING";
+    @Audit(activtyLog = "login customer account")
+    public String loginCustomer(String username, String password) {
         MainAccount ma = null;
-        StaffAccount sa = null;
-
-        AuditLog al = AuditUtils.createAuditLog(activityLog, functionName, input, output, ma, sa);
-        auditSessionBean.insertAuditLog(al);
 
         try {
-            MainAccount attemptLogin = loginSessionBean.getCustomerByUserID(loginAccount.getUserID()).getMainAccount();
+            MainAccount attemptLogin = loginSessionBean.getCustomerByUserID(username).getMainAccount();
             if (attemptLogin.getStatus().equals(EnumUtils.StatusType.PENDING)) {
-                output = "FAIL";
                 String msg = "Check your email and activate the account";
                 MessageUtils.displayInfo(msg);
+                return "";
             } else if (attemptLogin.getStatus().equals(EnumUtils.StatusType.FREEZE)) {
-                output = "FAIL";
                 String msg = "Your account has been freezed.";
                 MessageUtils.displayInfo(msg);
+                return "";
             } else if (attemptLogin.getStatus().equals(EnumUtils.StatusType.ACTIVE)) {
-                ma = loginSessionBean.loginAccount(loginAccount.getUserID(), HashPwdUtils.hashPwd(loginAccount.getPassword()));
+                ma = loginSessionBean.loginAccount(username, HashPwdUtils.hashPwd(password));
                 Long userID = ma.getId();
                 String userName = ma.getUserID();
                 SessionUtils.setUserId(userID);
                 SessionUtils.setUserName(userName);
-
-                output = "SUCCESS";
                 RedirectUtils.redirect("../customer_cms/customer_home.xhtml");
+                return "SUCCESS";
             }
         } catch (NullPointerException e) {
-            output = "FAIL";
             String msg = "Account not exists or password incorrect.";
             MessageUtils.displayError(msg);
-        } finally {
-            al = AuditUtils.createAuditLog(activityLog, functionName, input, output, ma, sa);
-            auditSessionBean.insertAuditLog(al);
         }
-
+        return "";
     }
 
     public void forgotUserID() {

@@ -12,22 +12,11 @@ import javax.persistence.Entity;
  * @author wang
  */
 @Entity
-public class CashBackCardAccount extends CreditCardAccount {
+public class CashBackCardAccount extends CreditCardProduct {
 
-    private double cashBackAmount;
     private double petrolCashBackRate = 0.08; // 8%
     private double groceryCashBackRate = 0.08; //8%
     private double diningCashBackRate = 0.08; //8%
-    private boolean minSpending = false; //default = false
-    private double minSpendingAmount = 0;
-
-    public double getCashBackAmount() {
-        return cashBackAmount;
-    }
-
-    public void setCashBackAmount(double cashBackAmount) {
-        this.cashBackAmount = cashBackAmount;
-    }
 
     public double getPetrolCashBackRate() {
         return petrolCashBackRate;
@@ -51,22 +40,6 @@ public class CashBackCardAccount extends CreditCardAccount {
 
     public void setDiningCashBackRate(double diningCashBackRate) {
         this.diningCashBackRate = diningCashBackRate;
-    }
-
-    public boolean isMinSpending() {
-        return minSpending;
-    }
-
-    public void setMinSpending(boolean minSpending) {
-        this.minSpending = minSpending;
-    }
-
-    public double getMinSpendingAmount() {
-        return minSpendingAmount;
-    }
-
-    public void setMinSpendingAmount(double minSpendingAmount) {
-        this.minSpendingAmount = minSpendingAmount;
     }
 
 }
