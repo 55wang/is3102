@@ -5,7 +5,6 @@
  */
 package ejb.session.common;
 
-import SMSMessaging.SendTextMessage;
 import entity.customer.Customer;
 import entity.customer.MainAccount;
 import javax.ejb.Stateless;

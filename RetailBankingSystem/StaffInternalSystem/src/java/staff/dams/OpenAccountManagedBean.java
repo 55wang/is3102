@@ -5,8 +5,8 @@
  */
 package staff.dams;
 
-import ejb.session.dams.BankAccountSessionBeanLocal;
-import ejb.session.dams.InterestSessionBeanLocal;
+import ejb.session.dams.DepositAccountSessionBeanLocal;
+import ejb.session.dams.AccountRuleSessionBeanLocal;
 import entity.dams.account.DepositAccount;
 import entity.dams.account.CurrentAccount;
 import entity.dams.account.FixedDepositAccount;
@@ -20,6 +20,7 @@ import javax.ejb.EJB;
 import javax.faces.event.ActionEvent;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
+import utils.EnumUtils;
 import utils.MessageUtils;
 
 /**
@@ -30,9 +31,9 @@ import utils.MessageUtils;
 @ViewScoped
 public class OpenAccountManagedBean implements Serializable {
     @EJB
-    private BankAccountSessionBeanLocal bankAccountSessionBean;
+    private DepositAccountSessionBeanLocal bankAccountSessionBean;
     @EJB
-    private InterestSessionBeanLocal interestSessionBean;
+    private AccountRuleSessionBeanLocal interestSessionBean;
 
     private String accountType;
     private CurrentAccount newCurrentAccount = new CurrentAccount();
@@ -42,9 +43,9 @@ public class OpenAccountManagedBean implements Serializable {
     private List<CurrentAccount> currentAccounts = new ArrayList<>();
     private List<FixedDepositAccount> fixedDepositAccounts = new ArrayList<>();
     private List<SavingAccount> savingAccounts = new ArrayList<>();
-    private String ACCOUNT_TYPE_CURRENT = DepositAccount.AccountType.CURRENT.toString();
-    private String ACCOUNT_TYPE_FIXED = DepositAccount.AccountType.FIXED.toString();
-    private String ACCOUNT_TYPE_SAVING = DepositAccount.AccountType.SAVING.toString();
+    private String ACCOUNT_TYPE_CURRENT = EnumUtils.DepositAccountType.CURRENT.toString();
+    private String ACCOUNT_TYPE_FIXED = EnumUtils.DepositAccountType.FIXED.toString();
+    private String ACCOUNT_TYPE_SAVING = EnumUtils.DepositAccountType.SAVING.toString();
  
     public OpenAccountManagedBean() {
         System.out.println("OpenAccountManagedBean() Created!!");
@@ -69,17 +70,26 @@ public class OpenAccountManagedBean implements Serializable {
         addTransaction();
         addDefaultInterest();
         if (getAccountType().equals(getACCOUNT_TYPE_CURRENT())) {
-            bankAccountSessionBean.addAccount(getNewCurrentAccount());
-            getCurrentAccounts().add(getNewCurrentAccount());
-            MessageUtils.displayInfo("Current Account Created");
+            if (bankAccountSessionBean.createAccount(getNewCurrentAccount()) != null) {
+                getCurrentAccounts().add(getNewCurrentAccount());
+                MessageUtils.displayInfo("Current Account Created");
+            } else {
+                MessageUtils.displayError("There's some error when creating account");
+            }
         } else if (getAccountType().equals(getACCOUNT_TYPE_FIXED())) {
-            bankAccountSessionBean.addAccount(getNewFixedDepositAccount());
-            getFixedDepositAccounts().add(getNewFixedDepositAccount());
-            MessageUtils.displayInfo("Fixed Deposit Account Created");
+            if (bankAccountSessionBean.createAccount(getNewFixedDepositAccount()) != null) {
+                getFixedDepositAccounts().add(getNewFixedDepositAccount());
+                MessageUtils.displayInfo("Fixed Deposit Account Created");
+            } else {
+                MessageUtils.displayError("There's some error when creating account");
+            }
         } else if (getAccountType().equals(getACCOUNT_TYPE_SAVING())) {
-            bankAccountSessionBean.addAccount(getNewSavingAccount());
-            getSavingAccounts().add(getNewSavingAccount());
-            MessageUtils.displayInfo("Savings Account Created");
+            if (bankAccountSessionBean.createAccount(getNewSavingAccount()) != null) {
+                getSavingAccounts().add(getNewSavingAccount());
+                MessageUtils.displayInfo("Savings Account Created");
+            } else {
+                MessageUtils.displayError("There's some error when creating account");
+            }
         } else {
             MessageUtils.displayError("There's some error when creating account");
         }
@@ -102,7 +112,7 @@ public class OpenAccountManagedBean implements Serializable {
         t.setAmount(getAccount().getBalance());
         t.setFromAccount(getAccount());
         t.setCredit(Boolean.TRUE);
-        t.setAction(Transaction.ActionType.DEPOSIT.toString());
+        t.setActionType(EnumUtils.TransactionType.DEPOSIT);
         if (accountType.equals(getACCOUNT_TYPE_CURRENT())) {
             getNewCurrentAccount().addTransaction(t);
         } else if (accountType.equals(getACCOUNT_TYPE_FIXED())) {

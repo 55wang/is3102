@@ -3,12 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package staff.others;
+package staff.common;
 
 import ejb.session.common.EmailServiceSessionBeanLocal;
 import ejb.session.staff.StaffAccountSessionBeanLocal;
 import ejb.session.staff.StaffRoleSessionBeanLocal;
-import entity.staff.Role.Permission;
 import entity.staff.StaffAccount;
 import java.io.Serializable;
 import javax.annotation.PostConstruct;
@@ -16,6 +15,7 @@ import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.faces.event.ActionEvent;
 import javax.faces.view.ViewScoped;
+import utils.EnumUtils.Permission;
 import utils.HashPwdUtils;
 import utils.MessageUtils;
 import utils.RedirectUtils;

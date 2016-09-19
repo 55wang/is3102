@@ -21,25 +21,14 @@ import javax.persistence.TemporalType;
 public class CumulatedInterest implements Serializable {
     
     @Column(precision=12, scale=2)
-    private BigDecimal amount;
-    private Integer times;
+    private BigDecimal currentAmount = BigDecimal.ZERO;
+    @Column(precision=12, scale=2)
+    private BigDecimal cummulativeAmount = BigDecimal.ZERO;// use to differetiate simple and cummulative interest
+    private Integer times = 0;
     @Temporal(value = TemporalType.TIMESTAMP)
     private Date updatedDate = new Date();
-    private Boolean isMonthly;
+    private Integer intervalMonth = 1;
 
-    /**
-     * @return the amount
-     */
-    public BigDecimal getAmount() {
-        return amount;
-    }
-
-    /**
-     * @param amount the amount to set
-     */
-    public void setAmount(BigDecimal amount) {
-        this.amount = amount;
-    }
 
     /**
      * @return the times
@@ -70,16 +59,44 @@ public class CumulatedInterest implements Serializable {
     }
 
     /**
-     * @return the isMonthly
+     * @return the currentAmount
      */
-    public Boolean getIsMonthly() {
-        return isMonthly;
+    public BigDecimal getCurrentAmount() {
+        return currentAmount;
     }
 
     /**
-     * @param isMonthly the isMonthly to set
+     * @param currentAmount the currentAmount to set
      */
-    public void setIsMonthly(Boolean isMonthly) {
-        this.isMonthly = isMonthly;
+    public void setCurrentAmount(BigDecimal currentAmount) {
+        this.currentAmount = currentAmount;
+    }
+
+    /**
+     * @return the cummulativeAmount
+     */
+    public BigDecimal getCummulativeAmount() {
+        return cummulativeAmount;
+    }
+
+    /**
+     * @param cummulativeAmount the cummulativeAmount to set
+     */
+    public void setCummulativeAmount(BigDecimal cummulativeAmount) {
+        this.cummulativeAmount = cummulativeAmount;
+    }
+
+    /**
+     * @return the intervalMonth
+     */
+    public Integer getIntervalMonth() {
+        return intervalMonth;
+    }
+
+    /**
+     * @param intervalMonth the intervalMonth to set
+     */
+    public void setIntervalMonth(Integer intervalMonth) {
+        this.intervalMonth = intervalMonth;
     }
 }

@@ -5,7 +5,6 @@
  */
 package entity.dams.rules;
 
-import entity.dams.rules.RangeInterest;
 import javax.persistence.Entity;
 
 /**

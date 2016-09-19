@@ -1,0 +1,148 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:em="http://xmlns.jcp.org/jsf/composite/emcomp"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <!--shift + ctrl + F, format-->
+    <f:view>
+        <h:head>
+            <title>Facelet Title</title>
+            <em:cssImport></em:cssImport>
+        </h:head>
+        <h:body>
+            <div class="container">
+                <h:form id="mainForm">
+                    <p:growl id="msgs" showDetail="true"/>
+                    <!--TODO: Add function here-->
+                    <p:panel header="Account Detail">
+                        <h:panelGrid columns="2" cellpadding="5">
+                            <p:column headerText="Id" sortBy="#{interestDemoManagedBean.account.id}">
+                                <p:outputLabel for="accountNumber" value="Account Number: " />
+                                <h:outputText id="accountNumber" value="#{interestDemoManagedBean.account.id}"></h:outputText>
+                            </p:column>
+                            <p:column headerText="Ammount" sortBy="#{interestDemoManagedBean.account.balance}">
+                                <p:outputLabel for="accountBalance" value="Account Balance " />
+                                <h:outputText id="accountBalance" value="#{interestDemoManagedBean.account.balance}"></h:outputText>
+                            </p:column>
+                            <p:column headerText="Total Interest Rate" sortBy="#{interestDemoManagedBean.getTotalInterest(interestDemoManagedBean.account)}">
+                                <p:outputLabel for="totalInterest" value="Total Interest " />
+                                <h:outputText id="totalInterest" value="#{interestDemoManagedBean.getTotalInterest(interestDemoManagedBean.account)}">
+                                    <f:convertNumber pattern="#0.0000"/>
+                                </h:outputText>
+                            </p:column>
+                        </h:panelGrid>
+                    </p:panel>
+                    
+                    <p:panel header="Normal Interests">
+                        <p:dataTable id="normalInterests" value="#{interestDemoManagedBean.normalInterests}" var="interest" editable="true" editMode="cell">
+                            <p:column headerText="Name" sortBy="#{interest.name}">
+                                    <h:outputText value="#{interest.name}"/>
+                            </p:column>
+                            <p:column headerText="Percentage" sortBy="#{interest.percentage}">
+                                <h:outputText value="#{interest.percentage}">
+                                    <f:convertNumber pattern="#0.0000"/>
+                                </h:outputText>
+                            </p:column>
+                        </p:dataTable>
+                    </p:panel>
+                    <p:panel header="Range Interests">
+                        <p:dataTable id="rangeInterests" value="#{interestDemoManagedBean.rangeInterests}" var="interest" editable="true" editMode="cell">
+                            <p:column headerText="Name" sortBy="#{interest.name}">
+                                <h:outputText value="#{interest.name}"/>
+                            </p:column>
+                            <p:column headerText="Percentage" sortBy="#{interest.percentage}">
+                                <h:outputText value="#{interest.percentage}">
+                                    <f:convertNumber pattern="#0.0000"/>
+                                </h:outputText>
+                            </p:column>
+                            <p:column headerText="Minimum" sortBy="#{interest.minimum}">
+                                <h:outputText value="#{interest.minimum}"/>
+                            </p:column>
+                            <p:column headerText="Maximum" sortBy="#{interest.maximum}">
+                                <h:outputText value="#{interest.maximum}"/>
+                            </p:column>
+                        </p:dataTable>
+                    </p:panel>
+                    <p:panel header="Time Range Interests">
+                        <p:dataTable id="timeRangeInterests" value="#{interestDemoManagedBean.timeRangeInterests}" var="interest" editable="true" editMode="cell">
+                            <p:column headerText="Name" sortBy="#{interest.name}">
+                                <h:outputText value="#{interest.name}"/>
+                            </p:column>
+                            <p:column headerText="Percentage" sortBy="#{interest.percentage}">
+                                <h:outputText value="#{interest.percentage}">
+                                    <f:convertNumber pattern="#0.0000"/>
+                                </h:outputText>
+                            </p:column>
+                            <p:column headerText="Minimum" sortBy="#{interest.minimum}">
+                                <h:outputText value="#{interest.minimum}"/>
+                            </p:column>
+                            <p:column headerText="Maximum" sortBy="#{interest.maximum}">
+                                <h:outputText value="#{interest.maximum}"/>
+                            </p:column>
+                            <p:column headerText="Start" sortBy="#{interest.startMonth}">
+                                <h:outputText value="#{interest.startMonth}"/>
+                            </p:column>
+                            <p:column headerText="End" sortBy="#{interest.endMonth}">
+                                <h:outputText value="#{interest.endMonth}"/>
+                            </p:column>
+                        </p:dataTable>
+                    </p:panel>
+                    <p:panel header="Condition Interests">
+                        <p:dataTable id="conditionInterests" value="#{interestDemoManagedBean.conditionInterests}" var="interest" editable="true" editMode="cell">
+                            <p:column headerText="Name" sortBy="#{interest.name}">
+                                <h:outputText value="#{interest.name}"/>
+                            </p:column>
+                            <p:column headerText="Percentage" sortBy="#{interest.percentage}">
+                                <h:outputText value="#{interest.percentage}">
+                                    <f:convertNumber type="percent"/>
+                                </h:outputText>
+                            </p:column>
+                            <p:column headerText="Amount" sortBy="#{interest.amount}">
+                                <h:outputText value="#{interest.amount}" />
+                            </p:column>
+                            <p:column headerText="Type" sortBy="#{interest.conditionType}">
+                                <h:outputText value="#{interest.conditionType}" />
+                            </p:column>
+                            <p:column headerText="Ceiling" sortBy="#{interest.ceiling}">
+                                <h:outputText value="#{interest.ceiling}" />
+                            </p:column>
+                        </p:dataTable>
+                    </p:panel>
+                    
+                    <p:panel header="Transactions">
+                        <p:dataTable id="transactions" value="#{interestDemoManagedBean.account.transactions}" var="transaction">
+                            <p:column headerText="Id" sortBy="#{transaction.id}">
+                                <h:outputText value="#{transaction.id}"/>
+                            </p:column>
+                            <c:if test="#{transaction.fromAccount != null}">
+                                <p:column headerText="From" sortBy="#{transaction.fromAccount.id}">
+                                    <h:outputText value="#{transaction.fromAccount.id}"/>
+                                </p:column>
+                            </c:if>
+                            <c:if test="#{transaction.toAccount != null}">
+                                <p:column headerText="To" sortBy="#{transaction.toAccount.id}">
+                                    <h:outputText value="#{transaction.toAccount.id}"/>
+                                </p:column>
+                            </c:if>
+                            <p:column headerText="Amount" sortBy="#{transaction.amount}">
+                                <h:outputText value="#{transaction.amount}"/>
+                            </p:column>
+                            <p:column headerText="Creadit" sortBy="#{transaction.credit}">
+                                <h:outputText value="#{transaction.credit}"/>
+                            </p:column>
+                            <p:column headerText="Type" sortBy="#{transaction.actionType}">
+                                <h:outputText value="#{transaction.actionType}"/>
+                            </p:column>
+                        </p:dataTable>
+                    </p:panel>
+                </h:form>
+            </div>
+        </h:body>
+    </f:view>
+
+
+</html>
+

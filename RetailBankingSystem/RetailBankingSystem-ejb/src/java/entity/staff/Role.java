@@ -6,12 +6,8 @@
 package entity.staff;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 
 /**
  *
@@ -19,54 +15,6 @@ import javax.persistence.OneToMany;
  */
 @Entity
 public class Role implements Serializable {
-    
-    public enum Permission {
-        SUPERUSER {
-            public String toString() {
-                return "SUPERUSER";
-            }
-        }, 
-        CUSTOMER{
-            public String toString() {
-                return "CUSTOMER";
-            }
-        },
-        DEPOSIT{
-            public String toString() {
-                return "DEPOSIT";
-            }
-        },
-        CARD{
-            public String toString() {
-                return "CARD";
-            }
-        },
-        LOAN{
-            public String toString() {
-                return "LOAN";
-            }
-        },
-        BILL{
-            public String toString() {
-                return "BILL";
-            }
-        },
-        WEALTH{
-            public String toString() {
-                return "WEALTH";
-            }
-        },
-        PORTFOLIO{
-            public String toString() {
-                return "PORTFOLIO";
-            }
-        },
-        ANALYTICS{
-            public String toString() {
-                return "ANALYTICS";
-            }
-        }
-    }
     
     @Id
     private String roleName;

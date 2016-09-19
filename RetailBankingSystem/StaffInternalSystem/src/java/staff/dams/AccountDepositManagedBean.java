@@ -5,7 +5,7 @@
  */
 package staff.dams;
 
-import ejb.session.dams.BankAccountSessionBeanLocal;
+import ejb.session.dams.DepositAccountSessionBeanLocal;
 import entity.dams.account.DepositAccount;
 import entity.dams.account.CurrentAccount;
 import java.io.Serializable;
@@ -15,7 +15,7 @@ import javax.ejb.EJB;
 import javax.faces.event.ActionEvent;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
-import utils.LoggingUtils;
+import utils.EnumUtils;
 import utils.MessageUtils;
 
 /**
@@ -27,13 +27,12 @@ import utils.MessageUtils;
 public class AccountDepositManagedBean implements Serializable {
 
     @EJB
-    private BankAccountSessionBeanLocal bankAccountSessionBean;
+    private DepositAccountSessionBeanLocal bankAccountSessionBean;
     
     private String accountType;
-    private String ACCOUNT_TYPE_CURRENT = DepositAccount.AccountType.CURRENT.toString();
-    private String ACCOUNT_TYPE_FIXED = DepositAccount.AccountType.FIXED.toString();
-    private String ACCOUNT_TYPE_SAVING = DepositAccount.AccountType.SAVING.toString();
-    private String ACCOUNT_TYPE_LOAN = DepositAccount.AccountType.LOAN.toString();
+    private String ACCOUNT_TYPE_CURRENT = EnumUtils.DepositAccountType.CURRENT.toString();
+    private String ACCOUNT_TYPE_FIXED = EnumUtils.DepositAccountType.FIXED.toString();
+    private String ACCOUNT_TYPE_SAVING = EnumUtils.DepositAccountType.SAVING.toString();
     private List<CurrentAccount> accounts;
     private Long accountNumber;
     private BigDecimal depositAmount;
@@ -142,19 +141,4 @@ public class AccountDepositManagedBean implements Serializable {
     public void setACCOUNT_TYPE_SAVING(String ACCOUNT_TYPE_SAVING) {
         this.ACCOUNT_TYPE_SAVING = ACCOUNT_TYPE_SAVING;
     }
-
-    /**
-     * @return the ACCOUNT_TYPE_LOAN
-     */
-    public String getACCOUNT_TYPE_LOAN() {
-        return ACCOUNT_TYPE_LOAN;
-    }
-
-    /**
-     * @param ACCOUNT_TYPE_LOAN the ACCOUNT_TYPE_LOAN to set
-     */
-    public void setACCOUNT_TYPE_LOAN(String ACCOUNT_TYPE_LOAN) {
-        this.ACCOUNT_TYPE_LOAN = ACCOUNT_TYPE_LOAN;
-    }
-
 }

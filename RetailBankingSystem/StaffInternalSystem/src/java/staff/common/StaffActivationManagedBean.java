@@ -14,6 +14,7 @@ import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.context.FacesContext;
+import utils.EnumUtils;
 import utils.SessionUtils;
 
 /**
@@ -43,7 +44,7 @@ public class StaffActivationManagedBean implements Serializable {
         StaffAccount sa = staffBean.loginAccount(email, randomPwd);
         if(sa != null ){
             valid = true;
-            sa.setStatus(StaffAccount.StatusType.ACTIVE.toString());
+            sa.setStatus(EnumUtils.StatusType.ACTIVE);
             staffBean.updateAccount(sa);
             SessionUtils.setStaffAccount(sa);
         }

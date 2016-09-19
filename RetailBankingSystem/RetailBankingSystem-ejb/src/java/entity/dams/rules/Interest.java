@@ -5,6 +5,7 @@
  */
 package entity.dams.rules;
 
+import entity.staff.Conversation;
 import java.math.BigDecimal;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,34 +17,10 @@ import javax.persistence.Entity;
 @Entity
 public class Interest extends Rule {
     
-    public enum InterestType {
-        NORMAL {
-            @Override
-            public String toString() {
-                return "NORMAL";
-            }
-        },
-        RANGE {
-            @Override
-            public String toString() {
-                return "RANGE";
-            }
-        },
-        TIMERANGE {
-            @Override
-            public String toString() {
-                return "TIMERANGE";
-            }
-        },
-        CONDITION {
-            @Override
-            public String toString() {
-                return "CONDITION";
-            }
-        }
-    }
+    
     @Column(precision=12, scale=2)
     private BigDecimal percentage;
+    private Boolean isCumulative = Boolean.TRUE;
     
     /**
      * @return the percentage
@@ -57,5 +34,19 @@ public class Interest extends Rule {
      */
     public void setPercentage(BigDecimal percentage) {
         this.percentage = percentage;
+    }
+
+    /**
+     * @return the isCumulative
+     */
+    public Boolean getIsCumulative() {
+        return isCumulative;
+    }
+
+    /**
+     * @param isCumulative the isCumulative to set
+     */
+    public void setIsCumulative(Boolean isCumulative) {
+        this.isCumulative = isCumulative;
     }
 }

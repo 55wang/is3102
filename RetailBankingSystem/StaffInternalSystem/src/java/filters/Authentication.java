@@ -119,6 +119,7 @@ public class Authentication implements Filter {
                     || reqURI.contains("/javax.faces.resource/")
                     || reqURI.contains("/index.xhtml") // login page is ignored
                     || reqURI.contains("/common/")
+                    || reqURI.contains("/demo/")
                     || (ses != null && ses.getAttribute("StaffAccount") != null)) { // check if it is already loged in
                 chain.doFilter(request, response);
             } else {

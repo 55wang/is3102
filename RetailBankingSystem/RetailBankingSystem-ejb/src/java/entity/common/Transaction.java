@@ -17,6 +17,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import utils.EnumUtils.TransactionType;
 
 /**
  *
@@ -24,63 +25,6 @@ import javax.persistence.TemporalType;
  */
 @Entity
 public class Transaction implements Serializable {
-
-    public enum ActionType {
-        INITIAL {
-            @Override
-            public String toString() {
-                return "INITIAL DEPOSIT";
-            }
-        },
-        DEPOSIT {
-            @Override
-            public String toString() {
-                return "DEPOSIT";
-            }
-        },
-        WITHDRAW {
-            @Override
-            public String toString() {
-                return "WITHDRAW";
-            }
-        },
-        CHEQUE {
-            @Override
-            public String toString() {
-                return "CHEQUE";
-            }
-        },
-        TRANSFER {
-            @Override
-            public String toString() {
-                return "TRANSFER";
-            }
-        },
-        LOCALTRANSFER {
-            @Override
-            public String toString() {
-                return "LOCAL TRANSFER";
-            }
-        },
-        INTERBANKTRANSFER {
-            @Override
-            public String toString() {
-                return "INTER BANK TRANSFER";
-            }
-        },
-        OVERSEASTRANSFER {
-            @Override
-            public String toString() {
-                return "OVERSEAS TRANSFER";
-            }
-        },
-        BILL {
-            @Override
-            public String toString() {
-                return "BILL";
-            }
-        }
-    }
     
     private static final long serialVersionUID = 1L;
     @Id
@@ -91,7 +35,7 @@ public class Transaction implements Serializable {
     @ManyToOne(cascade={CascadeType.MERGE})
     private DepositAccount toAccount;// can be null
     private String referenceNumber;
-    private String actionType;
+    private TransactionType actionType;
     private Boolean credit;
     private BigDecimal amount;
     @Temporal(value = TemporalType.TIMESTAMP)
@@ -148,20 +92,6 @@ public class Transaction implements Serializable {
     }
 
     /**
-     * @return the Action
-     */
-    public String getAction() {
-        return actionType;
-    }
-
-    /**
-     * @param actionType the actionType toAccount set
-     */
-    public void setAction(String actionType) {
-        this.actionType = actionType;
-    }
-
-    /**
      * @return the credit
      */
     public Boolean getCredit() {
@@ -201,5 +131,19 @@ public class Transaction implements Serializable {
      */
     public void setCreationDate(Date creationDate) {
         this.creationDate = creationDate;
+    }
+
+    /**
+     * @return the actionType
+     */
+    public TransactionType getActionType() {
+        return actionType;
+    }
+
+    /**
+     * @param actionType the actionType to set
+     */
+    public void setActionType(TransactionType actionType) {
+        this.actionType = actionType;
     }
 }

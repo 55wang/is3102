@@ -48,6 +48,7 @@ public class StaffAccountSessionBean implements StaffAccountSessionBeanLocal {
     
     @Override
     public StaffAccount getAccountByEmail(String email) {
+        
         Query q = em.createQuery("SELECT sa FROM StaffAccount sa WHERE sa.email = :email");
         
         q.setParameter("email", email);
@@ -55,7 +56,6 @@ public class StaffAccountSessionBean implements StaffAccountSessionBeanLocal {
         StaffAccount sa = null;
           
         try {
-            // TODO: Email need to be unique
             List<StaffAccount> accounts = q.getResultList();
             if (accounts != null && !accounts.isEmpty() && accounts.size() == 1) {
                 return accounts.get(0);

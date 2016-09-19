@@ -18,23 +18,24 @@ and open the template in the editor.
         </h:head>
 
         <h:body>
-<!--            <em:customerHeader context="index_deposit" userName="Log in"></em:customerHeader>-->
+            <em:customerHeader context="index_deposit" userName="Log in"></em:customerHeader>
             <em:customerNavBar context="index_deposit" pageName="index_deposit" ></em:customerNavBar>
 
-<div style="margin-top: 200px">
+<div style="margin-top: 200px;margin-left: 70px;position:absolute">
     <h:form>
+        <h1>Merlion Unique Account</h1>
         <p:growl id="msgs" showDetail="true" />
  
-        <p:layout style="min-width:250px;min-height:250px;margin-left: 100px;border: none">
-            <p:layoutUnit position="west" resizable="true" size="100" minSize="200" maxSize="200" style="border: none">
+        <p:layout style="height:500px;border: none;width:1100px">
+            <p:layoutUnit position="west" style="border: none">
 <!--        <p:panelGrid columns="1" style="width:150px;margin_left:300px;border:none">-->
-            <p:panel id="base" header="0.05% base interest ">
+<p:panel id="base" header="0.05% base interest " style="width: 200px">
                 <h:outputText value="Merlion Unique Account customer earns at least 0.05% interest rate per year."/>
             </p:panel>
         <!--</p:panelGrid>-->
     </p:layoutUnit>
             <p:layoutUnit position="center" style="border: none">
-        <p:panelGrid columns="3" style="width: 750px;margin-left: 50px; border: none">
+        <p:panelGrid columns="3" style="width: 800px;margin-left: 50px; border: none">
         <p:panel id="bonus1" header="1.2% bonus" >
                 <h:outputText value="Credit salary of at least S$3000 through GIRO" />
             </p:panel>
