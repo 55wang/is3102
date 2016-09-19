@@ -5,7 +5,7 @@
  */
 package ejb.session.cms;
 
-import entity.customer.Customer;
+import entity.customer.CustomerCase;
 import entity.customer.MainAccount;
 import javax.ejb.Local;
 
@@ -16,5 +16,5 @@ import javax.ejb.Local;
 @Local
 public interface CustomerCaseSessionBeanLocal {
     public MainAccount getMainAccountByUserID(String userID);
-    public Boolean saveCase(MainAccount mainAccount);
+    public Boolean saveCase(CustomerCase customerCase);
 }

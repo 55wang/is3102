@@ -5,7 +5,7 @@
  */
 package ejb.session.cms;
 
-import entity.customer.Customer;
+import entity.customer.CustomerCase;
 import entity.customer.MainAccount;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -41,11 +41,11 @@ public class CustomerCaseSessionBean implements CustomerCaseSessionBeanLocal {
     }
     
     @Override
-    public Boolean saveCase(MainAccount mainAccount){
+    public Boolean saveCase(CustomerCase customerCase){
         
         try{
             
-            em.merge(mainAccount);
+            em.merge(customerCase);
             em.flush();
           
             return true;

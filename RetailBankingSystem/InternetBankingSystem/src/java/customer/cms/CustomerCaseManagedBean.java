@@ -63,10 +63,15 @@ public class CustomerCaseManagedBean implements Serializable {
     public void saveCase(){
         customerCase.setIssues(issues);
         customerCase.setMainAccount(mainAccount);
-        List<CustomerCase> cases = mainAccount.getCases();
-        cases.add(customerCase);
-        mainAccount.setCases(cases);
-        customerCaseSessionBean.saveCase(mainAccount);
+        mainAccount.addCase(customerCase);
+        customerCaseSessionBean.saveCase(customerCase);
+    }
+    
+    public void removeIssue(String issueID){
+        for(int i = 0; i < issues.size(); i++){
+            if(issues.get(i).toString().equals(issueID))
+                issues.remove(i);
+        }
     }
 
     @PostConstruct

@@ -72,6 +72,10 @@ public class MainAccount implements Serializable {
     public void addDepositAccount(DepositAccount da) {
         this.bankAcounts.add(da);
     }
+    
+    public void addCase(CustomerCase cc){
+        this.cases.add(cc);
+    }
 
     public StatusType getStatus() {
         return status;

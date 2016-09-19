@@ -28,12 +28,22 @@
                         <c:if test="#{cc.attrs.context.contains('index_')}">
                             <li id="header-overview" class="#{cc.attrs.pageName == 'index' ? 'active' : ''}" value="Home"><a href="../index.xhtml">Home</a></li>
                         </c:if>
-                        <li id="header-overview" class="#{cc.attrs.pageName == 'index_deposit' ? 'active' : ''}" value="Deposit"><a href="index_subpages/index_deposit.xhtml">Deposit</a></li>
-                        <li id="header-overview" class="#{cc.attrs.context == 'index_card' ? 'active' : ''}" value="Card"><a href="index_subpages/index_card.xhtml">Cards</a></li>
-                        <li id="header-overview" class="#{cc.attrs.context == 'button' ? 'active' : ''}" value="button"><a href="#">Loan</a></li>
-                        <li id="header-overview" class="#{cc.attrs.context == 'button' ? 'active' : ''}" value="button"><a href="#">Invest</a></li>
-                        <li id="header-overview" class="#{cc.attrs.context == 'button' ? 'active' : ''}" value="button"><a href="#">Promotions</a></li>
-                        <li id="header-overview" class="#{cc.attrs.context == 'button' ? 'active' : ''}" value="button"><a href="#">button</a></li>
+                        <c:if test="#{cc.attrs.context == 'index'}">
+                            <li id="header-overview" class="#{cc.attrs.pageName == 'index_deposit' ? 'active' : ''}" value="Deposit"><a href="index_subpages/index_deposit.xhtml">Deposit</a></li>
+                            <li id="header-overview" class="#{cc.attrs.context == 'index_card' ? 'active' : ''}" value="Card"><a href="index_subpages/index_card.xhtml">Cards</a></li>
+                            <li id="header-overview" class="#{cc.attrs.context == 'button' ? 'active' : ''}" value="button"><a href="#">Loan</a></li>
+                            <li id="header-overview" class="#{cc.attrs.context == 'button' ? 'active' : ''}" value="button"><a href="#">Invest</a></li>
+                            <li id="header-overview" class="#{cc.attrs.context == 'button' ? 'active' : ''}" value="button"><a href="#">Promotions</a></li>
+                            <li id="header-overview" class="#{cc.attrs.context == 'button' ? 'active' : ''}" value="button"><a href="#">button</a></li>
+                        </c:if>
+                        <c:if test="#{cc.attrs.context.contains('index_')}">
+                            <li id="header-overview" class="#{cc.attrs.pageName == 'index_deposit' ? 'active' : ''}" value="Deposit"><a href="index_deposit.xhtml">Deposit</a></li>
+                            <li id="header-overview" class="#{cc.attrs.context == 'index_card' ? 'active' : ''}" value="Card"><a href="index_card.xhtml">Cards</a></li>
+                            <li id="header-overview" class="#{cc.attrs.context == 'button' ? 'active' : ''}" value="button"><a href="#">Loan</a></li>
+                            <li id="header-overview" class="#{cc.attrs.context == 'button' ? 'active' : ''}" value="button"><a href="#">Invest</a></li>
+                            <li id="header-overview" class="#{cc.attrs.context == 'button' ? 'active' : ''}" value="button"><a href="#">Promotions</a></li>
+                            <li id="header-overview" class="#{cc.attrs.context == 'button' ? 'active' : ''}" value="button"><a href="#">button</a></li>
+                        </c:if>
                     </c:if>
                     <c:if test="#{cc.attrs.context == 'customer_home'}">
                         <h:form>

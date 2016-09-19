@@ -25,12 +25,12 @@ import javax.persistence.OneToMany;
 public class CustomerCase implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String title;
     @OneToMany(cascade = {CascadeType.ALL}, mappedBy = "customerCase")
     private List<Issue> issues = new ArrayList<Issue>(); 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.MERGE})
     private MainAccount mainAccount;
     @ManyToOne
     private StaffAccount staffAccount;
