@@ -5,16 +5,18 @@
  */
 package ejb.session.cms;
 
-import com.sun.faces.util.MessageUtils;
 import ejb.session.common.EmailServiceSessionBeanLocal;
 import entity.customer.Customer;
 import entity.customer.MainAccount;
+import java.util.ArrayList;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import utils.EnumUtils.StatusType;
 
 /**
  *
@@ -22,45 +24,60 @@ import javax.persistence.Query;
  */
 @Stateless
 public class CustomerProfileSessionBean implements CustomerProfileSessionBeanLocal {
+
     @EJB
     private EmailServiceSessionBeanLocal emailServiceSessionBean;
-    
+
     @PersistenceContext(unitName = "RetailBankingSystem-ejbPU")
     private EntityManager em;
-    
-    
+
     @Override
-    public Customer getCustomerByUserID(String userID){    
+    public Customer getCustomerByUserID(String userID) {
         Query q = em.createQuery("SELECT a FROM MainAccount a WHERE a.userID = :inUserID");
-        
+
         q.setParameter("inUserID", userID);
-        
+
         MainAccount mainAccount = null;
-          
+
         try {
-            mainAccount = (MainAccount) q.getSingleResult();       
+            mainAccount = (MainAccount) q.getSingleResult();
             return mainAccount.getCustomer();
         } catch (NoResultException ex) {
             return null;
         }
     }
-    
+
     @Override
-    public Boolean saveProfile(Customer customer){
-        
-        try{
-            
+    public Boolean saveProfile(Customer customer) {
+
+        try {
+
             em.merge(customer);
             em.flush();
-            
+
             emailServiceSessionBean.sendUpdatedProfile(customer.getEmail());
             return true;
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             return false;
         }
     }
 
-    
-    
+    @Override
+    public List<Customer> retrieveActivatedCustomers() {
+
+        Query q = em.createQuery("SELECT a FROM MainAccount a WHERE a.status= :inStatus");
+        q.setParameter("inStatus", StatusType.ACTIVE);
+
+        List<Customer> customers = new ArrayList<Customer>();
+        List<MainAccount> mainAccounts = q.getResultList();
+        for (MainAccount mainAccount : mainAccounts) {
+            try {
+                customers.add(mainAccount.getCustomer());
+            } catch (NullPointerException ex) {
+                ex.printStackTrace();
+            }
+        }
+        return customers;
+
+    }
 }

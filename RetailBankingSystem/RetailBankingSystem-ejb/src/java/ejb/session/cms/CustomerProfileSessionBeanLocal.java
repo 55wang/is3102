@@ -6,6 +6,7 @@
 package ejb.session.cms;
 
 import entity.customer.Customer;
+import entity.customer.MainAccount;
 import java.util.List;
 import javax.ejb.Local;
 
@@ -18,6 +19,8 @@ public interface CustomerProfileSessionBeanLocal {
 
     public Customer getCustomerByUserID(String userID);
     public Boolean saveProfile(Customer customer);
-    
+    public List<Customer> retrieveActivatedCustomers();   
+     
+ 
 }
 

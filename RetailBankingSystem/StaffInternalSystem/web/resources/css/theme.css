@@ -40,7 +40,7 @@ and open the template in the editor.
     padding: 0;
 }
 #customer-header-nav{
-    width: 35%;
+    width: 25%;
     height: 67px;
     min-height: 40px;
     float: right;
@@ -58,7 +58,7 @@ and open the template in the editor.
     color: white;
     text-align: center;
     display: inline-block;
-    width:120px;
+    width:100px;
     float: left;
     cursor:pointer;
     box-sizing: border-box;

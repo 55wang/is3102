@@ -1,0 +1,40 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:em="http://xmlns.jcp.org/jsf/composite/emcomp"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <!--shift + ctrl + F, format-->
+    <f:view>
+        <h:head>
+            <title>Facelet Title</title>
+            <em:cssImport></em:cssImport>
+        </h:head>
+        <h:body>
+            <em:staffNavBar context="customer"></em:staffNavBar>
+            <em:staffSideBar top="customer" side="viewCustomer"></em:staffSideBar>
+            <div class="container">
+
+                <h:form id="DisplayForm">
+                    <p:growl id="msgs" showDetail="true"/>
+                    <p:panel header="List of Customers">
+                        <p:dataTable id="customerList" value="#{staffCustomerInformationManagedBean.customers}" var="customer" sortMode="multiple" >
+                            <p:column headerText="Name" sortBy="#{customer.lastname}">
+                                <h:outputText value="#{customer.lastname} #{customer.firstname}" />
+                            </p:column>
+                            <p:column headerText="Email" sortBy="#{customer.email}">
+                                <h:outputText value="#{customer.email}" />
+                            </p:column>
+                        </p:dataTable>
+                    </p:panel>
+
+                </h:form>
+            </div>
+        </h:body> 
+   </f:view>
+
+
+</html>
+

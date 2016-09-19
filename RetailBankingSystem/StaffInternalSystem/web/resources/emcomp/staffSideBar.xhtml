@@ -54,6 +54,14 @@
                             <h:link outcome="notification" value="Notification" />
                         </li>
                     </c:if>
+                    <c:if test="#{cc.attrs.top == 'customer'}">
+                        <li class="side-menu-item #{cc.attrs.side == 'viewCustomer' ? 'active' : ''}">
+                            <h:link outcome="staff-view-customer" value="View Customer" />
+                        </li>
+                        <li class="side-menu-item #{cc.attrs.side == 'searchCustomer' ? 'active' : ''}">
+                            <h:link outcome="staff-search-customer" value="Search Customer" />
+                        </li>
+                    </c:if>
                 </ul>
             </div>
             <!--TODO: Fillin all the sub menus here -->
