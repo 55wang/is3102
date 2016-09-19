@@ -53,7 +53,9 @@ public class Customer implements Serializable {
     
     private String gender;
     
-    private double CreditScore; //0-1000
+    private double creditScore; //0-1000
+    
+    private String martialStatus;
     
     @OneToOne(cascade = {CascadeType.PERSIST})
     private MainAccount mainAccount;
@@ -204,11 +206,19 @@ public class Customer implements Serializable {
     }
 
     public double getCreditScore() {
-        return CreditScore;
+        return creditScore;
     }
 
-    public void setCreditScore(double CreditScore) {
-        this.CreditScore = CreditScore;
+    public void setCreditScore(double creditScore) {
+        this.creditScore = creditScore;
+    }
+
+    public String getMartialStatus() {
+        return martialStatus;
+    }
+
+    public void setMartialStatus(String martialStatus) {
+        this.martialStatus = martialStatus;
     }
     
 }

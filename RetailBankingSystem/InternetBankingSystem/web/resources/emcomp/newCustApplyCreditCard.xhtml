@@ -1,0 +1,246 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:jsf="http://xmlns.jcp.org/jsf"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:em="http://xmlns.jcp.org/jsf/composite/emcomp">
+
+    <cc:interface>
+        <cc:attribute name="context" required="true"/>
+    </cc:interface>
+
+    <cc:implementation>
+        <f:view>
+            <em:cssImport></em:cssImport>
+            <div id="register-form-container" class="h-center">
+                <h:form>
+                    <p:growl id="growl" sticky="true" showDetail="true"/>
+
+                    <p:wizard widgetVar="myWizard" showNavBar="false">
+                        <c:if test="#{cc.attrs.context == 'apply_card_account'}">
+                            <p:tab id="account" title="1.Credit Card Account">
+                                <p:panel>
+                                    <p:messages />
+                                    <table style="margin-top:-90px">
+
+                                        <tr><div style="margin-left:120px;margin-top:0px">
+                                                <h:outputText style="font-weight:bolder" value="Choose Your Credit Card Account: " />
+                                                <p:selectOneMenu value="#{customerApplicationManagedBean.initialDepositAccount}" style="width:187px; height: 41px; line-height: 21px; top:10px" rendered="true" required="true">
+                                                    <f:selectItem itemLabel="Please Select..." itemValue="" />
+                                                    <f:selectItem itemLabel="MBS Miles Credit Card" itemValue="MILES" />
+                                                    <f:selectItem itemLabel="MBS Reward Credit Card" itemValue="REWARD" />
+                                                    <f:selectItem itemLabel="MBS Fixed Credit Card" itemValue="FIXED" />
+                                                </p:selectOneMenu>
+
+                                                <h:outputText value="Name Appear On Card: " />
+                                                <p:inputText value="#{customerApplicationManagedBean.customer.firstname}" required="true"/><br />
+                                                <h:outputText value="Number of Dependents: " />
+                                                <p:inputText value="#{customerApplicationManagedBean.customer.occupation}" required="true"/><br />
+                                                <h:outputText value="Residential Status: " />
+                                                <p:inputText value="#{customerApplicationManagedBean.customer.occupation}" required="true"/><br />
+                                                <h:outputText value="Residential Type: " />
+                                                <p:inputText value="#{customerApplicationManagedBean.customer.occupation}" required="true"/><br />
+                                                <h:outputText value="Education Level: " />
+                                                <p:inputText value="#{customerApplicationManagedBean.customer.occupation}" required="true"/><br />
+                                                <h:outputText value="Employment Status: " />
+                                                <p:inputText value="#{customerApplicationManagedBean.customer.occupation}" required="true"/><br />
+                                                <h:outputText value="Industry: " />
+                                                <p:inputText value="#{customerApplicationManagedBean.customer.occupation}" required="true"/><br />
+                                                <h:outputText value="Position: " />
+                                                <p:inputText value="#{customerApplicationManagedBean.customer.occupation}" required="true"/><br />
+                                                <h:outputText value="Company: " />
+                                                <p:inputText value="#{customerApplicationManagedBean.customer.occupation}" required="true"/><br />
+                                                <!-- need employmentpass, identitycert,incometax, other cert, payslip, cpf -->
+
+                                            </div></tr>
+                                        <tr><div>
+                                                <p style="margin-left:120px; margin-top:0px"> Terms and Conditions</p>
+                                            </div></tr>
+                                        <tr><p:scrollPanel mode="native" style="width:500px;height:200px;margin-left:120px;margin-top:0px;border:1px solid grey">
+                                                <p>
+                                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean blandit tortor a ipsum vehicula, in semper sapien auctor. Nulla tempor eget est non consequat. Nulla sit amet lorem justo. Cras non tellus eros. Sed ultricies orci ut quam interdum fringilla. Nam vitae massa ac mi elementum mattis vel vitae sem. Ut eros ipsum, scelerisque a erat a, eleifend luctus nibh. Interdum et malesuada fames ac ante ipsum primis in faucibus.
+                                                </p>
+                                                <p>
+                                                    Vivamus ac ullamcorper magna. Aenean felis ante, elementum sit amet urna at, eleifend aliquet velit. Morbi a convallis magna. In nec leo vel dolor hendrerit pharetra. Cras in iaculis enim. Aenean porta sapien dignissim turpis dapibus, eu dictum velit elementum. Aliquam sollicitudin gravida luctus.
+                                                </p>
+                                                <p>
+                                                    Ut vel nulla sit amet erat laoreet eleifend nec sed lacus. Quisque placerat diam vitae justo eleifend, rutrum mollis mauris fringilla. Curabitur turpis odio, euismod id lorem a, ultricies suscipit ligula. Pellentesque ut erat a leo rhoncus porta ac sed velit. Nunc at erat ligula. Fusce vehicula posuere interdum. Curabitur tempus, tortor at sollicitudin dapibus, erat ante varius nisl, id dictum erat ipsum porttitor ipsum. Interdum et malesuada fames ac ante ipsum primis in faucibus. Nulla id varius enim, sed rutrum orci.
+                                                </p>
+                                                <p>
+                                                    Sed tincidunt urna quis metus lacinia commodo. Praesent convallis eros vel quam scelerisque bibendum. Mauris eget dignissim libero. Pellentesque sagittis sem quis ipsum viverra, sed consequat mi consectetur. Donec facilisis dapibus ultrices. Donec luctus auctor lacus, at congue nisi aliquet eu. Praesent in justo at risus faucibus ultricies. Fusce et libero lectus. Donec elementum pharetra sapien, at placerat purus sodales et. Vivamus iaculis lacus sed placerat rhoncus. Mauris iaculis sit amet nunc at placerat. Donec consequat euismod lacinia. Etiam nec quam vehicula, cursus massa in, ullamcorper erat.
+                                                </p>
+                                                <p>
+                                                    Praesent volutpat scelerisque vestibulum. In eu massa non neque rutrum commodo. Nunc vel enim nisi. Aenean leo ipsum, molestie vel justo nec, pharetra luctus dui. Nunc rhoncus turpis id lorem luctus consequat. Nulla condimentum adipiscing turpis consequat semper. Etiam ullamcorper velit nec hendrerit malesuada. Praesent venenatis leo sit amet arcu commodo, sit amet porta tellus suscipit. Quisque mi tortor, vestibulum in arcu non, pretium auctor libero. In commodo luctus placerat.
+                                                </p>
+                                            </p:scrollPanel></tr>
+
+
+                                        <tr><div  style="margin-left: 120px; margin-top: 30px" >
+                                                <input type="checkbox" name="term" value="Term" id="TCcheck">I acknowledge and agree to the above. </input>
+                                            </div></tr>
+                                    </table>
+
+                                    <div class="register-form-button" style="margin-top: 52px">
+                                        <p:commandButton  value="Next" type="button" onclick="myFunction()" />
+                                        <script>
+                                            function myFunction() {
+                                                if (document.getElementById("TCcheck").checked === false) {
+                                                    alert("Please read and agree to the Terms and Conditions first!");
+                                                } else {
+                                                    PF('myWizard').next();
+                                                }
+                                            }
+                                        </script>
+                                    </div>
+                                </p:panel>
+                            </p:tab>
+                        </c:if>
+
+                        <p:tab id="identity" title="2.Identity" >
+                            <p:panel>
+                                <p:messages />
+                                <h:panelGrid columns="2" columnClasses="label, value">
+
+                                    <h:outputText value="Identity Type: " />
+                                    <p:selectOneMenu value="#{customerApplicationManagedBean.customer.identityType}" style="width:187px; height: 31px; line-height: 21px; top:8px" rendered="true" label="identityType" required="true">
+                                        <f:selectItem itemLabel="Please Select..." />
+                                        <f:selectItem itemLabel="Singaporean/PR NRIC" itemValue="NRIC" />
+                                        <f:selectItem itemLabel="Passport" itemValue="PASSPORT" />
+                                    </p:selectOneMenu>
+
+                                    <h:outputText value="Identity Number: " />
+                                    <p:inputText value="#{customerApplicationManagedBean.customer.identityNumber}" required="true"/>
+
+                                    <h:outputText value="Nationality: " />
+                                    <p:inputText value="#{customerApplicationManagedBean.customer.nationality}" required="true"/>
+
+                                    
+                                    <h:outputText value="Saluation: " />
+                                    <p:inputText value="#{customerApplicationManagedBean.customer.lastname}" required="true"/>
+                                    
+                                    <h:outputText value="Last Name: " />
+                                    <p:inputText value="#{customerApplicationManagedBean.customer.lastname}" required="true"/>
+
+                                    <h:outputText value="First Name: " />
+                                    <p:inputText value="#{customerApplicationManagedBean.customer.firstname}" required="true"/>
+
+                                    <h:outputText value="Date of Birth: " />
+                                    <p:calendar value="#{customerApplicationManagedBean.customer.birthDay}" navigator="true" yearRange="c-100:c+0" required="true" pattern="yyyy-MM-dd"/>
+                                </h:panelGrid>
+
+                                <div class="register-form-button">
+                                    <p:commandButton value="Back" type="button" onclick="PF('myWizard').back();" />
+                                    <p:commandButton value="Next" type="button" onclick="PF('myWizard').next();"/>
+
+                                </div>
+                            </p:panel>
+                        </p:tab>
+
+                        <p:tab id="contact" title="3.Personal">
+                            <p:panel>
+                                <p:messages />
+                                <h:panelGrid columns="2" columnClasses="label, value">
+                                    <h:outputText value="Gender " />
+                                    <p:selectOneMenu value="#{customerApplicationManagedBean.customer.gender}" style="width:187px; height: 31px; line-height: 21px; top:8px" rendered="true" label="income" required="true">
+                                        <f:selectItem itemLabel="Please Select..." />
+                                        <f:selectItem itemLabel="Male" itemValue="MALE" />
+                                        <f:selectItem itemLabel="Female" itemValue="FEMALE" />
+                                    </p:selectOneMenu>
+
+                                    <h:outputText value="Occupation: " />
+                                    <p:inputText value="#{customerApplicationManagedBean.customer.occupation}" required="true"/>
+
+                                    <h:outputText value="Income " />
+                                    <p:inputText value="#{customerApplicationManagedBean.customer.income}" required="true"/>
+
+                                    <h:outputText value="Email: " />
+                                    <p:inputText value="#{customerApplicationManagedBean.customer.email}" required="true"/>
+
+                                    <h:outputText value="Phone: " />
+                                    <p:inputText value="#{customerApplicationManagedBean.customer.phone}" required="true"/>
+
+                                    <h:outputText value="Postal Code: " />
+                                    <p:inputText value="#{customerApplicationManagedBean.customer.postalCode}" required="true"/>
+
+                                    <h:outputText value="Address: " />
+                                    <p:inputText value="#{customerApplicationManagedBean.customer.address}" required="true"/>
+
+
+                                </h:panelGrid>
+
+                                <div class="register-form-button">
+                                    <p:commandButton value="Back" type="button" onclick="PF('myWizard').back();" />
+                                    <p:commandButton  value="Next" type="button" onclick="PF('myWizard').next();"  />
+                                </div>
+                            </p:panel>
+                        </p:tab>
+
+                        <p:tab id="confirm" title="4.Confirmation">
+                            <p:panel>
+                                <p:scrollPanel id="confirmation" style="height:238px">
+                                    <h:panelGrid columns="2" columnClasses="label, value">
+                                        <h:outputText value="Initial Deposit Account: " />
+                                        <h:outputText value="#{customerApplicationManagedBean.initialDepositAccount}" styleClass="outputLabel"/>
+
+                                        <h:outputText value="Identity Type: " />
+                                        <h:outputText value="#{customerApplicationManagedBean.customer.identityType}" styleClass="outputLabel"/>
+
+                                        <h:outputText value="Identity Number: " />
+                                        <h:outputText value="#{customerApplicationManagedBean.customer.identityNumber}" styleClass="outputLabel"/>
+
+                                        <h:outputText value="Nationality: " />
+                                        <h:outputText value="#{customerApplicationManagedBean.customer.nationality}" styleClass="outputLabel"/>
+
+                                        <h:outputText value="Last Name: " />
+                                        <h:outputText value="#{customerApplicationManagedBean.customer.lastname}" styleClass="outputLabel"/>
+
+                                        <h:outputText value="First Name: " />
+                                        <h:outputText value="#{customerApplicationManagedBean.customer.firstname}" styleClass="outputLabel"/>
+
+                                        <h:outputText value="Date of Birth: " />
+                                        <h:outputText value="#{customerApplicationManagedBean.customer.birthDay}" styleClass="outputLabel">
+                                            <f:convertDateTime type="date" pattern="dd-MM-yyyy"/>
+                                        </h:outputText>
+
+                                        <h:outputText value="Gender: " />
+                                        <h:outputText value="#{customerApplicationManagedBean.customer.gender}" styleClass="outputLabel"/>
+
+                                        <h:outputText value="Occupation " />
+                                        <h:outputText value="#{customerApplicationManagedBean.customer.occupation}" styleClass="outputLabel"/>
+
+                                        <h:outputText value="Income " />
+                                        <h:outputText value="#{customerApplicationManagedBean.customer.income}" styleClass="outputLabel"/>
+
+                                        <h:outputText value="Email: " />
+                                        <h:outputText value="#{customerApplicationManagedBean.customer.email}" styleClass="outputLabel"/>
+
+                                        <h:outputText value="Phone: " />
+                                        <h:outputText value="#{customerApplicationManagedBean.customer.phone}" styleClass="outputLabel"/>
+
+                                        <h:outputText value="Postal Code: " />
+                                        <h:outputText value="#{customerApplicationManagedBean.customer.postalCode}" styleClass="outputLabel"/>
+
+                                        <h:outputText value="Address: " />
+                                        <h:outputText value="#{customerApplicationManagedBean.customer.address}" styleClass="outputLabel"/>
+                                    </h:panelGrid>
+
+
+                                </p:scrollPanel>
+
+                                <div class="register-form-button" style="margin-top: 0px">
+                                    <p:commandButton value="Back" type="button" onclick="PF('myWizard').back();" />
+                                    <p:commandButton value="Confirm" actionListener="#{customerApplicationManagedBean.save}" update="growl" process="@this"/>
+                                </div>
+                            </p:panel>
+                        </p:tab>
+                    </p:wizard>
+
+                </h:form>
+            </div>
+        </f:view>
+    </cc:implementation>
+</html>

@@ -5,6 +5,8 @@
  */
 package ejb.session.card;
 
+import entity.card.account.CreditCardOrder;
+import java.util.List;
 import javax.ejb.Local;
 
 /**
@@ -13,5 +15,10 @@ import javax.ejb.Local;
  */
 @Local
 public interface NewCardSessionBeanLocal {
-    
+
+    public List<CreditCardOrder> showAllCreditCardOrder();
+
+    public CreditCardOrder getAccountFromId(Long orderNumber);
+
+    public void addAccount(CreditCardOrder order);
 }

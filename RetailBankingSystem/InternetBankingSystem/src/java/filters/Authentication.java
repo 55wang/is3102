@@ -122,6 +122,7 @@ public class Authentication implements Filter {
                     || reqURI.contains("/common/")
                     || reqURI.contains("/index_subpages/")
                     || reqURI.contains("/apply_deposit_account.xhtml")
+                    || reqURI.contains("/apply_card_account.xhtml")
                     || (ses != null && ses.getAttribute("username") != null)) {
                 chain.doFilter(request, response);
             } else {
