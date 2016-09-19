@@ -6,7 +6,6 @@
 package ejb.session.cms;
 
 import entity.customer.Customer;
-import entity.customer.MainAccount;
 import java.util.List;
 import javax.ejb.Local;
 

@@ -7,7 +7,6 @@ package staff.cms;
 
 import ejb.session.cms.CustomerProfileSessionBeanLocal;
 import entity.customer.Customer;
-import entity.customer.MainAccount;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
