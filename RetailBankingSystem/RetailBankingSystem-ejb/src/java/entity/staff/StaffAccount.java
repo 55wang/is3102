@@ -12,6 +12,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -31,12 +32,13 @@ public class StaffAccount implements Serializable {
     private String firstName;
     private String lastName;
     private String password;
-    // TODO: Need to make this a unique attributes
+    @Column(unique = true)
     private String email;
     private StatusType status = StatusType.PENDING;
     @Embedded
     private StaffInfo staffInfo;
-    // TODO: Do we need more information? like email and handphone
+    
+    // Loose connection
     @ManyToOne(cascade = {CascadeType.MERGE})
     private Role role; // Role already consist of list of permissions
     @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "staffAccount")

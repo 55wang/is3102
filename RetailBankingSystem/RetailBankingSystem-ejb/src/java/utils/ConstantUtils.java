@@ -3,16 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package entity.dams.account;
-
-import javax.persistence.Entity;
+package utils;
 
 /**
  *
  * @author leiyang
  */
-@Entity
-public class SavingAccount extends DepositAccount {
-    // NO Cheque book
-    // limited withdraw times
+public class ConstantUtils {
+    public static final String DELIMITER = "``";
 }

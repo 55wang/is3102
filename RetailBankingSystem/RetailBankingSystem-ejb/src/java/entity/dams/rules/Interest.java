@@ -19,7 +19,7 @@ public class Interest extends Rule {
     
     @Column(precision=12, scale=2)
     private BigDecimal percentage;
-    private Boolean isCumulative;
+    private Boolean isCumulative = Boolean.TRUE;
     
     /**
      * @return the percentage

@@ -5,6 +5,7 @@
  */
 package ejb.session.dams;
 
+import entity.dams.rules.DepositRule;
 import entity.dams.rules.Interest;
 import java.util.List;
 import javax.ejb.Local;
@@ -14,7 +15,7 @@ import javax.ejb.Local;
  * @author leiyang
  */
 @Local
-public interface InterestSessionBeanLocal {
+public interface AccountRuleSessionBeanLocal {
     // create new or update interest
     public Boolean addInterest(Interest interest);
     public Boolean updateInterest(Interest interest);
@@ -24,4 +25,9 @@ public interface InterestSessionBeanLocal {
     public List<Interest> getSavingccountDefaultInterests();
     public List<Interest> getLoanAccountDefaultInterests();
     public List<Interest> getMobileAccountDefaultInterests();
+    public List<Interest> getDefaultInterestsByAccountName(String accountName);
+    // deposit Rule
+    public Boolean addDepositRule(DepositRule depositRule);
+    public Boolean updateDepositRule(DepositRule depositRule);
+    public DepositRule getDepositRuleByAccountName(String accountName);
 }

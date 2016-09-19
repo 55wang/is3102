@@ -6,23 +6,22 @@
 package init;
 
 import ejb.session.common.NewCustomerSessionBeanLocal;
-import ejb.session.dams.InterestSessionBeanLocal;
+import ejb.session.dams.AccountRuleSessionBeanLocal;
+import ejb.session.dams.BankAccountSessionBeanLocal;
 import ejb.session.staff.StaffAccountSessionBeanLocal;
 import ejb.session.staff.StaffRoleSessionBeanLocal;
+import entity.common.Transaction;
 import entity.customer.Customer;
 import entity.customer.MainAccount;
+import entity.dams.account.DepositAccount;
+import entity.dams.rules.ConditionInterest;
+import entity.dams.rules.DepositRule;
+import entity.dams.rules.Interest;
 import entity.dams.rules.TimeRangeInterest;
 import entity.staff.Role;
 import entity.staff.StaffAccount;
 import java.math.BigDecimal;
 import java.util.Date;
-//import java.io.File;
-//import java.io.FileInputStream;
-//import java.io.FileOutputStream;
-//import java.io.IOException;
-//import java.io.InputStream;
-//import java.io.OutputStream;
-//import java.util.Properties;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.ejb.Singleton;
@@ -47,7 +46,9 @@ public class EntityBuilderBean {
     @EJB
     private NewCustomerSessionBeanLocal newCustomerSessionBean;
     @EJB
-    private InterestSessionBeanLocal interestSessionBean;
+    private AccountRuleSessionBeanLocal accountRuleSessionBean;
+    @EJB
+    private BankAccountSessionBeanLocal bankAccountSessionBean;
 
     @PostConstruct
     public void init() {
@@ -84,24 +85,8 @@ public class EntityBuilderBean {
         // Yifan pls help edit for me on top of these.
         initCustomer();
         initInterest();
-    }
-    
-    private void initInterest() {
-        initTimeRangeInterest();
-    }
-    
-    private void initTimeRangeInterest() {
-        // Add to a fixedDepositAccount
-        // https://www.bankbazaar.sg/fixed-deposit/ocbc-fixed-deposit-rate.html
-        TimeRangeInterest i = new TimeRangeInterest();
-        i.setName("1month-2month-$5000-$20000-0.05%");
-        i.setDefaultFixedDepositAccount(Boolean.FALSE);
-        i.setStartMonth(1);
-        i.setEndMonth(2);
-        i.setMinimum(new BigDecimal(5000));
-        i.setMaximum(new BigDecimal(20000));
-        i.setPercentage(new BigDecimal(0.0005));
-        interestSessionBean.addInterest(i);
+        initDepositRules();
+        initDepositAccounts();
     }
     
     private void initCustomer() {
@@ -132,61 +117,121 @@ public class EntityBuilderBean {
         
         newCustomerSessionBean.createCustomer(c, ma);
     }
-
-//    private void mark(String mark) {
-//        Properties prop = new Properties();
-//        OutputStream output = null;
-//        try {
-//            output = new FileOutputStream("init.properties");
-//
-//            // set the properties value
-//            prop.setProperty("init", mark);
-//
-//            // save properties to project root folder
-//            prop.store(output, null);
-//
-//        } catch (IOException io) {
-//            io.printStackTrace();
-//        } finally {
-//            if (output != null) {
-//                try {
-//                    output.close();
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//
-//        }
-//    }
-//
-//    private Boolean isMarked() {
-//        Properties prop = new Properties();
-//        InputStream input = null;
-//
-//        try {
-//            String filePath = "init.properties";
-//            File f = new File(filePath);
-//            if (f.exists() && !f.isDirectory()) {
-//                input = new FileInputStream(filePath);
-//                // load a properties file
-//                prop.load(input);
-//                String init = prop.getProperty("init");
-//                // get the property value and print it out
-//                System.out.println(init);
-//                return init.equals("done");
-//            }
-//        } catch (IOException ex) {
-//            ex.printStackTrace();
-//        } finally {
-//            if (input != null) {
-//                try {
-//                    input.close();
-//                    return true;
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        }
-//        return false;
-//    }
+    
+    private void initInterest() {
+        Interest i = new Interest();
+        i.setName("Normal Interest");
+        i.setVersion(0);
+        i.setPercentage(new BigDecimal(0.0001));// 0.01%
+        accountRuleSessionBean.addInterest(i);
+        
+        // Init other interests
+        initTimeRangeInterest();
+        initConditionalInterest();
+    }
+    
+    private void initTimeRangeInterest() {
+        // Add to a fixedDepositAccount
+        // https://www.bankbazaar.sg/fixed-deposit/ocbc-fixed-deposit-rate.html
+        TimeRangeInterest i = new TimeRangeInterest();
+        i.setName("1month-2month-$5000-$20000-0.05%");
+        i.setVersion(0);
+        i.setDefaultFixedDepositAccount(Boolean.TRUE);
+        i.setStartMonth(1);
+        i.setEndMonth(2);
+        i.setMinimum(new BigDecimal(5000));
+        i.setMaximum(new BigDecimal(20000));
+        i.setPercentage(new BigDecimal(0.0005));
+        accountRuleSessionBean.addInterest(i);
+    }
+    
+    private void initConditionalInterest() {
+        // Credit your salary of at least $2,000 through GIRO
+        ConditionInterest ci = new ConditionInterest();
+        ci.setName("OCBC 360 Credit Salary");
+        ci.setVersion(0);
+        ci.setConditionType(EnumUtils.InterestConditionType.SALARY);
+        ci.setAmount(new BigDecimal(2000));
+        ci.setDefaultCustomizedAccountName("OCBC 360");
+        ci.setPercentage(new BigDecimal(0.012));
+        accountRuleSessionBean.addInterest(ci);
+        // Pay any 3 bills online or through GIRO
+        ci = new ConditionInterest();
+        ci.setName("OCBC 360 Pay Bill");
+        ci.setVersion(0);
+        ci.setConditionType(EnumUtils.InterestConditionType.BILL);
+        ci.setAmount(new BigDecimal(3));
+        ci.setDefaultCustomizedAccountName("OCBC 360");
+        ci.setPercentage(new BigDecimal(0.005));
+        accountRuleSessionBean.addInterest(ci);
+        // Spend at least $500 on OCBC Credit Cards
+        ci = new ConditionInterest();
+        ci.setName("OCBC 360 Credit Card Spend");
+        ci.setVersion(0);
+        ci.setConditionType(EnumUtils.InterestConditionType.CCSPENDING);
+        ci.setAmount(new BigDecimal(500));
+        ci.setDefaultCustomizedAccountName("OCBC 360");
+        ci.setPercentage(new BigDecimal(0.005));
+        accountRuleSessionBean.addInterest(ci);
+        // Insure or Invest and get this bonus for 12 months
+        ci = new ConditionInterest();
+        ci.setName("OCBC 360 Invest");
+        ci.setVersion(0);
+        ci.setConditionType(EnumUtils.InterestConditionType.CCSPENDING);
+        ci.setDefaultCustomizedAccountName("OCBC 360");
+        ci.setPercentage(new BigDecimal(0.01));
+        ci.setBenefitMonths(12);
+        accountRuleSessionBean.addInterest(ci);
+        // Increase your account balance from the previous month's balance
+        ci = new ConditionInterest();
+        ci.setName("OCBC 360 Increase Balance");
+        ci.setVersion(0);
+        ci.setConditionType(EnumUtils.InterestConditionType.INCREASE);
+        ci.setDefaultCustomizedAccountName("OCBC 360");
+        ci.setPercentage(new BigDecimal(0.01));
+        accountRuleSessionBean.addInterest(ci);
+    }
+    
+    private void initDepositRules() {
+        DepositRule dr = new DepositRule();
+        dr.setName("OCBC 360 Deposit Rules");
+        dr.setVersion(0);
+        dr.setDefaultCustomizedAccountName("OCBC 360");
+        dr.setInitialDeposit(new BigDecimal(1000));
+        dr.setMinBalance(new BigDecimal(3000));
+        dr.setCharges(new BigDecimal(2));
+        dr.setAnnualFees(BigDecimal.ZERO);
+        dr.setWaivedFeesCounter(12);
+        accountRuleSessionBean.addDepositRule(dr);
+    }
+    
+    private void initDepositAccounts() {
+        initCustomAccount();
+        initCurrentAccount();
+        initSavingAccount();
+        initFixedDepositAccount();
+    }
+    
+    private void initCustomAccount() {
+        DepositAccount da = new DepositAccount();
+        da.setName("OCBC 360");
+        da.setDescription("Earn bonus interest when you do all or any of these");
+        da.setType(EnumUtils.DepositAccountType.CUSTOM);
+        da.setBalance(new BigDecimal(1000));
+        da.setDepositRule(accountRuleSessionBean.getDepositRuleByAccountName(da.getName()));
+        
+        bankAccountSessionBean.createAccount(da);
+    }
+    
+    private void initCurrentAccount() {
+            
+    }
+    
+    private void initSavingAccount() {
+            
+    }
+    
+    private void initFixedDepositAccount() {
+            
+    }
 }

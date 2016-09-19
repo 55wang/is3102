@@ -18,7 +18,8 @@ import javax.ejb.Local;
 public interface BankAccountSessionBeanLocal {
     public long showNumberOfAccounts();
     public DepositAccount getAccountFromId(Long accountNumber);
-    public void addAccount(DepositAccount account);
+    public Boolean createAccount(DepositAccount account);
+    public Boolean updateAccount(DepositAccount account);
     public List<DepositAccount> showAllAccounts();
     public String depositIntoAccount(Long accountNumber, BigDecimal depositAmount);
     public String withdrawFromAccount(Long accountNumber, BigDecimal depositAmount);

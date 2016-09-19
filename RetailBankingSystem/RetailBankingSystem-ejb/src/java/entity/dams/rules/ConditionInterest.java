@@ -15,25 +15,12 @@ import utils.EnumUtils.InterestConditionType;
  */
 @Entity
 public class ConditionInterest extends Interest {
-
-    /**
-     * @return the stack
-     */
-    public Boolean getStack() {
-        return stack;
-    }
-
-    /**
-     * @param stack the stack to set
-     */
-    public void setStack(Boolean stack) {
-        this.stack = stack;
-    }
     
     private InterestConditionType conditionType;
-    private BigDecimal ceiling = new BigDecimal("60000");
-    private BigDecimal amount;
-    private Boolean stack;
+    private BigDecimal ceiling = new BigDecimal(60000);
+    private BigDecimal amount = BigDecimal.ZERO;
+    private Boolean stack = Boolean.TRUE;
+    private Integer benefitMonths = 1;
 
     /**
      * @return the ceiling
@@ -75,5 +62,33 @@ public class ConditionInterest extends Interest {
      */
     public void setConditionType(InterestConditionType conditionType) {
         this.conditionType = conditionType;
+    }
+    
+    /**
+     * @return the stack
+     */
+    public Boolean getStack() {
+        return stack;
+    }
+
+    /**
+     * @param stack the stack to set
+     */
+    public void setStack(Boolean stack) {
+        this.stack = stack;
+    }
+
+    /**
+     * @return the benefitMonths
+     */
+    public Integer getBenefitMonths() {
+        return benefitMonths;
+    }
+
+    /**
+     * @param benefitMonths the benefitMonths to set
+     */
+    public void setBenefitMonths(Integer benefitMonths) {
+        this.benefitMonths = benefitMonths;
     }
 }

@@ -9,6 +9,7 @@ package utils;
  *
  * @author leiyang
  */
+// REMARK: To get the list of enum values, just use e.g. CreditType.values()
 public class EnumUtils {
 
     // LY: depends on the depth, we can further categorize them
@@ -35,40 +36,7 @@ public class EnumUtils {
                     }
                 }
     }
-    
-    public enum DepositAccountType {
-        CURRENT {
-            @Override
-            public String toString() {
-                return "CURRENT";
-            }
-        },
-        SAVING {
-            @Override
-            public String toString() {
-                return "SAVING";
-            }
-        },
-        FIXED {
-            @Override
-            public String toString() {
-                return "FIXED";
-            }
-        },
-        MOBILE {
-            @Override
-            public String toString() {
-                return "MOBILE";
-            }
-        },
-        LOAN {// maybe need to seperate this from deposit account
-            @Override
-            public String toString() {
-                return "LOAN";
-            }
-        }
-    }
-    
+
     // LY: Can this conbimed with Status?
     public enum CardAccountStatus {
 
@@ -97,30 +65,60 @@ public class EnumUtils {
                     }
                 }
     }
-    
+
     public enum StatusType {
-        ACTIVE{
-            public String toString() {
-                return "ACTIVE";
-            }
-        }, 
-        PENDING{
-            public String toString() {
-                return "PENDING";
-            }
-        }, 
-        FREEZE{
-            public String toString() {
-                return "FREEZE";
-            }
-        }, 
-        CLOSED{
-            public String toString() {
-                return "CLOSED";
-            }
-        }
+
+        ACTIVE {
+                    public String toString() {
+                        return "ACTIVE";
+                    }
+                },
+        PENDING {
+                    public String toString() {
+                        return "PENDING";
+                    }
+                },
+        FREEZE {
+                    public String toString() {
+                        return "FREEZE";
+                    }
+                },
+        CLOSED {
+                    public String toString() {
+                        return "CLOSED";
+                    }
+                }
     }
-   
+
+    public enum ApplicationStatus {
+
+        PENDING {
+                    @Override
+                    public String toString() {
+                        return "PENDING";
+                    }
+                },
+        EDITABLE {
+                    @Override
+                    public String toString() {
+                        return "EDITABLE";
+                    }
+                },
+        REJECT {
+                    @Override
+                    public String toString() {
+                        return "REJECT";
+                    }
+                },
+        APPROVED {
+                    @Override
+                    public String toString() {
+                        return "APPROVED";
+                    }
+                }
+    }
+
+    // Customer
     public enum Position {
 
         SENIOR_MANAGEMENT {
@@ -181,34 +179,6 @@ public class EnumUtils {
                     @Override
                     public String toString() {
                         return "DILPOMAT";
-                    }
-                }
-    }
-
-    public enum ApplicationStatus {
-
-        PENDING {
-                    @Override
-                    public String toString() {
-                        return "PENDING";
-                    }
-                },
-        EDITABLE {
-                    @Override
-                    public String toString() {
-                        return "EDITABLE";
-                    }
-                },
-        REJECT {
-                    @Override
-                    public String toString() {
-                        return "REJECT";
-                    }
-                },
-        APPROVED {
-                    @Override
-                    public String toString() {
-                        return "APPROVED";
                     }
                 }
     }
@@ -357,7 +327,7 @@ public class EnumUtils {
                     }
                 }
     }
-    
+
     public enum ResidentialStatus {
 
         CONDO_APART {
@@ -383,7 +353,7 @@ public class EnumUtils {
                     public String toString() {
                         return "OTHERS";
                     }
-                },
+                }
     }
 
     public enum ResidentialType {
@@ -476,6 +446,34 @@ public class EnumUtils {
                 }
     }
 
+    public enum Nationality {
+
+        SINGAPOREAN {
+                    @Override
+                    public String toString() {
+                        return "SINGAPOREAN";
+                    }
+                },
+        PR {
+                    @Override
+                    public String toString() {
+                        return "PR";
+                    }
+                },
+        E_PASS {
+                    @Override
+                    public String toString() {
+                        return "E_PASS";
+                    }
+                },
+        S_PASS {
+                    @Override
+                    public String toString() {
+                        return "S_PASS";
+                    }
+                }// TODO: Fill up the list
+    }
+
     public enum Gender {
 
         MALE {
@@ -522,169 +520,224 @@ public class EnumUtils {
 
     // Transaction
     public enum TransactionType {
+
         INITIAL {
-            @Override
-            public String toString() {
-                return "INITIAL DEPOSIT";
-            }
-        },
+                    @Override
+                    public String toString() {
+                        return "INITIAL DEPOSIT";
+                    }
+                },
         DEPOSIT {
-            @Override
-            public String toString() {
-                return "DEPOSIT";
-            }
-        },
+                    @Override
+                    public String toString() {
+                        return "DEPOSIT";
+                    }
+                },
         WITHDRAW {
-            @Override
-            public String toString() {
-                return "WITHDRAW";
-            }
-        },
+                    @Override
+                    public String toString() {
+                        return "WITHDRAW";
+                    }
+                },
         CHEQUE {
-            @Override
-            public String toString() {
-                return "CHEQUE";
-            }
-        },
+                    @Override
+                    public String toString() {
+                        return "CHEQUE";
+                    }
+                },
         TRANSFER {
-            @Override
-            public String toString() {
-                return "TRANSFER";
-            }
-        },
+                    @Override
+                    public String toString() {
+                        return "TRANSFER";
+                    }
+                },
         LOCALTRANSFER {
-            @Override
-            public String toString() {
-                return "LOCAL TRANSFER";
-            }
-        },
+                    @Override
+                    public String toString() {
+                        return "LOCAL TRANSFER";
+                    }
+                },
         INTERBANKTRANSFER {
-            @Override
-            public String toString() {
-                return "INTER BANK TRANSFER";
-            }
-        },
+                    @Override
+                    public String toString() {
+                        return "INTER BANK TRANSFER";
+                    }
+                },
         OVERSEASTRANSFER {
-            @Override
-            public String toString() {
-                return "OVERSEAS TRANSFER";
-            }
-        },
+                    @Override
+                    public String toString() {
+                        return "OVERSEAS TRANSFER";
+                    }
+                },
         BILL {
-            @Override
-            public String toString() {
-                return "BILL";
-            }
-        }
+                    @Override
+                    public String toString() {
+                        return "BILL";
+                    }
+                }
     }
-    
+
     // STAFF
     public enum Permission {
+
         SUPERUSER {
-            public String toString() {
-                return "SUPERUSER";
-            }
-        }, 
-        CUSTOMER{
-            public String toString() {
-                return "CUSTOMER";
-            }
-        },
-        DEPOSIT{
-            public String toString() {
-                return "DEPOSIT";
-            }
-        },
-        CARD{
-            public String toString() {
-                return "CARD";
-            }
-        },
-        LOAN{
-            public String toString() {
-                return "LOAN";
-            }
-        },
-        BILL{
-            public String toString() {
-                return "BILL";
-            }
-        },
-        WEALTH{
-            public String toString() {
-                return "WEALTH";
-            }
-        },
-        PORTFOLIO{
-            public String toString() {
-                return "PORTFOLIO";
-            }
-        },
-        ANALYTICS{
-            public String toString() {
-                return "ANALYTICS";
-            }
-        }
+                    public String toString() {
+                        return "SUPERUSER";
+                    }
+                },
+        CUSTOMER {
+                    public String toString() {
+                        return "CUSTOMER";
+                    }
+                },
+        DEPOSIT {
+                    public String toString() {
+                        return "DEPOSIT";
+                    }
+                },
+        CARD {
+                    public String toString() {
+                        return "CARD";
+                    }
+                },
+        LOAN {
+                    public String toString() {
+                        return "LOAN";
+                    }
+                },
+        BILL {
+                    public String toString() {
+                        return "BILL";
+                    }
+                },
+        WEALTH {
+                    public String toString() {
+                        return "WEALTH";
+                    }
+                },
+        PORTFOLIO {
+                    public String toString() {
+                        return "PORTFOLIO";
+                    }
+                },
+        ANALYTICS {
+                    public String toString() {
+                        return "ANALYTICS";
+                    }
+                }
     }
-    
+
     // Interests
     public enum InterestType {
+
         NORMAL {
-            @Override
-            public String toString() {
-                return "NORMAL";
-            }
-        },
+                    @Override
+                    public String toString() {
+                        return "NORMAL";
+                    }
+                },
         RANGE {
-            @Override
-            public String toString() {
-                return "RANGE";
-            }
-        },
+                    @Override
+                    public String toString() {
+                        return "RANGE";
+                    }
+                },
         TIMERANGE {
-            @Override
-            public String toString() {
-                return "TIMERANGE";
-            }
-        },
+                    @Override
+                    public String toString() {
+                        return "TIMERANGE";
+                    }
+                },
         CONDITION {
-            @Override
-            public String toString() {
-                return "CONDITION";
-            }
-        }
+                    @Override
+                    public String toString() {
+                        return "CONDITION";
+                    }
+                }
     }
-    
+
     public enum InterestConditionType {
+
         BILL {
-            @Override
-            public String toString() {
-                return "BILL";
-            }
-        },
+                    @Override
+                    public String toString() {
+                        return "BILL";
+                    }
+                },
         CCSPENDING {
-            @Override
-            public String toString() {
-                return "CCSPENDING";
-            }
-        },
+                    @Override
+                    public String toString() {
+                        return "CCSPENDING";
+                    }
+                },
         SALARY {
-            @Override
-            public String toString() {
-                return "SALARY";
-            }
-        },
+                    @Override
+                    public String toString() {
+                        return "SALARY";
+                    }
+                },
         INVEST {
-            @Override
-            public String toString() {
-                return "INVEST";
-            }
-        },
+                    @Override
+                    public String toString() {
+                        return "INVEST";
+                    }
+                },
         INCREASE {
-            @Override
-            public String toString() {
-                return "INCREASE";
-            }
-        }
+                    @Override
+                    public String toString() {
+                        return "INCREASE";
+                    }
+                }
+    }
+
+    // Deposit Account
+    public enum DepositAccountType {
+
+        CUSTOM {
+                    @Override
+                    public String toString() {
+                        return "CUSTOM";
+                    }
+                },
+        CURRENT {
+                    @Override
+                    public String toString() {
+                        return "CURRENT";
+                    }
+                },
+        SAVING {
+                    @Override
+                    public String toString() {
+                        return "SAVING";
+                    }
+                },
+        FIXED {
+                    @Override
+                    public String toString() {
+                        return "FIXED";
+                    }
+                },
+        MOBILE {
+                    @Override
+                    public String toString() {
+                        return "MOBILE";
+                    }
+                },
+    }
+
+    public enum StatementType {
+
+        E_STATEMENT {
+                    @Override
+                    public String toString() {
+                        return "E_STATEMENT";
+                    }
+                },
+        PRINTED {
+                    @Override
+                    public String toString() {
+                        return "PRINTED";
+                    }
+                }
     }
 }

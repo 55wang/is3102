@@ -10,6 +10,7 @@ import entity.common.Transaction;
 import java.math.BigDecimal;
 import java.util.List;
 import javax.ejb.Stateless;
+import javax.persistence.EntityExistsException;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
@@ -37,8 +38,30 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
     }
 
     @Override
-    public void addAccount(DepositAccount account) {
-        em.persist(account);
+    public Boolean createAccount(DepositAccount account) {
+         try {
+            Transaction t = new Transaction();
+            t.setAmount(account.getBalance());
+            t.setCredit(Boolean.TRUE);
+            t.setActionType(EnumUtils.TransactionType.INITIAL);
+            account.addTransaction(t);
+            em.persist(account);
+            t.setFromAccount(account);
+            em.merge(t);
+            return true;
+        } catch (EntityExistsException e) {
+            return false;
+        }
+    }
+    
+    @Override
+    public Boolean updateAccount(DepositAccount account) {
+         try {
+            em.merge(account);
+            return true;
+        } catch (EntityExistsException e) {
+            return false;
+        }
     }
 
     @Override

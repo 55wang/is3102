@@ -7,7 +7,9 @@ package entity.dams.account;
 
 import entity.customer.MainAccount;
 import entity.common.Transaction;
+import entity.dams.rules.DepositRule;
 import entity.embedded.CumulatedInterest;
+import entity.embedded.TransferLimits;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -26,6 +28,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import utils.EnumUtils.DepositAccountType;
 
 /**
  *  http://www.moneysense.gov.sg/Understanding-Financial-Products/Banking-and-Cash/Banking.aspx
@@ -33,16 +36,21 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Inheritance(strategy=InheritanceType.JOINED)
-public abstract class DepositAccount implements Serializable {
+// instanceof must place at the very end
+public class DepositAccount implements Serializable {
     
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;// TODO: Need to generate our own account number
-    private String name;
-    private String type; // CURRENT, SAVING, FIXED, MOBILE, LOAN
+    private String name = null;// Only Customized Account has a name
+    private String description;
+    private String terms;
+    private DepositAccountType type;
     @Temporal(value = TemporalType.TIMESTAMP)
     private final Date creationDate = new Date();
+    @Embedded
+    private TransferLimits transferLimits = new TransferLimits();
     @Embedded
     private CumulatedInterest cumulatedInterest;
     @Column(precision=12, scale=2)
@@ -51,13 +59,18 @@ public abstract class DepositAccount implements Serializable {
     @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "fromAccount")
     private List<Transaction> transactions = new ArrayList<>();
     
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(cascade = CascadeType.MERGE)
     private MainAccount mainAccount = new MainAccount();
+    
+    @ManyToOne(cascade = {CascadeType.MERGE})
+    private DepositRule depositRule;
     // TODO: Other likely fields
     // billing address 
     // transaction history
     // payment history
     // Cheque
+    
+    
     
     public void addBalance(BigDecimal amount) {
         balance = balance.add(amount);
@@ -83,20 +96,6 @@ public abstract class DepositAccount implements Serializable {
      */
     public void setName(String name) {
         this.name = name;
-    }
-
-    /**
-     * @return the type
-     */
-    public String getType() {
-        return type;
-    }
-
-    /**
-     * @param type the type to set
-     */
-    public void setType(String type) {
-        this.type = type;
     }
 
     public Long getId() {
@@ -161,5 +160,75 @@ public abstract class DepositAccount implements Serializable {
      */
     public void setTransactions(List<Transaction> transactions) {
         this.transactions = transactions;
+    }
+
+    /**
+     * @return the description
+     */
+    public String getDescription() {
+        return description;
+    }
+
+    /**
+     * @param description the description to set
+     */
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    /**
+     * @return the terms
+     */
+    public String getTerms() {
+        return terms;
+    }
+
+    /**
+     * @param terms the terms to set
+     */
+    public void setTerms(String terms) {
+        this.terms = terms;
+    }
+
+    /**
+     * @return the transferLimits
+     */
+    public TransferLimits getTransferLimits() {
+        return transferLimits;
+    }
+
+    /**
+     * @param transferLimits the transferLimits to set
+     */
+    public void setTransferLimits(TransferLimits transferLimits) {
+        this.transferLimits = transferLimits;
+    }
+
+    /**
+     * @return the depositRule
+     */
+    public DepositRule getDepositRule() {
+        return depositRule;
+    }
+
+    /**
+     * @param depositRule the depositRule to set
+     */
+    public void setDepositRule(DepositRule depositRule) {
+        this.depositRule = depositRule;
+    }
+
+    /**
+     * @return the type
+     */
+    public DepositAccountType getType() {
+        return type;
+    }
+
+    /**
+     * @param type the type to set
+     */
+    public void setType(DepositAccountType type) {
+        this.type = type;
     }
 }

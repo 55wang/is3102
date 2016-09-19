@@ -16,7 +16,6 @@ import javax.faces.event.ActionEvent;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import utils.EnumUtils;
-import utils.LoggingUtils;
 import utils.MessageUtils;
 
 /**
@@ -34,7 +33,6 @@ public class AccountDepositManagedBean implements Serializable {
     private String ACCOUNT_TYPE_CURRENT = EnumUtils.DepositAccountType.CURRENT.toString();
     private String ACCOUNT_TYPE_FIXED = EnumUtils.DepositAccountType.FIXED.toString();
     private String ACCOUNT_TYPE_SAVING = EnumUtils.DepositAccountType.SAVING.toString();
-    private String ACCOUNT_TYPE_LOAN = EnumUtils.DepositAccountType.LOAN.toString();
     private List<CurrentAccount> accounts;
     private Long accountNumber;
     private BigDecimal depositAmount;
@@ -143,19 +141,4 @@ public class AccountDepositManagedBean implements Serializable {
     public void setACCOUNT_TYPE_SAVING(String ACCOUNT_TYPE_SAVING) {
         this.ACCOUNT_TYPE_SAVING = ACCOUNT_TYPE_SAVING;
     }
-
-    /**
-     * @return the ACCOUNT_TYPE_LOAN
-     */
-    public String getACCOUNT_TYPE_LOAN() {
-        return ACCOUNT_TYPE_LOAN;
-    }
-
-    /**
-     * @param ACCOUNT_TYPE_LOAN the ACCOUNT_TYPE_LOAN to set
-     */
-    public void setACCOUNT_TYPE_LOAN(String ACCOUNT_TYPE_LOAN) {
-        this.ACCOUNT_TYPE_LOAN = ACCOUNT_TYPE_LOAN;
-    }
-
 }

@@ -8,6 +8,8 @@ package entity.dams.rules;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
@@ -21,22 +23,27 @@ import javax.persistence.TemporalType;
 @Entity
 @Inheritance(strategy=InheritanceType.JOINED)
 public abstract class Rule implements Serializable {
-    // cannot be instantiated
+    private static final long serialVersionUID = 1L;
     @Id
-    private String name;
-    private Boolean saved;
-    private Boolean defaultCurrentAccount;
-    private Boolean defaultFixedDepositAccount;
-    private Boolean defaultSavingAccount;
-    private Boolean defaultMobileAccount;
-    private Boolean defaultLoanAccount;
-    private String defaultCustomizedAccountName;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    // cannot be instantiated
+    private String name; // name format "name" + version
+    // REMARK:Update will create a new version and leave a copy
     private Integer version = 0;
+    private Boolean isHistory = Boolean.FALSE;
+    private Boolean saved = Boolean.FALSE;
+    private Boolean defaultCurrentAccount = Boolean.FALSE;
+    private Boolean defaultFixedDepositAccount = Boolean.FALSE;
+    private Boolean defaultSavingAccount = Boolean.FALSE;
+    private Boolean defaultMobileAccount = Boolean.FALSE;
+    private Boolean defaultLoanAccount = Boolean.FALSE;
+    private String defaultCustomizedAccountName;
+    
     @Temporal(value = TemporalType.TIMESTAMP)
     private Date createDate = new Date();
-    @Temporal(value = TemporalType.TIMESTAMP)
-    private Date updateDate = new Date();
 
+    // Getters and Setters
     /**
      * @return the name
      */
@@ -141,13 +148,6 @@ public abstract class Rule implements Serializable {
     public Date getCreateDate() {
         return createDate;
     }
-
-    /**
-     * @return the updateDate
-     */
-    public Date getUpdateDate() {
-        return updateDate;
-    }
     
     /**
      * @return the defaultCustomizedAccountName
@@ -171,13 +171,6 @@ public abstract class Rule implements Serializable {
     }
 
     /**
-     * @param updateDate the updateDate to set
-     */
-    public void setUpdateDate(Date updateDate) {
-        this.updateDate = updateDate;
-    }
-
-    /**
      * @return the version
      */
     public Integer getVersion() {
@@ -189,6 +182,34 @@ public abstract class Rule implements Serializable {
      */
     public void setVersion(Integer version) {
         this.version = version;
+    }
+
+    /**
+     * @return the isHistory
+     */
+    public Boolean getIsHistory() {
+        return isHistory;
+    }
+
+    /**
+     * @param isHistory the isHistory to set
+     */
+    public void setIsHistory(Boolean isHistory) {
+        this.isHistory = isHistory;
+    }
+
+    /**
+     * @return the id
+     */
+    public Long getId() {
+        return id;
+    }
+
+    /**
+     * @param id the id to set
+     */
+    public void setId(Long id) {
+        this.id = id;
     }
 
 }

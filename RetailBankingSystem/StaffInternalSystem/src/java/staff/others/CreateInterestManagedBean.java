@@ -5,7 +5,7 @@
  */
 package staff.others;
 
-import ejb.session.dams.InterestSessionBeanLocal;
+import ejb.session.dams.AccountRuleSessionBeanLocal;
 import entity.dams.rules.ConditionInterest;
 import entity.dams.rules.Interest;
 import entity.dams.rules.RangeInterest;
@@ -31,7 +31,7 @@ import utils.MessageUtils;
 public class CreateInterestManagedBean implements Serializable {
 
     @EJB
-    private InterestSessionBeanLocal interestSessionBean;
+    private AccountRuleSessionBeanLocal interestSessionBean;
 
     private String interestType;
     private Interest normalInterest = new Interest();

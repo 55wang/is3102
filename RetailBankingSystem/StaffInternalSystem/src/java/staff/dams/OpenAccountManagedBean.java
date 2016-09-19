@@ -6,7 +6,7 @@
 package staff.dams;
 
 import ejb.session.dams.BankAccountSessionBeanLocal;
-import ejb.session.dams.InterestSessionBeanLocal;
+import ejb.session.dams.AccountRuleSessionBeanLocal;
 import entity.dams.account.DepositAccount;
 import entity.dams.account.CurrentAccount;
 import entity.dams.account.FixedDepositAccount;
@@ -33,7 +33,7 @@ public class OpenAccountManagedBean implements Serializable {
     @EJB
     private BankAccountSessionBeanLocal bankAccountSessionBean;
     @EJB
-    private InterestSessionBeanLocal interestSessionBean;
+    private AccountRuleSessionBeanLocal interestSessionBean;
 
     private String accountType;
     private CurrentAccount newCurrentAccount = new CurrentAccount();
@@ -70,17 +70,26 @@ public class OpenAccountManagedBean implements Serializable {
         addTransaction();
         addDefaultInterest();
         if (getAccountType().equals(getACCOUNT_TYPE_CURRENT())) {
-            bankAccountSessionBean.addAccount(getNewCurrentAccount());
-            getCurrentAccounts().add(getNewCurrentAccount());
-            MessageUtils.displayInfo("Current Account Created");
+            if (bankAccountSessionBean.createAccount(getNewCurrentAccount())) {
+                getCurrentAccounts().add(getNewCurrentAccount());
+                MessageUtils.displayInfo("Current Account Created");
+            } else {
+                MessageUtils.displayError("There's some error when creating account");
+            }
         } else if (getAccountType().equals(getACCOUNT_TYPE_FIXED())) {
-            bankAccountSessionBean.addAccount(getNewFixedDepositAccount());
-            getFixedDepositAccounts().add(getNewFixedDepositAccount());
-            MessageUtils.displayInfo("Fixed Deposit Account Created");
+            if (bankAccountSessionBean.createAccount(getNewFixedDepositAccount())) {
+                getFixedDepositAccounts().add(getNewFixedDepositAccount());
+                MessageUtils.displayInfo("Fixed Deposit Account Created");
+            } else {
+                MessageUtils.displayError("There's some error when creating account");
+            }
         } else if (getAccountType().equals(getACCOUNT_TYPE_SAVING())) {
-            bankAccountSessionBean.addAccount(getNewSavingAccount());
-            getSavingAccounts().add(getNewSavingAccount());
-            MessageUtils.displayInfo("Savings Account Created");
+            if (bankAccountSessionBean.createAccount(getNewSavingAccount())) {
+                getSavingAccounts().add(getNewSavingAccount());
+                MessageUtils.displayInfo("Savings Account Created");
+            } else {
+                MessageUtils.displayError("There's some error when creating account");
+            }
         } else {
             MessageUtils.displayError("There's some error when creating account");
         }
