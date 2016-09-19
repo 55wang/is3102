@@ -21,25 +21,14 @@ import javax.persistence.TemporalType;
 public class CumulatedInterest implements Serializable {
     
     @Column(precision=12, scale=2)
-    private BigDecimal amount;
+    private BigDecimal currentAmount;
+    @Column(precision=12, scale=2)
+    private BigDecimal cummulativeAmount;// use to differetiate simple and cummulative interest
     private Integer times;
     @Temporal(value = TemporalType.TIMESTAMP)
     private Date updatedDate = new Date();
     private Boolean isMonthly;
 
-    /**
-     * @return the amount
-     */
-    public BigDecimal getAmount() {
-        return amount;
-    }
-
-    /**
-     * @param amount the amount to set
-     */
-    public void setAmount(BigDecimal amount) {
-        this.amount = amount;
-    }
 
     /**
      * @return the times
@@ -81,5 +70,33 @@ public class CumulatedInterest implements Serializable {
      */
     public void setIsMonthly(Boolean isMonthly) {
         this.isMonthly = isMonthly;
+    }
+
+    /**
+     * @return the currentAmount
+     */
+    public BigDecimal getCurrentAmount() {
+        return currentAmount;
+    }
+
+    /**
+     * @param currentAmount the currentAmount to set
+     */
+    public void setCurrentAmount(BigDecimal currentAmount) {
+        this.currentAmount = currentAmount;
+    }
+
+    /**
+     * @return the cummulativeAmount
+     */
+    public BigDecimal getCummulativeAmount() {
+        return cummulativeAmount;
+    }
+
+    /**
+     * @param cummulativeAmount the cummulativeAmount to set
+     */
+    public void setCummulativeAmount(BigDecimal cummulativeAmount) {
+        this.cummulativeAmount = cummulativeAmount;
     }
 }

@@ -18,7 +18,8 @@ import javax.ejb.EJB;
 import javax.faces.event.ActionEvent;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
-import org.primefaces.event.CellEditEvent;
+import utils.EnumUtils.InterestConditionType;
+import utils.EnumUtils.InterestType;
 import utils.MessageUtils;
 
 /**
@@ -41,15 +42,15 @@ public class CreateInterestManagedBean implements Serializable {
     private List<RangeInterest> rangeInterests = new ArrayList<>();
     private List<TimeRangeInterest> timeRangeInterests = new ArrayList<>();
     private List<ConditionInterest> conditionInterests = new ArrayList<>();
-    private String INTEREST_TYPE_NORMAL = Interest.InterestType.NORMAL.toString();
-    private String INTEREST_TYPE_RANGE = Interest.InterestType.RANGE.toString();
-    private String INTEREST_TYPE_TIME_RANGE = Interest.InterestType.TIMERANGE.toString();
-    private String INTEREST_TYPE_CONDITION = Interest.InterestType.CONDITION.toString();
-    private String CONDITION_TYPE_BILL = ConditionInterest.ConditionType.BILL.toString();
-    private String CONDITION_TYPE_CCSPENDING = ConditionInterest.ConditionType.CCSPENDING.toString();
-    private String CONDITION_TYPE_SALARY = ConditionInterest.ConditionType.SALARY.toString();
-    private String CONDITION_TYPE_INVEST = ConditionInterest.ConditionType.INVEST.toString();
-    private String CONDITION_TYPE_INCREASE = ConditionInterest.ConditionType.INCREASE.toString();
+    private String INTEREST_TYPE_NORMAL = InterestType.NORMAL.toString();
+    private String INTEREST_TYPE_RANGE = InterestType.RANGE.toString();
+    private String INTEREST_TYPE_TIME_RANGE = InterestType.TIMERANGE.toString();
+    private String INTEREST_TYPE_CONDITION = InterestType.CONDITION.toString();
+    private String CONDITION_TYPE_BILL = InterestConditionType.BILL.toString();
+    private String CONDITION_TYPE_CCSPENDING = InterestConditionType.CCSPENDING.toString();
+    private String CONDITION_TYPE_SALARY = InterestConditionType.SALARY.toString();
+    private String CONDITION_TYPE_INVEST = InterestConditionType.INVEST.toString();
+    private String CONDITION_TYPE_INCREASE = InterestConditionType.INCREASE.toString();
 
     /**
      * Creates a new instance of CreateInterestManagedBean

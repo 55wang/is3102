@@ -12,6 +12,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import utils.EnumUtils;
 
 /**
  *
@@ -46,7 +47,7 @@ public class CustomerActivationSessionBean implements CustomerActivationSessionB
        
         try{
             MainAccount ma = (MainAccount) em.find(MainAccount.class , id); 
-            ma.setStatus(MainAccount.StatusType.ACTIVE);
+            ma.setStatus(EnumUtils.StatusType.ACTIVE);
             em.merge(ma);
             em.flush();
             return true;

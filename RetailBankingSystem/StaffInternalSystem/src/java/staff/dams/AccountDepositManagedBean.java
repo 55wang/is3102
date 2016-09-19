@@ -15,6 +15,7 @@ import javax.ejb.EJB;
 import javax.faces.event.ActionEvent;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
+import utils.EnumUtils;
 import utils.LoggingUtils;
 import utils.MessageUtils;
 
@@ -30,10 +31,10 @@ public class AccountDepositManagedBean implements Serializable {
     private BankAccountSessionBeanLocal bankAccountSessionBean;
     
     private String accountType;
-    private String ACCOUNT_TYPE_CURRENT = DepositAccount.AccountType.CURRENT.toString();
-    private String ACCOUNT_TYPE_FIXED = DepositAccount.AccountType.FIXED.toString();
-    private String ACCOUNT_TYPE_SAVING = DepositAccount.AccountType.SAVING.toString();
-    private String ACCOUNT_TYPE_LOAN = DepositAccount.AccountType.LOAN.toString();
+    private String ACCOUNT_TYPE_CURRENT = EnumUtils.DepositAccountType.CURRENT.toString();
+    private String ACCOUNT_TYPE_FIXED = EnumUtils.DepositAccountType.FIXED.toString();
+    private String ACCOUNT_TYPE_SAVING = EnumUtils.DepositAccountType.SAVING.toString();
+    private String ACCOUNT_TYPE_LOAN = EnumUtils.DepositAccountType.LOAN.toString();
     private List<CurrentAccount> accounts;
     private Long accountNumber;
     private BigDecimal depositAmount;

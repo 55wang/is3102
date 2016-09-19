@@ -19,6 +19,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import utils.EnumUtils.StatusType;
 
 /**
  *
@@ -26,29 +27,6 @@ import javax.persistence.OneToOne;
  */
 @Entity
 public class MainAccount implements Serializable {
-
-    public enum StatusType {
-        ACTIVE{
-            public String toString() {
-                return "ACTIVE";
-            }
-        }, 
-        PENDING{
-            public String toString() {
-                return "PENDING";
-            }
-        }, 
-        FREEZE{
-            public String toString() {
-                return "FREEZE";
-            }
-        }, 
-        CLOSED{
-            public String toString() {
-                return "CLOSED";
-            }
-        }
-    }
 
     private static final long serialVersionUID = 1L;
     @Id

@@ -5,7 +5,6 @@
  */
 package staff.others;
 
-import entity.staff.Role.Permission;
 import entity.staff.StaffAccount;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
@@ -13,6 +12,7 @@ import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import utils.EnumUtils.Permission;
 import utils.LoggingUtils;
 import utils.SessionUtils;
 import utils.UserUtils;

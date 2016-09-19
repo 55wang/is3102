@@ -11,7 +11,6 @@ import entity.dams.account.DepositAccount;
 import entity.dams.account.CurrentAccount;
 import entity.customer.Customer;
 import entity.customer.MainAccount;
-import entity.customer.MainAccount.StatusType;
 import entity.dams.account.SavingAccount;
 import java.io.Serializable;
 import java.security.SecureRandom;
@@ -21,6 +20,7 @@ import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import org.primefaces.event.FlowEvent;
+import utils.EnumUtils.StatusType;
 import utils.MessageUtils;
 import utils.RedirectUtils;
 

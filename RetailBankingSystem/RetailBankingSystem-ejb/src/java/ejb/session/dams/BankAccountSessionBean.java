@@ -13,6 +13,7 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import utils.EnumUtils;
 
 /**
  *
@@ -59,7 +60,7 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
             return "Account Not Found";
         } else {
             Transaction t = new Transaction();
-            t.setAction(Transaction.ActionType.DEPOSIT.toString());
+            t.setActionType(EnumUtils.TransactionType.DEPOSIT);
             t.setAmount(depositAmount);
             t.setCredit(Boolean.TRUE);
             t.setFromAccount(ba);
@@ -87,7 +88,7 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
                 return "Withdraw Failed! Balance not enough!";
             } else {
                 Transaction t = new Transaction();
-                t.setAction(Transaction.ActionType.DEPOSIT.toString());
+                t.setActionType(EnumUtils.TransactionType.DEPOSIT);
                 t.setAmount(withdrawAmount);
                 t.setCredit(Boolean.FALSE);
                 t.setFromAccount(ba);

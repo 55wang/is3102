@@ -20,6 +20,7 @@ import javax.ejb.EJB;
 import javax.faces.event.ActionEvent;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
+import utils.EnumUtils;
 import utils.MessageUtils;
 
 /**
@@ -42,9 +43,9 @@ public class OpenAccountManagedBean implements Serializable {
     private List<CurrentAccount> currentAccounts = new ArrayList<>();
     private List<FixedDepositAccount> fixedDepositAccounts = new ArrayList<>();
     private List<SavingAccount> savingAccounts = new ArrayList<>();
-    private String ACCOUNT_TYPE_CURRENT = DepositAccount.AccountType.CURRENT.toString();
-    private String ACCOUNT_TYPE_FIXED = DepositAccount.AccountType.FIXED.toString();
-    private String ACCOUNT_TYPE_SAVING = DepositAccount.AccountType.SAVING.toString();
+    private String ACCOUNT_TYPE_CURRENT = EnumUtils.DepositAccountType.CURRENT.toString();
+    private String ACCOUNT_TYPE_FIXED = EnumUtils.DepositAccountType.FIXED.toString();
+    private String ACCOUNT_TYPE_SAVING = EnumUtils.DepositAccountType.SAVING.toString();
  
     public OpenAccountManagedBean() {
         System.out.println("OpenAccountManagedBean() Created!!");
@@ -102,7 +103,7 @@ public class OpenAccountManagedBean implements Serializable {
         t.setAmount(getAccount().getBalance());
         t.setFromAccount(getAccount());
         t.setCredit(Boolean.TRUE);
-        t.setAction(Transaction.ActionType.DEPOSIT.toString());
+        t.setActionType(EnumUtils.TransactionType.DEPOSIT);
         if (accountType.equals(getACCOUNT_TYPE_CURRENT())) {
             getNewCurrentAccount().addTransaction(t);
         } else if (accountType.equals(getACCOUNT_TYPE_FIXED())) {

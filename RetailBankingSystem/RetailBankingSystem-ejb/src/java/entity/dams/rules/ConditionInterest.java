@@ -7,6 +7,7 @@ package entity.dams.rules;
 
 import java.math.BigDecimal;
 import javax.persistence.Entity;
+import utils.EnumUtils.InterestConditionType;
 
 /**
  *
@@ -28,40 +29,8 @@ public class ConditionInterest extends Interest {
     public void setStack(Boolean stack) {
         this.stack = stack;
     }
-
-    public enum ConditionType {
-        BILL {
-            @Override
-            public String toString() {
-                return "BILL";
-            }
-        },
-        CCSPENDING {
-            @Override
-            public String toString() {
-                return "CCSPENDING";
-            }
-        },
-        SALARY {
-            @Override
-            public String toString() {
-                return "SALARY";
-            }
-        },
-        INVEST {
-            @Override
-            public String toString() {
-                return "INVEST";
-            }
-        },
-        INCREASE {
-            @Override
-            public String toString() {
-                return "INCREASE";
-            }
-        }
-    }
-    private String conditionType = "";
+    
+    private InterestConditionType conditionType;
     private BigDecimal ceiling = new BigDecimal("60000");
     private BigDecimal amount;
     private Boolean stack;
@@ -93,18 +62,18 @@ public class ConditionInterest extends Interest {
     public void setAmount(BigDecimal amount) {
         this.amount = amount;
     }
-    
+
     /**
      * @return the conditionType
      */
-    public String getConditionType() {
+    public InterestConditionType getConditionType() {
         return conditionType;
     }
 
     /**
      * @param conditionType the conditionType to set
      */
-    public void setConditionType(String conditionType) {
+    public void setConditionType(InterestConditionType conditionType) {
         this.conditionType = conditionType;
     }
 }

@@ -16,6 +16,7 @@ import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import utils.AuditUtils;
+import utils.EnumUtils;
 import utils.HashPwdUtils;
 import utils.MessageUtils;
 import utils.RedirectUtils;
@@ -72,15 +73,15 @@ public class CustomerLoginManagedBean implements Serializable {
 
         try {
             MainAccount attemptLogin = loginSessionBean.getCustomerByUserID(loginAccount.getUserID()).getMainAccount();
-            if (attemptLogin.getStatus().equals(MainAccount.StatusType.PENDING)) {
+            if (attemptLogin.getStatus().equals(EnumUtils.StatusType.PENDING)) {
                 output = "FAIL";
                 String msg = "Check your email and activate the account";
                 MessageUtils.displayInfo(msg);
-            } else if (attemptLogin.getStatus().equals(MainAccount.StatusType.FREEZE)) {
+            } else if (attemptLogin.getStatus().equals(EnumUtils.StatusType.FREEZE)) {
                 output = "FAIL";
                 String msg = "Your account has been freezed.";
                 MessageUtils.displayInfo(msg);
-            } else if (attemptLogin.getStatus().equals(MainAccount.StatusType.ACTIVE)) {
+            } else if (attemptLogin.getStatus().equals(EnumUtils.StatusType.ACTIVE)) {
                 ma = loginSessionBean.loginAccount(loginAccount.getUserID(), HashPwdUtils.hashPwd(loginAccount.getPassword()));
                 Long userID = ma.getId();
                 String userName = ma.getUserID();

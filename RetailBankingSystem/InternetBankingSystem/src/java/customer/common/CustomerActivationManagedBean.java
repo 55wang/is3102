@@ -15,6 +15,7 @@ import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.context.FacesContext;
+import utils.EnumUtils;
 import utils.SessionUtils;
 
 /**
@@ -40,7 +41,7 @@ public class CustomerActivationManagedBean implements Serializable {
         email = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("email");
         String randomPwd = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("code");
         mainAccount = customerActivationSessionBean.getMainAccountByEmail(email);
-        if(mainAccount.getStatus().equals(MainAccount.StatusType.PENDING) && randomPwd.equals(mainAccount.getPassword())){
+        if(mainAccount.getStatus().equals(EnumUtils.StatusType.PENDING) && randomPwd.equals(mainAccount.getPassword())){
             valid = true; // And auto-login if valid?
             try{
                 customerActivationSessionBean.updateAccountStatus(mainAccount);

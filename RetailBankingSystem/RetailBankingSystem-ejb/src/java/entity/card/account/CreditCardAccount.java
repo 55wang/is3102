@@ -27,6 +27,8 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
+// LY: Can this be instanciated?? If cannot, use abstract class instead
+// LY: What if Bank needs to create a new credit card type with attractive offers?
 public class CreditCardAccount implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -36,31 +38,9 @@ public class CreditCardAccount implements Serializable {
     @ManyToOne(cascade = CascadeType.PERSIST)
     private MainAccount mainAccount = new MainAccount();
 
-    public enum AccountType {
-
-        MILE {
-                    @Override
-                    public String toString() {
-                        return "MILE";
-                    }
-                },
-        REWARD {
-                    @Override
-                    public String toString() {
-                        return "SAVING";
-                    }
-                },
-        FIXED {
-                    @Override
-                    public String toString() {
-                        return "FIXED";
-                    }
-                }
-    }
-
-    @Column(precision = 12)
+    @Column(precision = 12)// LY:credit card number in decimal??
     private BigDecimal creditCardNum;
-    private int cvv;
+    private int cvv; // LY: Use Integer instead of int
     private String nameOnCard;
     @Temporal(value = TemporalType.DATE)
     private Date validDate;
@@ -79,34 +59,6 @@ public class CreditCardAccount implements Serializable {
 
     @Temporal(value = TemporalType.DATE)
     private Date overDueDuration;
-
-    public enum cardAccountStatus {
-
-        PENDING {
-                    @Override
-                    public String toString() {
-                        return "PENDING";
-                    }
-                },
-        ACTIVE {
-                    @Override
-                    public String toString() {
-                        return "ACTIVE";
-                    }
-                },
-        FREEZE {
-                    @Override
-                    public String toString() {
-                        return "FREEZE";
-                    }
-                },
-        CLOSED {
-                    @Override
-                    public String toString() {
-                        return "CLOSED";
-                    }
-                }
-    }
 
     public Long getId() {
         return id;

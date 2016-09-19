@@ -28,6 +28,7 @@ import javax.ejb.EJB;
 import javax.ejb.Singleton;
 import javax.ejb.LocalBean;
 import javax.ejb.Startup;
+import utils.EnumUtils;
 import utils.HashPwdUtils;
 
 /**
@@ -126,7 +127,7 @@ public class EntityBuilderBean {
         ma = new MainAccount();
         ma.setUserID(u);
         ma.setPassword(p);
-        ma.setStatus(MainAccount.StatusType.ACTIVE);
+        ma.setStatus(EnumUtils.StatusType.ACTIVE);
         ma.setCustomer(c);
         
         newCustomerSessionBean.createCustomer(c, ma);

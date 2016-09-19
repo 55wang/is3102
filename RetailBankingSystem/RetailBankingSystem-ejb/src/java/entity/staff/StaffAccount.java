@@ -17,6 +17,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import utils.EnumUtils.StatusType;
 
 /**
  *
@@ -24,29 +25,6 @@ import javax.persistence.OneToMany;
  */
 @Entity
 public class StaffAccount implements Serializable {
-    
-    public enum StatusType {
-        ACTIVE{
-            public String toString() {
-                return "ACTIVE";
-            }
-        }, 
-        PENDING{
-            public String toString() {
-                return "PENDING";
-            }
-        }, 
-        FREEZE{
-            public String toString() {
-                return "FREEZE";
-            }
-        }, 
-        CLOSED{
-            public String toString() {
-                return "CLOSED";
-            }
-        }
-    }
 
     @Id
     private String username;
@@ -55,7 +33,7 @@ public class StaffAccount implements Serializable {
     private String password;
     // TODO: Need to make this a unique attributes
     private String email;
-    private String status = StatusType.PENDING.toString();
+    private StatusType status = StatusType.PENDING;
     @Embedded
     private StaffInfo staffInfo;
     // TODO: Do we need more information? like email and handphone
@@ -226,25 +204,25 @@ public class StaffAccount implements Serializable {
         this.staffInfo = staffInfo;
     }
 
-    /**
-     * @return the status
-     */
-    public String getStatus() {
-        return status;
-    }
-
-    /**
-     * @param status the status to set
-     */
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
     public List<CustomerCase> getCases() {
         return cases;
     }
 
     public void setCases(List<CustomerCase> cases) {
         this.cases = cases;
+    }
+
+    /**
+     * @return the status
+     */
+    public StatusType getStatus() {
+        return status;
+    }
+
+    /**
+     * @param status the status to set
+     */
+    public void setStatus(StatusType status) {
+        this.status = status;
     }
 }

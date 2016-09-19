@@ -35,38 +35,6 @@ import javax.persistence.TemporalType;
 @Inheritance(strategy=InheritanceType.JOINED)
 public abstract class DepositAccount implements Serializable {
     
-    public enum AccountType {
-        CURRENT {
-            @Override
-            public String toString() {
-                return "CURRENT";
-            }
-        },
-        SAVING {
-            @Override
-            public String toString() {
-                return "SAVING";
-            }
-        },
-        FIXED {
-            @Override
-            public String toString() {
-                return "FIXED";
-            }
-        },
-        MOBILE {
-            @Override
-            public String toString() {
-                return "MOBILE";
-            }
-        },
-        LOAN {// maybe need to seperate this from deposit account
-            @Override
-            public String toString() {
-                return "LOAN";
-            }
-        }
-    }
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
