@@ -29,6 +29,7 @@
                         <li id="header-overview" class="#{cc.attrs.context == 'others' ? 'active' : ''}" value="others"><a href="../others/create-interest.xhtml">Others</a></li>
                     </c:if>
                     <li id="header-overview" class="#{cc.attrs.context == 'message' ? 'active' : ''}" value="message"><a href="../message/chat.xhtml">Message</a></li>
+                    <li id="header-overview" class="#{cc.attrs.context == 'customer' ? 'active' : ''}" value="customer"><a href="../cms/staff-view-customer.xhtml">Customer</a></li>
                 </ul>
                 <emcomp:headerMenu context="staff_home" userName="#{staffUserManagedBean.getUserName()}"></emcomp:headerMenu>
             </div>
