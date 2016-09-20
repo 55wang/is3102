@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package interceptor.audit;
+package interceptor.audit.staff;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -15,7 +15,7 @@ import java.lang.annotation.Target;
  * @author leiyang
  */
 @Retention(RUNTIME)
-@Target(ElementType.PARAMETER)
-public @interface HalfHidden {
+@Target({ElementType.PARAMETER})
+public @interface FullHidden {
     
 }

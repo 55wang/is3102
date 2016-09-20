@@ -1,0 +1,44 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:em="http://xmlns.jcp.org/jsf/composite/emcomp">
+    <!--shift + ctrl + F, format-->
+    <f:view>
+        <h:head>
+            <title>Merlion Internal</title>
+            <em:cssImport></em:cssImport>
+        </h:head>
+        <h:body>
+            <em:staffNavBar context="admin"></em:staffNavBar>
+            <em:staffSideBar top="admin" side="createRole"></em:staffSideBar>
+            <div class="container">
+                <h:form id="mainForm">
+                    <p:panel header="Create Role">
+                        <p:messages id="messagesStatus" redisplay="false" >
+                            <h:panelGrid columns="2" cellpadding="5">
+
+                                <p:outputLabel for="roleName" value="Role Name: " />
+                                <p:inputText id="roleName" value="#{createRoleManagedBean.newRole.roleName}" required="true"/>
+                                
+                                <p:commandButton value="Create" icon="ui-icon-plus" update="@form" actionListener="#{createRoleManagedBean.addRole}" />
+                            </h:panelGrid>
+                        </p:messages>
+                    </p:panel>
+                    <p:panel header="Added Roles">
+                        <p:dataTable id="addedRoles" value="#{createRoleManagedBean.roles}" var="role">
+                            <p:column headerText="Name" sortBy="#{role.roleName}">
+                                <h:outputText value="#{role.roleName}"></h:outputText>
+                            </p:column>
+                        </p:dataTable>
+                    </p:panel>
+                </h:form>
+            </div>
+        </h:body>
+    </f:view>
+
+
+</html>
+

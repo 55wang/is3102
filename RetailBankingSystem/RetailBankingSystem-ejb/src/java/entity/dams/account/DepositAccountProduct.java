@@ -3,17 +3,27 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package entity.dams.rules;
+package entity.dams.account;
 
+import entity.dams.rules.Interest;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+import utils.EnumUtils.DepositAccountType;
+
 /**
- *
+ *  http://www.moneysense.gov.sg/Understanding-Financial-Products/Banking-and-Cash/Banking.aspx
  * @author leiyang
  */
 @Entity
-public class DepositRule extends Rule {
+//@Inheritance(strategy=InheritanceType.JOINED)
+public class DepositAccountProduct extends DepositProduct {
     
     @Column(precision=12, scale=2)
     private BigDecimal initialDeposit;
@@ -23,10 +33,16 @@ public class DepositRule extends Rule {
     private BigDecimal charges;
     @Column(precision=12, scale=2)
     private BigDecimal annualFees;
-    // Counter to decrease
-    private Integer waivedFeesCounter = 0;
-    private Integer waivedChargesCounter = 0;
+    private Integer waivedMonths;
+    
+    @OneToMany(cascade = {CascadeType.MERGE})
+    private List<Interest> interestRules = new ArrayList<>();
 
+    @Override
+    public String toString() {
+        return "DepositAccountProduct{" + "initialDeposit=" + initialDeposit + ", minBalance=" + minBalance + ", charges=" + charges + ", annualFees=" + annualFees + '}';
+    }
+    
     /**
      * @return the initialDeposit
      */
@@ -84,30 +100,30 @@ public class DepositRule extends Rule {
     }
 
     /**
-     * @return the waivedFeesCounter
+     * @return the interestRules
      */
-    public Integer getWaivedFeesCounter() {
-        return waivedFeesCounter;
+    public List<Interest> getInterestRules() {
+        return interestRules;
     }
 
     /**
-     * @param waivedFeesCounter the waivedFeesCounter to set
+     * @param interestRules the interestRules to set
      */
-    public void setWaivedFeesCounter(Integer waivedFeesCounter) {
-        this.waivedFeesCounter = waivedFeesCounter;
+    public void setInterestRules(List<Interest> interestRules) {
+        this.interestRules = interestRules;
     }
 
     /**
-     * @return the waivedChargesCounter
+     * @return the waivedMonths
      */
-    public Integer getWaivedChargesCounter() {
-        return waivedChargesCounter;
+    public Integer getWaivedMonths() {
+        return waivedMonths;
     }
 
     /**
-     * @param waivedChargesCounter the waivedChargesCounter to set
+     * @param waivedMonths the waivedMonths to set
      */
-    public void setWaivedChargesCounter(Integer waivedChargesCounter) {
-        this.waivedChargesCounter = waivedChargesCounter;
+    public void setWaivedMonths(Integer waivedMonths) {
+        this.waivedMonths = waivedMonths;
     }
 }

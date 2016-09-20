@@ -5,13 +5,11 @@
  */
 package ejb.session.dams;
 
-import entity.dams.rules.DepositRule;
 import entity.dams.rules.Interest;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -20,53 +18,39 @@ import javax.persistence.Query;
  * @author leiyang
  */
 @Stateless
-public class AccountRuleSessionBean implements AccountRuleSessionBeanLocal {
+public class InterestSessionBean implements InterestSessionBeanLocal {
     @PersistenceContext(unitName = "RetailBankingSystem-ejbPU")
     private EntityManager em;
     
     @Override
-    public Boolean addInterest(Interest interest) {
+    public Interest addInterest(Interest interest) {
         try {
             em.persist(interest);
-            return true;
+            return interest;
         } catch (EntityExistsException e) {
-            return false;
+            return null;
         }
     }
     
     @Override
-    public Boolean updateInterest(Interest interest) {
+    public Interest updateInterest(Interest interest) {
         try {
             em.merge(interest);
-            return true;
+            return interest;
         } catch (EntityExistsException e) {
-            return false;
-        }
-    }
-    
-    @Override
-    public Boolean addDepositRule(DepositRule depositRule) {
-        try {
-            em.persist(depositRule);
-            return true;
-        } catch (EntityExistsException e) {
-            return false;
-        }
-    }
-    
-    @Override
-    public Boolean updateDepositRule(DepositRule depositRule) {
-        try {
-            em.merge(depositRule);
-            return true;
-        } catch (EntityExistsException e) {
-            return false;
+            return null;
         }
     }
     
     @Override
     public List<Interest> showAllInterests() {
         Query q = em.createQuery("SELECT i FROM Interest i");
+        return q.getResultList();
+    }
+    
+    @Override
+    public List<Interest> showAllPresentInterests() {
+        Query q = em.createQuery("SELECT i FROM Interest i WHERE i.isHistory = false");
         return q.getResultList();
     }
     
@@ -128,29 +112,5 @@ public class AccountRuleSessionBean implements AccountRuleSessionBeanLocal {
         );
         q.setParameter("accountName", accountName);
         return q.getResultList();
-    }
-    
-    @Override
-    public DepositRule getDepositRuleByAccountName(String accountName) {
-        
-        Query q = em.createQuery("SELECT dr FROM DepositRule dr WHERE "
-                + "dr.defaultCustomizedAccountName = :accountName AND "
-                + "dr.isHistory = false "
-                + "ORDER BY dr.createDate"
-        );
-        q.setParameter("accountName", accountName);
-        
-        DepositRule dr = null;
-          
-        try {
-            List<DepositRule> rules = q.getResultList();
-            if (rules != null && !rules.isEmpty() && rules.size() == 1) {
-                return rules.get(0);
-            } else {
-                return null;
-            }
-        } catch (NoResultException ex) {
-            return null;
-        }
     }
 }

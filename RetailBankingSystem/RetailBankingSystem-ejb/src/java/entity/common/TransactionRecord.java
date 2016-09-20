@@ -24,7 +24,7 @@ import utils.EnumUtils.TransactionType;
  * @author leiyang
  */
 @Entity
-public class Transaction implements Serializable {
+public class TransactionRecord implements Serializable {
     
     private static final long serialVersionUID = 1L;
     @Id

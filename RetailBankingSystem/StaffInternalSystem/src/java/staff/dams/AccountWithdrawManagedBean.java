@@ -5,8 +5,7 @@
  */
 package staff.dams;
 
-import ejb.session.dams.DepositAccountSessionBeanLocal;
-import entity.dams.account.CurrentAccount;
+import ejb.session.dams.CustomerDepositSessionBeanLocal;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
@@ -24,9 +23,8 @@ import utils.MessageUtils;
 public class AccountWithdrawManagedBean implements Serializable {
 
     @EJB
-    private DepositAccountSessionBeanLocal bankAccountSessionBean;
+    private CustomerDepositSessionBeanLocal bankAccountSessionBean;
     
-    private List<CurrentAccount> accounts;
     private Long accountNumber;
     private BigDecimal withdrawAmount;
     
@@ -39,20 +37,6 @@ public class AccountWithdrawManagedBean implements Serializable {
     public void withdrawFromAccount() {
         String message = bankAccountSessionBean.withdrawFromAccount(getAccountNumber(), getWithdrawAmount());
         MessageUtils.displayInfo(message);
-    }
-
-    /**
-     * @return the accounts
-     */
-    public List<CurrentAccount> getAccounts() {
-        return accounts;
-    }
-
-    /**
-     * @param accounts the accounts to set
-     */
-    public void setAccounts(List<CurrentAccount> accounts) {
-        this.accounts = accounts;
     }
 
     /**

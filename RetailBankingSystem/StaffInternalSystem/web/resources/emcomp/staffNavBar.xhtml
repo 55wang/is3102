@@ -23,10 +23,8 @@
                     <!--http://stackoverflow.com/questions/7915134/how-to-use-the-spring-security-facelets-tag-library-in-jsf-->
                     <!--sec:authorize access="hasAnyRole('counterStaff')"></sec:authorize-->
                     <!--TODO: wrap menu option with sec tag -->
-                    <li id="header-overview" class="#{cc.attrs.context == 'overview' ? 'active' : ''}" value="overview"><a href="#">Overview</a></li>
-                    <li id="header-overview" class="#{cc.attrs.context == 'account' ? 'active' : ''}" value="account"><a href="../dams/open-account.xhtml">Accounts</a></li>
-                    <c:if test="#{staffUserManagedBean.isUserInRole(staffUserManagedBean.PERMISSION_SUPERUSER)}">
-                        <li id="header-overview" class="#{cc.attrs.context == 'others' ? 'active' : ''}" value="others"><a href="../others/create-interest.xhtml">Others</a></li>
+                    <c:if test="#{staffUserManagedBean.isUserInRole(staffUserManagedBean.SUPER_ADMIN)}">
+                        <li id="header-overview" class="#{cc.attrs.context == 'admin' ? 'active' : ''}" value="admin"><a href="../admin/create_interest.xhtml">Admin</a></li>
                     </c:if>
                     <li id="header-overview" class="#{cc.attrs.context == 'message' ? 'active' : ''}" value="message"><a href="../message/chat.xhtml">Message</a></li>
                     <li id="header-overview" class="#{cc.attrs.context == 'customer' ? 'active' : ''}" value="customer"><a href="../cms/staff-view-customer.xhtml">Customer</a></li>

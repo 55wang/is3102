@@ -27,7 +27,7 @@
                             </h:panelGrid>
                             
                             <!--talks to managed beans and getter and setter methods-->
-                            <p:dataTable id="dataTableBooks" value="#{checkAccountBalanceManagedBean.accounts}" var="account">
+                            <p:dataTable id="dataTableBooks" value="#{checkAccountBalanceManagedBean.depositAccounts}" var="account">
                                 <p:column headerText="ID" sortBy="#{account.id}">
                                     <h:outputText value="#{account.id}"></h:outputText>
                                 </p:column>
