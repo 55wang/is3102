@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Interceptor;
+package Interceptor.audit;
 
 import java.lang.annotation.ElementType;
 import static java.lang.annotation.ElementType.TYPE;
