@@ -10,6 +10,7 @@ import entity.customer.MainAccount;
 import entity.staff.StaffAccount;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  *
@@ -18,7 +19,7 @@ import java.util.Date;
 public class AuditUtils implements Serializable {
 
     public static AuditLog createAuditLog(String activityLog, String functionName,
-            String input, String output, MainAccount ma, StaffAccount sa) {
+            List<String> input, String output, MainAccount ma, StaffAccount sa) {
 
         Date date = new Date();
 
@@ -26,7 +27,7 @@ public class AuditUtils implements Serializable {
         al.setCreationDate(date);
         al.setActivityLog(activityLog);
         al.setFunctionName(functionName);
-        al.setInput(input);
+        al.setInput(input.toString());
         al.setOutput(output);
         String ip = SessionUtils.getIpAddress();
         al.setIpAddress(ip);

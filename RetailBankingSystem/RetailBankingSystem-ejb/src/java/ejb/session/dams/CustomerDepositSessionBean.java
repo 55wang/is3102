@@ -5,8 +5,9 @@
  */
 package ejb.session.dams;
 
+import entity.dams.account.CustomerDepositAccount;
+import entity.common.TransactionRecord;
 import entity.dams.account.DepositAccount;
-import entity.common.Transaction;
 import java.math.BigDecimal;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -21,31 +22,33 @@ import utils.EnumUtils;
  * @author leiyang
  */
 @Stateless
-public class DepositAccountSessionBean implements DepositAccountSessionBeanLocal {
+public class CustomerDepositSessionBean implements CustomerDepositSessionBeanLocal {
 
     @PersistenceContext(unitName = "RetailBankingSystem-ejbPU")
     private EntityManager em;
 
     @Override 
     public long showNumberOfAccounts() {
-        Query q = em.createQuery("SELECT COUNT(*) FROM BankAccount");
+        Query q = em.createQuery("SELECT COUNT(*) FROM DepositAccount");
         return ((Long)q.getSingleResult()).longValue();
     }
     
     @Override 
-    public DepositAccount getAccountFromId(Long accountNumber) {
-        return em.find(DepositAccount.class, accountNumber);
+    public CustomerDepositAccount getAccountFromId(Long accountNumber) {
+        return em.find(CustomerDepositAccount.class, accountNumber);
     }
 
     @Override
     public DepositAccount createAccount(DepositAccount account) {
          try {
-            Transaction t = new Transaction();
+            TransactionRecord t = new TransactionRecord();
             t.setAmount(account.getBalance());
             t.setCredit(Boolean.TRUE);
             t.setActionType(EnumUtils.TransactionType.INITIAL);
             account.addTransaction(t);
-            account.setPreviousBalance(account.getBalance());
+            if (account instanceof CustomerDepositAccount) {
+                ((CustomerDepositAccount)account).setPreviousBalance(account.getBalance());
+            }
             em.persist(account);
             t.setFromAccount(account);
             em.merge(t);
@@ -67,7 +70,7 @@ public class DepositAccountSessionBean implements DepositAccountSessionBeanLocal
 
     @Override
     public List<DepositAccount> showAllAccounts() {
-        Query q = em.createQuery("SELECT ba FROM BankAccount ba");
+        Query q = em.createQuery("SELECT ba FROM DepositAccount ba");
         return q.getResultList();
     }
 
@@ -83,7 +86,7 @@ public class DepositAccountSessionBean implements DepositAccountSessionBeanLocal
         if (ba == null) {
             return "Account Not Found";
         } else {
-            Transaction t = new Transaction();
+            TransactionRecord t = new TransactionRecord();
             t.setActionType(EnumUtils.TransactionType.DEPOSIT);
             t.setAmount(depositAmount);
             t.setCredit(Boolean.TRUE);
@@ -111,7 +114,7 @@ public class DepositAccountSessionBean implements DepositAccountSessionBeanLocal
             if (res == -1) {
                 return "Withdraw Failed! Balance not enough!";
             } else {
-                Transaction t = new Transaction();
+                TransactionRecord t = new TransactionRecord();
                 t.setActionType(EnumUtils.TransactionType.WITHDRAW);
                 t.setAmount(withdrawAmount);
                 t.setCredit(Boolean.FALSE);
@@ -129,7 +132,7 @@ public class DepositAccountSessionBean implements DepositAccountSessionBeanLocal
         if (account == null || depositAmount == null) {
             return null;
         } else {
-            Transaction t = new Transaction();
+            TransactionRecord t = new TransactionRecord();
             t.setActionType(EnumUtils.TransactionType.DEPOSIT);
             t.setAmount(depositAmount);
             t.setCredit(Boolean.TRUE);
@@ -150,7 +153,7 @@ public class DepositAccountSessionBean implements DepositAccountSessionBeanLocal
             if (res == -1) {
                 return null;
             } else {
-                Transaction t = new Transaction();
+                TransactionRecord t = new TransactionRecord();
                 t.setActionType(EnumUtils.TransactionType.WITHDRAW);
                 t.setAmount(withdrawAmount);
                 t.setCredit(Boolean.FALSE);
@@ -168,7 +171,7 @@ public class DepositAccountSessionBean implements DepositAccountSessionBeanLocal
         if (account == null || depositAmount == null) {
             return null;
         } else {
-            Transaction t = new Transaction();
+            TransactionRecord t = new TransactionRecord();
             t.setActionType(EnumUtils.TransactionType.SALARY);
             t.setAmount(depositAmount);
             t.setCredit(Boolean.TRUE);
@@ -189,7 +192,7 @@ public class DepositAccountSessionBean implements DepositAccountSessionBeanLocal
             if (res == -1) {
                 return null;
             } else {
-                Transaction t = new Transaction();
+                TransactionRecord t = new TransactionRecord();
                 t.setActionType(EnumUtils.TransactionType.BILL);
                 t.setAmount(payAmount);
                 t.setCredit(Boolean.FALSE);
@@ -211,7 +214,7 @@ public class DepositAccountSessionBean implements DepositAccountSessionBeanLocal
             if (res == -1) {
                 return null;
             } else {
-                Transaction t = new Transaction();
+                TransactionRecord t = new TransactionRecord();
                 t.setActionType(EnumUtils.TransactionType.CCSPENDING);
                 t.setAmount(spendAmount);
                 t.setCredit(Boolean.FALSE);
@@ -233,7 +236,7 @@ public class DepositAccountSessionBean implements DepositAccountSessionBeanLocal
             if (res == -1) {
                 return null;
             } else {
-                Transaction t = new Transaction();
+                TransactionRecord t = new TransactionRecord();
                 t.setActionType(EnumUtils.TransactionType.INVEST);
                 t.setAmount(investAmount);
                 t.setCredit(Boolean.FALSE);

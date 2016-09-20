@@ -644,6 +644,15 @@ public class EnumUtils {
                     }
                 }
     }
+    
+    public enum UserRole {
+        SUPER_ADMIN {
+            @Override
+            public String toString() {
+                return "SUPER_ADMIN";
+            }
+        }
+    }
 
     // Interests
     public enum InterestType {
@@ -704,6 +713,12 @@ public class EnumUtils {
                     @Override
                     public String toString() {
                         return "INCREASE";
+                    }
+                },
+        NOWITHDRAW {
+                    @Override
+                    public String toString() {
+                        return "NOWITHDRAW";
                     }
                 }
     }

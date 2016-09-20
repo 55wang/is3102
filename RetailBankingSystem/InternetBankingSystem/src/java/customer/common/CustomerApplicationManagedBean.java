@@ -7,11 +7,10 @@ package customer.common;
 
 import ejb.session.common.EmailServiceSessionBeanLocal;
 import ejb.session.common.NewCustomerSessionBeanLocal;
-import entity.dams.account.DepositAccount;
-import entity.dams.account.CurrentAccount;
 import entity.customer.Customer;
 import entity.customer.MainAccount;
-import entity.dams.account.SavingAccount;
+import entity.dams.account.CustomerDepositAccount;
+import entity.dams.account.DepositAccount;
 import java.io.Serializable;
 import java.security.SecureRandom;
 import java.util.ArrayList;
@@ -20,6 +19,7 @@ import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import org.primefaces.event.FlowEvent;
+import utils.EnumUtils.DepositAccountType;
 import utils.EnumUtils.StatusType;
 import utils.MessageUtils;
 import utils.RedirectUtils;
@@ -80,16 +80,18 @@ public class CustomerApplicationManagedBean implements Serializable {
         String randomPwd = generatePwd();
         mainAccount.setPassword(randomPwd);
 
-        List<DepositAccount> bankAccounts = new ArrayList<DepositAccount>();
+        List<DepositAccount> bankAccounts = new ArrayList<>();
         switch (initialDepositAccount) {
             case "MBS Current Account":
-                CurrentAccount currentAccount = new CurrentAccount();
+                CustomerDepositAccount currentAccount = new CustomerDepositAccount();
+                currentAccount.setType(DepositAccountType.CURRENT);
                 bankAccounts.add(currentAccount);
                 mainAccount.setBankAcounts(bankAccounts);
                 currentAccount.setMainAccount(mainAccount);
                 break;
             case "MBS Savings":
-                SavingAccount savingAccount = new SavingAccount();
+                CustomerDepositAccount savingAccount = new CustomerDepositAccount();
+                savingAccount.setType(DepositAccountType.SAVING);
                 bankAccounts.add(savingAccount);
                 mainAccount.setBankAcounts(bankAccounts);
                 savingAccount.setMainAccount(mainAccount);

@@ -5,7 +5,8 @@
  */
 package BatchProcess;
 
-import entity.common.Transaction;
+import entity.common.TransactionRecord;
+import entity.dams.account.CustomerDepositAccount;
 import entity.dams.account.DepositAccount;
 import entity.dams.rules.ConditionInterest;
 import java.math.BigDecimal;
@@ -15,6 +16,7 @@ import javax.persistence.Query;
 import java.util.List;
 import java.util.Date;
 import javax.persistence.PersistenceContext;
+import utils.ConstantUtils;
 import utils.DateUtils;
 import utils.EnumUtils.InterestConditionType;
 import utils.EnumUtils.TransactionType;
@@ -48,18 +50,18 @@ public class InterestAccrualSessionBean implements InterestAccrualSessionBeanLoc
         System.out.println(toDate);
         System.out.println(i.getConditionType());
         if (i.getConditionType() == InterestConditionType.BILL) {
-            List<Transaction> ts = retrieveTransactions(a, sinceDate, toDate, TransactionType.BILL);
+            List<TransactionRecord> ts = retrieveTransactions(a, sinceDate, toDate, TransactionType.BILL);
             System.out.println(ts);
             BigDecimal minimumNumberOfBills = i.getAmount();
             BigDecimal currentNumberOfBills = new BigDecimal(ts.size());
             System.out.println(minimumNumberOfBills.compareTo(currentNumberOfBills) <= 0);
             return minimumNumberOfBills.compareTo(currentNumberOfBills) <= 0;
         } else if (i.getConditionType() == InterestConditionType.CCSPENDING) {
-            List<Transaction> ts = retrieveTransactions(a, sinceDate, toDate, TransactionType.CCSPENDING);
+            List<TransactionRecord> ts = retrieveTransactions(a, sinceDate, toDate, TransactionType.CCSPENDING);
             System.out.println(ts);
             BigDecimal minimumAmountSpending = i.getAmount();
             BigDecimal currentAmountSpending = BigDecimal.ZERO;
-            for (Transaction t : ts) {
+            for (TransactionRecord t : ts) {
                 // payment
                 if (!t.getCredit()) {
                     currentAmountSpending = currentAmountSpending.add(t.getAmount());
@@ -70,14 +72,20 @@ public class InterestAccrualSessionBean implements InterestAccrualSessionBeanLoc
             System.out.println(minimumAmountSpending.compareTo(currentAmountSpending) <= 0);
             return minimumAmountSpending.compareTo(currentAmountSpending) <= 0;
         } else if (i.getConditionType() == InterestConditionType.INCREASE) {
-            System.out.println(a.getPreviousBalance().compareTo(a.getBalance()) <= 0);
-            return a.getPreviousBalance().compareTo(a.getBalance()) <= 0;
+            if (a instanceof CustomerDepositAccount) {
+                CustomerDepositAccount cda = (CustomerDepositAccount) a;
+                System.out.println(cda.getPreviousBalance().compareTo(a.getBalance()) <= 0);
+                return cda.getPreviousBalance().compareTo(a.getBalance()) <= 0;
+            } else {
+                return false;
+            }
+            
         } else if (i.getConditionType() == InterestConditionType.SALARY) {
-            List<Transaction> ts = retrieveTransactions(a, sinceDate, toDate, TransactionType.SALARY);
+            List<TransactionRecord> ts = retrieveTransactions(a, sinceDate, toDate, TransactionType.SALARY);
             System.out.println(ts);
             BigDecimal minimumSalaryCrediting = i.getAmount();
             BigDecimal currentSalaryCrediting = BigDecimal.ZERO;
-            for (Transaction t : ts) {
+            for (TransactionRecord t : ts) {
                 // payment
                 if (t.getCredit()) {
                     currentSalaryCrediting = currentSalaryCrediting.add(t.getAmount());
@@ -88,7 +96,7 @@ public class InterestAccrualSessionBean implements InterestAccrualSessionBeanLoc
         } else if (i.getConditionType() == InterestConditionType.INVEST) {
             sinceDate = DateUtils.getLastNthBeginOfMonth(i.getBenefitMonths());
             System.out.println(sinceDate);
-            List<Transaction> ts = retrieveTransactions(a, sinceDate, toDate, TransactionType.SALARY);
+            List<TransactionRecord> ts = retrieveTransactions(a, sinceDate, toDate, TransactionType.SALARY);
             System.out.println(ts);
             return !ts.isEmpty();
         } else {
@@ -96,9 +104,9 @@ public class InterestAccrualSessionBean implements InterestAccrualSessionBeanLoc
         }
     }
     
-    private List<Transaction> retrieveTransactions(DepositAccount a, Date sinceDate, Date toDate, TransactionType type) {
+    private List<TransactionRecord> retrieveTransactions(DepositAccount a, Date sinceDate, Date toDate, TransactionType type) {
         Query q = em.createQuery(
-                "SELECT t FROM Transaction t WHERE "
+                "SELECT t FROM " + ConstantUtils.TRANSACTION_ENTITY + " t WHERE "
                         + "t.fromAccount.id = :accountId AND "
                         + "t.actionType = :type AND "
                         + "t.creationDate BETWEEN :sinceDate AND :toDate"

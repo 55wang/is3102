@@ -52,7 +52,7 @@ public class SessionUtils {
         }
     }
 
-    public static void setUserId(Long userID) {
+    public static void setUserId(String userID) {
         HttpSession session = getSession();
         session.setAttribute("userid", userID);
     }
@@ -66,6 +66,11 @@ public class SessionUtils {
         HttpSession session = getSession();
         StaffAccount sa = (StaffAccount) session.getAttribute("StaffAccount");
         return sa.getUsername();
+    }
+    
+    public static StaffAccount getStaff() {
+        HttpSession session = getSession();
+        return (StaffAccount)session.getAttribute("StaffAccount");
     }
 
     public static String getContextPath() {

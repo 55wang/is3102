@@ -5,6 +5,7 @@
  */
 package customer.common;
 
+import interceptor.audit.Audit;
 import ejb.session.common.ChangePasswordSessionBeanLocal;
 import ejb.session.common.LoginSessionBeanLocal;
 import entity.customer.Customer;
@@ -38,6 +39,7 @@ public class CustomerHomeManagedBean implements Serializable{
     public CustomerHomeManagedBean() {
     }
     
+    @Audit(activtyLog = "home manged")
     public Boolean changePwd(){
         try{
             changePasswordSessionBean.changePwd(HashPwdUtils.hashPwd(newPwd), customer.getMainAccount());

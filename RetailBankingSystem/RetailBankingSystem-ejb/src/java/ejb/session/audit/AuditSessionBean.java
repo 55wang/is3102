@@ -25,6 +25,7 @@ public class AuditSessionBean implements AuditSessionBeanLocal {
     @PersistenceContext(unitName = "RetailBankingSystem-ejbPU")
     private EntityManager em;
 
+    @Override
     public List<AuditLog> getAuditLogByCustomerID(String userID) {
         Query q = em.createQuery("SELECT a FROM MainAccount a WHERE a.userID = :inUserID");
 
@@ -34,12 +35,14 @@ public class AuditSessionBean implements AuditSessionBeanLocal {
 
         try {
             mainAccount = (MainAccount) q.getSingleResult();
+            em.refresh(mainAccount);
             return mainAccount.getAuditLog();
         } catch (NoResultException ex) {
             return null;
         }
     }
 
+    @Override
     public List<AuditLog> getAuditLogByStaffID(String staffID) {
         Query q = em.createQuery("SELECT a FROM StaffAccount a WHERE a.username = :inUserID");
 
@@ -55,6 +58,7 @@ public class AuditSessionBean implements AuditSessionBeanLocal {
         }
     }
 
+    @Override
     public Boolean insertAuditLog(AuditLog auditLog) {
         try {
             em.merge(auditLog);

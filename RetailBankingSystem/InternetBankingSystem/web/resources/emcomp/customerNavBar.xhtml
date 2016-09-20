@@ -28,8 +28,8 @@
                         <c:if test="#{cc.attrs.context.contains('index_')}">
                             <li id="header-overview" class="#{cc.attrs.pageName == 'index' ? 'active' : ''}" value="Home"><a href="../index.xhtml">Home</a></li>
                         </c:if>
-                        <li id="header-overview" class="#{cc.attrs.pageName == 'index_deposit' ? 'active' : ''}" value="Deposit"><a href="https://localhost:8181/MerlionBank/index_subpages/index_deposit.xhtml">Deposit</a></li>
-                        <li id="header-overview" class="#{cc.attrs.context == 'index_card' ? 'active' : ''}" value="Card"><a href="https://localhost:8181/MerlionBank/index_subpages/index_card.xhtml">Cards</a></li>
+                        <li id="header-overview" class="#{cc.attrs.pageName == 'index_deposit' ? 'active' : ''}" value="Deposit"><a href="https://localhost:8181/InternetBankingSystem/index_subpages/index_deposit.xhtml">Deposit</a></li>
+                        <li id="header-overview" class="#{cc.attrs.context == 'index_card' ? 'active' : ''}" value="Card"><a href="https://localhost:8181/InternetBankingSystem/index_subpages/index_card.xhtml">Cards</a></li>
                         <li id="header-overview" class="#{cc.attrs.context == 'button' ? 'active' : ''}" value="button"><a href="#">Loan</a></li>
                         <li id="header-overview" class="#{cc.attrs.context == 'button' ? 'active' : ''}" value="button"><a href="#">Invest</a></li>
                         <li id="header-overview" class="#{cc.attrs.context == 'button' ? 'active' : ''}" value="button"><a href="#">Promotions</a></li>
@@ -37,7 +37,7 @@
                     </c:if>
                     <c:if test="#{cc.attrs.context == 'customer_home'}">
                         <h:form>
-                        <em:sessionTimeoutNotification></em:sessionTimeoutNotification>
+                        <!--<em:sessionTimeoutNotification></em:sessionTimeoutNotification>-->
                         <!--http://stackoverflow.com/questions/7915134/how-to-use-the-spring-security-facelets-tag-library-in-jsf-->
                         <!--sec:authorize access="hasAnyRole('counterStaff')"></sec:authorize-->
                         <!--TODO: wrap menu option with sec tag -->

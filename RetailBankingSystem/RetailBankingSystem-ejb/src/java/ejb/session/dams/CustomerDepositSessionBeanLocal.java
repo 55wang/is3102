@@ -15,7 +15,7 @@ import javax.ejb.Local;
  * @author leiyang
  */
 @Local
-public interface DepositAccountSessionBeanLocal {
+public interface CustomerDepositSessionBeanLocal {
     public long showNumberOfAccounts();
     public DepositAccount getAccountFromId(Long accountNumber);
     public DepositAccount createAccount(DepositAccount account);

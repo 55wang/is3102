@@ -3,15 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package entity.dams.account;
-
-import javax.persistence.Entity;
+package exception;
 
 /**
  *
  * @author leiyang
  */
-@Entity
-public class CurrentAccount extends DepositAccount {
-    // TODO: Add checkque
+public class UserNotInRoleException extends Exception {
+    public UserNotInRoleException(String message) {
+        super(message);
+    }
 }

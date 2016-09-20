@@ -124,4 +124,8 @@ and open the template in the editor.
     box-shadow: none;
     width: 120px;
 }
+
+.ui-widget textarea:focus{
+    outline: none;
+}
 /*end of css overwrite*/

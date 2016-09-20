@@ -33,9 +33,9 @@ and open the template in the editor.
 
                             </h:panelGrid>
 
-                            <p:commandButton value="Log in" actionListener="#{customerLoginManagedBean.loginCustomer}" class="h-center" style="margin-top:35%" update="@form"/>
+                            <p:commandButton value="Log in" action="#{customerLoginManagedBean.loginCustomer(customerLoginManagedBean.loginAccount.userID,customerLoginManagedBean.loginAccount.password)}" class="h-center" style="margin-top:35%" update="@form"/>
                         </p:messages>
-                        <p:captcha label="Captcha" />
+                        <!--<p:captcha label="Captcha" />-->
                     </h:form>
                     <h:form>
                         <p:messages id="messagesStatus" redisplay="false">

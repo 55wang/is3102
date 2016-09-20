@@ -18,6 +18,7 @@ import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -36,7 +37,9 @@ public class CreditCardAccount implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne(cascade = CascadeType.PERSIST)
-    private MainAccount mainAccount = new MainAccount();
+    private MainAccount mainAccount;
+    @OneToOne(cascade = {CascadeType.PERSIST})
+    private CreditCardProduct creditCardProduct;
 
     @Column(precision = 12)// LY:credit card number in decimal??
     private BigDecimal creditCardNum;
@@ -50,7 +53,9 @@ public class CreditCardAccount implements Serializable {
     private double minPayDue;
     private double annualInterestRate; //24% annual interest rate
     private double outstandingAmount;
-
+    private double cashBackAmount;
+    private double merlionMiles;
+    private double merlionPoints;
     //for bad credit record
     private int numOfLatePayment; //count of total late payment
     private int numOf_30_59_LatePayment; //count of 30-59 days overdue
@@ -203,6 +208,46 @@ public class CreditCardAccount implements Serializable {
 
     public void setOverDueDuration(Date overDueDuration) {
         this.overDueDuration = overDueDuration;
+    }
+
+    public double getCashBackAmount() {
+        return cashBackAmount;
+    }
+
+    public void setCashBackAmount(double cashBackAmount) {
+        this.cashBackAmount = cashBackAmount;
+    }
+
+    public double getMerlionMiles() {
+        return merlionMiles;
+    }
+
+    public void setMerlionMiles(double merlionMiles) {
+        this.merlionMiles = merlionMiles;
+    }
+
+    public double getMerlionPoints() {
+        return merlionPoints;
+    }
+
+    public void setMerlionPoints(double merlionPoints) {
+        this.merlionPoints = merlionPoints;
+    }
+
+    public CreditCardProduct getCreditCardProduct() {
+        return creditCardProduct;
+    }
+
+    public void setCreditCardProduct(CreditCardProduct creditCardProduct) {
+        this.creditCardProduct = creditCardProduct;
+    }
+
+    public MainAccount getMainAccount() {
+        return mainAccount;
+    }
+
+    public void setMainAccount(MainAccount mainAccount) {
+        this.mainAccount = mainAccount;
     }
 
 }

@@ -38,7 +38,7 @@ public class MainAccount implements Serializable {
     private StatusType status;
     @OneToOne(cascade = {CascadeType.PERSIST}, mappedBy = "mainAccount")
     private Customer customer;
-    @OneToMany(cascade = {CascadeType.MERGE}, mappedBy = "mainAccount")
+    @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "mainAccount")
     private List<DepositAccount> bankAcounts = new ArrayList<DepositAccount>(); 
     @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "mainAccount")
     private List<CreditCardAccount> creditCardAccounts= new ArrayList<CreditCardAccount>(); 
@@ -49,6 +49,10 @@ public class MainAccount implements Serializable {
     
     public void addDepositAccount(DepositAccount da) {
         this.bankAcounts.add(da);
+    }
+    
+    public void addCase(CustomerCase cc){
+        this.cases.add(cc);
     }
 
     public StatusType getStatus() {

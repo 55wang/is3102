@@ -73,8 +73,10 @@ public class StaffAccount implements Serializable {
 
     @Override
     public String toString() {
-        return "staff.Account[ id=" + username + " ]";
+        return "StaffAccount{" + "username=" + username + ", firstName=" + firstName + ", lastName=" + lastName + ", password=" + password + ", email=" + email + ", status=" + status + ", staffInfo=" + staffInfo + ", role=" + role + ", auditLog=" + auditLog + ", senderConversation=" + senderConversation + ", receiverConversation=" + receiverConversation + ", cases=" + cases + '}';
     }
+
+    
     
     // Getter and Setter
 

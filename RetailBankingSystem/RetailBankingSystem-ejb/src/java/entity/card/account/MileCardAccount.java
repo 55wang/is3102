@@ -12,21 +12,10 @@ import javax.persistence.Entity;
  * @author wang
  */
 @Entity
-public class MileCardAccount extends CreditCardAccount {
-    
-    private double merlionMiles;
+public class MileCardAccount extends CreditCardProduct {
+
     private double overseaMileRate; // USD$1 = 2 Miles
     private double localMileRate; // SGD$1 = 1.3 Miles
-    private boolean minSpending = false; //default = false
-    private double minSpendingAmount = 0; 
-
-    public double getMerlionMiles() {
-        return merlionMiles;
-    }
-
-    public void setMerlionMiles(double merlionMiles) {
-        this.merlionMiles = merlionMiles;
-    }
 
     public double getOverseaMileRate() {
         return overseaMileRate;
@@ -44,20 +33,4 @@ public class MileCardAccount extends CreditCardAccount {
         this.localMileRate = localMileRate;
     }
 
-    public boolean isMinSpending() {
-        return minSpending;
-    }
-
-    public void setMinSpending(boolean minSpending) {
-        this.minSpending = minSpending;
-    }
-
-    public double getMinSpendingAmount() {
-        return minSpendingAmount;
-    }
-
-    public void setMinSpendingAmount(double minSpendingAmount) {
-        this.minSpendingAmount = minSpendingAmount;
-    }
-    
 }

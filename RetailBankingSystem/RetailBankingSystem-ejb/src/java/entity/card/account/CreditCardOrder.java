@@ -28,7 +28,7 @@ public class CreditCardOrder implements Serializable {
     private Long id;
 
     private String saluation;
-    private String AccountType;
+    private String accountType;
     private String firstName;
     private String lastName;
     private String nameOnCard;
@@ -297,11 +297,11 @@ public class CreditCardOrder implements Serializable {
     }
 
     public String getAccountType() {
-        return AccountType;
+        return accountType;
     }
 
-    public void setAccountType(String AccountType) {
-        this.AccountType = AccountType;
+    public void setAccountType(String accountType) {
+        this.accountType = accountType;
     }
 
     public String getIdentityType() {

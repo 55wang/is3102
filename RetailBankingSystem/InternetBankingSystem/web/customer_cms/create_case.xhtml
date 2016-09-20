@@ -42,22 +42,15 @@
                                         </h:panelGrid>
                                         <p:repeat value="#{customerCaseManagedBean.issues}" var="issue" size="#{customerCaseManagedBean.issues.size()}" offset="0" step="1" varStatus="">
                                             <p:panel id="toggleable" class="issue-toggleable" header="Issue: #{issue.title}" toggleable="true" closable="true" toggleSpeed="500" closeSpeed="500" widgetVar="panel#{issue.title}" style="margin-bottom:20px">
-                                                 <h:panelGrid columns="2" cellpadding="10">
+                                                <p:ajax event="close" listener="#{customerCaseManagedBean.removeIssue(issue.toString())}" />
+                                                
+                                                <h:panelGrid columns="2" cellpadding="10">
                                                     <h:outputLabel for="field" value="Issue Field " />
                                                     <h:outputText id="field" value="#{issue.field}"/>
                                                     
                                                     <h:outputLabel for="details" value="Details " />
                                                     <h:outputText id="details" value="#{issue.details}"/>
                                                 </h:panelGrid>
-
-                                                <f:facet name="options">
-                                                    <p:menu>
-                                                        <p:submenu label="Settings">
-                                                            <p:menuitem value="Toggle" url="#" icon="ui-icon-newwin" onclick="PF('panel#{issue.title}').toggle()" />
-                                                            <p:menuitem value="Remove" url="#" icon="ui-icon-close" onclick="PF('panel#{issue.title}').close()" />
-                                                        </p:submenu>
-                                                    </p:menu>
-                                                </f:facet>
                                             </p:panel>
                                         </p:repeat>
                                         <p:commandButton value="Cancel" onclick="window.location.replace(window.location.href);"/>
@@ -69,7 +62,7 @@
                             </c:if>
                         </c:when>
                         <c:otherwise test="#{customerCaseManagedBean.issuePage == true}">
-                            <h:form id="mainForm">
+                            <h:form id="mainForm" enctype="multipart/form-data">
                                 <p:panel header="Raise Case">
                                     <h3>New Issue</h3>
                                     <p:messages id="messagesStatus" redisplay="false">
@@ -85,10 +78,10 @@
                                             </p:selectOneMenu>
                                             
                                             <h:outputLabel for="details" value="Issue Details " />
-                                            <h:inputTextarea id="details" value="#{customerCaseManagedBean.newIssue.details}" rows="6" cols="33" required="true"/>
+                                            <h:inputTextarea id="details" value="#{customerCaseManagedBean.newIssue.details}" rows="6" cols="33" required="true" />
                                             
                                             <h:outputLabel for="upload" value="Attachments " />
-                                            <p:fileUpload skinSimple="true"/>
+                                            <p:fileUpload id="upload" skinSimple="true" mode="advanced" fileUploadListener="#{customerCaseManagedBean.uploadPhoto}" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" update="@form"/>
                                                 
                                             <p:commandButton value="Add Issue" action="#{customerCaseManagedBean.addIssue}" update="@form"/>
                                         </h:panelGrid>
