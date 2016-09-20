@@ -1,4 +1,4 @@
-package Interceptor;
+package Interceptor.audit;
 
 import ejb.session.audit.AuditSessionBeanLocal;
 import ejb.session.common.LoginSessionBeanLocal;

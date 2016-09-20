@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package interceptor;
+package interceptor.audit;
 
 import ejb.session.audit.AuditSessionBeanLocal;
 import ejb.session.common.LoginSessionBeanLocal;

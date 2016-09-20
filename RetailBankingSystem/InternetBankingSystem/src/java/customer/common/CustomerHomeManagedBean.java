@@ -5,7 +5,7 @@
  */
 package customer.common;
 
-import Interceptor.Audit;
+import Interceptor.audit.Audit;
 import ejb.session.common.ChangePasswordSessionBeanLocal;
 import ejb.session.common.LoginSessionBeanLocal;
 import entity.customer.Customer;
