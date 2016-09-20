@@ -46,7 +46,7 @@ public class CustomerActivationManagedBean implements Serializable {
             try{
                 customerActivationSessionBean.updateAccountStatus(mainAccount);
                 loginSessionBean.loginAccount(mainAccount.getUserID(), mainAccount.getPassword());
-                SessionUtils.setUserId(mainAccount.getId());
+                SessionUtils.setUserId(Long.toString(mainAccount.getId()));
                 SessionUtils.setUserName(mainAccount.getUserID());
             }
             catch(Exception ex){
