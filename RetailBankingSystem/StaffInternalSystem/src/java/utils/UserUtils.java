@@ -85,4 +85,41 @@ public class UserUtils {
             return false;
         }
     }
+    
+    public static Boolean isUserInRoles(Permission[] roles) {
+        HttpSession session = getSession();
+        if (session != null) {
+            Boolean permitted = false;
+            StaffAccount sa = (StaffAccount) session.getAttribute("StaffAccount");
+            Role role = sa.getRole();
+
+            for (int i = 0; i < roles.length; i ++) {
+                Permission r = roles[i];
+                if (r.equals(Permission.SUPERUSER)) {
+                    if (role.getSuperUserRight()) permitted = true;
+                } else if (r.equals(Permission.ANALYTICS)) {
+                    if (role.getAnalyticsAccessRight()) permitted = true;
+                } else if (r.equals(Permission.BILL)) {
+                    if (role.getBillAccessRight()) permitted = true;
+                } else if (r.equals(Permission.CARD)) {
+                    if (role.getCardAccessRight()) permitted = true;
+                } else if (r.equals(Permission.CUSTOMER)) {
+                    if (role.getCustomerAccessRight()) permitted = true;
+                } else if (r.equals(Permission.DEPOSIT)) {
+                    if (role.getDepositAccessRight()) permitted = true;
+                } else if (r.equals(Permission.LOAN)) {
+                    if (role.getLoanAccessRight()) permitted = true;
+                } else if (r.equals(Permission.PORTFOLIO)) {
+                    if (role.getPortfolioAccessRight()) permitted = true;
+                } else if (r.equals(Permission.WEALTH)) {
+                    if (role.getWealthAccessRight()) permitted = true;
+                } else {
+                    return false;
+                }
+            }
+            return permitted;
+        } else {
+            return false;
+        }
+    }
 }

@@ -5,9 +5,9 @@
  */
 package customer.common;
 
-import Interceptor.audit.Audit;
-import Interceptor.audit.FullHidden;
-import Interceptor.audit.HalfHidden;
+import interceptor.audit.Audit;
+import interceptor.audit.FullHidden;
+import interceptor.audit.HalfHidden;
 import ejb.session.audit.AuditSessionBeanLocal;
 import ejb.session.common.EmailServiceSessionBeanLocal;
 import ejb.session.common.LoginSessionBeanLocal;
