@@ -74,8 +74,8 @@ public class AuditInterceptor implements Serializable {
         }
         MainAccount ma = null;
         try {
-            if (SessionUtils.getStaffUsername()!= null) {
-                ma = loginSessionBean.getMainAccountByUserID(SessionUtils.getStaffUsername());
+            if (SessionUtils.getUserName()!= null) {
+                ma = loginSessionBean.getMainAccountByUserID(SessionUtils.getUserName());
             }
         } catch (NullPointerException ex) {
             System.out.println("Null Pointer");

@@ -36,8 +36,6 @@ public class AuditUtils implements Serializable {
             al.setMainAccount(ma);
         } else if (sa != null) {
             al.setStaffAccount(sa);
-        } else {
-            return al;
         }
 
         return al;

@@ -10,6 +10,7 @@ import entity.dams.rules.ConditionInterest;
 import entity.dams.rules.Interest;
 import entity.dams.rules.RangeInterest;
 import entity.dams.rules.TimeRangeInterest;
+import interceptor.audit.staff.Audit;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -75,6 +76,7 @@ public class CreateInterestManagedBean implements Serializable {
         }
     }
 
+    @Audit(activtyLog = "Add Interest")
     public void addInterest(ActionEvent event) {
         if (interestType.equals(INTEREST_TYPE_NORMAL)) {
             if (interestSessionBean.addInterest(normalInterest)) {
