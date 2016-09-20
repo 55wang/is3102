@@ -193,10 +193,10 @@ and open the template in the editor.
     border-bottom:1px solid #eee;
 }
 #customer-navbar ul li:hover {
-    background: rgba(180,180,180,0.25);
+    background: #eee;
 }
 #customer-navbar ul li.active {
-    background: rgba(180,180,180,0.25);
+    background: #eee;
     border-bottom: 5px solid #c00;
 }
 

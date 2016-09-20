@@ -25,6 +25,7 @@ public class Issue implements Serializable {
     private String title;
     private String field;
     private String details;
+    private String attachmentFileName = null;
     @ManyToOne
     private CustomerCase customerCase;
 
@@ -66,6 +67,14 @@ public class Issue implements Serializable {
 
     public void setCustomerCase(CustomerCase customerCase) {
         this.customerCase = customerCase;
+    }
+
+    public String getAttachmentFileName() {
+        return attachmentFileName;
+    }
+
+    public void setAttachmentFileName(String attachmentFileName) {
+        this.attachmentFileName = attachmentFileName;
     }
 
     @Override

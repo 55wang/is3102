@@ -42,7 +42,7 @@
                                         </h:panelGrid>
                                         <p:repeat value="#{customerCaseManagedBean.issues}" var="issue" size="#{customerCaseManagedBean.issues.size()}" offset="0" step="1" varStatus="">
                                             <p:panel id="toggleable" class="issue-toggleable" header="Issue: #{issue.title}" toggleable="true" closable="true" toggleSpeed="500" closeSpeed="500" widgetVar="panel#{issue.title}" style="margin-bottom:20px">
-                                                <p:ajax event="close" listener="#{customerCaseManagedBean.removeIssue(issue.toString())}" />
+                                                <p:ajax event="close" listener="#{customerCaseManagedBean.removeIssue(issue.toString())}"/>
                                                 
                                                 <h:panelGrid columns="2" cellpadding="10">
                                                     <h:outputLabel for="field" value="Issue Field " />
@@ -50,6 +50,9 @@
                                                     
                                                     <h:outputLabel for="details" value="Details " />
                                                     <h:outputText id="details" value="#{issue.details}"/>
+                                                                                                       
+                                                    <h:outputLabel for="attachment" value="Attachment " />
+                                                    <h:outputText  id="attachment" value="#{issue.attachmentFileName}"/>                                                    
                                                 </h:panelGrid>
                                             </p:panel>
                                         </p:repeat>
@@ -81,7 +84,7 @@
                                             <h:inputTextarea id="details" value="#{customerCaseManagedBean.newIssue.details}" rows="6" cols="33" required="true" />
                                             
                                             <h:outputLabel for="upload" value="Attachments " />
-                                            <p:fileUpload id="upload" skinSimple="true" mode="advanced" fileUploadListener="#{customerCaseManagedBean.uploadPhoto}" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" update="@form"/>
+                                            <p:fileUpload id="upload" skinSimple="true" mode="advanced" fileUploadListener="#{customerCaseManagedBean.uploadPhoto}" allowTypes="/(\.|\/)(gif|jpe?g|png)$/"/>
                                                 
                                             <p:commandButton value="Add Issue" action="#{customerCaseManagedBean.addIssue}" update="@form"/>
                                         </h:panelGrid>

@@ -4,7 +4,8 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:em="http://xmlns.jcp.org/jsf/composite/emcomp"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     <!--shift + ctrl + F, format-->
     <f:view>
         <h:head>
@@ -19,8 +20,49 @@
                     <p:panel header="View Case">
                         <p:messages id="messagesStatus" redisplay="false">
                             <h:panelGrid columns="2" cellpadding="5">
-                                
+                                <p:selectOneButton id="searchType" value="#{customerCaseManagedBean.searchType}">
+                                    <f:selectItem itemLabel="Search by Case ID" itemValue="#{customerCaseManagedBean.searchByCaseID}" />
+                                    <f:selectItem itemLabel="Search by Case Title" itemValue="#{customerCaseManagedBean.searchByCaseTitle}" />
+                                    <f:ajax render="@form" />
+                                </p:selectOneButton>
                             </h:panelGrid>
+                            
+                            <c:if test="#{customerCaseManagedBean.searchType == customerCaseManagedBean.searchByCaseID}">
+                                <h:outputLabel for="caseID" value="Case ID: " />
+                                <h:inputText id="caseID" value="#{customerCaseManagedBean.searchCaseID}" required="true"/>
+                                
+                                <p:commandButton value="Search" action="#{customerCaseManagedBean.searchByIdFunction()}" update="@form"/>
+                            </c:if>
+                            <c:if test="#{customerCaseManagedBean.searchType == customerCaseManagedBean.searchByCaseTitle}">
+                                <h:outputLabel for="caseTitle" value="Case Title: " />
+                                <h:inputText id="caseTitle" value="#{customerCaseManagedBean.searchCaseTitle}" required="true"/>
+                                
+                                <p:commandButton value="Search" action="#{customerCaseManagedBean.searchByTitleFunction()}" update="@form"/>
+                            </c:if>
+                            
+                            <p:separator></p:separator>
+                            
+                            <c:if test="#{customerCaseManagedBean.searchResultList != null}">
+                                <p:repeat value="#{customerCaseManagedBean.searchResultList}" var="resultCase" size="#{customerCaseManagedBean.searchResultList.size()}" offset="0" step="1" varStatus="">
+                                    <h3>Case: #{resultCase.title}</h3>
+                                    <p:repeat value="#{resultCase.issues}" var="issue" size="#{resultCase.issues.size()}" offset="0" step="1" varStatus="">
+                                        <p:panel id="toggleable" class="issue-toggleable" header="Issue: #{issue.title}" style="margin-bottom:20px">
+                                            <h:panelGrid columns="2" cellpadding="10">
+                                                <h:outputLabel for="field" value="Issue Field " />
+                                                <h:outputText id="field" value="#{issue.field}"/>
+
+                                                <h:outputLabel for="details" value="Details " />
+                                                <h:outputText id="details" value="#{issue.details}"/>
+
+                                                <h:outputLabel for="attachment" value="Attachment " />
+                                                <h:outputText  id="attachment" value="#{issue.attachmentFileName}"/>                                                    
+                                            </h:panelGrid>
+                                        </p:panel>
+                                    </p:repeat>
+                                    <p:commandButton value="Cancel Case" action="#{customerCaseManagedBean.cancelCase(resultCase.id)}" update="@form"/>
+                                    <p:separator></p:separator>
+                                </p:repeat>
+                            </c:if>
                         </p:messages>
                     </p:panel>
                 </h:form>

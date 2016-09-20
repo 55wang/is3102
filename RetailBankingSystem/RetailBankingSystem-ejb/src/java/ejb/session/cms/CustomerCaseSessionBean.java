@@ -7,6 +7,7 @@ package ejb.session.cms;
 
 import entity.customer.CustomerCase;
 import entity.customer.MainAccount;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -54,7 +55,47 @@ public class CustomerCaseSessionBean implements CustomerCaseSessionBeanLocal {
             return false;
         }
     }
+    
+    @Override
+    public CustomerCase searchCaseByID(String id){
+        Query q = em.createQuery("SELECT a FROM CustomerCase a WHERE a.id = :caseID");
+        
+        q.setParameter("caseID", Long.parseLong(id));
+        
+        CustomerCase customerCase = null;
+          
+        try {
+            customerCase = (CustomerCase) q.getSingleResult();       
+            return customerCase;
+        } catch (NoResultException ex) {
+            System.out.println("CustomerCaseSessionBean.searchCaseById: "+ex.toString());
+            return null;
+        }
+    }
 
+    @Override
+    public List<CustomerCase> searchCaseByTitle(String title){
+        Query q = em.createQuery("SELECT a FROM CustomerCase a WHERE a.title = :caseTitle");
+        
+        q.setParameter("caseTitle", title);
+        
+        try {   
+            return q.getResultList();
+        } catch (NoResultException ex) {
+            System.out.println("CustomerCaseSessionBean.searchCaseByTitle: "+ex.toString());
+            return null;
+        }
+    }
+    
+    @Override
+    public Boolean cancelCase(Long id){
+        CustomerCase cc = (CustomerCase) em.find(CustomerCase.class, id); 
+        em.remove(cc);
+        em.flush();
+           
+        return true;
+    }
+    
     public void persist(Object object) {
         em.persist(object);
     }
