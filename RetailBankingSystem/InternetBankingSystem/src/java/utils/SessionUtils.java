@@ -67,6 +67,11 @@ public class SessionUtils {
         StaffAccount sa = (StaffAccount) session.getAttribute("StaffAccount");
         return sa.getUsername();
     }
+    
+    public static StaffAccount getStaff() {
+        HttpSession session = getSession();
+        return (StaffAccount)session.getAttribute("StaffAccount");
+    }
 
     public static String getContextPath() {
         return FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath();

@@ -13,6 +13,8 @@ import javax.persistence.EntityExistsException;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import utils.EnumUtils;
+import utils.EnumUtils.UserRole;
 
 /**
  *
@@ -28,18 +30,9 @@ public class StaffRoleSessionBean implements StaffRoleSessionBeanLocal {
     public Role getSuperAdminRole() {
         Role superRole = em.find(Role.class, "Super Admin");
         if (superRole == null) {
-            superRole = new Role("Super Admin");
-            superRole.setSuperUserRight(Boolean.TRUE);
+            superRole = new Role(UserRole.SUPER_ADMIN.toString());
             em.persist(superRole);
         }
-//        superRole.setAnalyticsAccessRight(Boolean.TRUE);
-//        superRole.setBillAccessRight(Boolean.TRUE);
-//        superRole.setCardAccessRight(Boolean.TRUE);
-//        superRole.setCustomerAccessRight(Boolean.TRUE);
-//        superRole.setDepositAccessRight(Boolean.TRUE);
-//        superRole.setLoanAccessRight(Boolean.TRUE);
-//        superRole.setPortfolioAccessRight(Boolean.TRUE);
-//        superRole.setWealthAccessRight(Boolean.TRUE);
         return superRole;
     }
     @Override

@@ -15,7 +15,9 @@ import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.faces.event.ActionEvent;
 import javax.faces.view.ViewScoped;
+import utils.EnumUtils;
 import utils.EnumUtils.Permission;
+import utils.EnumUtils.UserRole;
 import utils.HashPwdUtils;
 import utils.MessageUtils;
 import utils.RedirectUtils;
@@ -55,14 +57,12 @@ public class StaffLoginManagedBean implements Serializable {
     public void loginStaff(ActionEvent event) {
         StaffAccount sa = staffBean.loginAccount(username, HashPwdUtils.hashPwd(password));
         if (sa == null) {
-//            AuditUtils.testAuditAnnotation();
             MessageUtils.displayError("Either username or password is wrong");
         } else {
-//            AuditUtils.testAuditAnnotation();
             SessionUtils.setStaffAccount(sa);
-            if (UserUtils.isUserInRole(Permission.SUPERUSER)) {
+            if (UserUtils.isUserInRole(UserRole.SUPER_ADMIN.toString())) {
                 RedirectUtils.redirect(SessionUtils.getContextPath() + "/others/create-interest.xhtml");
-            } else if (UserUtils.isUserInRole(Permission.DEPOSIT)) {
+            } else {
                 RedirectUtils.redirect(SessionUtils.getContextPath() + "/dams/open-account.xhtml");
             }
         }

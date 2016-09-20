@@ -25,7 +25,7 @@
                     <!--TODO: wrap menu option with sec tag -->
                     <li id="header-overview" class="#{cc.attrs.context == 'overview' ? 'active' : ''}" value="overview"><a href="#">Overview</a></li>
                     <li id="header-overview" class="#{cc.attrs.context == 'account' ? 'active' : ''}" value="account"><a href="../dams/open-account.xhtml">Accounts</a></li>
-                    <c:if test="#{staffUserManagedBean.isUserInRole(staffUserManagedBean.PERMISSION_SUPERUSER)}">
+                    <c:if test="#{staffUserManagedBean.isUserInRole(staffUserManagedBean.SUPER_ADMIN)}">
                         <li id="header-overview" class="#{cc.attrs.context == 'others' ? 'active' : ''}" value="others"><a href="../others/create-interest.xhtml">Others</a></li>
                     </c:if>
                     <li id="header-overview" class="#{cc.attrs.context == 'message' ? 'active' : ''}" value="message"><a href="../message/chat.xhtml">Message</a></li>
