@@ -13,6 +13,7 @@ import ejb.session.message.ConversationSessionBeanLocal;
 import ejb.session.staff.StaffAccountSessionBeanLocal;
 import entity.staff.Conversation;
 import entity.staff.StaffAccount;
+import interceptor.permission.RoleAllowed;
 import javax.inject.Named;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -24,12 +25,14 @@ import javax.annotation.PreDestroy;
 import javax.ejb.EJB;
 import javax.faces.view.ViewScoped;
 import utils.ColorUtils;
+import utils.EnumUtils;
 import utils.LoggingUtils;
 import utils.RedirectUtils;
 import utils.SessionUtils;
 
 @Named(value = "chatViewManagedBean")
 @ViewScoped
+@RoleAllowed(role = EnumUtils.Permission.WEALTH)
 public class ChatViewManagedBean implements Serializable {
 
     @EJB

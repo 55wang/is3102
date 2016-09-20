@@ -1,4 +1,9 @@
-package Interceptor.audit;
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package interceptor.audit;
 
 import ejb.session.audit.AuditSessionBeanLocal;
 import ejb.session.common.LoginSessionBeanLocal;
@@ -6,14 +11,19 @@ import entity.common.AuditLog;
 import entity.customer.MainAccount;
 import java.io.Serializable;
 import java.lang.annotation.Annotation;
-import javax.interceptor.AroundInvoke;
-import javax.interceptor.InvocationContext;
-import javax.interceptor.Interceptor;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 import javax.ejb.EJB;
+import javax.interceptor.AroundInvoke;
+import javax.interceptor.Interceptor;
+import javax.interceptor.InvocationContext;
 import utils.AuditUtils;
 import utils.SessionUtils;
 
+/**
+ *
+ * @author leiyang
+ */
 @Interceptor
 @Audit
 public class AuditInterceptor implements Serializable {
@@ -64,8 +74,8 @@ public class AuditInterceptor implements Serializable {
         }
         MainAccount ma = null;
         try {
-            if (SessionUtils.getUserName() != null) {
-                ma = loginSessionBean.getMainAccountByUserID(SessionUtils.getUserName());
+            if (SessionUtils.getStaffUsername()!= null) {
+                ma = loginSessionBean.getMainAccountByUserID(SessionUtils.getStaffUsername());
             }
         } catch (NullPointerException ex) {
             System.out.println("Null Pointer");
