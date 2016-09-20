@@ -40,43 +40,60 @@ public class LoginSessionBean implements LoginSessionBeanLocal {
             return null;
         }
     }
-    
+
     @Override
-    public Customer getCustomerByUserID(String userID){    
+    public MainAccount getMainAccountByUserID(String userID) {
         Query q = em.createQuery("SELECT a FROM MainAccount a WHERE a.userID = :userID");
-        
+
         q.setParameter("userID", userID);
-        
+
         MainAccount mainAccount = null;
-          
+
         try {
-            mainAccount = (MainAccount) q.getSingleResult();       
+            mainAccount = (MainAccount) q.getSingleResult();
+            return mainAccount;
+        } catch (NoResultException ex) {
+            return null;
+        }
+    }
+
+    @Override
+    public Customer getCustomerByUserID(String userID) {
+        Query q = em.createQuery("SELECT a FROM MainAccount a WHERE a.userID = :userID");
+
+        q.setParameter("userID", userID);
+
+        MainAccount mainAccount = null;
+
+        try {
+            mainAccount = (MainAccount) q.getSingleResult();
             return mainAccount.getCustomer();
         } catch (NoResultException ex) {
             return null;
         }
     }
-    
+
     @Override
-    public MainAccount getMainAccountByEmail(String email){
-        
+    public MainAccount getMainAccountByEmail(String email) {
+
         Query q = em.createQuery("SELECT a FROM Customer a WHERE a.email = :email");
-        
+
         q.setParameter("email", email);
-        
+
         Customer customer = null;
-          
+
         try {
-            customer = (Customer) q.getSingleResult(); 
-            if(customer != null)
+            customer = (Customer) q.getSingleResult();
+            if (customer != null) {
                 return customer.getMainAccount();
-            else
+            } else {
                 return null;
+            }
         } catch (NoResultException ex) {
             return null;
         }
     }
-    
+
     public List<MainAccount> showAllAccounts() {
         Query q = em.createQuery("SELECT a FROM MainAccount a");
         return q.getResultList();

@@ -13,6 +13,10 @@ import javax.persistence.Entity;
  */
 @Entity
 public class SavingAccount extends DepositAccount {
+
+    public SavingAccount() {
+    }
+    
     // NO Cheque book
     // limited withdraw times
 }

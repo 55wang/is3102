@@ -52,7 +52,7 @@ public class SessionUtils {
         }
     }
 
-    public static void setUserId(Long userID) {
+    public static void setUserId(String userID) {
         HttpSession session = getSession();
         session.setAttribute("userid", userID);
     }

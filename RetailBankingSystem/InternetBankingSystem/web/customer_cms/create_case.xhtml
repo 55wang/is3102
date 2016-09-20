@@ -62,7 +62,7 @@
                             </c:if>
                         </c:when>
                         <c:otherwise test="#{customerCaseManagedBean.issuePage == true}">
-                            <h:form id="mainForm">
+                            <h:form id="mainForm" enctype="multipart/form-data">
                                 <p:panel header="Raise Case">
                                     <h3>New Issue</h3>
                                     <p:messages id="messagesStatus" redisplay="false">
@@ -78,10 +78,10 @@
                                             </p:selectOneMenu>
                                             
                                             <h:outputLabel for="details" value="Issue Details " />
-                                            <h:inputTextarea id="details" value="#{customerCaseManagedBean.newIssue.details}" rows="6" cols="33" required="true"/>
+                                            <h:inputTextarea id="details" value="#{customerCaseManagedBean.newIssue.details}" rows="6" cols="33" required="true" />
                                             
                                             <h:outputLabel for="upload" value="Attachments " />
-                                            <p:fileUpload skinSimple="true"/>
+                                            <p:fileUpload id="upload" skinSimple="true" mode="advanced" fileUploadListener="#{customerCaseManagedBean.uploadPhoto}" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" update="@form"/>
                                                 
                                             <p:commandButton value="Add Issue" action="#{customerCaseManagedBean.addIssue}" update="@form"/>
                                         </h:panelGrid>

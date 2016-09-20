@@ -58,7 +58,7 @@ public class CustomerLoginManagedBean implements Serializable {
     }
 
     @Audit(activtyLog = "login customer account")
-    public String loginCustomer(String username, String password) {
+    public String loginCustomer(String username, @FullHidden String password) {
         MainAccount ma = null;
 
         try {
@@ -66,25 +66,25 @@ public class CustomerLoginManagedBean implements Serializable {
             if (attemptLogin.getStatus().equals(EnumUtils.StatusType.PENDING)) {
                 String msg = "Check your email and activate the account";
                 MessageUtils.displayInfo(msg);
-                return "";
+                return "FAIL";
             } else if (attemptLogin.getStatus().equals(EnumUtils.StatusType.FREEZE)) {
                 String msg = "Your account has been freezed.";
                 MessageUtils.displayInfo(msg);
-                return "";
+                return "FAIL";
             } else if (attemptLogin.getStatus().equals(EnumUtils.StatusType.ACTIVE)) {
                 ma = loginSessionBean.loginAccount(username, HashPwdUtils.hashPwd(password));
-                Long userID = ma.getId();
+                String userID = Long.toString(ma.getId());
                 String userName = ma.getUserID();
                 SessionUtils.setUserId(userID);
                 SessionUtils.setUserName(userName);
-                RedirectUtils.redirect("../customer_cms/customer_home.xhtml");
+//                RedirectUtils.redirect("../customer_cms/customer_home.xhtml");
                 return "SUCCESS";
             }
         } catch (NullPointerException e) {
             String msg = "Account not exists or password incorrect.";
             MessageUtils.displayError(msg);
         }
-        return "";
+        return "FAIL";
     }
 
     public void forgotUserID() {
