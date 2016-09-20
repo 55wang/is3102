@@ -13,5 +13,8 @@ import javax.persistence.Entity;
  */
 @Entity
 public class CurrentAccount extends DepositAccount {
+
+    public CurrentAccount() {
+    }
     // TODO: Add checkque
 }

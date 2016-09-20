@@ -60,7 +60,7 @@ public abstract class DepositAccount implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "fromAccount")
     private List<Transaction> transactions = new ArrayList<>();
     
-    @ManyToOne(cascade = CascadeType.MERGE)
+    @ManyToOne(cascade = CascadeType.PERSIST)
     private MainAccount mainAccount = new MainAccount();
     
     @ManyToOne(cascade = {CascadeType.MERGE})

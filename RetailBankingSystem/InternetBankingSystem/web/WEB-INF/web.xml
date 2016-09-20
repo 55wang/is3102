@@ -13,6 +13,19 @@
         <filter-name>Authentication</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
+    <filter>
+        <filter-name>PrimeFaces FileUpload Filter</filter-name>
+        <filter-class>org.primefaces.webapp.filter.FileUploadFilter
+        </filter-class>
+        <init-param>
+            <param-name>thresholdSize</param-name>
+            <param-value>10240</param-value> <!-- 10 Mb -->
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>PrimeFaces FileUpload Filter</filter-name>
+        <servlet-name>Faces Servlet</servlet-name>
+    </filter-mapping>  
     <!-- End of Filter-->
     <servlet>
         <servlet-name>Faces Servlet</servlet-name>
@@ -54,5 +67,8 @@
         <param-name>primefaces.PUBLIC_CAPTCHA_KEY</param-name>
         <param-value>6Ldv3QYUAAAAAF_XqszyDGYJlUSPF_ydtAaaI44L</param-value>
     </context-param>
-    
+    <context-param>
+        <param-name>primefaces.UPLOADER</param-name>
+        <param-value>commons</param-value>
+    </context-param>  
 </web-app>
