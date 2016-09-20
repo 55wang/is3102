@@ -80,4 +80,16 @@ public class CustomerProfileSessionBean implements CustomerProfileSessionBeanLoc
         return customers;
 
     }
+
+    @Override
+    public List<Customer> searchCustomerByIdentityNumber(String id) {
+
+        Query q = em.createQuery("SELECT c FROM Customer c WHERE c.mainAccount.status = :inStatus AND c.identityNumber = :identityNumber");
+        q.setParameter("inStatus", StatusType.ACTIVE);
+        q.setParameter("identityNumber", id);
+        System.out.print("DB search ---------------" + q.getResultList().size());
+
+        return q.getResultList();
+    }
+
 }
