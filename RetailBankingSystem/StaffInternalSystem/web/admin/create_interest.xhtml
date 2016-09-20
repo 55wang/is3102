@@ -9,15 +9,15 @@
     <!--shift + ctrl + F, format-->
     <f:view>
         <h:head>
-            <title>Facelet Title</title>
+            <title>Merlion Internal</title>
             <em:cssImport></em:cssImport>
         </h:head>
         <h:body>
-            <em:staffNavBar context="others"></em:staffNavBar>
-            <em:staffSideBar top="others" side="createInterest"></em:staffSideBar>
+            <em:staffNavBar context="admin"></em:staffNavBar>
+            <em:staffSideBar top="admin" side="createInterest"></em:staffSideBar>
             <div class="container">
                 <h:form id="mainForm">
-                    <p:panel header="Create Interest//TODO: Assign default customized account">
+                    <p:panel header="Create Interest">
                         <p:messages id="messagesStatus" redisplay="false" >
                             <h:panelGrid columns="2" cellpadding="5">
                                 <p:outputLabel for="interestType" value="Interest Type: " />

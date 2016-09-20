@@ -3,14 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package staff.others;
+package staff.admin;
 
 import ejb.session.dams.InterestSessionBeanLocal;
 import entity.dams.rules.ConditionInterest;
 import entity.dams.rules.Interest;
 import entity.dams.rules.RangeInterest;
 import entity.dams.rules.TimeRangeInterest;
-import interceptor.audit.staff.Audit;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;

@@ -1,0 +1,167 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:em="http://xmlns.jcp.org/jsf/composite/emcomp"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <!--shift + ctrl + F, format-->
+    <f:view>
+        <h:head>
+            <title>Merlion Internal</title>
+            <em:cssImport></em:cssImport>
+        </h:head>
+        <h:body>
+            <em:staffNavBar context="admin"></em:staffNavBar>
+            <em:staffSideBar top="admin" side="createDepositProduct"></em:staffSideBar>
+            <div class="container">
+                <h:form id="mainForm">
+                    <p:panel header="Create Deposit Product">
+                        <p:messages id="messagesStatus" redisplay="false" >
+                            <h:panelGrid columns="2" cellpadding="5">
+                                <p:outputLabel for="interestType" value="Interest Type: " />
+                                <p:selectOneButton id="interestType" value="#{createDepositProductManagedBean.productType}">
+                                    <f:selectItem itemLabel="Normal Interest" itemValue="#{createDepositProductManagedBean.PRODUCT_TYPE_CUSTOM}" />
+                                    <f:selectItem itemLabel="Range Interest" itemValue="#{createDepositProductManagedBean.PRODUCT_TYPE_CURRENT}" />
+                                    <f:selectItem itemLabel="Time Range Interest" itemValue="#{createDepositProductManagedBean.PRODUCT_TYPE_SAVING}" />
+                                    <f:selectItem itemLabel="Conditional Interest" itemValue="#{createDepositProductManagedBean.PRODUCT_TYPE_FIXED}" />
+                                    <f:ajax render="@form" />
+                                </p:selectOneButton>
+
+                                <c:if test="#{createDepositProductManagedBean.productType == createDepositProductManagedBean.PRODUCT_TYPE_CUSTOM}" >
+                                    <p:outputLabel for="customProductName" value="Name: " />
+                                    <p:inputText id="customProductName" value="#{createDepositProductManagedBean.customProduct.name}" required="true"/>
+                                    <p:outputLabel for="customProductDescription" value="Description: " />
+                                    <p:inputText id="customProductDescription" value="#{createDepositProductManagedBean.customProduct.description}" required="true"/>
+                                    <p:outputLabel for="customProductTerms" value="Terms and Conditions: " />
+                                    <p:inputText id="customProductTerms" value="#{createDepositProductManagedBean.customProduct.terms}" required="true"/>
+                                    <p:outputLabel for="customProductInterval" value="Interest Interval in Months: " />
+                                    <p:inputText id="customProductInterval" value="#{createDepositProductManagedBean.customProduct.interestInterval}" required="true"/>
+                                    <p:outputLabel for="customProductInitialDeposit" value="Initial Deposit required: " />
+                                    <p:inputText id="customProductInitialDeposit" value="#{createDepositProductManagedBean.customProduct.initialDeposit}" required="true"/>
+                                    <p:outputLabel for="customProductMinimumBalance" value="Minimum Balance: " />
+                                    <p:inputText id="customProductMinimumBalance" value="#{createDepositProductManagedBean.customProduct.minBalance}" required="true"/>
+                                    <p:outputLabel for="customProductCharges" value="Fall Below Charges: " />
+                                    <p:inputText id="customProductCharges" value="#{createDepositProductManagedBean.customProduct.charges}" required="true"/>
+                                    <p:outputLabel for="customProductAnnualFees" value="Annual Fees: " />
+                                    <p:inputText id="customProductAnnualFees" value="#{createDepositProductManagedBean.customProduct.annualFees}" required="true"/>
+                                    <p:outputLabel for="customProductWaivedMonths" value="Waived N Months: " />
+                                    <p:inputText id="customProductWaivedMonths" value="#{createDepositProductManagedBean.customProduct.waivedMonths}" required="true"/>
+                                </c:if>
+                                
+                                <c:if test="#{createDepositProductManagedBean.productType == createDepositProductManagedBean.PRODUCT_TYPE_CURRENT}">
+                                    <p:outputLabel for="currentProductName" value="Name: " />
+                                    <p:inputText id="currentProductName" value="#{createDepositProductManagedBean.currentProduct.name}" required="true"/>
+                                    <p:outputLabel for="currentProductDescription" value="Description: " />
+                                    <p:inputText id="currentProductDescription" value="#{createDepositProductManagedBean.currentProduct.description}" required="true"/>
+                                    <p:outputLabel for="currentProductTerms" value="Terms and Conditions: " />
+                                    <p:inputText id="currentProductTerms" value="#{createDepositProductManagedBean.currentProduct.terms}" required="true"/>
+                                    <p:outputLabel for="currentProductInterval" value="Interest Interval in Months: " />
+                                    <p:inputText id="currentProductInterval" value="#{createDepositProductManagedBean.currentProduct.interestInterval}" required="true"/>
+                                    <p:outputLabel for="currentProductInitialDeposit" value="Initial Deposit required: " />
+                                    <p:inputText id="currentProductInitialDeposit" value="#{createDepositProductManagedBean.currentProduct.initialDeposit}" required="true"/>
+                                    <p:outputLabel for="currentProductMinimumBalance" value="Minimum Balance: " />
+                                    <p:inputText id="currentProductMinimumBalance" value="#{createDepositProductManagedBean.currentProduct.minBalance}" required="true"/>
+                                    <p:outputLabel for="currentProductCharges" value="Fall Below Charges: " />
+                                    <p:inputText id="currentProductCharges" value="#{createDepositProductManagedBean.currentProduct.charges}" required="true"/>
+                                    <p:outputLabel for="currentProductAnnualFees" value="Annual Fees: " />
+                                    <p:inputText id="currentProductAnnualFees" value="#{createDepositProductManagedBean.currentProduct.annualFees}" required="true"/>
+                                    <p:outputLabel for="currentProductWaivedMonths" value="Waived N Months: " />
+                                    <p:inputText id="currentProductWaivedMonths" value="#{createDepositProductManagedBean.currentProduct.waivedMonths}" required="true"/>
+                                </c:if>
+                                
+                                <c:if test="#{createDepositProductManagedBean.productType == createDepositProductManagedBean.PRODUCT_TYPE_SAVING}">
+                                    <p:outputLabel for="savingProductName" value="Name: " />
+                                    <p:inputText id="savingProductName" value="#{createDepositProductManagedBean.savingProduct.name}" required="true"/>
+                                    <p:outputLabel for="savingProductDescription" value="Description: " />
+                                    <p:inputText id="savingProductDescription" value="#{createDepositProductManagedBean.savingProduct.description}" required="true"/>
+                                    <p:outputLabel for="savingProductTerms" value="Terms and Conditions: " />
+                                    <p:inputText id="savingProductTerms" value="#{createDepositProductManagedBean.savingProduct.terms}" required="true"/>
+                                    <p:outputLabel for="savingProductInterval" value="Interest Interval in Months: " />
+                                    <p:inputText id="savingProductInterval" value="#{createDepositProductManagedBean.savingProduct.interestInterval}" required="true"/>
+                                    <p:outputLabel for="savingProductInitialDeposit" value="Initial Deposit required: " />
+                                    <p:inputText id="savingProductInitialDeposit" value="#{createDepositProductManagedBean.savingProduct.initialDeposit}" required="true"/>
+                                    <p:outputLabel for="savingProductMinimumBalance" value="Minimum Balance: " />
+                                    <p:inputText id="savingProductMinimumBalance" value="#{createDepositProductManagedBean.savingProduct.minBalance}" required="true"/>
+                                    <p:outputLabel for="savingProductCharges" value="Fall Below Charges: " />
+                                    <p:inputText id="savingProductCharges" value="#{createDepositProductManagedBean.savingProduct.charges}" required="true"/>
+                                    <p:outputLabel for="savingProductAnnualFees" value="Annual Fees: " />
+                                    <p:inputText id="savingProductAnnualFees" value="#{createDepositProductManagedBean.savingProduct.annualFees}" required="true"/>
+                                    <p:outputLabel for="savingProductWaivedMonths" value="Waived N Months: " />
+                                    <p:inputText id="savingProductWaivedMonths" value="#{createDepositProductManagedBean.savingProduct.waivedMonths}" required="true"/>
+                                </c:if>
+                                
+                                <c:if test="#{createDepositProductManagedBean.productType == createDepositProductManagedBean.PRODUCT_TYPE_FIXED}">
+                                    <p:outputLabel for="fixedProductName" value="Name: " />
+                                    <p:inputText id="fixedProductName" value="#{createDepositProductManagedBean.fixedProduct.name}" required="true"/>
+                                    <p:outputLabel for="fixedProductDescription" value="Description: " />
+                                    <p:inputText id="fixedProductDescription" value="#{createDepositProductManagedBean.fixedProduct.description}" required="true"/>
+                                    <p:outputLabel for="fixedProductTerms" value="Terms and Conditions: " />
+                                    <p:inputText id="fixedProductTerms" value="#{createDepositProductManagedBean.fixedProduct.terms}" required="true"/>
+                                    <p:outputLabel for="fixedProductInterval" value="Interest Interval in Months: " />
+                                    <p:inputText id="fixedProductInterval" value="#{createDepositProductManagedBean.fixedProduct.interestInterval}" required="true"/>
+                                </c:if>
+                                
+                                <c:if test="#{createDepositProductManagedBean.productType != createDepositProductManagedBean.PRODUCT_TYPE_FIXED}">
+                                    <p:outputLabel for="productInterests" value="Product Interests " />
+                                    <p:selectCheckboxMenu id="productInterests" value="#{createDepositProductManagedBean.selectedInterests}" label="Interests" filter="true" filterMatchMode="startsWith" required="true">
+                                        <f:selectItems value="#{createDepositProductManagedBean.selectInterests}"/>
+                                    </p:selectCheckboxMenu>
+                                </c:if>
+
+                                <p:commandButton value="Create" icon="ui-icon-plus" update="@form" actionListener="#{createDepositProductManagedBean.addProduct}" />
+                            </h:panelGrid>
+                        </p:messages>
+                    </p:panel>
+                </h:form>
+                
+                <h:form id="DisplayForm">
+                    <p:panel header="Custom Deposit Products">
+                        <p:dataTable id="customProductList" value="#{createDepositProductManagedBean.customProducts}" var="product">
+                            <p:column headerText="Name" sortBy="#{product.name}">
+                                <h:outputText value="#{product.name}"/>
+                            </p:column>
+                            <p:column headerText="Type" sortBy="#{product.type}">
+                                <h:outputText value="#{product.type}"/> 
+                            </p:column>
+                        </p:dataTable>
+                    </p:panel>
+                    <p:panel header="Current Deposit Products">
+                        <p:dataTable id="currentProductList" value="#{createDepositProductManagedBean.currentProducts}" var="product">
+                            <p:column headerText="Name" sortBy="#{product.name}">
+                                <h:outputText value="#{product.name}"/>
+                            </p:column>
+                            <p:column headerText="Type" sortBy="#{product.type}">
+                                <h:outputText value="#{product.type}"/> 
+                            </p:column>
+                        </p:dataTable>
+                    </p:panel>
+                    <p:panel header="Saving Deposit Products">
+                        <p:dataTable id="savingProductList" value="#{createDepositProductManagedBean.savingProducts}" var="product">
+                            <p:column headerText="Name" sortBy="#{product.name}">
+                                <h:outputText value="#{product.name}"/>
+                            </p:column>
+                            <p:column headerText="Type" sortBy="#{product.type}">
+                                <h:outputText value="#{product.type}"/> 
+                            </p:column>
+                        </p:dataTable>
+                    </p:panel>
+                    <p:panel header="Fixed Deposit Products">
+                        <p:dataTable id="fixedProductList" value="#{createDepositProductManagedBean.fixedProducts}" var="product">
+                            <p:column headerText="Name" sortBy="#{product.name}">
+                                <h:outputText value="#{product.name}"/>
+                            </p:column>
+                            <p:column headerText="Type" sortBy="#{product.type}">
+                                <h:outputText value="#{product.type}"/> 
+                            </p:column>
+                        </p:dataTable>
+                    </p:panel>
+                </h:form>
+            </div>
+        </h:body>
+    </f:view>
+
+
+</html>
+

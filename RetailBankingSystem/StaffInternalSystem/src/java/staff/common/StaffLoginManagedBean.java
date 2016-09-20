@@ -59,7 +59,7 @@ public class StaffLoginManagedBean implements Serializable {
         } else {
             SessionUtils.setStaffAccount(sa);
             if (UserUtils.isUserInRole(UserRole.SUPER_ADMIN.toString())) {
-                RedirectUtils.redirect(SessionUtils.getContextPath() + "/others/create-interest.xhtml");
+                RedirectUtils.redirect(SessionUtils.getContextPath() + "/admin/create_interest.xhtml");
             } else {
                 RedirectUtils.redirect(SessionUtils.getContextPath() + "/message/notification.xhtml");
             }

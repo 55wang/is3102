@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package staff.others;
+package staff.admin;
 
 import ejb.session.staff.StaffRoleSessionBeanLocal;
 import entity.staff.Role;

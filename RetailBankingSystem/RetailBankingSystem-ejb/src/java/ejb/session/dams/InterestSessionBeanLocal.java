@@ -19,6 +19,7 @@ public interface InterestSessionBeanLocal {
     public Interest addInterest(Interest interest);
     public Interest updateInterest(Interest interest);
     public List<Interest> showAllInterests();
+    public List<Interest> showAllPresentInterests();
     public List<Interest> getCustomAccountDefaultInterests();
     public List<Interest> getCurrentAccountDefaultInterests();
     public List<Interest> getFixedDepositAccountDefaultInterests();
