@@ -5,7 +5,7 @@
  */
 package staff.others;
 
-import ejb.session.dams.AccountRuleSessionBeanLocal;
+import ejb.session.dams.InterestSessionBeanLocal;
 import entity.dams.rules.ConditionInterest;
 import entity.dams.rules.Interest;
 import entity.dams.rules.RangeInterest;
@@ -32,7 +32,7 @@ import utils.MessageUtils;
 public class CreateInterestManagedBean implements Serializable {
 
     @EJB
-    private AccountRuleSessionBeanLocal interestSessionBean;
+    private InterestSessionBeanLocal interestSessionBean;
 
     private String interestType;
     private Interest normalInterest = new Interest();
@@ -52,6 +52,7 @@ public class CreateInterestManagedBean implements Serializable {
     private String CONDITION_TYPE_SALARY = InterestConditionType.SALARY.toString();
     private String CONDITION_TYPE_INVEST = InterestConditionType.INVEST.toString();
     private String CONDITION_TYPE_INCREASE = InterestConditionType.INCREASE.toString();
+    private String CONDITION_TYPE_NOWITHDRAW = InterestConditionType.NOWITHDRAW.toString();
 
     /**
      * Creates a new instance of CreateInterestManagedBean
@@ -76,44 +77,36 @@ public class CreateInterestManagedBean implements Serializable {
         }
     }
 
-    @Audit(activtyLog = "Add Interest")
+//    @Audit(activtyLog = "Add Interest")
     public void addInterest(ActionEvent event) {
         if (interestType.equals(INTEREST_TYPE_NORMAL)) {
-            if (interestSessionBean.addInterest(normalInterest)) {
+            if (interestSessionBean.addInterest(normalInterest) != null) {
                 normalInterests.add(normalInterest);
                 MessageUtils.displayInfo("Normal Interest Created");
             } else {
                 MessageUtils.displayError("This Interest Exists");
             }
         } else if (interestType.equals(INTEREST_TYPE_RANGE)) {
-            if (interestSessionBean.addInterest(rangeInterest)) {
+            if (interestSessionBean.addInterest(rangeInterest) != null) {
                 rangeInterests.add(rangeInterest);
                 MessageUtils.displayInfo("Range Interest Created");
             } else {
                 MessageUtils.displayError("This Interest Exists");
             }
         } else if (interestType.equals(INTEREST_TYPE_TIME_RANGE)) {
-            if (interestSessionBean.addInterest(timeRangeInterest)) {
+            if (interestSessionBean.addInterest(timeRangeInterest) != null) {
                 timeRangeInterests.add(timeRangeInterest);
                 MessageUtils.displayInfo("Time Range Interest Created");
             } else {
                 MessageUtils.displayError("This Interest Exists");
             }
         } else if (interestType.equals(INTEREST_TYPE_CONDITION)) {
-            if (interestSessionBean.addInterest(conditionInterest)) {
+            if (interestSessionBean.addInterest(conditionInterest) != null) {
                 conditionInterests.add(conditionInterest);
                 MessageUtils.displayInfo("Condition Interest Created");
             } else {
                 MessageUtils.displayError("This Interest Exists");
             }
-        } else {
-            MessageUtils.displayError("There's some error when creating interest");
-        }
-    }
-
-    public void onInterestCellEdit(Interest i) {
-        if (interestSessionBean.updateInterest(i)) {
-            MessageUtils.displayInfo(i.getName() + " Changed!");
         } else {
             MessageUtils.displayError("There's some error when creating interest");
         }

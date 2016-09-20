@@ -5,7 +5,7 @@
  */
 package staff.dams;
 
-import ejb.session.dams.DepositAccountSessionBeanLocal;
+import ejb.session.dams.CustomerDepositSessionBeanLocal;
 import entity.dams.account.DepositAccount;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -25,7 +25,7 @@ import utils.MessageUtils;
 public class CheckAccountBalanceManagedBean implements Serializable {
 
     @EJB
-    private DepositAccountSessionBeanLocal bankAccountSessionBean;
+    private CustomerDepositSessionBeanLocal bankAccountSessionBean;
     /**
      * Creates a new instance of CheckBalanceCurrentAccountManagedBean
      */
@@ -33,14 +33,14 @@ public class CheckAccountBalanceManagedBean implements Serializable {
     }
     
     private Long accountNumber;
-    private List<DepositAccount> accounts = new ArrayList<>();
+    private List<DepositAccount> depositAccounts = new ArrayList<>();
     
     public void checkBalance(ActionEvent event) {
         DepositAccount newAccount = bankAccountSessionBean.getAccountFromId(getAccountNumber());
         if (newAccount == null) {
             MessageUtils.displayError("Account Not Found!");
         } else {
-            getAccounts().add(newAccount);
+            getDepositAccounts().add(newAccount);
             MessageUtils.displayInfo("Account Retrieved!");
         }
         
@@ -61,16 +61,16 @@ public class CheckAccountBalanceManagedBean implements Serializable {
     }
 
     /**
-     * @return the accounts
+     * @return the depositAccounts
      */
-    public List<DepositAccount> getAccounts() {
-        return accounts;
+    public List<DepositAccount> getDepositAccounts() {
+        return depositAccounts;
     }
 
     /**
-     * @param accounts the accounts to set
+     * @param depositAccounts the depositAccounts to set
      */
-    public void setAccounts(List<DepositAccount> accounts) {
-        this.accounts = accounts;
+    public void setDepositAccounts(List<DepositAccount> depositAccounts) {
+        this.depositAccounts = depositAccounts;
     }
 }

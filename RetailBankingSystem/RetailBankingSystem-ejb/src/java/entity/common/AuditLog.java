@@ -42,6 +42,11 @@ public class AuditLog implements Serializable {
     @ManyToOne(cascade={CascadeType.PERSIST})
     private MainAccount mainAccount;
 
+    @Override
+    public String toString() {
+        return "AuditLog{" + "id=" + id + ", creationDate=" + creationDate + ", activityLog=" + activityLog + ", functionName=" + functionName + ", input=" + input + ", output=" + output + ", ipAddress=" + ipAddress + ", staffAccount=" + staffAccount + ", mainAccount=" + mainAccount + '}';
+    }
+    
     public Long getId() {
         return id;
     }

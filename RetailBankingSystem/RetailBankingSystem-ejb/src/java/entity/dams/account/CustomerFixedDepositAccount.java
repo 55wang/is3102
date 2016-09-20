@@ -6,10 +6,12 @@
 package entity.dams.account;
 
 import entity.dams.rules.Interest;
+import entity.embedded.CumulatedInterest;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.CascadeType;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
@@ -20,37 +22,30 @@ import javax.persistence.TemporalType;
  * @author leiyang
  */
 @Entity
-public class FixedDepositAccount extends DepositAccount {
+public class CustomerFixedDepositAccount extends DepositAccount {
+    
+    // Counter to decrease
     // if this is true, no interest will be credited
-    // I
     private Boolean earlyWithdrewed = false;
-    private Integer periodInMonth;
     @Temporal(value = TemporalType.DATE) //precision by date is sufficient
     private final Date maturityDate = new Date();
-    //Assume interest will be calculated at the maturity date
-    @OneToMany(cascade = CascadeType.MERGE)
-    private List<Interest> interests = new ArrayList<>();
-    
-    public void addInterestsRules(List<Interest> interests) {
-        interests.addAll(interests);
-    }
-    
-    public void removeInterestsRules(List<Interest> interests) {
-        interests.removeAll(interests);
-    }
-    
+    @Embedded
+    private CumulatedInterest cumulatedInterest = new CumulatedInterest();
+    @OneToMany(cascade = {CascadeType.MERGE})
+    private List<Interest> interestRules = new ArrayList<>();
+
     /**
-     * @return the interests
+     * @return the cumulatedInterest
      */
-    public List<Interest> getInterests() {
-        return interests;
+    public CumulatedInterest getCumulatedInterest() {
+        return cumulatedInterest;
     }
 
     /**
-     * @param interests the interests to set
+     * @param cumulatedInterest the cumulatedInterest to set
      */
-    public void setInterests(List<Interest> interests) {
-        this.interests = interests;
+    public void setCumulatedInterest(CumulatedInterest cumulatedInterest) {
+        this.cumulatedInterest = cumulatedInterest;
     }
 
     /**
@@ -68,23 +63,24 @@ public class FixedDepositAccount extends DepositAccount {
     }
 
     /**
-     * @return the periodInMonth
-     */
-    public Integer getPeriodInMonth() {
-        return periodInMonth;
-    }
-
-    /**
-     * @param periodInMonth the periodInMonth to set
-     */
-    public void setPeriodInMonth(Integer periodInMonth) {
-        this.periodInMonth = periodInMonth;
-    }
-
-    /**
      * @return the maturityDate
      */
     public Date getMaturityDate() {
         return maturityDate;
     }
+
+    /**
+     * @return the interestRules
+     */
+    public List<Interest> getInterestRules() {
+        return interestRules;
+    }
+
+    /**
+     * @param interestRules the interestRules to set
+     */
+    public void setInterestRules(List<Interest> interestRules) {
+        this.interestRules = interestRules;
+    }
+
 }

@@ -22,14 +22,20 @@ public class AuditUtils implements Serializable {
             List<String> input, String output, MainAccount ma, StaffAccount sa) {
 
         Date date = new Date();
-
+        System.out.println("Creating AuditLog");
         AuditLog al = new AuditLog();
+        System.out.println("Input Date is:" + date.toString());
         al.setCreationDate(date);
+        System.out.println("activityLog is:" + activityLog);
         al.setActivityLog(activityLog);
+        System.out.println("functionName is:" + functionName);
         al.setFunctionName(functionName);
+        System.out.println("Input is:" + input.toString());
         al.setInput(input.toString());
+        System.out.println("output is:" + output);
         al.setOutput(output);
         String ip = SessionUtils.getIpAddress();
+        System.out.println("ip is:" + ip);
         al.setIpAddress(ip);
 
         if (ma != null) {
@@ -37,7 +43,7 @@ public class AuditUtils implements Serializable {
         } else if (sa != null) {
             al.setStaffAccount(sa);
         }
-
+        System.out.println("StaffAccount is:" + sa.toString());
         return al;
     }
 

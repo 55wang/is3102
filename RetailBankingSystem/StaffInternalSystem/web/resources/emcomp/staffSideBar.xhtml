@@ -18,7 +18,7 @@
             <h:outputStylesheet library="css" name="theme.css"/>
             <div id="side-menu">
                 <ul id="side-menu-container">
-                    <c:if test="#{cc.attrs.top == 'account'}">
+                    <c:if test="#{cc.attrs.top == 'dams'}">
                         <li class="side-menu-item #{cc.attrs.side == 'openAccount' ? 'active' : ''}">
                             <h:link outcome="open-account" value="Open Current Account" />
                         </li>

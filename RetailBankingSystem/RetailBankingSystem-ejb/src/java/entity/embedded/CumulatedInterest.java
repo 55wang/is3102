@@ -27,8 +27,6 @@ public class CumulatedInterest implements Serializable {
     private Integer times = 0;
     @Temporal(value = TemporalType.TIMESTAMP)
     private Date updatedDate = new Date();
-    private Integer intervalMonth = 1;
-
 
     /**
      * @return the times
@@ -84,19 +82,5 @@ public class CumulatedInterest implements Serializable {
      */
     public void setCummulativeAmount(BigDecimal cummulativeAmount) {
         this.cummulativeAmount = cummulativeAmount;
-    }
-
-    /**
-     * @return the intervalMonth
-     */
-    public Integer getIntervalMonth() {
-        return intervalMonth;
-    }
-
-    /**
-     * @param intervalMonth the intervalMonth to set
-     */
-    public void setIntervalMonth(Integer intervalMonth) {
-        this.intervalMonth = intervalMonth;
     }
 }

@@ -5,13 +5,12 @@
  */
 package staff.dams;
 
-import ejb.session.dams.DepositAccountSessionBeanLocal;
-import ejb.session.dams.AccountRuleSessionBeanLocal;
+import ejb.session.dams.CustomerDepositSessionBeanLocal;
+import ejb.session.dams.InterestSessionBeanLocal;
+import entity.common.TransactionRecord;
+import entity.dams.account.CustomerDepositAccount;
+import entity.dams.account.CustomerFixedDepositAccount;
 import entity.dams.account.DepositAccount;
-import entity.dams.account.CurrentAccount;
-import entity.dams.account.FixedDepositAccount;
-import entity.dams.account.SavingAccount;
-import entity.common.Transaction;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +20,7 @@ import javax.faces.event.ActionEvent;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import utils.EnumUtils;
+import utils.EnumUtils.DepositAccountType;
 import utils.MessageUtils;
 
 /**
@@ -30,61 +30,71 @@ import utils.MessageUtils;
 @Named(value = "openAccountManagedBean")
 @ViewScoped
 public class OpenAccountManagedBean implements Serializable {
+
     @EJB
-    private DepositAccountSessionBeanLocal bankAccountSessionBean;
+    private CustomerDepositSessionBeanLocal customerDepositSessionBean;
     @EJB
-    private AccountRuleSessionBeanLocal interestSessionBean;
+    private InterestSessionBeanLocal interestSessionBean;
 
     private String accountType;
-    private CurrentAccount newCurrentAccount = new CurrentAccount();
-    private FixedDepositAccount newFixedDepositAccount = new FixedDepositAccount();
-    private SavingAccount newSavingAccount = new SavingAccount();
+    private CustomerDepositAccount newCurrentAccount;
+    private CustomerFixedDepositAccount newFixedDepositAccount;
+    private CustomerDepositAccount newSavingAccount;
     //LoanAccount and MobileAccount will be opened by other means
-    private List<CurrentAccount> currentAccounts = new ArrayList<>();
-    private List<FixedDepositAccount> fixedDepositAccounts = new ArrayList<>();
-    private List<SavingAccount> savingAccounts = new ArrayList<>();
+    private List<CustomerDepositAccount> currentAccounts = new ArrayList<>();
+    private List<CustomerFixedDepositAccount> fixedDepositAccounts = new ArrayList<>();
+    private List<CustomerDepositAccount> savingAccounts = new ArrayList<>();
     private String ACCOUNT_TYPE_CURRENT = EnumUtils.DepositAccountType.CURRENT.toString();
     private String ACCOUNT_TYPE_FIXED = EnumUtils.DepositAccountType.FIXED.toString();
     private String ACCOUNT_TYPE_SAVING = EnumUtils.DepositAccountType.SAVING.toString();
- 
+
     public OpenAccountManagedBean() {
         System.out.println("OpenAccountManagedBean() Created!!");
     }
-    
+
     @PostConstruct
     public void init() {
+        newCurrentAccount = new CustomerDepositAccount();
+        newCurrentAccount.setType(DepositAccountType.CURRENT);
+        newFixedDepositAccount = new CustomerFixedDepositAccount();
+        newFixedDepositAccount.setType(DepositAccountType.FIXED);
+        newSavingAccount = new CustomerDepositAccount();
+        newSavingAccount.setType(DepositAccountType.SAVING);
         accountType = ACCOUNT_TYPE_CURRENT;
-        List<DepositAccount> accounts = bankAccountSessionBean.showAllAccounts();
+        List<DepositAccount> accounts = customerDepositSessionBean.showAllAccounts();
         for (DepositAccount ba : accounts) {
-            if (ba instanceof CurrentAccount) {
-                getCurrentAccounts().add((CurrentAccount) ba);
-            } else if (ba instanceof FixedDepositAccount) {
-                getFixedDepositAccounts().add((FixedDepositAccount) ba);
-            } else if (ba instanceof SavingAccount) {
-                getSavingAccounts().add((SavingAccount) ba);
+            if (ba instanceof CustomerDepositAccount) {
+                if (ba.getType().equals(DepositAccountType.CURRENT)) {
+                    getCurrentAccounts().add((CustomerDepositAccount)ba);
+                } else if (ba.getType().equals(DepositAccountType.SAVING)) {
+                    getSavingAccounts().add((CustomerDepositAccount)ba);
+                }
+            } else {
+                getFixedDepositAccounts().add((CustomerFixedDepositAccount)ba);
             }
+            
         }
     }
-    
+
     public void addAccount(ActionEvent event) {
         addTransaction();
         addDefaultInterest();
         if (getAccountType().equals(getACCOUNT_TYPE_CURRENT())) {
-            if (bankAccountSessionBean.createAccount(getNewCurrentAccount()) != null) {
+            if (customerDepositSessionBean.createAccount(getNewCurrentAccount()) != null) {
                 getCurrentAccounts().add(getNewCurrentAccount());
                 MessageUtils.displayInfo("Current Account Created");
             } else {
                 MessageUtils.displayError("There's some error when creating account");
             }
         } else if (getAccountType().equals(getACCOUNT_TYPE_FIXED())) {
-            if (bankAccountSessionBean.createAccount(getNewFixedDepositAccount()) != null) {
+            if (customerDepositSessionBean.createAccount(getNewFixedDepositAccount()) != null) {
                 getFixedDepositAccounts().add(getNewFixedDepositAccount());
                 MessageUtils.displayInfo("Fixed Deposit Account Created");
             } else {
                 MessageUtils.displayError("There's some error when creating account");
             }
         } else if (getAccountType().equals(getACCOUNT_TYPE_SAVING())) {
-            if (bankAccountSessionBean.createAccount(getNewSavingAccount()) != null) {
+            if (customerDepositSessionBean.createAccount(getNewSavingAccount()) != null) {
                 getSavingAccounts().add(getNewSavingAccount());
                 MessageUtils.displayInfo("Savings Account Created");
             } else {
@@ -94,7 +104,7 @@ public class OpenAccountManagedBean implements Serializable {
             MessageUtils.displayError("There's some error when creating account");
         }
     }
-    
+
     private DepositAccount getAccount() {
         if (accountType.equals(getACCOUNT_TYPE_CURRENT())) {
             return getNewCurrentAccount();
@@ -106,9 +116,9 @@ public class OpenAccountManagedBean implements Serializable {
             return null;
         }
     }
-    
+
     private void addTransaction() {
-        Transaction t = new Transaction();
+        TransactionRecord t = new TransactionRecord();
         t.setAmount(getAccount().getBalance());
         t.setFromAccount(getAccount());
         t.setCredit(Boolean.TRUE);
@@ -122,13 +132,13 @@ public class OpenAccountManagedBean implements Serializable {
         } else {
         }
     }
-    
+
     private void addDefaultInterest() {
         if (accountType.equals(getACCOUNT_TYPE_FIXED())) {
             // Only fixed deposit account will save interest, save a new Interest object, with id account id + interest name
             getNewFixedDepositAccount().addInterestsRules(interestSessionBean.getFixedDepositAccountDefaultInterests());
         } else {
-            
+
         }
     }
 
@@ -149,84 +159,84 @@ public class OpenAccountManagedBean implements Serializable {
     /**
      * @return the newCurrentAccount
      */
-    public CurrentAccount getNewCurrentAccount() {
+    public CustomerDepositAccount getNewCurrentAccount() {
         return newCurrentAccount;
     }
 
     /**
      * @param newCurrentAccount the newCurrentAccount to set
      */
-    public void setNewCurrentAccount(CurrentAccount newCurrentAccount) {
+    public void setNewCurrentAccount(CustomerDepositAccount newCurrentAccount) {
         this.newCurrentAccount = newCurrentAccount;
     }
 
     /**
      * @return the newFixedDepositAccount
      */
-    public FixedDepositAccount getNewFixedDepositAccount() {
+    public CustomerFixedDepositAccount getNewFixedDepositAccount() {
         return newFixedDepositAccount;
     }
 
     /**
      * @param newFixedDepositAccount the newFixedDepositAccount to set
      */
-    public void setNewFixedDepositAccount(FixedDepositAccount newFixedDepositAccount) {
+    public void setNewFixedDepositAccount(CustomerFixedDepositAccount newFixedDepositAccount) {
         this.newFixedDepositAccount = newFixedDepositAccount;
     }
 
     /**
      * @return the newSavingAccount
      */
-    public SavingAccount getNewSavingAccount() {
+    public CustomerDepositAccount getNewSavingAccount() {
         return newSavingAccount;
     }
 
     /**
      * @param newSavingAccount the newSavingAccount to set
      */
-    public void setNewSavingAccount(SavingAccount newSavingAccount) {
+    public void setNewSavingAccount(CustomerDepositAccount newSavingAccount) {
         this.newSavingAccount = newSavingAccount;
     }
 
     /**
      * @return the currentAccounts
      */
-    public List<CurrentAccount> getCurrentAccounts() {
+    public List<CustomerDepositAccount> getCurrentAccounts() {
         return currentAccounts;
     }
 
     /**
      * @param currentAccounts the currentAccounts to set
      */
-    public void setCurrentAccounts(List<CurrentAccount> currentAccounts) {
+    public void setCurrentAccounts(List<CustomerDepositAccount> currentAccounts) {
         this.currentAccounts = currentAccounts;
     }
 
     /**
      * @return the fixedDepositAccounts
      */
-    public List<FixedDepositAccount> getFixedDepositAccounts() {
+    public List<CustomerFixedDepositAccount> getFixedDepositAccounts() {
         return fixedDepositAccounts;
     }
 
     /**
      * @param fixedDepositAccounts the fixedDepositAccounts to set
      */
-    public void setFixedDepositAccounts(List<FixedDepositAccount> fixedDepositAccounts) {
+    public void setFixedDepositAccounts(List<CustomerFixedDepositAccount> fixedDepositAccounts) {
         this.fixedDepositAccounts = fixedDepositAccounts;
     }
 
     /**
      * @return the savingAccounts
      */
-    public List<SavingAccount> getSavingAccounts() {
+    public List<CustomerDepositAccount> getSavingAccounts() {
         return savingAccounts;
     }
 
     /**
      * @param savingAccounts the savingAccounts to set
      */
-    public void setSavingAccounts(List<SavingAccount> savingAccounts) {
+    public void setSavingAccounts(List<CustomerDepositAccount> savingAccounts) {
         this.savingAccounts = savingAccounts;
     }
 

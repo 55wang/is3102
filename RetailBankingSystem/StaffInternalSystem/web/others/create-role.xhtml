@@ -23,25 +23,6 @@
                                 <p:outputLabel for="roleName" value="Role Name: " />
                                 <p:inputText id="roleName" value="#{createRoleManagedBean.newRole.roleName}" required="true"/>
                                 
-                                <h:outputText value="Super User Permission:" />
-                                <p:selectBooleanCheckbox value="#{createRoleManagedBean.newRole.superUserRight}" />
-                                <h:outputText value="Customer Permission:" />
-                                <p:selectBooleanCheckbox value="#{createRoleManagedBean.newRole.customerAccessRight}" />
-                                <h:outputText value="Deposit Permission:" />
-                                <p:selectBooleanCheckbox value="#{createRoleManagedBean.newRole.depositAccessRight}" />
-                                <h:outputText value="Card Permission:" />
-                                <p:selectBooleanCheckbox value="#{createRoleManagedBean.newRole.cardAccessRight}" />
-                                <h:outputText value="Loan Permission:" />
-                                <p:selectBooleanCheckbox value="#{createRoleManagedBean.newRole.loanAccessRight}" />
-                                <h:outputText value="Bill Permission:" />
-                                <p:selectBooleanCheckbox value="#{createRoleManagedBean.newRole.billAccessRight}" />
-                                <h:outputText value="Wealth Permission:" />
-                                <p:selectBooleanCheckbox value="#{createRoleManagedBean.newRole.wealthAccessRight}" />
-                                <h:outputText value="Portfolio Permission:" />
-                                <p:selectBooleanCheckbox value="#{createRoleManagedBean.newRole.portfolioAccessRight}" />
-                                <h:outputText value="Analytics Permission:" />
-                                <p:selectBooleanCheckbox value="#{createRoleManagedBean.newRole.analyticsAccessRight}" />
-
                                 <p:commandButton value="Create" icon="ui-icon-plus" update="@form" actionListener="#{createRoleManagedBean.addRole}" />
                             </h:panelGrid>
                         </p:messages>
@@ -50,33 +31,6 @@
                         <p:dataTable id="addedRoles" value="#{createRoleManagedBean.roles}" var="role">
                             <p:column headerText="Name" sortBy="#{role.roleName}">
                                 <h:outputText value="#{role.roleName}"></h:outputText>
-                            </p:column>
-                            <p:column headerText="SUPER" sortBy="#{role.superUserRight}">
-                                <h:outputText value="#{role.superUserRight}"></h:outputText>
-                            </p:column>
-                            <p:column headerText="CUST" sortBy="#{role.customerAccessRight}">
-                                <h:outputText value="#{role.customerAccessRight}"></h:outputText>
-                            </p:column>
-                            <p:column headerText="DEPO" sortBy="#{role.depositAccessRight}">
-                                <h:outputText value="#{role.depositAccessRight}"></h:outputText>
-                            </p:column>
-                            <p:column headerText="CARD" sortBy="#{role.cardAccessRight}">
-                                <h:outputText value="#{role.cardAccessRight}"></h:outputText>
-                            </p:column>
-                            <p:column headerText="LOAN" sortBy="#{role.loanAccessRight}">
-                                <h:outputText value="#{role.loanAccessRight}"></h:outputText>
-                            </p:column>
-                            <p:column headerText="BILL" sortBy="#{role.billAccessRight}">
-                                <h:outputText value="#{role.billAccessRight}"></h:outputText>
-                            </p:column>
-                            <p:column headerText="WEAL" sortBy="#{role.wealthAccessRight}">
-                                <h:outputText value="#{role.wealthAccessRight}"></h:outputText>
-                            </p:column>
-                            <p:column headerText="PORT" sortBy="#{role.portfolioAccessRight}">
-                                <h:outputText value="#{role.portfolioAccessRight}"></h:outputText>
-                            </p:column>
-                            <p:column headerText="ANAL" sortBy="#{role.analyticsAccessRight}">
-                                <h:outputText value="#{role.analyticsAccessRight}"></h:outputText>
                             </p:column>
                         </p:dataTable>
                     </p:panel>

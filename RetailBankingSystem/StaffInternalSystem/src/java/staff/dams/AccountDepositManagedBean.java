@@ -5,12 +5,9 @@
  */
 package staff.dams;
 
-import ejb.session.dams.DepositAccountSessionBeanLocal;
-import entity.dams.account.DepositAccount;
-import entity.dams.account.CurrentAccount;
+import ejb.session.dams.CustomerDepositSessionBeanLocal;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.List;
 import javax.ejb.EJB;
 import javax.faces.event.ActionEvent;
 import javax.inject.Named;
@@ -27,35 +24,20 @@ import utils.MessageUtils;
 public class AccountDepositManagedBean implements Serializable {
 
     @EJB
-    private DepositAccountSessionBeanLocal bankAccountSessionBean;
+    private CustomerDepositSessionBeanLocal customerDepositSessionBean;
     
     private String accountType;
     private String ACCOUNT_TYPE_CURRENT = EnumUtils.DepositAccountType.CURRENT.toString();
     private String ACCOUNT_TYPE_FIXED = EnumUtils.DepositAccountType.FIXED.toString();
     private String ACCOUNT_TYPE_SAVING = EnumUtils.DepositAccountType.SAVING.toString();
-    private List<CurrentAccount> accounts;
     private Long accountNumber;
     private BigDecimal depositAmount;
     
     public AccountDepositManagedBean() {}
     
     public void depositIntoAccount(ActionEvent event) {
-        String message = bankAccountSessionBean.depositIntoAccount(getAccountNumber(), getDepositAmount());
+        String message = customerDepositSessionBean.depositIntoAccount(getAccountNumber(), getDepositAmount());
         MessageUtils.displayInfo(message);
-    }
-
-    /**
-     * @return the accounts
-     */
-    public List<CurrentAccount> getAccounts() {
-        return accounts;
-    }
-
-    /**
-     * @param accounts the accounts to set
-     */
-    public void setAccounts(List<CurrentAccount> accounts) {
-        this.accounts = accounts;
     }
 
     /**

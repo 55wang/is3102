@@ -91,9 +91,10 @@ public class AuditInterceptor implements Serializable {
         } catch (NullPointerException ex) {
             System.out.println("Null Pointer");
         }
-        System.out.println("Second try");
+        System.out.println("Second try and StaffAccount is: " + sa.toString());
 //        System.out.println("AuditInterceptor: ....has returned " + result);
         AuditLog al = AuditUtils.createAuditLog(activityLog, functionName, input, result.toString(), null, sa);
+        System.out.println("AuditLog Created: " + al.toString());
         auditSessionBean.insertAuditLog(al);
         return result;
     }

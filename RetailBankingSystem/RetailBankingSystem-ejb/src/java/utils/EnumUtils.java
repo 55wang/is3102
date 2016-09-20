@@ -714,6 +714,12 @@ public class EnumUtils {
                     public String toString() {
                         return "INCREASE";
                     }
+                },
+        NOWITHDRAW {
+                    @Override
+                    public String toString() {
+                        return "NOWITHDRAW";
+                    }
                 }
     }
 

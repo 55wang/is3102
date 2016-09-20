@@ -15,8 +15,6 @@ import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.faces.event.ActionEvent;
 import javax.faces.view.ViewScoped;
-import utils.EnumUtils;
-import utils.EnumUtils.Permission;
 import utils.EnumUtils.UserRole;
 import utils.HashPwdUtils;
 import utils.MessageUtils;
@@ -63,7 +61,7 @@ public class StaffLoginManagedBean implements Serializable {
             if (UserUtils.isUserInRole(UserRole.SUPER_ADMIN.toString())) {
                 RedirectUtils.redirect(SessionUtils.getContextPath() + "/others/create-interest.xhtml");
             } else {
-                RedirectUtils.redirect(SessionUtils.getContextPath() + "/dams/open-account.xhtml");
+                RedirectUtils.redirect(SessionUtils.getContextPath() + "/message/notification.xhtml");
             }
         }
     }

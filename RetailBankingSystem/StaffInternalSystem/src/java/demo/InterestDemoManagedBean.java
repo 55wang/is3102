@@ -6,11 +6,11 @@
 package demo;
 
 import BatchProcess.InterestAccrualSessionBeanLocal;
-import ejb.session.dams.AccountRuleSessionBeanLocal;
-import ejb.session.dams.DepositAccountSessionBeanLocal;
-import entity.dams.account.CustomAccount;
+import ejb.session.dams.InterestSessionBeanLocal;
+import ejb.session.dams.CustomerDepositSessionBeanLocal;
+import entity.dams.account.CustomerDepositAccount;
 import entity.dams.account.DepositAccount;
-import entity.dams.account.FixedDepositAccount;
+import entity.dams.account.DepositAccountProduct;
 import entity.dams.rules.ConditionInterest;
 import entity.dams.rules.Interest;
 import entity.dams.rules.RangeInterest;
@@ -35,9 +35,9 @@ import utils.EnumUtils;
 public class InterestDemoManagedBean implements Serializable {
 
     @EJB
-    private DepositAccountSessionBeanLocal depositAccountSessionBean;
+    private CustomerDepositSessionBeanLocal depositAccountSessionBean;
     @EJB
-    private AccountRuleSessionBeanLocal accountRuleSessionBean;
+    private InterestSessionBeanLocal accountRuleSessionBean;
     @EJB
     private InterestAccrualSessionBeanLocal interestAccrualSessionBean;
 
@@ -58,7 +58,13 @@ public class InterestDemoManagedBean implements Serializable {
 
     public BigDecimal getTotalInterest(DepositAccount account) {
         BigDecimal totalInterest = BigDecimal.ZERO;
-        BigDecimal monthlyInterval = new BigDecimal(12 / (account.getCumulatedInterest().getIntervalMonth()));
+        BigDecimal monthlyInterval = null; 
+        if (account instanceof CustomerDepositAccount) {
+            monthlyInterval = new BigDecimal(12 / account.getProduct().getInterestInterval());
+        } else {
+            
+        }
+        
         System.out.println(monthlyInterval);
         BigDecimal originalAmount = account.getBalance();
 
@@ -129,18 +135,7 @@ public class InterestDemoManagedBean implements Serializable {
     }
 
     private void initInterests() {
-        List<Interest> interests = null;
-        if (account.getType().equals(EnumUtils.DepositAccountType.CUSTOM)) {
-            interests = accountRuleSessionBean.getCustomAccountDefaultInterests();
-            interests.addAll(accountRuleSessionBean.getDefaultInterestsByAccountName(((CustomAccount) account).getName()));
-        } else if (account.getType().equals(EnumUtils.DepositAccountType.CURRENT)) {
-            interests = accountRuleSessionBean.getCurrentAccountDefaultInterests();
-        } else if (account.getType().equals(EnumUtils.DepositAccountType.SAVING)) {
-            interests = accountRuleSessionBean.getSavingccountDefaultInterests();
-        } else if (account.getType().equals(EnumUtils.DepositAccountType.FIXED)) {
-            FixedDepositAccount fda = (FixedDepositAccount) account;
-            interests = fda.getInterests();
-        }
+        List<Interest> interests = ((DepositAccountProduct)account.getProduct()).getInterestRules();
 
         for (Interest i : interests) {
             if (i instanceof TimeRangeInterest) {
