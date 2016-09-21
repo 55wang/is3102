@@ -71,6 +71,7 @@ public class EntityBuilderBean {
     @EJB
     private MainAccountSessionBeanLocal mainAccountSessionBean;
     
+    private Interest demoNormalInterestData;
     private List<Interest> demoConditionalInterestData = new ArrayList<>();
     private MainAccount demoMainAccount;
 
@@ -440,7 +441,7 @@ public class EntityBuilderBean {
         i.setName("Normal Interest");
         i.setVersion(0);
         i.setPercentage(new BigDecimal(0.0001));// 0.01%
-        interestSessionBean.addInterest(i);
+        demoNormalInterestData = interestSessionBean.addInterest(i);
 
         // Init other interests
         initTimeRangeInterest();
@@ -520,6 +521,7 @@ public class EntityBuilderBean {
         dr.setAnnualFees(BigDecimal.ZERO);
         dr.setWaivedMonths(12);
         dr.setInterestRules(demoConditionalInterestData);
+        dr.addInterest(demoNormalInterestData);
         depositProductSessionBean.createDepositProduct(dr);
     }
 
