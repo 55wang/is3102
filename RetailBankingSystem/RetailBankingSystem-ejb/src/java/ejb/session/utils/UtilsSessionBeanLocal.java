@@ -14,6 +14,6 @@ import javax.ejb.Local;
 @Local
 public interface UtilsSessionBeanLocal {
     public Object find(Class type, Long id);
-    public Object persist(Class type, Long id);
-    public Object merge(Class type, Long id);
+    public Object persist(Object object);
+    public Object merge(Object object);
 }
