@@ -16,6 +16,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import utils.EnumUtils.CaseStatus;
 
 /**
  *
@@ -28,6 +29,7 @@ public class CustomerCase implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String title;
+    private CaseStatus caseStatus;
     @OneToMany(cascade = {CascadeType.ALL}, mappedBy = "customerCase")
     private List<Issue> issues = new ArrayList<Issue>(); 
     @ManyToOne(cascade = {CascadeType.MERGE})
@@ -94,6 +96,14 @@ public class CustomerCase implements Serializable {
             return false;
         }
         return true;
+    }
+
+    public CaseStatus getCaseStatus() {
+        return caseStatus;
+    }
+
+    public void setCaseStatus(CaseStatus caseStatus) {
+        this.caseStatus = caseStatus;
     }
 
     @Override

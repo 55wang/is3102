@@ -21,4 +21,5 @@ public interface CustomerCaseSessionBeanLocal {
     public CustomerCase searchCaseByID(String id);
     public List<CustomerCase> searchCaseByTitle(String title);
     public Boolean cancelCase(Long id);
+    public List<CustomerCase> getAllCase();
 }

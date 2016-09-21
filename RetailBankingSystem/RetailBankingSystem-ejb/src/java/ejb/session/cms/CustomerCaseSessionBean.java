@@ -13,6 +13,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import utils.EnumUtils.CaseStatus;
 
 /**
  *
@@ -43,6 +44,7 @@ public class CustomerCaseSessionBean implements CustomerCaseSessionBeanLocal {
     
     @Override
     public Boolean saveCase(CustomerCase customerCase){
+        customerCase.setCaseStatus(CaseStatus.ONHOLD);
         
         try{
             
@@ -58,9 +60,17 @@ public class CustomerCaseSessionBean implements CustomerCaseSessionBeanLocal {
     
     @Override
     public CustomerCase searchCaseByID(String id){
-        Query q = em.createQuery("SELECT a FROM CustomerCase a WHERE a.id = :caseID");
+        Query q = em.createQuery("SELECT a FROM CustomerCase a WHERE "
+                                  + "a.id = :caseID AND " 
+                                  + "a.caseStatus != :cancelStatus");
         
-        q.setParameter("caseID", Long.parseLong(id));
+        try{
+            q.setParameter("caseID", Long.parseLong(id));
+        }catch (Exception ex) {
+            System.out.println("CustomerCaseSessionBean.searchCaseById: "+ex.toString());
+            return null;
+        }
+        q.setParameter("cancelStatus", CaseStatus.CANCELLED);
         
         CustomerCase customerCase = null;
           
@@ -75,14 +85,31 @@ public class CustomerCaseSessionBean implements CustomerCaseSessionBeanLocal {
 
     @Override
     public List<CustomerCase> searchCaseByTitle(String title){
-        Query q = em.createQuery("SELECT a FROM CustomerCase a WHERE a.title = :caseTitle");
+        Query q = em.createQuery("SELECT a FROM CustomerCase a WHERE "
+                                 + "a.title = :caseTitle AND "
+                                 + "a.caseStatus != :cancelStatus");
         
         q.setParameter("caseTitle", title);
+        q.setParameter("cancelStatus", CaseStatus.CANCELLED);
         
         try {   
             return q.getResultList();
         } catch (NoResultException ex) {
             System.out.println("CustomerCaseSessionBean.searchCaseByTitle: "+ex.toString());
+            return null;
+        }
+    }
+    
+    @Override
+    public List<CustomerCase> getAllCase(){
+        Query q = em.createQuery("SELECT a FROM CustomerCase a WHERE a.caseStatus != :cancelStatus");
+        
+        q.setParameter("cancelStatus", CaseStatus.CANCELLED);
+        
+        try {   
+            return q.getResultList();
+        } catch (NoResultException ex) {
+            System.out.println("CustomerCaseSessionBean.getAllCase: "+ex.toString());
             return null;
         }
     }

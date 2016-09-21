@@ -5,6 +5,7 @@
  */
 package ejb.session.common;
 
+import entity.customer.CustomerCase;
 import entity.customer.MainAccount;
 import javax.ejb.Local;
 
@@ -21,5 +22,7 @@ public interface EmailServiceSessionBeanLocal {
     public Boolean sendActivationGmailForStaff(String recipient, String pwd);
     public Boolean sendUserNameforForgottenStaff(String recipient, String username);
     public Boolean sendResetPwdLinkforForgottenStaff(String recipient);
+    public Boolean sendNewCaseConfirmationToCustomer(String recipient, CustomerCase cc);
+    public Boolean sendCancelCaseConfirmationToCustomer(String recipient, CustomerCase cc);
     public void sendUpdatedProfile(String recipient);
 }
