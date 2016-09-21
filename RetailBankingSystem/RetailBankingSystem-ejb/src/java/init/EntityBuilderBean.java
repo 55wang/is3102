@@ -115,7 +115,6 @@ public class EntityBuilderBean {
         String u = "c1234567";
         String p = HashPwdUtils.hashPwd("password");
 
-        MainAccount ma = null;
         Customer c = new Customer();
         c.setAddress("some fake address"); //make it a bit more real
         c.setBirthDay(new Date()); //make some real birthday.
@@ -130,14 +129,13 @@ public class EntityBuilderBean {
         c.setOccupation("programmer");
         c.setPhone("81567758"); //must use real phone number as we need sms code
         c.setPostalCode("654321");
-        c.setMainAccount(ma);
-        ma = new MainAccount();
-        ma.setUserID(u);
-        ma.setPassword(p);
-        ma.setStatus(EnumUtils.StatusType.ACTIVE);
-        ma.setCustomer(c);
+        c.setMainAccount(new MainAccount());
+        c.getMainAccount().setUserID(u);
+        c.getMainAccount().setPassword(p);
+        c.getMainAccount().setStatus(EnumUtils.StatusType.ACTIVE);
+        c.getMainAccount().setCustomer(c);
 
-        newCustomerSessionBean.createCustomer(c, ma);
+        newCustomerSessionBean.createCustomer(c);
     }
 
     private void initInterest() {

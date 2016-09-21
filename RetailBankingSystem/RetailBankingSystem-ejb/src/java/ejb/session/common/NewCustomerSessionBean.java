@@ -22,9 +22,7 @@ public class NewCustomerSessionBean implements NewCustomerSessionBeanLocal {
     private EntityManager em;
 
     @Override
-    public void createCustomer(Customer customer, MainAccount mainAccount) {
-        customer.setMainAccount(mainAccount);
-        mainAccount.setCustomer(customer);
+    public void createCustomer(Customer customer) {
         em.persist(customer);
         //temporary comment the sms away to save credit
         //SendTextMessage.sendText("6581567758", "testing2");

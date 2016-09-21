@@ -15,5 +15,5 @@ import javax.ejb.Local;
  */
 @Local
 public interface NewCustomerSessionBeanLocal {
-    public void createCustomer(Customer customer, MainAccount mainAccount);
+    public void createCustomer(Customer customer);
 }
