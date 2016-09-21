@@ -38,12 +38,12 @@ public class CreditCardAccount implements Serializable {
     private Long id;
     @ManyToOne(cascade = CascadeType.PERSIST)
     private MainAccount mainAccount;
-    @OneToOne(cascade = {CascadeType.PERSIST})
+    @ManyToOne(cascade = {CascadeType.PERSIST})
     private CreditCardProduct creditCardProduct;
 
     @Column(precision = 12)// LY:credit card number in decimal??
     private BigDecimal creditCardNum;
-    private int cvv; // LY: Use Integer instead of int
+    private Integer cvv; // LY: Use Integer instead of int
     private String nameOnCard;
     @Temporal(value = TemporalType.DATE)
     private Date validDate;

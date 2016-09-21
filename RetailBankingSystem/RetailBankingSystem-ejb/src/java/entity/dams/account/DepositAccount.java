@@ -44,7 +44,8 @@ public abstract class DepositAccount implements Serializable {
     @Column(precision=12, scale=2)
     private BigDecimal balance = new BigDecimal(0);
     @ManyToOne(cascade = CascadeType.PERSIST)
-    private MainAccount mainAccount = new MainAccount();
+    private MainAccount mainAccount; // = new MainAccountl; 
+    // it would initiate with a new mainAccount would create a null mainaccount!!!
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "fromAccount")
     private List<TransactionRecord> transactions = new ArrayList<>();
     @ManyToOne(cascade = {CascadeType.MERGE})

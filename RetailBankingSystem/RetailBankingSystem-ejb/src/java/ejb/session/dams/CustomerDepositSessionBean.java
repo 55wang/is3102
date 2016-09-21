@@ -7,6 +7,7 @@ package ejb.session.dams;
 
 import entity.dams.account.CustomerDepositAccount;
 import entity.common.TransactionRecord;
+import entity.customer.MainAccount;
 import entity.dams.account.DepositAccount;
 import java.math.BigDecimal;
 import java.util.List;
@@ -49,6 +50,7 @@ public class CustomerDepositSessionBean implements CustomerDepositSessionBeanLoc
             if (account instanceof CustomerDepositAccount) {
                 ((CustomerDepositAccount)account).setPreviousBalance(account.getBalance());
             }
+            account.setMainAccount(new MainAccount()); //temporary create a null mainaccount;
             em.persist(account);
             t.setFromAccount(account);
             em.merge(t);

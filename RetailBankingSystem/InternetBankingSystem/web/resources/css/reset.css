@@ -97,7 +97,7 @@ table {
 /* change border colour to suit your needs */
 hr {
     display:block;
-    height:1px;
+    height:0px;
     border:0;   
     border-top:1px solid #cccccc;
     margin:1em 0;

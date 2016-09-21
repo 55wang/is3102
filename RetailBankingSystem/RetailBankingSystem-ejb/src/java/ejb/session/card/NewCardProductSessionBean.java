@@ -6,6 +6,7 @@
 package ejb.session.card;
 
 import entity.card.account.CreditCardOrder;
+import entity.card.account.MileCardProduct;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -17,21 +18,22 @@ import javax.persistence.Query;
  * @author wang
  */
 @Stateless
-public class NewCardSessionBean implements NewCardSessionBeanLocal {
+public class NewCardProductSessionBean implements NewCardProductSessionBeanLocal {
 
     @PersistenceContext(unitName = "RetailBankingSystem-ejbPU")
     private EntityManager em;
 
-    public List<CreditCardOrder> showAllCreditCardOrder() {
-        Query q = em.createQuery("SELECT cco FROM CreditCardOrder cco");
+    public List<MileCardProduct> showAllMileProducts() {
+        Query q = em.createQuery("SELECT * FROM CreditCardProduct cc inner join MileCardProduct mile on cc.id=mile.id");
         return q.getResultList();
     }
 
-    public CreditCardOrder getAccountFromId(Long orderNumber) {
-        return em.find(CreditCardOrder.class, orderNumber);
+    public MileCardProduct getMileProductFromId(Long orderNumber) {
+        return em.find(MileCardProduct.class, orderNumber);
     }
 
-    public void createAccount(CreditCardOrder order) {
-        em.persist(order);
+    public void createMileProduct(MileCardProduct mcp) {
+        em.persist(mcp);
     }
+
 }

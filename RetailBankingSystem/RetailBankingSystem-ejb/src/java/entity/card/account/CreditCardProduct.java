@@ -6,6 +6,8 @@
 package entity.card.account;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,7 +16,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
-import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
 
 /**
  *
@@ -35,8 +37,8 @@ public abstract class CreditCardProduct implements Serializable {
     private double minSpendingAmount = 0;
     private boolean minSpending = false; //default = false
 
-    @OneToOne(cascade = {CascadeType.PERSIST}, mappedBy = "creditCardProduct")
-    private CreditCardAccount creditCardAccount;
+    @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "creditCardProduct")
+    private List<CreditCardAccount> creditCardAcounts = new ArrayList<>();
 
     /**
      * @return the id
@@ -76,12 +78,13 @@ public abstract class CreditCardProduct implements Serializable {
         this.minSpending = minSpending;
     }
 
-    public CreditCardAccount getCreditCardAccount() {
-        return creditCardAccount;
+    public List<CreditCardAccount> getCreditCardAcounts() {
+        return creditCardAcounts;
     }
 
-    public void setCreditCardAccount(CreditCardAccount creditCardAccount) {
-        this.creditCardAccount = creditCardAccount;
+    public void setCreditCardAcounts(List<CreditCardAccount> creditCardAcounts) {
+        this.creditCardAcounts = creditCardAcounts;
     }
+
 
 }

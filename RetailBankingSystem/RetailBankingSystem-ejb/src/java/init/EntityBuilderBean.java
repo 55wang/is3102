@@ -6,12 +6,16 @@
 package init;
 
 import BatchProcess.InterestAccrualSessionBeanLocal;
+import ejb.session.card.NewCardProductSessionBean;
+import ejb.session.card.NewCardProductSessionBeanLocal;
 import ejb.session.common.NewCustomerSessionBeanLocal;
 import ejb.session.dams.InterestSessionBeanLocal;
 import ejb.session.dams.CustomerDepositSessionBeanLocal;
 import ejb.session.dams.DepositProductSessionBeanLocal;
 import ejb.session.staff.StaffAccountSessionBeanLocal;
 import ejb.session.staff.StaffRoleSessionBeanLocal;
+import entity.card.account.CreditCardProduct;
+import entity.card.account.MileCardProduct;
 import entity.customer.Customer;
 import entity.customer.MainAccount;
 import entity.dams.account.CustomerDepositAccount;
@@ -60,7 +64,9 @@ public class EntityBuilderBean {
     private InterestAccrualSessionBeanLocal interestAccrualSessionBean;
     @EJB
     private DepositProductSessionBeanLocal depositProductSessionBean;
-
+    @EJB
+    private NewCardProductSessionBeanLocal newCardProductSessionBean;
+    
     private List<Interest> demoConditionalInterestData = new ArrayList<>();
     private MainAccount demoAccount;
 
@@ -98,6 +104,18 @@ public class EntityBuilderBean {
         initInterest();
         initDepositProducts();
         initDepositAccounts();
+        
+        initCreditCardProduct();
+    }
+    
+    public void initCreditCardProduct() {
+        MileCardProduct mca = new MileCardProduct();
+        mca.setLocalMileRate(1.3);
+        mca.setOverseaMileRate(2);
+        mca.setMinSpending(true);
+        mca.setMinSpendingAmount(2000);
+        mca.setProductName("Merlion MileCard");
+        newCardProductSessionBean.createMileProduct(mca);
     }
 
     private void initStaffAndRoles() {
@@ -183,7 +201,7 @@ public class EntityBuilderBean {
         productManagerAccount.setLastName("Manager");
         productManagerAccount.setEmail("product_manager@merlionbank.com");
         productManagerAccount.setStatus(StatusType.ACTIVE);
-        productManagerAccount.setRole(loanOfficerRole);
+        productManagerAccount.setRole(productManagerRole);
         staffAccountSessionBean.createAccount(productManagerAccount);
     }
 
@@ -191,7 +209,6 @@ public class EntityBuilderBean {
         String u = "c1234567";
         String p = HashPwdUtils.hashPwd("password");
 
-        MainAccount ma = null;
         Customer c = new Customer();
         c.setAddress("some fake address"); //make it a bit more real
         c.setBirthDay(new Date()); //make some real birthday.
@@ -206,14 +223,13 @@ public class EntityBuilderBean {
         c.setOccupation("programmer");
         c.setPhone("81567758"); //must use real phone number as we need sms code
         c.setPostalCode("654321");
-        c.setMainAccount(ma);
-        ma = new MainAccount();
-        ma.setUserID(u);
-        ma.setPassword(p);
-        ma.setStatus(EnumUtils.StatusType.ACTIVE);
-        ma.setCustomer(c);
+        c.setMainAccount(new MainAccount());
+        c.getMainAccount().setUserID(u);
+        c.getMainAccount().setPassword(p);
+        c.getMainAccount().setStatus(EnumUtils.StatusType.ACTIVE);
+        c.getMainAccount().setCustomer(c);
 
-        newCustomerSessionBean.createCustomer(c, ma);
+        newCustomerSessionBean.createCustomer(c);
     }
 
     private void initInterest() {

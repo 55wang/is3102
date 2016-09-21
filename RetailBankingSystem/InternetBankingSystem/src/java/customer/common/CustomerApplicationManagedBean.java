@@ -38,7 +38,6 @@ public class CustomerApplicationManagedBean implements Serializable {
     private NewCustomerSessionBeanLocal newCustomerSessionBean;
 
     private Customer customer = new Customer();
-    private MainAccount mainAccount = new MainAccount();
     private String initialDepositAccount;
 
     /**
@@ -63,19 +62,14 @@ public class CustomerApplicationManagedBean implements Serializable {
         this.initialDepositAccount = initialDepositAccount;
     }
 
-    public MainAccount getMainAccount() {
-        return mainAccount;
-    }
-
-    public void setMainAccount(MainAccount mainAccount) {
-        this.mainAccount = mainAccount;
-    }
-
     public void save() {
+
+        customer.setMainAccount(new MainAccount());
+        MainAccount mainAccount = customer.getMainAccount();
         Boolean emailSuccessFlag = true;
-        
+
         mainAccount.setStatus(StatusType.PENDING);
-        
+
         mainAccount.setUserID(generateUserID(customer.getIdentityType(), customer.getIdentityNumber()));
         String randomPwd = generatePwd();
         mainAccount.setPassword(randomPwd);
@@ -98,48 +92,45 @@ public class CustomerApplicationManagedBean implements Serializable {
                 break;
         };
 
-        try{
+        try {
             emailServiceSessionBean.sendActivationGmailForCustomer(customer.getEmail(), randomPwd);
-        }catch(Exception ex){
+        } catch (Exception ex) {
             emailSuccessFlag = false;
         }
-        
-        if(emailSuccessFlag){
-            newCustomerSessionBean.createCustomer(customer, mainAccount);
+
+        if (emailSuccessFlag) {
+            newCustomerSessionBean.createCustomer(customer);
             RedirectUtils.redirect("../common/register_successful.xhtml");
-        }
-        else{
+        } else {
             MessageUtils.displayInfo("Fail!");
         }
-        
 
 //        emailServiceSessionBean.sendActivationEmailForCustomer(customer.getEmail());
-        
     }
 
     public String onFlowProcess(FlowEvent event) {
         return event.getNewStep();
     }
-    
-    public String generateUserID(String identityType, String identityNum){
-        if(identityType.equals("Singaporean/PR NRIC")){
-            return "c"+identityNum.substring(1, identityNum.length()-1);
-        }
-        else if(identityType.equals("Passport")){
-            return "c"+identityNum.substring(1);
-        }
-        else 
+
+    public String generateUserID(String identityType, String identityNum) {
+        if (identityType.equals("Singaporean/PR NRIC")) {
+            return "c" + identityNum.substring(1, identityNum.length() - 1);
+        } else if (identityType.equals("Passport")) {
+            return "c" + identityNum.substring(1);
+        } else {
             return "error";
+        }
     }
-    
-    private String generatePwd(){
+
+    private String generatePwd() {
         int pwdLen = 10;
         SecureRandom rnd = new SecureRandom();
 
         String AB = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
         StringBuilder sb = new StringBuilder(pwdLen);
-        for( int i = 0; i < pwdLen; i++ ) 
-            sb.append( AB.charAt( rnd.nextInt(AB.length()) ) );
+        for (int i = 0; i < pwdLen; i++) {
+            sb.append(AB.charAt(rnd.nextInt(AB.length())));
+        }
         return sb.toString();
     }
 }
