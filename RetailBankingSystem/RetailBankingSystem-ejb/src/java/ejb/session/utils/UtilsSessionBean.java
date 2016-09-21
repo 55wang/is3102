@@ -15,12 +15,24 @@ import javax.persistence.PersistenceContext;
  */
 @Stateless
 public class UtilsSessionBean implements UtilsSessionBeanLocal {
+    
     @PersistenceContext(unitName = "RetailBankingSystem-ejbPU")
     private EntityManager em;
 
     @Override
-    public Object getObjectById(Class type, Long id) {
+    public Object find(Class type, Long id) {
         return em.find(type, id);
     }
-
+    
+    @Override
+    public Object persist(Object object) {
+        em.persist(object);
+        return object;
+    }
+    
+    @Override
+    public Object merge(Object object) {
+        em.merge(object);
+        return object;
+    }
 }
