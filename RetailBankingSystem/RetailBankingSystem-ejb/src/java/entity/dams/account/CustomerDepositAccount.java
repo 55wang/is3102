@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
-import utils.EnumUtils.DepositAccountType;
+import server.utilities.EnumUtils.DepositAccountType;
 
 /**
  *

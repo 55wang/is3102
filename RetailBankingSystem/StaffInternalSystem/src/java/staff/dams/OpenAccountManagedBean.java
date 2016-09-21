@@ -19,8 +19,8 @@ import javax.ejb.EJB;
 import javax.faces.event.ActionEvent;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
-import utils.EnumUtils;
-import utils.EnumUtils.DepositAccountType;
+import server.utilities.EnumUtils;
+import server.utilities.EnumUtils.DepositAccountType;
 import utils.MessageUtils;
 
 /**

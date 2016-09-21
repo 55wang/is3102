@@ -16,7 +16,7 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import utils.EnumUtils.DepositAccountType;
+import server.utilities.EnumUtils.DepositAccountType;
 
 /**
  *

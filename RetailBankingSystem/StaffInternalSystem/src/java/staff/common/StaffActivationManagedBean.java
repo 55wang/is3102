@@ -14,7 +14,7 @@ import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.context.FacesContext;
-import utils.EnumUtils;
+import server.utilities.EnumUtils;
 import utils.SessionUtils;
 
 /**

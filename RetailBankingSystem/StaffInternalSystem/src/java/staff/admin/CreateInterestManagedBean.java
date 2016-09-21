@@ -18,8 +18,8 @@ import javax.ejb.EJB;
 import javax.faces.event.ActionEvent;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
-import utils.EnumUtils.InterestConditionType;
-import utils.EnumUtils.InterestType;
+import server.utilities.EnumUtils.InterestConditionType;
+import server.utilities.EnumUtils.InterestType;
 import utils.MessageUtils;
 
 /**

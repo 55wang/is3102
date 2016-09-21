@@ -35,11 +35,11 @@ import javax.ejb.EJB;
 import javax.ejb.Singleton;
 import javax.ejb.LocalBean;
 import javax.ejb.Startup;
-import utils.ConstantUtils;
-import utils.EnumUtils;
-import utils.EnumUtils.DepositAccountType;
-import utils.EnumUtils.StatusType;
-import utils.HashPwdUtils;
+import server.utilities.ConstantUtils;
+import server.utilities.EnumUtils;
+import server.utilities.EnumUtils.DepositAccountType;
+import server.utilities.EnumUtils.StatusType;
+import server.utilities.HashPwdUtils;
 
 /**
  *

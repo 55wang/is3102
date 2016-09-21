@@ -13,7 +13,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import utils.EnumUtils.CaseStatus;
+import server.utilities.EnumUtils.CaseStatus;
 
 /**
  *

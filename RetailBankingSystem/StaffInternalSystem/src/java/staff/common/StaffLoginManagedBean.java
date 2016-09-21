@@ -15,7 +15,7 @@ import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.faces.event.ActionEvent;
 import javax.faces.view.ViewScoped;
-import utils.EnumUtils.UserRole;
+import server.utilities.EnumUtils.UserRole;
 import utils.HashPwdUtils;
 import utils.MessageUtils;
 import utils.RedirectUtils;
