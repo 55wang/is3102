@@ -1016,7 +1016,6 @@ exists or setup the property manually. For example like this:
         <copyfiles files="${reference.RetailBankingSystem-ejb.dist}" todir="${build.web.dir}/WEB-INF/lib"/>
         <copyfiles files="${libs.javaee-api-7.0.classpath}" todir="${build.web.dir}/WEB-INF/lib"/>
         <copyfiles files="${libs.PrimeFaces_6.0.classpath}" todir="${build.web.dir}/WEB-INF/lib"/>
-        <copyfiles files="${libs.Atmosphere.classpath}" todir="${build.web.dir}/WEB-INF/lib"/>
         <copyfiles files="${libs.Apache.classpath}" todir="${build.web.dir}/WEB-INF/lib"/>
         <copyfiles files="${libs.atmosphere.classpath}" todir="${build.web.dir}/WEB-INF/lib"/>
     </target>

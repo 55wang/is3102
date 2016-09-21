@@ -52,11 +52,11 @@ public class CustomerProfileManagedBean implements Serializable {
         profileEdited = true;
     }
     
-    public Boolean save(){
-        
-        Boolean result = customerProfileSessionBean.saveProfile(customer);
-        RedirectUtils.redirect("view_profile.xhtml");
-        return result;
+    public void save(){
+        Customer result = customerProfileSessionBean.saveProfile(customer);
+        if (result != null) {
+            RedirectUtils.redirect("view_profile.xhtml");
+        }
     }
 
     public Customer getCustomer() {
