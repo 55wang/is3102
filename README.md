@@ -51,3 +51,11 @@ mysql -u root --password=password < RecreateDatabase.sql
 	In your managed bean:
 	private List<String> selectEnums = CommonUtils.getEnumList(EnumUtils.SomeEnum.class);
 
+# Input Format Mask #
+	TODO: XiaQing Please put some examples here
+
+# Output Format #
+	TODO: Some examples
+	// This displays in 0.0000% 
+	<f:convertNumber type="percent" minFractionDigits="4"/>
+

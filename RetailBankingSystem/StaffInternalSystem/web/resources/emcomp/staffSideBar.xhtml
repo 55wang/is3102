@@ -63,6 +63,12 @@
                         </li>
         
                     </c:if>
+                    <c:if test="#{cc.attrs.top == 'setting'}">
+                        <li class="side-menu-item #{cc.attrs.side == 'viewProfile' ? 'active' : ''}">
+                            <h:link outcome="staff_view_profile" value="View Profile" />
+                        </li>
+        
+                    </c:if>
                 </ul>
             </div>
             <!--TODO: Fillin all the sub menus here -->
