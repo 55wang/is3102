@@ -20,17 +20,16 @@
                 <p:panel header="Search Customer">
                     <p:outputPanel>
                         <h:form id="search-form">
-                            <p:inputText id="idFilter" style="width:180px" value="#{staffCustomerInformationManagedBean.searchText}" placeholder="Enter identity number"  />
-                            <p:commandButton value="Search" actionListener="#{staffCustomerInformationManagedBean.search}" update="update-form"/>
+                            <p:inputText id="idFilter" style="width:180px" value="#{staffCustomerCaseManagedBean.searchText}" placeholder="Enter Case ID"  />
+                            <p:commandButton value="Search" actionListener="#{staffCustomerCaseManagedBean.search}" update="search-form"/>
                         </h:form>
                     </p:outputPanel>
                 </p:panel>
 
 
                 <p:panel header="List of My Cases">
-                    <h:form id="update-form">
+                    <h:form id="mainForm">
                         <p:dataTable id="caseList" value="#{staffCustomerCaseManagedBean.cases}" var="case" sortMode="multiple" >
-
                             <p:column style="width:16px">
                                 <p:rowToggler />
                             </p:column>
@@ -43,12 +42,25 @@
                                 <h:outputText value="#{case.title}" />
                             </p:column>
 
-                            <p:column headerText="Status" sortBy="#{case.caseStatus}" >
-                                <h:outputText value="#{case.caseStatus}" />
+                            <p:column headerText="Status" sortBy="#{case.caseStatus}" style="width:140px">
+                                <p:selectOneMenu value="#{case.caseStatus}">
+                                    <f:selectItems value="#{staffCustomerCaseManagedBean.caseStatusList}" />
+                                </p:selectOneMenu>
                             </p:column>
 
                             <p:column headerText="Customer" sortBy="#{case.mainAccount.customer.identityNumber}">
                                 <h:outputText value="#{case.mainAccount.customer.identityNumber}" />
+                            </p:column>
+                            
+                            <p:column headerText="Case Assignee" sortBy="#{case.staffAccount.username}">
+                                <h:outputText value="#{case.staffAccount.username}" />
+                            </p:column>
+                            
+                            <p:column headerText="Action" style="width:140px">
+                                <p:splitButton value="Update" action="#{staffCustomerCaseManagedBean.update(case)}" update="@form" icon="ui-icon-disk">
+                                    <p:menuitem value="Transfer" actionListener="#{buttonView.update}" update="@form" icon="ui-icon-arrowrefresh-1-w" />
+                                    <p:menuitem value="Delete" actionListener="#{buttonView.delete}" ajax="false" icon="ui-icon-close" />
+                                </p:splitButton>
                             </p:column>
 
                         </p:dataTable>

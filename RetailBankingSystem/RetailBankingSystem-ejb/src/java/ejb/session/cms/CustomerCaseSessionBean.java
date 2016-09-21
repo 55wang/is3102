@@ -67,6 +67,22 @@ public class CustomerCaseSessionBean implements CustomerCaseSessionBeanLocal {
             return true;
         }
         catch (Exception ex) {
+            System.out.println("CustomerCaseSessionBean.saveCase: " + ex.toString());
+            return false;
+        }
+    }
+    
+    @Override
+    public Boolean updateCase(CustomerCase customerCase){        
+        try{
+            
+            em.merge(customerCase);
+            em.flush();
+          
+            return true;
+        }
+        catch (Exception ex) {
+            System.out.println("CustomerCaseSessionBean.updateCase: " + ex.toString());
             return false;
         }
     }

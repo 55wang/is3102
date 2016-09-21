@@ -19,6 +19,7 @@ import javax.ejb.Local;
 public interface CustomerCaseSessionBeanLocal {
     public MainAccount getMainAccountByUserID(String userID);
     public Boolean saveCase(CustomerCase customerCase);
+    public Boolean updateCase(CustomerCase customerCase);
     public CustomerCase searchCaseByID(String id);
     public List<CustomerCase> searchCaseByTitle(String title);
     public Boolean cancelCase(Long id);
