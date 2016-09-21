@@ -20,839 +20,775 @@ public class EnumUtils {
     // discounted partner merchants
     public enum CreditType {
 
-        MILE {
-                    @Override
-                    public String toString() {
-                        return "MILE";
-                    }
-                },
-        REWARD {
-                    @Override
-                    public String toString() {
-                        return "REWARD";
-                    }
-                },
-        CASHBACK {
-                    @Override
-                    public String toString() {
-                        return "CASHBACK";
-                    }
+        MILE("MILE"),
+        REWARD("REWARD"),
+        CASHBACK("CASHBACK");
+        private String value;
+
+        CreditType(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        @Override
+        public String toString() {
+            return this.getValue();
+        }
+
+        public static CreditType getEnum(String value) {
+            for (CreditType v : values()) {
+                if (v.getValue().equalsIgnoreCase(value)) {
+                    return v;
                 }
+            }
+            throw new IllegalArgumentException();
+        }
     }
 
     // LY: Can this conbimed with Status?
     public enum CardAccountStatus {
 
-        PENDING {
-                    @Override
-                    public String toString() {
-                        return "PENDING";
-                    }
-                },
-        ACTIVE {
-                    @Override
-                    public String toString() {
-                        return "ACTIVE";
-                    }
-                },
-        FREEZE {
-                    @Override
-                    public String toString() {
-                        return "FREEZE";
-                    }
-                },
-        CLOSED {
-                    @Override
-                    public String toString() {
-                        return "CLOSED";
-                    }
+        PENDING("PENDING"),
+        ACTIVE("ACTIVE"),
+        FREEZE("FREEZE"),
+        CLOSED("CLOSED");
+        
+        private String value;
+
+        CardAccountStatus(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        @Override
+        public String toString() {
+            return this.getValue();
+        }
+
+        public static CardAccountStatus getEnum(String value) {
+            for (CardAccountStatus v : values()) {
+                if (v.getValue().equalsIgnoreCase(value)) {
+                    return v;
                 }
+            }
+            throw new IllegalArgumentException();
+        }
     }
 
     public enum StatusType {
 
-        ACTIVE {
-                    public String toString() {
-                        return "ACTIVE";
-                    }
-                },
-        PENDING {
-                    public String toString() {
-                        return "PENDING";
-                    }
-                },
-        FREEZE {
-                    public String toString() {
-                        return "FREEZE";
-                    }
-                },
-        CLOSED {
-                    public String toString() {
-                        return "CLOSED";
-                    }
+        ACTIVE("ACTIVE"),
+        PENDING("PENDING"),
+        FREEZE("FREEZE"),
+        CLOSED("CLOSED");
+
+        private String value;
+
+        StatusType(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        @Override
+        public String toString() {
+            return this.getValue();
+        }
+
+        public static StatusType getEnum(String value) {
+            for (StatusType v : values()) {
+                if (v.getValue().equalsIgnoreCase(value)) {
+                    return v;
                 }
+            }
+            throw new IllegalArgumentException();
+        }
     }
 
     public enum ApplicationStatus {
 
-        PENDING {
-                    @Override
-                    public String toString() {
-                        return "PENDING";
-                    }
-                },
-        EDITABLE {
-                    @Override
-                    public String toString() {
-                        return "EDITABLE";
-                    }
-                },
-        REJECT {
-                    @Override
-                    public String toString() {
-                        return "REJECT";
-                    }
-                },
-        APPROVED {
-                    @Override
-                    public String toString() {
-                        return "APPROVED";
-                    }
-                },
-        CANCELLED {
-                    @Override
-                    public String toString() {
-                        return "CANCELLED";
-                    }
+        PENDING("PENDING"),
+        EDITABLE("EDITABLE"),
+        REJECT("REJECT"),
+        APPROVED("APPROVED"),
+        CANCELLED("CANCELLED");
+        
+        private String value;
+
+        ApplicationStatus(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        @Override
+        public String toString() {
+            return this.getValue();
+        }
+
+        public static ApplicationStatus getEnum(String value) {
+            for (ApplicationStatus v : values()) {
+                if (v.getValue().equalsIgnoreCase(value)) {
+                    return v;
                 }
+            }
+            throw new IllegalArgumentException();
+        }
     }
 
     // Customer
     public enum Position {
 
-        SENIOR_MANAGEMENT {
-                    @Override
-                    public String toString() {
-                        return "SENIOR_MANAGEMENT";
-                    }
-                },
-        PROFESSIONAL {
-                    @Override
-                    public String toString() {
-                        return "PROFESSIONAL";
-                    }
-                },
-        MANAGERIAL {
-                    @Override
-                    public String toString() {
-                        return "MANAGERIAL";
-                    }
-                },
-        EXECUTIVE {
-                    @Override
-                    public String toString() {
-                        return "EXECUTIVE";
-                    }
-                },
-        SALES {
-                    @Override
-                    public String toString() {
-                        return "SALES";
-                    }
-                },
-        OTHERS {
-                    @Override
-                    public String toString() {
-                        return "OTHERS";
-                    }
-                },
-        DIRECTOR {
-                    @Override
-                    public String toString() {
-                        return "DIRECTOR";
-                    }
-                },
-        SUPERVISOR {
-                    @Override
-                    public String toString() {
-                        return "SUPERVISOR";
-                    }
-                },
-        TEACHER_LECTURER {
-                    @Override
-                    public String toString() {
-                        return "TEACHER_LECTURER";
-                    }
-                },
-        DILPOMAT {
-                    @Override
-                    public String toString() {
-                        return "DILPOMAT";
-                    }
+        SENIOR_MANAGEMENT("SENIOR_MANAGEMENT"),
+        PROFESSIONAL("PROFESSIONAL"),
+        MANAGERIAL("MANAGERIAL"),
+        EXECUTIVE("EXECUTIVE"),
+        SALES("SALES"),
+        OTHERS("OTHERS"),
+        DIRECTOR("DIRECTOR"),
+        SUPERVISOR("SUPERVISOR"),
+        TEACHER_LECTURER("TEACHER_LECTURER"),
+        DILPOMAT("DILPOMAT");
+        
+        private String value;
+
+        Position(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        @Override
+        public String toString() {
+            return this.getValue();
+        }
+
+        public static Position getEnum(String value) {
+            for (Position v : values()) {
+                if (v.getValue().equalsIgnoreCase(value)) {
+                    return v;
                 }
+            }
+            throw new IllegalArgumentException();
+        }
     }
 
     public enum Industry {
 
-        BUILDING_CONSTRUCTION {
-                    @Override
-                    public String toString() {
-                        return "BUILDING_CONSTRUCTION";
-                    }
-                },
-        BANKING_FINANCE {
-                    @Override
-                    public String toString() {
-                        return "BANKING_FINANCE";
-                    }
-                },
-        IT_TELCO {
-                    @Override
-                    public String toString() {
-                        return "IT_TELCO";
-                    }
-                },
-        GOVERNMENT {
-                    @Override
-                    public String toString() {
-                        return "GOVERNMENT";
-                    }
-                },
-        MANUFACTURING {
-                    @Override
-                    public String toString() {
-                        return "MANUFACTURING";
-                    }
-                },
-        OTHERS {
-                    @Override
-                    public String toString() {
-                        return "OTHERS";
-                    }
-                },
-        SHIPPING_TRANSPORT {
-                    @Override
-                    public String toString() {
-                        return "SHIPPING_TRANSPORT";
-                    }
-                },
-        ENTERTAINMENT {
-                    @Override
-                    public String toString() {
-                        return "ENTERTAINMENT";
-                    }
-                },
-        HOTEL_RESTAURANT {
-                    @Override
-                    public String toString() {
-                        return "HOTEL_RESTAURANT";
-                    }
-                },
-        RETAIL {
-                    @Override
-                    public String toString() {
-                        return "RETAIL";
-                    }
-                },
-        TRAVEL_RELATED {
-                    @Override
-                    public String toString() {
-                        return "TRAVEL_RELATED";
-                    }
+        BUILDING_CONSTRUCTION("BUILDING_CONSTRUCTION"),
+        BANKING_FINANCE("BANKING_FINANCE"),
+        IT_TELCO("IT_TELCO"),
+        GOVERNMENT("GOVERNMENT"),
+        MANUFACTURING("MANUFACTURING"),
+        OTHERS("OTHERS"),
+        SHIPPING_TRANSPORT("SHIPPING_TRANSPORT"),
+        ENTERTAINMENT("ENTERTAINMENT"),
+        HOTEL_RESTAURANT("HOTEL_RESTAURANT"),
+        RETAIL("RETAIL"),
+        TRAVEL_RELATED("TRAVEL_RELATED");
+        
+        private String value;
+
+        Industry(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        @Override
+        public String toString() {
+            return this.getValue();
+        }
+
+        public static Industry getEnum(String value) {
+            for (Industry v : values()) {
+                if (v.getValue().equalsIgnoreCase(value)) {
+                    return v;
                 }
+            }
+            throw new IllegalArgumentException();
+        }
     }
 
     public enum EmploymentStatus {
 
-        VARIABLE_COMMISSION {
-                    @Override
-                    public String toString() {
-                        return "VARIABLE_COMMISSION";
-                    }
-                },
-        EMPLOYEE {
-                    @Override
-                    public String toString() {
-                        return "EMPLOYEE";
-                    }
-                },
-        SELF_EMPLOYED {
-                    @Override
-                    public String toString() {
-                        return "SELF_EMPLOYED";
-                    }
-                },
-        OTHERS {
-                    @Override
-                    public String toString() {
-                        return "OTHERS";
-                    }
+        VARIABLE_COMMISSION("VARIABLE_COMMISSION"),
+        EMPLOYEE("EMPLOYEE"),
+        SELF_EMPLOYED("SELF_EMPLOYED"),
+        OTHERS("OTHERS");
+        
+        private String value;
+
+        EmploymentStatus(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        @Override
+        public String toString() {
+            return this.getValue();
+        }
+
+        public static EmploymentStatus getEnum(String value) {
+            for (EmploymentStatus v : values()) {
+                if (v.getValue().equalsIgnoreCase(value)) {
+                    return v;
                 }
+            }
+            throw new IllegalArgumentException();
+        }
 
     }
 
     public enum EduLevel {
 
-        UNIVERSITY_GRAD {
-                    @Override
-                    public String toString() {
-                        return "UNIVERSITY_GRAD";
-                    }
-                },
-        DIPLOMA_HOLDER {
-                    @Override
-                    public String toString() {
-                        return "DIPLOMA_HOLDER";
-                    }
-                },
-        TECHNICAL {
-                    @Override
-                    public String toString() {
-                        return "TECHNICAL";
-                    }
-                },
-        A_LEVEL {
-                    @Override
-                    public String toString() {
-                        return "A_LEVEL";
-                    }
-                },
-        SECONDARY {
-                    @Override
-                    public String toString() {
-                        return "SECONDARY";
-                    }
-                },
-        PRIMARY {
-                    @Override
-                    public String toString() {
-                        return "PRIMARY";
-                    }
-                },
-        OTHERS {
-                    @Override
-                    public String toString() {
-                        return "OTHERS";
-                    }
+        UNIVERSITY_GRAD("UNIVERSITY_GRAD"),
+        DIPLOMA_HOLDER("DIPLOMA_HOLDER"),
+        TECHNICAL("TECHNICAL"),
+        A_LEVEL("A_LEVEL"),
+        SECONDARY("SECONDARY"),
+        PRIMARY("PRIMARY"),
+        OTHERS("OTHERS");
+        
+        private String value;
+
+        EduLevel(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        @Override
+        public String toString() {
+            return this.getValue();
+        }
+
+        public static EduLevel getEnum(String value) {
+            for (EduLevel v : values()) {
+                if (v.getValue().equalsIgnoreCase(value)) {
+                    return v;
                 }
+            }
+            throw new IllegalArgumentException();
+        }
     }
 
     public enum ResidentialStatus {
 
-        CONDO_APART {
-                    @Override
-                    public String toString() {
-                        return "CONDO_APART";
-                    }
-                },
-        HDB {
-                    @Override
-                    public String toString() {
-                        return "HDB";
-                    }
-                },
-        LANDED {
-                    @Override
-                    public String toString() {
-                        return "LANDED";
-                    }
-                },
-        OTHERS {
-                    @Override
-                    public String toString() {
-                        return "OTHERS";
-                    }
+        CONDO_APART("CONDO_APART"),
+        HDB("HDB"),
+        LANDED("LANDED"),
+        OTHERS("OTHERS");
+        
+        private String value;
+
+        ResidentialStatus(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        @Override
+        public String toString() {
+            return this.getValue();
+        }
+
+        public static ResidentialStatus getEnum(String value) {
+            for (ResidentialStatus v : values()) {
+                if (v.getValue().equalsIgnoreCase(value)) {
+                    return v;
                 }
+            }
+            throw new IllegalArgumentException();
+        }
     }
 
     public enum ResidentialType {
 
-        EMPLOYER {
-                    @Override
-                    public String toString() {
-                        return "EMPLOYER";
-                    }
-                },
-        MORTGAGED {
-                    @Override
-                    public String toString() {
-                        return "MORTGAGED";
-                    }
-                },
-        OTHERS {
-                    @Override
-                    public String toString() {
-                        return "OTHERS";
-                    }
-                },
-        PARENTS {
-                    @Override
-                    public String toString() {
-                        return "PARENTS";
-                    }
-                },
-        RENTED {
-                    @Override
-                    public String toString() {
-                        return "RENTED";
-                    }
-                },
-        SELF_OWNED {
-                    @Override
-                    public String toString() {
-                        return "SELF_OWNED";
-                    }
+        EMPLOYER("EMPLOYER"),
+        MORTGAGED("MORTGAGED"),
+        OTHERS("OTHERS"),
+        PARENTS("PARENTS"),
+        RENTED("RENTED"),
+        SELF_OWNED("SELF_OWNED");
+        
+        private String value;
+
+        ResidentialType(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        @Override
+        public String toString() {
+            return this.getValue();
+        }
+
+        public static ResidentialType getEnum(String value) {
+            for (ResidentialType v : values()) {
+                if (v.getValue().equalsIgnoreCase(value)) {
+                    return v;
                 }
+            }
+            throw new IllegalArgumentException();
+        }
     }
 
     public enum Salutation {
 
-        DR {
-                    @Override
-                    public String toString() {
-                        return "DR";
-                    }
-                },
-        MDM {
-                    @Override
-                    public String toString() {
-                        return "MDM";
-                    }
-                },
-        MR {
-                    @Override
-                    public String toString() {
-                        return "MR";
-                    }
-                },
-        MRS {
-                    @Override
-                    public String toString() {
-                        return "MRS";
-                    }
-                },
-        MS {
-                    @Override
-                    public String toString() {
-                        return "MS";
-                    }
+        DR("DR"),
+        MDM("MDM"),
+        MR("MR"),
+        MRS("MRS"),
+        MS("MS");
+        
+        private String value;
+
+        Salutation(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        @Override
+        public String toString() {
+            return this.getValue();
+        }
+
+        public static Salutation getEnum(String value) {
+            for (Salutation v : values()) {
+                if (v.getValue().equalsIgnoreCase(value)) {
+                    return v;
                 }
+            }
+            throw new IllegalArgumentException();
+        }
     }
 
     public enum IdentityType {
 
-        NRIC {
-                    @Override
-                    public String toString() {
-                        return "NRIC";
-                    }
-                },
-        PASSPORT {
-                    @Override
-                    public String toString() {
-                        return "PASSPORT";
-                    }
+        NRIC("NRIC"),
+        PASSPORT("PASSPORT");
+        
+        private String value;
+
+        IdentityType(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        @Override
+        public String toString() {
+            return this.getValue();
+        }
+
+        public static IdentityType getEnum(String value) {
+            for (IdentityType v : values()) {
+                if (v.getValue().equalsIgnoreCase(value)) {
+                    return v;
                 }
+            }
+            throw new IllegalArgumentException();
+        }
     }
 
     public enum Nationality {
 
-        SINGAPOREAN {
-                    @Override
-                    public String toString() {
-                        return "SINGAPOREAN";
-                    }
-                },
-        PR {
-                    @Override
-                    public String toString() {
-                        return "PR";
-                    }
-                },
-        E_PASS {
-                    @Override
-                    public String toString() {
-                        return "E_PASS";
-                    }
-                },
-        S_PASS {
-                    @Override
-                    public String toString() {
-                        return "S_PASS";
-                    }
-                }// TODO: Fill up the list
+        SINGAPOREAN("SINGAPOREAN"),
+        PR("PR"),
+        E_PASS("E_PASS"),
+        S_PASS("S_PASS");
+        
+        private String value;
+
+        Nationality(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        @Override
+        public String toString() {
+            return this.getValue();
+        }
+
+        public static Nationality getEnum(String value) {
+            for (Nationality v : values()) {
+                if (v.getValue().equalsIgnoreCase(value)) {
+                    return v;
+                }
+            }
+            throw new IllegalArgumentException();
+        }
     }
 
     public enum Gender {
 
-        MALE {
-                    @Override
-                    public String toString() {
-                        return "MALE";
-                    }
-                },
-        FEMALE {
-                    @Override
-                    public String toString() {
-                        return "FEMALE";
-                    }
-                };
-        public List<String> getList() {
-            List<String> results = new ArrayList<>();
-            Gender[] genders = Gender.values();
-            for (int i = 0; i < genders.length; i ++) {
-                results.add(genders[i].toString());
+        MALE("MALE"),
+        FEMALE("FEMALE");
+
+        private String value;
+
+        Gender(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        @Override
+        public String toString() {
+            return this.getValue();
+        }
+
+        public static Gender getEnum(String value) {
+            for (Gender v : values()) {
+                if (v.getValue().equalsIgnoreCase(value)) {
+                    return v;
+                }
             }
-            return results;
+            throw new IllegalArgumentException();
         }
     }
 
     public enum MartialStatus {
 
-        SINGLE {
-                    @Override
-                    public String toString() {
-                        return "SINGLE";
-                    }
-                },
-        MARRIED {
-                    @Override
-                    public String toString() {
-                        return "MARRIED";
-                    }
-                },
-        DIVORCED {
-                    @Override
-                    public String toString() {
-                        return "DIVORCED";
-                    }
-                },
-        OTHERS {
-                    @Override
-                    public String toString() {
-                        return "OTHERS";
-                    }
+        SINGLE("SINGLE"),
+        MARRIED("MARRIED"),
+        DIVORCED("DIVORCED"),
+        OTHERS("OTHERS");
+        
+        private String value;
+
+        MartialStatus(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        @Override
+        public String toString() {
+            return this.getValue();
+        }
+
+        public static MartialStatus getEnum(String value) {
+            for (MartialStatus v : values()) {
+                if (v.getValue().equalsIgnoreCase(value)) {
+                    return v;
                 }
+            }
+            throw new IllegalArgumentException();
+        }
     }
 
     // Transaction
     public enum TransactionType {
 
-        INITIAL {
-                    @Override
-                    public String toString() {
-                        return "INITIAL DEPOSIT";
-                    }
-                },
-        DEPOSIT {
-                    @Override
-                    public String toString() {
-                        return "DEPOSIT";
-                    }
-                },
-        WITHDRAW {
-                    @Override
-                    public String toString() {
-                        return "WITHDRAW";
-                    }
-                },
-        CHEQUE {
-                    @Override
-                    public String toString() {
-                        return "CHEQUE";
-                    }
-                },
-        TRANSFER {
-                    @Override
-                    public String toString() {
-                        return "TRANSFER";
-                    }
-                },
-        LOCALTRANSFER {
-                    @Override
-                    public String toString() {
-                        return "LOCAL TRANSFER";
-                    }
-                },
-        INTERBANKTRANSFER {
-                    @Override
-                    public String toString() {
-                        return "INTER BANK TRANSFER";
-                    }
-                },
-        OVERSEASTRANSFER {
-                    @Override
-                    public String toString() {
-                        return "OVERSEAS TRANSFER";
-                    }
-                },
-        BILL {
-                    @Override
-                    public String toString() {
-                        return "BILL";
-                    }
-                },
-        CCSPENDING {
-                    @Override
-                    public String toString() {
-                        return "CCSPENDING";
-                    }
-                },
-        INVEST {
-                    @Override
-                    public String toString() {
-                        return "INVEST";
-                    }
-                },
-        SALARY {
-                    @Override
-                    public String toString() {
-                        return "SALARY";
-                    }
+        INITIAL("INITIAL DEPOSIT"),
+        DEPOSIT("DEPOSIT"),
+        WITHDRAW("WITHDRAW"),
+        CHEQUE("CHEQUE"),
+        TRANSFER("TRANSFER"),
+        LOCALTRANSFER("LOCAL TRANSFER"),
+        INTERBANKTRANSFER("INTER BANK TRANSFER"),
+        OVERSEASTRANSFER("OVERSEAS TRANSFER"),
+        BILL("BILL"),
+        CCSPENDING("CCSPENDING"),
+        INVEST("INVEST"),
+        SALARY("SALARY");
+        
+        private String value;
+
+        TransactionType(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        @Override
+        public String toString() {
+            return this.getValue();
+        }
+
+        public static TransactionType getEnum(String value) {
+            for (TransactionType v : values()) {
+                if (v.getValue().equalsIgnoreCase(value)) {
+                    return v;
                 }
+            }
+            throw new IllegalArgumentException();
+        }
     }
 
     // STAFF
     public enum Permission {
 
-        SUPERUSER {
-                    public String toString() {
-                        return "SUPERUSER";
-                    }
-                },
-        CUSTOMER {
-                    public String toString() {
-                        return "CUSTOMER";
-                    }
-                },
-        DEPOSIT {
-                    public String toString() {
-                        return "DEPOSIT";
-                    }
-                },
-        CARD {
-                    public String toString() {
-                        return "CARD";
-                    }
-                },
-        LOAN {
-                    public String toString() {
-                        return "LOAN";
-                    }
-                },
-        BILL {
-                    public String toString() {
-                        return "BILL";
-                    }
-                },
-        WEALTH {
-                    public String toString() {
-                        return "WEALTH";
-                    }
-                },
-        PORTFOLIO {
-                    public String toString() {
-                        return "PORTFOLIO";
-                    }
-                },
-        ANALYTICS {
-                    public String toString() {
-                        return "ANALYTICS";
-                    }
+        SUPERUSER("SUPERUSER"),
+        CUSTOMER("CUSTOMER"),
+        DEPOSIT("DEPOSIT"),
+        CARD("CARD"),
+        LOAN("LOAN"),
+        BILL("BILL"),
+        WEALTH("WEALTH"),
+        PORTFOLIO("PORTFOLIO"),
+        ANALYTICS("ANALYTICS");
+        
+        private String value;
+
+        Permission(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        @Override
+        public String toString() {
+            return this.getValue();
+        }
+
+        public static Permission getEnum(String value) {
+            for (Permission v : values()) {
+                if (v.getValue().equalsIgnoreCase(value)) {
+                    return v;
                 }
+            }
+            throw new IllegalArgumentException();
+        }
     }
-    
+
     public enum UserRole {
-        GENERAL_TELLER {
-            @Override
-            public String toString() {
-                return "General Teller";
+
+        GENERAL_TELLER("General Teller"),
+        CUSTOMER_SERVICE("Customer Service Representative"),
+        LOAN_OFFICIER("Loan Officer"),
+        FINANCIAL_OFFICER("Financial Officer"),
+        FINANCIAL_ANALYST("Financial Analyst"),
+        PRODUCT_MANAGER("Product Manager"),
+        SUPER_ADMIN("Super Admin");
+        
+        private String value;
+
+        UserRole(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        @Override
+        public String toString() {
+            return this.getValue();
+        }
+
+        public static UserRole getEnum(String value) {
+            for (UserRole v : values()) {
+                if (v.getValue().equalsIgnoreCase(value)) {
+                    return v;
+                }
             }
-        },
-        CUSTOMER_SERVICE {
-            // Access to function.... D.1.2
-            @Override
-            public String toString() {
-                return "Customer Service Representative";
-            }
-        },
-        LOAN_OFFICIER {
-            @Override
-            public String toString() {
-                return "Loan Officer";
-            }
-        },
-        FINANCIAL_OFFICER {
-            @Override
-            public String toString() {
-                return "Financial Officer";
-            }
-        },
-        FINANCIAL_ANALYST {
-            @Override
-            public String toString() {
-                return "Financial Analyst";
-            }
-        },
-        PRODUCT_MANAGER {
-            @Override
-            public String toString() {
-                return "Product Manager";
-            }
-        },
-        SUPER_ADMIN {
-            @Override
-            public String toString() {
-                return "Super Admin";
-            }
+            throw new IllegalArgumentException();
         }
     }
 
     // Interests
     public enum InterestType {
 
-        NORMAL {
-                    @Override
-                    public String toString() {
-                        return "NORMAL";
-                    }
-                },
-        RANGE {
-                    @Override
-                    public String toString() {
-                        return "RANGE";
-                    }
-                },
-        TIMERANGE {
-                    @Override
-                    public String toString() {
-                        return "TIMERANGE";
-                    }
-                },
-        CONDITION {
-                    @Override
-                    public String toString() {
-                        return "CONDITION";
-                    }
+        NORMAL("NORMAL"),
+        RANGE("RANGE"),
+        TIMERANGE("TIMERANGE"),
+        CONDITION("CONDITION");
+                        
+        private String value;
+
+        InterestType(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        @Override
+        public String toString() {
+            return this.getValue();
+        }
+
+        public static InterestType getEnum(String value) {
+            for (InterestType v : values()) {
+                if (v.getValue().equalsIgnoreCase(value)) {
+                    return v;
                 }
+            }
+            throw new IllegalArgumentException();
+        }
     }
 
     public enum InterestConditionType {
 
-        BILL {
-                    @Override
-                    public String toString() {
-                        return "BILL";
-                    }
-                },
-        CCSPENDING {
-                    @Override
-                    public String toString() {
-                        return "CCSPENDING";
-                    }
-                },
-        SALARY {
-                    @Override
-                    public String toString() {
-                        return "SALARY";
-                    }
-                },
-        INVEST {
-                    @Override
-                    public String toString() {
-                        return "INVEST";
-                    }
-                },
-        INCREASE {
-                    @Override
-                    public String toString() {
-                        return "INCREASE";
-                    }
-                },
-        NOWITHDRAW {
-                    @Override
-                    public String toString() {
-                        return "NOWITHDRAW";
-                    }
+        BILL("BILL"),
+        CCSPENDING("CCSPENDING"),
+        SALARY("SALARY"),
+        INVEST("INVEST"),
+        INCREASE("INCREASE"),
+        NOWITHDRAW("NOWITHDRAW");
+        
+        private String value;
+
+        InterestConditionType(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        @Override
+        public String toString() {
+            return this.getValue();
+        }
+
+        public static InterestConditionType getEnum(String value) {
+            for (InterestConditionType v : values()) {
+                if (v.getValue().equalsIgnoreCase(value)) {
+                    return v;
                 }
+            }
+            throw new IllegalArgumentException();
+        }
     }
 
     // Deposit Account
     public enum DepositAccountType {
 
-        CUSTOM {
-                    @Override
-                    public String toString() {
-                        return "CUSTOM";
-                    }
-                },
-        CURRENT {
-                    @Override
-                    public String toString() {
-                        return "CURRENT";
-                    }
-                },
-        SAVING {
-                    @Override
-                    public String toString() {
-                        return "SAVING";
-                    }
-                },
-        FIXED {
-                    @Override
-                    public String toString() {
-                        return "FIXED";
-                    }
-                },
-        MOBILE {
-                    @Override
-                    public String toString() {
-                        return "MOBILE";
-                    }
-                },
+        CUSTOM("CUSTOM"),
+        CURRENT("CURRENT"),
+        SAVING("SAVING"),
+        FIXED("FIXED"),
+        MOBILE("MOBILE");
+        
+        private String value;
+
+        DepositAccountType(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        @Override
+        public String toString() {
+            return this.getValue();
+        }
+
+        public static DepositAccountType getEnum(String value) {
+            for (DepositAccountType v : values()) {
+                if (v.getValue().equalsIgnoreCase(value)) {
+                    return v;
+                }
+            }
+            throw new IllegalArgumentException();
+        }
     }
 
     public enum StatementType {
 
-        E_STATEMENT {
-                    @Override
-                    public String toString() {
-                        return "E_STATEMENT";
-                    }
-                },
-        PRINTED {
-                    @Override
-                    public String toString() {
-                        return "PRINTED";
-                    }
+        E_STATEMENT("E_STATEMENT"),
+        PRINTED("PRINTED");
+        
+        private String value;
+
+        StatementType(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        @Override
+        public String toString() {
+            return this.getValue();
+        }
+
+        public static StatementType getEnum(String value) {
+            for (StatementType v : values()) {
+                if (v.getValue().equalsIgnoreCase(value)) {
+                    return v;
                 }
+            }
+            throw new IllegalArgumentException();
+        }
     }
-    
+
     public enum CaseStatus {
 
-        ONHOLD {
-                    @Override
-                    public String toString() {
-                        return "ONHOLD";
-                    }
-                },
-        ONGOING {
-                    @Override
-                    public String toString() {
-                        return "ONGOING";
-                    }
-                },
-        RESOLVED {
-                    @Override
-                    public String toString() {
-                        return "RESOLVED";
-                    }
-                },
-        CANCELLED {
-                    @Override
-                    public String toString() {
-                        return "CANCELLED";
-                    }
+        ONHOLD("ONHOLD"),
+        ONGOING("ONGOING"),
+        RESOLVED("RESOLVED"),
+        CANCELLED("CANCELLED");
+        
+        private String value;
+
+        CaseStatus(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        @Override
+        public String toString() {
+            return this.getValue();
+        }
+
+        public static CaseStatus getEnum(String value) {
+            for (CaseStatus v : values()) {
+                if (v.getValue().equalsIgnoreCase(value)) {
+                    return v;
                 }
+            }
+            throw new IllegalArgumentException();
+        }
     }
 }
