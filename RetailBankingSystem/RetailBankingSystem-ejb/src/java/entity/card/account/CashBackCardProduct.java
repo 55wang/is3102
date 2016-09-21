@@ -12,7 +12,7 @@ import javax.persistence.Entity;
  * @author wang
  */
 @Entity
-public class CashBackCardAccount extends CreditCardProduct {
+public class CashBackCardProduct extends CreditCardProduct {
 
     private double petrolCashBackRate = 0.08; // 8%
     private double groceryCashBackRate = 0.08; //8%

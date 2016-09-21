@@ -6,19 +6,22 @@
 package ejb.session.card;
 
 import entity.card.account.CreditCardOrder;
+import entity.card.account.MileCardProduct;
 import java.util.List;
 import javax.ejb.Local;
+import javax.persistence.Query;
 
 /**
  *
  * @author wang
  */
 @Local
-public interface NewCardSessionBeanLocal {
+public interface NewCardProductSessionBeanLocal {
 
-    public List<CreditCardOrder> showAllCreditCardOrder();
+    public List<MileCardProduct> showAllMileProducts();
 
-    public CreditCardOrder getAccountFromId(Long orderNumber);
+    public MileCardProduct getMileProductFromId(Long orderNumber);
 
-    public void createAccount(CreditCardOrder order);
+    public void createMileProduct(MileCardProduct mcp);
+
 }

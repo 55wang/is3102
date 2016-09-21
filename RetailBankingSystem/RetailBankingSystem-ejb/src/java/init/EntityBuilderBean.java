@@ -6,12 +6,16 @@
 package init;
 
 import BatchProcess.InterestAccrualSessionBeanLocal;
+import ejb.session.card.NewCardProductSessionBean;
+import ejb.session.card.NewCardProductSessionBeanLocal;
 import ejb.session.common.NewCustomerSessionBeanLocal;
 import ejb.session.dams.InterestSessionBeanLocal;
 import ejb.session.dams.CustomerDepositSessionBeanLocal;
 import ejb.session.dams.DepositProductSessionBeanLocal;
 import ejb.session.staff.StaffAccountSessionBeanLocal;
 import ejb.session.staff.StaffRoleSessionBeanLocal;
+import entity.card.account.CreditCardProduct;
+import entity.card.account.MileCardProduct;
 import entity.customer.Customer;
 import entity.customer.MainAccount;
 import entity.dams.account.CustomerDepositAccount;
@@ -59,6 +63,8 @@ public class EntityBuilderBean {
     private InterestAccrualSessionBeanLocal interestAccrualSessionBean;
     @EJB
     private DepositProductSessionBeanLocal depositProductSessionBean;
+    @EJB
+    private NewCardProductSessionBeanLocal newCardProductSessionBean;
     
     private List<Interest> demoConditionalInterestData = new ArrayList<>();
 
@@ -109,6 +115,18 @@ public class EntityBuilderBean {
         initInterest();
         initDepositProducts();
         initDepositAccounts();
+        
+        initCreditCardProduct();
+    }
+    
+    public void initCreditCardProduct() {
+        MileCardProduct mca = new MileCardProduct();
+        mca.setLocalMileRate(1.3);
+        mca.setOverseaMileRate(2);
+        mca.setMinSpending(true);
+        mca.setMinSpendingAmount(2000);
+        mca.setProductName("Merlion MileCard");
+        newCardProductSessionBean.createMileProduct(mca);
     }
 
     private void initCustomer() {

@@ -12,7 +12,7 @@ import javax.persistence.Entity;
  * @author wang
  */
 @Entity
-public class MileCardAccount extends CreditCardProduct {
+public class MileCardProduct extends CreditCardProduct {
 
     private double overseaMileRate; // USD$1 = 2 Miles
     private double localMileRate; // SGD$1 = 1.3 Miles
