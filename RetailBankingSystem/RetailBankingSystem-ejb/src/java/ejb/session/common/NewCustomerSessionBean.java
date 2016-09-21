@@ -6,7 +6,6 @@
 package ejb.session.common;
 
 import entity.customer.Customer;
-import entity.customer.MainAccount;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -22,12 +21,15 @@ public class NewCustomerSessionBean implements NewCustomerSessionBeanLocal {
     private EntityManager em;
 
     @Override
-    public void createCustomer(Customer customer) {
+    public Customer createCustomer(Customer customer) {
         em.persist(customer);
+        return customer;
         //temporary comment the sms away to save credit
         //SendTextMessage.sendText("6581567758", "testing2");
     }
-    // Add business logic below. (Right-click in editor and choose
-    // "Insert Code > Add Business Method")
-
+    @Override
+    public Customer updateCustomer(Customer customer) {
+        em.merge(customer);
+        return customer;
+    }
 }

@@ -6,7 +6,6 @@
 package ejb.session.common;
 
 import entity.customer.Customer;
-import entity.customer.MainAccount;
 import javax.ejb.Local;
 
 /**
@@ -15,5 +14,6 @@ import javax.ejb.Local;
  */
 @Local
 public interface NewCustomerSessionBeanLocal {
-    public void createCustomer(Customer customer);
+    public Customer createCustomer(Customer customer);
+    public Customer updateCustomer(Customer customer);
 }
