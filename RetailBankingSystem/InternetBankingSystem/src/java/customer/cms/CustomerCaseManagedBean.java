@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Objects;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
@@ -28,6 +29,8 @@ import javax.faces.view.ViewScoped;
 import org.apache.commons.io.FilenameUtils;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.UploadedFile;
+import org.primefaces.push.EventBus;
+import org.primefaces.push.EventBusFactory;
 import utils.SessionUtils;
 import utils.MessageUtils;
 import utils.RedirectUtils;
@@ -64,7 +67,7 @@ public class CustomerCaseManagedBean implements Serializable {
     private String searchCaseID;
     private String searchCaseTitle;
     
-
+    private final static String NOTIFY_CHANNEL = "/notify";
     /**
      * Creates a new instance of CustomerCaseManagedBean
      */
@@ -87,9 +90,18 @@ public class CustomerCaseManagedBean implements Serializable {
         customerCase.setIssues(issues);
         customerCase.setMainAccount(mainAccount);
         mainAccount.addCase(customerCase);
-        customerCaseSessionBean.saveCase(customerCase);
-        RedirectUtils.redirect("view_case.xhtml");
-        emailServiceSessionBean.sendNewCaseConfirmationToCustomer(mainAccount.getCustomer().getEmail(), customerCase);
+        try{
+            customerCaseSessionBean.saveCase(customerCase);
+            RedirectUtils.redirect("view_case.xhtml");
+            emailServiceSessionBean.sendNewCaseConfirmationToCustomer(mainAccount.getCustomer().getEmail(), customerCase);
+        }catch(Exception ex){
+            System.out.println("CustoemrCaseManagedBean.saveCase: " + ex.toString());
+        }
+            
+        System.out.println("CustoemrCaseManagedBean.saveCase.NewCaseNotification sending");
+        EventBus eventBus = EventBusFactory.getDefault().eventBus();
+        FacesMessage m = new FacesMessage("New Case", "A new case with ID " + customerCase.getId() + " has been created");
+        eventBus.publish(NOTIFY_CHANNEL, m);
     }
     
     public void removeIssue(String issueID){

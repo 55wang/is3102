@@ -7,6 +7,7 @@ package ejb.session.cms;
 
 import entity.customer.CustomerCase;
 import entity.customer.MainAccount;
+import entity.staff.StaffAccount;
 import java.util.List;
 import javax.ejb.Local;
 
@@ -22,4 +23,5 @@ public interface CustomerCaseSessionBeanLocal {
     public List<CustomerCase> searchCaseByTitle(String title);
     public Boolean cancelCase(Long id);
     public List<CustomerCase> getAllCase();
+    public List<CustomerCase> getAllCaseUnderCertainStaff(StaffAccount staffAccount);
 }

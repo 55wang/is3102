@@ -7,6 +7,7 @@ package init;
 
 import BatchProcess.InterestAccrualSessionBeanLocal;
 import ejb.session.card.NewCardProductSessionBeanLocal;
+import ejb.session.cms.CustomerCaseSessionBeanLocal;
 import ejb.session.common.NewCustomerSessionBeanLocal;
 import ejb.session.dams.InterestSessionBeanLocal;
 import ejb.session.dams.CustomerDepositSessionBeanLocal;
@@ -17,6 +18,8 @@ import ejb.session.staff.StaffRoleSessionBeanLocal;
 import ejb.session.utils.UtilsSessionBeanLocal;
 import entity.card.account.MileCardProduct;
 import entity.customer.Customer;
+import entity.customer.CustomerCase;
+import entity.customer.Issue;
 import entity.customer.MainAccount;
 import entity.dams.account.CustomerDepositAccount;
 import entity.dams.account.DepositAccount;
@@ -37,6 +40,7 @@ import javax.ejb.LocalBean;
 import javax.ejb.Startup;
 import server.utilities.ConstantUtils;
 import server.utilities.EnumUtils;
+import server.utilities.EnumUtils.CaseStatus;
 import server.utilities.EnumUtils.DepositAccountType;
 import server.utilities.EnumUtils.StatusType;
 import server.utilities.HashPwdUtils;
@@ -49,7 +53,8 @@ import server.utilities.HashPwdUtils;
 @LocalBean
 @Startup
 public class EntityBuilderBean {
-
+    @EJB
+    private CustomerCaseSessionBeanLocal customerCaseSessionBean;
     @EJB
     private UtilsSessionBeanLocal utilsBean;
     @EJB
@@ -111,6 +116,7 @@ public class EntityBuilderBean {
         initDepositAccounts();
         
         initCreditCardProduct();
+        initCase();
     }
     
     public void initCreditCardProduct() {
@@ -557,6 +563,26 @@ public class EntityBuilderBean {
         da = customerDepositSessionBean.investFromAccount(da, new BigDecimal(5000));
     }
 
+    public void initCase(){
+        CustomerCase cc = new CustomerCase();
+        Issue issue = new Issue();
+        List<Issue> issues = new ArrayList<Issue>();
+        
+        issue.setTitle("Deposit Account Problem");
+        issue.setField("Deposit Account issue");
+        issue.setDetails("My deposit account has some suspicious credit histories. Could you please help me to check?");
+        issue.setCustomerCase(cc);
+        
+        issues.add(issue);
+        
+        cc.setIssues(issues);
+        cc.setTitle("My Deposit Account has Some problems");
+        cc.setMainAccount(demoMainAccount);
+        cc.setStaffAccount(staffAccountSessionBean.getAccountByUsername(ConstantUtils.SUPER_ADMIN_USERNAME));
+        cc.setCaseStatus(CaseStatus.ONHOLD);
+        
+        customerCaseSessionBean.saveCase(cc);
+    }
     /**
      * @return the demoConditionalInterestData
      */
