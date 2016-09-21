@@ -5,9 +5,6 @@
  */
 package utils;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  *
  * @author leiyang
@@ -496,15 +493,7 @@ public class EnumUtils {
                     public String toString() {
                         return "FEMALE";
                     }
-                };
-        public List<String> getList() {
-            List<String> results = new ArrayList<>();
-            Gender[] genders = Gender.values();
-            for (int i = 0; i < genders.length; i ++) {
-                results.add(genders[i].toString());
-            }
-            return results;
-        }
+                }
     }
 
     public enum MartialStatus {

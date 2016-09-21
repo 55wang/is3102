@@ -21,12 +21,53 @@
                         <p:messages id="messagesStatus" redisplay="false">
                             <h:panelGrid columns="2" cellpadding="5">
                                 <p:selectOneButton id="searchType" value="#{customerCaseManagedBean.searchType}">
+                                    <f:selectItem itemLabel="View All" itemValue="#{customerCaseManagedBean.viewAllCases}"  />
                                     <f:selectItem itemLabel="Search by Case ID" itemValue="#{customerCaseManagedBean.searchByCaseID}" />
                                     <f:selectItem itemLabel="Search by Case Title" itemValue="#{customerCaseManagedBean.searchByCaseTitle}" />
                                     <f:ajax render="@form" />
                                 </p:selectOneButton>
                             </h:panelGrid>
                             
+                            <c:if test="#{customerCaseManagedBean.searchType == customerCaseManagedBean.viewAllCases}">
+                                <c:if test="#{customerCaseManagedBean.allCaseList == null}">
+                                    <h3>Cases Found: 0</h3>
+                                    <p:separator></p:separator>
+                                </c:if>
+
+
+                                <c:if test="#{customerCaseManagedBean.allCaseList != null}">
+                                    <h3>Total Cases: #{customerCaseManagedBean.allCaseList.size()}</h3>
+                                    <p:separator></p:separator>
+                                    <p:repeat value="#{customerCaseManagedBean.allCaseList}" var="resultCase" size="#{customerCaseManagedBean.allCaseList.size()}" offset="0" step="1" varStatus="">
+                                        <h3>#{resultCase.title} (ID: #{resultCase.id})</h3>
+                                        <p:repeat value="#{resultCase.issues}" var="issue" size="#{resultCase.issues.size()}" offset="0" step="1" varStatus="">
+                                            <p:panel id="toggleable" class="issue-toggleable" header="Issue: #{issue.title}" style="margin-bottom:20px">
+                                                <h:panelGrid columns="2" cellpadding="10">
+                                                    <h:outputLabel for="field" value="Issue Field " />
+                                                    <h:outputText id="field" value="#{issue.field}"/>
+
+                                                    <h:outputLabel for="details" value="Details " />
+                                                    <h:outputText id="details" value="#{issue.details}"/>
+
+                                                    <h:outputLabel for="attachment" value="Attachment " />
+                                                    <h:outputText  id="attachment" value="#{issue.attachmentFileName}"/>                                                    
+                                                </h:panelGrid>
+                                            </p:panel>
+                                        </p:repeat>
+
+                                        <p:commandButton value="Cancel Case" action="#{customerCaseManagedBean.cancelCase(resultCase.id)}" update="@form">
+                                            <p:confirm header="Confirmation" message="Do you want to cancel this case?" icon="ui-icon-alert" />
+                                        </p:commandButton>
+
+                                        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                                            <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                                            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                                        </p:confirmDialog>
+
+                                        <p:separator></p:separator>
+                                    </p:repeat>
+                                </c:if>
+                            </c:if>
                             <c:if test="#{customerCaseManagedBean.searchType == customerCaseManagedBean.searchByCaseID}">
                                 <h:outputLabel for="caseID" value="Case ID: " />
                                 <h:inputText id="caseID" value="#{customerCaseManagedBean.searchCaseID}" required="true"/>
@@ -40,9 +81,15 @@
                                 <p:commandButton value="Search" action="#{customerCaseManagedBean.searchByTitleFunction()}" update="@form"/>
                             </c:if>
                             
-                            <p:separator></p:separator>
+                            <c:if test="#{customerCaseManagedBean.searchResultList == null and customerCaseManagedBean.searchType != customerCaseManagedBean.viewAllCases}">
+                                <h3>Cases Found: 0</h3>
+                                <p:separator></p:separator>
+                            </c:if>
                             
-                            <c:if test="#{customerCaseManagedBean.searchResultList != null}">
+                            
+                            <c:if test="#{customerCaseManagedBean.searchResultList != null and customerCaseManagedBean.searchType != customerCaseManagedBean.viewAllCases}">
+                                <h3>Cases Found: #{customerCaseManagedBean.searchResultList.size()}</h3>
+                                <p:separator></p:separator>
                                 <p:repeat value="#{customerCaseManagedBean.searchResultList}" var="resultCase" size="#{customerCaseManagedBean.searchResultList.size()}" offset="0" step="1" varStatus="">
                                     <h3>Case: #{resultCase.title}</h3>
                                     <p:repeat value="#{resultCase.issues}" var="issue" size="#{resultCase.issues.size()}" offset="0" step="1" varStatus="">
@@ -59,7 +106,16 @@
                                             </h:panelGrid>
                                         </p:panel>
                                     </p:repeat>
-                                    <p:commandButton value="Cancel Case" action="#{customerCaseManagedBean.cancelCase(resultCase.id)}" update="@form"/>
+                                   
+                                    <p:commandButton value="Cancel Case" action="#{customerCaseManagedBean.cancelCase(resultCase.id)}" update="@form">
+                                        <p:confirm header="Confirmation" message="Do you want to cancel this case?" icon="ui-icon-alert" />
+                                    </p:commandButton>
+
+                                    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                                        <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                                        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                                    </p:confirmDialog>
+                                    
                                     <p:separator></p:separator>
                                 </p:repeat>
                             </c:if>

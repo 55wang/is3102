@@ -17,7 +17,7 @@ import javax.ejb.Local;
 public interface CustomerProfileSessionBeanLocal {
 
     public Customer getCustomerByUserID(String userID);
-    public Boolean saveProfile(Customer customer);
+    public Customer saveProfile(Customer customer);
     public List<Customer> retrieveActivatedCustomers();   
     public List<Customer> searchCustomerByIdentityNumber(String id);     
  

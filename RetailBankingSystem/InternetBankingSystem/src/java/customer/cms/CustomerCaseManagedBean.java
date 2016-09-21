@@ -7,11 +7,11 @@ package customer.cms;
 
 import ejb.session.audit.AuditSessionBeanLocal;
 import ejb.session.cms.CustomerCaseSessionBeanLocal;
+import ejb.session.common.EmailServiceSessionBeanLocal;
 import entity.common.AuditLog;
 import entity.customer.CustomerCase;
 import entity.customer.Issue;
 import entity.customer.MainAccount;
-import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -30,6 +30,7 @@ import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.UploadedFile;
 import utils.SessionUtils;
 import utils.MessageUtils;
+import utils.RedirectUtils;
 
 /**
  *
@@ -39,9 +40,12 @@ import utils.MessageUtils;
 @ViewScoped
 public class CustomerCaseManagedBean implements Serializable {
     @EJB
+    private EmailServiceSessionBeanLocal emailServiceSessionBean;
+    @EJB
     private CustomerCaseSessionBeanLocal customerCaseSessionBean;
     @EJB
     private AuditSessionBeanLocal auditSessionBean;
+    
     
     private MainAccount mainAccount; 
     private List<AuditLog> auditLogs;
@@ -51,10 +55,12 @@ public class CustomerCaseManagedBean implements Serializable {
     private Boolean issuePage = false;
     private int numOfIssues = 0;
     private String directoryPath;
-    private String searchType="CaseID";
+    private String searchType="viewAllCases";
+    private String viewAllCases = "viewAllCases";
     private String searchByCaseID = "CaseID";
     private String searchByCaseTitle = "CaseTitle";
-    private List<CustomerCase> searchResultList = null;
+    private List<CustomerCase> searchResultList;
+    private List<CustomerCase> allCaseList;
     private String searchCaseID;
     private String searchCaseTitle;
     
@@ -82,8 +88,8 @@ public class CustomerCaseManagedBean implements Serializable {
         customerCase.setMainAccount(mainAccount);
         mainAccount.addCase(customerCase);
         customerCaseSessionBean.saveCase(customerCase);
-        String msg = "Case has been successfully submitted.";
-        MessageUtils.displayInfo(msg);
+        RedirectUtils.redirect("view_case.xhtml");
+        emailServiceSessionBean.sendNewCaseConfirmationToCustomer(mainAccount.getCustomer().getEmail(), customerCase);
     }
     
     public void removeIssue(String issueID){
@@ -142,22 +148,36 @@ public class CustomerCaseManagedBean implements Serializable {
     
     public void cancelCase(Long caseID){
         if(customerCaseSessionBean.cancelCase(caseID)){
-            for(int i=0; i<searchResultList.size();i++){
-                if(Objects.equals(searchResultList.get(i).getId(), caseID)){
-                    searchResultList.remove(i);
-                    String msg = "Case cancel successfully!";
-                    MessageUtils.displayInfo(msg);
+            if(!searchType.equals("viewAllCases")){
+                for(int i=0; i<searchResultList.size();i++){
+                    if(Objects.equals(searchResultList.get(i).getId(), caseID)){
+                        searchResultList.remove(i);
+                        String msg = "Case cancel successfully!";
+                        MessageUtils.displayInfo(msg);
+                    }
                 }
             }
+            
+                for(int i=0; i<allCaseList.size();i++){
+                    if(Objects.equals(allCaseList.get(i).getId(), caseID)){
+                        allCaseList.remove(i);
+                        String msg = "Case cancel successfully!";
+                        MessageUtils.displayInfo(msg);
+                    }
+                }
+            
         }else{
             String msg = "Error!";
             MessageUtils.displayError(msg);
         }       
+        
+        emailServiceSessionBean.sendCancelCaseConfirmationToCustomer(mainAccount.getCustomer().getEmail(), customerCase);
     }
 
     @PostConstruct
     public void setMainAccount() {
         this.mainAccount = customerCaseSessionBean.getMainAccountByUserID(SessionUtils.getUserName());
+        this.allCaseList = customerCaseSessionBean.getAllCase();
         this.auditLogs = auditSessionBean.getAuditLogByCustomerID(SessionUtils.getUserName());
     }
 
@@ -263,6 +283,22 @@ public class CustomerCaseManagedBean implements Serializable {
 
     public void setSearchCaseTitle(String searchCaseTitle) {
         this.searchCaseTitle = searchCaseTitle;
+    }
+
+    public String getViewAllCases() {
+        return viewAllCases;
+    }
+
+    public void setViewAllCases(String viewAllCases) {
+        this.viewAllCases = viewAllCases;
+    }
+
+    public List<CustomerCase> getAllCaseList() {
+        return allCaseList;
+    }
+
+    public void setAllCaseList(List<CustomerCase> allCaseList) {
+        this.allCaseList = allCaseList;
     }
     
 }

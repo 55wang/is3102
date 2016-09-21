@@ -6,6 +6,7 @@
 package ejb.session.common;
 
 import ejb.session.staff.StaffAccountSessionBeanLocal;
+import entity.customer.CustomerCase;
 import entity.customer.MainAccount;
 import java.util.Date;
 import java.util.Properties;
@@ -207,6 +208,59 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
             message.setSubject("Reset your password");
             message.setText("Dear Staff, please go to following link to reset your password: ");
 
+            Transport.send(message);
+
+            System.out.println("Email send out successfully");
+            return (true);
+
+        } catch (MessagingException e) {
+            System.out.println(e);
+            return (false);
+        }
+    }
+    
+    @Override
+    public Boolean sendNewCaseConfirmationToCustomer(String recipient, CustomerCase cc){
+        Session session = getSession();
+
+        try {
+
+            Message message = new MimeMessage(session);
+            message.setFrom(new InternetAddress("merlionbanking@gmail.com"));
+            message.setRecipients(Message.RecipientType.TO,
+                    InternetAddress.parse(recipient));
+            message.setSubject("You have submitted a new case");
+            message.setText("Dear Customer, here is your case ID(which you can use to retrieve your case): ");
+            message.setText("Case: " + cc.getTitle());
+            message.setText("ID: " + cc.getId());
+            
+            Transport.send(message);
+
+            System.out.println("Email send out successfully");
+            return (true);
+
+        } catch (MessagingException e) {
+            System.out.println(e);
+            return (false);
+        }
+    }
+    
+    @Override
+    public Boolean sendCancelCaseConfirmationToCustomer(String recipient, CustomerCase cc){
+        Session session = getSession();
+
+        try {
+
+            Message message = new MimeMessage(session);
+            message.setFrom(new InternetAddress("merlionbanking@gmail.com"));
+            message.setRecipients(Message.RecipientType.TO,
+                    InternetAddress.parse(recipient));
+            message.setSubject("You have cancelled a case");
+            message.setText("Dear Customer, you have cancelled the following case: ");
+            message.setText("Case: " + cc.getTitle());
+            message.setText("ID: " + cc.getId());
+            message.setText("If the action is not done by you, please contact our staff.");
+            
             Transport.send(message);
 
             System.out.println("Email send out successfully");
