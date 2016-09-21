@@ -24,7 +24,7 @@ import javax.annotation.PreDestroy;
 import javax.ejb.EJB;
 import javax.faces.view.ViewScoped;
 import utils.ColorUtils;
-import utils.EnumUtils;
+import utils.CommonUtils;
 import utils.LoggingUtils;
 import utils.RedirectUtils;
 import utils.SessionUtils;

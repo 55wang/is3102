@@ -5,12 +5,24 @@ To change this template file, choose Tools | Templates
 and open the template in the editor.
 -->
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
-    <head>
-        <title>TODO supply a title</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    </head>
-    <body>
-        <div>TODO write content</div>
-    </body>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:em="http://xmlns.jcp.org/jsf/composite/emcomp">
+    <f:view>
+        <h:head>
+            <title>TODO supply a title</title>
+            <em:cssImport></em:cssImport>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        </h:head>
+        <h:body>
+            <div>TODO write content</div>
+            <h:form>
+                <p:selectOneMenu id="staffrole" value="#{formDemoManagedBean.selectedEnum}" style="width:125px">
+                    <f:selectItems value="#{formDemoManagedBean.selectEnums}" />
+                </p:selectOneMenu>
+            </h:form>
+        </h:body>
+    </f:view>
 </html>
