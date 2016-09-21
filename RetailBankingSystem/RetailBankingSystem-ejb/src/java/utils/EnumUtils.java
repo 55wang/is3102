@@ -115,6 +115,12 @@ public class EnumUtils {
                     public String toString() {
                         return "APPROVED";
                     }
+                },
+        CANCELLED {
+                    @Override
+                    public String toString() {
+                        return "CANCELLED";
+                    }
                 }
     }
 

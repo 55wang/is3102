@@ -5,11 +5,9 @@
  */
 package ejb.session.card;
 
-import entity.card.account.CreditCardOrder;
 import entity.card.account.MileCardProduct;
 import java.util.List;
 import javax.ejb.Local;
-import javax.persistence.Query;
 
 /**
  *

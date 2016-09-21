@@ -5,7 +5,6 @@
  */
 package ejb.session.card;
 
-import entity.card.account.CreditCardOrder;
 import entity.card.account.MileCardProduct;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -28,12 +27,16 @@ public class NewCardProductSessionBean implements NewCardProductSessionBeanLocal
         return q.getResultList();
     }
 
+    @Override
     public MileCardProduct getMileProductFromId(Long orderNumber) {
         return em.find(MileCardProduct.class, orderNumber);
     }
 
+    @Override
     public void createMileProduct(MileCardProduct mcp) {
         em.persist(mcp);
     }
+    
+    //repeat for the rest of card
 
 }
