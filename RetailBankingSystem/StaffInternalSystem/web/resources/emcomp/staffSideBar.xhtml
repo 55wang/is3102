@@ -72,6 +72,9 @@
                         <li class="side-menu-item #{cc.attrs.side == 'resetPassword' ? 'active' : ''}">
                             <h:link outcome="staff_login_reset_pwd" value="Reset Password" />
                         </li>
+                        <li class="side-menu-item #{cc.attrs.side == 'viewAccess' ? 'active' : ''}">
+                            <h:link outcome="staff_view_access" value="View Access" />
+                        </li>
                     </c:if>
                 </ul>
             </div>

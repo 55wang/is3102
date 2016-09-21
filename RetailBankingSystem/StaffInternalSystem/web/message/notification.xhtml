@@ -24,7 +24,7 @@
                             <p:inputText id="title" value="#{notificationViewManagedBean.newAnnouncement.title}" required="true" />
 
                             <p:outputLabel for="content" value="Content: " /> 
-                            <p:inputText id="content" value="#{notificationViewManagedBean.newAnnouncement.content}" required="true" />
+                            <p:inputTextarea id="content" value="#{notificationViewManagedBean.newAnnouncement.content}" required="true" />
                         </h:panelGrid>
                         <p:commandButton value="Send" actionListener="#{notificationViewManagedBean.send}" />
                     </p:messages>

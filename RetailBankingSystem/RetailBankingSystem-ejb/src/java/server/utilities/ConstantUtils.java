@@ -29,6 +29,6 @@ public class ConstantUtils {
     // General
     public static final String SOMETHING_WENT_WRONG = "Something went wrong.";
     // Password
-    public static final String OLD_PASSWORD_NOTMTACH = "Successful! You have reset your password. ";
+    public static final String OLD_PASSWORD_NOTMTACH = "You have entered a wrong password! ";
     public static final String PASSWORD_CHANGE_SUCCESS = "Successful! You have reset your password. ";
 }

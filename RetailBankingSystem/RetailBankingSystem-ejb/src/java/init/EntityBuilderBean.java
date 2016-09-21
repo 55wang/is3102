@@ -131,18 +131,25 @@ public class EntityBuilderBean {
 
     private void initStaffAndRoles() {
         Role superAdminRole = new Role(EnumUtils.UserRole.SUPER_ADMIN.toString());
+        superAdminRole.setDescription("Everything includes front end services and back end administrations");
         superAdminRole = staffRoleSessionBean.addRole(superAdminRole);
         Role customerServiceRole = new Role(EnumUtils.UserRole.CUSTOMER_SERVICE.toString());
         customerServiceRole = staffRoleSessionBean.addRole(customerServiceRole);
         Role financialAnalystRole = new Role(EnumUtils.UserRole.FINANCIAL_ANALYST.toString());
+        financialAnalystRole.setDescription("Generate and make use of BI results to support decision making");
         financialAnalystRole = staffRoleSessionBean.addRole(financialAnalystRole); 
         Role financialOfficerRole = new Role(EnumUtils.UserRole.FINANCIAL_OFFICER.toString());
+        financialOfficerRole.setDescription("Offer wealth management services to the customers\n" +
+"(Offering wealth services but do not design wealth products)");
         financialOfficerRole = staffRoleSessionBean.addRole(financialOfficerRole); 
         Role generalTellerRole = new Role(EnumUtils.UserRole.GENERAL_TELLER.toString());
         generalTellerRole = staffRoleSessionBean.addRole(generalTellerRole); 
         Role loanOfficerRole = new Role(EnumUtils.UserRole.LOAN_OFFICIER.toString());
+        loanOfficerRole.setDescription("Provide loan-related services to the customers\n" +
+"(Provide service but do not design loan products)");
         loanOfficerRole = staffRoleSessionBean.addRole(loanOfficerRole); 
         Role productManagerRole = new Role(EnumUtils.UserRole.PRODUCT_MANAGER.toString());
+        productManagerRole.setDescription("Design, adjust, and launch financial products to the market");
         productManagerRole = staffRoleSessionBean.addRole(productManagerRole);
         
         StaffAccount superAdminAccount = new StaffAccount();
