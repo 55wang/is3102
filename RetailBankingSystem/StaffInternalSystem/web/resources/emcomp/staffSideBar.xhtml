@@ -61,7 +61,9 @@
                         <li class="side-menu-item #{cc.attrs.side == 'viewCustomer' ? 'active' : ''}">
                             <h:link outcome="staff-view-customer" value="View Customer" />
                         </li>
-        
+                        <li class="side-menu-item #{cc.attrs.side == 'viewCase' ? 'active' : ''}">
+                            <h:link outcome="staff-view-case" value="View Case" />
+                        </li>
                     </c:if>
                     <c:if test="#{cc.attrs.top == 'setting'}">
                         <li class="side-menu-item #{cc.attrs.side == 'viewProfile' ? 'active' : ''}">
