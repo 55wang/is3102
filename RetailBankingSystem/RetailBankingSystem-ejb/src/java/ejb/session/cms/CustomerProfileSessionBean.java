@@ -48,7 +48,7 @@ public class CustomerProfileSessionBean implements CustomerProfileSessionBeanLoc
     }
 
     @Override
-    public Boolean saveProfile(Customer customer) {
+    public Customer saveProfile(Customer customer) {
 
         try {
 
@@ -56,29 +56,22 @@ public class CustomerProfileSessionBean implements CustomerProfileSessionBeanLoc
             em.flush();
 
             emailServiceSessionBean.sendUpdatedProfile(customer.getEmail());
-            return true;
+            return customer;
         } catch (Exception ex) {
-            return false;
+            return null;
         }
     }
 
     @Override
     public List<Customer> retrieveActivatedCustomers() {
 
-        Query q = em.createQuery("SELECT a FROM MainAccount a WHERE a.status= :inStatus");
+        
+        Query q = em.createQuery("SELECT c FROM Customer c WHERE c.mainAccount.status = :inStatus");
         q.setParameter("inStatus", StatusType.ACTIVE);
 
-        List<Customer> customers = new ArrayList<Customer>();
-        List<MainAccount> mainAccounts = q.getResultList();
-        for (MainAccount mainAccount : mainAccounts) {
-            try {
-                customers.add(mainAccount.getCustomer());
-            } catch (NullPointerException ex) {
-                ex.printStackTrace();
-            }
-        }
-        return customers;
-
+        return q.getResultList();
+        
+ 
     }
 
     @Override

@@ -16,19 +16,21 @@
             <em:staffNavBar context="customer"></em:staffNavBar>
             <em:staffSideBar top="customer" side="viewCustomer"></em:staffSideBar>
             <div class="container">
+                <p:messages id="messagesStatus" redisplay="false"></p:messages>
+                <p:panel header="Search Customer">
+                    <p:outputPanel>
+                        <h:form id="search-form">
+                            <p:inputText id="idFilter" style="width:180px" value="#{staffCustomerInformationManagedBean.searchText}" placeholder="Enter identity number"  />
+                            <p:commandButton value="Search" actionListener="#{staffCustomerInformationManagedBean.search}" update="update-form"/>
+                        </h:form>
+                    </p:outputPanel>
+                </p:panel>
 
-                <h:form id="DisplayForm">
 
-
-                    <p:panel header="List of Customers">
-
+                <p:panel header="List of Customers">
+                    <h:form id="update-form">
                         <p:dataTable id="customerList" value="#{staffCustomerInformationManagedBean.customers}" var="customer" sortMode="multiple" >
-                            <f:facet name="header">
-                                <p:outputPanel>
-                                    <p:inputText id="idFilter" style="width:180px" value="#{staffCustomerInformationManagedBean.searchText}" placeholder="Enter identity number"  required="true"  />
-                                    <p:commandButton value="Search" actionListener="#{staffCustomerInformationManagedBean.search}" update="DisplayForm"/>
-                                </p:outputPanel>
-                            </f:facet>
+
                             <p:column style="width:16px">
                                 <p:rowToggler />
                             </p:column>
@@ -79,7 +81,7 @@
                                     <h:inputText value="#{customer.nationality}" />
 
                                     <h:outputText value="Identity Type: " />
-                                    <h:inputText value="#{customer.identityType}"/>
+                                    <h:inputText value="#{customer.identityType}" />
 
                                     <h:outputText value="Identity Number: " />
                                     <h:inputText value="#{customer.identityNumber}" />
@@ -87,22 +89,25 @@
                                     <h:outputText value="Occupation: " />
                                     <h:inputText value="#{customer.occupation}" />
 
-                                    <h:outputText value="Income: " />
-                                    <h:inputText value="$#{customer.income}" />
+                                    <h:outputText value="Income (S$): " />
+                                    <h:inputText value="#{customer.income}" />
 
 
                                     <h:outputText value="Martial Status: " />
                                     <h:inputText value="#{customer.martialStatus}" />
 
                                     <h:outputText value="DOB: " />
-                                    <h:inputText value="#{customer.birthDay}"> <f:convertDateTime pattern="dd/MM/yyyy"/></h:inputText>
-
+<p:calendar value="#{customer.birthDay}" navigator="true" yearRange="c-100:c+0" required="true" pattern="yyyy-MM-dd"/>
                                     <h:outputText value="Credit Score" />
                                     <h:inputText value="#{customer.creditScore}" />
                                 </p:panelGrid>
 
+                                <f:facet name="header">
+                                    Contact Details 
+                                </f:facet>
+
                                 <p:panelGrid  columns="2" columnClasses="label,value" style="width:500px; margin: auto" >
-                                    <f:facet name="header">
+                                    <f:facet name="header" >
                                         Contact Details 
                                     </f:facet>
 
@@ -117,7 +122,7 @@
 
                                     <h:outputText value="Postal Code: " />
                                     <h:inputText value="#{customer.postalCode}"/>
-                                
+
 
                                 </p:panelGrid>
 
@@ -134,12 +139,20 @@
                                     </p:column>
 
                                 </p:dataTable>
+                                <br/><br/>
+                                <p:outputPanel>
+
+                                    <p:commandButton class="h-center" value="Update" update="update-form" action="#{staffCustomerInformationManagedBean.saveUpdatedCustomerInformation(customer)}" />
+
+                                </p:outputPanel>
+
+
                             </p:rowExpansion>
+
                         </p:dataTable>
-                    </p:panel>
+                    </h:form>
+                </p:panel>
 
-
-                </h:form>
             </div>
         </h:body> 
     </f:view>
