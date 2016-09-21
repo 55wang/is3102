@@ -6,7 +6,6 @@
 package ejb.session.mainaccount;
 
 import entity.customer.MainAccount;
-import entity.dams.account.DepositAccount;
 import javax.ejb.Local;
 
 /**
@@ -16,4 +15,5 @@ import javax.ejb.Local;
 @Local
 public interface MainAccountSessionBeanLocal {
     public MainAccount updateMainAccount(MainAccount ma);
+    public MainAccount getMainAccountByUserId(String userID);
 }

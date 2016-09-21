@@ -210,7 +210,6 @@ public class EntityBuilderBean {
     }
 
     private void initCustomer() {
-        String u = "c1234567";
         String p = HashPwdUtils.hashPwd("password");
 
         Customer c = new Customer();
@@ -228,7 +227,7 @@ public class EntityBuilderBean {
         c.setPhone("81567758"); //must use real phone number as we need sms code
         c.setPostalCode("654321");
         c.setMainAccount(new MainAccount());
-        c.getMainAccount().setUserID(u);
+        c.getMainAccount().setUserID(ConstantUtils.DEMO_MAIN_ACCOUNT_USER_ID);
         c.getMainAccount().setPassword(p);
         c.getMainAccount().setStatus(EnumUtils.StatusType.ACTIVE);
         c.getMainAccount().setCustomer(c);

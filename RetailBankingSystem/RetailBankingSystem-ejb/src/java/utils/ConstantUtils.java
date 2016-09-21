@@ -12,6 +12,7 @@ package utils;
 public class ConstantUtils {
     public static final String DELIMITER = "``";
     public static final String DEMO_CUSTOM_DEPOSIT_PRODUCT_NAME = "Merlion Account";
+    public static final String DEMO_MAIN_ACCOUNT_USER_ID = "c1234567";
     public static final String TRANSACTION_ENTITY = "TransactionRecord";
     public static final String SUPER_ADMIN_USERNAME = "adminadmin";
     public static final String SUPER_ADMIN_PASSWORD = "password";
