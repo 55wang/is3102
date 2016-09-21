@@ -13,8 +13,6 @@ import javax.persistence.EntityExistsException;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import utils.EnumUtils;
-import utils.EnumUtils.UserRole;
 
 /**
  *
@@ -27,37 +25,28 @@ public class StaffRoleSessionBean implements StaffRoleSessionBeanLocal {
     private EntityManager em;
     
     @Override
-    public Role getSuperAdminRole() {
-        Role superRole = em.find(Role.class, "Super Admin");
-        if (superRole == null) {
-            superRole = new Role(UserRole.SUPER_ADMIN.toString());
-            em.persist(superRole);
-        }
-        return superRole;
-    }
-    @Override
     public List<Role> getAllRoles() {
         Query q = em.createQuery("SELECT r FROM Role r");
         return q.getResultList();
     }
     
     @Override
-    public Boolean addRole(Role r) {
+    public Role addRole(Role r) {
         try {
             em.persist(r);
-            return true;
+            return r;
         } catch (EntityExistsException e) {
-            return false;
+            return null;
         }
     }
     
     @Override
-    public Boolean updateRole(Role r) {
+    public Role updateRole(Role r) {
         try {
             em.merge(r);
-            return true;
+            return r;
         } catch (Exception e) {
-            return false;
+            return null;
         }
     }
     
@@ -65,15 +54,4 @@ public class StaffRoleSessionBean implements StaffRoleSessionBeanLocal {
     public Role findRoleByName(String roleName) {
         return em.find(Role.class, roleName);
     }
-    
-//    @Override 
-//    public void addUserToRole(StaffAccount sa, Role r) {
-//        try {
-//            r.addStaffAccount(sa);
-//            em.merge(r);
-//            em.flush();
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
 }

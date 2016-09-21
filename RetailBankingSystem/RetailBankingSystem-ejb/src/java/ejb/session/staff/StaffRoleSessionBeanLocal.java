@@ -15,10 +15,9 @@ import javax.ejb.Local;
  */
 @Local
 public interface StaffRoleSessionBeanLocal {
-    public Role getSuperAdminRole();
     public List<Role> getAllRoles();
-    public Boolean addRole(Role r);
-    public Boolean updateRole(Role r);
+    public Role addRole(Role r);
+    public Role updateRole(Role r);
     public Role findRoleByName(String roleName);
 //    public void addUserToRole(StaffAccount sa, Role r);
 }

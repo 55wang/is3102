@@ -646,10 +646,47 @@ public class EnumUtils {
     }
     
     public enum UserRole {
+        GENERAL_TELLER {
+            @Override
+            public String toString() {
+                return "General Teller";
+            }
+        },
+        CUSTOMER_SERVICE {
+            // Access to function.... D.1.2
+            @Override
+            public String toString() {
+                return "Customer Service Representative";
+            }
+        },
+        LOAN_OFFICIER {
+            @Override
+            public String toString() {
+                return "Loan Officer";
+            }
+        },
+        FINANCIAL_OFFICER {
+            @Override
+            public String toString() {
+                return "Financial Officer";
+            }
+        },
+        FINANCIAL_ANALYST {
+            @Override
+            public String toString() {
+                return "Financial Analyst";
+            }
+        },
+        PRODUCT_MANAGER {
+            @Override
+            public String toString() {
+                return "Product Manager";
+            }
+        },
         SUPER_ADMIN {
             @Override
             public String toString() {
-                return "SUPER_ADMIN";
+                return "Super Admin";
             }
         }
     }
