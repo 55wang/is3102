@@ -16,20 +16,21 @@
             <em:staffNavBar context="admin"></em:staffNavBar>
             <em:staffSideBar top="admin" side="createStaff"></em:staffSideBar>
             <div class="container">
-                <h:form id="mainForm">
+                <h:form id="form">
+                    <p:growl id="msgs" showDetail="true"/>
                     <p:panel header="Create Staff">
                         <p:messages id="messagesStatus" redisplay="false" >
                             <h:panelGrid columns="2" cellpadding="5">
 
                                 <p:outputLabel for="username" value="Username: " />
                                 <p:inputText id="username" value="#{createStaffManagedBean.newStaff.username}" required="true"/>
-                                
+
                                 <p:outputLabel for="email" value="Email " />
                                 <p:inputText id="email" value="#{createStaffManagedBean.newStaff.email}" required="true"/>
-                                
+
                                 <p:outputLabel for="firstname" value="First Name " />
                                 <p:inputText id="firstname" value="#{createStaffManagedBean.newStaff.firstName}" required="true"/>
-                                
+
                                 <p:outputLabel for="lastname" value="Last Name " />
                                 <p:inputText id="lastname" value="#{createStaffManagedBean.newStaff.lastName}" required="true"/>
 
@@ -43,12 +44,25 @@
                         </p:messages>
                     </p:panel>
                     <p:panel header="Added Staff">
-                        <p:dataTable id="addedRoles" value="#{createStaffManagedBean.staffs}" var="staff">
+                        <p:dataTable id="addedRoles" value="#{createStaffManagedBean.staffs}" var="staff" editable="true" editMode="cell">
+                            <f:facet name="header">
+                                Edit Roles By Clicking
+                            </f:facet>
+                            <p:ajax event="cellEdit" listener="#{createStaffManagedBean.onCellEdit(staff)}" update=":form:msgs" />
                             <p:column headerText="Name" sortBy="#{staff.username}">
                                 <h:outputText value="#{staff.username}"></h:outputText>
                             </p:column>
                             <p:column headerText="Role" sortBy="#{staff.role.roleName}">
-                                <h:outputText value="#{staff.role.roleName}"></h:outputText>
+                                <p:cellEditor>
+                                    <f:facet name="output">
+                                        <h:outputText value="#{staff.role.roleName}" />
+                                    </f:facet>
+                                    <f:facet name="input">
+                                        <h:selectOneMenu value="#{createStaffManagedBean.cellSelectedRoleName}" style="width:100%">
+                                            <f:selectItems value="#{createStaffManagedBean.selectRoles}" />
+                                        </h:selectOneMenu>
+                                    </f:facet>
+                                </p:cellEditor>
                             </p:column>
                         </p:dataTable>
                     </p:panel>

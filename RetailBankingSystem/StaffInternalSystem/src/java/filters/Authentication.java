@@ -114,7 +114,7 @@ public class Authentication implements Filter {
             HttpSession ses = reqt.getSession(false);
 
             String reqURI = reqt.getRequestURI();
-            System.out.println(reqURI);
+//            System.out.println(reqURI);
             if (    reqURI.contains("/resources/")
                     || reqURI.contains("/javax.faces.resource/")
                     || reqURI.contains("/index.xhtml") // login page is ignored

@@ -99,7 +99,7 @@ public class InterestDemoManagedBean implements Serializable {
         } else {
 
         }
-
+        
         System.out.println(monthlyInterval);
         BigDecimal originalAmount = account.getBalance();
 

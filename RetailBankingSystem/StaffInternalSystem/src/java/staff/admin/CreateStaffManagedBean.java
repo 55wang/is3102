@@ -44,6 +44,7 @@ public class CreateStaffManagedBean implements Serializable {
     private List<Role> roles = new ArrayList<>();
     private Map<String, String> selectRoles = new HashMap<>();
     private String selectedRoleName;
+    private String cellSelectedRoleName;
     
     public CreateStaffManagedBean() {}
     
@@ -86,6 +87,17 @@ public class CreateStaffManagedBean implements Serializable {
             MessageUtils.displayInfo("Staff already Added");
         }
     }
+    
+    public void onCellEdit(StaffAccount sa) {
+        sa.setRole(staffRoleSessionBean.findRoleByName(cellSelectedRoleName));
+        if (staffAccountSessionBean.updateAccount(sa)) {
+            System.out.println("Staff length " + staffs.size());
+            MessageUtils.displayInfo(sa.getFullName() + "'s Role Edited");
+        } else {
+            MessageUtils.displayInfo(sa.getFullName() + "'s Role Not Edited");
+        }
+    }
+    
     private String generatePwd(){
         int pwdLen = 10;
         SecureRandom rnd = new SecureRandom();
@@ -167,5 +179,19 @@ public class CreateStaffManagedBean implements Serializable {
      */
     public void setSelectedRoleName(String selectedRoleName) {
         this.selectedRoleName = selectedRoleName;
+    }
+
+    /**
+     * @return the cellSelectedRoleName
+     */
+    public String getCellSelectedRoleName() {
+        return cellSelectedRoleName;
+    }
+
+    /**
+     * @param cellSelectedRoleName the cellSelectedRoleName to set
+     */
+    public void setCellSelectedRoleName(String cellSelectedRoleName) {
+        this.cellSelectedRoleName = cellSelectedRoleName;
     }
 }
