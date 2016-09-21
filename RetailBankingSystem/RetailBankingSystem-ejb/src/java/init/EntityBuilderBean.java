@@ -12,8 +12,10 @@ import ejb.session.common.NewCustomerSessionBeanLocal;
 import ejb.session.dams.InterestSessionBeanLocal;
 import ejb.session.dams.CustomerDepositSessionBeanLocal;
 import ejb.session.dams.DepositProductSessionBeanLocal;
+import ejb.session.mainaccount.MainAccountSessionBeanLocal;
 import ejb.session.staff.StaffAccountSessionBeanLocal;
 import ejb.session.staff.StaffRoleSessionBeanLocal;
+import ejb.session.utils.UtilsSessionBeanLocal;
 import entity.card.account.CreditCardProduct;
 import entity.card.account.MileCardProduct;
 import entity.customer.Customer;
@@ -51,6 +53,8 @@ import utils.HashPwdUtils;
 public class EntityBuilderBean {
 
     @EJB
+    private UtilsSessionBeanLocal utilsBean;
+    @EJB
     private StaffAccountSessionBeanLocal staffAccountSessionBean;
     @EJB
     private StaffRoleSessionBeanLocal staffRoleSessionBean;
@@ -66,9 +70,11 @@ public class EntityBuilderBean {
     private DepositProductSessionBeanLocal depositProductSessionBean;
     @EJB
     private NewCardProductSessionBeanLocal newCardProductSessionBean;
+    @EJB
+    private MainAccountSessionBeanLocal mainAccountSessionBean;
     
     private List<Interest> demoConditionalInterestData = new ArrayList<>();
-    private MainAccount demoAccount;
+    private MainAccount demoMainAccount;
 
     @PostConstruct
     public void init() {
@@ -229,7 +235,7 @@ public class EntityBuilderBean {
         c.getMainAccount().setStatus(EnumUtils.StatusType.ACTIVE);
         c.getMainAccount().setCustomer(c);
 
-        newCustomerSessionBean.createCustomer(c);
+        demoMainAccount = newCustomerSessionBean.createCustomer(c).getMainAccount();
     }
 
     private void initInterest() {
@@ -330,7 +336,11 @@ public class EntityBuilderBean {
         cda.setType(DepositAccountType.CUSTOM);
         cda.setProduct(depositProductSessionBean.getDepositProductByName(ConstantUtils.DEMO_CUSTOM_DEPOSIT_PRODUCT_NAME));
         cda.setBalance(new BigDecimal(1000));
-        initTransactions(customerDepositSessionBean.createAccount(cda));
+        DepositAccount dp = customerDepositSessionBean.createAccount(cda);
+        System.out.println("demoMainAccount ==== " + demoMainAccount.getId());
+        demoMainAccount = mainAccountSessionBean.addDepositAccountToMainAccount(dp, demoMainAccount);
+        System.out.println("demoMainAccount ==== " + demoMainAccount.getId());
+        initTransactions(dp);
     }
 
     private void initTransactions(DepositAccount account) {
