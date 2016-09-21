@@ -52,6 +52,18 @@
                             <p:column headerText="Name" sortBy="#{staff.username}">
                                 <h:outputText value="#{staff.username}"></h:outputText>
                             </p:column>
+                            <p:column headerText="Status" sortBy="#{staff.status}">
+                                <p:cellEditor>
+                                    <f:facet name="output">
+                                        <h:outputText value="#{staff.status}" />
+                                    </f:facet>
+                                    <f:facet name="input">
+                                        <h:selectOneMenu value="#{createStaffManagedBean.cellSelectedStatus}" style="width:100%">
+                                            <f:selectItems value="#{createStaffManagedBean.selectStatuses}" />
+                                        </h:selectOneMenu>
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>
                             <p:column headerText="Role" sortBy="#{staff.role.roleName}">
                                 <p:cellEditor>
                                     <f:facet name="output">
