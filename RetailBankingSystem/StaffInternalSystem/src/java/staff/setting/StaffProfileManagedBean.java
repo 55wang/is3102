@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package staff.common;
+package staff.setting;
 
 import ejb.session.staff.StaffAccountSessionBeanLocal;
 import entity.staff.StaffAccount;
