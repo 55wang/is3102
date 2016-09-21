@@ -30,6 +30,7 @@ public class Interest implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(unique = true, nullable = false)
     private String name;
     // REMARK:Update will create a new version and leave a copy
     private Integer version = 0;

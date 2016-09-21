@@ -18,9 +18,9 @@ import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import utils.EnumUtils.CardAccountStatus;
 
 /**
  *
@@ -38,16 +38,18 @@ public class CreditCardAccount implements Serializable {
     private Long id;
     @ManyToOne(cascade = CascadeType.PERSIST)
     private MainAccount mainAccount;
-    @OneToOne(cascade = {CascadeType.PERSIST})
+    @ManyToOne(cascade = {CascadeType.PERSIST})
     private CreditCardProduct creditCardProduct;
 
+    private CardAccountStatus CardStatus;
     @Column(precision = 12)// LY:credit card number in decimal??
     private BigDecimal creditCardNum;
-    private int cvv; // LY: Use Integer instead of int
+    private Integer cvv; // LY: Use Integer instead of int
     private String nameOnCard;
     @Temporal(value = TemporalType.DATE)
     private Date validDate;
-    private double transactionLimit;
+    private double transactionMonthlyLimit;
+    private double transactionDailyLimit;
     @Temporal(value = TemporalType.TIMESTAMP)
     private Date creationDate = new Date();
     private double minPayDue;
@@ -128,14 +130,6 @@ public class CreditCardAccount implements Serializable {
 
     public void setValidDate(Date validDate) {
         this.validDate = validDate;
-    }
-
-    public double getTransactionLimit() {
-        return transactionLimit;
-    }
-
-    public void setTransactionLimit(double transactionLimit) {
-        this.transactionLimit = transactionLimit;
     }
 
     public Date getCreationDate() {
@@ -249,5 +243,30 @@ public class CreditCardAccount implements Serializable {
     public void setMainAccount(MainAccount mainAccount) {
         this.mainAccount = mainAccount;
     }
+
+    public CardAccountStatus getCardStatus() {
+        return CardStatus;
+    }
+
+    public void setCardStatus(CardAccountStatus CardStatus) {
+        this.CardStatus = CardStatus;
+    }
+
+    public double getTransactionDailyLimit() {
+        return transactionDailyLimit;
+    }
+
+    public void setTransactionDailyLimit(double transactionDailyLimit) {
+        this.transactionDailyLimit = transactionDailyLimit;
+    }
+
+    public double getTransactionMonthlyLimit() {
+        return transactionMonthlyLimit;
+    }
+
+    public void setTransactionMonthlyLimit(double transactionMonthlyLimit) {
+        this.transactionMonthlyLimit = transactionMonthlyLimit;
+    }
+
 
 }

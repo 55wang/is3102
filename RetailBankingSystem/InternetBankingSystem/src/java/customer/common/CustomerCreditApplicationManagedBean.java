@@ -5,7 +5,7 @@
  */
 package customer.common;
 
-import ejb.session.card.NewCardSessionBeanLocal;
+import ejb.session.card.CardAcctSessionBeanLocal;
 import ejb.session.common.EmailServiceSessionBeanLocal;
 import ejb.session.common.NewCustomerSessionBeanLocal;
 import java.io.Serializable;
@@ -26,7 +26,7 @@ public class CustomerCreditApplicationManagedBean implements Serializable {
     @EJB
     private NewCustomerSessionBeanLocal newCustomerSessionBean;
     @EJB
-    private NewCardSessionBeanLocal newCardSessionBean;
+    private CardAcctSessionBeanLocal newCardSessionBean;
 
 
     /**

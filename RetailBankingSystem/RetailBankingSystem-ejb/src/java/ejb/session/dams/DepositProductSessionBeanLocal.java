@@ -6,6 +6,7 @@
 package ejb.session.dams;
 
 import entity.dams.account.DepositProduct;
+import java.util.List;
 import javax.ejb.Local;
 
 /**
@@ -17,4 +18,5 @@ public interface DepositProductSessionBeanLocal {
     public DepositProduct createDepositProduct(DepositProduct dp);
     public DepositProduct updateDepositProduct(DepositProduct dp);
     public DepositProduct getDepositProductByName(String name);
+    public List<DepositProduct> getAllPresentProducts();
 }

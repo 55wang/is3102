@@ -49,6 +49,12 @@ public class InterestSessionBean implements InterestSessionBeanLocal {
     }
     
     @Override
+    public List<Interest> showAllPresentInterests() {
+        Query q = em.createQuery("SELECT i FROM Interest i WHERE i.isHistory = false");
+        return q.getResultList();
+    }
+    
+    @Override
     public List<Interest> getCustomAccountDefaultInterests() {
         Query q = em.createQuery("SELECT i FROM Interest i WHERE "
                 + "i.defaultCustomAccount = true AND "

@@ -6,7 +6,6 @@
 package ejb.session.dams;
 
 import entity.dams.account.DepositProduct;
-import entity.staff.StaffAccount;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityExistsException;
@@ -63,5 +62,11 @@ public class DepositProductSessionBean implements DepositProductSessionBeanLocal
         } catch (NoResultException ex) {
             return null;
         }
+    }
+    
+    @Override
+    public List<DepositProduct> getAllPresentProducts() {
+        Query q = em.createQuery("SELECT dp FROM DepositProduct dp WHERE dp.isHistory = false");
+        return q.getResultList();
     }
 }

@@ -35,15 +35,18 @@
                             <h:link outcome="check-account-balance" value="Check Balance Current Account" />
                         </li>
                     </c:if>
-                    <c:if test="#{cc.attrs.top == 'others'}">
+                    <c:if test="#{cc.attrs.top == 'admin'}">
                         <li class="side-menu-item #{cc.attrs.side == 'createInterest' ? 'active' : ''}">
-                            <h:link outcome="create-interest" value="Create Interest" />
+                            <h:link outcome="create_interest" value="Create Interest" />
+                        </li>
+                        <li class="side-menu-item #{cc.attrs.side == 'createDepositProduct' ? 'active' : ''}">
+                            <h:link outcome="create_deposit_product" value="Create Deposit Product" />
                         </li>
                         <li class="side-menu-item #{cc.attrs.side == 'createRole' ? 'active' : ''}">
-                            <h:link outcome="create-role" value="Create Role" />
+                            <h:link outcome="create_role" value="Create Role" />
                         </li>
                         <li class="side-menu-item #{cc.attrs.side == 'createStaff' ? 'active' : ''}">
-                            <h:link outcome="create-staff" value="Create Staff" />
+                            <h:link outcome="create_staff" value="Create Staff" />
                         </li>
                     </c:if>
                     <c:if test="#{cc.attrs.top == 'message'}">

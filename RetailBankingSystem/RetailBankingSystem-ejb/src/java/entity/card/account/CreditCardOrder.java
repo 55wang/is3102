@@ -14,6 +14,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.Temporal;
+import utils.EnumUtils;
 
 /**
  *
@@ -77,7 +78,7 @@ public class CreditCardOrder implements Serializable {
     private Blob otherCert; //for anything else
     private String resultNotes; //for staff to reply to customer
 
-    private String applicationStatus;
+    private EnumUtils.ApplicationStatus applicationStatus;
 
     public Long getId() {
         return id;
@@ -376,11 +377,13 @@ public class CreditCardOrder implements Serializable {
         this.position = position;
     }
 
-    public String getApplicationStatus() {
+    public EnumUtils.ApplicationStatus getApplicationStatus() {
         return applicationStatus;
     }
 
-    public void setApplicationStatus(String applicationStatus) {
+    public void setApplicationStatus(EnumUtils.ApplicationStatus applicationStatus) {
         this.applicationStatus = applicationStatus;
     }
+
+
 }

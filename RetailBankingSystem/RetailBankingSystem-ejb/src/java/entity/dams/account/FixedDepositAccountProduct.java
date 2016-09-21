@@ -6,7 +6,6 @@
 package entity.dams.account;
 
 import javax.persistence.Entity;
-import utils.EnumUtils.DepositAccountType;
 
 /**
  *

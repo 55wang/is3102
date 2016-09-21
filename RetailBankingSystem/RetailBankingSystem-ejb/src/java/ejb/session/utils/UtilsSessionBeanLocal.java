@@ -3,16 +3,17 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ejb.session.timer;
+package ejb.session.utils;
 
 import javax.ejb.Local;
 
 /**
  *
- * @author litong
+ * @author leiyang
  */
 @Local
-public interface TimerSessionBeanLocal {
-    
-    public void EODTimer();
+public interface UtilsSessionBeanLocal {
+    public Object find(Class type, Long id);
+    public Object persist(Object object);
+    public Object merge(Object object);
 }

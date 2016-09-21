@@ -30,7 +30,7 @@ public class DepositProduct implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Integer version = 0;
-    private Boolean isHistory;
+    private Boolean isHistory = Boolean.FALSE;
     private String description;
     @Column(unique = true, nullable = false)
     private String name;

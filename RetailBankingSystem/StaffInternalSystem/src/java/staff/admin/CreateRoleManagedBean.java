@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package staff.others;
+package staff.admin;
 
 import ejb.session.staff.StaffRoleSessionBeanLocal;
 import entity.staff.Role;
@@ -40,8 +40,9 @@ public class CreateRoleManagedBean implements Serializable {
     }
     
     public void addRole(ActionEvent event) {
-        if (staffRoleSessionBean.addRole(newRole)) {
-            roles.add(newRole);
+        Role temp = staffRoleSessionBean.addRole(newRole);
+        if (temp != null) {
+            roles.add(temp);
             newRole = new Role();
             MessageUtils.displayInfo("New Role Added");
         } else {

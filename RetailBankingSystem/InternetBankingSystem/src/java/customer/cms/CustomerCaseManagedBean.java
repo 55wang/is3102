@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.context.ExternalContext;
@@ -49,6 +50,13 @@ public class CustomerCaseManagedBean implements Serializable {
     private Issue newIssue = new Issue();
     private Boolean issuePage = false;
     private int numOfIssues = 0;
+    private String directoryPath;
+    private String searchType="CaseID";
+    private String searchByCaseID = "CaseID";
+    private String searchByCaseTitle = "CaseTitle";
+    private List<CustomerCase> searchResultList = null;
+    private String searchCaseID;
+    private String searchCaseTitle;
     
 
     /**
@@ -74,6 +82,8 @@ public class CustomerCaseManagedBean implements Serializable {
         customerCase.setMainAccount(mainAccount);
         mainAccount.addCase(customerCase);
         customerCaseSessionBean.saveCase(customerCase);
+        String msg = "Case has been successfully submitted.";
+        MessageUtils.displayInfo(msg);
     }
     
     public void removeIssue(String issueID){
@@ -86,28 +96,63 @@ public class CustomerCaseManagedBean implements Serializable {
     public void uploadPhoto(FileUploadEvent e) throws IOException{
         System.out.println("CustomerCaseManagedBean.uploadPhoto: start uploading");
         UploadedFile uploadedPhoto=e.getFile();
+        String filename = FilenameUtils.getName(uploadedPhoto.getFileName());
  
         byte[] bytes=null;
- 
-            if (null!=uploadedPhoto) {
+        
+            if (uploadedPhoto!=null) {
                 ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext(); 
-                String filePath = ec.getRealPath("//WEB-INF//files//");
-//                    System.out.println("CustomerCaseManagedBean.uploadPhoto.filePath: " + filePath);
+                directoryPath = ec.getRealPath("//WEB-INF//files//");
                 bytes = uploadedPhoto.getContents();
-                String filename = FilenameUtils.getName(uploadedPhoto.getFileName());
-                String filepath = filePath+"/"+filename;
-                    System.out.println("CustomerCaseManagedBean.uploadPhoto.filenAME: " + filepath);
-            try (FileOutputStream stream = new FileOutputStream((new File(filePath+"/"+filename)))) {
+                String filepath = directoryPath+"/"+filename;
+                System.out.println("CustomerCaseManagedBean.uploadPhoto.filenAME: " + filepath);
+            try (FileOutputStream stream = new FileOutputStream((new File(directoryPath+"/"+filename)))) {
                 System.out.println("CustomerCaseManagedBean.uploadPhoto: start writing");
                 stream.write(bytes);
                 stream.flush();
+                newIssue.setAttachmentFileName(filename);
             }catch(Exception ex){
-                    System.out.println("CustomerCaseManagedBean.uploadPhoto: " + ex.toString());
+                System.out.println("CustomerCaseManagedBean.uploadPhoto: " + ex.toString());
                 }
             }
- 
-        String msg = "Upload successfully!";
-        MessageUtils.displayInfo(msg);
+    }
+    
+    public void searchByIdFunction(){
+        searchResultList = null;
+        CustomerCase resultCase = customerCaseSessionBean.searchCaseByID(searchCaseID);
+        
+        if(resultCase == null){        
+            String msg = "Result not found!";
+            MessageUtils.displayInfo(msg);
+        }else{
+            searchResultList = new ArrayList<CustomerCase>();
+            searchResultList.add(resultCase);
+        }                
+    }
+    
+    public void searchByTitleFunction(){
+        searchResultList = null;
+        searchResultList = customerCaseSessionBean.searchCaseByTitle(searchCaseTitle);
+        
+        if(searchResultList.size() == 0){
+            String msg = "Result not found!";
+            MessageUtils.displayInfo(msg);
+        }            
+    }
+    
+    public void cancelCase(Long caseID){
+        if(customerCaseSessionBean.cancelCase(caseID)){
+            for(int i=0; i<searchResultList.size();i++){
+                if(Objects.equals(searchResultList.get(i).getId(), caseID)){
+                    searchResultList.remove(i);
+                    String msg = "Case cancel successfully!";
+                    MessageUtils.displayInfo(msg);
+                }
+            }
+        }else{
+            String msg = "Error!";
+            MessageUtils.displayError(msg);
+        }       
     }
 
     @PostConstruct
@@ -162,6 +207,62 @@ public class CustomerCaseManagedBean implements Serializable {
 
     public void setNumOfIssues(int numOfIssues) {
         this.numOfIssues = numOfIssues;
+    }
+
+    public String getDirectoryPath() {
+        return directoryPath;
+    }
+
+    public void setDirectoryPath(String directoryPath) {
+        this.directoryPath = directoryPath;
+    }
+
+    public String getSearchType() {
+        return searchType;
+    }
+
+    public void setSearchType(String searchType) {
+        this.searchType = searchType;
+    }
+
+    public String getSearchByCaseID() {
+        return searchByCaseID;
+    }
+
+    public void setSearchByCaseID(String searchByCaseID) {
+        this.searchByCaseID = searchByCaseID;
+    }
+
+    public String getSearchByCaseTitle() {
+        return searchByCaseTitle;
+    }
+
+    public void setSearchByCaseTitle(String searchByCaseTitle) {
+        this.searchByCaseTitle = searchByCaseTitle;
+    }
+
+    public List<CustomerCase> getSearchResultList() {
+        return searchResultList;
+    }
+
+    public void setSearchResultList(List<CustomerCase> searchResultList) {
+        this.searchResultList = searchResultList;
+    }
+
+    public String getSearchCaseID() {
+        return searchCaseID;
+    }
+
+    public void setSearchCaseID(String searchCaseID) {
+        this.searchCaseID = searchCaseID;
+    }
+
+    public String getSearchCaseTitle() {
+        return searchCaseTitle;
+    }
+
+    public void setSearchCaseTitle(String searchCaseTitle) {
+        this.searchCaseTitle = searchCaseTitle;
     }
     
 }
