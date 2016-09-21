@@ -13,6 +13,8 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
+import utils.MessageUtils;
+import utils.RedirectUtils;
 
 /**
  *
@@ -35,9 +37,21 @@ public class StaffCustomerInformationManagedBean implements Serializable {
     }
 
     public void search() {
-        customers = customerProfileSessionBean.searchCustomerByIdentityNumber(searchText);
-        System.out.print("Managed Bean search ---------------" + customers.size());
+        if (searchText.isEmpty()){
+            customers = customerProfileSessionBean.retrieveActivatedCustomers();
+        }else{
+            customers = customerProfileSessionBean.searchCustomerByIdentityNumber(searchText);
+        }
 
+    }
+
+    public void saveUpdatedCustomerInformation(Customer customer) {
+        Customer result = customerProfileSessionBean.saveProfile(customer);
+        if (result == null) {
+            MessageUtils.displayError("Customer not found!");
+        } else {
+            MessageUtils.displayInfo("Cusotmer information is updated!");
+        }
     }
 
     /**

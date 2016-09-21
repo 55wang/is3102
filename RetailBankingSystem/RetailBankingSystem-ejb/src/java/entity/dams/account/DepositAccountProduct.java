@@ -43,6 +43,10 @@ public class DepositAccountProduct extends DepositProduct {
         return "DepositAccountProduct{" + "initialDeposit=" + initialDeposit + ", minBalance=" + minBalance + ", charges=" + charges + ", annualFees=" + annualFees + '}';
     }
     
+    public void addInterest(Interest i) {
+        this.interestRules.add(i);
+    }
+    
     /**
      * @return the initialDeposit
      */

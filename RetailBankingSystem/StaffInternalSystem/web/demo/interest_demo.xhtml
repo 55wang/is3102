@@ -19,31 +19,32 @@
                     <!--TODO: Add function here-->
                     <p:panel header="Account Detail">
                         <h:panelGrid columns="2" cellpadding="5">
-                            <p:column headerText="Id" sortBy="#{interestDemoManagedBean.account.id}">
-                                <p:outputLabel for="accountNumber" value="Account Number: " />
-                                <h:outputText id="accountNumber" value="#{interestDemoManagedBean.account.id}"></h:outputText>
-                            </p:column>
-                            <p:column headerText="Ammount" sortBy="#{interestDemoManagedBean.account.balance}">
-                                <p:outputLabel for="accountBalance" value="Account Balance " />
-                                <h:outputText id="accountBalance" value="#{interestDemoManagedBean.account.balance}"></h:outputText>
-                            </p:column>
-                            <p:column headerText="Total Interest Rate" sortBy="#{interestDemoManagedBean.getTotalInterest(interestDemoManagedBean.account)}">
-                                <p:outputLabel for="totalInterest" value="Total Interest " />
-                                <h:outputText id="totalInterest" value="#{interestDemoManagedBean.getTotalInterest(interestDemoManagedBean.account)}">
-                                    <f:convertNumber pattern="#0.0000"/>
-                                </h:outputText>
-                            </p:column>
+                            
+                            <h:selectOneMenu value="#{interestDemoManagedBean.selectedDepositAccount}" required="true">
+                                <f:selectItems value="#{interestDemoManagedBean.availableDepositAccount}" />
+                            </h:selectOneMenu>
+                            
+                            <p:commandButton value="Change" update="@form" actionListener="#{interestDemoManagedBean.changeAccount}" />
+
+                            <p:outputLabel for="accountNumber" value="Account Number: " />
+                            <h:outputText id="accountNumber" value="#{interestDemoManagedBean.showingAccount.id}"></h:outputText>
+                            <p:outputLabel for="accountBalance" value="Account Balance " />
+                            <h:outputText id="accountBalance" value="#{interestDemoManagedBean.showingAccount.balance}"></h:outputText>
+                            <p:outputLabel for="totalInterest" value="Total Interest " />
+                            <h:outputText id="totalInterest" value="#{interestDemoManagedBean.getTotalInterest(interestDemoManagedBean.showingAccount)}">
+                                <f:convertNumber pattern="###00.00"/>
+                            </h:outputText>
                         </h:panelGrid>
                     </p:panel>
-                    
+
                     <p:panel header="Normal Interests">
                         <p:dataTable id="normalInterests" value="#{interestDemoManagedBean.normalInterests}" var="interest" editable="true" editMode="cell">
                             <p:column headerText="Name" sortBy="#{interest.name}">
-                                    <h:outputText value="#{interest.name}"/>
+                                <h:outputText value="#{interest.name}"/>
                             </p:column>
                             <p:column headerText="Percentage" sortBy="#{interest.percentage}">
                                 <h:outputText value="#{interest.percentage}">
-                                    <f:convertNumber pattern="#0.0000"/>
+                                    <f:convertNumber type="percent" minFractionDigits="4"/>
                                 </h:outputText>
                             </p:column>
                         </p:dataTable>
@@ -55,7 +56,7 @@
                             </p:column>
                             <p:column headerText="Percentage" sortBy="#{interest.percentage}">
                                 <h:outputText value="#{interest.percentage}">
-                                    <f:convertNumber pattern="#0.0000"/>
+                                    <f:convertNumber type="percent" minFractionDigits="4"/>
                                 </h:outputText>
                             </p:column>
                             <p:column headerText="Minimum" sortBy="#{interest.minimum}">
@@ -73,7 +74,7 @@
                             </p:column>
                             <p:column headerText="Percentage" sortBy="#{interest.percentage}">
                                 <h:outputText value="#{interest.percentage}">
-                                    <f:convertNumber pattern="#0.0000"/>
+                                    <f:convertNumber type="percent" minFractionDigits="4"/>
                                 </h:outputText>
                             </p:column>
                             <p:column headerText="Minimum" sortBy="#{interest.minimum}">
@@ -97,7 +98,7 @@
                             </p:column>
                             <p:column headerText="Percentage" sortBy="#{interest.percentage}">
                                 <h:outputText value="#{interest.percentage}">
-                                    <f:convertNumber type="percent"/>
+                                    <f:convertNumber type="percent" minFractionDigits="4"/>
                                 </h:outputText>
                             </p:column>
                             <p:column headerText="Amount" sortBy="#{interest.amount}">
@@ -111,9 +112,9 @@
                             </p:column>
                         </p:dataTable>
                     </p:panel>
-                    
+
                     <p:panel header="Transactions">
-                        <p:dataTable id="transactions" value="#{interestDemoManagedBean.account.transactions}" var="transaction">
+                        <p:dataTable id="transactions" value="#{interestDemoManagedBean.showingAccount.transactions}" var="transaction">
                             <p:column headerText="Id" sortBy="#{transaction.id}">
                                 <h:outputText value="#{transaction.id}"/>
                             </p:column>

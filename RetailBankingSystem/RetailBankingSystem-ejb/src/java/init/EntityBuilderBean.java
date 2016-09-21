@@ -71,6 +71,7 @@ public class EntityBuilderBean {
     @EJB
     private MainAccountSessionBeanLocal mainAccountSessionBean;
     
+    private Interest demoNormalInterestData;
     private List<Interest> demoConditionalInterestData = new ArrayList<>();
     private MainAccount demoMainAccount;
 
@@ -210,7 +211,6 @@ public class EntityBuilderBean {
     }
 
     private void initCustomer() {
-        String u = "c1234567";
         String p = HashPwdUtils.hashPwd("password");
 
         Customer c = new Customer();
@@ -228,7 +228,7 @@ public class EntityBuilderBean {
         c.setPhone("81567758"); //must use real phone number as we need sms code
         c.setPostalCode("654321");
         c.setMainAccount(new MainAccount());
-        c.getMainAccount().setUserID(u);
+        c.getMainAccount().setUserID(ConstantUtils.DEMO_MAIN_ACCOUNT_USER_ID);
         c.getMainAccount().setPassword(p);
         c.getMainAccount().setStatus(EnumUtils.StatusType.ACTIVE);
         c.getMainAccount().setCustomer(c);
@@ -441,7 +441,7 @@ public class EntityBuilderBean {
         i.setName("Normal Interest");
         i.setVersion(0);
         i.setPercentage(new BigDecimal(0.0001));// 0.01%
-        interestSessionBean.addInterest(i);
+        demoNormalInterestData = interestSessionBean.addInterest(i);
 
         // Init other interests
         initTimeRangeInterest();
@@ -521,6 +521,7 @@ public class EntityBuilderBean {
         dr.setAnnualFees(BigDecimal.ZERO);
         dr.setWaivedMonths(12);
         dr.setInterestRules(demoConditionalInterestData);
+        dr.addInterest(demoNormalInterestData);
         depositProductSessionBean.createDepositProduct(dr);
     }
 

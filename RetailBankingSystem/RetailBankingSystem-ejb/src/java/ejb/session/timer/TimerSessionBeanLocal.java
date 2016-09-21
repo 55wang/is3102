@@ -14,7 +14,5 @@ import javax.ejb.Local;
 @Local
 public interface TimerSessionBeanLocal {
     
-    public void EODTimeout();
-
-   
+    public void EODTimer();
 }
