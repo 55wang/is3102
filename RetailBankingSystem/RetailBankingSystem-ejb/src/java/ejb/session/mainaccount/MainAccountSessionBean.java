@@ -6,7 +6,6 @@
 package ejb.session.mainaccount;
 
 import entity.customer.MainAccount;
-import entity.dams.account.DepositAccount;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -24,16 +23,6 @@ public class MainAccountSessionBean implements MainAccountSessionBeanLocal {
     @Override
     public MainAccount updateMainAccount(MainAccount ma) {
         em.merge(ma);
-        return ma;
-    }
-    
-    @Override
-    public MainAccount addDepositAccountToMainAccount(DepositAccount da, MainAccount ma) {
-        da.setMainAccount(ma);
-        ma.addDepositAccount(da);
-        em.merge(ma);
-        em.merge(da);
-        em.flush();
         return ma;
     }
 }

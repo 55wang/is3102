@@ -16,5 +16,4 @@ import javax.ejb.Local;
 @Local
 public interface MainAccountSessionBeanLocal {
     public MainAccount updateMainAccount(MainAccount ma);
-    public MainAccount addDepositAccountToMainAccount(DepositAccount da, MainAccount ma);
 }
