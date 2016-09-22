@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -29,7 +29,7 @@ public class TimerSessionBean implements TimerSessionBeanLocal {
         System.out.println("aaaaa");
     }
 }
-=======
+
 ///*
 // * To change this license header, choose License Headers in Project Properties.
 // * To change this template file, choose Tools | Templates
@@ -68,4 +68,3 @@ public class TimerSessionBean implements TimerSessionBeanLocal {
 //        }
 //    }
 //}
->>>>>>> 11fa14de17d18cdaebb8ba7086a5076d56afc112

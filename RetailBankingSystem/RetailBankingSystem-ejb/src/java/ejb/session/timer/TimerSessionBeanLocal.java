@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -18,7 +18,7 @@ public interface TimerSessionBeanLocal {
     
     public void handleTimeout(Timer timer);
 }
-=======
+
 ///*
 // * To change this license header, choose License Headers in Project Properties.
 // * To change this template file, choose Tools | Templates
@@ -37,4 +37,3 @@ public interface TimerSessionBeanLocal {
 //    
 //    public void EODTimer();
 //}
->>>>>>> 11fa14de17d18cdaebb8ba7086a5076d56afc112

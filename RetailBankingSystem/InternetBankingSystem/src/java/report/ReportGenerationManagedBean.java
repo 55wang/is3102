@@ -35,7 +35,7 @@ public class ReportGenerationManagedBean implements Serializable {
     public ReportGenerationManagedBean() {
     }
     
-    public void generateReport() throws JRException, IOException {
+    public void generateTestReport() throws JRException, IOException {
         String filePath = new File("").getAbsolutePath();
         filePath += "/src/java/report/testReport.jrxml";
         System.out.println(filePath);
@@ -65,7 +65,7 @@ public class ReportGenerationManagedBean implements Serializable {
     
     public static void main(String args[]) throws Exception{
         ReportGenerationManagedBean bean = new ReportGenerationManagedBean();
-        bean.generateReport();
+        bean.generateTestReport();
     }
 }
 
