@@ -18,6 +18,8 @@ public class Role implements Serializable {
     
     @Id
     private String roleName;
+    //set not null
+    private String description;
     
     public Role() {
         
@@ -38,5 +40,19 @@ public class Role implements Serializable {
     @Override
     public String toString() {
         return this.roleName;
+    }
+
+    /**
+     * @return the description
+     */
+    public String getDescription() {
+        return description;
+    }
+
+    /**
+     * @param description the description to set
+     */
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

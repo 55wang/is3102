@@ -83,7 +83,8 @@ public class CreateStaffManagedBean implements Serializable {
     
     // private function helper
     private void createAccount() {
-        if (staffAccountSessionBean.createAccount(newStaff)) {
+        StaffAccount result = staffAccountSessionBean.createAccount(newStaff);
+        if (result != null) {
             staffs.add(newStaff);
             newStaff = new StaffAccount();
             MessageUtils.displayInfo("New Role Added");
@@ -100,7 +101,8 @@ public class CreateStaffManagedBean implements Serializable {
         } else {
             return;
         }
-        if (staffAccountSessionBean.updateAccount(sa)) {
+        StaffAccount result = staffAccountSessionBean.updateAccount(sa);
+        if (result != null) {
             cellSelectedRoleName = null;
             cellSelectedStatus = null;
             MessageUtils.displayInfo(sa.getFullName() + "'s Role Edited");
