@@ -582,6 +582,15 @@ public class EntityBuilderBean {
         
         issues.add(issue);
         
+        issue = new Issue();
+        
+        issue.setTitle("Investment Problem");
+        issue.setField(EnumUtils.IssueField.INVESTMENT);
+        issue.setDetails("My investment plan has some problems. Could you please help me to check?");
+        issue.setCustomerCase(cc);
+        
+        issues.add(issue);
+        
         cc.setIssues(issues);
         cc.setTitle("My Deposit Account has Some problems");
         cc.setMainAccount(demoMainAccount);
