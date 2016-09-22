@@ -70,7 +70,7 @@ public class CustomerCaseManagedBean implements Serializable {
     private String searchCaseTitle;
     private List<String> issueFieldList = CommonUtils.getEnumList(EnumUtils.IssueField.class);
     
-    private final static String NOTIFY_CHANNEL = "/notify";
+    private final static String NOTIFY_CHANNEL = "/notify";//TODO: notify to specific staff roll
     /**
      * Creates a new instance of CustomerCaseManagedBean
      */
