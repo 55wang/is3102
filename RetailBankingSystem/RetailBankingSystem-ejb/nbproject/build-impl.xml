@@ -796,34 +796,22 @@ exists or setup the property manually. For example like this:
         <copyfiles files="${libs.NEXMO.classpath}" todir="${build.classes.dir}"/>
         <copyfiles files="${libs.Apache.classpath}" todir="${build.classes.dir}"/>
         <copyfiles files="${libs.RFC4226.classpath}" todir="${build.classes.dir}"/>
-        <copyfiles files="${file.reference.jasperreports-javaflow-6.3.0.jar}" todir="${build.classes.dir}"/>
-        <copyfiles files="${file.reference.jasperreports-6.3.0.jar}" todir="${build.classes.dir}"/>
-        <copyfiles files="${file.reference.jasperreports-fonts-6.3.0.jar}" todir="${build.classes.dir}"/>
     </target>
     <target if="is.server.weblogic" name="-library-inclusion-in-archive-weblogic">
         <basename file="${libs.NEXMO.classpath}" property="manifest.libs.NEXMO.classpath"/>
         <basename file="${libs.Apache.classpath}" property="manifest.libs.Apache.classpath"/>
         <basename file="${libs.RFC4226.classpath}" property="manifest.libs.RFC4226.classpath"/>
-        <basename file="${file.reference.jasperreports-javaflow-6.3.0.jar}" property="manifest.file.reference.jasperreports-javaflow-6.3.0.jar"/>
-        <basename file="${file.reference.jasperreports-6.3.0.jar}" property="manifest.file.reference.jasperreports-6.3.0.jar"/>
-        <basename file="${file.reference.jasperreports-fonts-6.3.0.jar}" property="manifest.file.reference.jasperreports-fonts-6.3.0.jar"/>
         <manifest file="${build.ear.classes.dir}/META-INF/MANIFEST.MF" mode="update">
-            <attribute name="Extension-List" value="jar-1 jar-2 jar-3 jar-4 jar-5 jar-6 jar-7 "/>
+            <attribute name="Extension-List" value="jar-1 jar-2 jar-3 "/>
             <attribute name="jar-1-Extension-Name" value="${manifest.libs.NEXMO.classpath}"/>
             <attribute name="jar-2-Extension-Name" value="${manifest.libs.Apache.classpath}"/>
             <attribute name="jar-3-Extension-Name" value="${manifest.libs.RFC4226.classpath}"/>
-            <attribute name="jar-4-Extension-Name" value="${manifest.file.reference.jasperreports-javaflow-6.3.0.jar}"/>
-            <attribute name="jar-5-Extension-Name" value="${manifest.file.reference.jasperreports-6.3.0.jar}"/>
-            <attribute name="jar-6-Extension-Name" value="${manifest.file.reference.jasperreports-fonts-6.3.0.jar}"/>
         </manifest>
     </target>
     <target depends="compile" name="library-inclusion-in-manifest">
         <copyfiles files="${libs.NEXMO.classpath}" todir="${dist.ear.dir}/lib"/>
         <copyfiles files="${libs.Apache.classpath}" todir="${dist.ear.dir}/lib"/>
         <copyfiles files="${libs.RFC4226.classpath}" todir="${dist.ear.dir}/lib"/>
-        <copyfiles files="${file.reference.jasperreports-javaflow-6.3.0.jar}" todir="${dist.ear.dir}/lib"/>
-        <copyfiles files="${file.reference.jasperreports-6.3.0.jar}" todir="${dist.ear.dir}/lib"/>
-        <copyfiles files="${file.reference.jasperreports-fonts-6.3.0.jar}" todir="${dist.ear.dir}/lib"/>
         <manifest file="${build.ear.classes.dir}/META-INF/MANIFEST.MF" mode="update"/>
     </target>
     <target name="-copy-meta-inf">
