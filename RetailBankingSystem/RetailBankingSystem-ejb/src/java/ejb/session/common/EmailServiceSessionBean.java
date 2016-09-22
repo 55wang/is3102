@@ -299,6 +299,32 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
         }
     }
     
+    @Override
+    public Boolean sendCaseStatusChangeToCustomer(String recipient, CustomerCase cc){
+        Session session = getSession();
+
+        try {
+
+            Message message = new MimeMessage(session);
+            message.setFrom(new InternetAddress("merlionbanking@gmail.com"));
+            message.setRecipients(Message.RecipientType.TO,
+                    InternetAddress.parse(recipient));
+            message.setSubject("The status of your case(ID: " + cc.getId() + ") has been changed");
+            message.setText("Dear Customer, \n The staff has updated your case status to "
+                    + cc.getCaseStatus()
+                    + "\nIf there is anything wrong, please check with our staff.");
+
+            Transport.send(message);
+
+            System.out.println("Email send out successfully");
+            return true;
+
+        } catch (MessagingException e) {
+            System.out.println(e);
+            return false;
+        }
+    }
+    
     private Properties getGmailProperties() {
         Properties props = new Properties();
         props.put("mail.smtp.host", "smtp.gmail.com");

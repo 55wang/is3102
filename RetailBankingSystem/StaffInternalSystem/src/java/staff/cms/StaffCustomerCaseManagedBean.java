@@ -6,6 +6,7 @@
 package staff.cms;
 
 import ejb.session.cms.CustomerCaseSessionBeanLocal;
+import ejb.session.common.EmailServiceSessionBeanLocal;
 import ejb.session.staff.StaffAccountSessionBeanLocal;
 import entity.customer.CustomerCase;
 import entity.staff.StaffAccount;
@@ -17,6 +18,7 @@ import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import server.utilities.EnumUtils;
+import server.utilities.EnumUtils.CaseStatus;
 import utils.CommonUtils;
 import utils.MessageUtils;
 import utils.RedirectUtils;
@@ -30,6 +32,8 @@ import utils.SessionUtils;
 @ViewScoped
 public class StaffCustomerCaseManagedBean implements Serializable{
     @EJB
+    private EmailServiceSessionBeanLocal emailServiceSessionBean;
+    @EJB
     private StaffAccountSessionBeanLocal staffBean;
     @EJB
     private CustomerCaseSessionBeanLocal customerCaseSessionBean;
@@ -39,6 +43,8 @@ public class StaffCustomerCaseManagedBean implements Serializable{
     private String searchStaff;
     private List<StaffAccount> staffs = new ArrayList<>();
     private static CustomerCase transferedCase = new CustomerCase();
+    
+    private CaseStatus csOnHold = CaseStatus.ONHOLD; 
     
     private List<String> caseStatusList = CommonUtils.getEnumList(EnumUtils.CaseStatus.class);
     private List<String> issueFieldList = CommonUtils.getEnumList(EnumUtils.IssueField.class);
@@ -64,11 +70,23 @@ public class StaffCustomerCaseManagedBean implements Serializable{
         }
     }
     
+    public void start(CustomerCase cc) {
+        cc.setCaseStatus(EnumUtils.CaseStatus.ONGOING);
+        Boolean result = customerCaseSessionBean.updateCase(cc);
+        if (result == false) {
+            MessageUtils.displayError("Case not found!");
+        } else {
+            emailServiceSessionBean.sendCaseStatusChangeToCustomer(cc.getMainAccount().getCustomer().getEmail(), cc);
+            MessageUtils.displayInfo("Case information is updated!");
+        }
+    }
+    
     public void update(CustomerCase cc) {
         Boolean result = customerCaseSessionBean.updateCase(cc);
         if (result == false) {
             MessageUtils.displayError("Case not found!");
         } else {
+            emailServiceSessionBean.sendCaseStatusChangeToCustomer(cc.getMainAccount().getCustomer().getEmail(), cc);
             MessageUtils.displayInfo("Case information is updated!");
         }
     }
@@ -166,4 +184,13 @@ public class StaffCustomerCaseManagedBean implements Serializable{
     public void setSearchStaff(String searchStaff) {
         this.searchStaff = searchStaff;
     }
+
+    public CaseStatus getCsOnHold() {
+        return csOnHold;
+    }
+
+    public void setCsOnHold(CaseStatus csOnHold) {
+        this.csOnHold = csOnHold;
+    }
+    
 }

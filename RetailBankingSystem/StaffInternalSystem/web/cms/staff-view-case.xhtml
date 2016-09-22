@@ -53,12 +53,17 @@
                                 <h:outputText value="#{case.staffAccount.username}" />
                             </p:column>
                             
-                            <p:column headerText="Action" style="width:140px">
-                                <p:splitButton value="Update" action="#{staffCustomerCaseManagedBean.update(case)}" update="@form" icon="ui-icon-disk">
-                                    <p:menuitem value="Transfer" action="#{staffCustomerCaseManagedBean.redirectToTransferPage(case)}" icon="ui-icon-arrowrefresh-1-w" />
-                                    <p:menuitem value="Delete" actionListener="#{buttonView.delete}" ajax="false" icon="ui-icon-close" />
+                            <p:column headerText="Action" style="width:140px" rendered="#{case.caseStatus == 'ONHOLD'}">
+                                <p:splitButton value="Start" action="#{staffCustomerCaseManagedBean.start(case)}" update="@form" icon="ui-icon-disk">
+                                    <p:menuitem value="Transfer" action="#{staffCustomerCaseManagedBean.redirectToTransferPage(case)}" icon="ui-icon-arrowrefresh-1-w" />                                  
                                 </p:splitButton>
                             </p:column>
+                            <p:column headerText="Action" style="width:140px" rendered="#{case.caseStatus != 'ONHOLD'}">
+                                <p:splitButton value="Update" action="#{staffCustomerCaseManagedBean.update(case)}" update="@form" icon="ui-icon-disk">
+                                    <p:menuitem value="Transfer" action="#{staffCustomerCaseManagedBean.redirectToTransferPage(case)}" icon="ui-icon-arrowrefresh-1-w" />                                  
+                                </p:splitButton>
+                            </p:column>
+                            
                             
                             <p:rowExpansion>
                                 <p:dataTable id="issueList" value="#{case.issues}" var="issue" sortMode="multiple" >
@@ -74,10 +79,8 @@
                                         <h:outputText value="#{issue.title}" />
                                     </p:column>
                                     
-                                    <p:column headerText="Field" sortBy="#{issue.field}" style="width:150px">
-                                        <p:selectOneMenu value="#{issue.field}">
-                                            <f:selectItems value="#{staffCustomerCaseManagedBean.issueFieldList}" />
-                                        </p:selectOneMenu>
+                                    <p:column headerText="Field" sortBy="#{issue.field}">
+                                        <h:outputText value="#{issue.field}" />
                                     </p:column>
                                     
                                     <p:column headerText="Details" sortBy="#{issue.details}">
