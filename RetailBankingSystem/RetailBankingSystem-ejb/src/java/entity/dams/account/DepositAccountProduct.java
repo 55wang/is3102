@@ -75,6 +75,18 @@ public class DepositAccountProduct extends DepositProduct {
         return result;
     }
     
+    public List<RangeInterest> getRangeInterest() {
+        List<RangeInterest> result = new ArrayList();
+        for (Interest i : interestRules) {
+            if (i instanceof TimeRangeInterest) {
+            } else if (i instanceof RangeInterest) {
+                result.add((RangeInterest)i);
+            } else if (i instanceof ConditionInterest) {
+            }
+        }
+        return result;
+    }
+    
     /**
      * @return the initialDeposit
      */
