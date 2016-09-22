@@ -6,6 +6,7 @@
 package ejb.session.timer;
 
 import javax.ejb.Local;
+import javax.ejb.Timer;
 
 /**
  *
@@ -14,5 +15,5 @@ import javax.ejb.Local;
 @Local
 public interface TimerSessionBeanLocal {
     
-    public void EODTimer();
+    public void handleTimeout(Timer timer);
 }

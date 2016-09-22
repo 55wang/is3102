@@ -22,17 +22,9 @@ public class TimerSessionBean implements TimerSessionBeanLocal {
     @Resource 
     private SessionContext ctx;
 
-    @Schedule(dayOfWeek = "*", month = "*", hour = "0-8", dayOfMonth = "*", year = "*", minute = "*", second = "*")
-    public void EODTimer() {
-    
-    }
-    
-    @Timeout
+    @Schedule(dayOfWeek = "*", month = "*", hour = "9", dayOfMonth = "*", year = "*", minute = "48", second = "1")
     public void handleTimeout(Timer timer) 
     {
-        if(timer.getInfo().toString().equals("Some name"))
-        {
-            System.err.println("EjbTimerSession.handleTimeout(): some name");
-        }
+        System.out.println("aaaaa");
     }
 }
