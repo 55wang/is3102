@@ -67,6 +67,7 @@ and open the template in the editor.
     float: left;
     background: #fff;
     border: 1px solid black;
+    overflow: auto;
 }
 #messages-container {
     height: 500px;
