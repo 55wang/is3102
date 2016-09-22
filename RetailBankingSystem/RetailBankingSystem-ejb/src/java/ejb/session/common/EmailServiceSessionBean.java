@@ -284,7 +284,7 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
             message.setRecipients(Message.RecipientType.TO,
                     InternetAddress.parse(recipient));
             message.setSubject("Your profile is updated - Merlion Bank");
-            message.setText("Dear Customer, \n You have updated your profile. "
+            message.setText("Dear Customer, \n Your profile has been updated. "
                     + "Click the link to check updated profile: "
                     + "https://localhost:8181/InternetBankingSystem/customer_cms/view_profile.xhtml .");
 

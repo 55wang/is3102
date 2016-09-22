@@ -53,6 +53,7 @@ public class CustomerProfileSessionBean implements CustomerProfileSessionBeanLoc
         try {
 
             em.merge(customer);
+            em.merge(customer.getMainAccount());
             em.flush();
 
             emailServiceSessionBean.sendUpdatedProfile(customer.getEmail());
@@ -65,13 +66,11 @@ public class CustomerProfileSessionBean implements CustomerProfileSessionBeanLoc
     @Override
     public List<Customer> retrieveActivatedCustomers() {
 
-        
         Query q = em.createQuery("SELECT c FROM Customer c WHERE c.mainAccount.status = :inStatus");
         q.setParameter("inStatus", StatusType.ACTIVE);
 
         return q.getResultList();
-        
- 
+
     }
 
     @Override
