@@ -14,8 +14,8 @@ git update-index --assume-unchanged filename
     git update-index --assume-unchanged RetailBankingSystem/StaffInternalSystem/nbproject/build-impl.xml
     git update-index --assume-unchanged RetailBankingSystem/InternetBankingSystem/nbproject/build-impl.xml
     git update-index --assume-unchanged RetailBankingSystem/RetailBankingSystem-ejb/nbproject/project.properties
-    git update-index --assume-unchanged RetailBankingSystem/StaffInternalSystem-ejb/nbproject/project.properties
-    git update-index --assume-unchanged RetailBankingSystem/InternetBankingSystem-ejb/nbproject/project.properties
+    git update-index --assume-unchanged RetailBankingSystem/StaffInternalSystem/nbproject/project.properties
+    git update-index --assume-unchanged RetailBankingSystem/InternetBankingSystem/nbproject/project.properties
 
 # Error Handling** IMPORTANT #
 Standardize Error Handingly Message from server.utilities.ConstantUtils.java
