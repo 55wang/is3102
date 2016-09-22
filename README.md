@@ -8,7 +8,14 @@ run this in cmdline
 mysql -u root --password=password < RecreateDatabase.sql
 
 ### Change the project name accordingly ###
-git update-index --assume-unchanged RetailBankingSystem/StaffInternalSystem/nbproject/build-impl.xml
+git update-index --assume-unchanged filename
+
+    git update-index --assume-unchanged RetailBankingSystem/RetailBankingSystem-ejb/nbproject/build-impl.xml
+    git update-index --assume-unchanged RetailBankingSystem/StaffInternalSystem/nbproject/build-impl.xml
+    git update-index --assume-unchanged RetailBankingSystem/InternetBankingSystem/nbproject/build-impl.xml
+    git update-index --assume-unchanged RetailBankingSystem/RetailBankingSystem-ejb/nbproject/project.properties
+    git update-index --assume-unchanged RetailBankingSystem/StaffInternalSystem/nbproject/project.properties
+    git update-index --assume-unchanged RetailBankingSystem/InternetBankingSystem/nbproject/project.properties
 
 # Error Handling** IMPORTANT #
 Standardize Error Handingly Message from server.utilities.ConstantUtils.java

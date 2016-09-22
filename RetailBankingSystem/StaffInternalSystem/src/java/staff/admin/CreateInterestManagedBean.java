@@ -362,4 +362,18 @@ public class CreateInterestManagedBean implements Serializable {
     public void setCONDITION_TYPE_INCREASE(String CONDITION_TYPE_INCREASE) {
         this.CONDITION_TYPE_INCREASE = CONDITION_TYPE_INCREASE;
     }
+
+    /**
+     * @return the CONDITION_TYPE_NOWITHDRAW
+     */
+    public String getCONDITION_TYPE_NOWITHDRAW() {
+        return CONDITION_TYPE_NOWITHDRAW;
+    }
+
+    /**
+     * @param CONDITION_TYPE_NOWITHDRAW the CONDITION_TYPE_NOWITHDRAW to set
+     */
+    public void setCONDITION_TYPE_NOWITHDRAW(String CONDITION_TYPE_NOWITHDRAW) {
+        this.CONDITION_TYPE_NOWITHDRAW = CONDITION_TYPE_NOWITHDRAW;
+    }
 }

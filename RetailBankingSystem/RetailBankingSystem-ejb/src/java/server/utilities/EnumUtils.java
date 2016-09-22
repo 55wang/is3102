@@ -845,6 +845,76 @@ public class EnumUtils {
             throw new IllegalArgumentException();
         }
     }
+    
+    public enum InterestTimeRange {
+        // in month
+        T1_T2("1-2 months"),
+        T3_T5("3-5 months"),
+        T6("6 mth"),
+        T7_T8("7-8 months"),
+        T9_T11("9-11 months"),
+        T12_T15("12-15 months"),
+        T18("18 mth"),
+        T24("24 mth"),
+        T36("18 mth");
+        
+        private String value;
+
+        InterestTimeRange(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        @Override
+        public String toString() {
+            return this.getValue();
+        }
+
+        public static InterestTimeRange getEnum(String value) {
+            for (InterestTimeRange v : values()) {
+                if (v.getValue().equalsIgnoreCase(value)) {
+                    return v;
+                }
+            }
+            throw new IllegalArgumentException();
+        }
+    }
+    
+    public enum InterestAmountRange {
+        M5_M20("$5,000 - $20,000"),
+        M20_M50("$20,000 - $50,000"),
+        M50_M99("$50,000 - $99,999"),
+        M100_M249("$100,000 - $249,999"),
+        M250_M499("$250,000 - $499,999"),
+        M500_M999("$500,000 - $999,999");
+        
+        private String value;
+
+        InterestAmountRange(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        @Override
+        public String toString() {
+            return this.getValue();
+        }
+
+        public static InterestAmountRange getEnum(String value) {
+            for (InterestAmountRange v : values()) {
+                if (v.getValue().equalsIgnoreCase(value)) {
+                    return v;
+                }
+            }
+            throw new IllegalArgumentException();
+        }
+    }
 
     // Deposit Account
     public enum DepositAccountType {
@@ -934,6 +1004,41 @@ public class EnumUtils {
 
         public static CaseStatus getEnum(String value) {
             for (CaseStatus v : values()) {
+                if (v.getValue().equalsIgnoreCase(value)) {
+                    return v;
+                }
+            }
+            throw new IllegalArgumentException();
+        }
+    }
+    
+    public enum IssueField {
+
+        PROFILE("PROFILE"),
+        ACCOUNT("ACCOUNT"),
+        DEPOSIT("DEPOSIT"),
+        CARD("CARD"),
+        LOAN("LOAN"),
+        INVESTMENT("INVESTMENT");
+        
+        
+        private String value;
+
+        IssueField(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        @Override
+        public String toString() {
+            return this.getValue();
+        }
+
+        public static IssueField getEnum(String value) {
+            for (IssueField v : values()) {
                 if (v.getValue().equalsIgnoreCase(value)) {
                     return v;
                 }

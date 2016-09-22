@@ -38,8 +38,8 @@
                             <p:outputLabel id="header-nav-contact" value="Contact us"/>
                             <p:menu overlay="true" trigger="header-nav-contact" my="left top" at="left bottom">
                                 <p:submenu label="Navigations">
-                                    <p:menuitem value="Raise Case" url="../customer_cms/create_case.xhtml"/>
-                                    <p:menuitem value="View Case" url="../customer_cms/view_case.xhtml"/>
+                                    <p:menuitem value="Raise Case" url="../customer_csm/create_case.xhtml"/>
+                                    <p:menuitem value="View Case" url="../customer_csm/view_case.xhtml"/>
                                 </p:submenu>
                             </p:menu>
                         </li>
@@ -47,10 +47,7 @@
                             <p:outputLabel id="header-nav-message" value="Message"/>
                             <p:menu overlay="true" trigger="header-nav-message" my="left top" at="left bottom">
                                 <p:submenu label="Navigations">
-                                    <p:menuitem value="nav1" url="http://www.primefaces.org"/>
-                                    <p:menuitem value="nav2" />
-                                    <p:menuitem value="nav3" url="http://www.primefaces.org"/>
-                                    <p:menuitem value="nav4"/>
+                                    <p:menuitem value="announcement" outcome="/customer_message/announcement"/>
                                 </p:submenu>
                             </p:menu>
                         </li>
@@ -58,8 +55,8 @@
                             <p:outputLabel id="header-nav-profile" value="#{cc.attrs.userName}"/>
                             <p:menu overlay="true" trigger="header-nav-profile" my="left top" at="left bottom">
                                 <p:submenu label="Navigations">
-                                    <p:menuitem value="Profile" url="../customer_cms/view_profile.xhtml" />
-                                    <p:menuitem value="Reset Password" url="../customer_cms/customer_reset_pwd.xhtml" />
+                                    <p:menuitem value="Profile" url="../customer_csm/view_profile"/>
+                                    <p:menuitem value="Reset Password" url="../customer_csm/customer_reset_pwd" />
                                     <p:menuitem value="Logout" onclick="PF('logout').show()" />
                                 </p:submenu>
                             </p:menu>

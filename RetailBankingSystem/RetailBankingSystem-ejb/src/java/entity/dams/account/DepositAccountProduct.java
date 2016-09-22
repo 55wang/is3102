@@ -5,7 +5,10 @@
  */
 package entity.dams.account;
 
+import entity.dams.rules.ConditionInterest;
 import entity.dams.rules.Interest;
+import entity.dams.rules.RangeInterest;
+import entity.dams.rules.TimeRangeInterest;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -45,6 +48,43 @@ public class DepositAccountProduct extends DepositProduct {
     
     public void addInterest(Interest i) {
         this.interestRules.add(i);
+    }
+    
+    public List<Interest> getBaseInterest() {
+        List<Interest> result = new ArrayList();
+        for (Interest i : interestRules) {
+            if (i instanceof TimeRangeInterest) {
+            } else if (i instanceof RangeInterest) {
+            } else if (i instanceof ConditionInterest) {
+            } else {
+                result.add(i);
+            }
+        }
+        return result;
+    }
+    
+    public List<ConditionInterest> getConditionalInterest() {
+        List<ConditionInterest> result = new ArrayList();
+        for (Interest i : interestRules) {
+            if (i instanceof TimeRangeInterest) {
+            } else if (i instanceof RangeInterest) {
+            } else if (i instanceof ConditionInterest) {
+                result.add((ConditionInterest)i);
+            }
+        }
+        return result;
+    }
+    
+    public List<RangeInterest> getRangeInterest() {
+        List<RangeInterest> result = new ArrayList();
+        for (Interest i : interestRules) {
+            if (i instanceof TimeRangeInterest) {
+            } else if (i instanceof RangeInterest) {
+                result.add((RangeInterest)i);
+            } else if (i instanceof ConditionInterest) {
+            }
+        }
+        return result;
     }
     
     /**

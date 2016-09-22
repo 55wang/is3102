@@ -8,7 +8,8 @@ and open the template in the editor.
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:cc="http://xmlns.jcp.org/jsf/composite"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     
     <cc:interface>
         <cc:attribute name="context" required="true"/>
@@ -27,18 +28,26 @@ and open the template in the editor.
         <h:panelGrid columns="2" cellpadding="10">
             <p:graphicImage library="img" style="width: 300px;height: 200px" name="bank-image.jpg" />
             <h:outputText
-                value="Current account is suitable for your daily banking needs." />
+                value="Current account is suitable for your daily banking needs." rendered="#{displayDepositProductManagedBean.hasCurrentDepositProduct}"/>
+            <h:outputText
+                value="Current account product is coming soon!" rendered="#{!displayDepositProductManagedBean.hasCurrentDepositProduct}" />
         </h:panelGrid>
-            <p><a href=".../customer_dams/currentdeposit.xhtml" style="text-decoration: none;color:grey">View Details</a></p>
+            <p><c:if test="#{displayDepositProductManagedBean.hasCurrentDepositProduct}">
+                    <a herf="current_deposit" style="text-decoration: none;color:grey">View Details</a>
+            </c:if></p>
     </p:panel></td>
     <td style="column-width: 20px"></td>
     <td><p:panel id="Savingsaccount" header="Savings Account" style="margin-top:200px;margin-bottom:20px">
         <h:panelGrid columns="2" cellpadding="10">
             <p:graphicImage library="img" style="width: 300px;height: 200px" name="deposit.jpg" />
             <h:outputText
-                value="Grow your savings with these accounts." />
+                value="Grow your savings with these accounts." rendered="#{displayDepositProductManagedBean.hasSavingsDepositProduct}" />
+            <h:outputText
+                value="Savings account product is coming soon!" rendered="#{!displayDepositProductManagedBean.hasSavingsDepositProduct}" />
         </h:panelGrid>
-            <p><a href=".../customer_dams/Savingsaccount.xhtml" style="text-decoration: none;color:grey">View Details</a></p>
+            <p><c:if test="#{displayDepositProductManagedBean.hasSavingsDepositProduct}">
+                    <a href="../customer_dams/savings_account.xhtml" style="text-decoration: none;color:grey" >View Details</a>
+            </c:if></p>
     </p:panel></td>
         </tr>
     
@@ -47,18 +56,26 @@ and open the template in the editor.
         <h:panelGrid columns="2" cellpadding="10">
             <p:graphicImage library="img" style="width: 300px;height: 200px" name="fixed-deposit.jpg" />
             <h:outputText
-                value="Stand a chance to earn 0.8% return." />
+                value="Stand a chance to earn 0.8% return." rendered="#{displayDepositProductManagedBean.hasTimeDepositProduct}"/>
+            <h:outputText
+                value="Time Deposit product is coming soon!" rendered="#{!displayDepositProductManagedBean.hasTimeDepositProduct}"/>
         </h:panelGrid>
-            <p><a href=".../customer_dams/timedeposit.xhtml" style="text-decoration: none;color: grey">View Details</a></p>
+            <p><c:if test="#{displayDepositProductManagedBean.hasTimeDepositProduct}">
+                    <a href="../customer_dams/time_deposit.xhtml" style="text-decoration: none;color:grey">View Details</a>
+            </c:if></p>
     </p:panel></td>
     <td style="column-width: 20px"></td>
     <td><p:panel id="Merlionuniqueaccount" header="Merlion Unique Account"  style="margin-bottom:20px">
         <h:panelGrid columns="2" cellpadding="10">
             <p:graphicImage library="img" style="width: 300px;height: 200px" name="growth-of-money-market-in-india.jpg" />
             <h:outputText
-                value="Enjoy exclusive bonus Merlion deposit customers." />
+                value="Enjoy exclusive bonus Merlion deposit customers." rendered="#{displayDepositProductManagedBean.hasCustomDepositProduct}"/>
+            <h:outputText
+                value="Merlion exclusive products coming soon! " rendered="#{!displayDepositProductManagedBean.hasCustomDepositProduct}"/>
         </h:panelGrid>
-            <p><a href=".../customer_dams/Merlion_unique.xhtml" style="text-decoration: none;color:grey">View Details</a></p>
+            <p><c:if test="#{displayDepositProductManagedBean.hasCustomDepositProduct}">
+                    <a href="../customer_dams/merlion_custom_deposit.xhtml" style="text-decoration: none;color:grey">View Details</a>
+            </c:if></p>
     </p:panel></td>
         </tr>
     </table>

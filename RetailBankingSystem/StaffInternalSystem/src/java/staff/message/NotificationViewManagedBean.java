@@ -6,10 +6,14 @@
 package staff.message;
 
 import ejb.session.message.AnnouncementSessionBeanLocal;
+import ejb.session.staff.StaffRoleSessionBeanLocal;
 import entity.staff.Announcement;
+import entity.staff.Role;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
@@ -19,7 +23,10 @@ import javax.faces.view.ViewScoped;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.primefaces.push.EventBus;
 import org.primefaces.push.EventBusFactory;
+import server.utilities.EnumUtils;
+import server.utilities.EnumUtils.UserRole;
 import utils.MessageUtils;
+import utils.SessionUtils;
 
 /**
  *
@@ -31,13 +38,20 @@ public class NotificationViewManagedBean implements Serializable {
 
     @EJB
     private AnnouncementSessionBeanLocal announcementBean;
+    @EJB
+    private StaffRoleSessionBeanLocal staffRoleSessionBean;
 
-    private final static String NOTIFY_CHANNEL = "/notify";
+    private final static String STAFF_NOTIFY_CHANNEL = "/staff_notify";
+    private final static String CUSTOMER_NOTIFY_CHANNEL = "/customer_notify";
+    private final static String ROLE_NOTIFY_CHANNEL = "/role_notification/";
 
+    private Boolean isForStaff = true;
+    private Boolean forAllStaff = true;
     private Announcement newAnnouncement = new Announcement();
     private List<Announcement> announcements = new ArrayList<>();
-    
-
+    private List<Role> roles = new ArrayList<>();
+    private Map<String, String> rolesOption = new HashMap<>();
+    private String selectedRoleName;
     /**
      * Creates a new instance of NotificationViewManagedBean
      */
@@ -46,20 +60,41 @@ public class NotificationViewManagedBean implements Serializable {
 
     @PostConstruct
     public void init() {
-        announcements = announcementBean.getAllAnnouncements();
+        announcements = announcementBean.getAllAnnouncements(SessionUtils.getStaff().getRole());
+        setRoles(staffRoleSessionBean.getAllRoles());
+        for (Role r : roles) {
+            rolesOption.put(r.getRoleName(), r.getRoleName());
+        }
     }
 
     public void send() {
+        
+        if (!forAllStaff && selectedRoleName!= null) {
+            newAnnouncement.setRole(staffRoleSessionBean.findRoleByName(selectedRoleName));
+        }
+        newAnnouncement.setIsForStaff(isForStaff);
         if (announcementBean.createAnnouncement(getNewAnnouncement())) {
+            announcements.add(0, newAnnouncement);
             MessageUtils.displayInfo("New Announcement Added");
         } else {
             MessageUtils.displayInfo("Announcement already Added");
         }
         EventBus eventBus = EventBusFactory.getDefault().eventBus();
         FacesMessage m = new FacesMessage(StringEscapeUtils.escapeHtml(newAnnouncement.getTitle()), StringEscapeUtils.escapeHtml(newAnnouncement.getContent()));
-        eventBus.publish(NOTIFY_CHANNEL, m);
+        
+        if (!isForStaff) {
+            eventBus.publish(CUSTOMER_NOTIFY_CHANNEL, m);
+            eventBus.publish(ROLE_NOTIFY_CHANNEL + UserRole.SUPER_ADMIN.toString(), m);
+        } else {
+            if (getForAllStaff() == false) {
+                eventBus.publish(ROLE_NOTIFY_CHANNEL + selectedRoleName, m);
+            } else {
+                eventBus.publish(STAFF_NOTIFY_CHANNEL, m);
+            }
+        }
 
         setNewAnnouncement(new Announcement());
+        selectedRoleName = null;
     }
 
     // Getter and Setters
@@ -89,5 +124,75 @@ public class NotificationViewManagedBean implements Serializable {
      */
     public void setNewAnnouncement(Announcement newAnnouncement) {
         this.newAnnouncement = newAnnouncement;
+    }
+
+    /**
+     * @return the isForStaff
+     */
+    public Boolean getIsForStaff() {
+        return isForStaff;
+    }
+
+    /**
+     * @param isForStaff the isForStaff to set
+     */
+    public void setIsForStaff(Boolean isForStaff) {
+        this.isForStaff = isForStaff;
+    }
+
+    /**
+     * @return the roles
+     */
+    public List<Role> getRoles() {
+        return roles;
+    }
+
+    /**
+     * @param roles the roles to set
+     */
+    public void setRoles(List<Role> roles) {
+        this.roles = roles;
+    }
+
+    /**
+     * @return the rolesOption
+     */
+    public Map<String, String> getRolesOption() {
+        return rolesOption;
+    }
+
+    /**
+     * @param rolesOption the rolesOption to set
+     */
+    public void setRolesOption(Map<String, String> rolesOption) {
+        this.rolesOption = rolesOption;
+    }
+
+    /**
+     * @return the selectedRoleName
+     */
+    public String getSelectedRoleName() {
+        return selectedRoleName;
+    }
+
+    /**
+     * @param selectedRoleName the selectedRoleName to set
+     */
+    public void setSelectedRoleName(String selectedRoleName) {
+        this.selectedRoleName = selectedRoleName;
+    }
+
+    /**
+     * @return the forAllStaff
+     */
+    public Boolean getForAllStaff() {
+        return forAllStaff;
+    }
+
+    /**
+     * @param forAllStaff the forAllStaff to set
+     */
+    public void setForAllStaff(Boolean forAllStaff) {
+        this.forAllStaff = forAllStaff;
     }
 }

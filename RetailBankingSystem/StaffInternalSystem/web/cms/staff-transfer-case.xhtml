@@ -16,17 +16,15 @@
             <em:staffNavBar context="customer"></em:staffNavBar>
             <em:staffSideBar top="customer" side="viewCase"></em:staffSideBar>
             <div class="container">
-                <h:form id="mainForm">
-                    <p:panel header="Search Customer">   
-                        <p:outputPanel>
-                                <p:inputText id="idFilter" style="width:180px" value="#{staffCustomerCaseManagedBean.searchText}" placeholder="Enter Case ID"  />
-                                <p:commandButton value="Search" actionListener="#{staffCustomerCaseManagedBean.search}" update="@form"/>
-                        </p:outputPanel>
-                    </p:panel>
-
-
-                <p:panel header="List of My Cases">
-                        <p:dataTable id="caseList" value="#{staffCustomerCaseManagedBean.cases}" var="case" sortMode="multiple" >
+                <p:panel header="Search Staff">   
+                    <h:form>
+                        <p:inputText value="#{staffCustomerCaseManagedBean.searchStaff}" />
+                        <p:commandButton value="Search" update="staff-table" actionListener="#{staffCustomerCaseManagedBean.searchStaff}"/>
+                        <p:commandButton value="Show All" update="staff-table" actionListener="#{staffCustomerCaseManagedBean.showAllStaff}"/>
+                    </h:form>
+                </p:panel>
+                <p:panel header="Case to be Transfered">
+                    <p:dataTable id="caseList" value="#{staffCustomerCaseManagedBean.transferedCase}" var="case" sortMode="multiple" >
                             <p:column style="width:16px">
                                 <p:rowToggler />
                             </p:column>
@@ -39,10 +37,8 @@
                                 <h:outputText value="#{case.title}" />
                             </p:column>
 
-                            <p:column headerText="Status" sortBy="#{case.caseStatus}" style="width:140px">
-                                <p:selectOneMenu value="#{case.caseStatus}">
-                                    <f:selectItems value="#{staffCustomerCaseManagedBean.caseStatusList}" />
-                                </p:selectOneMenu>
+                            <p:column headerText="Status" sortBy="#{case.caseStatus}">
+                                    <h:outputText value="#{case.caseStatus}" />
                             </p:column>
 
                             <p:column headerText="Customer" sortBy="#{case.mainAccount.customer.identityNumber}">
@@ -52,18 +48,6 @@
                             <p:column headerText="Case Handler" sortBy="#{case.staffAccount.username}">
                                 <h:outputText value="#{case.staffAccount.username}" />
                             </p:column>
-                            
-                            <p:column headerText="Action" style="width:140px" rendered="#{case.caseStatus == 'ONHOLD'}">
-                                <p:splitButton value="Start" action="#{staffCustomerCaseManagedBean.start(case)}" update="@form" icon="ui-icon-disk">
-                                    <p:menuitem value="Transfer" action="#{staffCustomerCaseManagedBean.redirectToTransferPage(case)}" icon="ui-icon-arrowrefresh-1-w" />                                  
-                                </p:splitButton>
-                            </p:column>
-                            <p:column headerText="Action" style="width:140px" rendered="#{case.caseStatus != 'ONHOLD'}">
-                                <p:splitButton value="Update" action="#{staffCustomerCaseManagedBean.update(case)}" update="@form" icon="ui-icon-disk">
-                                    <p:menuitem value="Transfer" action="#{staffCustomerCaseManagedBean.redirectToTransferPage(case)}" icon="ui-icon-arrowrefresh-1-w" />                                  
-                                </p:splitButton>
-                            </p:column>
-                            
                             
                             <p:rowExpansion>
                                 <p:dataTable id="issueList" value="#{case.issues}" var="issue" sortMode="multiple" >
@@ -79,7 +63,7 @@
                                         <h:outputText value="#{issue.title}" />
                                     </p:column>
                                     
-                                    <p:column headerText="Field" sortBy="#{issue.field}">
+                                    <p:column headerText="Field" sortBy="#{issue.field}" style="width:150px">
                                         <h:outputText value="#{issue.field}" />
                                     </p:column>
                                     
@@ -95,13 +79,28 @@
                                 </p:dataTable>
                             </p:rowExpansion>
                         </p:dataTable>
-                    </p:panel>
-                    <p:messages id="messagesStatus" redisplay="false"></p:messages>
-                </h:form>
+                </p:panel>
+                    <p:panel header="Staffs">
+                        <h:form id="staff-table">
+                            <p:dataTable id="staff-list" value="#{staffCustomerCaseManagedBean.staffs}" var="staff">
+                                <p:column headerText="ID" sortBy="#{staff.username}">
+                                    <h:outputText value="#{staff.username}"></h:outputText>
+                                </p:column>
+                                <p:column headerText="Name" sortBy="#{staff.fullName}">
+                                    <h:outputText value="#{staff.fullName}"></h:outputText>
+                                </p:column>
+                                <p:column headerText="Role" sortBy="#{staff.role}">
+                                    <h:outputText value="#{staff.role}"></h:outputText>
+                                </p:column>
+                                <p:column headerText="" sortBy="#{staff.username}">
+                                    <p:commandButton value="Transfer" action="#{staffCustomerCaseManagedBean.transfer(staff)}" update="@form"/>
+                                </p:column>
+                            </p:dataTable>
+                            <p:messages id="messagesStatus" redisplay="false"></p:messages>
+                        </h:form>      
+                    </p:panel>          
             </div>
         </h:body> 
     </f:view>
-
-
 </html>
 

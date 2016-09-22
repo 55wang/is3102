@@ -11,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import server.utilities.EnumUtils.IssueField;
 
 /**
  *
@@ -23,7 +24,7 @@ public class Issue implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String title;
-    private String field;
+    private IssueField field;
     private String details;
     private String attachmentFileName = null;
     @ManyToOne
@@ -45,11 +46,11 @@ public class Issue implements Serializable {
         this.title = title;
     }
 
-    public String getField() {
+    public IssueField getField() {
         return field;
     }
 
-    public void setField(String field) {
+    public void setField(IssueField field) {
         this.field = field;
     }
 

@@ -32,6 +32,7 @@ public class Interest implements Serializable {
     private Long id;
     @Column(unique = true, nullable = false)
     private String name;
+    private String description;
     // REMARK:Update will create a new version and leave a copy
     private Integer version = 0;
     private Boolean isHistory = Boolean.FALSE;
@@ -170,5 +171,19 @@ public class Interest implements Serializable {
      */
     public void setCreateDate(Date createDate) {
         this.createDate = createDate;
+    }
+
+    /**
+     * @return the description
+     */
+    public String getDescription() {
+        return description;
+    }
+
+    /**
+     * @param description the description to set
+     */
+    public void setDescription(String description) {
+        this.description = description;
     }
 }
