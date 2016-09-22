@@ -5,12 +5,10 @@
  */
 package ejb.session.common;
 
-import ejb.session.staff.StaffAccountSessionBeanLocal;
 import entity.customer.CustomerCase;
 import entity.customer.MainAccount;
 import java.util.Date;
 import java.util.Properties;
-import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -296,6 +294,32 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
         } catch (MessagingException e) {
             System.out.println(e);
             return;
+        }
+    }
+    
+    @Override
+    public Boolean sendCaseStatusChangeToCustomer(String recipient, CustomerCase cc){
+        Session session = getSession();
+
+        try {
+
+            Message message = new MimeMessage(session);
+            message.setFrom(new InternetAddress("merlionbanking@gmail.com"));
+            message.setRecipients(Message.RecipientType.TO,
+                    InternetAddress.parse(recipient));
+            message.setSubject("The status of your case(ID: " + cc.getId() + ") has been changed");
+            message.setText("Dear Customer, \n The staff has updated your case status to "
+                    + cc.getCaseStatus()
+                    + "\nIf there is anything wrong, please check with our staff.");
+
+            Transport.send(message);
+
+            System.out.println("Email send out successfully");
+            return true;
+
+        } catch (MessagingException e) {
+            System.out.println(e);
+            return false;
         }
     }
     

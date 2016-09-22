@@ -9,7 +9,8 @@ and open the template in the editor.
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:em="http://xmlns.jcp.org/jsf/composite/emcomp">
+      xmlns:em="http://xmlns.jcp.org/jsf/composite/emcomp"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     <f:view>
         <h:head>
             <title>Merlion Bank</title>
@@ -39,24 +40,21 @@ and open the template in the editor.
             <div style="margin-top: 200px;position: absolute;margin-left: 70px">
                 <h1>Savings Account</h1>
                 <p:tabView orientation="left">
-                    <p:tab title="Monthly Savings Account">
-                        <p><b>Base interest: 0.05% </b></p>
-                        <br> <b>Bonus:</b> If the customer does not withdraw any money and he/she deposits at least S$50 in a month, he/she will earn bonus interest rate 0.35%.</br>
-                        <div style="margin-left: 100px;margin-top: 200px;position: absolute">
-                            <button type="button" onclick="window.location.href = '../customer_dams/apply_deposit_account.xhtml'">New Customer Apply</button>
-                            <button style="margin-left: 50px" type="button" onclick="window.location.href = '.../common/customer_login.xhtml'">Existing customer Login</button>
-                        </div>
-
-                    </p:tab>
-                    <p:tab title="Bonus+Savings">
-                        <p><b>Base interest: </b>The initial deposit must be at least S$10,000 and the default base interest rate is 0.05%. </p>
-                        <br><b>Bonus interest: </b>If the customer does not withdraw any money and maintain the minimum balance of S$3,000 every day, then he/she will earn the bonus interest rate of 0.75%.</br>
-                        <div style="margin-left: 100px;margin-top: 200px;position: absolute">
-                            <button type="button" onclick="window.location.href = '../customer_dams/apply_deposit_account.xhtml'">New Customer Apply</button>
-                            <button style="margin-left: 50px" type="button" onclick="window.location.href = '.../common/customer_login.xhtml'">Existing customer Login</button>
-                        </div>
-                    </p:tab>
-
+                    <c:forEach items="#{displaySavingsDepositProductManagedBean.savingsDepositProducts}" var="savingProduct">
+                        <p:tab title="#{savingProduct.name}">
+                            <c:forEach items="#{savingProduct.baseInterest}" var="interest">
+                                <p><b>Base: #{interest.name}</b></p>
+                            </c:forEach>
+                            <c:forEach items="#{savingProduct.conditionalInterest}" var="interest">
+                                <br><b>Bonus:#{interest.description}</b></br>
+                            </c:forEach>
+                            
+                            <div style="margin-left: 100px;margin-top: 200px;position: absolute">
+                                <button type="button" onclick="window.location.href = '../customer_dams/apply_deposit_account.xhtml'">New Customer Apply</button>
+                                <button style="margin-left: 50px" type="button" onclick="window.location.href = '../common/customer_login.xhtml'">Existing customer Login</button>
+                            </div>
+                        </p:tab>
+                    </c:forEach>
                 </p:tabView>
             </div>
 

@@ -1164,5 +1164,33 @@ public class EntityBuilderBean {
         cc.setCaseStatus(CaseStatus.ONHOLD);
         
         customerCaseSessionBean.saveCase(cc);
+        
+        cc = new CustomerCase();
+        issue = new Issue();
+        issues = new ArrayList<Issue>();
+        
+        issue.setTitle("Loan Problem");
+        issue.setField(EnumUtils.IssueField.DEPOSIT);
+        issue.setDetails("My loan account has some problems. Could you please help me to check?");
+        issue.setCustomerCase(cc);
+        
+        issues.add(issue);
+        
+        issue = new Issue();
+        
+        issue.setTitle("Loan Problem");
+        issue.setField(EnumUtils.IssueField.INVESTMENT);
+        issue.setDetails("My loan account has some problems. Could you please help me to check?");
+        issue.setCustomerCase(cc);
+        
+        issues.add(issue);
+        
+        cc.setIssues(issues);
+        cc.setTitle("Loan Problem");
+        cc.setMainAccount(demoMainAccount);
+        cc.setStaffAccount(staffAccountSessionBean.getAccountByUsername(ConstantUtils.SUPER_ADMIN_USERNAME));
+        cc.setCaseStatus(CaseStatus.ONHOLD);
+        
+        customerCaseSessionBean.saveCase(cc);
     }
 }

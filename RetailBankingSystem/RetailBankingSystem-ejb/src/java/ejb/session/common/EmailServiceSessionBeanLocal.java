@@ -24,5 +24,6 @@ public interface EmailServiceSessionBeanLocal {
     public Boolean sendResetPwdLinkforForgottenStaff(String recipient);
     public Boolean sendNewCaseConfirmationToCustomer(String recipient, CustomerCase cc);
     public Boolean sendCancelCaseConfirmationToCustomer(String recipient, CustomerCase cc);
+    public Boolean sendCaseStatusChangeToCustomer(String recipient, CustomerCase cc);
     public void sendUpdatedProfile(String recipient);
 }

@@ -7,7 +7,9 @@ package customer.deposit;
 
 import ejb.session.dams.DepositProductSessionBeanLocal;
 import entity.dams.account.DepositAccountProduct;
+import java.io.Serializable;
 import java.util.List;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
@@ -18,12 +20,12 @@ import javax.faces.view.ViewScoped;
  */
 @Named(value = "displaySavingsDepositProductManagedBean")
 @ViewScoped
-public class DisplaySavingsDepositProductManagedBean {
+public class DisplaySavingsDepositProductManagedBean implements Serializable {
 
     @EJB
     private DepositProductSessionBeanLocal dpBean;
     
-    private List<DepositAccountProduct> currentDepositProducts;
+    private List<DepositAccountProduct> savingsDepositProducts;
     
     /**
      * Creates a new instance of DisplaySavingsDepositProductManagedBean
@@ -31,4 +33,24 @@ public class DisplaySavingsDepositProductManagedBean {
     public DisplaySavingsDepositProductManagedBean() {
     }
     
+    @PostConstruct
+    public void init() {
+        System.out.println("@PostConstruct =======================>>>>>>>>>");
+        setSavingsDepositProducts(dpBean.getAllPresentSavingsDepositProducts());
+        System.out.println("displaySavingsDepositProductManagedBean: " + savingsDepositProducts.size());
+    }
+
+    /**
+     * @return the savingsDepositProducts
+     */
+    public List<DepositAccountProduct> getSavingsDepositProducts() {
+        return savingsDepositProducts;
+    }
+
+    /**
+     * @param savingsDepositProducts the savingsDepositProducts to set
+     */
+    public void setSavingsDepositProducts(List<DepositAccountProduct> savingsDepositProducts) {
+        this.savingsDepositProducts = savingsDepositProducts;
+    }
 }
