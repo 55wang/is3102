@@ -44,6 +44,11 @@ import server.utilities.ConstantUtils;
 import server.utilities.EnumUtils;
 import server.utilities.EnumUtils.CaseStatus;
 import server.utilities.EnumUtils.DepositAccountType;
+import server.utilities.EnumUtils.Gender;
+import server.utilities.EnumUtils.IdentityType;
+import server.utilities.EnumUtils.Income;
+import server.utilities.EnumUtils.Nationality;
+import server.utilities.EnumUtils.Occupation;
 import server.utilities.EnumUtils.StatusType;
 import server.utilities.HashPwdUtils;
 
@@ -236,13 +241,13 @@ public class EntityBuilderBean {
         c.setBirthDay(new Date()); //make some real birthday.
         c.setEmail("wangzhe.lynx@gmail.com");
         c.setFirstname("Yifan");
-        c.setGender("MALE"); // pls modify gender to enum type
+        c.setGender(Gender.MALE); // pls modify gender to enum type
         c.setIdentityNumber("S1234567Z");
-        c.setIdentityType("CITIZEN"); // same for this to enum type
-        c.setIncome(5000);
+        c.setIdentityType(IdentityType.NRIC); // same for this to enum type
+        c.setIncome(Income.FROM_2000_TO_4000);
         c.setLastname("Chen");
-        c.setNationality("Singapore"); //enum type if possible
-        c.setOccupation("programmer");
+        c.setNationality(Nationality.CHINA); //enum type if possible
+        c.setOccupation(Occupation.DIRECTOR);
         c.setPhone("81567758"); //must use real phone number as we need sms code
         c.setPostalCode("654321");
         c.setMainAccount(new MainAccount());
@@ -261,13 +266,13 @@ public class EntityBuilderBean {
         c2.setBirthDay(new Date()); //make some real birthday.
         c2.setEmail("wangzhe.lynx@gmail.com");
         c2.setFirstname("Zhe");
-        c2.setGender("MALE"); // pls modify gender to enum type
+        c2.setGender(Gender.MALE); // pls modify gender to enum type
         c2.setIdentityNumber("S1234223Z");
-        c2.setIdentityType("CITIZEN"); // same for this to enum type
-        c2.setIncome(5000);
+        c2.setIdentityType(IdentityType.PASSPORT); // same for this to enum type
+        c2.setIncome(Income.FROM_4000_TO_6000);
         c2.setLastname("Wang");
-        c2.setNationality("Singaporean"); //enum type if possible
-        c2.setOccupation("programmer");
+        c2.setNationality(Nationality.CHINA_HONG_KONG); //enum type if possible
+        c2.setOccupation(Occupation.FREELANCER);
         c2.setPhone("81567712"); //must use real phone number as we need sms code
         c2.setPostalCode("654302");
         c2.setMainAccount(new MainAccount());
@@ -286,13 +291,13 @@ public class EntityBuilderBean {
         c3.setBirthDay(new Date()); //make some real birthday.
         c3.setEmail("leiyang007@gmail.com");
         c3.setFirstname("Yang");
-        c3.setGender("MALE"); // pls modify gender to enum type
+        c3.setGender(Gender.FEMALE); // pls modify gender to enum type
         c3.setIdentityNumber("S1234902Z");
-        c3.setIdentityType("CITIZEN"); // same for this to enum type
-        c3.setIncome(5000);
+        c3.setIdentityType(IdentityType.PASSPORT); // same for this to enum type
+        c3.setIncome(Income.FROM_6000_TO_8000);
         c3.setLastname("Lei");
-        c3.setNationality("Singaporean"); //enum type if possible
-        c3.setOccupation("programmer");
+        c3.setNationality(Nationality.GERMANY); //enum type if possible
+        c3.setOccupation(Occupation.MANAGERIAL);
         c3.setPhone("89212758"); //must use real phone number as we need sms code
         c3.setPostalCode("654111");
         c3.setMainAccount(new MainAccount());
@@ -311,13 +316,13 @@ public class EntityBuilderBean {
         c4.setBirthDay(new Date()); //make some real birthday.
         c4.setEmail("sunyuxuan123@gmail.com");
         c4.setFirstname("Yuxuan");
-        c4.setGender("MALE"); // pls modify gender to enum type
+        c4.setGender(Gender.MALE); // pls modify gender to enum type
         c4.setIdentityNumber("S1243267Z");
-        c4.setIdentityType("CITIZEN"); // same for this to enum type
-        c4.setIncome(5000);
+        c4.setIdentityType(IdentityType.PASSPORT); // same for this to enum type
+        c4.setIncome(Income.FROM_8000_TO_10000);
         c4.setLastname("Sun");
-        c4.setNationality("Singaporean"); //enum type if possible
-        c4.setOccupation("programmer");
+        c4.setNationality(Nationality.INDONESIA); //enum type if possible
+        c4.setOccupation(Occupation.EXECUTIVE);
         c4.setPhone("81123558"); //must use real phone number as we need sms code
         c4.setPostalCode("621329");
         c4.setMainAccount(new MainAccount());
@@ -336,13 +341,13 @@ public class EntityBuilderBean {
         c5.setBirthDay(new Date()); //make some real birthday.
         c5.setEmail("lilitong01@gmail.com");
         c5.setFirstname("Litong");
-        c5.setGender("FEMALE"); // pls modify gender to enum type
+        c5.setGender(Gender.MALE); // pls modify gender to enum type
         c5.setIdentityNumber("S1289812Z");
-        c5.setIdentityType("CITIZEN"); // same for this to enum type
-        c5.setIncome(5000);
+        c5.setIdentityType(IdentityType.PASSPORT); // same for this to enum type
+        c5.setIncome(Income.FROM_2000_TO_4000);
         c5.setLastname("Chen");
-        c5.setNationality("Singaporean"); //enum type if possible
-        c5.setOccupation("programmer");
+        c5.setNationality(Nationality.JAPAN); //enum type if possible
+        c5.setOccupation(Occupation.MANAGERIAL);
         c5.setPhone("90028125");//must use real phone number as we need sms code
         c5.setPostalCode("001409");
         c5.setMainAccount(new MainAccount());
@@ -361,13 +366,13 @@ public class EntityBuilderBean {
         c6.setBirthDay(new Date()); //make some real birthday.
         c6.setEmail("daisyqiu@gmail.com");
         c6.setFirstname("Xiaqing");
-        c6.setGender("FEMALE"); // pls modify gender to enum type
+        c6.setGender(Gender.MALE); // pls modify gender to enum type
         c6.setIdentityNumber("S1209183Z");
-        c6.setIdentityType("CITIZEN"); // same for this to enum type
-        c6.setIncome(5000);
+        c6.setIdentityType(IdentityType.PASSPORT); // same for this to enum type
+        c6.setIncome(Income.FROM_2000_TO_4000);
         c6.setLastname("Qiu");
-        c6.setNationality("Singaporean"); //enum type if possible
-        c6.setOccupation("programmer");
+        c6.setNationality(Nationality.INDONESIA); //enum type if possible
+        c6.setOccupation(Occupation.EXECUTIVE);
         c6.setPhone("81509281"); //must use real phone number as we need sms code
         c6.setPostalCode("118921");
         c6.setMainAccount(new MainAccount());
@@ -386,13 +391,13 @@ public class EntityBuilderBean {
         c7.setBirthDay(new Date()); //make some real birthday.
         c7.setEmail("daisykoo@gmail.com");
         c7.setFirstname("Daisy");
-        c7.setGender("FEMALE"); // pls modify gender to enum type
+        c7.setGender(Gender.MALE); // pls modify gender to enum type
         c7.setIdentityNumber("S1290528Z");
-        c7.setIdentityType("CITIZEN"); // same for this to enum type
-        c7.setIncome(5000);
+        c7.setIdentityType(IdentityType.PASSPORT); // same for this to enum type
+        c7.setIncome(Income.FROM_2000_TO_4000);
         c7.setLastname("Koo");
-        c7.setNationality("Singaporean"); //enum type if possible
-        c7.setOccupation("programmer");
+        c7.setNationality(Nationality.INDONESIA); //enum type if possible
+        c7.setOccupation(Occupation.TEACHER);
         c7.setPhone("91027903"); //must use real phone number as we need sms code
         c7.setPostalCode("002987");
         c7.setMainAccount(new MainAccount());
@@ -411,13 +416,13 @@ public class EntityBuilderBean {
         c8.setBirthDay(new Date()); //make some real birthday.
         c8.setEmail("vincentlee@gmail.com");
         c8.setFirstname("Vincent");
-        c8.setGender("MALE"); // pls modify gender to enum type
+        c8.setGender(Gender.MALE); // pls modify gender to enum type
         c8.setIdentityNumber("S12091235Z");
-        c8.setIdentityType("CITIZEN"); // same for this to enum type
-        c8.setIncome(5000);
+        c8.setIdentityType(IdentityType.PASSPORT); // same for this to enum type
+        c8.setIncome(Income.FROM_6000_TO_8000);
         c8.setLastname("Lee");
-        c8.setNationality("Singaporean"); //enum type if possible
-        c8.setOccupation("programmer");
+        c8.setNationality(Nationality.SINGAPOREAN); //enum type if possible
+        c8.setOccupation(Occupation.SUPERVISOR);
         c8.setPhone("99910888"); //must use real phone number as we need sms code
         c8.setPostalCode("020988");
         c8.setMainAccount(new MainAccount());
@@ -436,13 +441,13 @@ public class EntityBuilderBean {
         c9.setBirthDay(new Date()); //make some real birthday.
         c9.setEmail("cassychoi@gmail.com");
         c9.setFirstname("Cassy");
-        c9.setGender("FEMALE"); // pls modify gender to enum type
+        c9.setGender(Gender.FEMALE); // pls modify gender to enum type
         c9.setIdentityNumber("S1234567Z");
-        c9.setIdentityType("CITIZEN"); // same for this to enum type
-        c9.setIncome(5000);
+        c9.setIdentityType(IdentityType.NRIC); // same for this to enum type
+        c9.setIncome(Income.FROM_6000_TO_8000);
         c9.setLastname("Choi");
-        c9.setNationality("Singaporean"); //enum type if possible
-        c9.setOccupation("programmer");
+        c9.setNationality(Nationality.UNITED_STATES); //enum type if possible
+        c9.setOccupation(Occupation.SELF_EMPLOYED);
         c9.setPhone("80031182"); //must use real phone number as we need sms code
         c9.setPostalCode("019090");
         c9.setMainAccount(new MainAccount());

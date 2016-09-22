@@ -20,6 +20,7 @@ import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import org.primefaces.event.FlowEvent;
 import server.utilities.EnumUtils.DepositAccountType;
+import server.utilities.EnumUtils.IdentityType;
 import server.utilities.EnumUtils.StatusType;
 import utils.MessageUtils;
 import utils.RedirectUtils;
@@ -112,10 +113,11 @@ public class CustomerApplicationManagedBean implements Serializable {
         return event.getNewStep();
     }
 
-    public String generateUserID(String identityType, String identityNum) {
-        if (identityType.equals("Singaporean/PR NRIC")) {
+    public String generateUserID(IdentityType identityType, String identityNum) {
+
+        if (identityType.equals(IdentityType.NRIC)) {
             return "c" + identityNum.substring(1, identityNum.length() - 1);
-        } else if (identityType.equals("Passport")) {
+        } else if (identityType.equals(IdentityType.PASSPORT)) {
             return "c" + identityNum.substring(1);
         } else {
             return "error";

@@ -55,7 +55,7 @@ public class EnumUtils {
         ACTIVE("ACTIVE"),
         FREEZE("FREEZE"),
         CLOSED("CLOSED");
-        
+
         private String value;
 
         CardAccountStatus(String value) {
@@ -120,7 +120,7 @@ public class EnumUtils {
         REJECT("REJECT"),
         APPROVED("APPROVED"),
         CANCELLED("CANCELLED");
-        
+
         private String value;
 
         ApplicationStatus(String value) {
@@ -159,7 +159,7 @@ public class EnumUtils {
         SUPERVISOR("SUPERVISOR"),
         TEACHER_LECTURER("TEACHER_LECTURER"),
         DILPOMAT("DILPOMAT");
-        
+
         private String value;
 
         Position(String value) {
@@ -198,7 +198,7 @@ public class EnumUtils {
         HOTEL_RESTAURANT("HOTEL_RESTAURANT"),
         RETAIL("RETAIL"),
         TRAVEL_RELATED("TRAVEL_RELATED");
-        
+
         private String value;
 
         Industry(String value) {
@@ -230,7 +230,7 @@ public class EnumUtils {
         EMPLOYEE("EMPLOYEE"),
         SELF_EMPLOYED("SELF_EMPLOYED"),
         OTHERS("OTHERS");
-        
+
         private String value;
 
         EmploymentStatus(String value) {
@@ -266,7 +266,7 @@ public class EnumUtils {
         SECONDARY("SECONDARY"),
         PRIMARY("PRIMARY"),
         OTHERS("OTHERS");
-        
+
         private String value;
 
         EduLevel(String value) {
@@ -298,7 +298,7 @@ public class EnumUtils {
         HDB("HDB"),
         LANDED("LANDED"),
         OTHERS("OTHERS");
-        
+
         private String value;
 
         ResidentialStatus(String value) {
@@ -332,7 +332,7 @@ public class EnumUtils {
         PARENTS("PARENTS"),
         RENTED("RENTED"),
         SELF_OWNED("SELF_OWNED");
-        
+
         private String value;
 
         ResidentialType(String value) {
@@ -365,7 +365,7 @@ public class EnumUtils {
         MR("MR"),
         MRS("MRS"),
         MS("MS");
-        
+
         private String value;
 
         Salutation(String value) {
@@ -395,7 +395,7 @@ public class EnumUtils {
 
         NRIC("NRIC"),
         PASSPORT("PASSPORT");
-        
+
         private String value;
 
         IdentityType(String value) {
@@ -421,13 +421,55 @@ public class EnumUtils {
         }
     }
 
+    public enum Citizenship {
+
+        SINGAPOREAN("SINGAPOREAN"),
+        SINGAPORE_PR("SINGAPORE_PR"),
+        FOREIGNER("FOREIGNER");
+
+        private String value;
+
+        Citizenship(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        @Override
+        public String toString() {
+            return this.getValue();
+        }
+
+        public static Citizenship getEnum(String value) {
+            for (Citizenship v : values()) {
+                if (v.getValue().equalsIgnoreCase(value)) {
+                    return v;
+                }
+            }
+            throw new IllegalArgumentException();
+        }
+    }
+
     public enum Nationality {
 
         SINGAPOREAN("SINGAPOREAN"),
-        PR("PR"),
-        E_PASS("E_PASS"),
-        S_PASS("S_PASS");
-        
+        INDONESIA("INDONESIA"),
+        CHINA("CHINA"),
+        MALAYSIA("MALAYSIA"),
+        AUSTRALIA("AUSTRALIA"),
+        INDIA("INDIA"),
+        JAPAN("JAPAN"),
+        PHILIPPINES("PHILIPPINES"),
+        CHINA_HONG_KONG("CHINA_HONG_KONG"),
+        SOUTH_KOREA("SOUTH_KOREA"),
+        THAILAND("THAILAND"),
+        UNITED_STATES("UNITED_STATES"),
+        UNITED_KINGDOM("UNITED_KINGDOM"),
+        VIETNAM("VIETNAM"),
+        GERMANY("GERMANY");
+
         private String value;
 
         Nationality(String value) {
@@ -445,6 +487,114 @@ public class EnumUtils {
 
         public static Nationality getEnum(String value) {
             for (Nationality v : values()) {
+                if (v.getValue().equalsIgnoreCase(value)) {
+                    return v;
+                }
+            }
+            throw new IllegalArgumentException();
+        }
+    }
+
+    public enum Occupation {
+
+        SELF_EMPLOYED("SELF_EMPLOYED"),
+        FREELANCER("FREELANCER"),
+        SENIOR_MANAGEMENT("SENIOR_MANAGEMENT"),
+        DIRECTOR("DIRECTOR"),
+        EXECUTIVE("EXECUTIVE"),
+        TEACHER("TEACHER"),
+        SALES("SALES"),
+        SUPERVISOR("SUPERVISOR"),
+        MANAGERIAL("MANAGERIAL"),
+        DIPLOMAT("DIPLOMAT"),
+        OTHERS("OTHERS");
+
+        private String value;
+
+        Occupation(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        @Override
+        public String toString() {
+            return this.getValue();
+        }
+
+        public static Occupation getEnum(String value) {
+            for (Occupation v : values()) {
+                if (v.getValue().equalsIgnoreCase(value)) {
+                    return v;
+                }
+            }
+            throw new IllegalArgumentException();
+        }
+    }
+
+    public enum Education {
+
+        POSTGRAD("POSTGRAD"),
+        UNIVERSITY("UNIVERSITY"),
+        DIPLOMA("DIPLOMA"),
+        A_LEVEL("A_LEVEL"),
+        SECONDARY("SECONDARY"),
+        TECHNICAL("TECHNICAL"),
+        OTHERS("OTHERS");
+
+        private String value;
+
+        Education(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        @Override
+        public String toString() {
+            return this.getValue();
+        }
+
+        public static Education getEnum(String value) {
+            for (Education v : values()) {
+                if (v.getValue().equalsIgnoreCase(value)) {
+                    return v;
+                }
+            }
+            throw new IllegalArgumentException();
+        }
+    }
+
+    public enum Income {
+
+        BELOW_2000("BELOW_2000"),
+        FROM_2000_TO_4000("FROM_2000_TO_4000"),
+        FROM_4000_TO_6000("FROM_4000_TO_6000"),
+        FROM_6000_TO_8000("FROM_6000_TO_8000"),
+        FROM_8000_TO_10000("FROM_8000_TO_10000"),
+        OVER_10000("OVER_10000");
+
+        private String value;
+
+        Income(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        @Override
+        public String toString() {
+            return this.getValue();
+        }
+
+        public static Income getEnum(String value) {
+            for (Income v : values()) {
                 if (v.getValue().equalsIgnoreCase(value)) {
                     return v;
                 }
@@ -483,16 +633,16 @@ public class EnumUtils {
         }
     }
 
-    public enum MartialStatus {
+    public enum MaritalStatus {
 
         SINGLE("SINGLE"),
         MARRIED("MARRIED"),
         DIVORCED("DIVORCED"),
         OTHERS("OTHERS");
-        
+
         private String value;
 
-        MartialStatus(String value) {
+        MaritalStatus(String value) {
             this.value = value;
         }
 
@@ -505,8 +655,8 @@ public class EnumUtils {
             return this.getValue();
         }
 
-        public static MartialStatus getEnum(String value) {
-            for (MartialStatus v : values()) {
+        public static MaritalStatus getEnum(String value) {
+            for (MaritalStatus v : values()) {
                 if (v.getValue().equalsIgnoreCase(value)) {
                     return v;
                 }
@@ -530,7 +680,7 @@ public class EnumUtils {
         CCSPENDING("CCSPENDING"),
         INVEST("INVEST"),
         SALARY("SALARY");
-        
+
         private String value;
 
         TransactionType(String value) {
@@ -568,7 +718,7 @@ public class EnumUtils {
         WEALTH("WEALTH"),
         PORTFOLIO("PORTFOLIO"),
         ANALYTICS("ANALYTICS");
-        
+
         private String value;
 
         Permission(String value) {
@@ -603,7 +753,7 @@ public class EnumUtils {
         FINANCIAL_ANALYST("Financial Analyst"),
         PRODUCT_MANAGER("Product Manager"),
         SUPER_ADMIN("Super Admin");
-        
+
         private String value;
 
         UserRole(String value) {
@@ -636,7 +786,7 @@ public class EnumUtils {
         RANGE("RANGE"),
         TIMERANGE("TIMERANGE"),
         CONDITION("CONDITION");
-                        
+
         private String value;
 
         InterestType(String value) {
@@ -670,7 +820,7 @@ public class EnumUtils {
         INVEST("INVEST"),
         INCREASE("INCREASE"),
         NOWITHDRAW("NOWITHDRAW");
-        
+
         private String value;
 
         InterestConditionType(String value) {
@@ -774,7 +924,7 @@ public class EnumUtils {
         SAVING("SAVING"),
         FIXED("FIXED"),
         MOBILE("MOBILE");
-        
+
         private String value;
 
         DepositAccountType(String value) {
@@ -804,7 +954,7 @@ public class EnumUtils {
 
         E_STATEMENT("E_STATEMENT"),
         PRINTED("PRINTED");
-        
+
         private String value;
 
         StatementType(String value) {
@@ -836,7 +986,7 @@ public class EnumUtils {
         ONGOING("ONGOING"),
         RESOLVED("RESOLVED"),
         CANCELLED("CANCELLED");
-        
+
         private String value;
 
         CaseStatus(String value) {
