@@ -74,10 +74,8 @@
                                             <h:inputText id="title" value="#{customerCaseManagedBean.newIssue.title}" required="true"/>
                                             
                                             <h:outputLabel for="field" value="Issue Field " />
-                                            <p:selectOneMenu id="field" value="#{customerCaseManagedBean.newIssue.field}"  required="true">
-                                                <f:selectItem itemLabel="Please Select..." itemValue="" />
-                                                <f:selectItem itemLabel="Account Issue" itemValue="Account" />
-                                                <f:selectItem itemLabel="Card Issue" itemValue="Card" />
+                                            <p:selectOneMenu id="field" value="#{customerCaseManagedBean.newIssue.field}" required="true">
+                                                <f:selectItems value="#{customerCaseManagedBean.issueFieldList}" />
                                             </p:selectOneMenu>
                                             
                                             <h:outputLabel for="details" value="Issue Details " />

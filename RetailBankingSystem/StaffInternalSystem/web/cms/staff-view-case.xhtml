@@ -16,10 +16,10 @@
             <em:staffNavBar context="customer"></em:staffNavBar>
             <em:staffSideBar top="customer" side="viewCase"></em:staffSideBar>
             <div class="container">
-                <p:messages id="messagesStatus" redisplay="false"></p:messages>
                 <p:panel header="Search Customer">
                     <p:outputPanel>
                         <h:form id="search-form">
+                            <p:messages id="messagesStatus" redisplay="false"></p:messages>
                             <p:inputText id="idFilter" style="width:180px" value="#{staffCustomerCaseManagedBean.searchText}" placeholder="Enter Case ID"  />
                             <p:commandButton value="Search" actionListener="#{staffCustomerCaseManagedBean.search}" update="search-form"/>
                         </h:form>
@@ -29,6 +29,7 @@
 
                 <p:panel header="List of My Cases">
                     <h:form id="mainForm">
+                        <p:messages id="messagesStatus" redisplay="false"></p:messages>
                         <p:dataTable id="caseList" value="#{staffCustomerCaseManagedBean.cases}" var="case" sortMode="multiple" >
                             <p:column style="width:16px">
                                 <p:rowToggler />
@@ -52,7 +53,7 @@
                                 <h:outputText value="#{case.mainAccount.customer.identityNumber}" />
                             </p:column>
                             
-                            <p:column headerText="Case Assignee" sortBy="#{case.staffAccount.username}">
+                            <p:column headerText="Case Handler" sortBy="#{case.staffAccount.username}">
                                 <h:outputText value="#{case.staffAccount.username}" />
                             </p:column>
                             
@@ -62,6 +63,34 @@
                                     <p:menuitem value="Delete" actionListener="#{buttonView.delete}" ajax="false" icon="ui-icon-close" />
                                 </p:splitButton>
                             </p:column>
+                            
+                            <p:rowExpansion>
+                                <p:dataTable id="issueList" value="#{case.issues}" var="issue" sortMode="multiple" >
+                                    <p:column headerText="Issue ID" sortBy="#{issue.id}">
+                                        <h:outputText value="#{issue.id}" />
+                                    </p:column>
+                                    
+                                    <p:column headerText="Issue" sortBy="#{issue.title}">
+                                        <h:outputText value="#{issue.title}" />
+                                    </p:column>
+                                    
+                                    <p:column headerText="Field" sortBy="#{issue.field}" style="width:150px">
+                                        <p:selectOneMenu value="#{issue.field}">
+                                            <f:selectItems value="#{staffCustomerCaseManagedBean.issueFieldList}" />
+                                        </p:selectOneMenu>
+                                    </p:column>
+                                    
+                                    <p:column headerText="Details" sortBy="#{issue.details}">
+                                        <h:outputText value="#{issue.details}" />
+                                    </p:column>
+                                    
+                                    <p:column headerText="Attachment" sortBy="#{issue.attachmentName}">
+                                        <c:if test="#{issue.attachmentName != null}">
+                                            <h:outputText value="#{issue.attachmentName}" />
+                                        </c:if>
+                                    </p:column>
+                                </p:dataTable>
+                            </p:rowExpansion>
 
                         </p:dataTable>
                     </h:form>

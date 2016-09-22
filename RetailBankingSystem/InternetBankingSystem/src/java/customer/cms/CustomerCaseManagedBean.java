@@ -31,6 +31,8 @@ import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.UploadedFile;
 import org.primefaces.push.EventBus;
 import org.primefaces.push.EventBusFactory;
+import server.utilities.EnumUtils;
+import utils.CommonUtils;
 import utils.SessionUtils;
 import utils.MessageUtils;
 import utils.RedirectUtils;
@@ -66,6 +68,7 @@ public class CustomerCaseManagedBean implements Serializable {
     private List<CustomerCase> allCaseList;
     private String searchCaseID;
     private String searchCaseTitle;
+    private List<String> issueFieldList = CommonUtils.getEnumList(EnumUtils.IssueField.class);
     
     private final static String NOTIFY_CHANNEL = "/notify";
     /**
@@ -312,5 +315,13 @@ public class CustomerCaseManagedBean implements Serializable {
     public void setAllCaseList(List<CustomerCase> allCaseList) {
         this.allCaseList = allCaseList;
     }
-    
+
+    public List<String> getIssueFieldList() {
+        return issueFieldList;
+    }
+
+    public void setIssueFieldList(List<String> issueFieldList) {
+        this.issueFieldList = issueFieldList;
+    }
+
 }
