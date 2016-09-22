@@ -12,7 +12,6 @@ import java.io.Serializable;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import server.utilities.EnumUtils;
-import server.utilities.EnumUtils.Permission;
 import utils.LoggingUtils;
 import utils.SessionUtils;
 import utils.UserUtils;
@@ -39,6 +38,11 @@ public class StaffUserManagedBean implements Serializable {
      * Creates a new instance of StaffUserManagedBean
      */
     public StaffUserManagedBean() {}
+    
+    
+    public String getRoleName() {
+        return SessionUtils.getStaff().getRole().getRoleName();
+    }
     
     public String getUserName() {
         return SessionUtils.getStaffUsername();

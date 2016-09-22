@@ -9,7 +9,7 @@
     <!--shift + ctrl + F, format-->
     <f:view>
         <h:head>
-            <title>Facelet Title</title>
+            <title>Merlion Bank</title>
             <em:cssImport></em:cssImport>
         </h:head>
         <h:body>
@@ -20,6 +20,19 @@
                     <!-- TODO: This Function is only accessable to Some Role -->
                     <p:messages id="messagesStatus" redisplay="false" >
                         <h:panelGrid columns="2">
+                            <h:outputText value="Internal Annoucement: " />
+                            <p:selectBooleanButton id="forStaff" value="#{notificationViewManagedBean.isForStaff}" onLabel="Yes" offLabel="No" style="width:60px" >
+                                <f:ajax render="@form" />
+                            </p:selectBooleanButton>
+                            <h:outputText value="For all staff: " rendered="#{notificationViewManagedBean.isForStaff}"/>
+                            <p:selectBooleanButton id="forAllStaff" value="#{notificationViewManagedBean.forAllStaff}" onLabel="Yes" offLabel="No" style="width:60px" rendered="#{notificationViewManagedBean.isForStaff}">
+                                <f:ajax render="@form" />
+                            </p:selectBooleanButton>
+                            
+                            <h:outputText value="Select Role: " rendered="#{!notificationViewManagedBean.forAllStaff}"/>
+                            <p:selectOneMenu id="staffrole" value="#{notificationViewManagedBean.selectedRoleName}" style="width:125px" rendered="#{!notificationViewManagedBean.forAllStaff}">
+                                <f:selectItems value="#{notificationViewManagedBean.rolesOption}" />
+                            </p:selectOneMenu>
                             <p:outputLabel for="title" value="Title: " /> 
                             <p:inputText id="title" value="#{notificationViewManagedBean.newAnnouncement.title}" required="true" />
 

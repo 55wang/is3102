@@ -6,6 +6,7 @@
 package ejb.session.message;
 
 import entity.staff.Announcement;
+import entity.staff.Role;
 import java.util.List;
 import javax.ejb.Local;
 
@@ -16,5 +17,5 @@ import javax.ejb.Local;
 @Local
 public interface AnnouncementSessionBeanLocal {
     public Boolean createAnnouncement(Announcement a);
-    public List<Announcement> getAllAnnouncements();
+    public List<Announcement> getAllAnnouncements(Role role);
 }

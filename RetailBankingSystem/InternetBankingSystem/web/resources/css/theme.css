@@ -368,3 +368,46 @@ v-center {
     -webkit-transform: translateY(-50%); 
 }
 
+.no-margin {
+    margin:0;
+}
+.float-left {
+    float: left;
+}
+.float-right {
+    float: right;
+}
+.full-width {
+    width:100%;
+}
+.width-80 {
+    width: 80%;
+}
+.no-padding {
+    padding:0;
+}
+.absolute-left{
+    left: 0;
+}
+.absolute-right{
+    right:0;
+}
+.border-bottom {
+    border-bottom: 1px solid gray;
+}
+.table-cell {
+    position: relative;
+    height: 50px;
+}
+.text-center {
+    text-align: center;
+}
+.font-20 {
+    font-size: 20px;
+}
+.padding-20{
+    padding: 20px;
+}
+.hidden {
+    display: none;
+}
