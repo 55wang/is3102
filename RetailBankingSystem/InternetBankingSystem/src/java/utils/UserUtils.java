@@ -7,9 +7,7 @@ package utils;
 
 import entity.staff.Role;
 import entity.staff.StaffAccount;
-import java.util.List;
 import javax.servlet.http.HttpSession;
-import utils.EnumUtils.Permission;
 import static utils.SessionUtils.getSession;
 
 /**

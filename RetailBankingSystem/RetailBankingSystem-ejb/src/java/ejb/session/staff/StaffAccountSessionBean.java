@@ -68,22 +68,22 @@ public class StaffAccountSessionBean implements StaffAccountSessionBeanLocal {
     }
     
     @Override
-    public Boolean createAccount(StaffAccount sa) {
+    public StaffAccount createAccount(StaffAccount sa) {
         try {
             em.persist(sa);
-            return true;
+            return sa;
         } catch (EntityExistsException e) {
-            return false;
+            return null;
         }
     }
     
     @Override
-    public Boolean updateAccount(StaffAccount sa) {
+    public StaffAccount updateAccount(StaffAccount sa) {
         try {
             em.merge(sa);
-            return true;
+            return sa;
         } catch (EntityExistsException e) {
-            return false;
+            return null;
         }
     }
     

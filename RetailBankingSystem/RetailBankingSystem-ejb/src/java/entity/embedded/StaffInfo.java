@@ -6,7 +6,11 @@
 package entity.embedded;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Embeddable;
+import javax.persistence.Temporal;
+import server.utilities.EnumUtils;
+import server.utilities.EnumUtils.Gender;
 
 /**
  *
@@ -21,9 +25,12 @@ public class StaffInfo implements Serializable {
     
     private String phone;
     
-    private String nationality;
+    private EnumUtils.Nationality nationality;
     
-    private String gender;
+    private Gender gender;
+    
+    @Temporal(javax.persistence.TemporalType.DATE)
+    private Date birthDay;
 
     /**
      * @return the address
@@ -68,31 +75,45 @@ public class StaffInfo implements Serializable {
     }
 
     /**
-     * @return the nationality
-     */
-    public String getNationality() {
-        return nationality;
-    }
-
-    /**
-     * @param nationality the nationality to set
-     */
-    public void setNationality(String nationality) {
-        this.nationality = nationality;
-    }
-
-    /**
      * @return the gender
      */
-    public String getGender() {
+    public Gender getGender() {
         return gender;
     }
 
     /**
      * @param gender the gender to set
      */
-    public void setGender(String gender) {
+    public void setGender(Gender gender) {
         this.gender = gender;
+    }
+
+    /**
+     * @return the birthDay
+     */
+    public Date getBirthDay() {
+        return birthDay;
+    }
+
+    /**
+     * @param birthDay the birthDay to set
+     */
+    public void setBirthDay(Date birthDay) {
+        this.birthDay = birthDay;
+    }
+
+    /**
+     * @return the nationality
+     */
+    public EnumUtils.Nationality getNationality() {
+        return nationality;
+    }
+
+    /**
+     * @param nationality the nationality to set
+     */
+    public void setNationality(EnumUtils.Nationality nationality) {
+        this.nationality = nationality;
     }
     
 }

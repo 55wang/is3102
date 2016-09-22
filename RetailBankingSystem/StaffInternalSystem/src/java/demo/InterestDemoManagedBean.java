@@ -27,9 +27,9 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
-import utils.EnumUtils;
-import utils.CommonUtils;
-import utils.ConstantUtils;
+import server.utilities.EnumUtils;
+import server.utilities.CommonHelper;
+import server.utilities.ConstantUtils;
 
 /**
  *

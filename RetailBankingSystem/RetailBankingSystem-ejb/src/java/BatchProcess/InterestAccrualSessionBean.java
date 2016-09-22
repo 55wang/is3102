@@ -16,10 +16,10 @@ import javax.persistence.Query;
 import java.util.List;
 import java.util.Date;
 import javax.persistence.PersistenceContext;
-import utils.ConstantUtils;
-import utils.DateUtils;
-import utils.EnumUtils.InterestConditionType;
-import utils.EnumUtils.TransactionType;
+import server.utilities.ConstantUtils;
+import server.utilities.DateUtils;
+import server.utilities.EnumUtils.InterestConditionType;
+import server.utilities.EnumUtils.TransactionType;
 
 /**
  *

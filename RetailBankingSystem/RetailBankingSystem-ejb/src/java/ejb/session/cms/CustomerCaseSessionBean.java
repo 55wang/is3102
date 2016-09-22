@@ -7,13 +7,14 @@ package ejb.session.cms;
 
 import entity.customer.CustomerCase;
 import entity.customer.MainAccount;
+import entity.staff.StaffAccount;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import utils.EnumUtils.CaseStatus;
+import server.utilities.EnumUtils.CaseStatus;
 
 /**
  *
@@ -44,6 +45,18 @@ public class CustomerCaseSessionBean implements CustomerCaseSessionBeanLocal {
     
     @Override
     public Boolean saveCase(CustomerCase customerCase){
+        //will update this part when role is finished
+        Query q = em.createQuery("SELECT a FROM StaffAccount a WHERE a.username = :user");
+        
+        q.setParameter("user", "adminadmin");
+        
+        try {
+            StaffAccount sa = (StaffAccount) q.getSingleResult();       
+            customerCase.setStaffAccount(sa);
+        } catch (NoResultException ex) {
+            return null;
+        }
+        //will update this part when role is finished
         customerCase.setCaseStatus(CaseStatus.ONHOLD);
         
         try{
@@ -54,6 +67,22 @@ public class CustomerCaseSessionBean implements CustomerCaseSessionBeanLocal {
             return true;
         }
         catch (Exception ex) {
+            System.out.println("CustomerCaseSessionBean.saveCase: " + ex.toString());
+            return false;
+        }
+    }
+    
+    @Override
+    public Boolean updateCase(CustomerCase customerCase){        
+        try{
+            
+            em.merge(customerCase);
+            em.flush();
+          
+            return true;
+        }
+        catch (Exception ex) {
+            System.out.println("CustomerCaseSessionBean.updateCase: " + ex.toString());
             return false;
         }
     }
@@ -110,6 +139,20 @@ public class CustomerCaseSessionBean implements CustomerCaseSessionBeanLocal {
             return q.getResultList();
         } catch (NoResultException ex) {
             System.out.println("CustomerCaseSessionBean.getAllCase: "+ex.toString());
+            return null;
+        }
+    }
+    
+    @Override
+    public List<CustomerCase> getAllCaseUnderCertainStaff(StaffAccount staffAccount){
+        Query q = em.createQuery("SELECT a FROM CustomerCase a WHERE a.staffAccount.username = :staffUserName");
+        
+        q.setParameter("staffUserName", staffAccount.getUsername());
+        
+        try {   
+            return q.getResultList();
+        } catch (NoResultException ex) {
+            System.out.println("CustomerCaseSessionBean.getAllCaseUnderCertainStaff: "+ex.toString());
             return null;
         }
     }

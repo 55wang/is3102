@@ -25,7 +25,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import utils.EnumUtils.DepositAccountType;
+import server.utilities.EnumUtils.DepositAccountType;
 
 /**
  *

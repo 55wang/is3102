@@ -5,6 +5,7 @@
  */
 package ejb.session.utils;
 
+import java.util.List;
 import javax.ejb.Local;
 
 /**
@@ -14,6 +15,7 @@ import javax.ejb.Local;
 @Local
 public interface UtilsSessionBeanLocal {
     public Object find(Class type, Long id);
+    public List<Object> findAll(String entityName);
     public Object persist(Object object);
     public Object merge(Object object);
 }

@@ -21,6 +21,8 @@ import javax.ejb.EJB;
 import javax.faces.event.ActionEvent;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
+import server.utilities.EnumUtils.StatusType;
+import utils.CommonUtils;
 import utils.HashPwdUtils;
 import utils.MessageUtils;
 
@@ -43,8 +45,10 @@ public class CreateStaffManagedBean implements Serializable {
     private List<StaffAccount> staffs = new ArrayList<>();
     private List<Role> roles = new ArrayList<>();
     private Map<String, String> selectRoles = new HashMap<>();
+    private List<String> selectStatuses = CommonUtils.getEnumList(StatusType.class);
     private String selectedRoleName;
     private String cellSelectedRoleName;
+    private String cellSelectedStatus;
     
     public CreateStaffManagedBean() {}
     
@@ -67,7 +71,7 @@ public class CreateStaffManagedBean implements Serializable {
             emailSuccessFlag = false;
         } finally {
             if (emailSuccessFlag) {
-                Role r = staffRoleSessionBean.findRoleByName(selectedRoleName);
+                Role r = staffRoleSessionBean.findRoleByName(getSelectedRoleName());
                 newStaff.setRole(r);
                 newStaff.setPassword(randomPwd);
                 createAccount();
@@ -79,7 +83,8 @@ public class CreateStaffManagedBean implements Serializable {
     
     // private function helper
     private void createAccount() {
-        if (staffAccountSessionBean.createAccount(newStaff)) {
+        StaffAccount result = staffAccountSessionBean.createAccount(newStaff);
+        if (result != null) {
             staffs.add(newStaff);
             newStaff = new StaffAccount();
             MessageUtils.displayInfo("New Role Added");
@@ -89,9 +94,17 @@ public class CreateStaffManagedBean implements Serializable {
     }
     
     public void onCellEdit(StaffAccount sa) {
-        sa.setRole(staffRoleSessionBean.findRoleByName(cellSelectedRoleName));
-        if (staffAccountSessionBean.updateAccount(sa)) {
-            System.out.println("Staff length " + staffs.size());
+        if (cellSelectedRoleName != null) {
+            sa.setRole(staffRoleSessionBean.findRoleByName(getCellSelectedRoleName()));
+        } else if (cellSelectedStatus != null) {
+            sa.setStatus(StatusType.getEnum(cellSelectedStatus));
+        } else {
+            return;
+        }
+        StaffAccount result = staffAccountSessionBean.updateAccount(sa);
+        if (result != null) {
+            cellSelectedRoleName = null;
+            cellSelectedStatus = null;
             MessageUtils.displayInfo(sa.getFullName() + "'s Role Edited");
         } else {
             MessageUtils.displayInfo(sa.getFullName() + "'s Role Not Edited");
@@ -193,5 +206,33 @@ public class CreateStaffManagedBean implements Serializable {
      */
     public void setCellSelectedRoleName(String cellSelectedRoleName) {
         this.cellSelectedRoleName = cellSelectedRoleName;
+    }
+
+    /**
+     * @return the selectStatuses
+     */
+    public List<String> getSelectStatuses() {
+        return selectStatuses;
+    }
+
+    /**
+     * @param selectStatuses the selectStatuses to set
+     */
+    public void setSelectStatuses(List<String> selectStatuses) {
+        this.selectStatuses = selectStatuses;
+    }
+
+    /**
+     * @return the cellSelectedStatus
+     */
+    public String getCellSelectedStatus() {
+        return cellSelectedStatus;
+    }
+
+    /**
+     * @param cellSelectedStatus the cellSelectedStatus to set
+     */
+    public void setCellSelectedStatus(String cellSelectedStatus) {
+        this.cellSelectedStatus = cellSelectedStatus;
     }
 }

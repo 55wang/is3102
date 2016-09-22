@@ -22,6 +22,8 @@
 
                                 <p:outputLabel for="roleName" value="Role Name: " />
                                 <p:inputText id="roleName" value="#{createRoleManagedBean.newRole.roleName}" required="true"/>
+                                <p:outputLabel for="roleDescription" value="Role Description: " />
+                                <p:inputTextarea id="roleDescription" value="#{createRoleManagedBean.newRole.description}" required="true"/>
                                 
                                 <p:commandButton value="Create" icon="ui-icon-plus" update="@form" actionListener="#{createRoleManagedBean.addRole}" />
                             </h:panelGrid>

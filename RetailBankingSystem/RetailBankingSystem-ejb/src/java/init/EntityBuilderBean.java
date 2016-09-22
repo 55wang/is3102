@@ -7,6 +7,7 @@ package init;
 
 import BatchProcess.InterestAccrualSessionBeanLocal;
 import ejb.session.card.NewCardProductSessionBeanLocal;
+import ejb.session.cms.CustomerCaseSessionBeanLocal;
 import ejb.session.common.NewCustomerSessionBeanLocal;
 import ejb.session.dams.InterestSessionBeanLocal;
 import ejb.session.dams.CustomerDepositSessionBeanLocal;
@@ -17,6 +18,8 @@ import ejb.session.staff.StaffRoleSessionBeanLocal;
 import ejb.session.utils.UtilsSessionBeanLocal;
 import entity.card.account.MileCardProduct;
 import entity.customer.Customer;
+import entity.customer.CustomerCase;
+import entity.customer.Issue;
 import entity.customer.MainAccount;
 import entity.dams.account.CustomerDepositAccount;
 import entity.dams.account.DepositAccount;
@@ -35,11 +38,12 @@ import javax.ejb.EJB;
 import javax.ejb.Singleton;
 import javax.ejb.LocalBean;
 import javax.ejb.Startup;
-import utils.ConstantUtils;
-import utils.EnumUtils;
-import utils.EnumUtils.DepositAccountType;
-import utils.EnumUtils.StatusType;
-import utils.HashPwdUtils;
+import server.utilities.ConstantUtils;
+import server.utilities.EnumUtils;
+import server.utilities.EnumUtils.CaseStatus;
+import server.utilities.EnumUtils.DepositAccountType;
+import server.utilities.EnumUtils.StatusType;
+import server.utilities.HashPwdUtils;
 
 /**
  *
@@ -49,7 +53,8 @@ import utils.HashPwdUtils;
 @LocalBean
 @Startup
 public class EntityBuilderBean {
-
+    @EJB
+    private CustomerCaseSessionBeanLocal customerCaseSessionBean;
     @EJB
     private UtilsSessionBeanLocal utilsBean;
     @EJB
@@ -111,6 +116,7 @@ public class EntityBuilderBean {
         initDepositAccounts();
         
         initCreditCardProduct();
+        initCase();
     }
     
     public void initCreditCardProduct() {
@@ -125,18 +131,25 @@ public class EntityBuilderBean {
 
     private void initStaffAndRoles() {
         Role superAdminRole = new Role(EnumUtils.UserRole.SUPER_ADMIN.toString());
+        superAdminRole.setDescription("Everything includes front end services and back end administrations");
         superAdminRole = staffRoleSessionBean.addRole(superAdminRole);
         Role customerServiceRole = new Role(EnumUtils.UserRole.CUSTOMER_SERVICE.toString());
         customerServiceRole = staffRoleSessionBean.addRole(customerServiceRole);
         Role financialAnalystRole = new Role(EnumUtils.UserRole.FINANCIAL_ANALYST.toString());
+        financialAnalystRole.setDescription("Generate and make use of BI results to support decision making");
         financialAnalystRole = staffRoleSessionBean.addRole(financialAnalystRole); 
         Role financialOfficerRole = new Role(EnumUtils.UserRole.FINANCIAL_OFFICER.toString());
+        financialOfficerRole.setDescription("Offer wealth management services to the customers\n" +
+"(Offering wealth services but do not design wealth products)");
         financialOfficerRole = staffRoleSessionBean.addRole(financialOfficerRole); 
         Role generalTellerRole = new Role(EnumUtils.UserRole.GENERAL_TELLER.toString());
         generalTellerRole = staffRoleSessionBean.addRole(generalTellerRole); 
         Role loanOfficerRole = new Role(EnumUtils.UserRole.LOAN_OFFICIER.toString());
+        loanOfficerRole.setDescription("Provide loan-related services to the customers\n" +
+"(Provide service but do not design loan products)");
         loanOfficerRole = staffRoleSessionBean.addRole(loanOfficerRole); 
         Role productManagerRole = new Role(EnumUtils.UserRole.PRODUCT_MANAGER.toString());
+        productManagerRole.setDescription("Design, adjust, and launch financial products to the market");
         productManagerRole = staffRoleSessionBean.addRole(productManagerRole);
         
         StaffAccount superAdminAccount = new StaffAccount();
@@ -557,6 +570,26 @@ public class EntityBuilderBean {
         da = customerDepositSessionBean.investFromAccount(da, new BigDecimal(5000));
     }
 
+    public void initCase(){
+        CustomerCase cc = new CustomerCase();
+        Issue issue = new Issue();
+        List<Issue> issues = new ArrayList<Issue>();
+        
+        issue.setTitle("Deposit Account Problem");
+        issue.setField("Deposit Account issue");
+        issue.setDetails("My deposit account has some suspicious credit histories. Could you please help me to check?");
+        issue.setCustomerCase(cc);
+        
+        issues.add(issue);
+        
+        cc.setIssues(issues);
+        cc.setTitle("My Deposit Account has Some problems");
+        cc.setMainAccount(demoMainAccount);
+        cc.setStaffAccount(staffAccountSessionBean.getAccountByUsername(ConstantUtils.SUPER_ADMIN_USERNAME));
+        cc.setCaseStatus(CaseStatus.ONHOLD);
+        
+        customerCaseSessionBean.saveCase(cc);
+    }
     /**
      * @return the demoConditionalInterestData
      */

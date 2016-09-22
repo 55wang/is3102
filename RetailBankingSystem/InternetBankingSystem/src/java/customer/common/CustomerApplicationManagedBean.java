@@ -19,8 +19,8 @@ import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import org.primefaces.event.FlowEvent;
-import utils.EnumUtils.DepositAccountType;
-import utils.EnumUtils.StatusType;
+import server.utilities.EnumUtils.DepositAccountType;
+import server.utilities.EnumUtils.StatusType;
 import utils.MessageUtils;
 import utils.RedirectUtils;
 

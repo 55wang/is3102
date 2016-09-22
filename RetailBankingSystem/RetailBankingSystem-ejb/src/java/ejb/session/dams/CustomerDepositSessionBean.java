@@ -15,7 +15,7 @@ import javax.persistence.EntityExistsException;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import utils.EnumUtils;
+import server.utilities.EnumUtils;
 
 /**
  *

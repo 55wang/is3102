@@ -48,6 +48,9 @@
                         <li class="side-menu-item #{cc.attrs.side == 'createStaff' ? 'active' : ''}">
                             <h:link outcome="create_staff" value="Create Staff" />
                         </li>
+                        <li class="side-menu-item #{cc.attrs.side == 'createServiceCharge' ? 'active' : ''}">
+                            <h:link outcome="create_service_charge" value="Create Service Charge" />
+                        </li>
                     </c:if>
                     <c:if test="#{cc.attrs.top == 'message'}">
                         <li class="side-menu-item #{cc.attrs.side == 'chat' ? 'active' : ''}">
@@ -61,7 +64,20 @@
                         <li class="side-menu-item #{cc.attrs.side == 'viewCustomer' ? 'active' : ''}">
                             <h:link outcome="staff-view-customer" value="View Customer" />
                         </li>
-        
+                        <li class="side-menu-item #{cc.attrs.side == 'viewCase' ? 'active' : ''}">
+                            <h:link outcome="staff-view-case" value="View Case" />
+                        </li>
+                    </c:if>
+                    <c:if test="#{cc.attrs.top == 'setting'}">
+                        <li class="side-menu-item #{cc.attrs.side == 'viewProfile' ? 'active' : ''}">
+                            <h:link outcome="staff_view_profile" value="View Profile" />
+                        </li>
+                        <li class="side-menu-item #{cc.attrs.side == 'resetPassword' ? 'active' : ''}">
+                            <h:link outcome="staff_login_reset_pwd" value="Reset Password" />
+                        </li>
+                        <li class="side-menu-item #{cc.attrs.side == 'viewAccess' ? 'active' : ''}">
+                            <h:link outcome="staff_view_access" value="View Access" />
+                        </li>
                     </c:if>
                 </ul>
             </div>

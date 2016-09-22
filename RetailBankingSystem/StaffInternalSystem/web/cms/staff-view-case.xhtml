@@ -1,0 +1,76 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:em="http://xmlns.jcp.org/jsf/composite/emcomp"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <!--shift + ctrl + F, format-->
+    <f:view>
+        <h:head>
+            <title>Merlion Internal</title>
+            <em:cssImport></em:cssImport>
+        </h:head>
+        <h:body>
+            <em:staffNavBar context="customer"></em:staffNavBar>
+            <em:staffSideBar top="customer" side="viewCase"></em:staffSideBar>
+            <div class="container">
+                <p:messages id="messagesStatus" redisplay="false"></p:messages>
+                <p:panel header="Search Customer">
+                    <p:outputPanel>
+                        <h:form id="search-form">
+                            <p:inputText id="idFilter" style="width:180px" value="#{staffCustomerCaseManagedBean.searchText}" placeholder="Enter Case ID"  />
+                            <p:commandButton value="Search" actionListener="#{staffCustomerCaseManagedBean.search}" update="search-form"/>
+                        </h:form>
+                    </p:outputPanel>
+                </p:panel>
+
+
+                <p:panel header="List of My Cases">
+                    <h:form id="mainForm">
+                        <p:dataTable id="caseList" value="#{staffCustomerCaseManagedBean.cases}" var="case" sortMode="multiple" >
+                            <p:column style="width:16px">
+                                <p:rowToggler />
+                            </p:column>
+
+                            <p:column headerText="ID" sortBy="#{case.id}">
+                                <h:outputText value="#{case.id}" />
+                            </p:column>
+
+                            <p:column headerText="Title" sortBy="#{customer.title}">
+                                <h:outputText value="#{case.title}" />
+                            </p:column>
+
+                            <p:column headerText="Status" sortBy="#{case.caseStatus}" style="width:140px">
+                                <p:selectOneMenu value="#{case.caseStatus}">
+                                    <f:selectItems value="#{staffCustomerCaseManagedBean.caseStatusList}" />
+                                </p:selectOneMenu>
+                            </p:column>
+
+                            <p:column headerText="Customer" sortBy="#{case.mainAccount.customer.identityNumber}">
+                                <h:outputText value="#{case.mainAccount.customer.identityNumber}" />
+                            </p:column>
+                            
+                            <p:column headerText="Case Assignee" sortBy="#{case.staffAccount.username}">
+                                <h:outputText value="#{case.staffAccount.username}" />
+                            </p:column>
+                            
+                            <p:column headerText="Action" style="width:140px">
+                                <p:splitButton value="Update" action="#{staffCustomerCaseManagedBean.update(case)}" update="@form" icon="ui-icon-disk">
+                                    <p:menuitem value="Transfer" actionListener="#{buttonView.update}" update="@form" icon="ui-icon-arrowrefresh-1-w" />
+                                    <p:menuitem value="Delete" actionListener="#{buttonView.delete}" ajax="false" icon="ui-icon-close" />
+                                </p:splitButton>
+                            </p:column>
+
+                        </p:dataTable>
+                    </h:form>
+                </p:panel>
+
+            </div>
+        </h:body> 
+    </f:view>
+
+
+</html>
+

@@ -12,7 +12,7 @@ import javax.ejb.EJB;
 import javax.faces.event.ActionEvent;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
-import utils.EnumUtils;
+import server.utilities.EnumUtils;
 import utils.MessageUtils;
 
 /**

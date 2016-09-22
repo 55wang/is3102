@@ -3,13 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package utils;
+package server.utilities;
 
 /**
  *
  * @author leiyang
  */
-public class CommonUtils {
+public class CommonHelper {
     
     public static String delimAdd(String full, String s) {
         if (full == null || full.isEmpty()) {

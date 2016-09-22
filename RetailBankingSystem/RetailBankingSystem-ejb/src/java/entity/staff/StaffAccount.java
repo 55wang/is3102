@@ -18,7 +18,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import utils.EnumUtils.StatusType;
+import server.utilities.EnumUtils.StatusType;
 
 /**
  *

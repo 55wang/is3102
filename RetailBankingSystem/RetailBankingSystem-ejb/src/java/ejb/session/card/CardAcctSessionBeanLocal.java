@@ -9,7 +9,7 @@ import entity.card.account.CreditCardAccount;
 import entity.card.account.CreditCardOrder;
 import java.util.List;
 import javax.ejb.Local;
-import utils.EnumUtils;
+import server.utilities.EnumUtils;
 
 /**
  *

@@ -20,7 +20,7 @@ import javax.persistence.InheritanceType;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import utils.EnumUtils.CardAccountStatus;
+import server.utilities.EnumUtils.CardAccountStatus;
 
 /**
  *
