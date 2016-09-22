@@ -69,6 +69,15 @@
                     </c:if>
                 </ul>
             </div>
+            <!-- Global Notification -->
+            <p:growl id="msgs" widgetVar="growl" showDetail="true" sticky="true"/>
+            <p:socket onMessage="handleAnnouncement" channel="/customer_notify"/>
+            <script type="text/javascript">
+                function handleAnnouncement(facesmessage) {
+                    console.log(facesmessage);
+                    PF('growl').show([facesmessage]);
+                }
+            </script>
         </f:view>
     </cc:implementation>
 </html>
