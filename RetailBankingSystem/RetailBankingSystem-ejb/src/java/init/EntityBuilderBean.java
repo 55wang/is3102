@@ -569,7 +569,7 @@ public class EntityBuilderBean {
         List<Issue> issues = new ArrayList<Issue>();
         
         issue.setTitle("Deposit Account Problem");
-        issue.setField("Deposit Account issue");
+        issue.setField(EnumUtils.IssueField.DEPOSIT);
         issue.setDetails("My deposit account has some suspicious credit histories. Could you please help me to check?");
         issue.setCustomerCase(cc);
         

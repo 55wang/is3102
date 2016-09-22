@@ -791,4 +791,39 @@ public class EnumUtils {
             throw new IllegalArgumentException();
         }
     }
+    
+    public enum IssueField {
+
+        PROFILE("PROFILE"),
+        ACCOUNT("ACCOUNT"),
+        DEPOSIT("DEPOSIT"),
+        CARD("CARD"),
+        LOAN("LOAN"),
+        INVESTMENT("INVESTMENT");
+        
+        
+        private String value;
+
+        IssueField(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        @Override
+        public String toString() {
+            return this.getValue();
+        }
+
+        public static IssueField getEnum(String value) {
+            for (IssueField v : values()) {
+                if (v.getValue().equalsIgnoreCase(value)) {
+                    return v;
+                }
+            }
+            throw new IllegalArgumentException();
+        }
+    }
 }

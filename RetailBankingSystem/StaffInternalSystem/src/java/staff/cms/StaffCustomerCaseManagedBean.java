@@ -33,6 +33,7 @@ public class StaffCustomerCaseManagedBean implements Serializable{
     private String searchText;
     
     private List<String> caseStatusList = CommonUtils.getEnumList(EnumUtils.CaseStatus.class);
+    private List<String> issueFieldList = CommonUtils.getEnumList(EnumUtils.IssueField.class);
     
     /**
      * Creates a new instance of StaffCutomerCaseManagedBean
@@ -82,6 +83,14 @@ public class StaffCustomerCaseManagedBean implements Serializable{
 
     public void setCaseStatusList(List<String> caseStatusList) {
         this.caseStatusList = caseStatusList;
+    }
+
+    public List<String> getIssueFieldList() {
+        return issueFieldList;
+    }
+
+    public void setIssueFieldList(List<String> issueFieldList) {
+        this.issueFieldList = issueFieldList;
     }
     
 }
