@@ -5,13 +5,11 @@
  */
 package entity.dams.account;
 
-import entity.embedded.CumulatedInterest;
 import entity.embedded.TransferLimits;
 import java.math.BigDecimal;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
-import server.utilities.EnumUtils.DepositAccountType;
 
 /**
  *
@@ -25,10 +23,8 @@ public class CustomerDepositAccount extends DepositAccount {
     private Integer waivedChargesCounter = 0;
     @Embedded
     private TransferLimits transferLimits = new TransferLimits();
-    @Embedded
-    private CumulatedInterest cumulatedInterest = new CumulatedInterest();
     
-    @Column(precision=12, scale=2)
+    @Column(precision=30, scale=20)
     private BigDecimal previousBalance = new BigDecimal(0);
     
     /**
@@ -71,20 +67,6 @@ public class CustomerDepositAccount extends DepositAccount {
      */
     public void setTransferLimits(TransferLimits transferLimits) {
         this.transferLimits = transferLimits;
-    }
-
-    /**
-     * @return the cumulatedInterest
-     */
-    public CumulatedInterest getCumulatedInterest() {
-        return cumulatedInterest;
-    }
-
-    /**
-     * @param cumulatedInterest the cumulatedInterest to set
-     */
-    public void setCumulatedInterest(CumulatedInterest cumulatedInterest) {
-        this.cumulatedInterest = cumulatedInterest;
     }
 
     /**

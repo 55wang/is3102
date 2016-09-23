@@ -248,4 +248,23 @@ public class CustomerDepositSessionBean implements CustomerDepositSessionBeanLoc
             }
         }
     }
+    
+    @Override
+    public DepositAccount creditInterestAccount(DepositAccount account) {
+        BigDecimal interestAmount = account.getCumulatedInterest().getCummulativeAmount();
+        if (account == null || interestAmount == null || interestAmount.compareTo(new BigDecimal(0.001)) >= 0) {
+            return null;
+        } else {
+            TransactionRecord t = new TransactionRecord();
+            t.setActionType(EnumUtils.TransactionType.INTEREST);
+            t.setAmount(interestAmount);
+            t.setCredit(Boolean.TRUE);
+            t.setFromAccount(account);
+            account.addTransaction(t);
+            account.addBalance(interestAmount);
+            account.getCumulatedInterest().reset();
+            em.merge(account);
+            return account;
+        }
+    }
 }

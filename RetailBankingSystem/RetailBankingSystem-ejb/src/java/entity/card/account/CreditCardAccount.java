@@ -47,8 +47,7 @@ public class CreditCardAccount implements Serializable {
     private List<PromoCode> promoCode = new ArrayList<>();
 
     private CardAccountStatus CardStatus;
-    @Column(precision = 12)// LY:credit card number in decimal??
-    private BigDecimal creditCardNum;
+    private String creditCardNum;
     private Integer cvv; // LY: Use Integer instead of int
     private String nameOnCard;
     @Temporal(value = TemporalType.DATE)
@@ -103,14 +102,6 @@ public class CreditCardAccount implements Serializable {
     @Override
     public String toString() {
         return "entity.card.account.CreditCard[ id=" + id + " ]";
-    }
-
-    public BigDecimal getCreditCardNum() {
-        return creditCardNum;
-    }
-
-    public void setCreditCardNum(BigDecimal creditCardNum) {
-        this.creditCardNum = creditCardNum;
     }
 
     public int getCvv() {
@@ -279,6 +270,14 @@ public class CreditCardAccount implements Serializable {
 
     public void setPromoCode(List<PromoCode> promoCode) {
         this.promoCode = promoCode;
+    }
+
+    public String getCreditCardNum() {
+        return creditCardNum;
+    }
+
+    public void setCreditCardNum(String creditCardNum) {
+        this.creditCardNum = creditCardNum;
     }
 
 }

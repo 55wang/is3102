@@ -5,16 +5,26 @@
  */
 package BatchProcess;
 
+import ejb.session.dams.CustomerDepositSessionBeanLocal;
+import ejb.session.dams.InterestSessionBeanLocal;
 import entity.common.TransactionRecord;
 import entity.dams.account.CustomerDepositAccount;
+import entity.dams.account.CustomerFixedDepositAccount;
 import entity.dams.account.DepositAccount;
+import entity.dams.account.DepositAccountProduct;
 import entity.dams.rules.ConditionInterest;
+import entity.dams.rules.Interest;
+import entity.dams.rules.RangeInterest;
+import entity.dams.rules.TimeRangeInterest;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.ArrayList;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import java.util.List;
 import java.util.Date;
+import javax.ejb.EJB;
 import javax.persistence.PersistenceContext;
 import server.utilities.ConstantUtils;
 import server.utilities.DateUtils;
@@ -31,6 +41,166 @@ public class InterestAccrualSessionBean implements InterestAccrualSessionBeanLoc
     @PersistenceContext(unitName = "RetailBankingSystem-ejbPU")
     private EntityManager em;
 
+    @EJB
+    private CustomerDepositSessionBeanLocal depositBean;
+    @EJB
+    private InterestSessionBeanLocal interestBean;
+
+    @Override
+    public List<DepositAccount> calculateMonthlyInterestsForDepositAccount(List<DepositAccount> accounts) {
+        List<DepositAccount> result = new ArrayList<>();
+
+        for (DepositAccount a : accounts) {
+            result.add(depositBean.creditInterestAccount(a));
+        }
+
+        return result;
+    }
+
+    @Override
+    public List<DepositAccount> calculateDailyInterestsForDepositAccount(List<DepositAccount> accounts) {
+        List<DepositAccount> result = new ArrayList<>();
+
+        for (DepositAccount a : accounts) {
+            if (a instanceof CustomerDepositAccount) {
+                result.add(calculateDailyInterestForCustomerDepositAccount((CustomerDepositAccount) a));
+            } else { // fixed account
+                result.add(calculateDailyInterestForCustomerFixedDepositAccount((CustomerFixedDepositAccount) a));
+            }
+        }
+
+        return result;
+    }
+
+    @Override
+    public DepositAccount calculateMonthlyInterestForDepositAccount(DepositAccount a) {
+        return depositBean.creditInterestAccount(a);
+    }
+
+    @Override
+    public DepositAccount calculateDailyInterestForDepositAccount(DepositAccount a) {
+        if (a instanceof CustomerDepositAccount) {
+            return calculateDailyInterestForCustomerDepositAccount((CustomerDepositAccount) a);
+        } else { // fixed account
+            return calculateDailyInterestForCustomerFixedDepositAccount((CustomerFixedDepositAccount) a);
+        }
+    }
+
+    private CustomerFixedDepositAccount calculateDailyInterestForCustomerFixedDepositAccount(CustomerFixedDepositAccount account) {
+        List<TimeRangeInterest> interests = interestBean.getFixedDepositAccountInterestsByAccount(account);
+
+        BigDecimal originalAmount = account.getBalance().setScale(30);
+        BigDecimal totalInterest = BigDecimal.ZERO.setScale(30);
+        // TODO: Change to day in month
+        BigDecimal dailyInterval = new BigDecimal(30 * 12 / account.getProduct().getInterestInterval());
+
+        for (TimeRangeInterest i : interests) {
+            BigDecimal interval = BigDecimal.ZERO;
+            // Min |   | Max
+            if (originalAmount.compareTo(i.getMaximum()) >= 0) {
+                // apply to full range
+                interval = i.getMaximum().subtract(i.getMinimum());
+            } else if (originalAmount.compareTo(i.getMinimum()) >= 0) {
+                // apply to partial range
+                interval = originalAmount.subtract(i.getMinimum());
+            } else {
+                // not apply, originalAmount too small
+                continue;
+            }
+            BigDecimal percentage = i.getPercentage().divide(dailyInterval, 12, RoundingMode.HALF_UP);
+            totalInterest = totalInterest.add(interval.multiply(percentage));
+        }
+
+        account.getCumulatedInterest().addCumulatedInterest(totalInterest);
+        em.merge(account);
+        return account;
+    }
+
+    private CustomerDepositAccount calculateDailyInterestForCustomerDepositAccount(CustomerDepositAccount a) {
+
+        DepositAccountProduct p = (DepositAccountProduct) a.getProduct();
+        List<Interest> allInterests = p.getInterestRules();
+        List<Interest> normalInterests = new ArrayList<>();
+        List<RangeInterest> rangeInterests = new ArrayList<>();
+        List<ConditionInterest> conditionInterests = new ArrayList<>();
+
+        for (Interest i : allInterests) {
+            if (i instanceof TimeRangeInterest) {
+            } else if (i instanceof RangeInterest) {
+                rangeInterests.add((RangeInterest) i);
+            } else if (i instanceof ConditionInterest) {
+                conditionInterests.add((ConditionInterest) i);
+            } else {
+                normalInterests.add(i);
+            }
+        }
+
+        BigDecimal originalAmount = a.getBalance().setScale(30);
+        BigDecimal totalInterest = BigDecimal.ZERO.setScale(30);
+        // TODO: Change to day in month
+        BigDecimal dailyInterval = new BigDecimal(30 * 12 / a.getProduct().getInterestInterval());
+
+        // Get highest base interest
+        BigDecimal baseInterest = BigDecimal.ZERO;
+        for (Interest i : normalInterests) {
+            if (baseInterest.compareTo(i.getPercentage()) < 0) {
+                baseInterest = i.getPercentage();
+            }
+        }
+        // Assume Cap is 60,000, this is independent
+        for (ConditionInterest i : conditionInterests) {
+            // if fulfill, then stack
+            Boolean met = isAccountMeetCondition(a, i);
+            if (met) {
+                System.out.println("Condition: " + i.getConditionType() + " has met with percentage " + i.getPercentage());
+                BigDecimal ceiling = i.getCeiling();
+                if (originalAmount.compareTo(ceiling) >= 0) {
+                    // only process ceiling
+                    BigDecimal percentage = i.getPercentage().divide(dailyInterval, 12, RoundingMode.HALF_UP);
+                    System.out.println("Daily Interest Percentage " + percentage);
+                    totalInterest = totalInterest.add(ceiling.multiply(percentage));
+                } else {
+                    // process originalAmount
+                    BigDecimal percentage = i.getPercentage().divide(dailyInterval, 12, RoundingMode.HALF_UP);
+                    System.out.println("Percentage " + percentage);
+                    totalInterest = totalInterest.add(originalAmount.multiply(percentage));
+                }
+            }
+        }
+        // Assume not be overlapped
+        BigDecimal leftOver = originalAmount;
+        BigDecimal tempInterest = baseInterest;
+        for (RangeInterest i : rangeInterests) {
+            if (tempInterest.compareTo(i.getPercentage()) < 0) {
+                tempInterest = i.getPercentage();
+            }
+            BigDecimal interval = BigDecimal.ZERO;
+            // Min |   | Max
+            if (originalAmount.compareTo(i.getMaximum()) >= 0) {
+                // apply to full range
+                interval = i.getMaximum().subtract(i.getMinimum());
+            } else if (originalAmount.compareTo(i.getMinimum()) >= 0) {
+                // apply to partial range
+                interval = originalAmount.subtract(i.getMinimum());
+            } else {
+                // not apply, originalAmount too small
+                continue;
+            }
+            BigDecimal percentage = baseInterest.divide(dailyInterval, 30, RoundingMode.HALF_UP);
+            totalInterest = totalInterest.add(interval.multiply(percentage));
+            leftOver = leftOver.subtract(interval);
+        }
+
+        BigDecimal percentage = tempInterest.divide(dailyInterval, 30, RoundingMode.HALF_UP);
+        totalInterest = totalInterest.add(leftOver.multiply(percentage));
+
+        System.out.println("Total interest for the day: " + totalInterest);
+        a.getCumulatedInterest().addCumulatedInterest(totalInterest);
+        System.out.println("Total cumulated interest for the day: " + a.getCumulatedInterest().getCummulativeAmount());
+        em.merge(a);
+        return a;
+    }
+
     @Override
     public Boolean isAccountMeetCondition(DepositAccount a, ConditionInterest i) {
         Date lastMonthFirstDay = DateUtils.getLastBeginOfMonth();
@@ -40,14 +210,7 @@ public class InterestAccrualSessionBean implements InterestAccrualSessionBeanLoc
         BigDecimal bd1 = new BigDecimal(500);
         BigDecimal bd2 = new BigDecimal(500.0);
         BigDecimal bd3 = new BigDecimal(1000);
-        
-        System.out.println("bd1 compare to bd2: " + bd1.compareTo(bd2));
-        System.out.println("bd1 compare to bd3: " + bd1.compareTo(bd3));
-        System.out.println("bd3 compare to bd2: " + bd3.compareTo(bd2));
-        System.out.println(lastMonthFirstDay);
-        System.out.println(lastMonthLastDay);
-        System.out.println(sinceDate);
-        System.out.println(toDate);
+
         System.out.println(i.getConditionType());
         if (i.getConditionType() == InterestConditionType.BILL) {
             List<TransactionRecord> ts = retrieveTransactions(a, sinceDate, toDate, TransactionType.BILL);
@@ -79,7 +242,7 @@ public class InterestAccrualSessionBean implements InterestAccrualSessionBeanLoc
             } else {
                 return false;
             }
-            
+
         } else if (i.getConditionType() == InterestConditionType.SALARY) {
             List<TransactionRecord> ts = retrieveTransactions(a, sinceDate, toDate, TransactionType.SALARY);
             System.out.println(ts);
@@ -103,13 +266,13 @@ public class InterestAccrualSessionBean implements InterestAccrualSessionBeanLoc
             return false;
         }
     }
-    
+
     private List<TransactionRecord> retrieveTransactions(DepositAccount a, Date sinceDate, Date toDate, TransactionType type) {
         Query q = em.createQuery(
                 "SELECT t FROM " + ConstantUtils.TRANSACTION_ENTITY + " t WHERE "
-                        + "t.fromAccount.id = :accountId AND "
-                        + "t.actionType = :type AND "
-                        + "t.creationDate BETWEEN :sinceDate AND :toDate"
+                + "t.fromAccount.id = :accountId AND "
+                + "t.actionType = :type AND "
+                + "t.creationDate BETWEEN :sinceDate AND :toDate"
         );
         q.setParameter("accountId", a.getId());
         q.setParameter("sinceDate", sinceDate);

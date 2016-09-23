@@ -5,14 +5,17 @@
  */
 package ejb.session.dams;
 
+import entity.dams.account.CustomerFixedDepositAccount;
 import entity.dams.rules.Interest;
 import entity.dams.rules.TimeRangeInterest;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import server.utilities.DateUtils;
 
 /**
  *
@@ -71,6 +74,21 @@ public class InterestSessionBean implements InterestSessionBeanLocal {
                 + "i.isHistory = false AND i.version = :version"
         );
         q.setParameter("version", getCurrentVersion());
+        return q.getResultList();
+    }
+    
+    @Override
+    public List<TimeRangeInterest> getFixedDepositAccountInterestsByAccount(CustomerFixedDepositAccount account) {
+        Date startDate = account.getCreationDate();
+        Date now = new Date();
+        Integer monthDiff = DateUtils.monthDifference(startDate, now);
+        Query q = em.createQuery("SELECT i FROM TimeRangeInterest i WHERE "
+                + "i.isHistory = false AND i.version = :version AND "
+                + "i.startMonth <= :monthDiff AND i.endMonth >= :monthDiff"
+        );
+        q.setParameter("version", getCurrentVersion());
+        q.setParameter("monthDiff", monthDiff);
+        
         return q.getResultList();
     }
     
