@@ -491,7 +491,7 @@ public class EntityBuilderBean {
         RangeInterest i2 = new RangeInterest();
         i2.setName("10,001~100,000");
         i2.setVersion(0);
-        i2.setMinimum(new BigDecimal(100001));
+        i2.setMinimum(new BigDecimal(10001));
         i2.setMaximum(new BigDecimal(100000));
         i2.setPercentage(new BigDecimal(0.00075));
         demoRangeInterestData.add(interestSessionBean.addInterest(i2));
@@ -1164,6 +1164,7 @@ public class EntityBuilderBean {
         fixedAccount.setProduct(depositProductSessionBean.getDepositProductByName(ConstantUtils.DEMO_FIXED_DEPOSIT_PRODUCT_NAME));
         fixedAccount.setBalance(new BigDecimal(750000));
         fixedAccount.setMainAccount(demoMainAccount);
+        fixedAccount.setInterestRules(interestSessionBean.getFixedDepositAccountDefaultInterests());
         customerDepositSessionBean.createAccount(fixedAccount);
     }
 

@@ -6,6 +6,7 @@
 package entity.dams.account;
 
 import entity.dams.rules.Interest;
+import entity.dams.rules.TimeRangeInterest;
 import entity.embedded.CumulatedInterest;
 import java.util.ArrayList;
 import java.util.Date;
@@ -32,7 +33,7 @@ public class CustomerFixedDepositAccount extends DepositAccount {
     @Embedded
     private CumulatedInterest cumulatedInterest = new CumulatedInterest();
     @OneToMany(cascade = {CascadeType.MERGE})
-    private List<Interest> interestRules = new ArrayList<>();
+    private List<TimeRangeInterest> interestRules = new ArrayList<>();
 
     /**
      * @return the cumulatedInterest
@@ -72,15 +73,14 @@ public class CustomerFixedDepositAccount extends DepositAccount {
     /**
      * @return the interestRules
      */
-    public List<Interest> getInterestRules() {
+    public List<TimeRangeInterest> getInterestRules() {
         return interestRules;
     }
 
     /**
      * @param interestRules the interestRules to set
      */
-    public void setInterestRules(List<Interest> interestRules) {
+    public void setInterestRules(List<TimeRangeInterest> interestRules) {
         this.interestRules = interestRules;
     }
-
 }

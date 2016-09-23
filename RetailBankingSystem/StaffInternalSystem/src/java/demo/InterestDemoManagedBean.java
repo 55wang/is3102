@@ -10,6 +10,7 @@ import ejb.session.dams.InterestSessionBeanLocal;
 import ejb.session.mainaccount.MainAccountSessionBeanLocal;
 import entity.customer.MainAccount;
 import entity.dams.account.CustomerDepositAccount;
+import entity.dams.account.CustomerFixedDepositAccount;
 import entity.dams.account.DepositAccount;
 import entity.dams.account.DepositAccountProduct;
 import entity.dams.rules.ConditionInterest;
@@ -68,11 +69,6 @@ public class InterestDemoManagedBean implements Serializable {
 
     @PostConstruct
     public void init() {
-        timeRangeInterests = interestSessionBean.getFixedDepositAccountDefaultInterests();
-        if (!timeRangeInterests.isEmpty()) {
-            initTimeRangeDisplay();
-        }
-        
         initDemoAccount();
         if (!demoAccount.getBankAcounts().isEmpty()) {
             setShowingAccount(getDemoAccount().getBankAcounts().get(0));
@@ -138,6 +134,9 @@ public class InterestDemoManagedBean implements Serializable {
                     normalInterests.add(i);
                 }
             }
+        } else if (showingAccount instanceof CustomerFixedDepositAccount) {
+            timeRangeInterests = ((CustomerFixedDepositAccount)showingAccount).getInterestRules();
+            initTimeRangeDisplay();
         }
 
     }

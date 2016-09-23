@@ -87,7 +87,7 @@ public class InterestAccrualSessionBean implements InterestAccrualSessionBeanLoc
     }
 
     private CustomerFixedDepositAccount calculateDailyInterestForCustomerFixedDepositAccount(CustomerFixedDepositAccount account) {
-        List<TimeRangeInterest> interests = interestBean.getFixedDepositAccountInterestsByAccount(account);
+        List<TimeRangeInterest> interests = account.getInterestRules();
 
         BigDecimal originalAmount = account.getBalance().setScale(30);
         BigDecimal totalInterest = BigDecimal.ZERO.setScale(30);
