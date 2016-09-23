@@ -5,7 +5,6 @@
  */
 package entity.dams.rules;
 
-import java.math.BigDecimal;
 import javax.persistence.Entity;
 
 /**
@@ -50,9 +49,6 @@ public class TimeRangeInterest extends RangeInterest implements Comparable<TimeR
 
     @Override
     public int compareTo(TimeRangeInterest compare) {
-        System.out.println("TimeRangeInterest compare:");
-        System.out.println("TimeRangeInterest compare Minimum:" + this.getMinimum().compareTo(compare.getMinimum()));
-        System.out.println("TimeRangeInterest compare Month:" + (this.getStartMonth() - compare.getStartMonth()));
         if (this.getMinimum().compareTo(compare.getMinimum()) == 0) {
             return this.getStartMonth() - compare.getStartMonth();
         } else {

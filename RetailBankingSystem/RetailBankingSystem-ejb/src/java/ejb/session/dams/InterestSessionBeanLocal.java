@@ -18,6 +18,7 @@ import javax.ejb.Local;
 public interface InterestSessionBeanLocal {
     // create new or update interest
     public Interest addInterest(Interest interest);
+    public List<TimeRangeInterest> addAllTimeRangeInterest(List<TimeRangeInterest> interest);
     public Interest updateInterest(Interest interest);
     public List<Interest> showAllInterests();
     public List<Interest> showAllPresentInterests();

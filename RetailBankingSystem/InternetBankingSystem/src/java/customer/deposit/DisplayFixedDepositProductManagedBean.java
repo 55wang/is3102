@@ -36,6 +36,7 @@ public class DisplayFixedDepositProductManagedBean implements Serializable {
     private TimeRangeInterest[][] formatedInterests;
     private List<Integer> colIndex = new ArrayList<>();
     private List<Integer> rowIndex = new ArrayList<>();
+    private Integer colSize;
     
     /**
      * Creates a new instance of DisplayFixedDepositProductManagedBean
@@ -82,6 +83,7 @@ public class DisplayFixedDepositProductManagedBean implements Serializable {
         for (int i = 0; i <= row; i++) {
             getRowIndex().add(i);
         }
+        colSize = getColIndex().size();
         System.out.println(getColIndex());
         System.out.println(getRowIndex());
 //        getRowIndex().add(getRowIndex().size());
@@ -102,10 +104,7 @@ public class DisplayFixedDepositProductManagedBean implements Serializable {
             return "$" + cell.getMinimum().intValue() + " ~ $" + cell.getMaximum().intValue();
         } else {
             TimeRangeInterest cell = formatedInterests[row - 1][col - 1];
-//            DecimalFormat format = new DecimalFormat("0.00");
-//            long percent = cell.getPercentage().longValue() / 10;
-//            return format.format(percent) + "%";
-            return cell.getPercentage().toString();
+            return cell.getPercentage().toString().substring(0, 6);
         }
     }
 
@@ -149,6 +148,20 @@ public class DisplayFixedDepositProductManagedBean implements Serializable {
      */
     public void setRowIndex(List<Integer> rowIndex) {
         this.rowIndex = rowIndex;
+    }
+
+    /**
+     * @return the colSize
+     */
+    public Integer getColSize() {
+        return colSize;
+    }
+
+    /**
+     * @param colSize the colSize to set
+     */
+    public void setColSize(Integer colSize) {
+        this.colSize = colSize;
     }
 
 }

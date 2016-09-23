@@ -34,6 +34,16 @@ public class InterestSessionBean implements InterestSessionBeanLocal {
     }
     
     @Override
+    public List<TimeRangeInterest> addAllTimeRangeInterest(List<TimeRangeInterest> interest) {
+        Integer newVersion = getCurrentVersion() + 1;
+        for (TimeRangeInterest i : interest) {
+            i.setVersion(newVersion);
+            em.persist(i);
+        }
+        return interest;
+    }
+    
+    @Override
     public Interest updateInterest(Interest interest) {
         try {
             em.merge(interest);
@@ -58,8 +68,14 @@ public class InterestSessionBean implements InterestSessionBeanLocal {
     @Override
     public List<TimeRangeInterest> getFixedDepositAccountDefaultInterests() {
         Query q = em.createQuery("SELECT i FROM TimeRangeInterest i WHERE "
-                + "i.isHistory = false"
+                + "i.isHistory = false AND i.version = :version"
         );
+        q.setParameter("version", getCurrentVersion());
         return q.getResultList();
+    }
+    
+    private Integer getCurrentVersion() {
+        Query q = em.createQuery("SELECT MAX(i.version) FROM TimeRangeInterest i");
+        return (Integer) q.getSingleResult();
     }
 }
