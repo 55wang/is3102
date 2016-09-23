@@ -68,15 +68,15 @@
                                     <p:menuitem value="Credit Card Summary" url="../customer_card/credit_card_summary.xhtml" />
                                     <p:menuitem value="Activate Debit Card" url="#" />
                                     <p:menuitem value="Activate Credit Card" url="#" />
-                                    <p:menuitem value="Debit Card Limit" url="#" />
-                                    <p:menuitem value="Credit Card Limit" url="#" />
+                                    <p:menuitem value="Debit Card Limit" url="../customer_card/change_debit_card_limit.xhtml" />
+                                    <p:menuitem value="Credit Card Limit" url="../customer_card/change_credit_card_limit.xhtml" />
                                 </p:submenu>
                             </p:menu>
                         </p:overlayPanel>
                         
                         <li id="header-overview" class="#{cc.attrs.pageName == 'button' ? 'active' : ''}" value="button"><a href="#">button</a></li>
-                        <li id="header-overview" class="#{cc.attrs.pageName == 'button' ? 'active' : ''}" value="button"><a href="#">button</a></li>
-                        <li id="navbar-apply-tab" class="#{cc.attrs.pageName == 'cards_home' ? 'active' : ''}" value="myapply"><a href="../customer_card/cards_home.xhtml"><p:outputLabel id="tab-myApply" value="Apply" style="cursor: pointer"/></a></li>
+                        
+                        <li id="navbar-apply-tab" class="#{cc.attrs.pageName == 'apply_home' ? 'active' : ''}" value="myapply"><a href="../apply/apply_home.xhtml"><p:outputLabel id="tab-myApply" value="Apply" style="cursor: pointer"/></a></li>
                         <p:overlayPanel class="nav-overlay-panel-apply" for="tab-myApply" showEvent="mouseover" hideEvent="mousedown" dismissable="true">
                             <p:menu>
                                 <p:submenu style="display:none">
@@ -84,6 +84,17 @@
                                     <p:menuitem value="Debit cards" url="#" />
                                     <p:menuitem value="Credit Cards" url="#" />
                                    
+                                </p:submenu>
+                            </p:menu>
+                        </p:overlayPanel>
+                        
+                        <li id="navbar-request-tab" class="#{cc.attrs.pageName == 'request_home' ? 'active' : ''}" value="myRequest"><a href="../request/request_home.xhtml"><p:outputLabel id="tab-myRequest" value="Request" style="cursor: pointer"/></a></li>
+                        <p:overlayPanel class="nav-overlay-panel-request" for="tab-myRequest" showEvent="mouseover" hideEvent="mousedown" dismissable="true">
+                            <p:menu>
+                                <p:submenu style="display:none">
+                                    <p:menuitem value="E-statement" url="#"/>
+                                    <p:menuitem value="View Cheque Status" url="#" />
+                                    
                                 </p:submenu>
                             </p:menu>
                         </p:overlayPanel>
