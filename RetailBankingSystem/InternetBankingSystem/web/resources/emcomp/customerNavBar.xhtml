@@ -72,6 +72,7 @@
             <!-- Global Notification -->
             <p:growl id="msgs" widgetVar="growl" showDetail="true" sticky="true"/>
             <p:socket onMessage="handleAnnouncement" channel="/customer_notify"/>
+            <p:socket onMessage="handleAnnouncement" channel="/single_notification/#{customerInfoManagedBean.userId}"/>
             <script type="text/javascript">
                 function handleAnnouncement(facesmessage) {
                     console.log(facesmessage);
