@@ -143,4 +143,12 @@ public class MainAccount implements Serializable {
     public void setCases(List<CustomerCase> cases) {
         this.cases = cases;
     }
+
+    public List<CreditCardAccount> getCreditCardAccounts() {
+        return creditCardAccounts;
+    }
+
+    public void setCreditCardAccounts(List<CreditCardAccount> creditCardAccounts) {
+        this.creditCardAccounts = creditCardAccounts;
+    }
 }

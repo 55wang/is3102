@@ -42,7 +42,9 @@ public class CreditCardOrder implements Serializable {
 
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date birthDay;
-
+    
+    private double creditScore;
+    private String bureaCreditScore;
     private Gender gender;
     private Income income;
     private double credit_limit;
@@ -392,6 +394,22 @@ public class CreditCardOrder implements Serializable {
 
     public void setEduLevel(Education eduLevel) {
         this.eduLevel = eduLevel;
+    }
+
+    public double getCreditScore() {
+        return creditScore;
+    }
+
+    public void setCreditScore(double creditScore) {
+        this.creditScore = creditScore;
+    }
+
+    public String getBureaCreditScore() {
+        return bureaCreditScore;
+    }
+
+    public void setBureaCreditScore(String bureaCreditScore) {
+        this.bureaCreditScore = bureaCreditScore;
     }
 
 }
