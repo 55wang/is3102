@@ -55,7 +55,7 @@
                         <p:overlayPanel class="nav-overlay-panel-account" for="tab-myAccount" showEvent="mouseover" hideEvent="mousedown" dismissable="true">
                             <p:menu>
                                 <p:submenu style="display:none">
-                                    <p:menuitem value="Account" url="../customer_cms/view_profile.xhtml" />
+                                    <p:menuitem value="Deposit" url="../customer_dams/deposit_account_summary.xhtml" />
                                     <p:menuitem value="Account" />
                                 </p:submenu>
                             </p:menu>
@@ -76,7 +76,17 @@
                         
                         <li id="header-overview" class="#{cc.attrs.pageName == 'button' ? 'active' : ''}" value="button"><a href="#">button</a></li>
                         <li id="header-overview" class="#{cc.attrs.pageName == 'button' ? 'active' : ''}" value="button"><a href="#">button</a></li>
-                        <li id="header-overview" class="#{cc.attrs.pageName == 'button' ? 'active' : ''}" value="button"><a href="#">button</a></li>
+                        <li id="navbar-apply-tab" class="#{cc.attrs.pageName == 'cards_home' ? 'active' : ''}" value="myapply"><a href="../customer_card/cards_home.xhtml"><p:outputLabel id="tab-myApply" value="Apply" style="cursor: pointer"/></a></li>
+                        <p:overlayPanel class="nav-overlay-panel-apply" for="tab-myApply" showEvent="mouseover" hideEvent="mousedown" dismissable="true">
+                            <p:menu>
+                                <p:submenu style="display:none">
+                                    <p:menuitem value="Deposit Accounts" url="#" />
+                                    <p:menuitem value="Debit cards" url="#" />
+                                    <p:menuitem value="Credit Cards" url="#" />
+                                   
+                                </p:submenu>
+                            </p:menu>
+                        </p:overlayPanel>
                         <li id="header-overview" class="#{cc.attrs.context == 'index_activity_history' ? 'active' : ''}" value="Activity"><a href="index_activity_history.xhtml">Activity History</a></li>
                         </h:form>
                     </c:if>

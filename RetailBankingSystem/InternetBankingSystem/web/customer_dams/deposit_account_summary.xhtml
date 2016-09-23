@@ -17,15 +17,15 @@
             <em:customerNavBar context="customer_home" pageName="customer_home" ></em:customerNavBar>
             <div class="customer_main_container">
                 <h:form id="mainForm">
-                    <p:panel header="Debit Cards">
+                    <p:panel header="Deposit Accounts">
                         <p:messages id="messagesStatus" redisplay="false" >
                             <h:panelGrid columns="2" cellpadding="5">
                                 <p:dataTable var="auditLog" value="#{customerProfileManagedBean.auditLogs}">
-                                    <p:column headerText="Type">
+                                    <p:column headerText="Account">
                                         <h:outputText value="#{auditLog.creationDate}" />
                                     </p:column>
 
-                                    <p:column headerText="Account">
+                                    <p:column headerText="Number">
                                         <h:outputText value="#{auditLog.activityLog}" />
                                     </p:column>
 
@@ -37,8 +37,7 @@
                                         <p:menu>
                                             <p:submenu>
                                                 <p:menuitem value="View transactions" url="../customer_card/debit_card_transactions.xhtml" />
-                                                <p:menuitem value="Terminate" url="../customer_card/credit_card_summary.xhtml" />
-
+                                                
                                             </p:submenu>
                                         </p:menu>
                                     </p:column>

@@ -9,7 +9,7 @@
     <!--shift + ctrl + F, format-->
     <f:view>
         <h:head>
-            <title>Your Debit Card Summary</title>
+            <title>Transactions</title>
             <em:cssImport></em:cssImport>
         </h:head>
         <h:body>
@@ -17,33 +17,31 @@
             <em:customerNavBar context="customer_home" pageName="customer_home" ></em:customerNavBar>
             <div class="customer_main_container">
                 <h:form id="mainForm">
-                    <p:panel header="Debit Cards">
+                    <p:panel header="Transactions">
                         <p:messages id="messagesStatus" redisplay="false" >
                             <h:panelGrid columns="2" cellpadding="5">
                                 <p:dataTable var="auditLog" value="#{customerProfileManagedBean.auditLogs}">
-                                    <p:column headerText="Type">
+                                    <p:column headerText="Date">
                                         <h:outputText value="#{auditLog.creationDate}" />
                                     </p:column>
 
-                                    <p:column headerText="Account">
+                                    <p:column headerText="Counterparty">
+                                        <h:outputText value="#{auditLog.activityLog}" />
+                                    </p:column>
+                                    
+                                    <p:column headerText="Credit">
+                                        <h:outputText value="#{auditLog.activityLog}" />
+                                    </p:column>
+                                    
+                                    <p:column headerText="Debit">
+                                        <h:outputText value="#{auditLog.activityLog}" />
+                                    </p:column>
+                                    
+                                    <p:column headerText="Amount">
                                         <h:outputText value="#{auditLog.activityLog}" />
                                     </p:column>
 
-                                    <p:column headerText="Balance">
-                                        <h:outputText value="#{auditLog.activityLog}" />
-                                    </p:column>
-
-                                    <p:column headerText="Action">
-                                        <p:menu>
-                                            <p:submenu>
-                                                <p:menuitem value="View transactions" url="../customer_card/debit_card_transactions.xhtml" />
-                                                <p:menuitem value="Terminate" url="../customer_card/credit_card_summary.xhtml" />
-
-                                            </p:submenu>
-                                        </p:menu>
-                                    </p:column>
-
-
+                                    
 
                                 </p:dataTable>
 
