@@ -60,7 +60,20 @@
                                 </p:submenu>
                             </p:menu>
                         </p:overlayPanel>
-                        <li id="header-overview" class="#{cc.attrs.pageName == 'button' ? 'active' : ''}" value="button"><a href="#">button</a></li>
+                        <li id="navbar-cards-tab" class="#{cc.attrs.pageName == 'cards_home' ? 'active' : ''}" value="mycards"><a href="../customer_card/cards_home.xhtml"><p:outputLabel id="tab-myCard" value="Cards" style="cursor: pointer"/></a></li>
+                        <p:overlayPanel class="nav-overlay-panel-cards" for="tab-myCard" showEvent="mouseover" hideEvent="mousedown" dismissable="true">
+                            <p:menu>
+                                <p:submenu style="display:none">
+                                    <p:menuitem value="Debit Card Summary" url="../customer_card/debit_card_summary.xhtml" />
+                                    <p:menuitem value="Credit Card Summary" url="../customer_card/credit_card_summary.xhtml" />
+                                    <p:menuitem value="Activate Debit Card" url="#" />
+                                    <p:menuitem value="Activate Credit Card" url="#" />
+                                    <p:menuitem value="Debit Card Limit" url="#" />
+                                    <p:menuitem value="Credit Card Limit" url="#" />
+                                </p:submenu>
+                            </p:menu>
+                        </p:overlayPanel>
+                        
                         <li id="header-overview" class="#{cc.attrs.pageName == 'button' ? 'active' : ''}" value="button"><a href="#">button</a></li>
                         <li id="header-overview" class="#{cc.attrs.pageName == 'button' ? 'active' : ''}" value="button"><a href="#">button</a></li>
                         <li id="header-overview" class="#{cc.attrs.pageName == 'button' ? 'active' : ''}" value="button"><a href="#">button</a></li>
