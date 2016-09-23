@@ -5,6 +5,7 @@
  */
 package ejb.session.dams;
 
+import entity.dams.account.CustomerFixedDepositAccount;
 import entity.dams.rules.Interest;
 import entity.dams.rules.TimeRangeInterest;
 import java.util.List;
@@ -23,4 +24,5 @@ public interface InterestSessionBeanLocal {
     public List<Interest> showAllInterests();
     public List<Interest> showAllPresentInterests();
     public List<TimeRangeInterest> getFixedDepositAccountDefaultInterests();
+    public List<TimeRangeInterest> getFixedDepositAccountInterestsByAccount(CustomerFixedDepositAccount account);
 }

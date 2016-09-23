@@ -26,6 +26,8 @@
                             
                             <p:commandButton value="Change" update="@form" actionListener="#{interestDemoManagedBean.changeAccount}" />
 
+                            <p:outputLabel for="accountType" value="Account Type " />
+                            <h:outputText id="accountType" value="#{interestDemoManagedBean.showingAccount.type}"></h:outputText>
                             <p:outputLabel for="accountNumber" value="Account Number: " />
                             <h:outputText id="accountNumber" value="#{interestDemoManagedBean.showingAccount.id}"></h:outputText>
                             <p:outputLabel for="accountBalance" value="Account Balance " />
@@ -68,28 +70,13 @@
                         </p:dataTable>
                     </p:panel>
                     <p:panel header="Time Range Interests">
-                        <p:dataTable id="timeRangeInterests" value="#{interestDemoManagedBean.timeRangeInterests}" var="interest" editable="true" editMode="cell">
-                            <p:column headerText="Name" sortBy="#{interest.name}">
-                                <h:outputText value="#{interest.name}"/>
-                            </p:column>
-                            <p:column headerText="Percentage" sortBy="#{interest.percentage}">
-                                <h:outputText value="#{interest.percentage}">
-                                    <f:convertNumber type="percent" minFractionDigits="4"/>
-                                </h:outputText>
-                            </p:column>
-                            <p:column headerText="Minimum" sortBy="#{interest.minimum}">
-                                <h:outputText value="#{interest.minimum}"/>
-                            </p:column>
-                            <p:column headerText="Maximum" sortBy="#{interest.maximum}">
-                                <h:outputText value="#{interest.maximum}"/>
-                            </p:column>
-                            <p:column headerText="Start" sortBy="#{interest.startMonth}">
-                                <h:outputText value="#{interest.startMonth}"/>
-                            </p:column>
-                            <p:column headerText="End" sortBy="#{interest.endMonth}">
-                                <h:outputText value="#{interest.endMonth}"/>
-                            </p:column>
-                        </p:dataTable>
+                        <p:panelGrid columns="#{interestDemoManagedBean.colSize}">
+                            <c:forEach items="#{interestDemoManagedBean.rowIndex}" var="row">
+                                <c:forEach items="#{interestDemoManagedBean.colIndex}" var="col">
+                                    <h:outputText value="#{interestDemoManagedBean.getDisplayCell(row, col)}" />
+                                </c:forEach>
+                            </c:forEach>
+                        </p:panelGrid>
                     </p:panel>
                     <p:panel header="Condition Interests">
                         <p:dataTable id="conditionInterests" value="#{interestDemoManagedBean.conditionInterests}" var="interest" editable="true" editMode="cell">
