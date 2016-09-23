@@ -34,5 +34,7 @@ public class CustomerCreditApplicationManagedBean implements Serializable {
      */
     public CustomerCreditApplicationManagedBean() {
     }
+    
+    
 
 }
