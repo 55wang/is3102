@@ -13,7 +13,7 @@
         </h:head>
 
 
-
+   
         <body>
             <style>
                 div.img {
@@ -38,7 +38,7 @@
                     text-align: center;
                 }
 
-                .floating-menu {
+/*                .floating-menu {
                     font-family: sans-serif;
                     background: gainsboro;
                     position: fixed;
@@ -55,16 +55,17 @@
                     display: block;
                     margin: 0 0.5em;
                     color: white;
-                }
+                }*/
 
             </style>
             <em:customerHeader context="index_card" userName="Log in"></em:customerHeader>
             <em:customerNavBar context="index_card" pageName="index_card" ></em:customerNavBar>
+            <em:floating_menu context="debit"></em:floating_menu>
             <div style="margin-top:750px;margin-left: 70px;position: absolute;width: 1100px"   >    
-                
+
                 <h2 style="margin-top: 20px">Featured Products</h2>
                 <div  class="img" style="width:300 px;height: 200px;border: none">
-                    <a target="_blank" href="img_fjords.jpg">
+                    <a target="_blank" href="debitcard1.xhtml">
                         <img src="../resources/img/mdebit1.jpg" alt="debitcard1" ></img>
                     </a>
                     <div class="desc">Add a description of the card1 here</div>
@@ -76,26 +77,26 @@
                     </a>
                     <div class="desc">Add a description of the card2 here</div>
                 </div>
-
             </div>
 
+   
 
-           <div style="margin-top:200px;margin-left: 70px;position:absolute">
+            <div style="margin-top:200px;margin-left: 70px;position:absolute">
                 <h1>Debit Cards</h1>
-                
+
                 <div style="background-image: url(../resources/img/happy.jpeg);height:400px;width: 800px"> 
                     <h1 style="margin-left:50px;margin-top: 50px;position: absolute"> Get your own Debit Card!</h1>
                 </div>
 
-<!--                <p:lightBox styleClass="imagebox" id="lighbox1">  
-                    <h:outputLink value="../resources/img/happy.jpeg" title="Our customer will enjoy extraodinary return.">  
-                        <h:graphicImage alt="lalal" library="img" name="happy.jpeg" id="nature1" style="height: 400px; width: 800px" />  
-                    </h:outputLink>
-
-                </p:lightBox>-->
+                <!--                <p:lightBox styleClass="imagebox" id="lighbox1">  
+                                    <h:outputLink value="../resources/img/happy.jpeg" title="Our customer will enjoy extraodinary return.">  
+                                        <h:graphicImage alt="lalal" library="img" name="happy.jpeg" id="nature1" style="height: 400px; width: 800px" />  
+                                    </h:outputLink>
+                
+                                </p:lightBox>-->
             </div>
-            <nav class="floating-menu">
-                <p:button style="margin-top: 30px;margin-left: 20px;width: 180px;height: 60px" value="Login now" onclick="location.href = 'www.google.com'">
+<!--            <nav class="floating-menu">
+                <p:button style="margin-top: 30px;margin-left: 20px;width: 180px;height: 60px" value="Login now" onclick="window.location.href = 'http://www.google.com'">
                 </p:button>
                 <p:button style="margin-top: 20px;margin-left: 20px;width: 180px;height: 60px" value="Apply now" >
                 </p:button>
@@ -103,7 +104,7 @@
                 </p:button>
 
 
-            </nav>  
+            </nav>  -->
 
 
 
