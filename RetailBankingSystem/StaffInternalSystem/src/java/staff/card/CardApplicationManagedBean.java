@@ -7,12 +7,12 @@ package staff.card;
 
 import ejb.session.card.CardAcctSessionBeanLocal;
 import entity.card.account.CreditCardOrder;
+import java.io.Serializable;
 import java.util.Date;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import server.utilities.EnumUtils.*;
-import server.utilities.CommonHelper;
 import utils.generateCardNumber;
 
 /**
@@ -21,7 +21,7 @@ import utils.generateCardNumber;
  */
 @Named(value = "cardApplicationManagedBean")
 @ViewScoped
-public class CardApplicationManagedBean {
+public class CardApplicationManagedBean implements Serializable{
 
     @EJB
     private CardAcctSessionBeanLocal cardAcctSessionBean;
