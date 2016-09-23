@@ -5,7 +5,9 @@
  */
 package ejb.session.card;
 
+import entity.card.account.CashBackCardProduct;
 import entity.card.account.MileCardProduct;
+import entity.card.account.RewardCardProduct;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -22,8 +24,9 @@ public class NewCardProductSessionBean implements NewCardProductSessionBeanLocal
     @PersistenceContext(unitName = "RetailBankingSystem-ejbPU")
     private EntityManager em;
 
+    @Override
     public List<MileCardProduct> showAllMileProducts() {
-        Query q = em.createQuery("SELECT * FROM CreditCardProduct cc inner join MileCardProduct mile on cc.id=mile.id");
+        Query q = em.createQuery("SELECT mcp FROM MileCardProduct mcp");
         return q.getResultList();
     }
 
@@ -36,7 +39,37 @@ public class NewCardProductSessionBean implements NewCardProductSessionBeanLocal
     public void createMileProduct(MileCardProduct mcp) {
         em.persist(mcp);
     }
-    
-    //repeat for the rest of card
+
+    @Override
+    public List<RewardCardProduct> showAllRewardProducts() {
+        Query q = em.createQuery("SELECT rcp FROM RewardCardProduct rcp");
+        return q.getResultList();
+    }
+
+    @Override
+    public RewardCardProduct getRewardProductFromId(Long orderNumber) {
+        return em.find(RewardCardProduct.class, orderNumber);
+    }
+
+    @Override
+    public void createRewardProduct(RewardCardProduct rcp) {
+        em.persist(rcp);
+    }
+
+    @Override
+    public List<CashBackCardProduct> showAllCashBackCardProducts() {
+        Query q = em.createQuery("SELECT cbcp FROM CashBackCardProduct cbcp");
+        return q.getResultList();
+    }
+
+    @Override
+    public CashBackCardProduct getCashBackCardProductFromId(Long orderNumber) {
+        return em.find(CashBackCardProduct.class, orderNumber);
+    }
+
+    @Override
+    public void createCashBackProduct(CashBackCardProduct cbcp) {
+        em.persist(cbcp);
+    }
 
 }

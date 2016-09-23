@@ -8,7 +8,9 @@ package entity.card.account;
 import entity.customer.MainAccount;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,6 +20,7 @@ import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import server.utilities.EnumUtils.CardAccountStatus;
@@ -40,6 +43,8 @@ public class CreditCardAccount implements Serializable {
     private MainAccount mainAccount;
     @ManyToOne(cascade = {CascadeType.PERSIST})
     private CreditCardProduct creditCardProduct;
+    @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "creditCardAccount")
+    private List<PromoCode> promoCode = new ArrayList<>();
 
     private CardAccountStatus CardStatus;
     @Column(precision = 12)// LY:credit card number in decimal??
@@ -268,5 +273,12 @@ public class CreditCardAccount implements Serializable {
         this.transactionMonthlyLimit = transactionMonthlyLimit;
     }
 
+    public List<PromoCode> getPromoCode() {
+        return promoCode;
+    }
+
+    public void setPromoCode(List<PromoCode> promoCode) {
+        this.promoCode = promoCode;
+    }
 
 }

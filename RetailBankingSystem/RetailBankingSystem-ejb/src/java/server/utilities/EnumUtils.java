@@ -257,41 +257,6 @@ public class EnumUtils {
 
     }
 
-    public enum EduLevel {
-
-        UNIVERSITY_GRAD("UNIVERSITY_GRAD"),
-        DIPLOMA_HOLDER("DIPLOMA_HOLDER"),
-        TECHNICAL("TECHNICAL"),
-        A_LEVEL("A_LEVEL"),
-        SECONDARY("SECONDARY"),
-        PRIMARY("PRIMARY"),
-        OTHERS("OTHERS");
-
-        private String value;
-
-        EduLevel(String value) {
-            this.value = value;
-        }
-
-        public String getValue() {
-            return value;
-        }
-
-        @Override
-        public String toString() {
-            return this.getValue();
-        }
-
-        public static EduLevel getEnum(String value) {
-            for (EduLevel v : values()) {
-                if (v.getValue().equalsIgnoreCase(value)) {
-                    return v;
-                }
-            }
-            throw new IllegalArgumentException();
-        }
-    }
-
     public enum ResidentialStatus {
 
         CONDO_APART("CONDO_APART"),

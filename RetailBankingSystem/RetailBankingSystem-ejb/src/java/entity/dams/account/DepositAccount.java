@@ -63,14 +63,6 @@ public abstract class DepositAccount implements Serializable {
         getTransactions().add(t);
     }
     
-    public void addInterestsRules(List<Interest> interests) {
-        interests.addAll(interests);
-    }
-    
-    public void removeInterestsRules(List<Interest> interests) {
-        interests.removeAll(interests);
-    }
-    
     public Long getId() {
         return id;
     }
