@@ -285,6 +285,11 @@ and open the template in the editor.
     margin-right: 50px;
     overflow: auto;
 }
+.center-container{
+    width: 80%;
+    margin: auto;
+    padding-top: 50px;
+}
 
 .customer_main_container{
     margin-left: auto;
