@@ -60,7 +60,8 @@ public class CardApplicationManagedBean implements Serializable {
         return cardAcctSessionBean.showAllCreditCardOrder();
     }
 
-    public String writeHardwareCard() {
+    public String writeHardwareCard(String cardNumber) {
+
         return null;
     }
 
@@ -128,7 +129,7 @@ public class CardApplicationManagedBean implements Serializable {
 
         //send a notification to staff to write card info to mifare card
         EventBus eventBus = EventBusFactory.getDefault().eventBus();
-        eventBus.publish(STAFF_NOTIFY_CHANNEL, "New Card Printing Order"+cca.getCreditCardNum());
+        eventBus.publish(STAFF_NOTIFY_CHANNEL, "New Card Printing Order" + cca.getCreditCardNum());
 
         return cca;
     }
@@ -152,11 +153,17 @@ public class CardApplicationManagedBean implements Serializable {
         return "SUCCESS";
     }
 
-    //pending, reject, cancel,
+    //pending, reject,
     public String updateApplicationStatus(String creditCardOrder, ApplicationStatus status) {
         CreditCardOrder cco = cardAcctSessionBean.getCardOrderFromId(Long.parseLong(creditCardOrder));
 
         String result = cardAcctSessionBean.updateCardOrderStatus(cco, status);
+
+        if (status.equals(ApplicationStatus.REJECT)) {
+            //email the customer about the result
+            String msg = "We are sorry that your application is not successful.";
+            emailServiceSessionBean.sendRequireAdditionalInfo(cco.getEmail(), msg);
+        }
 
         return result;
     }

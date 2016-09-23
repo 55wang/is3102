@@ -32,6 +32,16 @@
                                     <p:column headerText="Balance">
                                         <h:outputText value="#{auditLog.activityLog}" />
                                     </p:column>
+                                    
+                                    <p:column headerText="Action">
+                                        <p:menu>
+                                            <p:submenu>
+                                                <p:menuitem value="View transactions" url="../customer_card/debit_card_transactions.xhtml" />
+                                                <p:menuitem value="Terminate" url="../customer_card/credit_card_summary.xhtml" />
+
+                                            </p:submenu>
+                                        </p:menu>
+                                    </p:column>
 
                                     
 

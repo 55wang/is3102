@@ -37,3 +37,6 @@ hs_err_pid*
 /RetailBankingSystem/TellerCounterSystem/nbproject/private/
 /RetailBankingSystem/TellerCounterSystem/build/
 /RetailBankingSystem/TellerCounterSystem/dist/
+/RetailBankingSystem/CardOperatorSystem/build/
+/RetailBankingSystem/CardOperatorSystem/nbproject/private/
+/RetailBankingSystem/CardOperatorSystem/dist/
