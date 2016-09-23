@@ -7,12 +7,10 @@ package entity.card.account;
 
 import entity.customer.MainAccount;
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -23,7 +21,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import server.utilities.EnumUtils.CardAccountStatus;
+import server.utilities.EnumUtils.*;
 
 /**
  *
@@ -45,7 +43,8 @@ public class CreditCardAccount implements Serializable {
     private CreditCardProduct creditCardProduct;
     @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "creditCardAccount")
     private List<PromoCode> promoCode = new ArrayList<>();
-
+    
+    private CardNetwork cardNetwork;
     private CardAccountStatus CardStatus;
     private String creditCardNum;
     private Integer cvv; // LY: Use Integer instead of int
@@ -278,6 +277,14 @@ public class CreditCardAccount implements Serializable {
 
     public void setCreditCardNum(String creditCardNum) {
         this.creditCardNum = creditCardNum;
+    }
+
+    public CardNetwork getCardNetwork() {
+        return cardNetwork;
+    }
+
+    public void setCardNetwork(CardNetwork cardNetwork) {
+        this.cardNetwork = cardNetwork;
     }
 
 }

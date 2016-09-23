@@ -54,6 +54,18 @@ public class CardApplicationManagedBean implements Serializable {
      */
     public CardApplicationManagedBean() {
     }
+    
+    public String processChargeBack(String notification, String creditCard, String status) {
+        //reverse transaction amount
+        
+
+        //send notification to specific customer based on their creditcard number
+        
+        
+        //update chargeback status at the case management
+        
+        return null;
+    }
 
     //get all applications
     public List<CreditCardOrder> displayCreditCardOrders() {
