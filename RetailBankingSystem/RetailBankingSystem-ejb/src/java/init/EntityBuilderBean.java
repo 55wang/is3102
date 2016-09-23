@@ -741,9 +741,9 @@ public class EntityBuilderBean {
         interestSessionBean.addInterest(i23);
         
         TimeRangeInterest i24 = new TimeRangeInterest();
-        i24.setName("24-36month-$50000-$99999-0.65%");
+        i24.setName("25-36month-$50000-$99999-0.65%");
         i24.setVersion(0);
-        i24.setStartMonth(24);
+        i24.setStartMonth(25);
         i24.setEndMonth(36);
         i24.setMinimum(new BigDecimal(50000));
         i24.setMaximum(new BigDecimal(99999));
@@ -811,9 +811,9 @@ public class EntityBuilderBean {
         interestSessionBean.addInterest(i30);
         
         TimeRangeInterest i31 = new TimeRangeInterest();
-        i31.setName("18-24month-$100000-$249999-0.55%");
+        i31.setName("19-24month-$100000-$249999-0.55%");
         i31.setVersion(0);
-        i31.setStartMonth(18);
+        i31.setStartMonth(19);
         i31.setEndMonth(24);
         i31.setMinimum(new BigDecimal(100000));
         i31.setMaximum(new BigDecimal(249999));
@@ -821,9 +821,9 @@ public class EntityBuilderBean {
         interestSessionBean.addInterest(i31);
         
         TimeRangeInterest i32 = new TimeRangeInterest();
-        i32.setName("24-36month-$100000-$249999-0.65%");
+        i32.setName("25-36month-$100000-$249999-0.65%");
         i32.setVersion(0);
-        i32.setStartMonth(24);
+        i32.setStartMonth(25);
         i32.setEndMonth(36);
         i32.setMinimum(new BigDecimal(100000));
         i32.setMaximum(new BigDecimal(249999));

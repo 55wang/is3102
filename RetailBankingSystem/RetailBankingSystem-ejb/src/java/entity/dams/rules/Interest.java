@@ -38,7 +38,7 @@ public class Interest implements Serializable {
     private Boolean isHistory = Boolean.FALSE;
     @Temporal(value = TemporalType.TIMESTAMP)
     private Date createDate = new Date();
-    @Column(precision=12, scale=2)
+    @Column(precision=12, scale=5)
     private BigDecimal percentage;
     private Boolean isCumulative = Boolean.TRUE;
 
