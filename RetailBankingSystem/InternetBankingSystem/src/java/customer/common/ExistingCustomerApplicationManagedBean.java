@@ -12,6 +12,7 @@ import ejb.session.dams.DepositProductSessionBeanLocal;
 import entity.customer.Customer;
 import entity.customer.MainAccount;
 import entity.dams.account.CustomerDepositAccount;
+import java.io.Serializable;
 import java.security.SecureRandom;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -30,7 +31,7 @@ import utils.RedirectUtils;
  */
 @Named(value = "existingCustomerApplicationManagedBean")
 @ViewScoped
-public class ExistingCustomerApplicationManagedBean {
+public class ExistingCustomerApplicationManagedBean implements Serializable {
 
     /**
      * Creates a new instance of ExistingCustomerApplicationManagedBean
