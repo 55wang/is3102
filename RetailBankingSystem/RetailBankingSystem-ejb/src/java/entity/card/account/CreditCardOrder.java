@@ -14,7 +14,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.Temporal;
-import server.utilities.EnumUtils;
+import server.utilities.EnumUtils.*;
 
 /**
  *
@@ -28,41 +28,44 @@ public class CreditCardOrder implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String saluation;
-    private String accountType;
+    private Salutation saluation;
+    private CreditType creditType;
     private String firstName;
     private String lastName;
     private String nameOnCard;
     private String phone;
-    private String nationality;
+    private Nationality nationality;
+    private Citizenship citizenship;
     private String identityNumber;
-    private String identityType;
+    private IdentityType identityType;
     private String email;
 
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date birthDay;
-
-    private String gender;
-    private double income;
+    
+    private double creditScore;
+    private String bureaCreditScore;
+    private Gender gender;
+    private Income income;
     private double credit_limit;
-    private String martialStatus;
+    private MaritalStatus maritalStatus;
     private int numOfDependents;
     private String Address;
     private String postalCode;
 
-    private String residentialStatus;
+    private ResidentialStatus residentialStatus;
 
-    private String residentialType;
+    private ResidentialType residentialType;
 
-    private String eduLevel;
+    private Education eduLevel;
 
-    private String employmentStatus;
+    private EmploymentStatus employmentStatus;
 
-    private String occupation;
+    private Occupation occupation;
 
-    private String industry;
+    private Industry industry;
 
-    private String position;
+    private Position position;
     private String company;
     @Lob
     private Blob cpf;
@@ -78,7 +81,7 @@ public class CreditCardOrder implements Serializable {
     private Blob otherCert; //for anything else
     private String resultNotes; //for staff to reply to customer
 
-    private EnumUtils.ApplicationStatus applicationStatus;
+    private ApplicationStatus applicationStatus;
 
     public Long getId() {
         return id;
@@ -153,14 +156,6 @@ public class CreditCardOrder implements Serializable {
         this.birthDay = birthDay;
     }
 
-    public double getIncome() {
-        return income;
-    }
-
-    public void setIncome(double income) {
-        this.income = income;
-    }
-
     public double getCredit_limit() {
         return credit_limit;
     }
@@ -175,14 +170,6 @@ public class CreditCardOrder implements Serializable {
 
     public void setAddress(String Address) {
         this.Address = Address;
-    }
-
-    public String getOccupation() {
-        return occupation;
-    }
-
-    public void setOccupation(String occupation) {
-        this.occupation = occupation;
     }
 
     public String getCompany() {
@@ -241,14 +228,6 @@ public class CreditCardOrder implements Serializable {
         this.otherCert = otherCert;
     }
 
-    public String getNationality() {
-        return nationality;
-    }
-
-    public void setNationality(String nationality) {
-        this.nationality = nationality;
-    }
-
     public int getNumOfDependents() {
         return numOfDependents;
     }
@@ -289,101 +268,148 @@ public class CreditCardOrder implements Serializable {
         this.postalCode = postalCode;
     }
 
-    public String getSaluation() {
+    public Salutation getSaluation() {
         return saluation;
     }
 
-    public void setSaluation(String saluation) {
+    public void setSaluation(Salutation saluation) {
         this.saluation = saluation;
     }
 
-    public String getAccountType() {
-        return accountType;
+    public CreditType getCreditType() {
+        return creditType;
     }
 
-    public void setAccountType(String accountType) {
-        this.accountType = accountType;
+    public void setCreditType(CreditType creditType) {
+        this.creditType = creditType;
     }
 
-    public String getIdentityType() {
+    public Nationality getNationality() {
+        return nationality;
+    }
+
+    public void setNationality(Nationality nationality) {
+        this.nationality = nationality;
+    }
+
+    public Citizenship getCitizenship() {
+        return citizenship;
+    }
+
+    public void setCitizenship(Citizenship citizenship) {
+        this.citizenship = citizenship;
+    }
+
+    public IdentityType getIdentityType() {
         return identityType;
     }
 
-    public void setIdentityType(String identityType) {
+    public void setIdentityType(IdentityType identityType) {
         this.identityType = identityType;
     }
 
-    public String getGender() {
+    public Gender getGender() {
         return gender;
     }
 
-    public void setGender(String gender) {
+    public void setGender(Gender gender) {
         this.gender = gender;
     }
 
-    public String getMartialStatus() {
-        return martialStatus;
+    public Income getIncome() {
+        return income;
     }
 
-    public void setMartialStatus(String martialStatus) {
-        this.martialStatus = martialStatus;
+    public void setIncome(Income income) {
+        this.income = income;
     }
 
-    public String getResidentialStatus() {
+    public MaritalStatus getMaritalStatus() {
+        return maritalStatus;
+    }
+
+    public void setMaritalStatus(MaritalStatus maritalStatus) {
+        this.maritalStatus = maritalStatus;
+    }
+
+    public ResidentialStatus getResidentialStatus() {
         return residentialStatus;
     }
 
-    public void setResidentialStatus(String residentialStatus) {
+    public void setResidentialStatus(ResidentialStatus residentialStatus) {
         this.residentialStatus = residentialStatus;
     }
 
-    public String getResidentialType() {
+    public ResidentialType getResidentialType() {
         return residentialType;
     }
 
-    public void setResidentialType(String residentialType) {
+    public void setResidentialType(ResidentialType residentialType) {
         this.residentialType = residentialType;
     }
 
-    public String getEduLevel() {
-        return eduLevel;
-    }
-
-    public void setEduLevel(String eduLevel) {
-        this.eduLevel = eduLevel;
-    }
-
-    public String getEmploymentStatus() {
+    public EmploymentStatus getEmploymentStatus() {
         return employmentStatus;
     }
 
-    public void setEmploymentStatus(String employmentStatus) {
+    public void setEmploymentStatus(EmploymentStatus employmentStatus) {
         this.employmentStatus = employmentStatus;
     }
 
-    public String getIndustry() {
+    public Occupation getOccupation() {
+        return occupation;
+    }
+
+    public void setOccupation(Occupation occupation) {
+        this.occupation = occupation;
+    }
+
+    public Industry getIndustry() {
         return industry;
     }
 
-    public void setIndustry(String industry) {
+    public void setIndustry(Industry industry) {
         this.industry = industry;
     }
 
-    public String getPosition() {
+    public Position getPosition() {
         return position;
     }
 
-    public void setPosition(String position) {
+    public void setPosition(Position position) {
         this.position = position;
     }
 
-    public EnumUtils.ApplicationStatus getApplicationStatus() {
+    public ApplicationStatus getApplicationStatus() {
         return applicationStatus;
     }
 
-    public void setApplicationStatus(EnumUtils.ApplicationStatus applicationStatus) {
+    public void setApplicationStatus(ApplicationStatus applicationStatus) {
         this.applicationStatus = applicationStatus;
     }
 
+    public Education getEduLevel() {
+        return eduLevel;
+    }
+
+    public void setEduLevel(Education eduLevel) {
+        this.eduLevel = eduLevel;
+    }
+
+    public double getCreditScore() {
+        return creditScore;
+    }
+
+    public void setCreditScore(double creditScore) {
+        this.creditScore = creditScore;
+    }
+
+    public String getBureaCreditScore() {
+        return bureaCreditScore;
+    }
+
+    public void setBureaCreditScore(String bureaCreditScore) {
+        this.bureaCreditScore = bureaCreditScore;
+    }
 
 }

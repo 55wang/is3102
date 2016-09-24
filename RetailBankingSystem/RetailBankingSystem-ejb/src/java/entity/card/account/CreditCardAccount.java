@@ -7,10 +7,10 @@ package entity.card.account;
 
 import entity.customer.MainAccount;
 import java.io.Serializable;
-import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -18,9 +18,10 @@ import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import server.utilities.EnumUtils.CardAccountStatus;
+import server.utilities.EnumUtils.*;
 
 /**
  *
@@ -40,10 +41,12 @@ public class CreditCardAccount implements Serializable {
     private MainAccount mainAccount;
     @ManyToOne(cascade = {CascadeType.PERSIST})
     private CreditCardProduct creditCardProduct;
-
+    @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "creditCardAccount")
+    private List<PromoCode> promoCode = new ArrayList<>();
+    
+    private CardNetwork cardNetwork;
     private CardAccountStatus CardStatus;
-    @Column(precision = 12)// LY:credit card number in decimal??
-    private BigDecimal creditCardNum;
+    private String creditCardNum;
     private Integer cvv; // LY: Use Integer instead of int
     private String nameOnCard;
     @Temporal(value = TemporalType.DATE)
@@ -98,14 +101,6 @@ public class CreditCardAccount implements Serializable {
     @Override
     public String toString() {
         return "entity.card.account.CreditCard[ id=" + id + " ]";
-    }
-
-    public BigDecimal getCreditCardNum() {
-        return creditCardNum;
-    }
-
-    public void setCreditCardNum(BigDecimal creditCardNum) {
-        this.creditCardNum = creditCardNum;
     }
 
     public int getCvv() {
@@ -268,5 +263,28 @@ public class CreditCardAccount implements Serializable {
         this.transactionMonthlyLimit = transactionMonthlyLimit;
     }
 
+    public List<PromoCode> getPromoCode() {
+        return promoCode;
+    }
+
+    public void setPromoCode(List<PromoCode> promoCode) {
+        this.promoCode = promoCode;
+    }
+
+    public String getCreditCardNum() {
+        return creditCardNum;
+    }
+
+    public void setCreditCardNum(String creditCardNum) {
+        this.creditCardNum = creditCardNum;
+    }
+
+    public CardNetwork getCardNetwork() {
+        return cardNetwork;
+    }
+
+    public void setCardNetwork(CardNetwork cardNetwork) {
+        this.cardNetwork = cardNetwork;
+    }
 
 }

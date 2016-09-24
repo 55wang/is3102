@@ -14,6 +14,14 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Temporal;
 import javax.persistence.OneToOne;
+import server.utilities.EnumUtils.Citizenship;
+import server.utilities.EnumUtils.Education;
+import server.utilities.EnumUtils.Gender;
+import server.utilities.EnumUtils.IdentityType;
+import server.utilities.EnumUtils.Income;
+import server.utilities.EnumUtils.MaritalStatus;
+import server.utilities.EnumUtils.Nationality;
+import server.utilities.EnumUtils.Occupation;
 
 /**
  *
@@ -21,59 +29,56 @@ import javax.persistence.OneToOne;
  */
 @Entity
 public class Customer implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
-    private String identityType;
-    
+
+    private IdentityType identityType;
+
     private String identityNumber;
-    
+
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date birthDay;
-    
+
     private String firstname;
-     
+
     private String lastname;
-     
+
     private String address;
-     
+
     private String postalCode;
     // TODO: Need to make this a unique attributes
     private String email;
-    
+
     private String phone;
-    
-    private String occupation;
-    
-    private double income;
-    
-    private String nationality;
-    
-    private String gender;
-    
+
+    private Occupation occupation;
+
+    private Income income;
+
+    private Nationality nationality;
+
+    private Gender gender;
+
     private double creditScore; //0-1000
-    
-    private String martialStatus;
-    
+
+    private MaritalStatus maritalStatus;
+
+    private Citizenship citizenship;
+
+    private Education education;
+
     @OneToOne(cascade = {CascadeType.PERSIST})
     private MainAccount mainAccount;
-    
+
     public Long getId() {
         return id;
     }
 
     public void setId(Long id) {
         this.id = id;
-    }
-    
-    public String getIdentityType() {
-        return identityType;
-    }
-
-    public void setIdentityType(String identityType) {
-        this.identityType = identityType;
     }
 
     public String getIdentityNumber() {
@@ -84,26 +89,20 @@ public class Customer implements Serializable {
         this.identityNumber = identityNumber;
     }
 
-    public Date getBirthDay() {
-        return birthDay;
-    }
 
-    public void setBirthDay(Date birthDay) {
-        this.birthDay = birthDay;
-    }
- 
+
     public String getFirstname() {
         return firstname;
     }
- 
+
     public void setFirstname(String firstname) {
         this.firstname = firstname;
     }
- 
+
     public String getLastname() {
         return lastname;
     }
- 
+
     public void setLastname(String lastname) {
         this.lastname = lastname;
     }
@@ -115,62 +114,32 @@ public class Customer implements Serializable {
     public void setAddress(String address) {
         this.address = address;
     }
- 
+
     public String getPostalCode() {
         return postalCode;
     }
- 
+
     public void setPostalCode(String postalCode) {
         this.postalCode = postalCode;
     }
-     
+
     public String getEmail() {
         return email;
     }
- 
+
     public void setEmail(String email) {
         this.email = email;
     }
- 
+
     public String getPhone() {
         return phone;
     }
- 
+
     public void setPhone(String phone) {
         this.phone = phone;
     }
 
-    public String getOccupation() {
-        return occupation;
-    }
 
-    public void setOccupation(String occupation) {
-        this.occupation = occupation;
-    }
-
-    public double getIncome() {
-        return income;
-    }
-
-    public void setIncome(double income) {
-        this.income = income;
-    }
-
-    public String getNationality() {
-        return nationality;
-    }
-
-    public void setNationality(String nationality) {
-        this.nationality = nationality;
-    }
-
-    public String getGender() {
-        return gender;
-    }
-
-    public void setGender(String gender) {
-        this.gender = gender;
-    }
 
     @Override
     public int hashCode() {
@@ -213,12 +182,135 @@ public class Customer implements Serializable {
         this.creditScore = creditScore;
     }
 
-    public String getMartialStatus() {
-        return martialStatus;
+
+
+
+    /**
+     * @return the identityType
+     */
+    public IdentityType getIdentityType() {
+        return identityType;
     }
 
-    public void setMartialStatus(String martialStatus) {
-        this.martialStatus = martialStatus;
+    /**
+     * @param identityType the identityType to set
+     */
+    public void setIdentityType(IdentityType identityType) {
+        this.identityType = identityType;
     }
-    
+
+
+    /**
+     * @return the maritalStatus
+     */
+    public MaritalStatus getMaritalStatus() {
+        return maritalStatus;
+    }
+
+    /**
+     * @param maritalStatus the maritalStatus to set
+     */
+    public void setMaritalStatus(MaritalStatus maritalStatus) {
+        this.maritalStatus = maritalStatus;
+    }
+
+    /**
+     * @return the citizenship
+     */
+    public Citizenship getCitizenship() {
+        return citizenship;
+    }
+
+    /**
+     * @param citizenship the citizenship to set
+     */
+    public void setCitizenship(Citizenship citizenship) {
+        this.citizenship = citizenship;
+    }
+
+    /**
+     * @return the nationality
+     */
+    public Nationality getNationality() {
+        return nationality;
+    }
+
+    /**
+     * @param nationality the nationality to set
+     */
+    public void setNationality(Nationality nationality) {
+        this.nationality = nationality;
+    }
+
+    /**
+     * @return the gender
+     */
+    public Gender getGender() {
+        return gender;
+    }
+
+    /**
+     * @param gender the gender to set
+     */
+    public void setGender(Gender gender) {
+        this.gender = gender;
+    }
+
+    /**
+     * @return the education
+     */
+    public Education getEducation() {
+        return education;
+    }
+
+    /**
+     * @param education the education to set
+     */
+    public void setEducation(Education education) {
+        this.education = education;
+    }
+
+    /**
+     * @return the occupation
+     */
+    public Occupation getOccupation() {
+        return occupation;
+    }
+
+    /**
+     * @param occupation the occupation to set
+     */
+    public void setOccupation(Occupation occupation) {
+        this.occupation = occupation;
+    }
+
+    /**
+     * @return the income
+     */
+    public Income getIncome() {
+        return income;
+    }
+
+    /**
+     * @param income the income to set
+     */
+    public void setIncome(Income income) {
+        this.income = income;
+    }
+
+    /**
+     * @return the birthDay
+     */
+    public Date getBirthDay() {
+        return birthDay;
+    }
+
+    /**
+     * @param birthDay the birthDay to set
+     */
+    public void setBirthDay(Date birthDay) {
+        this.birthDay = birthDay;
+    }
+
+
 }

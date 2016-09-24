@@ -44,8 +44,6 @@ public class StaffCustomerCaseManagedBean implements Serializable{
     private List<StaffAccount> staffs = new ArrayList<>();
     private static CustomerCase transferedCase = new CustomerCase();
     
-    private CaseStatus csOnHold = CaseStatus.ONHOLD; 
-    
     private List<String> caseStatusList = CommonUtils.getEnumList(EnumUtils.CaseStatus.class);
     private List<String> issueFieldList = CommonUtils.getEnumList(EnumUtils.IssueField.class);
     
@@ -184,13 +182,4 @@ public class StaffCustomerCaseManagedBean implements Serializable{
     public void setSearchStaff(String searchStaff) {
         this.searchStaff = searchStaff;
     }
-
-    public CaseStatus getCsOnHold() {
-        return csOnHold;
-    }
-
-    public void setCsOnHold(CaseStatus csOnHold) {
-        this.csOnHold = csOnHold;
-    }
-    
 }

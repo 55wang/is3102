@@ -1,40 +1,118 @@
 <!DOCTYPE html>
-<html>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
-<body>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:em="http://xmlns.jcp.org/jsf/composite/emcomp">
+    <f:view>
+        <h:head>
 
-<nav class="w3-sidenav w3-white w3-card-2" style="width:25%">
-  <br>
-  <a href="#">Link</a>
-  <a href="#">Link</a>
-  <a href="#">Link</a>
-  <a href="#">Link</a>
-  <a href="#">Link</a>
-</nav>
+            <title>Merlion Bank</title>
+            <h:outputStylesheet library="css" name="reset.css"/>
+            <h:outputStylesheet library="css" name="theme.css"/>
+        </h:head>
 
-<div style="margin-left:25%">
 
-<header class="w3-container w3-teal">
-  <h1>My Header</h1>
-</header>
 
-<img src="img_car.jpg" alt="Car" style="width:100%">
+        <body>
+            <style>
+                div.img {
+                    margin: 5px;
+                    border: 1px solid #ccc;
+                    float: left;
+                    width: 400px;
+                }
 
-<div class="w3-container">
-  <h2>Side Navigation Example</h2>
-  <p>Note that you control the size of the sidenav with style="width:value". To change the color, change the w3-color class.</p>
+                div.img:hover {
+                    border: 1px solid #777;
+                }
 
-  <p>Make sure to add the margin-left property to the page content, with a value that is equal to the width of the sidenav. If you omit this, the navigation pane will overlay/sit on top of the page content.</p>
-</div>
+                div.img img {
+                    width: 100%;
+                    height: 230px;
 
-<footer class="w3-container w3-teal">
-  <h5>Footer</h5>
-  <p>Footer information goes here</p>
-</footer>
+                }
 
-</div>
-      
-</body>
+                div.desc {
+                    padding: 15px;
+                    text-align: center;
+                }
+
+/*                .floating-menu {
+                    font-family: sans-serif;
+                    background: gainsboro;
+                    position: fixed;
+                    right: 0;
+                    top: 40%;
+                    width: 200px;
+                    height: 300px;
+                    margin-top: -2.5em;
+                }
+
+                .floating-menu a, 
+                .floating-menu h3 {
+                    font-size: 0.9em;
+                    display: block;
+                    margin: 0 0.5em;
+                    color: white;
+                }*/
+                
+
+            </style>
+            <em:customerHeader context="index_card" userName="Log in"></em:customerHeader>
+            <em:customerNavBar context="index_card" pageName="index_card" ></em:customerNavBar>
+             <em:floating_menu context="debit"></em:floating_menu>
+            <div style="margin-top:650px;margin-left: 70px;position: absolute;width: 1100px"   >    
+
+               <h3 style="margin-top:0">Product Details</h3>
+               <p:tabView style="width:600px">
+        <p:tab title="Highlights">
+            <h:panelGrid columns="1" cellpadding="10">
+               
+                <h:outputText
+                    value="The story begins as Don Vito Corleone..." />
+            </h:panelGrid>
+        </p:tab>
+        <p:tab title="Eligibility">
+            <h:panelGrid columns="1" cellpadding="10">
+                
+                <h:outputText value="Francis Ford Coppola's legendary..." />
+            </h:panelGrid>
+        </p:tab>
+        <p:tab title="Benefits and Privileges">
+            <h:panelGrid columns="1" cellpadding="10">
+
+                <h:outputText value="After a break of more than 15 years..." />
+            </h:panelGrid>
+        </p:tab>
+    </p:tabView>
+
+            </div>
+
+
+            <div style="margin-top:200px;margin-left: 70px;position:absolute">
+                <h1>Debit Cards</h1>
+
+                <div style="background-image: url(../resources/img/debit_card_1_background.jpg);height:400px;width: 800px;background-repeat:no-repeat"> 
+                    <h1 style="margin-left:50px;margin-top: 50px;position: absolute"> Enjoy visa with debit card</h1>
+                    
+                </div>
+ 
+            </div>
+<!--            <nav class="floating-menu">
+                <p:button style="margin-top: 30px;margin-left: 20px;width: 180px;height: 60px" value="Login now" onclick="location.href = 'www.google.com'">
+                </p:button>
+                <p:button style="margin-top: 20px;margin-left: 20px;width: 180px;height: 60px" value="Apply now" >
+                </p:button>
+                <p:button style="margin-top: 20px;margin-left: 20px;width: 180px;height: 60px" value="Contact us" >
+                </p:button>
+
+
+            </nav>  -->
+
+
+
+        </body>
+    </f:view>
 </html>
 

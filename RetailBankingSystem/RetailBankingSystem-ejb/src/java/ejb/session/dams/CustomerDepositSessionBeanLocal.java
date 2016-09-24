@@ -29,4 +29,5 @@ public interface CustomerDepositSessionBeanLocal {
     public DepositAccount payBillFromAccount(DepositAccount account, BigDecimal payAmount);
     public DepositAccount ccSpendingFromAccount(DepositAccount account, BigDecimal spendAmount);
     public DepositAccount investFromAccount(DepositAccount account, BigDecimal investAmount);
+    public DepositAccount creditInterestAccount(DepositAccount account);
 }

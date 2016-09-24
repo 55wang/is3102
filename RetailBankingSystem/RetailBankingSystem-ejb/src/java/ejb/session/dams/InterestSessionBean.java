@@ -5,13 +5,17 @@
  */
 package ejb.session.dams;
 
+import entity.dams.account.CustomerFixedDepositAccount;
 import entity.dams.rules.Interest;
+import entity.dams.rules.TimeRangeInterest;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import server.utilities.DateUtils;
 
 /**
  *
@@ -30,6 +34,16 @@ public class InterestSessionBean implements InterestSessionBeanLocal {
         } catch (EntityExistsException e) {
             return null;
         }
+    }
+    
+    @Override
+    public List<TimeRangeInterest> addAllTimeRangeInterest(List<TimeRangeInterest> interest) {
+        Integer newVersion = getCurrentVersion() + 1;
+        for (TimeRangeInterest i : interest) {
+            i.setVersion(newVersion);
+            em.persist(i);
+        }
+        return interest;
     }
     
     @Override
@@ -55,62 +69,31 @@ public class InterestSessionBean implements InterestSessionBeanLocal {
     }
     
     @Override
-    public List<Interest> getCustomAccountDefaultInterests() {
-        Query q = em.createQuery("SELECT i FROM Interest i WHERE "
-                + "i.defaultCustomAccount = true AND "
-                + "i.isHistory = false"
+    public List<TimeRangeInterest> getFixedDepositAccountDefaultInterests() {
+        Query q = em.createQuery("SELECT i FROM TimeRangeInterest i WHERE "
+                + "i.isHistory = false AND i.version = :version"
         );
+        q.setParameter("version", getCurrentVersion());
         return q.getResultList();
     }
     
     @Override
-    public List<Interest> getCurrentAccountDefaultInterests() {
-        Query q = em.createQuery("SELECT i FROM Interest i WHERE "
-                + "i.defaultCurrentAccount = true AND "
-                + "i.isHistory = false"
+    public List<TimeRangeInterest> getFixedDepositAccountInterestsByAccount(CustomerFixedDepositAccount account) {
+        Date startDate = account.getCreationDate();
+        Date now = new Date();
+        Integer monthDiff = DateUtils.monthDifference(startDate, now);
+        Query q = em.createQuery("SELECT i FROM TimeRangeInterest i WHERE "
+                + "i.isHistory = false AND i.version = :version AND "
+                + "i.startMonth <= :monthDiff AND i.endMonth >= :monthDiff"
         );
-        return q.getResultList();
-    }
-    @Override
-    public List<Interest> getFixedDepositAccountDefaultInterests() {
-        Query q = em.createQuery("SELECT i FROM Interest i WHERE "
-                + "i.defaultFixedDepositAccount = true AND "
-                + "i.isHistory = false"
-        );
-        return q.getResultList();
-    }
-    @Override
-    public List<Interest> getSavingccountDefaultInterests() {
-        Query q = em.createQuery("SELECT i FROM Interest i WHERE "
-                + "i.defaultSavingAccount = true AND "
-                + "i.isHistory = false"
-        );
-        return q.getResultList();
-    }
-    @Override
-    public List<Interest> getLoanAccountDefaultInterests() {
-        Query q = em.createQuery("SELECT i FROM Interest i WHERE "
-                + "i.defaultLoanAccount = true AND "
-                + "i.isHistory = false"
-        );
-        return q.getResultList();
-    }
-    @Override
-    public List<Interest> getMobileAccountDefaultInterests() {
-        Query q = em.createQuery("SELECT i FROM Interest i WHERE "
-                + "i.defaultMobileAccount = true AND "
-                + "i.isHistory = false"
-        );
+        q.setParameter("version", getCurrentVersion());
+        q.setParameter("monthDiff", monthDiff);
+        
         return q.getResultList();
     }
     
-    @Override// For Custom Account
-    public List<Interest> getDefaultInterestsByAccountName(String accountName) {
-        Query q = em.createQuery("SELECT i FROM Interest i WHERE "
-                + "i.defaultCustomizedAccountName = :accountName AND "
-                + "i.isHistory = false"
-        );
-        q.setParameter("accountName", accountName);
-        return q.getResultList();
+    private Integer getCurrentVersion() {
+        Query q = em.createQuery("SELECT MAX(i.version) FROM TimeRangeInterest i");
+        return (Integer) q.getSingleResult();
     }
 }
