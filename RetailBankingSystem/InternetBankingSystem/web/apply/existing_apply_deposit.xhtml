@@ -80,23 +80,44 @@
                         <p:panel>
                             <p:messages />
                             <h:panelGrid columns="2" columnClasses="label, value">
+                                
+                                <h:outputText value="Initial Deposit Account: " />
+                                <h:outputText value="#{customerApplicationManagedBean.initialDepositAccount}" styleClass="outputLabel"/>
 
-                                <h:outputLabel for="mobileNumber" value="Mobile number (for OTP): " />
-                                <h:outputText id="mobileNumber" value="#{customerProfileManagedBean.customer.phone}"/>
+
+                                <h:outputLabel for="identityType" value="Identity Type: " />
+                                <h:outputText id="identityType" value="#{customerProfileManagedBean.customer.identityType} "/>
+
+                                <h:outputLabel for="identityNumber" value="Identity Number: " />
+                                <h:outputText id="identityNumber" value="#{customerProfileManagedBean.customer.identityNumber} "/>
+
+                                <h:outputLabel for="Nationality" value="Nationality: " />
+                                <h:outputText id="Nationality" value="#{customerProfileManagedBean.customer.nationality} "/>
+
+                                <h:outputLabel for="lastName" value="Last Name: " />
+                                <h:outputText id="lastName" value="#{customerProfileManagedBean.customer.lastname} "/>
+
+                                <h:outputLabel for="firstName" value="First Name: " />
+                                <h:outputText id="firstName" value="#{customerProfileManagedBean.customer.firstname} "/>
+
+                                <h:outputLabel for="occupation" value="Occupation: " />
+                                <h:outputText id="occupation" value="#{customerProfileManagedBean.customer.occupation} "/>
+
+                                <h:outputLabel for="income" value="Income in SGD: " />
+                                <h:outputText id="income" value="#{customerProfileManagedBean.customer.income} "/>
 
                                 <h:outputLabel for="email" value="Email: " />
-                                <h:outputText id="email" value="#{customerProfileManagedBean.customer.email}"/>
+                                <h:outputText id="email" value="#{customerProfileManagedBean.customer.email} "/>
 
-                                <h:outputLabel for="address" value="Address: " />
-                                <h:outputText id="address" value="#{customerProfileManagedBean.customer.address}"/>
-
+                                <h:outputLabel for="phone" value="Phone no: " />
+                                <h:outputText id="phone" value="#{customerProfileManagedBean.customer.phone} "/>
                             </h:panelGrid>
 
 
 
                             <div class="register-form-button" style="margin-top: 20px">
                                 <p:commandButton value="Back" type="button" onclick="PF('myWizard').back();" />
-                                <p:commandButton value="Confirm" actionListener="#{customerApplicationManagedBean.save}" update="growl" process="@this"/>
+                                <p:commandButton value="Confirm" actionListener="#{existingCustomerApplicationManagedBean.save}" update="growl" "/>
                             </div>
                         </p:panel>
                     </p:tab>

@@ -65,7 +65,6 @@ public class CreditCardOrder implements Serializable {
 
     private Industry industry;
 
-    private Position position;
     private String company;
     @Lob
     private Blob cpf;
@@ -372,13 +371,6 @@ public class CreditCardOrder implements Serializable {
         this.industry = industry;
     }
 
-    public Position getPosition() {
-        return position;
-    }
-
-    public void setPosition(Position position) {
-        this.position = position;
-    }
 
     public ApplicationStatus getApplicationStatus() {
         return applicationStatus;

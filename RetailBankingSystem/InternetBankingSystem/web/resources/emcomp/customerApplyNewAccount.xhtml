@@ -88,18 +88,18 @@
 
 
                                     <h:outputText value="Identity Type: " />
-                                    <p:selectOneMenu value="#{customerApplicationManagedBean.customer.identityType}" style="width:187px; height: 31px; line-height: 21px; top:8px" rendered="true" label="identityType" required="true">
+                                    <p:selectOneMenu value="#{customerApplicationManagedBean.selectedIdentityType}" style="width:187px; height: 31px; line-height: 21px; top:8px" rendered="true" label="identityType" required="true">
                                         <f:selectItem itemLabel="Please select.." itemValue=""/>                                                    
-                                        <f:selectItems value="#{customerApplicationManagedBean.selectIdentityTypes}" />
+                                        <f:selectItems value="#{customerApplicationManagedBean.identityTypeOptions}" />
                                     </p:selectOneMenu>
 
                                     <h:outputText value="Identity Number: " />
                                     <p:inputText value="#{customerApplicationManagedBean.customer.identityNumber}" required="true"/>
 
                                     <h:outputText value="Nationality: " />
-                                    <p:selectOneMenu value="#{customerApplicationManagedBean.customer.nationality}" style="width:187px; height: 31px; line-height: 21px; top:8px" rendered="true" label="identityType" required="true">
+                                    <p:selectOneMenu value="#{customerApplicationManagedBean.selectedNationality}" style="width:187px; height: 31px; line-height: 21px; top:8px" rendered="true" label="identityType" required="true">
                                         <f:selectItem itemLabel="Please select.." itemValue=""/>                                                    
-                                        <f:selectItems value="#{customerApplicationManagedBean.selectNationalities}" />
+                                        <f:selectItems value="#{customerApplicationManagedBean.nationalityOptions}" />
                                     </p:selectOneMenu>
 
                                     <h:outputText value="Last Name: " />
@@ -125,21 +125,21 @@
                                 <p:messages />
                                 <h:panelGrid columns="2" columnClasses="label, value">
                                     <h:outputText value="Gender " />
-                                    <p:selectOneMenu value="#{customerApplicationManagedBean.customer.gender}" style="width:187px; height: 31px; line-height: 21px; top:8px" rendered="true" label="income" required="true">
+                                    <p:selectOneMenu value="#{customerApplicationManagedBean.selectedGender}" style="width:187px; height: 31px; line-height: 21px; top:8px" rendered="true" label="income" required="true">
                                         <f:selectItem itemLabel="Please Select..." />
-                                        <f:selectItems value="#{customerApplicationManagedBean.selectGenders}" />
+                                        <f:selectItems value="#{customerApplicationManagedBean.genderOptions}" />
                                     </p:selectOneMenu>
 
                                     <h:outputText value="Occupation: " />
-                                    <p:selectOneMenu value="#{customerApplicationManagedBean.customer.occupation}" style="width:187px; height: 31px; line-height: 21px; top:8px" rendered="true" label="income" required="true">
+                                    <p:selectOneMenu value="#{customerApplicationManagedBean.selectedOccupation}" style="width:187px; height: 31px; line-height: 21px; top:8px" rendered="true" label="income" required="true">
                                         <f:selectItem itemLabel="Please Select..." />
-                                        <f:selectItems value="#{customerApplicationManagedBean.selectOccupations}" />
+                                        <f:selectItems value="#{customerApplicationManagedBean.occupationOptions}" />
                                     </p:selectOneMenu>
 
                                     <h:outputText value="Income " />
-                                    <p:selectOneMenu value="#{customerApplicationManagedBean.customer.income}" style="width:187px; height: 31px; line-height: 21px; top:8px" rendered="true" label="income" required="true">
+                                    <p:selectOneMenu value="#{customerApplicationManagedBean.selectedIncome}" style="width:187px; height: 31px; line-height: 21px; top:8px" rendered="true" label="income" required="true">
                                         <f:selectItem itemLabel="Please Select..." />
-                                        <f:selectItems value="#{customerApplicationManagedBean.selectIncome}" />
+                                        <f:selectItems value="#{customerApplicationManagedBean.incomeOptions}" />
                                     </p:selectOneMenu>
                                     <h:outputText value="Email: " />
 
@@ -180,13 +180,13 @@
                                         <h:outputText value="#{customerApplicationManagedBean.initialDepositAccount}" styleClass="outputLabel"/>
 
                                         <h:outputText value="Identity Type: " />
-                                        <h:outputText value="#{customerApplicationManagedBean.customer.identityType}" styleClass="outputLabel"/>
+                                        <h:outputText value="#{customerApplicationManagedBean.selectedIdentityType}" styleClass="outputLabel"/>
 
                                         <h:outputText value="Identity Number: " />
                                         <h:outputText value="#{customerApplicationManagedBean.customer.identityNumber}" styleClass="outputLabel"/>
 
                                         <h:outputText value="Nationality: " />
-                                        <h:outputText value="#{customerApplicationManagedBean.customer.nationality}" styleClass="outputLabel"/>
+                                        <h:outputText value="#{customerApplicationManagedBean.selectedNationality}" styleClass="outputLabel"/>
 
                                         <h:outputText value="Last Name: " />
                                         <h:outputText value="#{customerApplicationManagedBean.customer.lastname}" styleClass="outputLabel"/>
@@ -200,13 +200,13 @@
                                         </h:outputText>
 
                                         <h:outputText value="Gender: " />
-                                        <h:outputText value="#{customerApplicationManagedBean.customer.gender}" styleClass="outputLabel"/>
+                                        <h:outputText value="#{customerApplicationManagedBean.selectedGender}" styleClass="outputLabel"/>
 
                                         <h:outputText value="Occupation " />
-                                        <h:outputText value="#{customerApplicationManagedBean.customer.occupation}" styleClass="outputLabel"/>
+                                        <h:outputText value="#{customerApplicationManagedBean.selectedOccupation}" styleClass="outputLabel"/>
 
                                         <h:outputText value="Income " />
-                                        <h:outputText value="#{customerApplicationManagedBean.customer.income}" styleClass="outputLabel"/>
+                                        <h:outputText value="#{customerApplicationManagedBean.selectedIncome}" styleClass="outputLabel"/>
 
                                         <h:outputText value="Email: " />
                                         <h:outputText value="#{customerApplicationManagedBean.customer.email}" styleClass="outputLabel"/>
@@ -226,7 +226,7 @@
 
                                 <div class="register-form-button" style="margin-top: 20px">
                                     <p:commandButton value="Back" type="button" onclick="PF('myWizard').back();" />
-                                    <p:commandButton value="Confirm" actionListener="#{customerApplicationManagedBean.save}" update="growl" process="@this"/>
+                                    <p:commandButton value="Confirm" actionListener="#{customerApplicationManagedBean.save}" update="growl"/>
                                 </div>
                             </p:panel>
                         </p:tab>
