@@ -5,6 +5,7 @@
  */
 package ejb.session.card;
 
+import entity.card.account.CardTransaction;
 import entity.card.account.CreditCardAccount;
 import entity.card.account.CreditCardOrder;
 import java.util.List;
@@ -37,5 +38,7 @@ public interface CardAcctSessionBeanLocal {
     public String updateCardAcctTransactionDailyLimit(CreditCardAccount cca, double newDailyLimit);
     
     public String updateCardAcctTransactionMonthlyLimit(CreditCardAccount cca, double newMonthlyLimit);
+    
+    public List<CardTransaction> getCardTransactionFromId(CreditCardAccount cca);
     
 }

@@ -6,6 +6,7 @@
 package init;
 
 import BatchProcess.InterestAccrualSessionBeanLocal;
+import ejb.session.card.CardAcctSessionBeanLocal;
 import ejb.session.card.NewCardProductSessionBeanLocal;
 import ejb.session.cms.CustomerCaseSessionBeanLocal;
 import ejb.session.common.NewCustomerSessionBeanLocal;
@@ -16,6 +17,7 @@ import ejb.session.mainaccount.MainAccountSessionBeanLocal;
 import ejb.session.staff.StaffAccountSessionBeanLocal;
 import ejb.session.staff.StaffRoleSessionBeanLocal;
 import ejb.session.utils.UtilsSessionBeanLocal;
+import entity.card.account.CreditCardAccount;
 import entity.card.account.MileCardProduct;
 import entity.customer.Customer;
 import entity.customer.CustomerCase;
@@ -84,6 +86,8 @@ public class EntityBuilderBean {
     private NewCardProductSessionBeanLocal newCardProductSessionBean;
     @EJB
     private MainAccountSessionBeanLocal mainAccountSessionBean;
+    @EJB
+    private CardAcctSessionBeanLocal cardAcctSessionBean;
 
     private Interest demoNormalInterestData;
     private List<Interest> demoRangeInterestData = new ArrayList<>();
@@ -133,6 +137,8 @@ public class EntityBuilderBean {
 
         initCreditCardProduct();
         initCase();
+        
+        
     }
 
     public void initCreditCardProduct() {
@@ -143,6 +149,12 @@ public class EntityBuilderBean {
         mca.setMinSpendingAmount(2000);
         mca.setProductName("Merlion MileCard");
         newCardProductSessionBean.createMileProduct(mca);
+        
+        CreditCardAccount cca = new CreditCardAccount();
+        cca.setCreditCardProduct(mca);
+        cca.setNameOnCard(demoMainAccount.getCustomer().getFirstname());
+        cca.setMainAccount(demoMainAccount);
+        cardAcctSessionBean.createCardAccount(cca);
     }
 
     private void initStaffAndRoles() {

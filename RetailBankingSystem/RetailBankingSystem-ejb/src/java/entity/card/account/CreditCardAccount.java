@@ -43,7 +43,9 @@ public class CreditCardAccount implements Serializable {
     private CreditCardProduct creditCardProduct;
     @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "creditCardAccount")
     private List<PromoCode> promoCode = new ArrayList<>();
-    
+    @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "creditCardAccount")
+    private List<CardTransaction> cardTransactions = new ArrayList<>();
+
     private CardNetwork cardNetwork;
     private CardAccountStatus CardStatus;
     private String creditCardNum;
@@ -285,6 +287,14 @@ public class CreditCardAccount implements Serializable {
 
     public void setCardNetwork(CardNetwork cardNetwork) {
         this.cardNetwork = cardNetwork;
+    }
+
+    public List<CardTransaction> getCardTransactions() {
+        return cardTransactions;
+    }
+
+    public void setCardTransactions(List<CardTransaction> cardTransactions) {
+        this.cardTransactions = cardTransactions;
     }
 
 }

@@ -86,5 +86,4 @@ public abstract class CreditCardProduct implements Serializable {
         this.creditCardAcounts = creditCardAcounts;
     }
 
-
 }
