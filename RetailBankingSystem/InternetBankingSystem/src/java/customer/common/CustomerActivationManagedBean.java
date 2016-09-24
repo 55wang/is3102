@@ -7,7 +7,9 @@ package customer.common;
 
 import ejb.session.common.CustomerActivationSessionBeanLocal;
 import ejb.session.common.LoginSessionBeanLocal;
+import ejb.session.dams.CustomerDepositSessionBeanLocal;
 import entity.customer.MainAccount;
+import entity.dams.account.DepositAccount;
 import java.io.Serializable;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -29,6 +31,8 @@ public class CustomerActivationManagedBean implements Serializable {
     private LoginSessionBeanLocal loginSessionBean;
     @EJB
     private CustomerActivationSessionBeanLocal customerActivationSessionBean;
+    @EJB
+    private CustomerDepositSessionBeanLocal depositAccountBean;
     
     @ManagedProperty(value="#{param.email}")
     private String email;
@@ -48,6 +52,10 @@ public class CustomerActivationManagedBean implements Serializable {
                 loginSessionBean.loginAccount(mainAccount.getUserID(), mainAccount.getPassword());
                 SessionUtils.setUserId(Long.toString(mainAccount.getId()));
                 SessionUtils.setUserName(mainAccount.getUserID());
+                for (DepositAccount a : mainAccount.getBankAcounts()) {
+                    a.setStatus(EnumUtils.StatusType.ACTIVE);
+                    depositAccountBean.updateAccount(a);
+                }
             }
             catch(Exception ex){
                 

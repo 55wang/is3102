@@ -7,7 +7,6 @@ package entity.dams.account;
 
 import entity.common.TransactionRecord;
 import entity.customer.MainAccount;
-import entity.dams.rules.Interest;
 import entity.embedded.CumulatedInterest;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -28,6 +27,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import server.utilities.EnumUtils.DepositAccountType;
+import server.utilities.EnumUtils.StatusType;
 
 /**
  *
@@ -41,10 +41,11 @@ public abstract class DepositAccount implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;// TODO: Need to generate our own account number
     private DepositAccountType type;
+    private StatusType status = StatusType.PENDING;
     @Temporal(value = TemporalType.TIMESTAMP)
     private final Date creationDate = new Date();
     @Column(precision=30, scale=20)
-    private BigDecimal balance = new BigDecimal(0);
+    private BigDecimal balance = BigDecimal.ZERO;
     @Embedded
     private CumulatedInterest cumulatedInterest = new CumulatedInterest();
     @ManyToOne(cascade = CascadeType.MERGE)
@@ -189,5 +190,19 @@ public abstract class DepositAccount implements Serializable {
      */
     public void setCumulatedInterest(CumulatedInterest cumulatedInterest) {
         this.cumulatedInterest = cumulatedInterest;
+    }
+
+    /**
+     * @return the status
+     */
+    public StatusType getStatus() {
+        return status;
+    }
+
+    /**
+     * @param status the status to set
+     */
+    public void setStatus(StatusType status) {
+        this.status = status;
     }
 }
