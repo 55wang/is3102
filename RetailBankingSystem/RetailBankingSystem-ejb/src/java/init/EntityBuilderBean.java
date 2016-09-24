@@ -56,6 +56,7 @@ import server.utilities.EnumUtils.Income;
 import server.utilities.EnumUtils.Nationality;
 import server.utilities.EnumUtils.Occupation;
 import server.utilities.EnumUtils.StatusType;
+import server.utilities.GenerateAccountAndCCNumber;
 import server.utilities.HashPwdUtils;
 
 /**
@@ -104,6 +105,7 @@ public class EntityBuilderBean {
     @PostConstruct
     public void init() {
         System.out.println("EntityInitilzationBean @PostConstruct");
+        System.out.println(GenerateAccountAndCCNumber.generateAccountNumber());
         if (needInit()) {
             buildEntities();
         } else {
@@ -119,14 +121,14 @@ public class EntityBuilderBean {
 
     private void testInterestRules() {
         // Get Product
-        DepositAccount da = customerDepositSessionBean.getAccountFromId(1L);
-        // Get Interest
-        List<Interest> interests = ((DepositAccountProduct) da.getProduct()).getInterestRules();
-        for (Interest i : interests) {
-            if (i instanceof ConditionInterest) {
-                System.out.print(interestAccrualSessionBean.isAccountMeetCondition(da, (ConditionInterest) i));
-            }
-        }
+//        DepositAccount da = customerDepositSessionBean.getAccountFromId(1L);
+//        // Get Interest
+//        List<Interest> interests = ((DepositAccountProduct) da.getProduct()).getInterestRules();
+//        for (Interest i : interests) {
+//            if (i instanceof ConditionInterest) {
+//                System.out.print(interestAccrualSessionBean.isAccountMeetCondition(da, (ConditionInterest) i));
+//            }
+//        }
     }
 
     private void buildEntities() {

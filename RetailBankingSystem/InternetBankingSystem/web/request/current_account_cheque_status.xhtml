@@ -22,7 +22,7 @@
                             <h:panelGrid columns="2" cellpadding="5">
                                 <p:dataTable var="cheque" value="#{customerViewChequeStatusManagedBean.cheques}">
                                     <p:column headerText="Account">
-                                        <h:outputText value="#{cheque.account.id}" />
+                                        <h:outputText value="#{cheque.account.accountNumber}" />
                                     </p:column>
 
                                     <p:column headerText="Cheque Status">

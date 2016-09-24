@@ -16,6 +16,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import server.utilities.EnumUtils;
+import server.utilities.GenerateAccountAndCCNumber;
 
 /**
  *
@@ -34,8 +35,8 @@ public class CustomerDepositSessionBean implements CustomerDepositSessionBeanLoc
     }
     
     @Override 
-    public CustomerDepositAccount getAccountFromId(Long accountNumber) {
-        return em.find(CustomerDepositAccount.class, accountNumber);
+    public DepositAccount getAccountFromId(String accountNumber) {
+        return em.find(DepositAccount.class, accountNumber);
     }
 
     @Override
@@ -49,12 +50,25 @@ public class CustomerDepositSessionBean implements CustomerDepositSessionBeanLoc
             if (account instanceof CustomerDepositAccount) {
                 ((CustomerDepositAccount)account).setPreviousBalance(account.getBalance());
             }
+            
+            account.setAccountNumber(generateAccountNumber());
             em.persist(account);
             t.setFromAccount(account);
             em.merge(t);
             return account;
         } catch (EntityExistsException e) {
             return null;
+        }
+    }
+    
+    private String generateAccountNumber() {
+        String accountNumber = "";
+        for(;;) {
+             accountNumber = GenerateAccountAndCCNumber.generateAccountNumber();
+             DepositAccount a = em.find(DepositAccount.class, accountNumber);
+             if (a == null) {
+                 return accountNumber;
+             }
         }
     }
     
@@ -82,7 +96,7 @@ public class CustomerDepositSessionBean implements CustomerDepositSessionBeanLoc
     }
 
     @Override
-    public String depositIntoAccount(Long accountNumber, BigDecimal depositAmount) {
+    public String depositIntoAccount(String accountNumber, BigDecimal depositAmount) {
         if (accountNumber == null) {
             return "Account Number Cannot be Empty!";
         }
@@ -106,7 +120,7 @@ public class CustomerDepositSessionBean implements CustomerDepositSessionBeanLoc
     }
 
     @Override
-    public String withdrawFromAccount(Long accountNumber, BigDecimal withdrawAmount) {
+    public String withdrawFromAccount(String accountNumber, BigDecimal withdrawAmount) {
         if (accountNumber == null) {
             return "Account Number Cannot be Empty!";
         }

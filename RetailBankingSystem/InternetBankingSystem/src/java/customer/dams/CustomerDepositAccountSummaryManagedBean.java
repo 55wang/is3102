@@ -65,7 +65,7 @@ public class CustomerDepositAccountSummaryManagedBean implements Serializable {
     public void viewTransaction(DepositAccount da) {
         // Go to Message View
         Map<String, String> map = new HashMap<>();
-        map.put("accountId", da.getId().toString());
+        map.put("accountId", da.getAccountNumber());
         String params = RedirectUtils.generateParameters(map);
         RedirectUtils.redirect("deposit_account_transaction.xhtml" + params);
     }

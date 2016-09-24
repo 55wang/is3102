@@ -12,6 +12,8 @@ package server.utilities;
 public class ConstantUtils {
     public static final String DELIMITER = "``";
     
+    public static final Integer ACCOUNT_NUBMER_LENGTH = 11;
+    
     // Entity Table Name
     public static final String TRANSACTION_ENTITY = "TransactionRecord";
     public static final String SERVICE_CHARGE_ENTITY = "ServiceCharge";
