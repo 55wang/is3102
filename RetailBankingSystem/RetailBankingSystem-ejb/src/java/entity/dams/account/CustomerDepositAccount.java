@@ -31,6 +31,10 @@ public class CustomerDepositAccount extends DepositAccount {
     @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "")
     private List<DebitCardAccount> debitCardAccount = new ArrayList<>();
     
+    // REMARK: Type != SAVING
+    @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "account")
+    private List<Cheque> cheques = new ArrayList<>();
+    
     @Column(precision=30, scale=20)
     private BigDecimal previousBalance = new BigDecimal(0);
     
@@ -96,5 +100,19 @@ public class CustomerDepositAccount extends DepositAccount {
 
     public void setDebitCardAccount(List<DebitCardAccount> debitCardAccount) {
         this.debitCardAccount = debitCardAccount;
+    }
+
+    /**
+     * @return the cheques
+     */
+    public List<Cheque> getCheques() {
+        return cheques;
+    }
+
+    /**
+     * @param cheques the cheques to set
+     */
+    public void setCheques(List<Cheque> cheques) {
+        this.cheques = cheques;
     }
 }
