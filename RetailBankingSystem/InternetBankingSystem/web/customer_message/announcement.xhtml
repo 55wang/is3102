@@ -20,7 +20,7 @@
                     <p:panel header="Announcements">
                         <div id="output">
                             <c:forEach items="#{announcementViewManagedBean.announcements}" var="accouncement">
-                                <div class="table-cell border-bottom" onclick="showModal('#{accouncement.title}', '#{accouncement.content}');">
+                                <div class="table-cell border-bottom" onclick="showModal('#{accouncement.title}', '#{accouncement.content}');" style="cursor: pointer">
                                     <span class="v-center absolute-left">#{accouncement.title}</span>
                                     <span class="v-center absolute-right">#{accouncement.creationDate}</span>
                                 </div>

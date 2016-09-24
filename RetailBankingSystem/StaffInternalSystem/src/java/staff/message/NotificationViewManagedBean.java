@@ -45,8 +45,11 @@ public class NotificationViewManagedBean implements Serializable {
     private final static String CUSTOMER_NOTIFY_CHANNEL = "/customer_notify";
     private final static String ROLE_NOTIFY_CHANNEL = "/role_notification/";
 
-    private Boolean isForStaff = true;
+    private String annocementTarget = "forStaff";
+    private String annocementForStaff = "forStaff";
+    private String annocementForCustomer = "forCustomer";
     private Boolean forAllStaff = true;
+    private Boolean forAllCustomer = true;
     private Announcement newAnnouncement = new Announcement();
     private List<Announcement> announcements = new ArrayList<>();
     private List<Role> roles = new ArrayList<>();
@@ -67,12 +70,15 @@ public class NotificationViewManagedBean implements Serializable {
         }
     }
 
-    public void send() {
+    public void send() { 
         
-        if (!forAllStaff && selectedRoleName!= null) {
+        if (!isForStaff() && selectedRoleName!= null) {
             newAnnouncement.setRole(staffRoleSessionBean.findRoleByName(selectedRoleName));
         }
-        newAnnouncement.setIsForStaff(isForStaff);
+            
+        newAnnouncement.setIsForStaff(isForStaff());   
+
+        
         if (announcementBean.createAnnouncement(getNewAnnouncement())) {
             announcements.add(0, newAnnouncement);
             MessageUtils.displayInfo("New Announcement Added");
@@ -82,7 +88,8 @@ public class NotificationViewManagedBean implements Serializable {
         EventBus eventBus = EventBusFactory.getDefault().eventBus();
         FacesMessage m = new FacesMessage(StringEscapeUtils.escapeHtml(newAnnouncement.getTitle()), StringEscapeUtils.escapeHtml(newAnnouncement.getContent()));
         
-        if (!isForStaff) {
+        if (!isForStaff()) {
+            System.out.println("Runs here and pushed to:" + CUSTOMER_NOTIFY_CHANNEL);
             eventBus.publish(CUSTOMER_NOTIFY_CHANNEL, m);
             eventBus.publish(ROLE_NOTIFY_CHANNEL + UserRole.SUPER_ADMIN.toString(), m);
         } else {
@@ -95,6 +102,13 @@ public class NotificationViewManagedBean implements Serializable {
 
         setNewAnnouncement(new Announcement());
         selectedRoleName = null;
+    }
+    
+    public Boolean isForStaff(){
+        if(annocementTarget.equals(annocementForStaff))
+            return true;
+        else
+            return false;
     }
 
     // Getter and Setters
@@ -124,20 +138,6 @@ public class NotificationViewManagedBean implements Serializable {
      */
     public void setNewAnnouncement(Announcement newAnnouncement) {
         this.newAnnouncement = newAnnouncement;
-    }
-
-    /**
-     * @return the isForStaff
-     */
-    public Boolean getIsForStaff() {
-        return isForStaff;
-    }
-
-    /**
-     * @param isForStaff the isForStaff to set
-     */
-    public void setIsForStaff(Boolean isForStaff) {
-        this.isForStaff = isForStaff;
     }
 
     /**
@@ -195,4 +195,37 @@ public class NotificationViewManagedBean implements Serializable {
     public void setForAllStaff(Boolean forAllStaff) {
         this.forAllStaff = forAllStaff;
     }
+
+    public String getAnnocementTarget() {
+        return annocementTarget;
+    }
+
+    public void setAnnocementTarget(String annocementTarget) {
+        this.annocementTarget = annocementTarget;
+    }
+
+    public String getAnnocementForStaff() {
+        return annocementForStaff;
+    }
+
+    public void setAnnocementForStaff(String annocementForStaff) {
+        this.annocementForStaff = annocementForStaff;
+    }
+
+    public String getAnnocementForCustomer() {
+        return annocementForCustomer;
+    }
+
+    public void setAnnocementForCustomer(String annocementForCustomer) {
+        this.annocementForCustomer = annocementForCustomer;
+    }
+
+    public Boolean getForAllCustomer() {
+        return forAllCustomer;
+    }
+
+    public void setForAllCustomer(Boolean forAllCustomer) {
+        this.forAllCustomer = forAllCustomer;
+    }
+    
 }
