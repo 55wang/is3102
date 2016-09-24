@@ -94,6 +94,13 @@ public class CustomerDepositSessionBean implements CustomerDepositSessionBeanLoc
         q.setParameter("mainAccountId", mainAccountId);
         return q.getResultList();
     }
+    
+    @Override
+    public List<CustomerDepositAccount> getAllNonFixedCustomerAccounts(Long mainAccountId) {
+        Query q = em.createQuery("SELECT ba FROM CustomerDepositAccount ba WHERE ba.mainAccount.id =:mainAccountId");
+        q.setParameter("mainAccountId", mainAccountId);
+        return q.getResultList();
+    }
 
     @Override
     public String depositIntoAccount(String accountNumber, BigDecimal depositAmount) {

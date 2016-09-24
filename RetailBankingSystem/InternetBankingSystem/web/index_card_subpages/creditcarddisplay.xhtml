@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:em="http://xmlns.jcp.org/jsf/composite/emcomp">
+    <f:view>
+        <h:head>
+
+            <title>Merlion Bank</title>
+            <h:outputStylesheet library="css" name="reset.css"/>
+            <h:outputStylesheet library="css" name="theme.css"/>
+        </h:head>
+
+
+
+        <body>
+            <style>
+                div.img {
+                    margin: 5px;
+                    border: 1px solid #ccc;
+                    float: left;
+                    width: 250px;
+                }
+
+                div.img:hover {
+                    border: 1px solid #777;
+                }
+
+                div.img img {
+                    width: 100%;
+                    height: 230px;
+
+                }
+
+                div.desc {
+                    padding: 15px;
+                    text-align: center;
+                }
+                /*                .floating-menu {
+                                    font-family: sans-serif;
+                                    background: gainsboro;
+                                    position: fixed;
+                                    right: 0;
+                                    top: 40%;
+                                    width: 200px;
+                                    height: 300px;
+                                    margin-top: -2.5em;
+                                }
+                
+                                .floating-menu a, 
+                                .floating-menu h3 {
+                                    font-size: 0.9em;
+                                    display: block;
+                                    margin: 0 0.5em;
+                                    color: white;
+                                }*/
+
+            </style>
+            <em:customerHeader context="index_card" userName="Log in"></em:customerHeader>
+            <em:customerNavBar context="index_card" pageName="index_card" ></em:customerNavBar>
+            <em:floating_menu context="credit"></em:floating_menu>
+
+            <div style="margin-top:650px;margin-left: 70px;position: absolute"   >
+
+                <h2 style="margin-top: 30">Featured Products</h2>
+
+
+                <div  class="img" style="width:250px;height: 180px">
+                    <a target="_blank" href="creditcard1.xhtml">
+                        <img src="../resources/img/creditcard1.jpeg" alt="creditcard1" ></img>
+                    </a>
+                    <div class="desc">Mile Visa Credit Card</div>
+                </div>
+
+                <div class="img" style="margin-left:40px;width: 250px;height: 180px">
+                    <a target="_blank" href="creditcard2.xhtml">
+                        <img src="../resources/img/creditcard2.jpeg" alt="creditcard2" ></img>
+                    </a>
+                    <div class="desc">Mile MasterCard Credit Card</div>
+                </div>
+
+                <div class="img" style="margin-left:40px;width:250px;height: 180px">
+                    <a target="_blank" href="creditcard3.xhtml">
+                        <img src="../resources/img/creditcard3.jpeg" alt="creditcard3" ></img>
+                    </a>
+                    <div class="desc">Reward Visa Credit Card</div>
+                </div>
+
+            </div>
+            <div style="margin-top:1000px;margin-left: 70px;position: absolute"   >
+                <div class="img" style="width:250px;height: 180px">
+                    <a target="_blank" href="creditcard4.xhtml">
+                        <img src="../resources/img/creditcard4.jpeg" alt="creditcard4" ></img>
+                    </a>
+                    <div class="desc">Reward MasterCard Credit Card</div>
+                </div>
+
+                <div class="img" style="margin-left:40px;width:250px;height: 180px">
+                    <a target="_blank" href="creditcard5.xhtml">
+                        <img src="../resources/img/creditcard5.jpeg" alt="creditcard5" ></img>
+                    </a>
+                    <div class="desc">Cash Back Visa Card</div>
+                </div>
+
+                <div class="img" style="margin-left:40px;width:250px;height: 180px">
+                    <a target="_blank" href="creditcard6.xhtml">
+                        <img src="../resources/img/creditcard6.jpeg" alt="creditcard6" ></img>
+                    </a>
+                    <div class="desc">Cash Back MasterCard Card</div>
+                </div>
+
+            </div>
+            <div style="margin-top:1350px;margin-left: 70px;position: absolute"   >
+                <div class="img" style="width:250px;height: 180px">
+                    <a target="_blank" href="creditcard7.xhtml">
+                        <img src="../resources/img/creditcard7.jpeg" alt="creditcard7" ></img>
+                    </a>
+                    <div class="desc">Merlion Student Visa Credit Card</div>
+                </div>
+
+                <div class="img" style="margin-left:40px;width:250px;height: 180px">
+                    <a target="_blank" href="creditcard8.xhtml">
+                        <img src="../resources/img/creditcard8.jpeg" alt="creditcard8" ></img>
+                    </a>
+                    <div class="desc">Merlion Student MasterCard Credit Card</div>
+                </div>
+            </div>
+
+
+
+
+            <div style="margin-top:200px;margin-left: 70px;position:absolute">
+                <h1>Credit Cards</h1>
+
+                <div style="background-image: url(../resources/img/singapore.jpg);height:300px;width: 800px"> 
+                    <h1 style="margin-left:50px;margin-top: 50px;color: white;position: absolute"> Get your own Credit Card!</h1>
+                </div>
+
+                <!--                <p:lightBox styleClass="imagebox" id="lighbox1">  
+                                    <h:outputLink value="../resources/img/singapore.jpg" title="Our customer will enjoy extraodinary return.">  
+                                        <h:graphicImage alt="lalal" library="img" name="singapore.jpg" id="nature1" style="height: 300px; width: 800px" />  
+                                    </h:outputLink>
+                
+                                </p:lightBox>-->
+            </div>
+            <!--            <nav class="floating-menu">
+                            <p:button style="margin-top: 30px;margin-left: 20px;width: 180px;height: 60px" value="Login now" onclick="location.href = 'www.google.com'">
+                            </p:button>
+                            <p:button style="margin-top: 20px;margin-left: 20px;width: 180px;height: 60px" value="Apply now" >
+                            </p:button>
+                            <p:button style="margin-top: 20px;margin-left: 20px;width: 180px;height: 60px" value="Contact us" >
+                            </p:button>
+            
+            
+                        </nav>  -->
+
+
+
+        </body>
+    </f:view>
+</html>
+

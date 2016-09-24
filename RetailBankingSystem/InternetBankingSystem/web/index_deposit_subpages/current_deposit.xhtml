@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:em="http://xmlns.jcp.org/jsf/composite/emcomp"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <f:view>
+        <h:head>
+            <title>Merlion Bank</title>
+            <h:outputStylesheet library="css" name="reset.css"/>
+            <h:outputStylesheet library="css" name="theme.css"/>
+        </h:head>
+
+        <h:body>
+            <em:customerHeader context="index_deposit" userName="Log in"></em:customerHeader>
+            <em:customerNavBar context="index_deposit" pageName="index_deposit" ></em:customerNavBar>
+
+            <div style="margin-top: 200px;margin-left: 70px;position: absolute"> 
+                <c:forEach items="#{displayCurrentDepositProductManagedBean.currentDepositProducts}" var="currentProduct">
+                    <h1>#{currentProduct.name}</h1>
+                    <p:panel style="width: 550px">
+                        <p:panelGrid columns="2" style="width: 500px">
+                            <f:facet name="header">
+                                <p:row>
+                                    <p:column colspan="7">Current Account Interest Rate</p:column>
+                                </p:row>
+                            </f:facet>
+                            <c:forEach items="#{currentProduct.rangeInterest}" var="i">
+                                <h:outputText value="#{i.name}" />
+                                <h:outputText value="#{i.percentage}">
+                                    <f:convertNumber type="percent" minFractionDigits="4"/>
+                                </h:outputText>
+                            </c:forEach>
+                        </p:panelGrid>
+                    </p:panel>
+                </c:forEach>
+
+                <div style="margin-top: 20px">
+                    <button style="margin-left: 30px" type="button" onclick="window.location.href = '../index_deposit_subpages/apply_deposit_account.xhtml'">New Customer Apply</button>
+                    <button style="margin-left: 50px" type="button" onclick="window.location.href = '.../common/customer_login.xhtml'">Existing customer Login</button>
+                </div>
+            </div>
+        </h:body>
+    </f:view>
+</html>

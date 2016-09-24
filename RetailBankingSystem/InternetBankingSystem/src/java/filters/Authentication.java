@@ -18,6 +18,8 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import utils.SessionUtils;
+import utils.TokenAuthenticationUtils;
 
 /**
  *
@@ -122,11 +124,31 @@ public class Authentication implements Filter {
                     || reqURI.contains("/index.xhtml")
                     || reqURI.contains("/common/")
                     || reqURI.contains("/index_subpages/")
-                    || reqURI.contains("/customer_dams/")
+                    || reqURI.contains("/index_deposit_subpages/")
+                    || reqURI.contains("/index_card_subpages/")
+                    || reqURI.contains("/apply/")
+                    || reqURI.contains("/customer_cms/")
+                    || reqURI.contains("/customer_deposit/")
                     || reqURI.contains("/apply_deposit_account.xhtml")
                     || reqURI.contains("/apply_card_account.xhtml")
                     || (ses != null && ses.getAttribute("username") != null)) {
-                chain.doFilter(request, response);
+                System.out.println("Before token checker");
+                        if(     
+                                (reqURI.contains("/customer_card/")
+                                    || reqURI.contains("/customer_cms/")
+                                    || reqURI.contains("/customer_message/")
+                                    || reqURI.contains("/customer_request/")
+                                ) && (
+                                    ses.getAttribute("tokenAuthentication").equals(Boolean.FALSE)
+//                                    SessionUtils.getTokenAuthentication().equals(Boolean.FALSE)
+                                )       
+                           ){
+                            System.out.println("need token authenticated");
+                            String targetPage = reqURI.replace("/InternetBankingSystem", "");
+                            resp.sendRedirect(reqt.getContextPath() + "/customer_token/token_authentication.xhtml?target="+targetPage);
+                            }
+                        else
+                            chain.doFilter(request, response);
             } else {
                 System.out.println("blocked");
                 resp.sendRedirect(reqt.getContextPath() + "/index.xhtml");

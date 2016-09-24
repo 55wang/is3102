@@ -17,6 +17,7 @@ and open the template in the editor.
     </cc:interface>
 
     <cc:implementation>
+        <h:form>
  
     <body>
         <style>
@@ -42,18 +43,22 @@ and open the template in the editor.
 
             </style>
         <nav class="floating-menu">
-                <p:button style="margin-top: 30px;margin-left: 20px;width: 180px;height: 60px" value="Login now" onclick="window.location.href = '/InternetBankingSystem/common/customer_login.xhtml'">
-                </p:button>
-                <p:button style="margin-top: 20px;margin-left: 20px;width: 180px;height: 60px" value="Apply now" onclick="window.location.href = '/InternetBankingSystem/customer_card/apply_card_account.xhtml'" >
-                </p:button>
-                <p:button style="margin-top: 20px;margin-left: 20px;width: 180px;height: 60px" value="Contact us" >
-                    
-                    <a href="/InternetBankingSystem/common/customer_login.xhtml">test1</a>
-                    <a href="/InternetBankingSystem/customer_card/apply_card_account.xhtml">test2</a>
-                </p:button>
+            
+<!--                <h:commandButton style="margin-top: 30px;margin-left: 20px;width: 180px;height: 60px" value="Login now" action="./common/customer_login.xhtml">
+                </h:commandButton>
+            
+                <h:commandButton style="margin-top: 20px;margin-left: 20px;width: 180px;height: 60px" value="Apply now" action="../common/customer_login.xhtml" >
+                </h:commandButton>
+                <h:commandButton style="margin-top: 20px;margin-left: 20px;width: 180px;height: 60px" value="Contact us" />
+                --> 
+                <div style="margin-top:60px;margin-left: 40px"><h2><a href="../common/customer_login.xhtml" style="text-decoration: none">Login</a></h2>
+                <h2><a href="../index_card_subpages/apply_card_account.xhtml" style="text-decoration: none">Apply now</a></h2>
+                <h2><a href="../index_card_subpages/apply_card_account.xhtml" style="text-decoration: none">Contact us</a></h2>
+                </div>
 
 
             </nav>  
     </body>
+        </h:form>
     </cc:implementation>
 </html>
