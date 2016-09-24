@@ -12,6 +12,7 @@ import ejb.session.dams.DepositProductSessionBeanLocal;
 import entity.customer.Customer;
 import entity.customer.MainAccount;
 import entity.dams.account.CustomerDepositAccount;
+import java.io.Serializable;
 import java.security.SecureRandom;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -30,14 +31,12 @@ import utils.RedirectUtils;
  */
 @Named(value = "existingCustomerApplicationManagedBean")
 @ViewScoped
-public class ExistingCustomerApplicationManagedBean {
+public class ExistingCustomerApplicationManagedBean implements Serializable {
 
     /**
      * Creates a new instance of ExistingCustomerApplicationManagedBean
      */
-    
-    @EJB
-    private EmailServiceSessionBeanLocal emailServiceSessionBean;
+   
     @EJB
     private NewCustomerSessionBeanLocal newCustomerSessionBean;
     @EJB
@@ -77,21 +76,26 @@ public class ExistingCustomerApplicationManagedBean {
         this.customer = customer;
     }
 
-    public void save() {
+    public void save(Customer thisCustomer) {
+        System.out.print(thisCustomer.getLastname());
 
-       
-        MainAccount mainAccount = customer.getMainAccount();
-        
+        MainAccount mainAccount = thisCustomer.getMainAccount();
+//        System.out.println(mainAccount);
 
         CustomerDepositAccount depostiAccount = new CustomerDepositAccount();
         depostiAccount.setMainAccount(mainAccount);
+        System.out.println("AAAAAAA"+initialDepositAccount);
         if (initialDepositAccount.equals(ConstantUtils.DEMO_CURRENT_DEPOSIT_PRODUCT_NAME)) {
             depostiAccount.setType(EnumUtils.DepositAccountType.CURRENT);
+            System.out.println("BBBBBB");
         } else if (initialDepositAccount.equals(ConstantUtils.DEMO_CUSTOM_DEPOSIT_PRODUCT_NAME)) {
             depostiAccount.setType(EnumUtils.DepositAccountType.CUSTOM);
+            System.out.println("CCCCC");
         }
         depostiAccount.setProduct(depositProductBean.getDepositProductByName(initialDepositAccount));
+        System.out.println("DDDDDD");
         depositAccountBean.createAccount(depostiAccount);
+        System.out.println("EEEEE");
     }
         
 
