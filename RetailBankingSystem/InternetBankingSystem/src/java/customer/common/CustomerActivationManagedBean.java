@@ -44,6 +44,8 @@ public class CustomerActivationManagedBean implements Serializable {
     public void init() {
         email = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("email");
         String randomPwd = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("code");
+        System.out.println(email);
+        System.out.println(randomPwd);
         mainAccount = customerActivationSessionBean.getMainAccountByEmail(email);
         if(mainAccount.getStatus().equals(EnumUtils.StatusType.PENDING) && randomPwd.equals(mainAccount.getPassword())){
             valid = true; // And auto-login if valid?
@@ -56,6 +58,7 @@ public class CustomerActivationManagedBean implements Serializable {
                     a.setStatus(EnumUtils.StatusType.ACTIVE);
                     depositAccountBean.updateAccount(a);
                 }
+                // TODO: Activate all the deposit account
             }
             catch(Exception ex){
                 

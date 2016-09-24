@@ -439,7 +439,7 @@ public class EntityBuilderBean {
         c8.setIdentityType(IdentityType.PASSPORT); // same for this to enum type
         c8.setIncome(Income.FROM_6000_TO_8000);
         c8.setLastname("Lee");
-        c8.setNationality(Nationality.SINGAPOREAN); //enum type if possible
+        c8.setNationality(Nationality.SINGAPORE); //enum type if possible
         c8.setOccupation(Occupation.SUPERVISOR);
         c8.setPhone("99910888"); //must use real phone number as we need sms code
         c8.setPostalCode("020988");

@@ -22,7 +22,14 @@ and open the template in the editor.
                 <p:selectOneMenu id="staffrole" value="#{formDemoManagedBean.selectedEnum}" style="width:125px">
                     <f:selectItems value="#{formDemoManagedBean.selectEnums}" />
                 </p:selectOneMenu>
+                
+                <p:selectOneMenu id="income" value="#{formDemoManagedBean.selectedIncome}" style="width:125px">
+                    <f:selectItems value="#{formDemoManagedBean.incomeOptions}" />
+                </p:selectOneMenu>
+                
+                <p:commandButton value="Change" update="@form" actionListener="#{formDemoManagedBean.print()}" />
             </h:form>
+            <h:outputText value="#{formDemoManagedBean.customer.income}"/>
         </h:body>
     </f:view>
 </html>

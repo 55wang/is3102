@@ -29,7 +29,7 @@ public class CustomerHomeManagedBean implements Serializable{
     private ChangePasswordSessionBeanLocal changePasswordSessionBean;
     @EJB
     private LoginSessionBeanLocal loginSessionBean;
-    private Customer customer = new Customer();
+    private Customer customer;
     private String newPwd;
     
     
@@ -49,6 +49,7 @@ public class CustomerHomeManagedBean implements Serializable{
         }
         catch(Exception ex){
             String msg = "Something went wrong.";
+            System.out.print(ex);
             MessageUtils.displayError(msg);
             return false;
         }
