@@ -10,6 +10,7 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -22,8 +23,21 @@ public class CurrentAccountChequeSessionBean implements CurrentAccountChequeSess
     private EntityManager em;
     
     @Override
-    public List<Cheque> getChequeByMainAccountId(String mainAccountId) {
-        
-        return null;
+    public List<Cheque> getChequeByMainAccountId(Long mainAccountId) {
+        Query q = em.createQuery("SELECT c FROM Cheque c WHERE c.account.mainAccount.id = :mainAccountId");
+        q.setParameter("mainAccountId", mainAccountId);
+        return q.getResultList();
+    }
+    
+    @Override
+    public Cheque createCheque(Cheque c) {
+        em.persist(c);
+        return c;
+    }
+    
+    @Override
+    public Cheque updateCheque(Cheque c) {
+        em.merge(c);
+        return c;
     }
 }
