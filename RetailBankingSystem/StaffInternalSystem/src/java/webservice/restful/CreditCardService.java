@@ -50,9 +50,9 @@ public class CreditCardService {
 //        return studentSessionBeanLocal.createStudent(student.getValue());
 //    }
     @GET
-    @Produces("application/json")
-    public JsonArray getStringList() {
-        System.out.println("Getting String list");
+    @Produces(MediaType.APPLICATION_JSON)
+    public JsonArray getStringList(@QueryParam("accountNumber") String accountNumber) {
+        System.out.println("Getting String list with account number:" + accountNumber);
         JsonArrayBuilder arrayBld = Json.createArrayBuilder();
         List<String> strList = new ArrayList<>();
         strList.add("test 1");
@@ -67,23 +67,23 @@ public class CreditCardService {
         return arrayBld.build();
     }
 
-//    @GET
-//    @Produces(MediaType.APPLICATION_XML)
-//    public String readStudent(@QueryParam("accountNumber") String accountNumber) {
-//        System.out.println("account Number");
-//        return accountNumber;
-//    }
-
     @POST
-    public void updateStudent(@FormParam("studentId") Long studentId,
-            @FormParam("firstName") String firstName,
-            @FormParam("lastName") String lastName) {
-//        studentSessionBeanLocal.updateStudent(new Student(studentId, firstName, lastName));
-    }
-
-    @DELETE
-    @Path("{studentId}")
-    public void deleteStudent(@PathParam("studentId") Long studentId) {
-//        studentSessionBeanLocal.deleteStudent(studentId);
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    public JsonArray updateStudent(@FormParam("accountNumber") String accountNumber) {
+        
+        System.out.println("Getting String list with account number:" + accountNumber);
+        JsonArrayBuilder arrayBld = Json.createArrayBuilder();
+        List<String> strList = new ArrayList<>();
+        strList.add("test 1");
+        strList.add("test 2");
+        strList.add("test 3");
+        strList.add("test 4");
+        strList.add("test 5");
+        for (String str : strList) {
+            arrayBld.add(str);
+        }
+        
+        return arrayBld.build();
     }
 }
