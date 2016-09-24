@@ -5,6 +5,7 @@
  */
 package ejb.session.dams;
 
+import entity.dams.account.CustomerDepositAccount;
 import entity.dams.account.DepositAccount;
 import java.math.BigDecimal;
 import java.util.List;
@@ -22,6 +23,7 @@ public interface CustomerDepositSessionBeanLocal {
     public DepositAccount updateAccount(DepositAccount account);
     public List<DepositAccount> showAllAccounts();
     public List<DepositAccount> getAllCustomerAccounts(Long mainAccountId);
+    public List<CustomerDepositAccount> getAllNonFixedCustomerAccounts(Long mainAccountId);
     public String depositIntoAccount(String accountNumber, BigDecimal depositAmount);
     public String withdrawFromAccount(String accountNumber, BigDecimal depositAmount);
     public DepositAccount depositIntoAccount(DepositAccount account, BigDecimal depositAmount);

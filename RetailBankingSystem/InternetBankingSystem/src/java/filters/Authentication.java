@@ -127,7 +127,6 @@ public class Authentication implements Filter {
                     || reqURI.contains("/index_deposit_subpages/")
                     || reqURI.contains("/index_card_subpages/")
                     || reqURI.contains("/apply/")
-                    || reqURI.contains("/customer_card/")
                     || reqURI.contains("/customer_cms/")
                     || reqURI.contains("/customer_deposit/")
                     || reqURI.contains("/apply_deposit_account.xhtml")

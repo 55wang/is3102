@@ -55,21 +55,13 @@ public class CustomerLoginManagedBean implements Serializable {
 //        FacesMessage m = new FacesMessage("Test Customer", "Content");
 //        eventBus.publish(NOTIFY_CHANNEL, m);
         
-//        MainAccount ma = loginSessionBean.getCustomerByUserID("c1234567").getMainAccount();
-//        String userID = Long.toString(ma.getId());
-//        String userName = ma.getUserID();
-//        SessionUtils.setUserId(userID);
-//        SessionUtils.setUserName(userName);
-//        RedirectUtils.redirect(SessionUtils.getContextPath() + "/customer_cms/customer_home.xhtml");
-        
         MainAccount ma = loginSessionBean.getCustomerByUserID("c1234567").getMainAccount();
         String userID = Long.toString(ma.getId());
         String userName = ma.getUserID();
         SessionUtils.setUserId(userID);
         SessionUtils.setUserName(userName);
-
-        SessionUtils.setTokenAuthentication(Boolean.FALSE);
-        RedirectUtils.redirect("/InternetBankingSystem/customer_deposit/deposit_account_summary.xhtml");
+        SessionUtils.setTokenAuthentication(Boolean.TRUE);
+        RedirectUtils.redirect("/InternetBankingSystem/customer_card/apply_debit_card_account.xhtml");
 
     }
 
@@ -101,6 +93,7 @@ public class CustomerLoginManagedBean implements Serializable {
                 String userName = ma.getUserID();
                 SessionUtils.setUserId(userID);
                 SessionUtils.setUserName(userName);
+                SessionUtils.setTokenAuthentication(Boolean.TRUE);
 //                RedirectUtils.redirect("../customer_cms/customer_home.xhtml");
                 return "SUCCESS";
             }
