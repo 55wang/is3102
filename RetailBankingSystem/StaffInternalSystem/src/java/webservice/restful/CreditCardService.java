@@ -24,7 +24,9 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PUT;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import javax.xml.bind.JAXBElement;
+import org.primefaces.json.JSONObject;
 
 /**
  *
@@ -70,20 +72,15 @@ public class CreditCardService {
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-    public JsonArray updateStudent(@FormParam("accountNumber") String accountNumber) {
-        
+    public Response updateStudent(@FormParam("accountNumber") String accountNumber) {
+        // get value from form
         System.out.println("Getting String list with account number:" + accountNumber);
-        JsonArrayBuilder arrayBld = Json.createArrayBuilder();
-        List<String> strList = new ArrayList<>();
-        strList.add("test 1");
-        strList.add("test 2");
-        strList.add("test 3");
-        strList.add("test 4");
-        strList.add("test 5");
-        for (String str : strList) {
-            arrayBld.add(str);
-        }
+        // return value
+        CreditCardDTO c = new CreditCardDTO();
+        c.setAmount("123.00");
+        c.setCreditCardNumber("4545454545454545");
+        String jsonString = new JSONObject(c).toString();
         
-        return arrayBld.build();
+        return Response.ok(jsonString, MediaType.APPLICATION_JSON).build();
     }
 }

@@ -12,6 +12,7 @@ import javax.annotation.PostConstruct;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import javax.json.JsonArray;
+import javax.json.JsonObject;
 import javax.json.JsonString;
 import javax.json.JsonValue;
 import javax.ws.rs.client.Client;
@@ -66,10 +67,8 @@ public class SimulatedCallManagedBean implements Serializable {
         form.param("accountNumber", "987654321");
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(path);
-        JsonArray response = target.request(MediaType.APPLICATION_JSON).post(Entity.entity(form, MediaType.APPLICATION_FORM_URLENCODED), JsonArray.class);
-        for (JsonValue str : response) {
-            allString.add(((JsonString) str).getString());
-        }
-        System.out.println(allString);
+        JsonObject response = target.request(MediaType.APPLICATION_JSON).post(Entity.entity(form, MediaType.APPLICATION_FORM_URLENCODED), JsonObject.class);
+        
+        System.out.println(response);
     }
 }
