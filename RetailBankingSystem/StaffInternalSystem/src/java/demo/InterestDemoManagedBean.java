@@ -10,6 +10,7 @@ import ejb.session.dams.InterestSessionBeanLocal;
 import ejb.session.mainaccount.MainAccountSessionBeanLocal;
 import entity.customer.MainAccount;
 import entity.dams.account.CustomerDepositAccount;
+import entity.dams.account.CustomerFixedDepositAccount;
 import entity.dams.account.DepositAccount;
 import entity.dams.account.DepositAccountProduct;
 import entity.dams.rules.ConditionInterest;
@@ -18,17 +19,17 @@ import entity.dams.rules.RangeInterest;
 import entity.dams.rules.TimeRangeInterest;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
-import server.utilities.EnumUtils;
-import server.utilities.CommonHelper;
 import server.utilities.ConstantUtils;
 
 /**
@@ -46,6 +47,11 @@ public class InterestDemoManagedBean implements Serializable {
     @EJB
     private InterestAccrualSessionBeanLocal interestAccrualSessionBean;
 
+    private List<Integer> colIndex = new ArrayList<>();
+    private List<Integer> rowIndex = new ArrayList<>();
+    private TimeRangeInterest[][] formatedInterests;
+    private Integer colSize;
+    
     private MainAccount demoAccount;
     private DepositAccount showingAccount;
     private String selectedDepositAccount;
@@ -53,10 +59,10 @@ public class InterestDemoManagedBean implements Serializable {
     
     
     // Display Current interests with the account
-    private List<Interest> normalInterests = new ArrayList<>();
-    private List<RangeInterest> rangeInterests = new ArrayList<>();
+    private List<Interest> normalInterests;
+    private List<RangeInterest> rangeInterests;
+    private List<ConditionInterest> conditionInterests;
     private List<TimeRangeInterest> timeRangeInterests = new ArrayList<>();
-    private List<ConditionInterest> conditionInterests = new ArrayList<>();
 
     public InterestDemoManagedBean() {
     }
@@ -92,92 +98,34 @@ public class InterestDemoManagedBean implements Serializable {
     }
 
     public BigDecimal getTotalInterest(DepositAccount account) {
+        System.out.println("getTotalInterest starting");
         // TODO: Seperate from fixed deposit account
-        BigDecimal totalInterest = BigDecimal.ZERO;
-        BigDecimal monthlyInterval = null;
-        if (account instanceof CustomerDepositAccount) {
-            monthlyInterval = new BigDecimal(12 / account.getProduct().getInterestInterval());
-        } else {
-
+        BigDecimal totalInterest = BigDecimal.ZERO.setScale(20);
+        
+        System.out.println("Current cumulated interest amount:" + account.getCumulatedInterest().getCummulativeAmount());
+        for (int i = 0; i < 30; i ++) {
+            account = interestAccrualSessionBean.calculateDailyInterestForDepositAccount(account);
+            System.out.println("Current cumulated interest amount:" + account.getCumulatedInterest().getCummulativeAmount());
         }
         
-        System.out.println(monthlyInterval);
-        BigDecimal originalAmount = account.getBalance();
-
-        if (account.getType().equals(EnumUtils.DepositAccountType.CUSTOM)) {
-            // Get highest base interest
-            BigDecimal baseInterest = BigDecimal.ZERO;
-            for (Interest i : normalInterests) {
-                if (baseInterest.compareTo(i.getPercentage()) < 0) {
-                    baseInterest = i.getPercentage();
-                }
-            }
-            // Assume Cap is 60,000, this is independent
-            for (ConditionInterest i : conditionInterests) {
-                // if fulfill, then stack
-                Boolean met = interestAccrualSessionBean.isAccountMeetCondition(account, i);
-                if (met) {
-                    System.out.println("Condition: " + i.getConditionType() + " has met with percentage " + i.getPercentage());
-                    BigDecimal ceiling = i.getCeiling();
-                    if (originalAmount.compareTo(ceiling) >= 0) {
-                        // only process ceiling
-                        BigDecimal percentage = i.getPercentage().divide(monthlyInterval, 12, RoundingMode.HALF_UP);
-                        System.out.println("Percentage " + percentage);
-                        totalInterest = totalInterest.add(ceiling.multiply(percentage));
-                    } else {
-                        // process originalAmount
-                        BigDecimal percentage = i.getPercentage().divide(monthlyInterval, 12, RoundingMode.HALF_UP);
-                        System.out.println("Percentage " + percentage);
-                        totalInterest = totalInterest.add(originalAmount.multiply(percentage));
-                    }
-                }
-            }
-            // Assume not be overlapped
-            BigDecimal leftOver = originalAmount;
-            BigDecimal tempInterest = baseInterest;
-            for (RangeInterest i : rangeInterests) {
-                if (tempInterest.compareTo(i.getPercentage()) < 0) {
-                    tempInterest = i.getPercentage();
-                }
-                BigDecimal interval = BigDecimal.ZERO;
-                // Min |   | Max
-                if (originalAmount.compareTo(i.getMaximum()) >= 0) {
-                    // apply to full range
-                    interval = i.getMaximum().subtract(i.getMinimum());
-                } else if (originalAmount.compareTo(i.getMinimum()) >= 0) {
-                    // apply to partial range
-                    interval = originalAmount.subtract(i.getMinimum());
-                } else {
-                    // not apply, originalAmount too small
-                    continue;
-                }
-                BigDecimal percentage = baseInterest.divide(monthlyInterval, 12, RoundingMode.HALF_UP);
-                totalInterest = totalInterest.add(interval.multiply(percentage));
-                leftOver = leftOver.subtract(interval);
-            }
-
-            BigDecimal percentage = tempInterest.divide(monthlyInterval, 12, RoundingMode.HALF_UP);
-            totalInterest = totalInterest.add(leftOver.multiply(percentage));
-
-        } else if (account.getType().equals(EnumUtils.DepositAccountType.CURRENT)) {
-
-        } else if (account.getType().equals(EnumUtils.DepositAccountType.SAVING)) {
-
-        } else if (account.getType().equals(EnumUtils.DepositAccountType.FIXED)) {
-
-        }
-
+        // End of month
+        totalInterest = account.getCumulatedInterest().getCummulativeAmount();
+        showingAccount = interestAccrualSessionBean.calculateMonthlyInterestForDepositAccount(account);
+        
         return totalInterest;
     }
 
     private void initInterests() {
+        rangeInterests = new ArrayList<>();
+        conditionInterests = new ArrayList<>();
+        normalInterests = new ArrayList<>();
+        
         if (showingAccount instanceof CustomerDepositAccount) {
 
             List<Interest> interests = ((DepositAccountProduct) showingAccount.getProduct()).getInterestRules();
 
             for (Interest i : interests) {
                 if (i instanceof TimeRangeInterest) {
-                    timeRangeInterests.add((TimeRangeInterest) i);
                 } else if (i instanceof RangeInterest) {
                     rangeInterests.add((RangeInterest) i);
                 } else if (i instanceof ConditionInterest) {
@@ -186,8 +134,64 @@ public class InterestDemoManagedBean implements Serializable {
                     normalInterests.add(i);
                 }
             }
+        } else if (showingAccount instanceof CustomerFixedDepositAccount) {
+            timeRangeInterests = ((CustomerFixedDepositAccount)showingAccount).getInterestRules();
+            initTimeRangeDisplay();
         }
 
+    }
+    
+    private void initTimeRangeDisplay() {
+        Set<Integer> set = new HashSet<>();
+        for (TimeRangeInterest i : timeRangeInterests) {
+            System.out.println("ID: " + i.getId() + " StartMonth: " + i.getStartMonth());
+            set.add(i.getStartMonth());
+        }
+        System.out.println("Before sort");
+        Collections.sort(timeRangeInterests);
+        System.out.println("Set is size: " + set.size());
+        Integer col = set.size();
+        Integer row = timeRangeInterests.size() / col;
+        System.out.println("Col: " + col + " Row: " + row);
+        formatedInterests = new TimeRangeInterest[row][col];
+        
+        Integer counter = 0;
+        for (int i = 0; i < formatedInterests.length; i++) {
+            for (int j = 0; j < formatedInterests[i].length; j++) {
+                formatedInterests[i][j] = timeRangeInterests.get(counter);
+                counter++;
+            }
+        }
+        
+        System.out.println(formatedInterests);
+        
+        for (int i = 0; i <= col; i++) {
+            getColIndex().add(i);
+        }
+//        getColIndex().add(getColIndex().size());
+        for (int i = 0; i <= row; i++) {
+            getRowIndex().add(i);
+        }
+        setColSize((Integer) getColIndex().size());
+    }
+    
+    public String getDisplayCell(Integer row, Integer col) {
+        System.out.println("Row is: " + row + " Col is: " + col);
+        if (row == 0 && col == 0) {
+            return "";
+        } else if (row == 0) {
+            TimeRangeInterest cell = getFormatedInterests()[row][col - 1];
+            return cell.getStartMonth() + "~" + cell.getEndMonth() + "mth";
+        } else if (col == 0) {
+            TimeRangeInterest cell = getFormatedInterests()[row - 1][col];
+            if (cell.getMinimum().equals(BigDecimal.ZERO)) {
+                return "First $" + cell.getMaximum();
+            }
+            return "$" + cell.getMinimum().intValue() + " ~ $" + cell.getMaximum().intValue();
+        } else {
+            TimeRangeInterest cell = getFormatedInterests()[row - 1][col - 1];
+            return cell.getPercentage().toString().substring(0, 6);
+        }
     }
 
     /**
@@ -216,20 +220,6 @@ public class InterestDemoManagedBean implements Serializable {
      */
     public void setRangeInterests(List<RangeInterest> rangeInterests) {
         this.rangeInterests = rangeInterests;
-    }
-
-    /**
-     * @return the timeRangeInterests
-     */
-    public List<TimeRangeInterest> getTimeRangeInterests() {
-        return timeRangeInterests;
-    }
-
-    /**
-     * @param timeRangeInterests the timeRangeInterests to set
-     */
-    public void setTimeRangeInterests(List<TimeRangeInterest> timeRangeInterests) {
-        this.timeRangeInterests = timeRangeInterests;
     }
 
     /**
@@ -300,5 +290,61 @@ public class InterestDemoManagedBean implements Serializable {
      */
     public void setAvailableDepositAccount(Map<String, String> availableDepositAccount) {
         this.availableDepositAccount = availableDepositAccount;
+    }
+
+    /**
+     * @return the colIndex
+     */
+    public List<Integer> getColIndex() {
+        return colIndex;
+    }
+
+    /**
+     * @param colIndex the colIndex to set
+     */
+    public void setColIndex(List<Integer> colIndex) {
+        this.colIndex = colIndex;
+    }
+
+    /**
+     * @return the rowIndex
+     */
+    public List<Integer> getRowIndex() {
+        return rowIndex;
+    }
+
+    /**
+     * @param rowIndex the rowIndex to set
+     */
+    public void setRowIndex(List<Integer> rowIndex) {
+        this.rowIndex = rowIndex;
+    }
+
+    /**
+     * @return the formatedInterests
+     */
+    public TimeRangeInterest[][] getFormatedInterests() {
+        return formatedInterests;
+    }
+
+    /**
+     * @param formatedInterests the formatedInterests to set
+     */
+    public void setFormatedInterests(TimeRangeInterest[][] formatedInterests) {
+        this.formatedInterests = formatedInterests;
+    }
+
+    /**
+     * @return the colSize
+     */
+    public Integer getColSize() {
+        return colSize;
+    }
+
+    /**
+     * @param colSize the colSize to set
+     */
+    public void setColSize(Integer colSize) {
+        this.colSize = colSize;
     }
 }

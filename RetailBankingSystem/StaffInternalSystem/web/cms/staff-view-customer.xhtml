@@ -16,8 +16,11 @@
             <em:staffNavBar context="customer"></em:staffNavBar>
             <em:staffSideBar top="customer" side="viewCustomer"></em:staffSideBar>
             <div class="container">
-                <p:messages id="messagesStatus" redisplay="false"></p:messages>
+
+
+                <!--                <p:messages id="messagesStatus" redisplay="false">-->
                 <p:panel header="Search Customer">
+
                     <p:outputPanel>
                         <h:form id="search-form">
                             <p:inputText id="idFilter" style="width:180px" value="#{staffCustomerInformationManagedBean.searchText}" placeholder="Enter identity number"  />
@@ -69,35 +72,62 @@
                                     </f:facet>
 
                                     <h:outputText value="Last Name: " />
-                                    <h:inputText value="#{customer.lastname}" />
+                                    <h:inputText value="#{customer.lastname}" style="width:97%"/>
 
                                     <h:outputText value="First Name: " />
-                                    <h:inputText value="#{customer.firstname}" />
+                                    <h:inputText value="#{customer.firstname}" style="width:97%"/>
+
+                                    <h:outputText value="Status: " />
+                                    <h:selectOneMenu value="#{customer.mainAccount.status}" style="width:100%">
+                                        <f:selectItems value="#{staffCustomerInformationManagedBean.selectStatuses}" />
+                                    </h:selectOneMenu>
 
                                     <h:outputText value="Gender: " />
-                                    <h:inputText value="#{customer.gender}" />                                   
+                                    <h:selectOneMenu value="#{customer.gender}" style="width:100%">
+                                        <f:selectItems value="#{staffCustomerInformationManagedBean.selectGenders}" />
+                                    </h:selectOneMenu>
+
+                                    <h:outputText value="Citizenship: " />
+                                    <h:selectOneMenu value="#{customer.citizenship}" style="width:100%">
+                                        <f:selectItems value="#{staffCustomerInformationManagedBean.selectCitizenships}" />
+                                    </h:selectOneMenu>
 
                                     <h:outputText value="Nationality: " />
-                                    <h:inputText value="#{customer.nationality}" />
+                                    <h:selectOneMenu value="#{customer.nationality}" style="width:100%">
+                                        <f:selectItems value="#{staffCustomerInformationManagedBean.selectNationalities}" />
+                                    </h:selectOneMenu>
 
                                     <h:outputText value="Identity Type: " />
-                                    <h:inputText value="#{customer.identityType}" />
+                                    <h:selectOneMenu value="#{customer.identityType}" style="width:100%">
+                                        <f:selectItems value="#{staffCustomerInformationManagedBean.selectIdentityTypes}" />
+                                    </h:selectOneMenu>
 
                                     <h:outputText value="Identity Number: " />
                                     <h:inputText value="#{customer.identityNumber}" />
 
                                     <h:outputText value="Occupation: " />
-                                    <h:inputText value="#{customer.occupation}" />
+                                    <h:selectOneMenu value="#{customer.occupation}" style="width:100%">
+                                        <f:selectItems value="#{staffCustomerInformationManagedBean.selectOccupations}" />
+                                    </h:selectOneMenu>
 
                                     <h:outputText value="Income (S$): " />
-                                    <h:inputText value="#{customer.income}" />
+                                    <h:selectOneMenu value="#{customer.income}" style="width:100%">
+                                        <f:selectItems value="#{staffCustomerInformationManagedBean.selectIncome}" />
+                                    </h:selectOneMenu>
 
+                                    <h:outputText value="Marital Status: " />
+                                    <h:selectOneMenu value="#{customer.maritalStatus}" style="width:100%">
+                                        <f:selectItems value="#{staffCustomerInformationManagedBean.selectMaritalStatus}" />
+                                    </h:selectOneMenu>
 
-                                    <h:outputText value="Martial Status: " />
-                                    <h:inputText value="#{customer.martialStatus}" />
+                                    <h:outputText value="Education: " />
+                                    <h:selectOneMenu value="#{customer.education}" style="width:100%">
+                                        <f:selectItems value="#{staffCustomerInformationManagedBean.selectEducation}" />
+                                    </h:selectOneMenu>
 
                                     <h:outputText value="DOB: " />
-<p:calendar value="#{customer.birthDay}" navigator="true" yearRange="c-100:c+0" required="true" pattern="yyyy-MM-dd"/>
+                                    <p:calendar value="#{customer.birthDay}" navigator="true" yearRange="c-100:c+0" required="true" pattern="yyyy-MM-dd"/>
+
                                     <h:outputText value="Credit Score" />
                                     <h:inputText value="#{customer.creditScore}" />
                                 </p:panelGrid>
@@ -142,7 +172,7 @@
                                 <br/><br/>
                                 <p:outputPanel>
 
-                                    <p:commandButton class="h-center" value="Update" update="update-form" action="#{staffCustomerInformationManagedBean.saveUpdatedCustomerInformation(customer)}" />
+                                    <p:commandButton class="h-center" value="Update"  action="#{staffCustomerInformationManagedBean.saveUpdatedCustomerInformation(customer)}" />
 
                                 </p:outputPanel>
 
@@ -152,7 +182,7 @@
                         </p:dataTable>
                     </h:form>
                 </p:panel>
-
+                <!--                </p:messages>-->
             </div>
         </h:body> 
     </f:view>

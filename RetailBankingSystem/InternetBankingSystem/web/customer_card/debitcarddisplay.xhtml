@@ -1,9 +1,3 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
@@ -12,62 +6,109 @@ and open the template in the editor.
       xmlns:em="http://xmlns.jcp.org/jsf/composite/emcomp">
     <f:view>
         <h:head>
+
             <title>Merlion Bank</title>
             <h:outputStylesheet library="css" name="reset.css"/>
             <h:outputStylesheet library="css" name="theme.css"/>
         </h:head>
 
-        <em:customerHeader context="index_card" userName="Log in"></em:customerHeader>
-        <em:customerNavBar context="index_card" pageName="index_card" ></em:customerNavBar>
-        
-       <table style="margin-left: 70px" align="center">
-    <tr>
-    <td><p:panel id="Debitcard1" header="Debit Card 1"  style="margin-top:200px;margin-bottom:20px">
-        <h:panelGrid columns="2" cellpadding="10">
-            <p:graphicImage library="img" style="width: 100px;height: 50px" name="bank-image.jpg" />
-            <h:outputText
-                value="Current account is suitable for your daily banking needs." />
-        </h:panelGrid>
-            <p><a href=".../customer_card/debitcard1.xhtml" style="text-decoration: none;color:grey">View Details</a></p>
-    </p:panel></td>
-    <td style="column-width: 20px"></td>
-    <td><p:panel id="Debitcard2" header="Debit Card 2" style="margin-top:200px;margin-bottom:20px">
-        <h:panelGrid columns="2" cellpadding="10">
-            <p:graphicImage library="img" style="width: 100px;height: 50px" name="deposit.jpg" />
-            <h:outputText
-                value="Grow your savings with these accounts." />
-        </h:panelGrid>
-            <p><a href="#" style="text-decoration: none;color:grey">View Details</a></p>
-    </p:panel></td>
-    <td><p:panel id="Debitcard3" header="Debit Card 3" style="margin-top:200px;margin-bottom:20px">
-        <h:panelGrid columns="2" cellpadding="10">
-            <p:graphicImage library="img" style="width: 100px;height: 50px" name="deposit.jpg" />
-            <h:outputText
-                value="Grow your savings with these accounts." />
-        </h:panelGrid>
-            <p><a href="#" style="text-decoration: none;color:grey">View Details</a></p>
-    </p:panel></td>
-        </tr>
-    
-    <tr>
-    <td><p:panel id="Debitcard4" header="Debit Card 4"  style="margin-bottom:20px">
-        <h:panelGrid columns="2" cellpadding="10">
-            <p:graphicImage library="img" style="width: 100px;height: 50px" name="fixed-deposit.jpg" />
-            <h:outputText
-                value="Stand a chance to earn 0.8% return." />
-        </h:panelGrid>
-            <p><a href="#" style="text-decoration: none;color: grey">View Details</a></p>
-    </p:panel></td>
-    <td style="column-width: 20px"></td>
-    <td><p:panel id="Debitcard5" header="Debit Card 4"  style="margin-bottom:20px">
-        <h:panelGrid columns="2" cellpadding="10">
-            <p:graphicImage library="img" style="width: 100px;height: 50px" name="growth-of-money-market-in-india.jpg" />
-            <h:outputText
-                value="Enjoy exclusive bonus Merlion deposit customers." />
-        </h:panelGrid>
-            <p><a href="#" style="text-decoration: none;color:grey">View Details</a></p>
-    </p:panel></td>
-        </tr>
-    </table>
-       </f:view>
-                </html>
+
+   
+        <body>
+            <style>
+                div.img {
+                    margin: 5px;
+                    border: 1px solid #ccc;
+                    float: left;
+                    width: 400px;
+                }
+
+                div.img:hover {
+                    border: 1px solid #777;
+                }
+
+                div.img img {
+                    width: 100%;
+                    height: 230px;
+
+                }
+
+                div.desc {
+                    padding: 15px;
+                    text-align: center;
+                }
+
+/*                .floating-menu {
+                    font-family: sans-serif;
+                    background: gainsboro;
+                    position: fixed;
+                    right: 0;
+                    top: 40%;
+                    width: 200px;
+                    height: 300px;
+                    margin-top: -2.5em;
+                }
+
+                .floating-menu a, 
+                .floating-menu h3 {
+                    font-size: 0.9em;
+                    display: block;
+                    margin: 0 0.5em;
+                    color: white;
+                }*/
+
+            </style>
+            <em:customerHeader context="index_card" userName="Log in"></em:customerHeader>
+            <em:customerNavBar context="index_card" pageName="index_card" ></em:customerNavBar>
+            <em:floating_menu context="debit"></em:floating_menu>
+            <div style="margin-top:750px;margin-left: 70px;position: absolute;width: 1100px"   >    
+
+                <h2 style="margin-top: 20px">Featured Products</h2>
+                <div  class="img" style="width:300 px;height: 200px;border: none">
+                    <a target="_blank" href="debitcard1.xhtml">
+                        <img src="../resources/img/mdebit1.jpg" alt="debitcard1" ></img>
+                    </a>
+                    <div class="desc">Add a description of the card1 here</div>
+                </div>
+
+                <div class="img" style="margin-left:60px;width: 360px;height: 200px;border: none">
+                    <a target="_blank" href="deposit.jpg">
+                        <img src="../resources/img/mdebitcard2.jpg" alt="debitcard2" ></img>
+                    </a>
+                    <div class="desc">Add a description of the card2 here</div>
+                </div>
+            </div>
+
+   
+
+            <div style="margin-top:200px;margin-left: 70px;position:absolute">
+                <h1>Debit Cards</h1>
+
+                <div style="background-image: url(../resources/img/happy.jpeg);height:400px;width: 800px"> 
+                    <h1 style="margin-left:50px;margin-top: 50px;position: absolute"> Get your own Debit Card!</h1>
+                </div>
+
+                <!--                <p:lightBox styleClass="imagebox" id="lighbox1">  
+                                    <h:outputLink value="../resources/img/happy.jpeg" title="Our customer will enjoy extraodinary return.">  
+                                        <h:graphicImage alt="lalal" library="img" name="happy.jpeg" id="nature1" style="height: 400px; width: 800px" />  
+                                    </h:outputLink>
+                
+                                </p:lightBox>-->
+            </div>
+<!--            <nav class="floating-menu">
+                <p:button style="margin-top: 30px;margin-left: 20px;width: 180px;height: 60px" value="Login now" onclick="window.location.href = 'http://www.google.com'">
+                </p:button>
+                <p:button style="margin-top: 20px;margin-left: 20px;width: 180px;height: 60px" value="Apply now" >
+                </p:button>
+                <p:button style="margin-top: 20px;margin-left: 20px;width: 180px;height: 60px" value="Contact us" >
+                </p:button>
+
+
+            </nav>  -->
+
+
+
+        </body>
+    </f:view>
+</html>
+

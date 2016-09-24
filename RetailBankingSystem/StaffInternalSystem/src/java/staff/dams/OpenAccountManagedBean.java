@@ -136,7 +136,7 @@ public class OpenAccountManagedBean implements Serializable {
     private void addDefaultInterest() {
         if (accountType.equals(getACCOUNT_TYPE_FIXED())) {
             // Only fixed deposit account will save interest, save a new Interest object, with id account id + interest name
-            getNewFixedDepositAccount().addInterestsRules(interestSessionBean.getFixedDepositAccountDefaultInterests());
+//            getNewFixedDepositAccount().addInterestsRules(interestSessionBean.getFixedDepositAccountDefaultInterests());
         } else {
 
         }

@@ -32,12 +32,13 @@ public class Interest implements Serializable {
     private Long id;
     @Column(unique = true, nullable = false)
     private String name;
+    private String description;
     // REMARK:Update will create a new version and leave a copy
     private Integer version = 0;
     private Boolean isHistory = Boolean.FALSE;
     @Temporal(value = TemporalType.TIMESTAMP)
     private Date createDate = new Date();
-    @Column(precision=12, scale=2)
+    @Column(precision=18, scale=6)
     private BigDecimal percentage;
     private Boolean isCumulative = Boolean.TRUE;
 
@@ -170,5 +171,19 @@ public class Interest implements Serializable {
      */
     public void setCreateDate(Date createDate) {
         this.createDate = createDate;
+    }
+
+    /**
+     * @return the description
+     */
+    public String getDescription() {
+        return description;
+    }
+
+    /**
+     * @param description the description to set
+     */
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

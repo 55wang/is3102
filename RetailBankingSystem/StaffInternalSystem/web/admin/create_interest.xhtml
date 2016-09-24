@@ -49,22 +49,7 @@
                                     <p:outputLabel for="rangeInterestMaximum" value="Maximum Deposit Amount: " />
                                     <p:inputText id="rangeInterestMaximum" value="#{createInterestManagedBean.rangeInterest.maximum}"/>
                                 </c:if>
-                                <c:if test="#{createInterestManagedBean.interestType == createInterestManagedBean.INTEREST_TYPE_TIME_RANGE}">
-                                    <p:outputLabel for="rangeInterestName" value="Interest Name: " />
-                                    <p:inputText id="rangeInterestName" value="#{createInterestManagedBean.timeRangeInterest.name}"/>
-                                    <p:outputLabel for="rangeInterestPercentage" value="Interest Percentage: " />
-                                    <p:inputText id="rangeInterestPercentage" value="#{createInterestManagedBean.timeRangeInterest.percentage}">
-                                        <f:convertNumber type="percent" minFractionDigits="4"/>
-                                    </p:inputText>
-                                    <p:outputLabel for="rangeInterestMinimum" value="Minimum Deposit Amount: " />
-                                    <p:inputText id="rangeInterestMinimum" value="#{createInterestManagedBean.timeRangeInterest.minimum}"/>
-                                    <p:outputLabel for="rangeInterestMaximum" value="Maximum Deposit Amount: " />
-                                    <p:inputText id="rangeInterestMaximum" value="#{createInterestManagedBean.timeRangeInterest.maximum}"/>
-                                    <p:outputLabel for="rangeInterestFirstMonth" value="Start Month: " />
-                                    <p:inputText id="rangeInterestFirstMonth" value="#{createInterestManagedBean.timeRangeInterest.startMonth}"/>
-                                    <p:outputLabel for="rangeInterestLastMonth" value="End Month: " />
-                                    <p:inputText id="rangeInterestLastMonth" value="#{createInterestManagedBean.timeRangeInterest.endMonth}"/>
-                                </c:if>
+
                                 <c:if test="#{createInterestManagedBean.interestType == createInterestManagedBean.INTEREST_TYPE_CONDITION}">
                                     <p:outputLabel for="conditionType" value="Condition Type: " />
                                     <p:selectOneButton id="conditionType" value="#{createInterestManagedBean.conditionInterest.conditionType}">
@@ -108,6 +93,146 @@
 
                                 <p:commandButton value="Create" icon="ui-icon-plus" update="@form" actionListener="#{createInterestManagedBean.addInterest}" />
                             </h:panelGrid>
+                            <c:if test="#{createInterestManagedBean.interestType == createInterestManagedBean.INTEREST_TYPE_TIME_RANGE}">
+                                <p:outputLabel for="rangeInterestName" value="Interest Name: " />
+                                <p:inputText id="rangeInterestName" value="#{createInterestManagedBean.timeRangeInterestName}" required="true"/>
+                                <br/>
+                                <p:dataTable id="conditionInterests" value="#{createInterestManagedBean.collectionDTOs}" var="interest" editable="true" editMode="cell">
+                                    <p:column headerText="Min Amt" sortBy="#{interest.minAmount}">
+                                        <p:cellEditor>
+                                            <f:facet name="output">
+                                                <h:outputText value="#{interest.minAmount}" />
+                                            </f:facet>
+                                            <f:facet name="input">
+                                                <h:inputText value="#{interest.minAmount}"/>
+                                            </f:facet>
+                                        </p:cellEditor>
+                                    </p:column>
+                                    <p:column headerText="Max Amt" sortBy="#{interest.maxAmount}">
+                                        <p:cellEditor>
+                                            <f:facet name="output">
+                                                <h:outputText value="#{interest.maxAmount}" />
+                                            </f:facet>
+                                            <f:facet name="input">
+                                                <h:inputText value="#{interest.maxAmount}" />
+                                            </f:facet>
+                                        </p:cellEditor>
+                                    </p:column>
+                                    <p:column headerText="1~2mth" sortBy="#{interest.amount1}">
+                                        <p:cellEditor>
+                                            <f:facet name="output">
+                                                <h:outputText value="#{interest.amount1}">
+                                                    <f:convertNumber type="percent" minFractionDigits="4"/>
+                                                </h:outputText>
+                                            </f:facet>
+                                            <f:facet name="input">
+                                                <h:inputText value="#{interest.amount1}">
+                                                    <f:convertNumber type="percent" minFractionDigits="4"/>
+                                                </h:inputText>
+                                            </f:facet>
+                                        </p:cellEditor>
+                                    </p:column>
+                                    <p:column headerText="3~5mth" sortBy="#{interest.amount2}">
+                                        <p:cellEditor>
+                                            <f:facet name="output">
+                                                <h:outputText value="#{interest.amount2}">
+                                                    <f:convertNumber type="percent" minFractionDigits="4"/>
+                                                </h:outputText>
+                                            </f:facet>
+                                            <f:facet name="input">
+                                                <h:inputText value="#{interest.amount2}">
+                                                    <f:convertNumber type="percent" minFractionDigits="4"/>
+                                                </h:inputText>
+                                            </f:facet>
+                                        </p:cellEditor>
+                                    </p:column>
+                                    <p:column headerText="6~8mth" sortBy="#{interest.amount3}">
+                                        <p:cellEditor>
+                                            <f:facet name="output">
+                                                <h:outputText value="#{interest.amount3}">
+                                                    <f:convertNumber type="percent" minFractionDigits="4"/>
+                                                </h:outputText>
+                                            </f:facet>
+                                            <f:facet name="input">
+                                                <h:inputText value="#{interest.amount3}">
+                                                    <f:convertNumber type="percent" minFractionDigits="4"/>
+                                                </h:inputText>
+                                            </f:facet>
+                                        </p:cellEditor>
+                                    </p:column>
+                                    <p:column headerText="9~11mth" sortBy="#{interest.amount4}">
+                                        <p:cellEditor>
+                                            <f:facet name="output">
+                                                <h:outputText value="#{interest.amount4}">
+                                                    <f:convertNumber type="percent" minFractionDigits="4"/>
+                                                </h:outputText>
+                                            </f:facet>
+                                            <f:facet name="input">
+                                                <h:inputText value="#{interest.amount4}">
+                                                    <f:convertNumber type="percent" minFractionDigits="4"/>
+                                                </h:inputText>
+                                            </f:facet>
+                                        </p:cellEditor>
+                                    </p:column>
+                                    <p:column headerText="12~15mth" sortBy="#{interest.amount5}">
+                                        <p:cellEditor>
+                                            <f:facet name="output">
+                                                <h:outputText value="#{interest.amount5}">
+                                                    <f:convertNumber type="percent" minFractionDigits="4"/>
+                                                </h:outputText>
+                                            </f:facet>
+                                            <f:facet name="input">
+                                                <h:inputText value="#{interest.amount5}">
+                                                    <f:convertNumber type="percent" minFractionDigits="4"/>
+                                                </h:inputText>
+                                            </f:facet>
+                                        </p:cellEditor>
+                                    </p:column>
+                                    <p:column headerText="16~18mth" sortBy="#{interest.amount6}">
+                                        <p:cellEditor>
+                                            <f:facet name="output">
+                                                <h:outputText value="#{interest.amount6}">
+                                                    <f:convertNumber type="percent" minFractionDigits="4"/>
+                                                </h:outputText>
+                                            </f:facet>
+                                            <f:facet name="input">
+                                                <h:inputText value="#{interest.amount6}">
+                                                    <f:convertNumber type="percent" minFractionDigits="4"/>
+                                                </h:inputText>
+                                            </f:facet>
+                                        </p:cellEditor>
+                                    </p:column>
+                                    <p:column headerText="19~24mth" sortBy="#{interest.amount7}">
+                                        <p:cellEditor>
+                                            <f:facet name="output">
+                                                <h:outputText value="#{interest.amount7}">
+                                                    <f:convertNumber type="percent" minFractionDigits="4"/>
+                                                </h:outputText>
+                                            </f:facet>
+                                            <f:facet name="input">
+                                                <h:inputText value="#{interest.amount7}">
+                                                    <f:convertNumber type="percent" minFractionDigits="4"/>
+                                                </h:inputText>
+                                            </f:facet>
+                                        </p:cellEditor>
+                                    </p:column>
+                                    <p:column headerText="25~36mth" sortBy="#{interest.amount8}">
+                                        <p:cellEditor>
+                                            <f:facet name="output">
+                                                <h:outputText value="#{interest.amount8}">
+                                                    <f:convertNumber type="percent" minFractionDigits="4"/>
+                                                </h:outputText>
+                                            </f:facet>
+                                            <f:facet name="input">
+                                                <h:inputText value="#{interest.amount8}">
+                                                    <f:convertNumber type="percent" minFractionDigits="4"/>
+                                                </h:inputText>
+                                            </f:facet>
+                                        </p:cellEditor>
+                                    </p:column>
+                                </p:dataTable>
+
+                            </c:if>
                         </p:messages>
                     </p:panel>
                 </h:form>
@@ -143,28 +268,13 @@
                         </p:dataTable>
                     </p:panel>
                     <p:panel header="Time Range Interests">
-                        <p:dataTable id="timeRangeInterests" value="#{createInterestManagedBean.timeRangeInterests}" var="interest">
-                            <p:column headerText="Name" sortBy="#{interest.name}">
-                                <h:outputText value="#{interest.name}"/>
-                            </p:column>
-                            <p:column headerText="Percentage" sortBy="#{interest.percentage}">
-                                <h:outputText value="#{interest.percentage}">
-                                    <f:convertNumber type="percent" minFractionDigits="4"/>
-                                </h:outputText>
-                            </p:column>
-                            <p:column headerText="Minimum" sortBy="#{interest.minimum}">
-                                <h:outputText value="#{interest.minimum}"/>
-                            </p:column>
-                            <p:column headerText="Maximum" sortBy="#{interest.maximum}">
-                                <h:outputText value="#{interest.maximum}"/>
-                            </p:column>
-                            <p:column headerText="Start" sortBy="#{interest.startMonth}">
-                                <h:outputText value="#{interest.startMonth}"/>
-                            </p:column>
-                            <p:column headerText="End" sortBy="#{interest.endMonth}">
-                                <h:outputText value="#{interest.endMonth}"/>
-                            </p:column>
-                        </p:dataTable>
+                        <p:panelGrid columns="#{createInterestManagedBean.colSize}">
+                            <c:forEach items="#{createInterestManagedBean.rowIndex}" var="row">
+                                <c:forEach items="#{createInterestManagedBean.colIndex}" var="col">
+                                    <h:outputText value="#{createInterestManagedBean.getDisplayCell(row, col)}" />
+                                </c:forEach>
+                            </c:forEach>
+                        </p:panelGrid>
                     </p:panel>
                     <p:panel header="Condition Interests">
                         <p:dataTable id="conditionInterests" value="#{createInterestManagedBean.conditionInterests}" var="interest">

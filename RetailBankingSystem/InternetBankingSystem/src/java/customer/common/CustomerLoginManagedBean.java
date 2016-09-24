@@ -45,7 +45,7 @@ public class CustomerLoginManagedBean implements Serializable {
 
     private String findUsernameEmail;
     private String findPasswordEmail;
-    
+
     private final static String NOTIFY_CHANNEL = "/notify";
 
     /**
@@ -53,13 +53,19 @@ public class CustomerLoginManagedBean implements Serializable {
      */
     public CustomerLoginManagedBean() {
     }
-    
+
     @PostConstruct
     public void init() {
         System.out.println("CustomerLoginManagedBean @PostConstruct");
-        EventBus eventBus = EventBusFactory.getDefault().eventBus();
-        FacesMessage m = new FacesMessage("Test Customer", "Content");
-        eventBus.publish(NOTIFY_CHANNEL, m);
+//        EventBus eventBus = EventBusFactory.getDefault().eventBus();
+//        FacesMessage m = new FacesMessage("Test Customer", "Content");
+//        eventBus.publish(NOTIFY_CHANNEL, m);
+        MainAccount ma = loginSessionBean.getCustomerByUserID("c1234567").getMainAccount();
+        String userID = Long.toString(ma.getId());
+        String userName = ma.getUserID();
+        SessionUtils.setUserId(userID);
+        SessionUtils.setUserName(userName);
+        RedirectUtils.redirect(SessionUtils.getContextPath() + "/customer_cms/customer_home.xhtml");
     }
 
     public MainAccount getLoginAccount() {
@@ -70,8 +76,8 @@ public class CustomerLoginManagedBean implements Serializable {
         this.loginAccount = loginAccount;
     }
 
-    @Audit(activtyLog = "login customer account")
-    public String loginCustomer(String username, @FullHidden String password) {
+//    @Audit(activtyLog = "login customer account")
+    public String loginCustomer(String username, /*@FullHidden*/ String password) {
         MainAccount ma = null;
 
         try {

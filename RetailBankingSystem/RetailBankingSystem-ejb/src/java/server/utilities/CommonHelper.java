@@ -5,12 +5,14 @@
  */
 package server.utilities;
 
+import java.security.SecureRandom;
+
 /**
  *
  * @author leiyang
  */
 public class CommonHelper {
-    
+
     public static String delimAdd(String full, String s) {
         if (full == null || full.isEmpty()) {
             return s;
@@ -18,15 +20,15 @@ public class CommonHelper {
             return full + ConstantUtils.DELIMITER + s;
         }
     }
-    
+
     public static String delimRemove(String full, String s) {
         if (full.equals(s)) {
             return "";
         } else {
             Integer counter = 0;
-            String [] parts = full.split(ConstantUtils.DELIMITER);
+            String[] parts = full.split(ConstantUtils.DELIMITER);
             String result = "";
-            if (parts.length < 2 ) {
+            if (parts.length < 2) {
                 // not found
                 return full;
             }
@@ -43,12 +45,12 @@ public class CommonHelper {
             return result;
         }
     }
-    
+
     public static Boolean delimContains(String full, String s) {
         if (full == null || full.isEmpty()) {
             return false;
         } else {
-            String [] parts = full.split(ConstantUtils.DELIMITER);
+            String[] parts = full.split(ConstantUtils.DELIMITER);
             for (String p : parts) {
                 if (p.equals(s)) {
                     return true;
@@ -57,4 +59,26 @@ public class CommonHelper {
             return false;
         }
     }
+
+    private static final String AB = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+    private static final String num = "0123456789";
+
+    private static SecureRandom rnd = new SecureRandom();
+
+    public static String generateRandom(boolean numerical, int len) {
+        StringBuilder sb = new StringBuilder(len);
+        String temp;
+
+        if (numerical == true) {
+            temp = num;
+        } else {
+            temp = AB;
+        }
+
+        for (int i = 0; i < len; i++) {
+            sb.append(temp.charAt(rnd.nextInt(temp.length())));
+        }
+        return sb.toString();
+    }
+
 }
