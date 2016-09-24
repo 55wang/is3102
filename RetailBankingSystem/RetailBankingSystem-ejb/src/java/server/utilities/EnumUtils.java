@@ -176,44 +176,44 @@ public class EnumUtils {
         }
     }
 
-    // Customer
-    public enum Position {
-
-        SENIOR_MANAGEMENT("SENIOR_MANAGEMENT"),
-        PROFESSIONAL("PROFESSIONAL"),
-        MANAGERIAL("MANAGERIAL"),
-        EXECUTIVE("EXECUTIVE"),
-        SALES("SALES"),
-        OTHERS("OTHERS"),
-        DIRECTOR("DIRECTOR"),
-        SUPERVISOR("SUPERVISOR"),
-        TEACHER_LECTURER("TEACHER_LECTURER"),
-        DILPOMAT("DILPOMAT");
-
-        private String value;
-
-        Position(String value) {
-            this.value = value;
-        }
-
-        public String getValue() {
-            return value;
-        }
-
-        @Override
-        public String toString() {
-            return this.getValue();
-        }
-
-        public static Position getEnum(String value) {
-            for (Position v : values()) {
-                if (v.getValue().equalsIgnoreCase(value)) {
-                    return v;
-                }
-            }
-            throw new IllegalArgumentException();
-        }
-    }
+//    // Customer
+//    public enum Position {
+//
+//        SENIOR_MANAGEMENT("SENIOR_MANAGEMENT"),
+//        PROFESSIONAL("PROFESSIONAL"),
+//        MANAGERIAL("MANAGERIAL"),
+//        EXECUTIVE("EXECUTIVE"),
+//        SALES("SALES"),
+//        OTHERS("OTHERS"),
+//        DIRECTOR("DIRECTOR"),
+//        SUPERVISOR("SUPERVISOR"),
+//        TEACHER_LECTURER("TEACHER_LECTURER"),
+//        DILPOMAT("DILPOMAT");
+//
+//        private String value;
+//
+//        Position(String value) {
+//            this.value = value;
+//        }
+//
+//        public String getValue() {
+//            return value;
+//        }
+//
+//        @Override
+//        public String toString() {
+//            return this.getValue();
+//        }
+//
+//        public static Position getEnum(String value) {
+//            for (Position v : values()) {
+//                if (v.getValue().equalsIgnoreCase(value)) {
+//                    return v;
+//                }
+//            }
+//            throw new IllegalArgumentException();
+//        }
+//    }
 
     public enum Industry {
 
@@ -389,7 +389,7 @@ public class EnumUtils {
     public enum IdentityType {
 
         NRIC("NRIC"),
-        PASSPORT("PASSPORT");
+        PASSPORT("Passport");
 
         private String value;
 
@@ -418,9 +418,9 @@ public class EnumUtils {
 
     public enum Citizenship {
 
-        SINGAPOREAN("SINGAPOREAN"),
-        SINGAPORE_PR("SINGAPORE_PR"),
-        FOREIGNER("FOREIGNER");
+        SINGAPOREAN("Singaporean"),
+        SINGAPORE_PR("Singapore PR"),
+        FOREIGNER("Foreigner");
 
         private String value;
 
@@ -449,21 +449,21 @@ public class EnumUtils {
 
     public enum Nationality {
 
-        SINGAPOREAN("SINGAPOREAN"),
-        INDONESIA("INDONESIA"),
-        CHINA("CHINA"),
-        MALAYSIA("MALAYSIA"),
-        AUSTRALIA("AUSTRALIA"),
-        INDIA("INDIA"),
-        JAPAN("JAPAN"),
-        PHILIPPINES("PHILIPPINES"),
-        CHINA_HONG_KONG("CHINA_HONG_KONG"),
-        SOUTH_KOREA("SOUTH_KOREA"),
-        THAILAND("THAILAND"),
-        UNITED_STATES("UNITED_STATES"),
-        UNITED_KINGDOM("UNITED_KINGDOM"),
-        VIETNAM("VIETNAM"),
-        GERMANY("GERMANY");
+        SINGAPORE("Singapore"),
+        INDONESIA("Indonesia"),
+        CHINA("China"),
+        MALAYSIA("Malaysia"),
+        AUSTRALIA("Australia"),
+        INDIA("India"),
+        JAPAN("Japan"),
+        PHILIPPINES("Philippines"),
+        CHINA_HONG_KONG("China Hong Kong"),
+        SOUTH_KOREA("South Korea"),
+        THAILAND("Thailand"),
+        UNITED_STATES("United States"),
+        UNITED_KINGDOM("United Kingdom"),
+        VIETNAM("Vietnam"),
+        GERMANY("Germany");
 
         private String value;
 
@@ -492,17 +492,17 @@ public class EnumUtils {
 
     public enum Occupation {
 
-        SELF_EMPLOYED("SELF_EMPLOYED"),
-        FREELANCER("FREELANCER"),
-        SENIOR_MANAGEMENT("SENIOR_MANAGEMENT"),
-        DIRECTOR("DIRECTOR"),
-        EXECUTIVE("EXECUTIVE"),
-        TEACHER("TEACHER"),
-        SALES("SALES"),
-        SUPERVISOR("SUPERVISOR"),
-        MANAGERIAL("MANAGERIAL"),
-        DIPLOMAT("DIPLOMAT"),
-        OTHERS("OTHERS");
+        SELF_EMPLOYED("Self employed"),
+        FREELANCER("Freelancer"),
+        SENIOR_MANAGEMENT("Senior Management"),
+        DIRECTOR("Director"),
+        EXECUTIVE("Executive"),
+        TEACHER("Teacher"),
+        SALES("Sales"),
+        SUPERVISOR("Supervisor"),
+        MANAGERIAL("Managerial"),
+        DIPLOMAT("Diplomat"),
+        OTHERS("Others");
 
         private String value;
 
@@ -531,13 +531,13 @@ public class EnumUtils {
 
     public enum Education {
 
-        POSTGRAD("POSTGRAD"),
-        UNIVERSITY("UNIVERSITY"),
-        DIPLOMA("DIPLOMA"),
-        A_LEVEL("A_LEVEL"),
-        SECONDARY("SECONDARY"),
-        TECHNICAL("TECHNICAL"),
-        OTHERS("OTHERS");
+        POSTGRAD("PostGrad"),
+        UNIVERSITY("University"),
+        DIPLOMA("Diploma"),
+        A_LEVEL("A_level"),
+        SECONDARY("Secondary"),
+        TECHNICAL("Technical"),
+        OTHERS("Others");
 
         private String value;
 
@@ -566,12 +566,12 @@ public class EnumUtils {
 
     public enum Income {
 
-        BELOW_2000("BELOW_2000"),
-        FROM_2000_TO_4000("FROM_2000_TO_4000"),
-        FROM_4000_TO_6000("FROM_4000_TO_6000"),
-        FROM_6000_TO_8000("FROM_6000_TO_8000"),
-        FROM_8000_TO_10000("FROM_8000_TO_10000"),
-        OVER_10000("OVER_10000");
+        BELOW_2000("< 2000"),
+        FROM_2000_TO_4000("2000 to 4000"),
+        FROM_4000_TO_6000("4000 to 6000"),
+        FROM_6000_TO_8000("6000 to 8000"),
+        FROM_8000_TO_10000("8000 to 10000"),
+        OVER_10000("> 10000");
 
         private String value;
 
@@ -600,8 +600,8 @@ public class EnumUtils {
 
     public enum Gender {
 
-        MALE("MALE"),
-        FEMALE("FEMALE");
+        MALE("Male"),
+        FEMALE("Female");
 
         private String value;
 
@@ -630,10 +630,10 @@ public class EnumUtils {
 
     public enum MaritalStatus {
 
-        SINGLE("SINGLE"),
-        MARRIED("MARRIED"),
-        DIVORCED("DIVORCED"),
-        OTHERS("OTHERS");
+        SINGLE("Single"),
+        MARRIED("Married"),
+        DIVORCED("Divorced"),
+        OTHERS("Others");
 
         private String value;
 
