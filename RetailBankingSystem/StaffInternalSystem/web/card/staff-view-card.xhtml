@@ -1,0 +1,97 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:em="http://xmlns.jcp.org/jsf/composite/emcomp"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <!--shift + ctrl + F, format-->
+    <f:view>
+        <h:head>
+            <title>Merlion Internal</title>
+            <em:cssImport></em:cssImport>
+        </h:head>
+        <h:body>
+            <em:staffNavBar context="card"></em:staffNavBar>
+            <em:staffSideBar top="card" side="viewCard"></em:staffSideBar>
+
+            <div class="container">
+                <h:form id="mainForm">
+                    <p:panel header="Mile Credit Cards">
+                        <p:messages id="messagesStatus" redisplay="false" >
+                            <h:panelGrid columns="2" cellpadding="5">
+                                <p:dataTable value="#{cardViewProductManagedBean.mcps}" var="mcp" >
+
+                                    <p:column headerText="Card Product Name">
+                                        <h:outputText value="#{mcp.productName}" />
+                                    </p:column>
+
+                                    <p:column headerText="Min Spending Amount">
+                                        <h:outputText value="#{mcp.minSpendingAmount}" />
+                                    </p:column>
+
+                                    <p:column headerText="Local Mile Rate">
+                                        <h:outputText value="#{mcp.localMileRate}" />
+                                    </p:column>
+
+                                    <p:column headerText="Oversea Mile Rate">
+                                        <h:outputText value="#{mcp.overseaMileRate}" />
+                                    </p:column>
+                                </p:dataTable>
+                            </h:panelGrid>
+                        </p:messages>
+                    </p:panel>
+                    <p:panel header="Reward Credit Cards">
+                        <h:panelGrid columns="2" cellpadding="5">
+                            <p:dataTable value="#{cardViewProductManagedBean.rcps}" var="rcp" >
+
+                                <p:column headerText="Card Product Name">
+                                    <h:outputText value="#{rcp.productName}" />
+                                </p:column>
+
+                                <p:column headerText="Min Spending Amount">
+                                    <h:outputText value="#{rcp.minSpendingAmount}" />
+                                </p:column>
+
+                                <p:column headerText="Local Mile Rate">
+                                    <h:outputText value="#{rcp.localMileRate}" />
+                                </p:column>
+
+                                <p:column headerText="Local Point Rate">
+                                    <h:outputText value="#{rcp.localPointRate}" />
+                                </p:column>
+                            </p:dataTable>
+                        </h:panelGrid>
+                    </p:panel>
+                    <p:panel header="CashBack Credit Cards">
+                        <h:panelGrid columns="2" cellpadding="5">
+                            <p:dataTable value="#{cardViewProductManagedBean.cbcps}" var="cbcp" >
+
+                                <p:column headerText="Card Product Name">
+                                    <h:outputText value="#{cbcp.productName}" />
+                                </p:column>
+
+                                <p:column headerText="Dining Cashback Rate">
+                                    <h:outputText value="#{cbcp.diningCashBackRate}" />
+                                </p:column>
+
+                                <p:column headerText="Grocery Cashback Rate">
+                                    <h:outputText value="#{cbcp.groceryCashBackRate}" />
+                                </p:column>
+
+                                <p:column headerText="Petrol Cashback Rate">
+                                    <h:outputText value="#{cbcp.petrolCashBackRate}" />
+                                </p:column>
+                            </p:dataTable>
+                        </h:panelGrid>
+                    </p:panel>
+                </h:form>
+            </div>
+
+        </h:body> 
+    </f:view>
+
+
+</html>
+

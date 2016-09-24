@@ -14,7 +14,7 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import server.utilities.EnumUtils;
+import server.utilities.EnumUtils.*;
 
 /**
  *
@@ -38,9 +38,13 @@ public class CardAcctSessionBean implements CardAcctSessionBeanLocal {
     }
     
     @Override
-    public List<CardTransaction> getCardTransactionFromId(CreditCardAccount cca) {
-        CreditCardAccount ccaEntity= em.find(CreditCardAccount.class, cca);
-        return ccaEntity.getCardTransactions();
+    public List<CardTransaction> getCardTransactionFromId(Long ccaId) {
+        System.out.println(ccaId);
+        Query q = em.createQuery("SELECT ct FROM CardTransaction ct WHERE ct.creditCardAccount.id =:inCcaId");
+        q.setParameter("inCcaId", ccaId);
+        List<CardTransaction> cts = q.getResultList();
+        System.out.println(cts);
+        return cts;
     }
     
     //try not to use void, always return something or null. and catch it at the caller side.
@@ -59,7 +63,7 @@ public class CardAcctSessionBean implements CardAcctSessionBeanLocal {
 
     //update cardorder application status which can be cancel or approve and etc.
     @Override
-    public String updateCardOrderStatus(CreditCardOrder order, EnumUtils.ApplicationStatus status) {
+    public String updateCardOrderStatus(CreditCardOrder order, ApplicationStatus status) {
         try {
             order.setApplicationStatus(status);
             em.merge(order);
@@ -73,8 +77,11 @@ public class CardAcctSessionBean implements CardAcctSessionBeanLocal {
     }
     
     @Override
-    public List<CreditCardAccount> showAllCreditCardAccount() {
-        Query q = em.createQuery("SELECT cco FROM CreditCardAccount cca");
+    public List<CreditCardAccount> showAllCreditCardAccount(CardAccountStatus status, Long id) {
+        System.out.println("Status:" + status + " and id:" + id);
+        Query q = em.createQuery("SELECT cca FROM CreditCardAccount cca WHERE cca.CardStatus <> :inStatus AND cca.mainAccount.id =:id");
+        q.setParameter("inStatus", status);
+        q.setParameter("id", id);
         return q.getResultList();
     }
     
@@ -98,7 +105,7 @@ public class CardAcctSessionBean implements CardAcctSessionBeanLocal {
 
     //update cardaccount status 
     @Override
-    public String updateCardAccountStatus(CreditCardAccount cca, EnumUtils.CardAccountStatus status) {
+    public String updateCardAccountStatus(CreditCardAccount cca, CardAccountStatus status) {
         try {
             cca.setCardStatus(status);
             em.merge(cca);

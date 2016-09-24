@@ -18,7 +18,6 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
-import server.utilities.EnumUtils.CardAccountStatus;
 import utils.RedirectUtils;
 import utils.SessionUtils;
 
@@ -26,40 +25,31 @@ import utils.SessionUtils;
  *
  * @author wang
  */
-@Named(value = "customerCardManagedBean")
+@Named(value = "cardTransactionManagedBean")
 @ViewScoped
-public class CustomerCardManagedBean implements Serializable {
+public class CardTransactionManagedBean implements Serializable {
 
     private Customer customer;
-    private List<CreditCardAccount> ccas;
     private List<CardTransaction> cardTransactions;
+    private String ccaId;
 
     @EJB
     private CardAcctSessionBeanLocal cardAcctSessionBean;
     @EJB
     private CustomerProfileSessionBeanLocal customerProfileSessionBean;
 
-    public void sendCCTransactionDetail(CreditCardAccount cca) {
-        Map<String, String> map = new HashMap<>();
-        map.put("ccaId", cca.getId().toString());
-        String params = RedirectUtils.generateParameters(map);
-        RedirectUtils.redirect("credit_card_transactions.xhtml" + params);
+    public void viewCCTransactionDetail() {
+        System.out.println("ccaId: " +ccaId);
+        this.cardTransactions = cardAcctSessionBean.getCardTransactionFromId(Long.parseLong(ccaId));
     }
 
-    public void viewTerminatePage(CreditCardAccount cca) {
-        System.out.println("in viewTerminatePage");
-        cardAcctSessionBean.updateCardAccountStatus(cca, CardAccountStatus.CLOSED);
-        RedirectUtils.redirect("/InternetBankingSystem/customer_card/credit_card_summary.xhtml");
-    }
-
-    public CustomerCardManagedBean() {
+    public CardTransactionManagedBean() {
     }
 
     @PostConstruct
     public void setCustomer() {
         System.out.println("@POSTCONSTRUCT INIT CustomerCardManagedBean");
         this.customer = customerProfileSessionBean.getCustomerByUserID(SessionUtils.getUserName());
-        this.setCcas(cardAcctSessionBean.showAllCreditCardAccount(CardAccountStatus.CLOSED, customer.getMainAccount().getId())); //that is not closed
     }
 
     public Customer getCustomer() {
@@ -70,7 +60,6 @@ public class CustomerCardManagedBean implements Serializable {
         this.customer = customer;
     }
 
-
     public List<CardTransaction> getCardTransactions() {
         return cardTransactions;
     }
@@ -79,11 +68,11 @@ public class CustomerCardManagedBean implements Serializable {
         this.cardTransactions = cardTransactions;
     }
 
-    public List<CreditCardAccount> getCcas() {
-        return ccas;
+    public String getCcaId() {
+        return ccaId;
     }
 
-    public void setCcas(List<CreditCardAccount> ccas) {
-        this.ccas = ccas;
+    public void setCcaId(String ccaId) {
+        this.ccaId = ccaId;
     }
 }

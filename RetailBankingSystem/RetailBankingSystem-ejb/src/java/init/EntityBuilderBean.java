@@ -18,8 +18,11 @@ import ejb.session.mainaccount.MainAccountSessionBeanLocal;
 import ejb.session.staff.StaffAccountSessionBeanLocal;
 import ejb.session.staff.StaffRoleSessionBeanLocal;
 import ejb.session.utils.UtilsSessionBeanLocal;
+import entity.card.account.CardTransaction;
+import entity.card.account.CashBackCardProduct;
 import entity.card.account.CreditCardAccount;
 import entity.card.account.MileCardProduct;
+import entity.card.account.RewardCardProduct;
 import entity.customer.Customer;
 import entity.customer.CustomerCase;
 import entity.customer.Issue;
@@ -144,8 +147,7 @@ public class EntityBuilderBean {
 
         initCreditCardProduct();
         initCase();
-        
-        
+
     }
 
     public void initCreditCardProduct() {
@@ -156,11 +158,68 @@ public class EntityBuilderBean {
         mca.setMinSpendingAmount(2000);
         mca.setProductName("Merlion MileCard");
         newCardProductSessionBean.createMileProduct(mca);
-        
+
+        mca = new MileCardProduct();
+        mca.setLocalMileRate(1.5);
+        mca.setOverseaMileRate(2.1);
+        mca.setMinSpending(true);
+        mca.setMinSpendingAmount(3000);
+        mca.setProductName("Merlion MileCard2");
+        newCardProductSessionBean.createMileProduct(mca);
+
+        RewardCardProduct rcp = new RewardCardProduct();
+        rcp.setLocalMileRate(1.3);
+        rcp.setLocalPointRate(3);
+        rcp.setMinSpending(true);
+        rcp.setMinSpendingAmount(500);
+        rcp.setProductName("Merlion RewardCard");
+        newCardProductSessionBean.createRewardProduct(rcp);
+
+        rcp = new RewardCardProduct();
+        rcp.setLocalMileRate(1.4);
+        rcp.setLocalPointRate(3.1);
+        rcp.setMinSpending(true);
+        rcp.setMinSpendingAmount(700);
+        rcp.setProductName("Merlion RewardCard2");
+        newCardProductSessionBean.createRewardProduct(rcp);
+
+        CashBackCardProduct cbcp = new CashBackCardProduct();
+        cbcp.setDiningCashBackRate(0.9);
+        cbcp.setGroceryCashBackRate(1.2);
+        cbcp.setPetrolCashBackRate(0.7);
+        cbcp.setMinSpendingAmount(2000);
+        cbcp.setProductName("Merlion CashBackCard");
+        newCardProductSessionBean.createCashBackProduct(cbcp);
+
+        cbcp = new CashBackCardProduct();
+        cbcp.setDiningCashBackRate(1.1);
+        cbcp.setGroceryCashBackRate(1.3);
+        cbcp.setPetrolCashBackRate(0.6);
+        cbcp.setMinSpendingAmount(2000);
+        cbcp.setProductName("Merlion CashBackCard2");
+        newCardProductSessionBean.createCashBackProduct(cbcp);
+
         CreditCardAccount cca = new CreditCardAccount();
         cca.setCreditCardProduct(mca);
         cca.setNameOnCard(demoMainAccount.getCustomer().getFirstname());
+        cca.setCreditCardNum("4918292292281322");
+        cca.setOutstandingAmount(0);
+        cca.setCardStatus(EnumUtils.CardAccountStatus.ACTIVE);
         cca.setMainAccount(demoMainAccount);
+
+        List<CardTransaction> cts = new ArrayList<>();
+        CardTransaction cardTransaction = new CardTransaction();
+        cardTransaction.setCardTransactionType(EnumUtils.CardTransactionType.PENDINGTRANSACTION);
+        cardTransaction.setCreditAmount(500);
+        cardTransaction.setIsCredit(true);
+        cardTransaction.setTransactionCode("MST");
+        cardTransaction.setTransactionDescription("AMAZON SERVICE USD378.50");
+        cardTransaction.setTransactionTimeStamp(new Date());
+
+        cts.add(cardTransaction);
+        cca.setCardTransactions(cts);
+        cardTransaction.setCreditCardAccount(cca);
+
         cardAcctSessionBean.createCardAccount(cca);
     }
 
@@ -1155,12 +1214,11 @@ public class EntityBuilderBean {
         customAccount.setProduct(depositProductSessionBean.getDepositProductByName(ConstantUtils.DEMO_CUSTOM_DEPOSIT_PRODUCT_NAME));
         customAccount.setBalance(new BigDecimal(1000));
         customAccount.setMainAccount(demoMainAccount);
-        
-        
+
         DepositAccount dp = customerDepositSessionBean.createAccount(customAccount);
         initTransactions(dp);
         initCheques(dp);
-        
+
         CustomerDepositAccount savingAccount = new CustomerDepositAccount();
         savingAccount.setType(DepositAccountType.SAVING);
         savingAccount.setStatus(StatusType.ACTIVE);
@@ -1168,7 +1226,7 @@ public class EntityBuilderBean {
         savingAccount.setBalance(new BigDecimal(1000));
         savingAccount.setMainAccount(demoMainAccount);
         customerDepositSessionBean.createAccount(savingAccount);
-        
+
         CustomerDepositAccount savingAccount2 = new CustomerDepositAccount();
         savingAccount2.setType(DepositAccountType.SAVING);
         savingAccount2.setStatus(StatusType.ACTIVE);
@@ -1176,7 +1234,7 @@ public class EntityBuilderBean {
         savingAccount2.setBalance(new BigDecimal(1000));
         savingAccount2.setMainAccount(demoMainAccount);
         customerDepositSessionBean.createAccount(savingAccount2);
-        
+
         CustomerDepositAccount currentAccount = new CustomerDepositAccount();
         currentAccount.setType(DepositAccountType.SAVING);
         currentAccount.setStatus(StatusType.ACTIVE);
@@ -1184,7 +1242,7 @@ public class EntityBuilderBean {
         currentAccount.setBalance(new BigDecimal(1000));
         currentAccount.setMainAccount(demoMainAccount);
         customerDepositSessionBean.createAccount(currentAccount);
-        
+
         CustomerFixedDepositAccount fixedAccount = new CustomerFixedDepositAccount();
         fixedAccount.setType(DepositAccountType.FIXED);
         fixedAccount.setStatus(StatusType.ACTIVE);
@@ -1211,25 +1269,25 @@ public class EntityBuilderBean {
         // invest once and for a year
         da = customerDepositSessionBean.investFromAccount(da, new BigDecimal(5000));
     }
-    
+
     private void initCheques(DepositAccount account) {
         if (account instanceof CustomerDepositAccount) {
-            if (account.getType().equals(DepositAccountType.CURRENT) || 
-                    account.getType().equals(DepositAccountType.CUSTOM)) {
-                
+            if (account.getType().equals(DepositAccountType.CURRENT)
+                    || account.getType().equals(DepositAccountType.CUSTOM)) {
+
                 CustomerDepositAccount cda = (CustomerDepositAccount) account;
                 Cheque c = new Cheque();
                 c.setAccount(cda);
                 c.setAmount(new BigDecimal(500));
                 c.setStatus(ChequeStatus.PROCESSING);
                 chequeBean.createCheque(c);
-                
+
                 c = new Cheque();
                 c.setAccount(cda);
                 c.setAmount(new BigDecimal(300));
                 c.setStatus(ChequeStatus.RECEIVED);
                 chequeBean.createCheque(c);
-                
+
                 c = new Cheque();
                 c.setAccount(cda);
                 c.setAmount(new BigDecimal(800));
