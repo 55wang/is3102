@@ -5,9 +5,6 @@
  */
 package server.utilities;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  *
  * @author leiyang
@@ -969,6 +966,39 @@ public class EnumUtils {
 
         public static DepositAccountType getEnum(String value) {
             for (DepositAccountType v : values()) {
+                if (v.getValue().equalsIgnoreCase(value)) {
+                    return v;
+                }
+            }
+            throw new IllegalArgumentException();
+        }
+    }
+    
+    public enum ChequeStatus {
+
+        UNTOUCHED("UNTOUCHED"),
+        RECEIVED("RECEIVED"),
+        PROCESSING("PROCESSING"),
+        TRANSFERED("TRANSFERED"),
+        LOST("LOST");
+
+        private String value;
+
+        ChequeStatus(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        @Override
+        public String toString() {
+            return this.getValue();
+        }
+
+        public static ChequeStatus getEnum(String value) {
+            for (ChequeStatus v : values()) {
                 if (v.getValue().equalsIgnoreCase(value)) {
                     return v;
                 }

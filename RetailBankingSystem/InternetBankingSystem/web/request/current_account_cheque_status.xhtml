@@ -14,37 +14,29 @@
         </h:head>
         <h:body>
             <em:customerHeader context="customer_home" userName="#{customerHomeManagedBean.customer.firstname }"></em:customerHeader>
-            <em:customerNavBar context="customer_home" pageName="customer_home" ></em:customerNavBar>
+            <em:customerNavBar context="customer_home" pageName="request_home" ></em:customerNavBar>
             <div class="customer_main_container">
                 <h:form id="mainForm">
-                    <p:panel header="Deposit Accounts">
+                    <p:panel header="Cheque Status">
                         <p:messages id="messagesStatus" redisplay="false" >
                             <h:panelGrid columns="2" cellpadding="5">
                                 <p:dataTable var="account" value="#{customerDepositAccountSummaryManagedBean.accounts}">
-
                                     <p:column headerText="Account">
-                                        <h:outputText value="#{account.id}" >
-                                        
-                                        </h:outputText>
+                                        <h:outputText value="#{account.id}" />
                                     </p:column>
 
-                                    <p:column headerText="Type">
+                                    <p:column headerText="Cheque Status">
                                         <h:outputText value="#{account.type}" />
-                                        
-                                    </p:column>
-                                    
-
-                                    <p:column headerText="Balance (in SGD)">
-                                        <h:outputText value="#{account.balance}" >
-                                        <f:convertNumber type="number" pattern="#0.00"/>
-                                        </h:outputText>
                                     </p:column>
 
-                                    <p:column headerText="Action">
-                                        <p:commandButton value="View Transactions" actionListener="#{customerDepositAccountSummaryManagedBean.viewTransaction(account)}"/>
+                                    <p:column headerText="Amount">
+                                        <h:outputText value="#{account.balance}" />
+                                    </p:column>
+
+                                    <p:column headerText="Date">
+                                        <h:outputText value="#{account.balance}" />
                                     </p:column>
                                 </p:dataTable>
-
                             </h:panelGrid>
                         </p:messages>
                     </p:panel>

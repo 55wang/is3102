@@ -95,12 +95,10 @@ public class CustomerApplicationManagedBean implements Serializable {
         depostiAccount.setMainAccount(mainAccount);
         if (initialDepositAccount.equals(ConstantUtils.DEMO_CURRENT_DEPOSIT_PRODUCT_NAME)) {
             depostiAccount.setType(DepositAccountType.CURRENT);
-            depostiAccount.setProduct(depositProductBean.getDepositProductByName(ConstantUtils.DEMO_CURRENT_DEPOSIT_PRODUCT_NAME));
         } else if (initialDepositAccount.equals(ConstantUtils.DEMO_CUSTOM_DEPOSIT_PRODUCT_NAME)) {
             depostiAccount.setType(DepositAccountType.CUSTOM);
-            depostiAccount.setProduct(depositProductBean.getDepositProductByName(ConstantUtils.DEMO_CUSTOM_DEPOSIT_PRODUCT_NAME));
         }
-        
+        depostiAccount.setProduct(depositProductBean.getDepositProductByName(initialDepositAccount));
         depositAccountBean.createAccount(depostiAccount);
         
         try {

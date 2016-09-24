@@ -1144,6 +1144,7 @@ public class EntityBuilderBean {
     private void initDepositAccount() {
         CustomerDepositAccount customAccount = new CustomerDepositAccount();
         customAccount.setType(DepositAccountType.CUSTOM);
+        customAccount.setStatus(StatusType.ACTIVE);
         customAccount.setProduct(depositProductSessionBean.getDepositProductByName(ConstantUtils.DEMO_CUSTOM_DEPOSIT_PRODUCT_NAME));
         customAccount.setBalance(new BigDecimal(1000));
         customAccount.setMainAccount(demoMainAccount);
@@ -1152,6 +1153,7 @@ public class EntityBuilderBean {
         
         CustomerDepositAccount savingAccount = new CustomerDepositAccount();
         savingAccount.setType(DepositAccountType.SAVING);
+        savingAccount.setStatus(StatusType.ACTIVE);
         savingAccount.setProduct(depositProductSessionBean.getDepositProductByName(ConstantUtils.DEMO_SAVING1_DEPOSIT_PRODUCT_NAME));
         savingAccount.setBalance(new BigDecimal(1000));
         savingAccount.setMainAccount(demoMainAccount);
@@ -1159,6 +1161,7 @@ public class EntityBuilderBean {
         
         CustomerDepositAccount savingAccount2 = new CustomerDepositAccount();
         savingAccount2.setType(DepositAccountType.SAVING);
+        savingAccount2.setStatus(StatusType.ACTIVE);
         savingAccount2.setProduct(depositProductSessionBean.getDepositProductByName(ConstantUtils.DEMO_SAVING2_DEPOSIT_PRODUCT_NAME));
         savingAccount2.setBalance(new BigDecimal(1000));
         savingAccount2.setMainAccount(demoMainAccount);
@@ -1166,6 +1169,7 @@ public class EntityBuilderBean {
         
         CustomerDepositAccount currentAccount = new CustomerDepositAccount();
         currentAccount.setType(DepositAccountType.SAVING);
+        currentAccount.setStatus(StatusType.ACTIVE);
         currentAccount.setProduct(depositProductSessionBean.getDepositProductByName(ConstantUtils.DEMO_CURRENT_DEPOSIT_PRODUCT_NAME));
         currentAccount.setBalance(new BigDecimal(1000));
         currentAccount.setMainAccount(demoMainAccount);
@@ -1173,6 +1177,7 @@ public class EntityBuilderBean {
         
         CustomerFixedDepositAccount fixedAccount = new CustomerFixedDepositAccount();
         fixedAccount.setType(DepositAccountType.FIXED);
+        fixedAccount.setStatus(StatusType.ACTIVE);
         fixedAccount.setProduct(depositProductSessionBean.getDepositProductByName(ConstantUtils.DEMO_FIXED_DEPOSIT_PRODUCT_NAME));
         fixedAccount.setBalance(new BigDecimal(750000));
         fixedAccount.setMainAccount(demoMainAccount);
