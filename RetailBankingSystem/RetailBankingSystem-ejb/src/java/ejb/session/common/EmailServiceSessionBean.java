@@ -28,7 +28,7 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
 
     @PersistenceContext(unitName = "RetailBankingSystem-ejbPU")
     private EntityManager em;
-    
+
     String emailServerName = "mailauth.comp.nus.edu.sg";
     String mailer = "JavaMailer";
 
@@ -93,7 +93,34 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
         }
 
     }
-    
+
+    @Override
+    public Boolean sendRequireAdditionalInfo(String recipient, String msg) {
+
+        Session session = getSession();
+
+        try {
+
+            Message message = new MimeMessage(session);
+            message.setFrom(new InternetAddress("merlionbanking@gmail.com"));
+            message.setRecipients(Message.RecipientType.TO,
+                    InternetAddress.parse(recipient));
+            message.setSubject("Welcome to Merlion Banking");
+            message.setText("Dear Customer, \n");
+            message.setText(msg);
+
+            Transport.send(message);
+
+            System.out.println("sendRequireAdditionalInfo: Email send out successfully");
+            return (true);
+
+        } catch (MessagingException e) {
+            System.out.println(e);
+            return (false);
+        }
+
+    }
+
     @Override
     public Boolean sendActivationGmailForStaff(String recipient, String pwd) {
 
@@ -120,9 +147,9 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
         }
 
     }
-    
+
     @Override
-    public Boolean sendUserIDforForgottenCustomer(String recipient, MainAccount forgotAccount){
+    public Boolean sendUserIDforForgottenCustomer(String recipient, MainAccount forgotAccount) {
         Session session = getSession();
 
         try {
@@ -144,9 +171,9 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
             return (false);
         }
     }
-    
+
     @Override
-    public Boolean sendUserNameforForgottenStaff(String recipient, String username){
+    public Boolean sendUserNameforForgottenStaff(String recipient, String username) {
         Session session = getSession();
 
         try {
@@ -168,9 +195,9 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
             return (false);
         }
     }
-    
+
     @Override
-    public Boolean sendResetPwdLinkforForgottenCustomer(String recipient, MainAccount forgotAccount){
+    public Boolean sendResetPwdLinkforForgottenCustomer(String recipient, MainAccount forgotAccount) {
         Session session = getSession();
 
         try {
@@ -192,9 +219,9 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
             return (false);
         }
     }
-    
+
     @Override
-    public Boolean sendResetPwdLinkforForgottenStaff(String recipient){
+    public Boolean sendResetPwdLinkforForgottenStaff(String recipient) {
         Session session = getSession();
 
         try {
@@ -216,9 +243,9 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
             return (false);
         }
     }
-    
+
     @Override
-    public Boolean sendNewCaseConfirmationToCustomer(String recipient, CustomerCase cc){
+    public Boolean sendNewCaseConfirmationToCustomer(String recipient, CustomerCase cc) {
         Session session = getSession();
 
         try {
@@ -231,7 +258,7 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
             message.setText("Dear Customer, here is your case ID(which you can use to retrieve your case): ");
             message.setText("Case: " + cc.getTitle());
             message.setText("ID: " + cc.getId());
-            
+
             Transport.send(message);
 
             System.out.println("Email send out successfully");
@@ -242,9 +269,9 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
             return (false);
         }
     }
-    
+
     @Override
-    public Boolean sendCancelCaseConfirmationToCustomer(String recipient, CustomerCase cc){
+    public Boolean sendCancelCaseConfirmationToCustomer(String recipient, CustomerCase cc) {
         Session session = getSession();
 
         try {
@@ -258,7 +285,7 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
             message.setText("Case: " + cc.getTitle());
             message.setText("ID: " + cc.getId());
             message.setText("If the action is not done by you, please contact our staff.");
-            
+
             Transport.send(message);
 
             System.out.println("Email send out successfully");
@@ -269,10 +296,9 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
             return (false);
         }
     }
-    
-    
+
     @Override
-    public void sendUpdatedProfile(String recipient){
+    public void sendUpdatedProfile(String recipient) {
         Session session = getSession();
 
         try {
@@ -296,9 +322,8 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
             return;
         }
     }
-    
-    @Override
-    public Boolean sendCaseStatusChangeToCustomer(String recipient, CustomerCase cc){
+
+    public Boolean sendCaseStatusChangeToCustomer(String recipient, CustomerCase cc) {
         Session session = getSession();
 
         try {
@@ -333,7 +358,7 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
         props.put("mail.smtp.port", "465");
         return props;
     }
-    
+
     private Session getSession() {
         return Session.getInstance(getGmailProperties(),
                 new javax.mail.Authenticator() {

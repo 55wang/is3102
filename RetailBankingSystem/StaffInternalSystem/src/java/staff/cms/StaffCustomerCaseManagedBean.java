@@ -9,7 +9,7 @@ import ejb.session.cms.CustomerCaseSessionBeanLocal;
 import ejb.session.common.EmailServiceSessionBeanLocal;
 import ejb.session.staff.StaffAccountSessionBeanLocal;
 import entity.customer.CustomerCase;
-import entity.staff.StaffAccount; 
+import entity.staff.StaffAccount;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;

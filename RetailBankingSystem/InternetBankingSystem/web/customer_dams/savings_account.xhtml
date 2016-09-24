@@ -43,7 +43,7 @@ and open the template in the editor.
                     <c:forEach items="#{displaySavingsDepositProductManagedBean.savingsDepositProducts}" var="savingProduct">
                         <p:tab title="#{savingProduct.name}">
                             <c:forEach items="#{savingProduct.baseInterest}" var="interest">
-                                <p><b>Base: #{interest.name}</b></p>
+                                <p><b>Base: #{interest.description}</b></p>
                             </c:forEach>
                             <c:forEach items="#{savingProduct.conditionalInterest}" var="interest">
                                 <br><b>Bonus:#{interest.description}</b></br>

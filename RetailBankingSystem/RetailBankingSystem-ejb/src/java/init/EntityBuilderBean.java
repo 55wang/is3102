@@ -22,6 +22,7 @@ import entity.customer.CustomerCase;
 import entity.customer.Issue;
 import entity.customer.MainAccount;
 import entity.dams.account.CustomerDepositAccount;
+import entity.dams.account.CustomerFixedDepositAccount;
 import entity.dams.account.DepositAccount;
 import entity.dams.account.DepositAccountProduct;
 import entity.dams.account.FixedDepositAccountProduct;
@@ -60,6 +61,7 @@ import server.utilities.HashPwdUtils;
 @LocalBean
 @Startup
 public class EntityBuilderBean {
+
     @EJB
     private CustomerCaseSessionBeanLocal customerCaseSessionBean;
     @EJB
@@ -82,7 +84,7 @@ public class EntityBuilderBean {
     private NewCardProductSessionBeanLocal newCardProductSessionBean;
     @EJB
     private MainAccountSessionBeanLocal mainAccountSessionBean;
-    
+
     private Interest demoNormalInterestData;
     private List<Interest> demoRangeInterestData = new ArrayList<>();
     private List<Interest> demoTimeRangeInterestData = new ArrayList<>();
@@ -96,15 +98,7 @@ public class EntityBuilderBean {
         if (needInit()) {
             buildEntities();
         } else {
-            // Get Product
-            DepositAccount da = customerDepositSessionBean.getAccountFromId(1L);
-            // Get Interest
-            List<Interest> interests = ((DepositAccountProduct) da.getProduct()).getInterestRules();
-            for (Interest i : interests) {
-                if (i instanceof ConditionInterest) {
-                    System.out.print(interestAccrualSessionBean.isAccountMeetCondition(da, (ConditionInterest) i));
-                }
-            }
+            testInterestRules();
         }
     }
 
@@ -112,6 +106,18 @@ public class EntityBuilderBean {
     private Boolean needInit() {
         StaffAccount sa = staffAccountSessionBean.getAccountByUsername(ConstantUtils.SUPER_ADMIN_USERNAME);
         return sa == null;
+    }
+
+    private void testInterestRules() {
+        // Get Product
+        DepositAccount da = customerDepositSessionBean.getAccountFromId(1L);
+        // Get Interest
+        List<Interest> interests = ((DepositAccountProduct) da.getProduct()).getInterestRules();
+        for (Interest i : interests) {
+            if (i instanceof ConditionInterest) {
+                System.out.print(interestAccrualSessionBean.isAccountMeetCondition(da, (ConditionInterest) i));
+            }
+        }
     }
 
     private void buildEntities() {
@@ -124,11 +130,11 @@ public class EntityBuilderBean {
         initInterest();
         initDepositProducts();
         initDepositAccounts();
-        
+
         initCreditCardProduct();
         initCase();
     }
-    
+
     public void initCreditCardProduct() {
         MileCardProduct mca = new MileCardProduct();
         mca.setLocalMileRate(1.3);
@@ -147,21 +153,21 @@ public class EntityBuilderBean {
         customerServiceRole = staffRoleSessionBean.addRole(customerServiceRole);
         Role financialAnalystRole = new Role(EnumUtils.UserRole.FINANCIAL_ANALYST.toString());
         financialAnalystRole.setDescription("Generate and make use of BI results to support decision making");
-        financialAnalystRole = staffRoleSessionBean.addRole(financialAnalystRole); 
+        financialAnalystRole = staffRoleSessionBean.addRole(financialAnalystRole);
         Role financialOfficerRole = new Role(EnumUtils.UserRole.FINANCIAL_OFFICER.toString());
-        financialOfficerRole.setDescription("Offer wealth management services to the customers\n" +
-"(Offering wealth services but do not design wealth products)");
-        financialOfficerRole = staffRoleSessionBean.addRole(financialOfficerRole); 
+        financialOfficerRole.setDescription("Offer wealth management services to the customers\n"
+                + "(Offering wealth services but do not design wealth products)");
+        financialOfficerRole = staffRoleSessionBean.addRole(financialOfficerRole);
         Role generalTellerRole = new Role(EnumUtils.UserRole.GENERAL_TELLER.toString());
-        generalTellerRole = staffRoleSessionBean.addRole(generalTellerRole); 
+        generalTellerRole = staffRoleSessionBean.addRole(generalTellerRole);
         Role loanOfficerRole = new Role(EnumUtils.UserRole.LOAN_OFFICIER.toString());
-        loanOfficerRole.setDescription("Provide loan-related services to the customers\n" +
-"(Provide service but do not design loan products)");
-        loanOfficerRole = staffRoleSessionBean.addRole(loanOfficerRole); 
+        loanOfficerRole.setDescription("Provide loan-related services to the customers\n"
+                + "(Provide service but do not design loan products)");
+        loanOfficerRole = staffRoleSessionBean.addRole(loanOfficerRole);
         Role productManagerRole = new Role(EnumUtils.UserRole.PRODUCT_MANAGER.toString());
         productManagerRole.setDescription("Design, adjust, and launch financial products to the market");
         productManagerRole = staffRoleSessionBean.addRole(productManagerRole);
-        
+
         StaffAccount superAdminAccount = new StaffAccount();
         superAdminAccount.setUsername(ConstantUtils.SUPER_ADMIN_USERNAME);
         superAdminAccount.setPassword(ConstantUtils.SUPER_ADMIN_PASSWORD);
@@ -171,7 +177,7 @@ public class EntityBuilderBean {
         superAdminAccount.setStatus(StatusType.ACTIVE);
         superAdminAccount.setRole(superAdminRole);
         staffAccountSessionBean.createAccount(superAdminAccount);
-        
+
         StaffAccount customerServiceAccount = new StaffAccount();
         customerServiceAccount.setUsername(ConstantUtils.CUSTOMER_SERVICE_USERNAME);
         customerServiceAccount.setPassword(ConstantUtils.STAFF_DEMO_PASSWORD);
@@ -181,7 +187,7 @@ public class EntityBuilderBean {
         customerServiceAccount.setStatus(StatusType.ACTIVE);
         customerServiceAccount.setRole(customerServiceRole);
         staffAccountSessionBean.createAccount(customerServiceAccount);
-        
+
         StaffAccount financialAnalystAccount = new StaffAccount();
         financialAnalystAccount.setUsername(ConstantUtils.FINANCIAL_ANALYST_USERNAME);
         financialAnalystAccount.setPassword(ConstantUtils.STAFF_DEMO_PASSWORD);
@@ -191,7 +197,7 @@ public class EntityBuilderBean {
         financialAnalystAccount.setStatus(StatusType.ACTIVE);
         financialAnalystAccount.setRole(financialAnalystRole);
         staffAccountSessionBean.createAccount(financialAnalystAccount);
-        
+
         StaffAccount financialOfficerAccount = new StaffAccount();
         financialOfficerAccount.setUsername(ConstantUtils.FINANCIAL_OFFICER_USERNAME);
         financialOfficerAccount.setPassword(ConstantUtils.STAFF_DEMO_PASSWORD);
@@ -201,7 +207,7 @@ public class EntityBuilderBean {
         financialOfficerAccount.setStatus(StatusType.ACTIVE);
         financialOfficerAccount.setRole(financialOfficerRole);
         staffAccountSessionBean.createAccount(financialOfficerAccount);
-        
+
         StaffAccount generalTellerAccount = new StaffAccount();
         generalTellerAccount.setUsername(ConstantUtils.GENERAL_TELLER_USERNAME);
         generalTellerAccount.setPassword(ConstantUtils.STAFF_DEMO_PASSWORD);
@@ -211,7 +217,7 @@ public class EntityBuilderBean {
         generalTellerAccount.setStatus(StatusType.ACTIVE);
         generalTellerAccount.setRole(generalTellerRole);
         staffAccountSessionBean.createAccount(generalTellerAccount);
-        
+
         StaffAccount loanOfficerAccount = new StaffAccount();
         loanOfficerAccount.setUsername(ConstantUtils.LOAN_OFFICIER_USERNAME);
         loanOfficerAccount.setPassword(ConstantUtils.STAFF_DEMO_PASSWORD);
@@ -221,7 +227,7 @@ public class EntityBuilderBean {
         loanOfficerAccount.setStatus(StatusType.ACTIVE);
         loanOfficerAccount.setRole(loanOfficerRole);
         staffAccountSessionBean.createAccount(loanOfficerAccount);
-        
+
         StaffAccount productManagerAccount = new StaffAccount();
         productManagerAccount.setUsername(ConstantUtils.PRODUCT_MANAGER_USERNAME);
         productManagerAccount.setPassword(ConstantUtils.STAFF_DEMO_PASSWORD);
@@ -257,10 +263,10 @@ public class EntityBuilderBean {
         c.getMainAccount().setCustomer(c);
 
         demoMainAccount = newCustomerSessionBean.createCustomer(c).getMainAccount();
-        
+
         String u2 = "c0000002";
         String p2 = HashPwdUtils.hashPwd("password");
-        
+
         Customer c2 = new Customer();
         c2.setAddress("19 Tanglin Road, 131-1-1"); //make it a bit more real
         c2.setBirthDay(new Date()); //make some real birthday.
@@ -280,12 +286,12 @@ public class EntityBuilderBean {
         c2.getMainAccount().setPassword(p2);
         c2.getMainAccount().setStatus(EnumUtils.StatusType.ACTIVE);
         c2.getMainAccount().setCustomer(c2);
-        
+
         newCustomerSessionBean.createCustomer(c2);
-        
+
         String u3 = "c0000003";
         String p3 = HashPwdUtils.hashPwd("password");
-        
+
         Customer c3 = new Customer();
         c3.setAddress("9 Thomson Road, 9-1-B"); //make it a bit more real
         c3.setBirthDay(new Date()); //make some real birthday.
@@ -305,12 +311,12 @@ public class EntityBuilderBean {
         c3.getMainAccount().setPassword(p3);
         c3.getMainAccount().setStatus(EnumUtils.StatusType.ACTIVE);
         c3.getMainAccount().setCustomer(c3);
-        
+
         newCustomerSessionBean.createCustomer(c3);
-        
+
         String u4 = "c0000004";
         String p4 = HashPwdUtils.hashPwd("password");
-        
+
         Customer c4 = new Customer();
         c4.setAddress("3 Sim Lim Avenue, 898B-501"); //make it a bit more real
         c4.setBirthDay(new Date()); //make some real birthday.
@@ -330,12 +336,12 @@ public class EntityBuilderBean {
         c4.getMainAccount().setPassword(p4);
         c4.getMainAccount().setStatus(EnumUtils.StatusType.ACTIVE);
         c4.getMainAccount().setCustomer(c4);
-        
+
         newCustomerSessionBean.createCustomer(c4);
-        
+
         String u5 = "c0000005";
         String p5 = HashPwdUtils.hashPwd("password");
-        
+
         Customer c5 = new Customer();
         c5.setAddress("28 West Coast Road, B-2"); //make it a bit more real
         c5.setBirthDay(new Date()); //make some real birthday.
@@ -355,12 +361,12 @@ public class EntityBuilderBean {
         c5.getMainAccount().setPassword(p5);
         c5.getMainAccount().setStatus(EnumUtils.StatusType.ACTIVE);
         c5.getMainAccount().setCustomer(c5);
-        
+
         newCustomerSessionBean.createCustomer(c5);
-        
+
         String u6 = "c0000006";
         String p6 = HashPwdUtils.hashPwd("password");
-        
+
         Customer c6 = new Customer();
         c6.setAddress("67 Ang Mo Kio Avenue, 256-1"); //make it a bit more real
         c6.setBirthDay(new Date()); //make some real birthday.
@@ -380,12 +386,12 @@ public class EntityBuilderBean {
         c6.getMainAccount().setPassword(p6);
         c6.getMainAccount().setStatus(EnumUtils.StatusType.ACTIVE);
         c6.getMainAccount().setCustomer(c6);
-        
+
         newCustomerSessionBean.createCustomer(c6);
-        
+
         String u7 = "c0000007";
         String p7 = HashPwdUtils.hashPwd("password");
-        
+
         Customer c7 = new Customer();
         c7.setAddress("555 Clementi Road, 419-807"); //make it a bit more real
         c7.setBirthDay(new Date()); //make some real birthday.
@@ -405,12 +411,12 @@ public class EntityBuilderBean {
         c7.getMainAccount().setPassword(p7);
         c7.getMainAccount().setStatus(EnumUtils.StatusType.ACTIVE);
         c7.getMainAccount().setCustomer(c7);
-        
+
         newCustomerSessionBean.createCustomer(c7);
-        
+
         String u8 = "c0000008";
         String p8 = HashPwdUtils.hashPwd("password");
-        
+
         Customer c8 = new Customer();
         c8.setAddress("9 Hougang Road, 193-303"); //make it a bit more real
         c8.setBirthDay(new Date()); //make some real birthday.
@@ -430,12 +436,12 @@ public class EntityBuilderBean {
         c8.getMainAccount().setPassword(p8);
         c8.getMainAccount().setStatus(EnumUtils.StatusType.ACTIVE);
         c8.getMainAccount().setCustomer(c8);
-        
+
         newCustomerSessionBean.createCustomer(c8);
-        
+
         String u9 = "c0000009";
         String p9 = HashPwdUtils.hashPwd("password");
-        
+
         Customer c9 = new Customer();
         c9.setAddress("17 South Buona Vista Road, 29-905"); //make it a bit more real
         c9.setBirthDay(new Date()); //make some real birthday.
@@ -455,7 +461,7 @@ public class EntityBuilderBean {
         c9.getMainAccount().setPassword(p9);
         c9.getMainAccount().setStatus(EnumUtils.StatusType.ACTIVE);
         c9.getMainAccount().setCustomer(c9);
-        
+
         newCustomerSessionBean.createCustomer(c9);
     }
 
@@ -472,7 +478,7 @@ public class EntityBuilderBean {
         initRangeInterest();
         initConditionalInterest();
     }
-    
+
     private void initRangeInterest() {
         RangeInterest i1 = new RangeInterest();
         i1.setName("First 10,000");
@@ -481,15 +487,15 @@ public class EntityBuilderBean {
         i1.setMaximum(new BigDecimal(10000));
         i1.setPercentage(new BigDecimal(0.0005));
         demoRangeInterestData.add(interestSessionBean.addInterest(i1));
-        
+
         RangeInterest i2 = new RangeInterest();
         i2.setName("10,001~100,000");
         i2.setVersion(0);
-        i2.setMinimum(new BigDecimal(100001));
+        i2.setMinimum(new BigDecimal(10001));
         i2.setMaximum(new BigDecimal(100000));
         i2.setPercentage(new BigDecimal(0.00075));
         demoRangeInterestData.add(interestSessionBean.addInterest(i2));
-        
+
         RangeInterest i3 = new RangeInterest();
         i3.setName("100,001~500,000");
         i3.setVersion(0);
@@ -497,7 +503,7 @@ public class EntityBuilderBean {
         i3.setMaximum(new BigDecimal(500000));
         i3.setPercentage(new BigDecimal(0.00075));
         demoRangeInterestData.add(interestSessionBean.addInterest(i3));
-        
+
         RangeInterest i4 = new RangeInterest();
         i4.setName("Above 500,000");
         i4.setVersion(0);
@@ -519,7 +525,7 @@ public class EntityBuilderBean {
         i1.setMaximum(new BigDecimal(20000));
         i1.setPercentage(new BigDecimal(0.0005));
         interestSessionBean.addInterest(i1);
-        
+
         TimeRangeInterest i2 = new TimeRangeInterest();
         i2.setName("3-5month-$5000-$20000-0.10%");
         i2.setVersion(0);
@@ -529,7 +535,7 @@ public class EntityBuilderBean {
         i2.setMaximum(new BigDecimal(20000));
         i2.setPercentage(new BigDecimal(0.0010));
         interestSessionBean.addInterest(i2);
-        
+
         TimeRangeInterest i3 = new TimeRangeInterest();
         i3.setName("6-8month-$5000-$20000-0.15%");
         i3.setVersion(0);
@@ -539,7 +545,7 @@ public class EntityBuilderBean {
         i3.setMaximum(new BigDecimal(20000));
         i3.setPercentage(new BigDecimal(0.0015));
         interestSessionBean.addInterest(i3);
-        
+
         TimeRangeInterest i4 = new TimeRangeInterest();
         i4.setName("9-11month-$5000-$20000-0.20%");
         i4.setVersion(0);
@@ -549,7 +555,7 @@ public class EntityBuilderBean {
         i4.setMaximum(new BigDecimal(20000));
         i4.setPercentage(new BigDecimal(0.0020));
         interestSessionBean.addInterest(i4);
-        
+
         TimeRangeInterest i5 = new TimeRangeInterest();
         i5.setName("12-15month-$5000-$20000-0.25%");
         i5.setVersion(0);
@@ -559,7 +565,7 @@ public class EntityBuilderBean {
         i5.setMaximum(new BigDecimal(20000));
         i5.setPercentage(new BigDecimal(0.0025));
         interestSessionBean.addInterest(i5);
-        
+
         TimeRangeInterest i6 = new TimeRangeInterest();
         i6.setName("16-18month-$5000-$20000-0.50%");
         i6.setVersion(0);
@@ -569,7 +575,7 @@ public class EntityBuilderBean {
         i6.setMaximum(new BigDecimal(20000));
         i6.setPercentage(new BigDecimal(0.0050));
         interestSessionBean.addInterest(i6);
-        
+
         TimeRangeInterest i7 = new TimeRangeInterest();
         i7.setName("19-24month-$5000-$20000-0.55%");
         i7.setVersion(0);
@@ -579,7 +585,7 @@ public class EntityBuilderBean {
         i7.setMaximum(new BigDecimal(20000));
         i7.setPercentage(new BigDecimal(0.0055));
         interestSessionBean.addInterest(i7);
-        
+
         TimeRangeInterest i8 = new TimeRangeInterest();
         i8.setName("25-36month-$5000-$20000-0.65%");
         i8.setVersion(0);
@@ -589,7 +595,7 @@ public class EntityBuilderBean {
         i8.setMaximum(new BigDecimal(20000));
         i8.setPercentage(new BigDecimal(0.0065));
         interestSessionBean.addInterest(i8);
-        
+
         TimeRangeInterest i9 = new TimeRangeInterest();
         i9.setName("1-2month-$20000-$50000-0.05%");
         i9.setVersion(0);
@@ -599,7 +605,7 @@ public class EntityBuilderBean {
         i9.setMaximum(new BigDecimal(50000));
         i9.setPercentage(new BigDecimal(0.0005));
         interestSessionBean.addInterest(i9);
-        
+
         TimeRangeInterest i10 = new TimeRangeInterest();
         i10.setName("3-5month-$20000-$50000-0.10%");
         i10.setVersion(0);
@@ -609,7 +615,7 @@ public class EntityBuilderBean {
         i10.setMaximum(new BigDecimal(50000));
         i10.setPercentage(new BigDecimal(0.0010));
         interestSessionBean.addInterest(i10);
-        
+
         TimeRangeInterest i11 = new TimeRangeInterest();
         i11.setName("6-8month-$20000-$50000-0.15%");
         i11.setVersion(0);
@@ -619,7 +625,7 @@ public class EntityBuilderBean {
         i11.setMaximum(new BigDecimal(50000));
         i11.setPercentage(new BigDecimal(0.0015));
         interestSessionBean.addInterest(i11);
-        
+
         TimeRangeInterest i12 = new TimeRangeInterest();
         i12.setName("9-11month-$20000-$50000-0.20%");
         i12.setVersion(0);
@@ -629,7 +635,7 @@ public class EntityBuilderBean {
         i12.setMaximum(new BigDecimal(50000));
         i12.setPercentage(new BigDecimal(0.0020));
         interestSessionBean.addInterest(i12);
-        
+
         TimeRangeInterest i13 = new TimeRangeInterest();
         i13.setName("12-15month-$20000-$50000-0.25%");
         i13.setVersion(0);
@@ -639,7 +645,7 @@ public class EntityBuilderBean {
         i13.setMaximum(new BigDecimal(50000));
         i13.setPercentage(new BigDecimal(0.0025));
         interestSessionBean.addInterest(i13);
-        
+
         TimeRangeInterest i14 = new TimeRangeInterest();
         i14.setName("16-18month-$20000-$50000-0.50%");
         i14.setVersion(0);
@@ -649,7 +655,7 @@ public class EntityBuilderBean {
         i14.setMaximum(new BigDecimal(50000));
         i14.setPercentage(new BigDecimal(0.0050));
         interestSessionBean.addInterest(i14);
-        
+
         TimeRangeInterest i15 = new TimeRangeInterest();
         i15.setName("19-24month-$20000-$50000-0.55%");
         i15.setVersion(0);
@@ -659,7 +665,7 @@ public class EntityBuilderBean {
         i15.setMaximum(new BigDecimal(50000));
         i15.setPercentage(new BigDecimal(0.0055));
         interestSessionBean.addInterest(i15);
-        
+
         TimeRangeInterest i16 = new TimeRangeInterest();
         i16.setName("25-36month-$20000-$50000-0.65%");
         i16.setVersion(0);
@@ -669,7 +675,7 @@ public class EntityBuilderBean {
         i16.setMaximum(new BigDecimal(50000));
         i16.setPercentage(new BigDecimal(0.0065));
         interestSessionBean.addInterest(i16);
-        
+
         TimeRangeInterest i17 = new TimeRangeInterest();
         i17.setName("1-2month-$50000-$99999-0.05%");
         i17.setVersion(0);
@@ -679,7 +685,7 @@ public class EntityBuilderBean {
         i17.setMaximum(new BigDecimal(99999));
         i17.setPercentage(new BigDecimal(0.0005));
         interestSessionBean.addInterest(i17);
-        
+
         TimeRangeInterest i18 = new TimeRangeInterest();
         i18.setName("3-5month-$50000-$99999-0.10%");
         i18.setVersion(0);
@@ -689,7 +695,7 @@ public class EntityBuilderBean {
         i18.setMaximum(new BigDecimal(90000));
         i18.setPercentage(new BigDecimal(0.0010));
         interestSessionBean.addInterest(i18);
-        
+
         TimeRangeInterest i19 = new TimeRangeInterest();
         i19.setName("6-8month-$50000-$99999-0.15%");
         i19.setVersion(0);
@@ -699,7 +705,7 @@ public class EntityBuilderBean {
         i19.setMaximum(new BigDecimal(99999));
         i19.setPercentage(new BigDecimal(0.0015));
         interestSessionBean.addInterest(i19);
-        
+
         TimeRangeInterest i20 = new TimeRangeInterest();
         i20.setName("9-11month-$50000-$99999-0.20%");
         i20.setVersion(0);
@@ -709,7 +715,7 @@ public class EntityBuilderBean {
         i20.setMaximum(new BigDecimal(99999));
         i20.setPercentage(new BigDecimal(0.0020));
         interestSessionBean.addInterest(i20);
-        
+
         TimeRangeInterest i21 = new TimeRangeInterest();
         i21.setName("12-15month-$50000-$99999-0.25%");
         i21.setVersion(0);
@@ -719,7 +725,7 @@ public class EntityBuilderBean {
         i21.setMaximum(new BigDecimal(99999));
         i21.setPercentage(new BigDecimal(0.0025));
         interestSessionBean.addInterest(i21);
-        
+
         TimeRangeInterest i22 = new TimeRangeInterest();
         i22.setName("16-18month-$50000-$99999-0.50%");
         i22.setVersion(0);
@@ -729,7 +735,7 @@ public class EntityBuilderBean {
         i22.setMaximum(new BigDecimal(99999));
         i22.setPercentage(new BigDecimal(0.0050));
         interestSessionBean.addInterest(i22);
-        
+
         TimeRangeInterest i23 = new TimeRangeInterest();
         i23.setName("19-24month-$50000-$99999-0.55%");
         i23.setVersion(0);
@@ -739,17 +745,17 @@ public class EntityBuilderBean {
         i23.setMaximum(new BigDecimal(99999));
         i23.setPercentage(new BigDecimal(0.0055));
         interestSessionBean.addInterest(i23);
-        
+
         TimeRangeInterest i24 = new TimeRangeInterest();
-        i24.setName("24-36month-$50000-$99999-0.65%");
+        i24.setName("25-36month-$50000-$99999-0.65%");
         i24.setVersion(0);
-        i24.setStartMonth(24);
+        i24.setStartMonth(25);
         i24.setEndMonth(36);
         i24.setMinimum(new BigDecimal(50000));
         i24.setMaximum(new BigDecimal(99999));
         i24.setPercentage(new BigDecimal(0.0065));
         interestSessionBean.addInterest(i24);
-        
+
         TimeRangeInterest i25 = new TimeRangeInterest();
         i25.setName("1-2month-$100000-$249999-0.05%");
         i25.setVersion(0);
@@ -759,7 +765,7 @@ public class EntityBuilderBean {
         i25.setMaximum(new BigDecimal(249999));
         i25.setPercentage(new BigDecimal(0.0005));
         interestSessionBean.addInterest(i25);
-        
+
         TimeRangeInterest i26 = new TimeRangeInterest();
         i26.setName("3-5month-$100000-$249999-0.10%");
         i26.setVersion(0);
@@ -769,7 +775,7 @@ public class EntityBuilderBean {
         i26.setMaximum(new BigDecimal(249999));
         i26.setPercentage(new BigDecimal(0.0010));
         interestSessionBean.addInterest(i26);
-        
+
         TimeRangeInterest i27 = new TimeRangeInterest();
         i27.setName("6-8month-$100000-$249999-0.15%");
         i27.setVersion(0);
@@ -779,7 +785,7 @@ public class EntityBuilderBean {
         i27.setMaximum(new BigDecimal(249999));
         i27.setPercentage(new BigDecimal(0.0015));
         interestSessionBean.addInterest(i27);
-        
+
         TimeRangeInterest i28 = new TimeRangeInterest();
         i28.setName("9-11month-$100000-$249999-0.20%");
         i28.setVersion(0);
@@ -789,7 +795,7 @@ public class EntityBuilderBean {
         i28.setMaximum(new BigDecimal(249999));
         i28.setPercentage(new BigDecimal(0.0020));
         interestSessionBean.addInterest(i28);
-        
+
         TimeRangeInterest i29 = new TimeRangeInterest();
         i29.setName("12-15month-$100000-$249999-0.25%");
         i29.setVersion(0);
@@ -799,7 +805,7 @@ public class EntityBuilderBean {
         i29.setMaximum(new BigDecimal(249999));
         i29.setPercentage(new BigDecimal(0.0025));
         interestSessionBean.addInterest(i29);
-        
+
         TimeRangeInterest i30 = new TimeRangeInterest();
         i30.setName("16-18month-$100000-$249999-0.50%");
         i30.setVersion(0);
@@ -809,27 +815,27 @@ public class EntityBuilderBean {
         i30.setMaximum(new BigDecimal(249999));
         i30.setPercentage(new BigDecimal(0.0050));
         interestSessionBean.addInterest(i30);
-        
+
         TimeRangeInterest i31 = new TimeRangeInterest();
-        i31.setName("18-24month-$100000-$249999-0.55%");
+        i31.setName("19-24month-$100000-$249999-0.55%");
         i31.setVersion(0);
-        i31.setStartMonth(18);
+        i31.setStartMonth(19);
         i31.setEndMonth(24);
         i31.setMinimum(new BigDecimal(100000));
         i31.setMaximum(new BigDecimal(249999));
         i31.setPercentage(new BigDecimal(0.0055));
         interestSessionBean.addInterest(i31);
-        
+
         TimeRangeInterest i32 = new TimeRangeInterest();
-        i32.setName("24-36month-$100000-$249999-0.65%");
+        i32.setName("25-36month-$100000-$249999-0.65%");
         i32.setVersion(0);
-        i32.setStartMonth(24);
+        i32.setStartMonth(25);
         i32.setEndMonth(36);
         i32.setMinimum(new BigDecimal(100000));
         i32.setMaximum(new BigDecimal(249999));
         i32.setPercentage(new BigDecimal(0.0065));
         interestSessionBean.addInterest(i32);
-        
+
         TimeRangeInterest i33 = new TimeRangeInterest();
         i33.setName("1-2month-$250000-$499999-0.05%");
         i33.setVersion(0);
@@ -839,7 +845,7 @@ public class EntityBuilderBean {
         i33.setMaximum(new BigDecimal(499999));
         i33.setPercentage(new BigDecimal(0.0005));
         interestSessionBean.addInterest(i33);
-        
+
         TimeRangeInterest i34 = new TimeRangeInterest();
         i34.setName("3-5month-$250000-$499999-0.10%");
         i34.setVersion(0);
@@ -849,7 +855,7 @@ public class EntityBuilderBean {
         i34.setMaximum(new BigDecimal(499999));
         i34.setPercentage(new BigDecimal(0.0010));
         interestSessionBean.addInterest(i34);
-        
+
         TimeRangeInterest i35 = new TimeRangeInterest();
         i35.setName("6-8month-$250000-$499999-0.15%");
         i35.setVersion(0);
@@ -859,7 +865,7 @@ public class EntityBuilderBean {
         i35.setMaximum(new BigDecimal(499999));
         i35.setPercentage(new BigDecimal(0.0015));
         interestSessionBean.addInterest(i35);
-        
+
         TimeRangeInterest i36 = new TimeRangeInterest();
         i36.setName("9-11month-$250000-$499999-0.20%");
         i36.setVersion(0);
@@ -869,7 +875,7 @@ public class EntityBuilderBean {
         i36.setMaximum(new BigDecimal(499999));
         i36.setPercentage(new BigDecimal(0.0020));
         interestSessionBean.addInterest(i36);
-        
+
         TimeRangeInterest i37 = new TimeRangeInterest();
         i37.setName("12-15month-$250000-$499999-0.25%");
         i37.setVersion(0);
@@ -879,7 +885,7 @@ public class EntityBuilderBean {
         i37.setMaximum(new BigDecimal(499999));
         i37.setPercentage(new BigDecimal(0.0025));
         interestSessionBean.addInterest(i37);
-        
+
         TimeRangeInterest i38 = new TimeRangeInterest();
         i38.setName("16-18month-$250000-$499999-0.50%");
         i38.setVersion(0);
@@ -889,7 +895,7 @@ public class EntityBuilderBean {
         i38.setMaximum(new BigDecimal(499999));
         i38.setPercentage(new BigDecimal(0.0050));
         interestSessionBean.addInterest(i38);
-        
+
         TimeRangeInterest i39 = new TimeRangeInterest();
         i39.setName("19-24month-$250000-$499999-0.55%");
         i39.setVersion(0);
@@ -899,7 +905,7 @@ public class EntityBuilderBean {
         i39.setMaximum(new BigDecimal(499999));
         i39.setPercentage(new BigDecimal(0.0055));
         interestSessionBean.addInterest(i39);
-        
+
         TimeRangeInterest i40 = new TimeRangeInterest();
         i40.setName("25-36month-$250000-$499999-0.65%");
         i40.setVersion(0);
@@ -909,7 +915,7 @@ public class EntityBuilderBean {
         i40.setMaximum(new BigDecimal(499999));
         i40.setPercentage(new BigDecimal(0.0065));
         interestSessionBean.addInterest(i40);
-        
+
         TimeRangeInterest i41 = new TimeRangeInterest();
         i41.setName("1-2month-$500000-$XXXXXX-0.05%");
         i41.setVersion(0);
@@ -919,7 +925,7 @@ public class EntityBuilderBean {
         i41.setMaximum(new BigDecimal(999999));
         i41.setPercentage(new BigDecimal(0.0005));
         interestSessionBean.addInterest(i41);
-        
+
         TimeRangeInterest i42 = new TimeRangeInterest();
         i42.setName("3-5month-$500000-$XXXXXX-0.10%");
         i42.setVersion(0);
@@ -929,7 +935,7 @@ public class EntityBuilderBean {
         i42.setMaximum(new BigDecimal(999999));
         i42.setPercentage(new BigDecimal(0.0010));
         interestSessionBean.addInterest(i42);
-        
+
         TimeRangeInterest i43 = new TimeRangeInterest();
         i43.setName("6-8month-$500000-$XXXXXX-0.15%");
         i43.setVersion(0);
@@ -939,7 +945,7 @@ public class EntityBuilderBean {
         i43.setMaximum(new BigDecimal(999999));
         i43.setPercentage(new BigDecimal(0.0015));
         interestSessionBean.addInterest(i43);
-        
+
         TimeRangeInterest i44 = new TimeRangeInterest();
         i44.setName("9-11month-$500000-$XXXXXX-0.20%");
         i44.setVersion(0);
@@ -949,7 +955,7 @@ public class EntityBuilderBean {
         i44.setMaximum(new BigDecimal(999999));
         i44.setPercentage(new BigDecimal(0.0020));
         interestSessionBean.addInterest(i44);
-        
+
         TimeRangeInterest i45 = new TimeRangeInterest();
         i45.setName("12-15month-$500000-$XXXXXX-0.25%");
         i45.setVersion(0);
@@ -959,7 +965,7 @@ public class EntityBuilderBean {
         i45.setMaximum(new BigDecimal(999999));
         i45.setPercentage(new BigDecimal(0.0025));
         interestSessionBean.addInterest(i45);
-        
+
         TimeRangeInterest i46 = new TimeRangeInterest();
         i46.setName("16-18month-$500000-$XXXXXX-0.50%");
         i46.setVersion(0);
@@ -969,7 +975,7 @@ public class EntityBuilderBean {
         i46.setMaximum(new BigDecimal(999999));
         i46.setPercentage(new BigDecimal(0.0050));
         interestSessionBean.addInterest(i46);
-        
+
         TimeRangeInterest i47 = new TimeRangeInterest();
         i47.setName("19-24month-$500000-$XXXXXX-0.55%");
         i47.setVersion(0);
@@ -979,7 +985,7 @@ public class EntityBuilderBean {
         i47.setMaximum(new BigDecimal(999999));
         i47.setPercentage(new BigDecimal(0.0055));
         interestSessionBean.addInterest(i47);
-        
+
         TimeRangeInterest i48 = new TimeRangeInterest();
         i48.setName("25-36month-$500000-$XXXXXX-0.65%");
         i48.setVersion(0);
@@ -1067,7 +1073,7 @@ public class EntityBuilderBean {
         customProduct.setInterestRules(demoConditionalInterestDataForCustomDepositProduct);
         customProduct.addInterest(demoNormalInterestData);
         depositProductSessionBean.createDepositProduct(customProduct);
-        
+
         DepositAccountProduct savingProduct = new DepositAccountProduct();
         savingProduct.setType(DepositAccountType.SAVING);
         savingProduct.setName("Monthly Savings Account");
@@ -1077,10 +1083,10 @@ public class EntityBuilderBean {
         savingProduct.setCharges(BigDecimal.ZERO);
         savingProduct.setAnnualFees(BigDecimal.ZERO);
         savingProduct.setWaivedMonths(0);
-        savingProduct.addInterest(demoRangeInterestData.get(0));
+        savingProduct.addInterest(demoConditionalInterestDataForSavingsDepositProduct.get(0));
         savingProduct.addInterest(demoNormalInterestData);
         depositProductSessionBean.createDepositProduct(savingProduct);
-        
+
         savingProduct = new DepositAccountProduct();
         savingProduct.setType(DepositAccountType.SAVING);
         savingProduct.setName("Bonus+Savings");
@@ -1090,10 +1096,10 @@ public class EntityBuilderBean {
         savingProduct.setCharges(BigDecimal.ZERO);
         savingProduct.setAnnualFees(BigDecimal.ZERO);
         savingProduct.setWaivedMonths(0);
-        savingProduct.addInterest(demoRangeInterestData.get(1));
+        savingProduct.addInterest(demoConditionalInterestDataForSavingsDepositProduct.get(1));
         savingProduct.addInterest(demoNormalInterestData);
         depositProductSessionBean.createDepositProduct(savingProduct);
-        
+
         DepositAccountProduct currentProduct = new DepositAccountProduct();
         currentProduct.setType(DepositAccountType.CURRENT);
         currentProduct.setName("Current Account");
@@ -1105,7 +1111,7 @@ public class EntityBuilderBean {
         currentProduct.setWaivedMonths(0);
         currentProduct.setInterestRules(demoRangeInterestData);
         depositProductSessionBean.createDepositProduct(currentProduct);
-        
+
         FixedDepositAccountProduct fixedProduct = new FixedDepositAccountProduct();
         fixedProduct.setType(DepositAccountType.FIXED);
         fixedProduct.setName("Time Deposit");
@@ -1124,13 +1130,42 @@ public class EntityBuilderBean {
 
     // custom account for demo
     private void initDepositAccount() {
-        CustomerDepositAccount cda = new CustomerDepositAccount();
-        cda.setType(DepositAccountType.CUSTOM);
-        cda.setProduct(depositProductSessionBean.getDepositProductByName(ConstantUtils.DEMO_CUSTOM_DEPOSIT_PRODUCT_NAME));
-        cda.setBalance(new BigDecimal(1000));
-        cda.setMainAccount(demoMainAccount);
-        DepositAccount dp = customerDepositSessionBean.createAccount(cda);
+        CustomerDepositAccount customAccount = new CustomerDepositAccount();
+        customAccount.setType(DepositAccountType.CUSTOM);
+        customAccount.setProduct(depositProductSessionBean.getDepositProductByName(ConstantUtils.DEMO_CUSTOM_DEPOSIT_PRODUCT_NAME));
+        customAccount.setBalance(new BigDecimal(1000));
+        customAccount.setMainAccount(demoMainAccount);
+        DepositAccount dp = customerDepositSessionBean.createAccount(customAccount);
         initTransactions(dp);
+        
+        CustomerDepositAccount savingAccount = new CustomerDepositAccount();
+        savingAccount.setType(DepositAccountType.SAVING);
+        savingAccount.setProduct(depositProductSessionBean.getDepositProductByName(ConstantUtils.DEMO_SAVING1_DEPOSIT_PRODUCT_NAME));
+        savingAccount.setBalance(new BigDecimal(1000));
+        savingAccount.setMainAccount(demoMainAccount);
+        customerDepositSessionBean.createAccount(savingAccount);
+        
+        CustomerDepositAccount savingAccount2 = new CustomerDepositAccount();
+        savingAccount2.setType(DepositAccountType.SAVING);
+        savingAccount2.setProduct(depositProductSessionBean.getDepositProductByName(ConstantUtils.DEMO_SAVING2_DEPOSIT_PRODUCT_NAME));
+        savingAccount2.setBalance(new BigDecimal(1000));
+        savingAccount2.setMainAccount(demoMainAccount);
+        customerDepositSessionBean.createAccount(savingAccount2);
+        
+        CustomerDepositAccount currentAccount = new CustomerDepositAccount();
+        currentAccount.setType(DepositAccountType.SAVING);
+        currentAccount.setProduct(depositProductSessionBean.getDepositProductByName(ConstantUtils.DEMO_CURRENT_DEPOSIT_PRODUCT_NAME));
+        currentAccount.setBalance(new BigDecimal(1000));
+        currentAccount.setMainAccount(demoMainAccount);
+        customerDepositSessionBean.createAccount(currentAccount);
+        
+        CustomerFixedDepositAccount fixedAccount = new CustomerFixedDepositAccount();
+        fixedAccount.setType(DepositAccountType.FIXED);
+        fixedAccount.setProduct(depositProductSessionBean.getDepositProductByName(ConstantUtils.DEMO_FIXED_DEPOSIT_PRODUCT_NAME));
+        fixedAccount.setBalance(new BigDecimal(750000));
+        fixedAccount.setMainAccount(demoMainAccount);
+        fixedAccount.setInterestRules(interestSessionBean.getFixedDepositAccountDefaultInterests());
+        customerDepositSessionBean.createAccount(fixedAccount);
     }
 
     private void initTransactions(DepositAccount account) {
@@ -1150,52 +1185,52 @@ public class EntityBuilderBean {
         da = customerDepositSessionBean.investFromAccount(da, new BigDecimal(5000));
     }
 
-    public void initCase(){
+    public void initCase() {
         CustomerCase cc = new CustomerCase();
         Issue issue = new Issue();
         List<Issue> issues = new ArrayList<Issue>();
-        
+
         issue.setTitle("Deposit Account Problem");
         issue.setField(EnumUtils.IssueField.DEPOSIT);
         issue.setDetails("My deposit account has some suspicious credit histories. Could you please help me to check?");
         issue.setCustomerCase(cc);
-        
+
         issues.add(issue);
-        
+
         cc.setIssues(issues);
         cc.setTitle("My Deposit Account has Some problems");
         cc.setMainAccount(demoMainAccount);
         cc.setStaffAccount(staffAccountSessionBean.getAccountByUsername(ConstantUtils.SUPER_ADMIN_USERNAME));
         cc.setCaseStatus(CaseStatus.ONHOLD);
-        
+
         customerCaseSessionBean.saveCase(cc);
-        
+
         cc = new CustomerCase();
         issue = new Issue();
         issues = new ArrayList<Issue>();
-        
+
         issue.setTitle("Loan Problem");
         issue.setField(EnumUtils.IssueField.DEPOSIT);
         issue.setDetails("My loan account has some problems. Could you please help me to check?");
         issue.setCustomerCase(cc);
-        
+
         issues.add(issue);
-        
+
         issue = new Issue();
-        
+
         issue.setTitle("Loan Problem");
         issue.setField(EnumUtils.IssueField.INVESTMENT);
         issue.setDetails("My loan account has some problems. Could you please help me to check?");
         issue.setCustomerCase(cc);
-        
+
         issues.add(issue);
-        
+
         cc.setIssues(issues);
         cc.setTitle("Loan Problem");
         cc.setMainAccount(demoMainAccount);
         cc.setStaffAccount(staffAccountSessionBean.getAccountByUsername(ConstantUtils.SUPER_ADMIN_USERNAME));
         cc.setCaseStatus(CaseStatus.ONHOLD);
-        
+
         customerCaseSessionBean.saveCase(cc);
     }
 }

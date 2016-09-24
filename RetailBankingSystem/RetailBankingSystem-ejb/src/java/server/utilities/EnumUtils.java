@@ -15,6 +15,35 @@ import java.util.List;
 // REMARK: To get the list of enum values, just use e.g. CreditType.values()
 public class EnumUtils {
 
+    public enum CardNetwork {
+
+        VISA("VISA"),
+        Master("MASTER");
+        private String value;
+
+        CardNetwork(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        @Override
+        public String toString() {
+            return this.getValue();
+        }
+
+        public static CardNetwork getEnum(String value) {
+            for (CardNetwork v : values()) {
+                if (v.getValue().equalsIgnoreCase(value)) {
+                    return v;
+                }
+            }
+            throw new IllegalArgumentException();
+        }
+    }
+
     // LY: depends on the depth, we can further categorize them
     // e.g. Cashback on Purchases or Payments
     // discounted partner merchants
@@ -115,6 +144,7 @@ public class EnumUtils {
 
     public enum ApplicationStatus {
 
+        NEW("NEW"),
         PENDING("PENDING"),
         EDITABLE("EDITABLE"),
         REJECT("REJECT"),
@@ -255,41 +285,6 @@ public class EnumUtils {
             throw new IllegalArgumentException();
         }
 
-    }
-
-    public enum EduLevel {
-
-        UNIVERSITY_GRAD("UNIVERSITY_GRAD"),
-        DIPLOMA_HOLDER("DIPLOMA_HOLDER"),
-        TECHNICAL("TECHNICAL"),
-        A_LEVEL("A_LEVEL"),
-        SECONDARY("SECONDARY"),
-        PRIMARY("PRIMARY"),
-        OTHERS("OTHERS");
-
-        private String value;
-
-        EduLevel(String value) {
-            this.value = value;
-        }
-
-        public String getValue() {
-            return value;
-        }
-
-        @Override
-        public String toString() {
-            return this.getValue();
-        }
-
-        public static EduLevel getEnum(String value) {
-            for (EduLevel v : values()) {
-                if (v.getValue().equalsIgnoreCase(value)) {
-                    return v;
-                }
-            }
-            throw new IllegalArgumentException();
-        }
     }
 
     public enum ResidentialStatus {
@@ -672,6 +667,7 @@ public class EnumUtils {
         DEPOSIT("DEPOSIT"),
         WITHDRAW("WITHDRAW"),
         CHEQUE("CHEQUE"),
+        INTEREST("INTEREST"),
         TRANSFER("TRANSFER"),
         LOCALTRANSFER("LOCAL TRANSFER"),
         INTERBANKTRANSFER("INTER BANK TRANSFER"),
@@ -845,8 +841,9 @@ public class EnumUtils {
             throw new IllegalArgumentException();
         }
     }
-    
+
     public enum InterestTimeRange {
+
         // in month
         T1_T2("1-2 months"),
         T3_T5("3-5 months"),
@@ -857,7 +854,7 @@ public class EnumUtils {
         T18("18 mth"),
         T24("24 mth"),
         T36("18 mth");
-        
+
         private String value;
 
         InterestTimeRange(String value) {
@@ -882,15 +879,16 @@ public class EnumUtils {
             throw new IllegalArgumentException();
         }
     }
-    
+
     public enum InterestAmountRange {
+
         M5_M20("$5,000 - $20,000"),
         M20_M50("$20,000 - $50,000"),
         M50_M99("$50,000 - $99,999"),
         M100_M249("$100,000 - $249,999"),
         M250_M499("$250,000 - $499,999"),
         M500_M999("$500,000 - $999,999");
-        
+
         private String value;
 
         InterestAmountRange(String value) {
@@ -1011,7 +1009,7 @@ public class EnumUtils {
             throw new IllegalArgumentException();
         }
     }
-    
+
     public enum IssueField {
 
         PROFILE("PROFILE"),
@@ -1020,8 +1018,7 @@ public class EnumUtils {
         CARD("CARD"),
         LOAN("LOAN"),
         INVESTMENT("INVESTMENT");
-        
-        
+
         private String value;
 
         IssueField(String value) {

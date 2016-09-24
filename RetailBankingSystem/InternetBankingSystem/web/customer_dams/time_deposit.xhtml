@@ -1,4 +1,3 @@
-kj<?xml version="1.0" encoding="UTF-8"?>
 <!--
 To change this license header, choose License Headers in Project Properties.
 To change this template file, choose Tools | Templates
@@ -9,7 +8,8 @@ and open the template in the editor.
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:em="http://xmlns.jcp.org/jsf/composite/emcomp">
+      xmlns:em="http://xmlns.jcp.org/jsf/composite/emcomp"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     <f:view>
         <h:head>
             <title>Merlion Bank</title>
@@ -24,78 +24,18 @@ and open the template in the editor.
             <div style="margin-top: 200px;margin-left: 70px;position: absolute"> 
                 <h1>Time Deposit</h1> 
                 <p:panel style="width: 750px">
-                    <p:panelGrid columns="8">
+                    <p:panelGrid columns="#{displayFixedDepositProductManagedBean.colSize}">
                         <f:facet name="header">
                             <p:row>
                                 <p:column colspan="7">Time Deposit Interest Rate</p:column>
                             </p:row>
                         </f:facet>
-                        <h:outputText value="" />
-                        <h:outputText value="1-2 mth" />
-                        <h:outputText value="3-5 mth" />
-                        <h:outputText value="6-8 mth" />
-                        <h:outputText value="9-12 mth" />
-                        <h:outputText value="18 mth" />
-                        <h:outputText value="24 mth" />
-                        <h:outputText value="36 mth" />
 
-
-                        <h:outputText value="5,000~20,000" />
-                        <h:outputText value="0.05%" />
-                        <h:outputText value="0.1%" />
-                        <h:outputText value="0.15%" />
-                        <h:outputText value="0.2%" />
-                        <h:outputText value="0.4%" />
-                        <h:outputText value="0.6%" />
-                        <h:outputText value="0.8%" />
-
-                        <h:outputText value="20,001~50,000" />
-                        <h:outputText value="0.05%" />
-                        <h:outputText value="0.1%" />
-                        <h:outputText value="0.15%" />
-                        <h:outputText value="0.2%" />
-                        <h:outputText value="0.4%" />
-                        <h:outputText value="0.6%" />
-                        <h:outputText value="0.8%" />
-
-                        <h:outputText value="50,001~100,000" />
-                        <h:outputText value="0.05%" />
-                        <h:outputText value="0.1%" />
-                        <h:outputText value="0.15%" />
-                        <h:outputText value="0.2%" />
-                        <h:outputText value="0.4%" />
-                        <h:outputText value="0.6%" />
-                        <h:outputText value="0.8%" />
-
-                        <h:outputText value="100,001~250,000" />
-                        <h:outputText value="0.05%" />
-                        <h:outputText value="0.1%" />
-                        <h:outputText value="0.15%" />
-                        <h:outputText value="0.2%" />
-                        <h:outputText value="0.4%" />
-                        <h:outputText value="0.6%" />
-                        <h:outputText value="0.8%" />
-
-                        <h:outputText value="250,001~500,000" />
-                        <h:outputText value="0.05%" />
-                        <h:outputText value="0.1%" />
-                        <h:outputText value="0.15%" />
-                        <h:outputText value="0.2%" />
-                        <h:outputText value="0.4%" />
-                        <h:outputText value="0.6%" />
-                        <h:outputText value="0.8%" />
-
-                        <h:outputText value="20,001~50,000" />
-                        <h:outputText value="0.05%" />
-                        <h:outputText value="0.1%" />
-                        <h:outputText value="0.15%" />
-                        <h:outputText value="0.2%" />
-                        <h:outputText value="0.4%" />
-                        <h:outputText value="0.6%" />
-                        <h:outputText value="0.8%" />
-
-
-
+                        <c:forEach items="#{displayFixedDepositProductManagedBean.rowIndex}" var="row">
+                            <c:forEach items="#{displayFixedDepositProductManagedBean.colIndex}" var="col">
+                                <h:outputText value="#{displayFixedDepositProductManagedBean.getDisplayCell(row, col)}" />
+                            </c:forEach>
+                        </c:forEach>
                     </p:panelGrid>
 
 

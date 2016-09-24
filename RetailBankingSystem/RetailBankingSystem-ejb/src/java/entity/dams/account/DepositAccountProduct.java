@@ -50,6 +50,14 @@ public class DepositAccountProduct extends DepositProduct {
         this.interestRules.add(i);
     }
     
+    public void addInterestsRules(List<Interest> interests) {
+        interests.addAll(interests);
+    }
+    
+    public void removeInterestsRules(List<Interest> interests) {
+        interests.removeAll(interests);
+    }
+    
     public List<Interest> getBaseInterest() {
         List<Interest> result = new ArrayList();
         for (Interest i : interestRules) {

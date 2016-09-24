@@ -8,7 +8,11 @@ run this in cmdline
 mysql -u root --password=password < RecreateDatabase.sql
 
 ### Change the project name accordingly ###
+
+### Do no commit .xml and .properties file ###
 git update-index --assume-unchanged filename
+### If pull merge failed and aborted because of the .xml and .properties file, use the below command ###
+git update-index --no-assume-unchanged filename
 
     git update-index --assume-unchanged RetailBankingSystem/RetailBankingSystem-ejb/nbproject/build-impl.xml
     git update-index --assume-unchanged RetailBankingSystem/StaffInternalSystem/nbproject/build-impl.xml
@@ -16,6 +20,11 @@ git update-index --assume-unchanged filename
     git update-index --assume-unchanged RetailBankingSystem/RetailBankingSystem-ejb/nbproject/project.properties
     git update-index --assume-unchanged RetailBankingSystem/StaffInternalSystem/nbproject/project.properties
     git update-index --assume-unchanged RetailBankingSystem/InternetBankingSystem/nbproject/project.properties
+    git update-index --assume-unchanged RetailBankingSystem/RetailBankingSystem-ejb/nbproject/genfiles.properties
+    git update-index --assume-unchanged RetailBankingSystem/RetailBankingSystem-ejb/nbproject/project.xml
+    git update-index --assume-unchanged RetailBankingSystem/InternetBankingSystem/nbproject/build-impl.xml~
+    git update-index --assume-unchanged RetailBankingSystem/RetailBankingSystem-ejb/nbproject/build-impl.xml~
+
 
 # Error Handling** IMPORTANT #
 Standardize Error Handingly Message from server.utilities.ConstantUtils.java

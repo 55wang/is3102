@@ -5,13 +5,16 @@
  */
 package entity.dams.account;
 
-import entity.embedded.CumulatedInterest;
+import entity.card.account.DebitCardAccount;
 import entity.embedded.TransferLimits;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
-import server.utilities.EnumUtils.DepositAccountType;
+import javax.persistence.OneToMany;
 
 /**
  *
@@ -25,10 +28,10 @@ public class CustomerDepositAccount extends DepositAccount {
     private Integer waivedChargesCounter = 0;
     @Embedded
     private TransferLimits transferLimits = new TransferLimits();
-    @Embedded
-    private CumulatedInterest cumulatedInterest = new CumulatedInterest();
+    @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "")
+    private List<DebitCardAccount> debitCardAccount = new ArrayList<>();
     
-    @Column(precision=12, scale=2)
+    @Column(precision=30, scale=20)
     private BigDecimal previousBalance = new BigDecimal(0);
     
     /**
@@ -74,20 +77,6 @@ public class CustomerDepositAccount extends DepositAccount {
     }
 
     /**
-     * @return the cumulatedInterest
-     */
-    public CumulatedInterest getCumulatedInterest() {
-        return cumulatedInterest;
-    }
-
-    /**
-     * @param cumulatedInterest the cumulatedInterest to set
-     */
-    public void setCumulatedInterest(CumulatedInterest cumulatedInterest) {
-        this.cumulatedInterest = cumulatedInterest;
-    }
-
-    /**
      * @return the previousBalance
      */
     public BigDecimal getPreviousBalance() {
@@ -99,5 +88,13 @@ public class CustomerDepositAccount extends DepositAccount {
      */
     public void setPreviousBalance(BigDecimal previousBalance) {
         this.previousBalance = previousBalance;
+    }
+
+    public List<DebitCardAccount> getDebitCardAccount() {
+        return debitCardAccount;
+    }
+
+    public void setDebitCardAccount(List<DebitCardAccount> debitCardAccount) {
+        this.debitCardAccount = debitCardAccount;
     }
 }
