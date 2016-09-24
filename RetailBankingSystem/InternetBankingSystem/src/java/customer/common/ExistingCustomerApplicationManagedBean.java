@@ -31,14 +31,14 @@ import utils.RedirectUtils;
  */
 @Named(value = "existingCustomerApplicationManagedBean")
 @ViewScoped
-public class ExistingCustomerApplicationManagedBean implements Serializable{
+
+public class ExistingCustomerApplicationManagedBean implements Serializable {
+
 
     /**
      * Creates a new instance of ExistingCustomerApplicationManagedBean
      */
-    
-    @EJB
-    private EmailServiceSessionBeanLocal emailServiceSessionBean;
+   
     @EJB
     private NewCustomerSessionBeanLocal newCustomerSessionBean;
     @EJB
@@ -78,21 +78,26 @@ public class ExistingCustomerApplicationManagedBean implements Serializable{
         this.customer = customer;
     }
 
-    public void save() {
+    public void save(Customer thisCustomer) {
+        System.out.print(thisCustomer.getLastname());
 
-       
-        MainAccount mainAccount = customer.getMainAccount();
-        
+        MainAccount mainAccount = thisCustomer.getMainAccount();
+//        System.out.println(mainAccount);
 
         CustomerDepositAccount depostiAccount = new CustomerDepositAccount();
         depostiAccount.setMainAccount(mainAccount);
+        
         if (initialDepositAccount.equals(ConstantUtils.DEMO_CURRENT_DEPOSIT_PRODUCT_NAME)) {
             depostiAccount.setType(EnumUtils.DepositAccountType.CURRENT);
+            
         } else if (initialDepositAccount.equals(ConstantUtils.DEMO_CUSTOM_DEPOSIT_PRODUCT_NAME)) {
             depostiAccount.setType(EnumUtils.DepositAccountType.CUSTOM);
+            
         }
         depostiAccount.setProduct(depositProductBean.getDepositProductByName(initialDepositAccount));
+        
         depositAccountBean.createAccount(depostiAccount);
+        
     }
         
 

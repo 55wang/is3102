@@ -9,6 +9,7 @@ import ejb.session.common.EmailServiceSessionBeanLocal;
 import ejb.session.common.NewCustomerSessionBeanLocal;
 import ejb.session.dams.CustomerDepositSessionBeanLocal;
 import ejb.session.dams.DepositProductSessionBeanLocal;
+import ejb.session.utils.UtilsSessionBeanLocal;
 import entity.customer.Customer;
 import entity.customer.MainAccount;
 import entity.dams.account.CustomerDepositAccount;
@@ -17,6 +18,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.security.SecureRandom;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -33,6 +35,7 @@ import server.utilities.EnumUtils.Nationality;
 import server.utilities.EnumUtils.Occupation;
 import server.utilities.EnumUtils.StatusType;
 import utils.CommonUtils;
+import utils.JSUtils;
 import utils.MessageUtils;
 import utils.RedirectUtils;
 
@@ -43,6 +46,9 @@ import utils.RedirectUtils;
 @Named(value = "customerApplicationManagedBean")
 @ViewScoped
 public class CustomerApplicationManagedBean implements Serializable {
+
+    @EJB
+    private UtilsSessionBeanLocal utilsSessionBean;
 
     @EJB
     private EmailServiceSessionBeanLocal emailServiceSessionBean;
@@ -68,11 +74,32 @@ public class CustomerApplicationManagedBean implements Serializable {
     private String selectedGender;
     private String selectedOccupation;
     private String selectedIncome;
+    private Date currentDate = new Date();
 
     /**
      * Creates a new instance of customerApplicationManagedBean
      */
     public CustomerApplicationManagedBean() {
+    }
+
+    public void validateInputTwoThenNext() {
+
+        if (utilsSessionBean.checkIdentityNumberIsUnique(customer.getIdentityNumber()) == false) {
+            MessageUtils.displayError("Identity Number is registered!");
+        } else {
+            JSUtils.callJSMethod("PF('myWizard').next();");
+        }
+    }
+
+    public void validateInputThreeThenNext() {
+
+        if (utilsSessionBean.checkEmailIsUnique(customer.getEmail()) == false) {
+            MessageUtils.displayError("Email is registered!");
+        } else if (utilsSessionBean.checkPhoneIsUnique(customer.getPhone()) == false) {
+            MessageUtils.displayError("Phone is registered!");
+        } else {
+            JSUtils.callJSMethod("PF('myWizard').next();");
+        }
     }
 
     @PostConstruct
@@ -320,4 +347,19 @@ public class CustomerApplicationManagedBean implements Serializable {
     public void setIncomeOptions(List<String> IncomeOptions) {
         this.IncomeOptions = IncomeOptions;
     }
+
+    /**
+     * @return the currentDate
+     */
+    public Date getCurrentDate() {
+        return currentDate;
+    }
+
+    /**
+     * @param currentDate the currentDate to set
+     */
+    public void setCurrentDate(Date currentDate) {
+        this.currentDate = currentDate;
+    }
+
 }
