@@ -6,13 +6,22 @@
 package ejb.session.card;
 
 import entity.card.account.CashBackCardProduct;
+import entity.card.account.DebitCardAccount;
 import entity.card.account.MileCardProduct;
 import entity.card.account.RewardCardProduct;
+import entity.common.TransactionRecord;
+import entity.customer.MainAccount;
+import entity.dams.account.CustomerDepositAccount;
+import entity.dams.account.DepositAccount;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;
+import javax.persistence.EntityExistsException;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import server.utilities.EnumUtils;
+import server.utilities.GenerateAccountAndCCNumber;
 
 /**
  *

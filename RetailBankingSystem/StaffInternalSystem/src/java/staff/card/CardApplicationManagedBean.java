@@ -103,7 +103,7 @@ public class CardApplicationManagedBean implements Serializable {
         }
         cca.setCreditCardProduct(cp);
         cca.setCvv(Integer.parseInt(CommonHelper.generateRandom(true, 3)));
-        cal.set(Calendar.YEAR, 1);
+        cal.set(Calendar.YEAR, 2);
         cca.setValidDate(cal.getTime());
 
         //new main account and customer

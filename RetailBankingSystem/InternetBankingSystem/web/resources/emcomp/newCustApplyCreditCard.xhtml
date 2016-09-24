@@ -31,6 +31,7 @@
                                                 <h:outputText style="font-weight:bolder" value="Choose Your Credit Card Account: " />
                                                 <p:selectOneMenu value="#{customerApplicationManagedBean.initialDepositAccount}" style="width:187px; height: 41px; line-height: 21px; top:10px" rendered="true" required="true">
                                                     <f:selectItem itemLabel="Please Select..." itemValue="" />
+                                                    
                                                     <f:selectItem itemLabel="MBS Miles Credit Card" itemValue="MILES" />
                                                     <f:selectItem itemLabel="MBS Reward Credit Card" itemValue="REWARD" />
                                                     <f:selectItem itemLabel="MBS Fixed Credit Card" itemValue="FIXED" />
@@ -50,7 +51,7 @@
                                                 <p:inputText value="#{customerApplicationManagedBean.customer.occupation}" required="true"/><br />
                                                 <h:outputText value="Industry: " />
                                                 <p:inputText value="#{customerApplicationManagedBean.customer.occupation}" required="true"/><br />
-                                                <h:outputText value="Position: " />
+                                                <h:outputText value="Occupation: " />
                                                 <p:inputText value="#{customerApplicationManagedBean.customer.occupation}" required="true"/><br />
                                                 <h:outputText value="Company: " />
                                                 <p:inputText value="#{customerApplicationManagedBean.customer.occupation}" required="true"/><br />

@@ -8,6 +8,7 @@ package ejb.session.card;
 import entity.card.account.CardTransaction;
 import entity.card.account.CreditCardAccount;
 import entity.card.account.CreditCardOrder;
+import entity.card.account.DebitCardAccount;
 import java.util.List;
 import javax.ejb.Local;
 import server.utilities.EnumUtils;
@@ -36,9 +37,11 @@ public interface CardAcctSessionBeanLocal {
     public String updateCardAccountStatus(CreditCardAccount cca, EnumUtils.CardAccountStatus status);
 
     public String updateCardAcctTransactionDailyLimit(CreditCardAccount cca, double newDailyLimit);
-    
+
     public String updateCardAcctTransactionMonthlyLimit(CreditCardAccount cca, double newMonthlyLimit);
-    
+
     public List<CardTransaction> getCardTransactionFromId(Long ccaId);
+
+    public DebitCardAccount createDebitAccount(DebitCardAccount dba, Long depositAccountId);
     
 }

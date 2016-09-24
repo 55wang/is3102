@@ -84,7 +84,7 @@ public class StaffCustomerInformationManagedBean implements Serializable {
         selectedCustomer.setIncome(Income.getEnum(selectedIncome));
         selectedCustomer.setMaritalStatus(MaritalStatus.getEnum(selectedMaritalStatus));
         selectedCustomer.setEducation(Education.getEnum(selectedEducation));
-
+       
         Customer result = getCustomerProfileSessionBean().saveProfile(selectedCustomer);
 
         if (result == null) {

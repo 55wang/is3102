@@ -8,13 +8,21 @@ package ejb.session.card;
 import entity.card.account.CardTransaction;
 import entity.card.account.CreditCardAccount;
 import entity.card.account.CreditCardOrder;
+import entity.card.account.DebitCardAccount;
 import entity.card.account.PromoCode;
+import entity.dams.account.CustomerDepositAccount;
+import entity.dams.account.DepositAccount;
+import java.util.Calendar;
 import java.util.List;
 import javax.ejb.Stateless;
+import javax.persistence.EntityExistsException;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import server.utilities.EnumUtils.*;
+import server.utilities.EnumUtils;
+import server.utilities.EnumUtils.ApplicationStatus;
+import server.utilities.EnumUtils.CardAccountStatus;
+import server.utilities.GenerateAccountAndCCNumber;
 
 /**
  *
@@ -22,21 +30,21 @@ import server.utilities.EnumUtils.*;
  */
 @Stateless
 public class CardAcctSessionBean implements CardAcctSessionBeanLocal {
-    
+
     @PersistenceContext(unitName = "RetailBankingSystem-ejbPU")
     private EntityManager em;
-    
+
     @Override
     public List<CreditCardOrder> showAllCreditCardOrder() {
         Query q = em.createQuery("SELECT cco FROM CreditCardOrder cco");
         return q.getResultList();
     }
-    
+
     @Override
     public CreditCardOrder getCardOrderFromId(Long orderNumber) {
         return em.find(CreditCardOrder.class, orderNumber);
     }
-    
+
     @Override
     public List<CardTransaction> getCardTransactionFromId(Long ccaId) {
         System.out.println(ccaId);
@@ -46,7 +54,7 @@ public class CardAcctSessionBean implements CardAcctSessionBeanLocal {
         System.out.println(cts);
         return cts;
     }
-    
+
     //try not to use void, always return something or null. and catch it at the caller side.
     @Override
     public String createCardOrder(CreditCardOrder order) {
@@ -75,7 +83,7 @@ public class CardAcctSessionBean implements CardAcctSessionBeanLocal {
             return null;
         }
     }
-    
+
     @Override
     public List<CreditCardAccount> showAllCreditCardAccount(CardAccountStatus status, Long id) {
         System.out.println("Status:" + status + " and id:" + id);
@@ -84,12 +92,12 @@ public class CardAcctSessionBean implements CardAcctSessionBeanLocal {
         q.setParameter("id", id);
         return q.getResultList();
     }
-    
+
     @Override
     public CreditCardAccount getCardAccountFromId(Long cardID) {
         return em.find(CreditCardAccount.class, cardID);
     }
-    
+
     @Override
     public String createCardAccount(CreditCardAccount cca) {
         try {
@@ -117,7 +125,7 @@ public class CardAcctSessionBean implements CardAcctSessionBeanLocal {
             return null;
         }
     }
-    
+
     @Override
     public String updateCardAcctTransactionDailyLimit(CreditCardAccount cca, double newDailyLimit) {
         try {
@@ -131,7 +139,7 @@ public class CardAcctSessionBean implements CardAcctSessionBeanLocal {
             return null;
         }
     }
-    
+
     @Override
     public String updateCardAcctTransactionMonthlyLimit(CreditCardAccount cca, double newMonthlyLimit) {
         try {
@@ -174,5 +182,35 @@ public class CardAcctSessionBean implements CardAcctSessionBeanLocal {
             return null;
         }
     }
-    
+
+    @Override
+    public DebitCardAccount createDebitAccount(DebitCardAccount dba, Long depositAccountId) {
+        try {
+            DepositAccount da = em.find(DepositAccount.class, depositAccountId);
+            dba.setCreditCardNum(generateAccountNumber());
+            dba.setCvv(Integer.parseInt(server.utilities.CommonHelper.generateRandom(true, 3)));
+            dba.setCardStatus(EnumUtils.CardAccountStatus.PENDING);
+            Calendar cal = Calendar.getInstance();
+            dba.setCreationDate(cal.getTime());
+            cal.set(Calendar.YEAR, 2);
+            dba.setValidDate(cal.getTime());
+            dba.setCustomerDepositAccount((CustomerDepositAccount) da);
+            em.persist(dba);
+
+            return dba;
+        } catch (EntityExistsException e) {
+            return null;
+        }
+    }
+
+    private String generateAccountNumber() {
+        String accountNumber = "";
+        for (;;) {
+            accountNumber = GenerateAccountAndCCNumber.generateMasterCardNumber();
+            DepositAccount a = em.find(DepositAccount.class, accountNumber);
+            if (a == null) {
+                return accountNumber;
+            }
+        }
+    }
 }

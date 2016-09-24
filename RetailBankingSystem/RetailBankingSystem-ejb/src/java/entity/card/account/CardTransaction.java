@@ -33,7 +33,7 @@ public class CardTransaction implements Serializable {
         serialVersionUID = aSerialVersionUID;
     }
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date transactionTimeStamp;
