@@ -1076,7 +1076,7 @@ public class EntityBuilderBean {
 
         DepositAccountProduct savingProduct = new DepositAccountProduct();
         savingProduct.setType(DepositAccountType.SAVING);
-        savingProduct.setName("Monthly Savings Account");
+        savingProduct.setName(ConstantUtils.DEMO_SAVING1_DEPOSIT_PRODUCT_NAME);
         savingProduct.setVersion(0);
         savingProduct.setInitialDeposit(new BigDecimal(1000));
         savingProduct.setMinBalance(BigDecimal.ZERO);
@@ -1089,7 +1089,7 @@ public class EntityBuilderBean {
 
         savingProduct = new DepositAccountProduct();
         savingProduct.setType(DepositAccountType.SAVING);
-        savingProduct.setName("Bonus+Savings");
+        savingProduct.setName(ConstantUtils.DEMO_SAVING2_DEPOSIT_PRODUCT_NAME);
         savingProduct.setVersion(0);
         savingProduct.setInitialDeposit(new BigDecimal(10000));
         savingProduct.setMinBalance(BigDecimal.ZERO);
@@ -1102,7 +1102,7 @@ public class EntityBuilderBean {
 
         DepositAccountProduct currentProduct = new DepositAccountProduct();
         currentProduct.setType(DepositAccountType.CURRENT);
-        currentProduct.setName("Current Account");
+        currentProduct.setName(ConstantUtils.DEMO_CURRENT_DEPOSIT_PRODUCT_NAME);
         currentProduct.setVersion(0);
         currentProduct.setInitialDeposit(BigDecimal.ZERO);
         currentProduct.setMinBalance(BigDecimal.ZERO);
@@ -1114,7 +1114,7 @@ public class EntityBuilderBean {
 
         FixedDepositAccountProduct fixedProduct = new FixedDepositAccountProduct();
         fixedProduct.setType(DepositAccountType.FIXED);
-        fixedProduct.setName("Time Deposit");
+        fixedProduct.setName(ConstantUtils.DEMO_FIXED_DEPOSIT_PRODUCT_NAME);
         fixedProduct.setVersion(0);
         fixedProduct.setTerms("Any early withdraw will stop interests immediately");
         fixedProduct.setMaxAmount(new BigDecimal(999999));

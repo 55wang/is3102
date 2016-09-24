@@ -92,6 +92,9 @@ public class CustomerApplicationManagedBean implements Serializable {
             depostiAccount.setType(DepositAccountType.CUSTOM);
             depostiAccount.setProduct(depositProductBean.getDepositProductByName(ConstantUtils.DEMO_CUSTOM_DEPOSIT_PRODUCT_NAME));
         }
+        
+        depositAccountBean.createAccount(depostiAccount);
+        
         try {
             emailServiceSessionBean.sendActivationGmailForCustomer(customer.getEmail(), randomPwd);
             RedirectUtils.redirect("../common/register_successful.xhtml");
