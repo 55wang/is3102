@@ -59,18 +59,9 @@ public class LoginSessionBean implements LoginSessionBeanLocal {
 
     @Override
     public Customer getCustomerByUserID(String userID) {
-        Query q = em.createQuery("SELECT a FROM MainAccount a WHERE a.userID = :userID");
-
+        Query q = em.createQuery("SELECT c FROM Customer c WHERE c.mainAccount.userID = :userID");
         q.setParameter("userID", userID);
-
-        MainAccount mainAccount = null;
-
-        try {
-            mainAccount = (MainAccount) q.getSingleResult();
-            return mainAccount.getCustomer();
-        } catch (NoResultException ex) {
-            return null;
-        }
+        return (Customer) q.getSingleResult();
     }
 
     @Override

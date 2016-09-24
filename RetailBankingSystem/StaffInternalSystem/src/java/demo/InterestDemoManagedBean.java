@@ -84,13 +84,13 @@ public class InterestDemoManagedBean implements Serializable {
     private void initDemoAccount() {
         setDemoAccount(mainAccountSessionBean.getMainAccountByUserId(ConstantUtils.DEMO_MAIN_ACCOUNT_USER_ID));
         for (DepositAccount da : demoAccount.getBankAcounts()) {
-            availableDepositAccount.put(Long.toString(da.getId()), Long.toString(da.getId()));
+            availableDepositAccount.put(da.getAccountNumber(), da.getAccountNumber());
         }
     }
     
     private DepositAccount getSelectedAccount() {
             for (DepositAccount da : demoAccount.getBankAcounts()) {
-                if (Long.toString(da.getId()).equals(selectedDepositAccount)) {
+                if (da.getAccountNumber().equals(selectedDepositAccount)) {
                     return da;
                 }
         }

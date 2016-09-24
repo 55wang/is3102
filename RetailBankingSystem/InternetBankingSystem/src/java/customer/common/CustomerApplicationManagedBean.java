@@ -26,7 +26,11 @@ import org.primefaces.event.FlowEvent;
 import server.utilities.EnumUtils;
 import server.utilities.ConstantUtils;
 import server.utilities.EnumUtils.DepositAccountType;
+import server.utilities.EnumUtils.Gender;
 import server.utilities.EnumUtils.IdentityType;
+import server.utilities.EnumUtils.Income;
+import server.utilities.EnumUtils.Nationality;
+import server.utilities.EnumUtils.Occupation;
 import server.utilities.EnumUtils.StatusType;
 import utils.CommonUtils;
 import utils.MessageUtils;
@@ -52,21 +56,25 @@ public class CustomerApplicationManagedBean implements Serializable {
     private Customer customer = new Customer();
     private String initialDepositAccount;
 
-    private List<String> selectIdentityTypes = CommonUtils.getEnumList(EnumUtils.IdentityType.class);
-    private List<String> selectDepositAccountTypes = CommonUtils.getEnumList(EnumUtils.DepositAccountType.class);
-    private List<String> selectNationalities = CommonUtils.getEnumList(EnumUtils.Nationality.class);
-    private List<String> selectGenders = CommonUtils.getEnumList(EnumUtils.Gender.class);
-    private List<String> selectOccupations = CommonUtils.getEnumList(EnumUtils.Occupation.class);
-    private List<String> selectIncome = CommonUtils.getEnumList(EnumUtils.Income.class);
+    private List<String> IdentityTypeOptions = CommonUtils.getEnumList(EnumUtils.IdentityType.class);
+    private List<String> NationalityOptions = CommonUtils.getEnumList(EnumUtils.Nationality.class);
+    private List<String> GenderOptions = CommonUtils.getEnumList(EnumUtils.Gender.class);
+    private List<String> OccupationOptions = CommonUtils.getEnumList(EnumUtils.Occupation.class);
+    private List<String> IncomeOptions = CommonUtils.getEnumList(EnumUtils.Income.class);
     // TODO: For resend Email Button
     private Boolean emailSuccessFlag = true;
+    private String selectedIdentityType;
+    private String selectedNationality;
+    private String selectedGender;
+    private String selectedOccupation;
+    private String selectedIncome;
 
     /**
      * Creates a new instance of customerApplicationManagedBean
      */
     public CustomerApplicationManagedBean() {
     }
-    
+
     @PostConstruct
     public void init() {
         System.out.println("CustomerApplicationManagedBean @PostContruct");
@@ -81,6 +89,11 @@ public class CustomerApplicationManagedBean implements Serializable {
     }
 
     public void save() {
+        customer.setIncome(Income.getEnum(selectedIncome));
+        customer.setIdentityType(IdentityType.getEnum(selectedIdentityType));
+        customer.setNationality(Nationality.getEnum(selectedNationality));
+        customer.setGender(Gender.getEnum(selectedGender));
+        customer.setOccupation(Occupation.getEnum(selectedOccupation));
 
         customer.setMainAccount(new MainAccount());
         MainAccount mainAccount = customer.getMainAccount();
@@ -95,14 +108,14 @@ public class CustomerApplicationManagedBean implements Serializable {
         depostiAccount.setMainAccount(mainAccount);
         if (initialDepositAccount.equals(ConstantUtils.DEMO_CURRENT_DEPOSIT_PRODUCT_NAME)) {
             depostiAccount.setType(DepositAccountType.CURRENT);
-            depostiAccount.setProduct(depositProductBean.getDepositProductByName(ConstantUtils.DEMO_CURRENT_DEPOSIT_PRODUCT_NAME));
         } else if (initialDepositAccount.equals(ConstantUtils.DEMO_CUSTOM_DEPOSIT_PRODUCT_NAME)) {
             depostiAccount.setType(DepositAccountType.CUSTOM);
-            depostiAccount.setProduct(depositProductBean.getDepositProductByName(ConstantUtils.DEMO_CUSTOM_DEPOSIT_PRODUCT_NAME));
         }
-        
+
+        depostiAccount.setProduct(depositProductBean.getDepositProductByName(initialDepositAccount));
+
         depositAccountBean.createAccount(depostiAccount);
-        
+
         try {
             emailServiceSessionBean.sendActivationGmailForCustomer(customer.getEmail(), randomPwd);
             RedirectUtils.redirect("../common/register_successful.xhtml");
@@ -140,92 +153,6 @@ public class CustomerApplicationManagedBean implements Serializable {
         return sb.toString();
     }
 
- 
-
-    /**
-     * @return the selectIdentityTypes
-     */
-    public List<String> getSelectIdentityTypes() {
-        return selectIdentityTypes;
-    }
-
-    /**
-     * @param selectIdentityTypes the selectIdentityTypes to set
-     */
-    public void setSelectIdentityTypes(List<String> selectIdentityTypes) {
-        this.selectIdentityTypes = selectIdentityTypes;
-    }
-
-    /**
-     * @return the selectDepositAccountTypes
-     */
-    public List<String> getSelectDepositAccountTypes() {
-        return selectDepositAccountTypes;
-    }
-
-    /**
-     * @param selectDepositAccountTypes the selectDepositAccountTypes to set
-     */
-    public void setSelectDepositAccountTypes(List<String> selectDepositAccountTypes) {
-        this.selectDepositAccountTypes = selectDepositAccountTypes;
-    }
-
-    /**
-     * @return the selectNationalities
-     */
-    public List<String> getSelectNationalities() {
-        return selectNationalities;
-    }
-
-    /**
-     * @param selectNationalities the selectNationalities to set
-     */
-    public void setSelectNationalities(List<String> selectNationalities) {
-        this.selectNationalities = selectNationalities;
-    }
-
-    /**
-     * @return the selectGenders
-     */
-    public List<String> getSelectGenders() {
-        return selectGenders;
-    }
-
-    /**
-     * @param selectGenders the selectGenders to set
-     */
-    public void setSelectGenders(List<String> selectGenders) {
-        this.selectGenders = selectGenders;
-    }
-
-    /**
-     * @return the selectOccupations
-     */
-    public List<String> getSelectOccupations() {
-        return selectOccupations;
-    }
-
-    /**
-     * @param selectOccupations the selectOccupations to set
-     */
-    public void setSelectOccupations(List<String> selectOccupations) {
-        this.selectOccupations = selectOccupations;
-    }
-
-    /**
-     * @return the selectIncome
-     */
-    public List<String> getSelectIncome() {
-        return selectIncome;
-    }
-
-    /**
-     * @param selectIncome the selectIncome to set
-     */
-    public void setSelectIncome(List<String> selectIncome) {
-        this.selectIncome = selectIncome;
-    }
-
     /**
      * @return the initialDepositAccount
      */
@@ -252,5 +179,145 @@ public class CustomerApplicationManagedBean implements Serializable {
      */
     public void setEmailSuccessFlag(Boolean emailSuccessFlag) {
         this.emailSuccessFlag = emailSuccessFlag;
+    }
+
+    /**
+     * @return the selectedIncome
+     */
+    public String getSelectedIncome() {
+        return selectedIncome;
+    }
+
+    /**
+     * @param selectedIncome the selectedIncome to set
+     */
+    public void setSelectedIncome(String selectedIncome) {
+        this.selectedIncome = selectedIncome;
+    }
+
+    /**
+     * @return the selectedIdentityType
+     */
+    public String getSelectedIdentityType() {
+        return selectedIdentityType;
+    }
+
+    /**
+     * @param selectedIdentityType the selectedIdentityType to set
+     */
+    public void setSelectedIdentityType(String selectedIdentityType) {
+        this.selectedIdentityType = selectedIdentityType;
+    }
+
+    /**
+     * @return the selectedNationality
+     */
+    public String getSelectedNationality() {
+        return selectedNationality;
+    }
+
+    /**
+     * @param selectedNationality the selectedNationality to set
+     */
+    public void setSelectedNationality(String selectedNationality) {
+        this.selectedNationality = selectedNationality;
+    }
+
+    /**
+     * @return the selectedGender
+     */
+    public String getSelectedGender() {
+        return selectedGender;
+    }
+
+    /**
+     * @param selectedGender the selectedGender to set
+     */
+    public void setSelectedGender(String selectedGender) {
+        this.selectedGender = selectedGender;
+    }
+
+    /**
+     * @return the selectedOccupation
+     */
+    public String getSelectedOccupation() {
+        return selectedOccupation;
+    }
+
+    /**
+     * @param selectedOccupation the selectedOccupation to set
+     */
+    public void setSelectedOccupation(String selectedOccupation) {
+        this.selectedOccupation = selectedOccupation;
+    }
+
+    /**
+     * @return the IdentityTypeOptions
+     */
+    public List<String> getIdentityTypeOptions() {
+        return IdentityTypeOptions;
+    }
+
+    /**
+     * @param IdentityTypeOptions the IdentityTypeOptions to set
+     */
+    public void setIdentityTypeOptions(List<String> IdentityTypeOptions) {
+        this.IdentityTypeOptions = IdentityTypeOptions;
+    }
+
+    /**
+     * @return the NationalityOptions
+     */
+    public List<String> getNationalityOptions() {
+        return NationalityOptions;
+    }
+
+    /**
+     * @param NationalityOptions the NationalityOptions to set
+     */
+    public void setNationalityOptions(List<String> NationalityOptions) {
+        this.NationalityOptions = NationalityOptions;
+    }
+
+    /**
+     * @return the GenderOptions
+     */
+    public List<String> getGenderOptions() {
+        return GenderOptions;
+    }
+
+    /**
+     * @param GenderOptions the GenderOptions to set
+     */
+    public void setGenderOptions(List<String> GenderOptions) {
+        this.GenderOptions = GenderOptions;
+    }
+
+    /**
+     * @return the OccupationOptions
+     */
+    public List<String> getOccupationOptions() {
+        return OccupationOptions;
+    }
+
+    /**
+     * @param OccupationOptions the OccupationOptions to set
+     */
+    public void setOccupationOptions(List<String> OccupationOptions) {
+        this.OccupationOptions = OccupationOptions;
+    }
+
+    /**
+     * @return the IncomeOptions
+     */
+    public List<String> getIncomeOptions() {
+        return IncomeOptions;
+    }
+
+    /**
+     * @param IncomeOptions the IncomeOptions to set
+     */
+    public void setIncomeOptions(List<String> IncomeOptions) {
+        this.IncomeOptions = IncomeOptions;
     }
 }

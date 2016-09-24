@@ -29,7 +29,7 @@
                             <p:outputLabel for="accountType" value="Account Type " />
                             <h:outputText id="accountType" value="#{interestDemoManagedBean.showingAccount.type}"></h:outputText>
                             <p:outputLabel for="accountNumber" value="Account Number: " />
-                            <h:outputText id="accountNumber" value="#{interestDemoManagedBean.showingAccount.id}"></h:outputText>
+                            <h:outputText id="accountNumber" value="#{interestDemoManagedBean.showingAccount.accountNumber}"></h:outputText>
                             <p:outputLabel for="accountBalance" value="Account Balance " />
                             <h:outputText id="accountBalance" value="#{interestDemoManagedBean.showingAccount.balance}"></h:outputText>
                             <p:outputLabel for="totalInterest" value="Total Interest " />
@@ -106,13 +106,13 @@
                                 <h:outputText value="#{transaction.id}"/>
                             </p:column>
                             <c:if test="#{transaction.fromAccount != null}">
-                                <p:column headerText="From" sortBy="#{transaction.fromAccount.id}">
-                                    <h:outputText value="#{transaction.fromAccount.id}"/>
+                                <p:column headerText="From" sortBy="#{transaction.fromAccount.accountNumber}">
+                                    <h:outputText value="#{transaction.fromAccount.accountNumber}"/>
                                 </p:column>
                             </c:if>
                             <c:if test="#{transaction.toAccount != null}">
-                                <p:column headerText="To" sortBy="#{transaction.toAccount.id}">
-                                    <h:outputText value="#{transaction.toAccount.id}"/>
+                                <p:column headerText="To" sortBy="#{transaction.toAccount.accountNumber}">
+                                    <h:outputText value="#{transaction.toAccount.accountNumber}"/>
                                 </p:column>
                             </c:if>
                             <p:column headerText="Amount" sortBy="#{transaction.amount}">

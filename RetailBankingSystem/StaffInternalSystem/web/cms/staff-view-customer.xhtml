@@ -46,20 +46,20 @@
                                 <h:outputText value="#{customer.firstname}" />
                             </p:column>
 
-                            <p:column headerText="Identity Type" sortBy="#{customer.identityType}" >
-                                <h:outputText value="#{customer.identityType}" />
+                            <p:column headerText="Identity Type" sortBy="#{customer.identityType.toString()}" >
+                                <h:outputText value="#{customer.identityType.toString()}" />
                             </p:column>
 
                             <p:column headerText="Identity Number" sortBy="#{customer.identityNumber}">
                                 <h:outputText value="#{customer.identityNumber}" />
                             </p:column>
 
-                            <p:column headerText="Occupation" sortBy="#{customer.occupation}">
-                                <h:outputText value="#{customer.occupation}" />
+                            <p:column headerText="Occupation" sortBy="#{customer.occupation.toString()}">
+                                <h:outputText value="#{customer.occupation.toString()}" />
                             </p:column>
 
-                            <p:column headerText="Income" sortBy="#{customer.income}">
-                                <h:outputText value="#{customer.income}" />                                 
+                            <p:column headerText="Income" sortBy="#{customer.income.toString()}">
+                                <h:outputText value="#{customer.income.toString()}" />                                 
                             </p:column>
 
                             <p:column headerText="No. of Accounts" sortBy="#{customer.getMainAccount().getBankAcounts().size()}">
@@ -72,64 +72,46 @@
                                     </f:facet>
 
                                     <h:outputText value="Last Name: " />
-                                    <h:inputText value="#{customer.lastname}" style="width:97%"/>
+                                    <h:outputText value="#{customer.lastname}" style="width:97%"/>
 
                                     <h:outputText value="First Name: " />
-                                    <h:inputText value="#{customer.firstname}" style="width:97%"/>
+                                    <h:outputText value="#{customer.firstname}" style="width:97%"/>
 
                                     <h:outputText value="Status: " />
-                                    <h:selectOneMenu value="#{customer.mainAccount.status}" style="width:100%">
-                                        <f:selectItems value="#{staffCustomerInformationManagedBean.selectStatuses}" />
-                                    </h:selectOneMenu>
+                                    <h:outputText value="#{customer.mainAccount.status.toString()}" style="width:100%"/>
 
                                     <h:outputText value="Gender: " />
-                                    <h:selectOneMenu value="#{customer.gender}" style="width:100%">
-                                        <f:selectItems value="#{staffCustomerInformationManagedBean.selectGenders}" />
-                                    </h:selectOneMenu>
+                                    <h:outputText value="#{customer.gender.toString()}" style="width:100%"/>
 
                                     <h:outputText value="Citizenship: " />
-                                    <h:selectOneMenu value="#{customer.citizenship}" style="width:100%">
-                                        <f:selectItems value="#{staffCustomerInformationManagedBean.selectCitizenships}" />
-                                    </h:selectOneMenu>
-
+                                    <h:outputText value="#{customer.citizenship.toString()}" style="width:100%"/>
+                                     
                                     <h:outputText value="Nationality: " />
-                                    <h:selectOneMenu value="#{customer.nationality}" style="width:100%">
-                                        <f:selectItems value="#{staffCustomerInformationManagedBean.selectNationalities}" />
-                                    </h:selectOneMenu>
-
+                                    <h:outputText value="#{customer.nationality.toString()}" style="width:100%"/>
+                               
                                     <h:outputText value="Identity Type: " />
-                                    <h:selectOneMenu value="#{customer.identityType}" style="width:100%">
-                                        <f:selectItems value="#{staffCustomerInformationManagedBean.selectIdentityTypes}" />
-                                    </h:selectOneMenu>
-
+                                    <h:outputText value="#{customer.identityType.toString()}" style="width:100%"/>
+                                     
                                     <h:outputText value="Identity Number: " />
-                                    <h:inputText value="#{customer.identityNumber}" />
+                                    <h:outputText value="#{customer.identityNumber}" />
 
                                     <h:outputText value="Occupation: " />
-                                    <h:selectOneMenu value="#{customer.occupation}" style="width:100%">
-                                        <f:selectItems value="#{staffCustomerInformationManagedBean.selectOccupations}" />
-                                    </h:selectOneMenu>
-
+                                    <h:outputText value="#{customer.occupation.toString()}" style="width:100%"/>
+                                      
                                     <h:outputText value="Income (S$): " />
-                                    <h:selectOneMenu value="#{customer.income}" style="width:100%">
-                                        <f:selectItems value="#{staffCustomerInformationManagedBean.selectIncome}" />
-                                    </h:selectOneMenu>
+                                    <h:outputText value="#{customer.income.toString()}" style="width:100%"/>
 
                                     <h:outputText value="Marital Status: " />
-                                    <h:selectOneMenu value="#{customer.maritalStatus}" style="width:100%">
-                                        <f:selectItems value="#{staffCustomerInformationManagedBean.selectMaritalStatus}" />
-                                    </h:selectOneMenu>
-
+                                    <h:outputText value="#{customer.maritalStatus.toString()}" style="width:100%"/>
+                            
                                     <h:outputText value="Education: " />
-                                    <h:selectOneMenu value="#{customer.education}" style="width:100%">
-                                        <f:selectItems value="#{staffCustomerInformationManagedBean.selectEducation}" />
-                                    </h:selectOneMenu>
-
+                                    <h:outputText value="#{customer.education.toString()}" style="width:100%"/>
+                                 
                                     <h:outputText value="DOB: " />
-                                    <p:calendar value="#{customer.birthDay}" navigator="true" yearRange="c-100:c+0" required="true" pattern="yyyy-MM-dd"/>
+                                    <h:outputText value="#{customer.birthDay}" style="width:100%"><f:convertDateTime pattern="dd-MM-yyyy" /></h:outputText>
 
                                     <h:outputText value="Credit Score" />
-                                    <h:inputText value="#{customer.creditScore}" />
+                                    <h:outputText value="#{customer.creditScore}" />
                                 </p:panelGrid>
 
                                 <f:facet name="header">
@@ -142,16 +124,16 @@
                                     </f:facet>
 
                                     <h:outputText value="Phone Number: " />
-                                    <h:inputText value="#{customer.phone}" />
+                                    <h:outputText value="#{customer.phone}" />
 
                                     <h:outputText value="Email: " />
-                                    <h:inputText value="#{customer.email}" />                                   
+                                    <h:outputText value="#{customer.email}" />                                   
 
                                     <h:outputText value="Address: " />
-                                    <h:inputText value="#{customer.address}" />
+                                    <h:outputText value="#{customer.address}" />
 
                                     <h:outputText value="Postal Code: " />
-                                    <h:inputText value="#{customer.postalCode}"/>
+                                    <h:outputText value="#{customer.postalCode}"/>
 
 
                                 </p:panelGrid>
@@ -172,7 +154,7 @@
                                 <br/><br/>
                                 <p:outputPanel>
 
-                                    <p:commandButton class="h-center" value="Update"  action="#{staffCustomerInformationManagedBean.saveUpdatedCustomerInformation(customer)}" />
+                                    <p:commandButton class="h-center" value="Edit"  action="#{staffCustomerInformationManagedBean.goToEditPage(customer)}" />
 
                                 </p:outputPanel>
 

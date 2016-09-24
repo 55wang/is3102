@@ -13,7 +13,7 @@
             <f:viewAction action="#{customerDepositAccountTransactionHistoryManagedBean.init()}"></f:viewAction>
         </f:metadata>
         <h:head>
-            <title>Transactions</title>
+            <title>Account Transactions</title>
             <em:cssImport></em:cssImport>
         </h:head>
         <h:body>
@@ -21,34 +21,60 @@
             <em:customerNavBar context="customer_home" pageName="customer_home" ></em:customerNavBar>
             <div class="customer_main_container">
                 <h:form id="mainForm">
-                    <p:panel header="Transactions">
+                    <p:panel header="Transactions for account #{customerDepositAccountTransactionHistoryManagedBean.account.id }">
                         <p:messages id="messagesStatus" redisplay="false" >
-                            <p:panel header="Transactions">
+
                             <p:dataTable id="transactions" value="#{customerDepositAccountTransactionHistoryManagedBean.account.transactions}" var="transaction">
-                            <p:column headerText="Id" sortBy="#{transaction.id}">
-                                <h:outputText value="#{transaction.id}"/>
-                            </p:column>
-                            <c:if test="#{transaction.fromAccount != null}">
-                                <p:column headerText="From" sortBy="#{transaction.fromAccount.id}">
-                                    <h:outputText value="#{transaction.fromAccount.id}"/>
+                                <p:column headerText="Date" sortBy="#{transaction.creationDate}">
+                                    <h:outputText value="#{transaction.creationDate}"/>
                                 </p:column>
-                            </c:if>
-                            <c:if test="#{transaction.toAccount != null}">
-                                <p:column headerText="To" sortBy="#{transaction.toAccount.id}">
-                                    <h:outputText value="#{transaction.toAccount.id}"/>
+
+
+                                <c:if test="#{transaction.fromAccount != null}">
+                                    <p:column headerText="From" sortBy="#{transaction.fromAccount.accountNumber}">
+                                        <h:outputText value="#{transaction.fromAccount.accountNumber}"/>
+                                    </p:column>
+                                </c:if>
+                                <c:if test="#{transaction.toAccount != null}">
+                                    <p:column headerText="To" sortBy="#{transaction.toAccount.accountNumber}">
+                                        <h:outputText value="#{transaction.toAccount.accountNumber}"/>
+                                    </p:column>
+                                </c:if>
+                                <p:column headerText="Amount in SGD" sortBy="#{transaction.amount}">
+                                    <h:outputText value="#{transaction.amount}">
+                                        <f:convertNumber type="number" pattern="#0.00"/>
+                                    </h:outputText>
                                 </p:column>
-                            </c:if>
-                            <p:column headerText="Amount" sortBy="#{transaction.amount}">
-                                <h:outputText value="#{transaction.amount}"/>
-                            </p:column>
-                            <p:column headerText="Creadit" sortBy="#{transaction.credit}">
-                                <h:outputText value="#{transaction.credit}"/>
-                            </p:column>
-                            <p:column headerText="Type" sortBy="#{transaction.actionType}">
-                                <h:outputText value="#{transaction.actionType}"/>
-                            </p:column>
-                        </p:dataTable>
-                                </p:panel>
+
+
+
+                                <p:column headerText="Credit in SGD" sortBy="#{transaction.amount}" rendered="#{transaction.credit}">
+                                    <h:outputText value="#{transaction.amount}">
+                                        <f:convertNumber type="number" pattern="#0.00"/>
+                                    </h:outputText>
+                                </p:column>
+
+                                <p:column headerText="Debit in SGD" rendered="#{transaction.credit}" sortBy="#{transaction.amount}">
+                                    <h:outputText value=""/>
+                                </p:column>
+
+
+
+                                <p:column headerText="Credit in SGD" rendered="#{!transaction.credit}" sortBy="#{transaction.amount}">
+                                    <h:outputText value=""/>
+                                </p:column>
+
+                                <p:column headerText="Debit in SGD" sortBy="#{transaction.amount}" rendered="#{!transaction.credit}">
+                                    <h:outputText value="#{transaction.amount}">
+                                    <f:convertNumber type="number" pattern="#0.00"/>
+                                    </h:outputText>
+                                </p:column>
+                                
+                                <p:column headerText="Type" sortBy="#{transaction.actionType}">
+                                    <h:outputText value="#{transaction.actionType}"/>
+                                </p:column>
+                            </p:dataTable>
+
                         </p:messages>
                     </p:panel>
                 </h:form>

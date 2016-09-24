@@ -13,12 +13,11 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
@@ -36,10 +35,9 @@ import server.utilities.EnumUtils.StatusType;
 @Entity
 @Inheritance(strategy=InheritanceType.JOINED)
 public abstract class DepositAccount implements Serializable {
-    private static final long serialVersionUID = 1L;
+    
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;// TODO: Need to generate our own account number
+    private String accountNumber;
     private DepositAccountType type;
     private StatusType status = StatusType.PENDING;
     @Temporal(value = TemporalType.TIMESTAMP)
@@ -67,39 +65,34 @@ public abstract class DepositAccount implements Serializable {
     public void addTransaction(TransactionRecord t) {
         getTransactions().add(t);
     }
-    
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     @Override
     public int hashCode() {
-        int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
+        int hash = 7;
+        hash = 89 * hash + Objects.hashCode(this.getAccountNumber());
         return hash;
     }
 
     @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof DepositAccount)) {
+    public boolean equals(Object obj) {
+        if (obj == null) {
             return false;
         }
-        DepositAccount other = (DepositAccount) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+        if (getClass() != obj.getClass()) {
             return false;
         }
+        final DepositAccount other = (DepositAccount) obj;
         return true;
     }
+    
+    
 
     @Override
     public String toString() {
-        return "entity.dams.account.DepositAccount[ id=" + id + " ]";
+        return "DepositAccount{" + "accountNumber=" + getAccountNumber() + ", type=" + type + ", status=" + status + ", creationDate=" + creationDate + ", balance=" + balance + ", mainAccount=" + mainAccount + '}';
     }
+    
+    
 
     /**
      * @return the type
@@ -204,5 +197,19 @@ public abstract class DepositAccount implements Serializable {
      */
     public void setStatus(StatusType status) {
         this.status = status;
+    }
+
+    /**
+     * @return the accountNumber
+     */
+    public String getAccountNumber() {
+        return accountNumber;
+    }
+
+    /**
+     * @param accountNumber the accountNumber to set
+     */
+    public void setAccountNumber(String accountNumber) {
+        this.accountNumber = accountNumber;
     }
 }

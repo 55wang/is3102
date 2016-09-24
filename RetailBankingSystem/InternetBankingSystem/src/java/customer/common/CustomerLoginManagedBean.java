@@ -50,13 +50,26 @@ public class CustomerLoginManagedBean implements Serializable {
     @PostConstruct
     public void init() {
         System.out.println("CustomerLoginManagedBean @PostConstruct");
+
+//        EventBus eventBus = EventBusFactory.getDefault().eventBus();
+//        FacesMessage m = new FacesMessage("Test Customer", "Content");
+//        eventBus.publish(NOTIFY_CHANNEL, m);
+        
+//        MainAccount ma = loginSessionBean.getCustomerByUserID("c1234567").getMainAccount();
+//        String userID = Long.toString(ma.getId());
+//        String userName = ma.getUserID();
+//        SessionUtils.setUserId(userID);
+//        SessionUtils.setUserName(userName);
+//        RedirectUtils.redirect(SessionUtils.getContextPath() + "/customer_cms/customer_home.xhtml");
         
         MainAccount ma = loginSessionBean.getCustomerByUserID("c1234567").getMainAccount();
         String userID = Long.toString(ma.getId());
         String userName = ma.getUserID();
         SessionUtils.setUserId(userID);
         SessionUtils.setUserName(userName);
-        RedirectUtils.redirect("/InternetBankingSystem/customer_card/credit_card_summary.xhtml");
+
+        RedirectUtils.redirect("/InternetBankingSystem/request/current_account_cheque_status.xhtml");
+
     }
 
     public MainAccount getLoginAccount() {

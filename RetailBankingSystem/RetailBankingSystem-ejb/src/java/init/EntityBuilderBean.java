@@ -10,6 +10,7 @@ import ejb.session.card.CardAcctSessionBeanLocal;
 import ejb.session.card.NewCardProductSessionBeanLocal;
 import ejb.session.cms.CustomerCaseSessionBeanLocal;
 import ejb.session.common.NewCustomerSessionBeanLocal;
+import ejb.session.dams.CurrentAccountChequeSessionBeanLocal;
 import ejb.session.dams.InterestSessionBeanLocal;
 import ejb.session.dams.CustomerDepositSessionBeanLocal;
 import ejb.session.dams.DepositProductSessionBeanLocal;
@@ -24,6 +25,7 @@ import entity.customer.Customer;
 import entity.customer.CustomerCase;
 import entity.customer.Issue;
 import entity.customer.MainAccount;
+import entity.dams.account.Cheque;
 import entity.dams.account.CustomerDepositAccount;
 import entity.dams.account.CustomerFixedDepositAccount;
 import entity.dams.account.DepositAccount;
@@ -48,6 +50,7 @@ import javax.transaction.Transaction;
 import server.utilities.ConstantUtils;
 import server.utilities.EnumUtils;
 import server.utilities.EnumUtils.CaseStatus;
+import server.utilities.EnumUtils.ChequeStatus;
 import server.utilities.EnumUtils.DepositAccountType;
 import server.utilities.EnumUtils.Gender;
 import server.utilities.EnumUtils.IdentityType;
@@ -55,6 +58,7 @@ import server.utilities.EnumUtils.Income;
 import server.utilities.EnumUtils.Nationality;
 import server.utilities.EnumUtils.Occupation;
 import server.utilities.EnumUtils.StatusType;
+import server.utilities.GenerateAccountAndCCNumber;
 import server.utilities.HashPwdUtils;
 
 /**
@@ -90,6 +94,8 @@ public class EntityBuilderBean {
     private MainAccountSessionBeanLocal mainAccountSessionBean;
     @EJB
     private CardAcctSessionBeanLocal cardAcctSessionBean;
+    @EJB
+    private CurrentAccountChequeSessionBeanLocal chequeBean;
 
     private Interest demoNormalInterestData;
     private List<Interest> demoRangeInterestData = new ArrayList<>();
@@ -101,6 +107,7 @@ public class EntityBuilderBean {
     @PostConstruct
     public void init() {
         System.out.println("EntityInitilzationBean @PostConstruct");
+        System.out.println(GenerateAccountAndCCNumber.generateAccountNumber());
         if (needInit()) {
             buildEntities();
         } else {
@@ -116,14 +123,14 @@ public class EntityBuilderBean {
 
     private void testInterestRules() {
         // Get Product
-        DepositAccount da = customerDepositSessionBean.getAccountFromId(1L);
-        // Get Interest
-        List<Interest> interests = ((DepositAccountProduct) da.getProduct()).getInterestRules();
-        for (Interest i : interests) {
-            if (i instanceof ConditionInterest) {
-                System.out.print(interestAccrualSessionBean.isAccountMeetCondition(da, (ConditionInterest) i));
-            }
-        }
+//        DepositAccount da = customerDepositSessionBean.getAccountFromId(1L);
+//        // Get Interest
+//        List<Interest> interests = ((DepositAccountProduct) da.getProduct()).getInterestRules();
+//        for (Interest i : interests) {
+//            if (i instanceof ConditionInterest) {
+//                System.out.print(interestAccrualSessionBean.isAccountMeetCondition(da, (ConditionInterest) i));
+//            }
+//        }
     }
 
     private void buildEntities() {
@@ -458,7 +465,7 @@ public class EntityBuilderBean {
         c8.setIdentityType(IdentityType.PASSPORT); // same for this to enum type
         c8.setIncome(Income.FROM_6000_TO_8000);
         c8.setLastname("Lee");
-        c8.setNationality(Nationality.SINGAPOREAN); //enum type if possible
+        c8.setNationality(Nationality.SINGAPORE); //enum type if possible
         c8.setOccupation(Occupation.SUPERVISOR);
         c8.setPhone("99910888"); //must use real phone number as we need sms code
         c8.setPostalCode("020988");
@@ -1163,14 +1170,19 @@ public class EntityBuilderBean {
     private void initDepositAccount() {
         CustomerDepositAccount customAccount = new CustomerDepositAccount();
         customAccount.setType(DepositAccountType.CUSTOM);
+        customAccount.setStatus(StatusType.ACTIVE);
         customAccount.setProduct(depositProductSessionBean.getDepositProductByName(ConstantUtils.DEMO_CUSTOM_DEPOSIT_PRODUCT_NAME));
         customAccount.setBalance(new BigDecimal(1000));
         customAccount.setMainAccount(demoMainAccount);
+        
+        
         DepositAccount dp = customerDepositSessionBean.createAccount(customAccount);
         initTransactions(dp);
+        initCheques(dp);
         
         CustomerDepositAccount savingAccount = new CustomerDepositAccount();
         savingAccount.setType(DepositAccountType.SAVING);
+        savingAccount.setStatus(StatusType.ACTIVE);
         savingAccount.setProduct(depositProductSessionBean.getDepositProductByName(ConstantUtils.DEMO_SAVING1_DEPOSIT_PRODUCT_NAME));
         savingAccount.setBalance(new BigDecimal(1000));
         savingAccount.setMainAccount(demoMainAccount);
@@ -1178,6 +1190,7 @@ public class EntityBuilderBean {
         
         CustomerDepositAccount savingAccount2 = new CustomerDepositAccount();
         savingAccount2.setType(DepositAccountType.SAVING);
+        savingAccount2.setStatus(StatusType.ACTIVE);
         savingAccount2.setProduct(depositProductSessionBean.getDepositProductByName(ConstantUtils.DEMO_SAVING2_DEPOSIT_PRODUCT_NAME));
         savingAccount2.setBalance(new BigDecimal(1000));
         savingAccount2.setMainAccount(demoMainAccount);
@@ -1185,6 +1198,7 @@ public class EntityBuilderBean {
         
         CustomerDepositAccount currentAccount = new CustomerDepositAccount();
         currentAccount.setType(DepositAccountType.SAVING);
+        currentAccount.setStatus(StatusType.ACTIVE);
         currentAccount.setProduct(depositProductSessionBean.getDepositProductByName(ConstantUtils.DEMO_CURRENT_DEPOSIT_PRODUCT_NAME));
         currentAccount.setBalance(new BigDecimal(1000));
         currentAccount.setMainAccount(demoMainAccount);
@@ -1192,6 +1206,7 @@ public class EntityBuilderBean {
         
         CustomerFixedDepositAccount fixedAccount = new CustomerFixedDepositAccount();
         fixedAccount.setType(DepositAccountType.FIXED);
+        fixedAccount.setStatus(StatusType.ACTIVE);
         fixedAccount.setProduct(depositProductSessionBean.getDepositProductByName(ConstantUtils.DEMO_FIXED_DEPOSIT_PRODUCT_NAME));
         fixedAccount.setBalance(new BigDecimal(750000));
         fixedAccount.setMainAccount(demoMainAccount);
@@ -1214,6 +1229,33 @@ public class EntityBuilderBean {
         da = customerDepositSessionBean.ccSpendingFromAccount(da, new BigDecimal(500));
         // invest once and for a year
         da = customerDepositSessionBean.investFromAccount(da, new BigDecimal(5000));
+    }
+    
+    private void initCheques(DepositAccount account) {
+        if (account instanceof CustomerDepositAccount) {
+            if (account.getType().equals(DepositAccountType.CURRENT) || 
+                    account.getType().equals(DepositAccountType.CUSTOM)) {
+                
+                CustomerDepositAccount cda = (CustomerDepositAccount) account;
+                Cheque c = new Cheque();
+                c.setAccount(cda);
+                c.setAmount(new BigDecimal(500));
+                c.setStatus(ChequeStatus.PROCESSING);
+                chequeBean.createCheque(c);
+                
+                c = new Cheque();
+                c.setAccount(cda);
+                c.setAmount(new BigDecimal(300));
+                c.setStatus(ChequeStatus.RECEIVED);
+                chequeBean.createCheque(c);
+                
+                c = new Cheque();
+                c.setAccount(cda);
+                c.setAmount(new BigDecimal(800));
+                c.setStatus(ChequeStatus.TRANSFERED);
+                chequeBean.createCheque(c);
+            }
+        }
     }
 
     public void initCase() {
