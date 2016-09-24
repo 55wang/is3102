@@ -25,7 +25,7 @@ public class AccountWithdrawManagedBean implements Serializable {
     @EJB
     private CustomerDepositSessionBeanLocal bankAccountSessionBean;
     
-    private Long accountNumber;
+    private String accountNumber;
     private BigDecimal withdrawAmount;
     
     /**
@@ -42,14 +42,14 @@ public class AccountWithdrawManagedBean implements Serializable {
     /**
      * @return the accountNumber
      */
-    public Long getAccountNumber() {
+    public String getAccountNumber() {
         return accountNumber;
     }
 
     /**
      * @param accountNumber the accountNumber to set
      */
-    public void setAccountNumber(Long accountNumber) {
+    public void setAccountNumber(String accountNumber) {
         this.accountNumber = accountNumber;
     }
 

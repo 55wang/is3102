@@ -27,7 +27,7 @@ public interface CardAcctSessionBeanLocal {
 
     public String updateCardOrderStatus(CreditCardOrder order, EnumUtils.ApplicationStatus status);
 
-    public List<CreditCardAccount> showAllCreditCardAccount();
+    public List<CreditCardAccount> showAllCreditCardAccount(EnumUtils.CardAccountStatus status, Long id);
 
     public CreditCardAccount getCardAccountFromId(Long cardID);
 
@@ -39,6 +39,6 @@ public interface CardAcctSessionBeanLocal {
     
     public String updateCardAcctTransactionMonthlyLimit(CreditCardAccount cca, double newMonthlyLimit);
     
-    public List<CardTransaction> getCardTransactionFromId(CreditCardAccount cca);
+    public List<CardTransaction> getCardTransactionFromId(Long ccaId);
     
 }

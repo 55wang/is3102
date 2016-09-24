@@ -33,18 +33,9 @@ public class CustomerProfileSessionBean implements CustomerProfileSessionBeanLoc
 
     @Override
     public Customer getCustomerByUserID(String userID) {
-        Query q = em.createQuery("SELECT a FROM MainAccount a WHERE a.userID = :inUserID");
-
+        Query q = em.createQuery("SELECT c FROM Customer c WHERE c.mainAccount.userID = :inUserID");
         q.setParameter("inUserID", userID);
-
-        MainAccount mainAccount = null;
-
-        try {
-            mainAccount = (MainAccount) q.getSingleResult();
-            return mainAccount.getCustomer();
-        } catch (NoResultException ex) {
-            return null;
-        }
+        return (Customer)q.getSingleResult();
     }
 
     @Override

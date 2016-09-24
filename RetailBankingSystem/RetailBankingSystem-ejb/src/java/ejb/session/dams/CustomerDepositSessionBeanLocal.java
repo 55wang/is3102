@@ -17,13 +17,13 @@ import javax.ejb.Local;
 @Local
 public interface CustomerDepositSessionBeanLocal {
     public long showNumberOfAccounts();
-    public DepositAccount getAccountFromId(Long accountNumber);
+    public DepositAccount getAccountFromId(String accountNumber);
     public DepositAccount createAccount(DepositAccount account);
     public DepositAccount updateAccount(DepositAccount account);
     public List<DepositAccount> showAllAccounts();
     public List<DepositAccount> getAllCustomerAccounts(Long mainAccountId);
-    public String depositIntoAccount(Long accountNumber, BigDecimal depositAmount);
-    public String withdrawFromAccount(Long accountNumber, BigDecimal depositAmount);
+    public String depositIntoAccount(String accountNumber, BigDecimal depositAmount);
+    public String withdrawFromAccount(String accountNumber, BigDecimal depositAmount);
     public DepositAccount depositIntoAccount(DepositAccount account, BigDecimal depositAmount);
     public DepositAccount withdrawFromAccount(DepositAccount account, BigDecimal withdrawAmount);
     public DepositAccount creditSalaryIntoAccount(DepositAccount account, BigDecimal depositAmount);

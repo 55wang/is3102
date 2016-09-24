@@ -31,7 +31,9 @@ import utils.RedirectUtils;
  */
 @Named(value = "existingCustomerApplicationManagedBean")
 @ViewScoped
+
 public class ExistingCustomerApplicationManagedBean implements Serializable {
+
 
     /**
      * Creates a new instance of ExistingCustomerApplicationManagedBean
