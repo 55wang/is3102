@@ -323,7 +323,6 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
         }
     }
 
-    @Override
     public Boolean sendCaseStatusChangeToCustomer(String recipient, CustomerCase cc) {
         Session session = getSession();
 
@@ -348,7 +347,7 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
             return false;
         }
     }
-
+    
     private Properties getGmailProperties() {
         Properties props = new Properties();
         props.put("mail.smtp.host", "smtp.gmail.com");

@@ -15,6 +15,35 @@ import java.util.List;
 // REMARK: To get the list of enum values, just use e.g. CreditType.values()
 public class EnumUtils {
 
+    public enum CardNetwork {
+
+        VISA("VISA"),
+        Master("MASTER");
+        private String value;
+
+        CardNetwork(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        @Override
+        public String toString() {
+            return this.getValue();
+        }
+
+        public static CardNetwork getEnum(String value) {
+            for (CardNetwork v : values()) {
+                if (v.getValue().equalsIgnoreCase(value)) {
+                    return v;
+                }
+            }
+            throw new IllegalArgumentException();
+        }
+    }
+
     // LY: depends on the depth, we can further categorize them
     // e.g. Cashback on Purchases or Payments
     // discounted partner merchants
@@ -816,7 +845,6 @@ public class EnumUtils {
     public enum InterestTimeRange {
 
         // in month
-
         T1_T2("1-2 months"),
         T3_T5("3-5 months"),
         T6("6 mth"),

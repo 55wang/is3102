@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package customer.deposit;
+package customer.deposit.display;
 
 import ejb.session.dams.InterestSessionBeanLocal;
 import entity.dams.rules.TimeRangeInterest;

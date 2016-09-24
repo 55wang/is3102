@@ -5,11 +5,16 @@
  */
 package entity.dams.account;
 
+import entity.card.account.DebitCardAccount;
 import entity.embedded.TransferLimits;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.OneToMany;
 
 /**
  *
@@ -23,6 +28,8 @@ public class CustomerDepositAccount extends DepositAccount {
     private Integer waivedChargesCounter = 0;
     @Embedded
     private TransferLimits transferLimits = new TransferLimits();
+    @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "")
+    private List<DebitCardAccount> debitCardAccount = new ArrayList<>();
     
     @Column(precision=30, scale=20)
     private BigDecimal previousBalance = new BigDecimal(0);
@@ -81,5 +88,13 @@ public class CustomerDepositAccount extends DepositAccount {
      */
     public void setPreviousBalance(BigDecimal previousBalance) {
         this.previousBalance = previousBalance;
+    }
+
+    public List<DebitCardAccount> getDebitCardAccount() {
+        return debitCardAccount;
+    }
+
+    public void setDebitCardAccount(List<DebitCardAccount> debitCardAccount) {
+        this.debitCardAccount = debitCardAccount;
     }
 }
