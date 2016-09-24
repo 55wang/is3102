@@ -79,6 +79,20 @@
                             <h:link outcome="staff_view_access" value="View Access" />
                         </li>
                     </c:if>
+                    <c:if test="#{cc.attrs.top == 'card'}">
+                        <li class="side-menu-item #{cc.attrs.side == 'cardCreate' ? 'active' : ''}">
+                            <h:link outcome="card-create-product" value="Create CreditCard Product" />
+                        </li>
+                        
+                        <li class="side-menu-item #{cc.attrs.side == 'cardAppView' ? 'active' : ''}">
+                            <h:link outcome="card-view-application" value="View Card Application" />
+                        </li>
+                        
+                        <li class="side-menu-item #{cc.attrs.side == 'cardIssue' ? 'active' : ''}">
+                            <h:link outcome="card-Issue" value="Issue Card" />
+                        </li>
+                        
+                    </c:if>
                 </ul>
             </div>
             <!--TODO: Fillin all the sub menus here -->

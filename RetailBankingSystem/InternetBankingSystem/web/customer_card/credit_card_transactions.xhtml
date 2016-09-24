@@ -8,8 +8,13 @@
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     <!--shift + ctrl + F, format-->
     <f:view>
+        <f:metadata>
+            <f:viewParam name="ccaId" value="#{cardTransactionManagedBean.ccaId}" />
+            <f:viewAction action="#{cardTransactionManagedBean.viewCCTransactionDetail()}"></f:viewAction>
+        </f:metadata>
+            
         <h:head>
-            <title>Transactions</title>
+            <title>Your Credit Card Summary</title>
             <em:cssImport></em:cssImport>
         </h:head>
         <h:body>
@@ -17,31 +22,30 @@
             <em:customerNavBar context="customer_home" pageName="customer_home" ></em:customerNavBar>
             <div class="customer_main_container">
                 <h:form id="mainForm">
-                    <p:panel header="Transactions">
+                    <p:panel header="Credit Cards">
                         <p:messages id="messagesStatus" redisplay="false" >
                             <h:panelGrid columns="2" cellpadding="5">
-                                <p:dataTable var="auditLog" value="#{customerProfileManagedBean.auditLogs}">
+                                <p:dataTable value="#{cardTransactionManagedBean.cardTransactions}" var="tran" >
+
                                     <p:column headerText="Date">
-                                        <h:outputText value="#{auditLog.creationDate}" />
+                                        <h:outputText value="#{tran.transactionTimeStamp}" />
                                     </p:column>
 
-                                    <p:column headerText="Counterparty">
-                                        <h:outputText value="#{auditLog.activityLog}" />
+                                    <p:column headerText="Code">
+                                        <h:outputText value="#{tran.transactionCode}" />
                                     </p:column>
-                                    
-                                    <p:column headerText="Credit">
-                                        <h:outputText value="#{auditLog.activityLog}" />
+
+                                    <p:column headerText="Description">
+                                        <h:outputText value="#{tran.transactionDescription}" />
                                     </p:column>
-                                    
+
                                     <p:column headerText="Debit">
-                                        <h:outputText value="#{auditLog.activityLog}" />
-                                    </p:column>
-                                    
-                                    <p:column headerText="Amount">
-                                        <h:outputText value="#{auditLog.activityLog}" />
+                                        <h:outputText value="#{tran.debitAmount}" />
                                     </p:column>
 
-                                    
+                                    <p:column headerText="Credit">
+                                        <h:outputText value="#{tran.creditAmount}" />
+                                    </p:column>
 
                                 </p:dataTable>
 

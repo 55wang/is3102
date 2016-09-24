@@ -20,21 +20,21 @@
                     <p:panel header="Cheque Status">
                         <p:messages id="messagesStatus" redisplay="false" >
                             <h:panelGrid columns="2" cellpadding="5">
-                                <p:dataTable var="account" value="#{customerDepositAccountSummaryManagedBean.accounts}">
+                                <p:dataTable var="cheque" value="#{customerViewChequeStatusManagedBean.cheques}">
                                     <p:column headerText="Account">
-                                        <h:outputText value="#{account.id}" />
+                                        <h:outputText value="#{cheque.account.accountNumber}" />
                                     </p:column>
 
                                     <p:column headerText="Cheque Status">
-                                        <h:outputText value="#{account.type}" />
+                                        <h:outputText value="#{cheque.status}" />
                                     </p:column>
 
                                     <p:column headerText="Amount">
-                                        <h:outputText value="#{account.balance}" />
+                                        <h:outputText value="#{cheque.amount}" />
                                     </p:column>
 
                                     <p:column headerText="Date">
-                                        <h:outputText value="#{account.balance}" />
+                                        <h:outputText value="#{cheque.creationDate}" />
                                     </p:column>
                                 </p:dataTable>
                             </h:panelGrid>

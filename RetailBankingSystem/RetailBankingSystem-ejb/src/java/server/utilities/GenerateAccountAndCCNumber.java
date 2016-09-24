@@ -3,14 +3,18 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package utils;
+package server.utilities;
 
 import java.util.List;
 import java.util.Stack;
 import java.util.Vector;
 
-public class generateCardNumber {
-	/*
+/**
+ *
+ * @author leiyang
+ */
+public class GenerateAccountAndCCNumber {
+    /*
 	 * Javascript credit card number generator Copyright (C) 2006-2012 Graham King
 	 *
 	 * This program is free software; you can redistribute it and/or modify it
@@ -138,6 +142,10 @@ public class generateCardNumber {
 	public static String generateMasterCardNumber() {
 		return credit_card_number(MASTERCARD_PREFIX_LIST, 16, 1)[0];
 	}
+        
+        public static String generateAccountNumber() {
+            return completed_number("", ConstantUtils.ACCOUNT_NUBMER_LENGTH);
+        }
 
 	public static boolean isValidCreditCardNumber(String creditCardNumber) {
 		boolean isValid = false;
@@ -169,24 +177,4 @@ public class generateCardNumber {
 
 		return isValid;
 	}
-
-//	public static void main(String[] args) {
-//		int howMany = 0;
-//		try {
-//			howMany = 1;
-//		} catch (Exception e) {
-//			System.err
-//					.println("Usage error. You need to supply a numeric argument (ex: 500000)");
-//		}
-//		String[] creditcardnumbers = generateMasterCardNumbers(howMany);
-//		for (int i = 0; i < creditcardnumbers.length; i++) {
-//			System.out.println(creditcardnumbers[i]
-//					+ ":"
-//					+ (isValidCreditCardNumber(creditcardnumbers[i]) ? "valid"
-//							: "invalid"));
-//		}
-//	}
-        
-        
-        
 }

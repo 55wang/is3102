@@ -56,8 +56,8 @@
                     <!-- TODO: Need to remove, this is for testing -->
                     <p:panel header="Current Accounts">
                         <p:dataTable id="currentAccounts" value="#{openAccountManagedBean.currentAccounts}" var="account">
-                            <p:column headerText="ID" sortBy="#{account.id}">
-                                <h:outputText value="#{account.id}"></h:outputText>
+                            <p:column headerText="ID" sortBy="#{account.accountNumber}">
+                                <h:outputText value="#{account.accountNumber}"></h:outputText>
                             </p:column>
                             <p:column headerText="Balance" sortBy="#{account.balance}">
                                 <h:outputText value="#{account.balance}">
@@ -68,8 +68,8 @@
                     </p:panel>
                     <p:panel header="Fixed Deposit Accounts">
                         <p:dataTable id="fixedDepositAccounts" value="#{openAccountManagedBean.fixedDepositAccounts}" var="account">
-                            <p:column headerText="ID" sortBy="#{account.id}">
-                                <h:outputText value="#{account.id}"></h:outputText>
+                            <p:column headerText="ID" sortBy="#{account.accountNumber}">
+                                <h:outputText value="#{account.accountNumber}"></h:outputText>
                             </p:column>
                             <p:column headerText="Balance" sortBy="#{account.balance}">
                                 <h:outputText value="#{account.balance}">
@@ -80,8 +80,8 @@
                     </p:panel>
                     <p:panel header="Savings Accounts">
                         <p:dataTable id="savingAccounts" value="#{openAccountManagedBean.savingAccounts}" var="account">
-                            <p:column headerText="ID" sortBy="#{account.id}">
-                                <h:outputText value="#{account.id}"></h:outputText>
+                            <p:column headerText="ID" sortBy="#{account.accountNumber}">
+                                <h:outputText value="#{account.accountNumber}"></h:outputText>
                             </p:column>
                             <p:column headerText="Balance" sortBy="#{account.balance}">
                                 <h:outputText value="#{account.balance}">
