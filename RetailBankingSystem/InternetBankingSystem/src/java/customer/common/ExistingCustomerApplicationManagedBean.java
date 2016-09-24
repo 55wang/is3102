@@ -84,18 +84,18 @@ public class ExistingCustomerApplicationManagedBean implements Serializable {
 
         CustomerDepositAccount depostiAccount = new CustomerDepositAccount();
         depostiAccount.setMainAccount(mainAccount);
-        System.out.println("AAAAAAA"+initialDepositAccount);
+        
         if (initialDepositAccount.equals(ConstantUtils.DEMO_CURRENT_DEPOSIT_PRODUCT_NAME)) {
             depostiAccount.setType(EnumUtils.DepositAccountType.CURRENT);
-            System.out.println("BBBBBB");
+            
         } else if (initialDepositAccount.equals(ConstantUtils.DEMO_CUSTOM_DEPOSIT_PRODUCT_NAME)) {
             depostiAccount.setType(EnumUtils.DepositAccountType.CUSTOM);
-            System.out.println("CCCCC");
+            
         }
         depostiAccount.setProduct(depositProductBean.getDepositProductByName(initialDepositAccount));
-        System.out.println("DDDDDD");
+        
         depositAccountBean.createAccount(depostiAccount);
-        System.out.println("EEEEE");
+        
     }
         
 
