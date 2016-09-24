@@ -22,15 +22,21 @@
                             <h:panelGrid columns="2" cellpadding="5">
                                 <p:dataTable var="account" value="#{customerDepositAccountSummaryManagedBean.accounts}">
                                     <p:column headerText="Account">
-                                        <h:outputText value="#{account.id}" />
+                                        <h:outputText value="#{account.id}" >
+                                        
+                                        </h:outputText>
                                     </p:column>
 
                                     <p:column headerText="Type">
                                         <h:outputText value="#{account.type}" />
+                                        
                                     </p:column>
+                                    
 
-                                    <p:column headerText="Balance">
-                                        <h:outputText value="#{account.balance}" />
+                                    <p:column headerText="Balance (in SGD)">
+                                        <h:outputText value="#{account.balance}" >
+                                        <f:convertNumber type="number" pattern="#0.00"/>
+                                        </h:outputText>
                                     </p:column>
 
                                     <p:column headerText="Action">
