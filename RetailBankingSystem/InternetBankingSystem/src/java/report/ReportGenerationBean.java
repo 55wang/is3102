@@ -28,17 +28,18 @@ import net.sf.jasperreports.engine.JasperReport;
  */
 @Stateless
 @LocalBean
-public class ReportGenerationManagedBean implements Serializable {
+public class ReportGenerationBean implements Serializable {
 
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")
-    public ReportGenerationManagedBean() {
+    public ReportGenerationBean() {
     }
     
     public void generateTestReport() throws JRException, IOException {
-        String filePath = new File("").getAbsolutePath();
-        filePath += "/src/java/report/testReport.jrxml";
-        System.out.println(filePath);
+        String filePath = "/Users/litong/Documents/IS3102/is3102/RetailBankingSystem/InternetBankingSystem/src/java/report/testReport.jrxml";
+//                new File("").getAbsolutePath();
+//        filePath += "/src/java/report/testReport.jrxml";
+//        System.out.println(filePath);
         // Compile jrxml file.
         JasperReport jasperReport = JasperCompileManager
                 .compileReport(filePath);
@@ -56,7 +57,7 @@ public class ReportGenerationManagedBean implements Serializable {
 
         // Make sure the output directory exists.
 
-        filePath = "/Users/litong/NetBeansProjects/test/test-ejb/StyledTextReportFFFF.pdf";
+        filePath = "/Users/litong/Downloads/test.pdf";
         System.out.println(filePath);
         // Export to PDF.
         JasperExportManager.exportReportToPdfFile(jasperPrint, filePath);
@@ -64,7 +65,7 @@ public class ReportGenerationManagedBean implements Serializable {
     }
     
     public static void main(String args[]) throws Exception{
-        ReportGenerationManagedBean bean = new ReportGenerationManagedBean();
+        ReportGenerationBean bean = new ReportGenerationBean();
         bean.generateTestReport();
     }
 }

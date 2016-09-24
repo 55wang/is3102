@@ -5,8 +5,6 @@
  */
 package customer.common;
 
-import interceptor.audit.Audit;
-import interceptor.audit.FullHidden;
 import ejb.session.audit.AuditSessionBeanLocal;
 import ejb.session.common.EmailServiceSessionBeanLocal;
 import ejb.session.common.LoginSessionBeanLocal;
@@ -14,11 +12,8 @@ import entity.customer.MainAccount;
 import java.io.Serializable;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import javax.faces.application.FacesMessage;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
-import org.primefaces.push.EventBus;
-import org.primefaces.push.EventBusFactory;
 import server.utilities.EnumUtils;
 import utils.HashPwdUtils;
 import utils.MessageUtils;
@@ -38,15 +33,13 @@ public class CustomerLoginManagedBean implements Serializable {
     @EJB
     private LoginSessionBeanLocal loginSessionBean;
 
-    @EJB
-    private AuditSessionBeanLocal auditSessionBean;
+//    @EJB
+//    private AuditSessionBeanLocal auditSessionBean;
 
     private MainAccount loginAccount = new MainAccount();
 
     private String findUsernameEmail;
     private String findPasswordEmail;
-
-    private final static String NOTIFY_CHANNEL = "/notify";
 
     /**
      * Creates a new instance of CustomerLoginManagedBean
@@ -57,6 +50,7 @@ public class CustomerLoginManagedBean implements Serializable {
     @PostConstruct
     public void init() {
         System.out.println("CustomerLoginManagedBean @PostConstruct");
+
 //        EventBus eventBus = EventBusFactory.getDefault().eventBus();
 //        FacesMessage m = new FacesMessage("Test Customer", "Content");
 //        eventBus.publish(NOTIFY_CHANNEL, m);
@@ -67,6 +61,14 @@ public class CustomerLoginManagedBean implements Serializable {
 //        SessionUtils.setUserId(userID);
 //        SessionUtils.setUserName(userName);
 //        RedirectUtils.redirect(SessionUtils.getContextPath() + "/customer_cms/customer_home.xhtml");
+        
+//        MainAccount ma = loginSessionBean.getCustomerByUserID("c1234567").getMainAccount();
+//        String userID = Long.toString(ma.getId());
+//        String userName = ma.getUserID();
+//        SessionUtils.setUserId(userID);
+//        SessionUtils.setUserName(userName);
+//        RedirectUtils.redirect("/InternetBankingSystem/customer_deposit/deposit_account_summary.xhtml");
+
     }
 
     public MainAccount getLoginAccount() {

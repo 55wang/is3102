@@ -5,6 +5,9 @@
  */
 package utils;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 
@@ -24,4 +27,23 @@ public class RedirectUtils {
 
     }
 
+    public static String generateParameters(Map<String, String> map) {
+        List<String> params = new ArrayList<>();
+        for (Map.Entry<String, String> entry: map.entrySet()) {
+            String oneEntry = entry.getKey() + "=" + entry.getValue();
+            params.add(oneEntry);
+        }
+        String result = "?";
+        int counter = 0;
+        for (String param : params) {
+            if (counter == 0) {
+                result += param;
+            } else {
+                result += "&" + param;
+            }
+            counter++;
+        }
+        
+        return result;
+    }
 }

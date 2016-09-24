@@ -5,6 +5,7 @@
  */
 package ejb.session.card;
 
+import entity.card.account.CardTransaction;
 import entity.card.account.CreditCardAccount;
 import entity.card.account.CreditCardOrder;
 import entity.card.account.PromoCode;
@@ -35,7 +36,13 @@ public class CardAcctSessionBean implements CardAcctSessionBeanLocal {
     public CreditCardOrder getCardOrderFromId(Long orderNumber) {
         return em.find(CreditCardOrder.class, orderNumber);
     }
-
+    
+    @Override
+    public List<CardTransaction> getCardTransactionFromId(CreditCardAccount cca) {
+        CreditCardAccount ccaEntity= em.find(CreditCardAccount.class, cca);
+        return ccaEntity.getCardTransactions();
+    }
+    
     //try not to use void, always return something or null. and catch it at the caller side.
     @Override
     public String createCardOrder(CreditCardOrder order) {
