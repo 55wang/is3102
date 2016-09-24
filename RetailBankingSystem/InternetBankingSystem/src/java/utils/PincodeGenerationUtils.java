@@ -11,7 +11,7 @@ import java.security.SecureRandom;
  *
  * @author wang
  */
-public class TokenUtils {
+public class PincodeGenerationUtils {
 
     private static final String AB = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
     private static final String num = "0123456789";

@@ -56,6 +56,7 @@ public class CustomerLoginManagedBean implements Serializable {
         String userName = ma.getUserID();
         SessionUtils.setUserId(userID);
         SessionUtils.setUserName(userName);
+        SessionUtils.setTokenAuthentication(Boolean.FALSE);
         RedirectUtils.redirect("/InternetBankingSystem/customer_deposit/deposit_account_summary.xhtml");
     }
 

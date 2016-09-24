@@ -42,6 +42,21 @@ public class SessionUtils {
         HttpSession session = getSession();
         session.setAttribute("username", userName);
     }
+    
+    public static Boolean getTokenAuthentication() {
+        HttpSession session = (HttpSession) FacesContext.getCurrentInstance()
+                .getExternalContext().getSession(false);
+        Object result = session.getAttribute("tokenAuthentication");
+        if (result == null) {
+            return false;
+        }
+        return (Boolean)result ;
+    }
+
+    public static void setTokenAuthentication(Boolean tokenAuthentication) {
+        HttpSession session = getSession();
+        session.setAttribute("tokenAuthentication", tokenAuthentication);
+    }
 
     public static String getUserId() {
         HttpSession session = getSession();
