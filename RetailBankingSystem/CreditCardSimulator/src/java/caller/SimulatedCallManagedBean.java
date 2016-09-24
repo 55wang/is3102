@@ -7,7 +7,9 @@ package caller;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
@@ -52,10 +54,10 @@ public class SimulatedCallManagedBean implements Serializable {
     private void testGetMethod() {
         List<String> allString = new ArrayList<>();
         Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(path + "?accountNumber=123456789");
+        WebTarget target = client.target(path + "?accountNumber=123456789");// Mapped by @QueryParam("accountNumber") 
         // @Get request
-        JsonArray response = target.request(MediaType.APPLICATION_JSON).get(JsonArray.class);
-        for (JsonValue str : response) {
+        JsonArray jsonString = target.request(MediaType.APPLICATION_JSON).get(JsonArray.class);
+        for (JsonValue str : jsonString) {
             allString.add(((JsonString) str).getString());
         }
         System.out.println(allString);
@@ -63,12 +65,21 @@ public class SimulatedCallManagedBean implements Serializable {
 
     private void testPostMethod() {
         List<String> allString = new ArrayList<>();
+        // This will be get from @FormParam("accountNumber")
         Form form = new Form();
         form.param("accountNumber", "987654321");
+        
+        // Start calling
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(path);
-        JsonObject response = target.request(MediaType.APPLICATION_JSON).post(Entity.entity(form, MediaType.APPLICATION_FORM_URLENCODED), JsonObject.class);
         
-        System.out.println(response);
+        // This is the response
+        JsonObject jsonString = target.request(MediaType.APPLICATION_JSON).post(Entity.entity(form, MediaType.APPLICATION_FORM_URLENCODED), JsonObject.class);
+        System.out.println(jsonString);
+        System.out.println("name: " + jsonString.getString("name"));
+        System.out.println("creditCardNumber: " + jsonString.getString("creditCardNumber"));
+        System.out.println("amount: " + jsonString.getString("amount"));
+
+        // Do necessary process
     }
 }

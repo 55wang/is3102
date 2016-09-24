@@ -52,7 +52,7 @@ public class CreditCardService {
 //        return studentSessionBeanLocal.createStudent(student.getValue());
 //    }
     @GET
-    @Produces(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON) 
     public JsonArray getStringList(@QueryParam("accountNumber") String accountNumber) {
         System.out.println("Getting String list with account number:" + accountNumber);
         JsonArrayBuilder arrayBld = Json.createArrayBuilder();
@@ -77,7 +77,8 @@ public class CreditCardService {
         System.out.println("Getting String list with account number:" + accountNumber);
         // return value
         CreditCardDTO c = new CreditCardDTO();
-        c.setAmount("123.00");
+        c.setAmount("123355333.00");
+        c.setName("Lei Yang");
         c.setCreditCardNumber("4545454545454545");
         String jsonString = new JSONObject(c).toString();
         

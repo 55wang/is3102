@@ -13,6 +13,7 @@ public class CreditCardDTO {
     
     private String creditCardNumber;
     private String amount;
+    private String name;
     
     public CreditCardDTO() {
         
@@ -44,5 +45,19 @@ public class CreditCardDTO {
      */
     public void setAmount(String amount) {
         this.amount = amount;
+    }
+
+    /**
+     * @return the name
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * @param name the name to set
+     */
+    public void setName(String name) {
+        this.name = name;
     }
 }
