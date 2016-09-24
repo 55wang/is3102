@@ -12,6 +12,35 @@ package server.utilities;
 // REMARK: To get the list of enum values, just use e.g. CreditType.values()
 public class EnumUtils {
 
+    public enum CardTransactionType {
+
+        PENDINGTRANSACTION("PENDINGSETTLEMENT"),
+        SETTLEDTRANSACTION("SETTLEDTRANSACTION");
+        private String value;
+
+        CardTransactionType(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        @Override
+        public String toString() {
+            return this.getValue();
+        }
+
+        public static CardTransactionType getEnum(String value) {
+            for (CardTransactionType v : values()) {
+                if (v.getValue().equalsIgnoreCase(value)) {
+                    return v;
+                }
+            }
+            throw new IllegalArgumentException();
+        }
+    }
+
     public enum CardNetwork {
 
         VISA("VISA"),

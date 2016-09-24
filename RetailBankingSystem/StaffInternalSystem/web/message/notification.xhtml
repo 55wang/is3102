@@ -20,12 +20,20 @@
                     <!-- TODO: This Function is only accessable to Some Role -->
                     <p:messages id="messagesStatus" redisplay="false" >
                         <h:panelGrid columns="2">
-                            <h:outputText value="Internal Annoucement: " />
-                            <p:selectBooleanButton id="forStaff" value="#{notificationViewManagedBean.isForStaff}" onLabel="Yes" offLabel="No" style="width:60px" >
+                            <p:outputLabel for="target" value="Annoucement Target: " />
+                            <p:selectOneButton id="target" value="#{notificationViewManagedBean.annocementTarget}">
+                                <f:selectItem itemLabel="Staff" itemValue="#{notificationViewManagedBean.annocementForStaff}" />
+                                <f:selectItem itemLabel="Customer" itemValue="#{notificationViewManagedBean.annocementForCustomer}" />
+                                <f:ajax render="@form" />
+                            </p:selectOneButton>
+                            
+                            <h:outputText value="For all staff: " rendered="#{notificationViewManagedBean.annocementTarget == notificationViewManagedBean.annocementForStaff}"/>
+                            <p:selectBooleanButton id="forAllStaff" value="#{notificationViewManagedBean.forAllStaff}" onLabel="Yes" offLabel="No" style="width:60px" rendered="#{notificationViewManagedBean.annocementTarget == notificationViewManagedBean.annocementForStaff}">
                                 <f:ajax render="@form" />
                             </p:selectBooleanButton>
-                            <h:outputText value="For all staff: " rendered="#{notificationViewManagedBean.isForStaff}"/>
-                            <p:selectBooleanButton id="forAllStaff" value="#{notificationViewManagedBean.forAllStaff}" onLabel="Yes" offLabel="No" style="width:60px" rendered="#{notificationViewManagedBean.isForStaff}">
+                            
+                            <h:outputText value="For all customer: " rendered="#{notificationViewManagedBean.annocementTarget == notificationViewManagedBean.annocementForCustomer}"/>
+                            <p:selectBooleanButton id="forAllCustomer" value="#{notificationViewManagedBean.forAllCustomer}" onLabel="Yes" offLabel="No" style="width:60px" rendered="#{notificationViewManagedBean.annocementTarget == notificationViewManagedBean.annocementForCustomer}">
                                 <f:ajax render="@form" />
                             </p:selectBooleanButton>
                             
@@ -39,14 +47,14 @@
                             <p:outputLabel for="content" value="Content: " /> 
                             <p:inputTextarea id="content" value="#{notificationViewManagedBean.newAnnouncement.content}" required="true" />
                         </h:panelGrid>
-                        <p:commandButton value="Send" actionListener="#{notificationViewManagedBean.send}" />
+                        <p:commandButton value="Send" actionListener="#{notificationViewManagedBean.send}" update="@form"/>
                     </p:messages>
                     <p:panel header="Announcements">
                         <div id="output">
-                            <c:forEach items="#{notificationViewManagedBean.announcements}" var="accouncement">
-                                <div class="table-cell border-bottom" onclick="showModal('#{accouncement.title}', '#{accouncement.content}');">
-                                    <span class="v-center absolute-left">#{accouncement.title}</span>
-                                    <span class="v-center absolute-right">#{accouncement.creationDate}</span>
+                            <c:forEach items="#{notificationViewManagedBean.announcements}" var="announcement">
+                                <div class="table-cell border-bottom" onclick="showModal('#{announcement.title}', '#{announcement.content}');">
+                                    <span class="v-center absolute-left">#{announcement.title}</span>
+                                    <span class="v-center absolute-right">#{announcement.creationDate}</span>
                                 </div>
                             </c:forEach>
                         </div>

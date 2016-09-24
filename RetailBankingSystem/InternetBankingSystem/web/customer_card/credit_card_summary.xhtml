@@ -20,17 +20,17 @@
                     <p:panel header="Credit Cards">
                         <p:messages id="messagesStatus" redisplay="false" >
                             <h:panelGrid columns="2" cellpadding="5">
-                                <p:dataTable var="auditLog" value="#{customerProfileManagedBean.auditLogs}">
-                                    <p:column headerText="Type">
-                                        <h:outputText value="#{auditLog.creationDate}" />
+                                <p:dataTable var="cca" value="#{CustomerCardManagedBean.ccas}">
+                                    <p:column headerText="Type Product Name">
+                                        <h:outputText value="#{cca.getCreditCardProduct().getProductName()}" />
                                     </p:column>
 
                                     <p:column headerText="Account">
-                                        <h:outputText value="#{auditLog.activityLog}" />
+                                        <h:outputText value="" />
                                     </p:column>
                                     
-                                    <p:column headerText="Balance">
-                                        <h:outputText value="#{auditLog.activityLog}" />
+                                    <p:column headerText="Outstanding Balance">
+                                        <h:outputText value="" />
                                     </p:column>
                                     
                                     <p:column headerText="Action">

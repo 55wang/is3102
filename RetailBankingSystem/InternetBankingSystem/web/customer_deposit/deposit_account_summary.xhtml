@@ -21,27 +21,28 @@
                         <p:messages id="messagesStatus" redisplay="false" >
                             <h:panelGrid columns="2" cellpadding="5">
                                 <p:dataTable var="account" value="#{customerDepositAccountSummaryManagedBean.accounts}">
-                                    <c:if test="account.status == customerDepositAccountSummaryManagedBean.ACCOUNT_ACTIVE}">
-                                        <p:column headerText="Account">
-                                            <h:outputText value="#{account.id}" />
-                                        </p:column>
 
-                                        <p:column headerText="Type">
-                                            <h:outputText value="#{account.type}" />
-                                        </p:column>
+                                    <p:column headerText="Account">
+                                        <h:outputText value="#{account.id}" >
+                                        
+                                        </h:outputText>
+                                    </p:column>
 
-                                        <p:column headerText="Balance">
-                                            <h:outputText value="#{account.balance}" />
-                                        </p:column>
+                                    <p:column headerText="Type">
+                                        <h:outputText value="#{account.type}" />
+                                        
+                                    </p:column>
+                                    
 
-                                        <p:column headerText="Transactions">
-                                            <p:commandButton value="View" actionListener="#{customerDepositAccountSummaryManagedBean.viewTransaction(account)}"/>
-                                        </p:column>
+                                    <p:column headerText="Balance (in SGD)">
+                                        <h:outputText value="#{account.balance}" >
+                                        <f:convertNumber type="number" pattern="#0.00"/>
+                                        </h:outputText>
+                                    </p:column>
 
-                                        <p:column headerText="Close Account">
-                                            <p:commandButton value="Close" actionListener="#{customerDepositAccountSummaryManagedBean.closeAccount(account)}" update="@form"/>
-                                        </p:column>
-                                    </c:if>
+                                    <p:column headerText="Action">
+                                        <p:commandButton value="View Transactions" actionListener="#{customerDepositAccountSummaryManagedBean.viewTransaction(account)}"/>
+                                    </p:column>
                                 </p:dataTable>
 
                             </h:panelGrid>
