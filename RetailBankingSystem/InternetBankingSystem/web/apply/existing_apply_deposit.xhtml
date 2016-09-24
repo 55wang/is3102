@@ -18,14 +18,14 @@
                 <p:growl id="growl" sticky="true" showDetail="true"/>
                 <p:wizard widgetVar="myWizard" showNavBar="false">
 
-                    -->                    <p:tab id="account" title="1.Deposit Account">
+                  <p:tab id="account" title="1.Deposit Account">
                         <p:panel>
                             <p:messages />
                             <table>
 
                                 <tr><div style="margin-top:30px">
                                         <h:outputText style="font-weight:bolder" value="Choose Your Deposit Account: " />
-                                        <p:selectOneMenu value="#{customerApplicationManagedBean.initialDepositAccount}" style="width:187px; height: 31px; line-height: 21px; top:8px" rendered="true" required="true">
+                                        <p:selectOneMenu value="#{existingCustomerApplicationManagedBean.initialDepositAccount}" style="width:187px; height: 31px; line-height: 21px; top:8px" rendered="true" required="true">
                                             <f:selectItem itemLabel="Please Select..." itemValue="" />
                                             <f:selectItem itemLabel="MBS Current Account" itemValue="MBS Current Account" />
                                             <f:selectItem itemLabel="MBS Savings" itemValue="MBS Savings" />
@@ -80,9 +80,9 @@
                         <p:panel>
                             <p:messages />
                             <h:panelGrid columns="2" columnClasses="label, value">
-                                
+
                                 <h:outputText value="Initial Deposit Account: " />
-                                <h:outputText value="#{customerApplicationManagedBean.initialDepositAccount}" styleClass="outputLabel"/>
+                                <h:outputText value="#{existingCustomerApplicationManagedBean.initialDepositAccount}" styleClass="outputLabel"/>
 
 
                                 <h:outputLabel for="identityType" value="Identity Type: " />
@@ -117,7 +117,7 @@
 
                             <div class="register-form-button" style="margin-top: 20px">
                                 <p:commandButton value="Back" type="button" onclick="PF('myWizard').back();" />
-                                <p:commandButton value="Confirm" actionListener="#{customerApplicationManagedBean.save}" update="growl" process="@this"/>
+                                <p:commandButton value="Confirm" action="#{existingCustomerApplicationManagedBean.save(customerProfileManagedBean.customer)}" update="growl"/>
                             </div>
                         </p:panel>
                     </p:tab>

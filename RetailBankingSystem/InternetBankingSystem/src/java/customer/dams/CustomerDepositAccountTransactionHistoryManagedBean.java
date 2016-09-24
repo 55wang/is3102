@@ -35,8 +35,8 @@ public class CustomerDepositAccountTransactionHistoryManagedBean implements Seri
     
     public void init() {
         System.out.println("Account id is: " + getAccountId());
-        setAccount(depositAccountBean.getAccountFromId(Long.parseLong(getAccountId())));
-        System.out.println("Account retrieved is: " + account.getId());
+        setAccount(depositAccountBean.getAccountFromId(getAccountId()));
+        System.out.println("Account retrieved is: " + account.getAccountNumber());
     }
 
     /**

@@ -28,7 +28,7 @@ import org.primefaces.push.EventBus;
 import org.primefaces.push.EventBusFactory;
 import server.utilities.EnumUtils.*;
 import server.utilities.CommonHelper;
-import utils.generateCardNumber;
+import server.utilities.GenerateAccountAndCCNumber;
 
 /**
  *
@@ -84,7 +84,7 @@ public class CardApplicationManagedBean implements Serializable {
 
         updateApplicationStatus(creditCardOrder, ApplicationStatus.APPROVED);
         //generate card number
-        String cardNumber = generateCardNumber.generateMasterCardNumber();
+        String cardNumber = GenerateAccountAndCCNumber.generateMasterCardNumber();
 
         //create card account;
         CreditCardAccount cca = new CreditCardAccount();

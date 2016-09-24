@@ -62,12 +62,14 @@ public class CustomerLoginManagedBean implements Serializable {
 //        SessionUtils.setUserName(userName);
 //        RedirectUtils.redirect(SessionUtils.getContextPath() + "/customer_cms/customer_home.xhtml");
         
-//        MainAccount ma = loginSessionBean.getCustomerByUserID("c1234567").getMainAccount();
-//        String userID = Long.toString(ma.getId());
-//        String userName = ma.getUserID();
-//        SessionUtils.setUserId(userID);
-//        SessionUtils.setUserName(userName);
-//        RedirectUtils.redirect("/InternetBankingSystem/customer_deposit/deposit_account_summary.xhtml");
+        MainAccount ma = loginSessionBean.getCustomerByUserID("c1234567").getMainAccount();
+        String userID = Long.toString(ma.getId());
+        String userName = ma.getUserID();
+        SessionUtils.setUserId(userID);
+        SessionUtils.setUserName(userName);
+
+        SessionUtils.setTokenAuthentication(Boolean.FALSE);
+        RedirectUtils.redirect("/InternetBankingSystem/customer_deposit/deposit_account_summary.xhtml");
 
     }
 

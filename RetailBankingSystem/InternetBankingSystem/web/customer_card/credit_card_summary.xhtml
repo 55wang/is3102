@@ -20,30 +20,36 @@
                     <p:panel header="Credit Cards">
                         <p:messages id="messagesStatus" redisplay="false" >
                             <h:panelGrid columns="2" cellpadding="5">
-                                <p:dataTable var="cca" value="#{CustomerCardManagedBean.ccas}">
-                                    <p:column headerText="Type Product Name">
-                                        <h:outputText value="#{cca.getCreditCardProduct().getProductName()}" />
+                                <p:dataTable value="#{customerCardManagedBean.ccas}" var="cca" >
+
+                                    <p:column headerText="Credit Card Number">
+                                        <h:outputText value="#{cca.creditCardNum}" />
                                     </p:column>
 
-                                    <p:column headerText="Account">
-                                        <h:outputText value="" />
-                                    </p:column>
-                                    
                                     <p:column headerText="Outstanding Balance">
-                                        <h:outputText value="" />
+                                        <h:outputText value="#{cca.outstandingAmount}" />
                                     </p:column>
-                                    
+
+                                    <p:column headerText="Product">
+                                        <h:outputText value="#{cca.creditCardProduct.productName}" />
+                                    </p:column>
+
                                     <p:column headerText="Action">
                                         <p:menu>
                                             <p:submenu>
-                                                <p:menuitem value="View transactions" url="../customer_card/debit_card_transactions.xhtml" />
-                                                <p:menuitem value="Terminate" url="../customer_card/credit_card_summary.xhtml" />
-
+                                                <p:menuitem value="View transactions" action="#{customerCardManagedBean.sendCCTransactionDetail(cca)}" />
                                             </p:submenu>
                                         </p:menu>
+                                        <p:commandButton value="Confirm" action="#{customerCardManagedBean.viewTerminatePage(cca)}" update="@form">
+                                            <p:confirm header="Confirmation" message="Are you sure you want to close your account?" icon="ui-icon-alert" />
+                                            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                                                <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                                                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                                            </p:confirmDialog>
+                                        </p:commandButton>
                                     </p:column>
 
-                                    
+
 
                                 </p:dataTable>
 

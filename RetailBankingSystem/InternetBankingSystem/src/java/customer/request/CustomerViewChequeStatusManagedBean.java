@@ -13,6 +13,7 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
+import utils.SessionUtils;
 
 /**
  *
@@ -24,7 +25,8 @@ public class CustomerViewChequeStatusManagedBean implements Serializable {
 
     @EJB
     private CurrentAccountChequeSessionBeanLocal chequeBean;
-    List<Cheque> cheques;
+    
+    private List<Cheque> cheques;
     /**
      * Creates a new instance of CustomerViewChequeStatusManagedBean
      */
@@ -33,6 +35,21 @@ public class CustomerViewChequeStatusManagedBean implements Serializable {
     
     @PostConstruct
     public void init() {
-        
+        setCheques(chequeBean.getChequeByMainAccountId(Long.parseLong(SessionUtils.getUserId())));
+        System.out.println("Cheque length:" + cheques.size());
+    }
+
+    /**
+     * @return the cheques
+     */
+    public List<Cheque> getCheques() {
+        return cheques;
+    }
+
+    /**
+     * @param cheques the cheques to set
+     */
+    public void setCheques(List<Cheque> cheques) {
+        this.cheques = cheques;
     }
 }
