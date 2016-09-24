@@ -17,6 +17,7 @@ import ejb.session.mainaccount.MainAccountSessionBeanLocal;
 import ejb.session.staff.StaffAccountSessionBeanLocal;
 import ejb.session.staff.StaffRoleSessionBeanLocal;
 import ejb.session.utils.UtilsSessionBeanLocal;
+import entity.card.account.CardTransaction;
 import entity.card.account.CreditCardAccount;
 import entity.card.account.MileCardProduct;
 import entity.customer.Customer;
@@ -43,6 +44,7 @@ import javax.ejb.EJB;
 import javax.ejb.Singleton;
 import javax.ejb.LocalBean;
 import javax.ejb.Startup;
+import javax.transaction.Transaction;
 import server.utilities.ConstantUtils;
 import server.utilities.EnumUtils;
 import server.utilities.EnumUtils.CaseStatus;
@@ -153,7 +155,24 @@ public class EntityBuilderBean {
         CreditCardAccount cca = new CreditCardAccount();
         cca.setCreditCardProduct(mca);
         cca.setNameOnCard(demoMainAccount.getCustomer().getFirstname());
+        cca.setCreditCardNum("4918292292281322");
+        cca.setOutstandingAmount(0);
+        cca.setCardStatus(EnumUtils.CardAccountStatus.ACTIVE);
         cca.setMainAccount(demoMainAccount);
+        
+        List<CardTransaction> cts = new ArrayList<>();
+        CardTransaction cardTransaction = new CardTransaction();
+        cardTransaction.setCardTransactionType(EnumUtils.CardTransactionType.PENDINGTRANSACTION);
+        cardTransaction.setCreditAmount(500);
+        cardTransaction.setIsCredit(true);
+        cardTransaction.setTransactionCode("MST");
+        cardTransaction.setTransactionDescription("AMAZON SERVICE USD378.50");
+        cardTransaction.setTransactionTimeStamp(new Date());
+        
+        cts.add(cardTransaction);
+        cca.setCardTransactions(cts);
+        cardTransaction.setCreditCardAccount(cca);
+        
         cardAcctSessionBean.createCardAccount(cca);
     }
 
