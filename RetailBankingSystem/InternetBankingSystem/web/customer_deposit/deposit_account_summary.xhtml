@@ -20,26 +20,21 @@
                     <p:panel header="Deposit Accounts">
                         <p:messages id="messagesStatus" redisplay="false" >
                             <h:panelGrid columns="2" cellpadding="5">
-                                <p:dataTable var="auditLog" value="#{customerProfileManagedBean.auditLogs}">
+                                <p:dataTable var="account" value="#{customerDepositAccountSummaryManagedBean.accounts}">
                                     <p:column headerText="Account">
-                                        <h:outputText value="#{auditLog.creationDate}" />
+                                        <h:outputText value="#{account.id}" />
                                     </p:column>
 
-                                    <p:column headerText="Number">
-                                        <h:outputText value="#{auditLog.activityLog}" />
+                                    <p:column headerText="Type">
+                                        <h:outputText value="#{account.type}" />
                                     </p:column>
 
                                     <p:column headerText="Balance">
-                                        <h:outputText value="#{auditLog.activityLog}" />
+                                        <h:outputText value="#{account.balance}" />
                                     </p:column>
 
                                     <p:column headerText="Action">
-                                        <p:menu>
-                                            <p:submenu>
-                                                <p:menuitem value="View transactions" url="../customer_card/debit_card_transactions.xhtml" />
-                                                
-                                            </p:submenu>
-                                        </p:menu>
+                                        <p:commandButton value="View Transactions" actionListener="#{customerDepositAccountSummaryManagedBean.viewTransaction(account)}"/>
                                     </p:column>
 
 

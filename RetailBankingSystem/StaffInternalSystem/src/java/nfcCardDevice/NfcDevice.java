@@ -21,15 +21,28 @@ import javax.xml.bind.DatatypeConverter;
 public class NfcDevice {
 
     public static void main(String[] args) {
+        //1. convert creditcard number to nfcFormat
+        //use initialize device + writecard or
+        //use initialize device + readcard
         System.out.println("*** Start nfc device ***");
         try {
+            String nfc = creditCardNumberToNFC("1234");
             CardChannel channel = initializeDevice();
             writeCard(channel, "00010203040506070809000102030405"); //32 digit
             readCard(channel);
             System.out.println();
+            channel.close();
         } catch (Exception ex) {
             System.out.println("error" + ex);
         }
+    }
+
+    public static String creditCardNumberToNFC(String creditCard) {
+        String nfcFormat = "";
+        for (int i = 0; i < creditCard.length(); i++) {
+            nfcFormat += "0" + creditCard.charAt(i);
+        }
+        return nfcFormat;
     }
 
     public static String writeCard(CardChannel channel, String inputCreditCardNumber) { //16 digit
@@ -54,7 +67,7 @@ public class NfcDevice {
             System.out.println("Read Result: " + answer.toString());
             byte r[] = answer.getData();
             for (int i = 0; i < 16; i++) {
-                
+
                 System.out.print(r[i]);
                 result += r[i];
             }

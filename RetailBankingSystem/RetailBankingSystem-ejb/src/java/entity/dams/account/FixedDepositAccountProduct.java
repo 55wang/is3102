@@ -15,7 +15,7 @@ import javax.persistence.Entity;
  */
 @Entity
 public class FixedDepositAccountProduct extends DepositProduct {
-    
+    // Only one copy
     @Column(precision=12, scale=2)
     private BigDecimal minAmount;
     @Column(precision=12, scale=2)

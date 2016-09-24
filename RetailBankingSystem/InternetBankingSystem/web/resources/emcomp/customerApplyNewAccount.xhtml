@@ -32,7 +32,7 @@
                                                 <p:selectOneMenu value="#{customerApplicationManagedBean.initialDepositAccount}" style="width:187px; height: 31px; line-height: 21px; top:8px" rendered="true" required="true">
                                                     <f:selectItem itemLabel="Please Select..." itemValue="" />
                                                     <f:selectItem itemLabel="MBS Current Account" itemValue="MBS Current Account" />
-                                                    <f:selectItem itemLabel="MBS Savings" itemValue="MBS Savings" />
+                                                    <f:selectItem itemLabel="Merlion Account" itemValue="Merlion Account" />
                                                 </p:selectOneMenu>
 
 
@@ -85,18 +85,22 @@
                                 <p:messages />
                                 <h:panelGrid columns="2" columnClasses="label, value">
 
+
+
                                     <h:outputText value="Identity Type: " />
                                     <p:selectOneMenu value="#{customerApplicationManagedBean.customer.identityType}" style="width:187px; height: 31px; line-height: 21px; top:8px" rendered="true" label="identityType" required="true">
-                                        <f:selectItem itemLabel="Please Select..." />
-                                        <f:selectItem itemLabel="Singaporean/PR NRIC" itemValue="Singaporean/PR NRIC" />
-                                        <f:selectItem itemLabel="Passport" itemValue="Passport" />
+                                        <f:selectItem itemLabel="Please select.." itemValue=""/>                                                    
+                                        <f:selectItems value="#{customerApplicationManagedBean.selectIdentityTypes}" />
                                     </p:selectOneMenu>
 
                                     <h:outputText value="Identity Number: " />
                                     <p:inputText value="#{customerApplicationManagedBean.customer.identityNumber}" required="true"/>
 
                                     <h:outputText value="Nationality: " />
-                                    <p:inputText value="#{customerApplicationManagedBean.customer.nationality}" required="true"/>
+                                    <p:selectOneMenu value="#{customerApplicationManagedBean.customer.nationality}" style="width:187px; height: 31px; line-height: 21px; top:8px" rendered="true" label="identityType" required="true">
+                                        <f:selectItem itemLabel="Please select.." itemValue=""/>                                                    
+                                        <f:selectItems value="#{customerApplicationManagedBean.selectNationalities}" />
+                                    </p:selectOneMenu>
 
                                     <h:outputText value="Last Name: " />
                                     <p:inputText value="#{customerApplicationManagedBean.customer.lastname}" required="true"/>
@@ -123,19 +127,31 @@
                                     <h:outputText value="Gender " />
                                     <p:selectOneMenu value="#{customerApplicationManagedBean.customer.gender}" style="width:187px; height: 31px; line-height: 21px; top:8px" rendered="true" label="income" required="true">
                                         <f:selectItem itemLabel="Please Select..." />
-                                        <f:selectItem itemLabel="Male" itemValue="Male" />
-                                        <f:selectItem itemLabel="Female" itemValue="Female" />
-                                        <f:selectItem itemLabel="Not willing to disclose..." itemValue="Not willing to disclose..." />     
+                                        <f:selectItems value="#{customerApplicationManagedBean.selectGenders}" />
                                     </p:selectOneMenu>
 
                                     <h:outputText value="Occupation: " />
-                                    <p:inputText value="#{customerApplicationManagedBean.customer.occupation}" required="true"/>
+                                    <p:selectOneMenu value="#{customerApplicationManagedBean.customer.occupation}" style="width:187px; height: 31px; line-height: 21px; top:8px" rendered="true" label="income" required="true">
+                                        <f:selectItem itemLabel="Please Select..." />
+                                        <f:selectItems value="#{customerApplicationManagedBean.selectOccupations}" />
+                                    </p:selectOneMenu>
 
                                     <h:outputText value="Income " />
-                                    <p:inputText value="#{customerApplicationManagedBean.customer.income}" required="true"/>
-
+                                    <p:selectOneMenu value="#{customerApplicationManagedBean.customer.income}" style="width:187px; height: 31px; line-height: 21px; top:8px" rendered="true" label="income" required="true">
+                                        <f:selectItem itemLabel="Please Select..." />
+                                        <f:selectItems value="#{customerApplicationManagedBean.selectIncome}" />
+                                    </p:selectOneMenu>
                                     <h:outputText value="Email: " />
-                                    <p:inputText value="#{customerApplicationManagedBean.customer.email}" required="true"/>
+
+                                    <p:inputText required="true" label="email" size="40"
+                                                 requiredMessage="Please enter your email address."
+                                                 validatorMessage="Invalid email format"
+                                                 value="#{customerApplicationManagedBean.customer.email}">
+
+                                        <f:validateRegex
+                                            pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+
+                                    </p:inputText>
 
                                     <h:outputText value="Phone: " />
                                     <p:inputText value="#{customerApplicationManagedBean.customer.phone}" required="true"/>

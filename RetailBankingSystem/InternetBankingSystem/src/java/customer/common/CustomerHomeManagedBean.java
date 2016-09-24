@@ -39,7 +39,7 @@ public class CustomerHomeManagedBean implements Serializable{
     public CustomerHomeManagedBean() {
     }
     
-    @Audit(activtyLog = "home manged")
+    @Audit(activtyLog = "home managed")
     public Boolean changePwd(){
         try{
             changePasswordSessionBean.changePwd(HashPwdUtils.hashPwd(newPwd), customer.getMainAccount());
