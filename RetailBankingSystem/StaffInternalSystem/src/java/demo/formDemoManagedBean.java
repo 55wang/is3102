@@ -7,6 +7,7 @@ package demo;
 
 import entity.customer.Customer;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.inject.Named;
@@ -27,19 +28,21 @@ public class formDemoManagedBean implements Serializable {
     private Customer customer;
     private String selectedIncome;
     private List<String> incomeOptions = CommonUtils.getEnumList(EnumUtils.Income.class);
+
+
     /**
      * Creates a new instance of formDemoManagedBean
      */
     public formDemoManagedBean() {
     }
-    
+
     @PostConstruct
     public void init() {
         System.out.println("Form Demo Construct");
         setCustomer(new Customer());
     }
-    
-    public void print(){
+
+    public void print() {
         System.out.println("Printing result");
         System.out.println(selectedIncome);
     }
@@ -113,4 +116,10 @@ public class formDemoManagedBean implements Serializable {
     public void setSelectedIncome(String selectedIncome) {
         this.selectedIncome = selectedIncome;
     }
+
+
+
+  
+ 
+
 }

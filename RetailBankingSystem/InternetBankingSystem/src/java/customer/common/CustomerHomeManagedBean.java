@@ -10,6 +10,7 @@ import ejb.session.common.ChangePasswordSessionBeanLocal;
 import ejb.session.common.LoginSessionBeanLocal;
 import entity.customer.Customer;
 import java.io.Serializable;
+import java.util.Date;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
@@ -24,30 +25,30 @@ import utils.SessionUtils;
  */
 @Named(value = "customerHomeManagedBean")
 @ViewScoped
-public class CustomerHomeManagedBean implements Serializable{
+public class CustomerHomeManagedBean implements Serializable {
+
     @EJB
     private ChangePasswordSessionBeanLocal changePasswordSessionBean;
     @EJB
     private LoginSessionBeanLocal loginSessionBean;
     private Customer customer;
     private String newPwd;
-    
-    
+    private Date currentDate = new Date();
+
     /**
      * Creates a new instance of CustomerHomeManagedBean
      */
     public CustomerHomeManagedBean() {
     }
-    
+
     @Audit(activtyLog = "home managed")
-    public Boolean changePwd(){
-        try{
+    public Boolean changePwd() {
+        try {
             changePasswordSessionBean.changePwd(HashPwdUtils.hashPwd(newPwd), customer.getMainAccount());
             String msg = "Successful! You have reset your password. ";
             MessageUtils.displayInfo(msg);
             return true;
-        }
-        catch(Exception ex){
+        } catch (Exception ex) {
             String msg = "Something went wrong.";
             System.out.print(ex);
             MessageUtils.displayError(msg);
@@ -70,5 +71,14 @@ public class CustomerHomeManagedBean implements Serializable{
 
     public void setNewPwd(String newPwd) {
         this.newPwd = newPwd;
-    } 
+    }
+
+    public Date getCurrentDate() {
+        return currentDate;
+    }
+
+    public void setCurrentDate(Date currentDate) {
+        this.currentDate = currentDate;
+    }
+
 }
