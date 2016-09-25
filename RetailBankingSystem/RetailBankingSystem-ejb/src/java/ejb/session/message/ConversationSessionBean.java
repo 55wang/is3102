@@ -17,6 +17,7 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -28,16 +29,16 @@ public class ConversationSessionBean implements ConversationSessionBeanLocal {
     private EntityManager em;
     
     @Override
-    public Boolean createConversation(Conversation c) {
+    public Conversation createConversation(Conversation c) {
         try {
             em.persist(c);
             StaffAccount sender = c.getSender();
             StaffAccount receiver = c.getReceiver();
             em.merge(sender);
             em.merge(receiver);
-            return true;
+            return c;
         } catch (EntityExistsException e) {
-            return false;
+            return null;
         }
     }
     
@@ -98,6 +99,29 @@ public class ConversationSessionBean implements ConversationSessionBeanLocal {
         }
     }
     
+    @Override
+    public String checkIfConversationExists(StaffAccount sender, StaffAccount receiver) {
+        try {
+            System.out.println("SELECT c FROM Conversation c WHERE (c.receiver = AND c.sender = :receiver) OR (c.sender = :sender AND c.receiver = :receiver)");
+            Query q = em.createQuery("SELECT c FROM Conversation c WHERE (c.receiver.username = :sender AND c.sender.username = :receiver) OR (c.sender.username = :sender AND c.receiver.username = :receiver)");
+            q.setParameter("sender", sender.getUsername());
+            q.setParameter("receiver", receiver.getUsername());
+            List<Conversation> result = q.getResultList();
+            System.out.println("after  q.getResultList()");
+            System.out.println(result);
+            if (result != null && !result.isEmpty() && result.size() == 1) {
+                System.out.println("Conversation:" + result.size());
+                return result.get(0).getId().toString();
+            }
+            System.out.println("Return null");
+            return "NOT_FOUND";
+        } catch (Exception e) {
+            System.out.println("Exception");
+            e.printStackTrace();
+            return "EXCEPTION";
+        }
+    }
+    
     private List<Conversation> dedupConversation(List<Conversation> conversations) {
         Map<Long, Conversation> map = new HashMap<>();
         for (Conversation c : conversations) {
@@ -107,4 +131,6 @@ public class ConversationSessionBean implements ConversationSessionBeanLocal {
         System.out.println("dedup: map size:" + map.size());
         return new ArrayList<Conversation>(map.values());
     }
+    
+    
 }
