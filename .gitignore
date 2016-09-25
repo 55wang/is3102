@@ -40,3 +40,7 @@ hs_err_pid*
 /RetailBankingSystem/CardOperatorSystem/build/
 /RetailBankingSystem/CardOperatorSystem/nbproject/private/
 /RetailBankingSystem/CardOperatorSystem/dist/
+/CreditCardSimulator/nbproject/private/
+/RetailBankingSystem/CreditCardSimulator/nbproject/private/
+/RetailBankingSystem/CreditCardSimulator/build/
+/RetailBankingSystem/CreditCardSimulator/dist/

@@ -98,12 +98,12 @@ public class CreateInterestManagedBean implements Serializable {
             System.out.println("ID: " + i.getId() + " StartMonth: " + i.getStartMonth());
             set.add(i.getStartMonth());
         }
-        System.out.println("Before sort");
+//        System.out.println("Before sort");
         Collections.sort(timeRangeInterests);
-        System.out.println("Set is size: " + set.size());
+//        System.out.println("Set is size: " + set.size());
         Integer col = set.size();
         Integer row = timeRangeInterests.size() / col;
-        System.out.println("Col: " + col + " Row: " + row);
+//        System.out.println("Col: " + col + " Row: " + row);
         formatedInterests = new TimeRangeInterest[row][col];
         
         Integer counter = 0;

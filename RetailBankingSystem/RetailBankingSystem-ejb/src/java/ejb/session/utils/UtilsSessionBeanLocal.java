@@ -5,6 +5,7 @@
  */
 package ejb.session.utils;
 
+import entity.customer.Customer;
 import java.util.List;
 import javax.ejb.Local;
 
@@ -18,4 +19,12 @@ public interface UtilsSessionBeanLocal {
     public List<Object> findAll(String entityName);
     public Object persist(Object object);
     public Object merge(Object object);
+    public Boolean checkIdentityNumberIsUnique(String identityNumber);
+    public Boolean checkEmailIsUnique(String email);
+    public Boolean checkPhoneIsUnique(String phone);
+
+    public Boolean checkUpdatedEmailIsUnique(Customer customer);
+
+    public Boolean checkUpdatedPhoneIsUnique(Customer customer);
+
 }

@@ -125,6 +125,10 @@ public class Authentication implements Filter {
                     || reqURI.contains("/common/")
                     || reqURI.contains("/index_subpages/")
                     || reqURI.contains("/index_deposit_subpages/")
+                    || reqURI.contains("/index_card_subpages/")
+                    || reqURI.contains("/apply/")
+                    || reqURI.contains("/customer_cms/")
+                    || reqURI.contains("/customer_deposit/")
                     || reqURI.contains("/apply_deposit_account.xhtml")
                     || reqURI.contains("/apply_card_account.xhtml")
                     || (ses != null && ses.getAttribute("username") != null)) {

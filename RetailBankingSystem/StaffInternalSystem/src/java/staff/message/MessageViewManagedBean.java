@@ -16,6 +16,7 @@ import javax.faces.view.ViewScoped;
 import org.primefaces.push.EventBus;
 import org.primefaces.push.EventBusFactory;
 import utils.ColorUtils;
+import utils.JSUtils;
 import utils.LoggingUtils;
 import utils.SessionUtils;
 
@@ -64,6 +65,8 @@ public class MessageViewManagedBean implements Serializable {
             mDTO.setConversationId(conversationId);
             eventBus.publish(CHANNEL + getReceiverUsername(), mDTO);
             newMessage = new Message();
+            init();
+            JSUtils.callJSMethod("scrollDown()");
         } else {
             LoggingUtils.StaffMessageLog(MessageViewManagedBean.class, "Created New Message FAILED");
         }
