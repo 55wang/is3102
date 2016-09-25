@@ -10,6 +10,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -55,8 +56,8 @@ public class CreditCardAccount implements Serializable {
     private String nameOnCard;
     @Temporal(value = TemporalType.DATE)
     private Date validDate;
-    private double transactionMonthlyLimit = 1000;
-    private double transactionDailyLimit = 500;
+    private double transactionMonthlyLimit = 1000.0;
+    private double transactionDailyLimit = 500.0;
     @Temporal(value = TemporalType.TIMESTAMP)
     private Date creationDate = new Date();
     private double minPayDue;
@@ -84,28 +85,42 @@ public class CreditCardAccount implements Serializable {
 
     @Override
     public int hashCode() {
-        int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
+        int hash = 7;
         return hash;
     }
 
     @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof CreditCardAccount)) {
+    public boolean equals(Object obj) {
+        if (obj == null) {
             return false;
         }
-        CreditCardAccount other = (CreditCardAccount) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final CreditCardAccount other = (CreditCardAccount) obj;
+        if (!Objects.equals(this.id, other.id)) {
+            return false;
+        }
+        if (!Objects.equals(this.creditCardNum, other.creditCardNum)) {
+            return false;
+        }
+        if (!Objects.equals(this.cvv, other.cvv)) {
+            return false;
+        }
+        if (!Objects.equals(this.nameOnCard, other.nameOnCard)) {
             return false;
         }
         return true;
     }
+    
+    
 
     @Override
     public String toString() {
-        return "entity.card.account.CreditCard[ id=" + id + " ]";
+        return "CreditCardAccount{" + "id=" + id + ", mainAccount=" + mainAccount + ", creditCardProduct=" + creditCardProduct + ", promoCode=" + promoCode + ", cardTransactions=" + cardTransactions + ", cardNetwork=" + cardNetwork + ", CardStatus=" + CardStatus + ", creditCardNum=" + creditCardNum + ", cvv=" + cvv + ", nameOnCard=" + nameOnCard + ", validDate=" + validDate + ", transactionMonthlyLimit=" + transactionMonthlyLimit + ", transactionDailyLimit=" + transactionDailyLimit + ", creationDate=" + creationDate + ", minPayDue=" + minPayDue + ", annualInterestRate=" + annualInterestRate + ", outstandingAmount=" + outstandingAmount + ", cashBackAmount=" + cashBackAmount + ", merlionMiles=" + merlionMiles + ", merlionPoints=" + merlionPoints + ", numOfLatePayment=" + numOfLatePayment + ", numOf_30_59_LatePayment=" + numOf_30_59_LatePayment + ", numOf_60_89_LatePayment=" + numOf_60_89_LatePayment + ", numOf_90_LatePayment=" + numOf_90_LatePayment + ", overDueDuration=" + overDueDuration + '}';
     }
+    
+    
 
     public int getCvv() {
         return cvv;

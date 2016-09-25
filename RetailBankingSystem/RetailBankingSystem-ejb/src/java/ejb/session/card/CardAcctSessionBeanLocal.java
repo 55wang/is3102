@@ -33,11 +33,13 @@ public interface CardAcctSessionBeanLocal {
     
     public CreditCardAccount getCardByCardNumber(String cardNumber);
     
-    public CreditCardAccount validateCreditCardDailyTransactionLimit(CreditCardAccount creditCard, Double requestAmount);
+    public CreditCardAccount validateCreditCardDailyTransactionLimit(CreditCardAccount creditCard, double requestAmount);
     
-    public CreditCardAccount validateCreditCardMonthlyTransactionLimit(CreditCardAccount creditCard, Double requestAmount);
+    public CreditCardAccount validateCreditCardMonthlyTransactionLimit(CreditCardAccount creditCard, double requestAmount);
 
-    public String createCardAccount(CreditCardAccount cca);
+    public CreditCardAccount createCardAccount(CreditCardAccount cca);
+    
+    public CardTransaction createCardAccountTransaction(String ccNumber, CardTransaction ct);
 
     public String updateCardAccountStatus(CreditCardAccount cca, EnumUtils.CardAccountStatus status);
 
