@@ -5,15 +5,20 @@
  */
 package customer.card;
 
+import ejb.session.card.CardAcctSessionBeanLocal;
 import ejb.session.dams.CustomerDepositSessionBeanLocal;
+import entity.card.account.DebitCardAccount;
 import entity.dams.account.CustomerDepositAccount;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
+import server.utilities.EnumUtils;
+import utils.RedirectUtils;
 import utils.SessionUtils;
 
 /**
@@ -26,6 +31,8 @@ public class ApplyDebitCardAccountManagedBean implements Serializable {
 
     @EJB
     private CustomerDepositSessionBeanLocal depositBean;
+    @EJB
+    private CardAcctSessionBeanLocal cardAcctSessionBean;
     
     private List<CustomerDepositAccount> depositAccounts = new ArrayList<>();
     private List<String> accountOptions = new ArrayList<>();
@@ -45,10 +52,23 @@ public class ApplyDebitCardAccountManagedBean implements Serializable {
     }
     
     public void applyDebitCard() {
+        System.out.println("card account session bean called");
         CustomerDepositAccount selectedAccount = getSelectedAccount();
         if (selectedAccount != null) {
             // TODO: create debit card and link with account
+//            dca.setCustomerDepositAccount(selectedAccount);
+//            dca.setCardStatus(EnumUtils.CardAccountStatus.PENDING);
+//            dca.setCreationDate(new Date());
+//            dca.setNameOnCard(dca, selectedAccount);
+//            cardAcctSessionBean.createDebitAccount(dca, );
+            System.out.println("inside the loop");
+            cardAcctSessionBean.createDebitAccount(selectedAccount);
+            RedirectUtils.redirect("/InternetBankingSystem/customer_card/debit_card_summary.xhtml");
+            
         }
+        
+        System.out.println("ended");
+        
     }
     
     public CustomerDepositAccount getSelectedAccount() {

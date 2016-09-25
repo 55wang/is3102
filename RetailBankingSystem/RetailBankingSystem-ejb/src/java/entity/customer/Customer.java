@@ -5,6 +5,7 @@
  */
 package entity.customer;
 
+import entity.card.account.CreditCardOrder;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.CascadeType;
@@ -30,6 +31,22 @@ import server.utilities.EnumUtils.Occupation;
 @Entity
 public class Customer implements Serializable {
 
+    public Customer () {
+        
+    }
+    
+    public Customer (CreditCardOrder cco) {
+        this.income = cco.getIncome();
+        this.firstname = cco.getFirstName();
+        this.lastname = cco.getLastName();
+        this.email = cco.getEmail();
+        this.maritalStatus = cco.getMaritalStatus();
+        this.address = this.getAddress();
+        this.education = cco.getEduLevel();
+        this.identityNumber = cco.getIdentityNumber();
+        this.identityType = cco.getIdentityType();
+        // copy all from cco
+    }
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

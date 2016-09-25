@@ -29,7 +29,7 @@ public interface NewCardProductSessionBeanLocal {
 
     public RewardCardProduct getRewardProductFromId(Long orderNumber);
 
-    public void createRewardProduct(RewardCardProduct rcp);
+    public RewardCardProduct createRewardProduct(RewardCardProduct rcp);
 
     public List<CashBackCardProduct> showAllCashBackCardProducts();
 

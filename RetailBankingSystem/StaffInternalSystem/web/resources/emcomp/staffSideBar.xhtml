@@ -83,6 +83,10 @@
                         </li>
                     </c:if>
                     <c:if test="#{cc.attrs.top == 'card'}">
+                        <li class="side-menu-item #{cc.attrs.side == 'viewCard' ? 'active' : ''}">
+                            <h:link outcome="staff-view-card" value="Card Products" />
+                        </li>
+                        
                         <li class="side-menu-item #{cc.attrs.side == 'cardCreate' ? 'active' : ''}">
                             <h:link outcome="card-create-product" value="Create CreditCard Product" />
                         </li>

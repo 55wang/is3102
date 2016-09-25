@@ -39,11 +39,13 @@ public class StaffActivationManagedBean implements Serializable {
     
     @PostConstruct
     public void init() {
+        System.out.println("Login from activation");
         email = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("email");
         String randomPwd = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("code");
         StaffAccount sa = staffBean.loginAccount(email, randomPwd);
         if(sa != null ){
             valid = true;
+            System.out.println("Status updated");
             sa.setStatus(EnumUtils.StatusType.ACTIVE);
             staffBean.updateAccount(sa);
             SessionUtils.setStaffAccount(sa);
