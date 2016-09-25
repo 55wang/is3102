@@ -7,6 +7,7 @@ package ejb.session.common;
 
 import entity.customer.CustomerCase;
 import entity.customer.MainAccount;
+import java.util.Date;
 import javax.ejb.Local;
 
 /**
@@ -29,4 +30,8 @@ public interface EmailServiceSessionBeanLocal {
     public Boolean sendCancelCaseConfirmationToCustomer(String recipient, CustomerCase cc);
     public Boolean sendCaseStatusChangeToCustomer(String recipient, CustomerCase cc);
     public void sendUpdatedProfile(String recipient);
+    public void sendTransactionLimitChangeNotice(String recipient);
+    public void sendCreditCardApplicationNotice(String recipient);
+
+
 }

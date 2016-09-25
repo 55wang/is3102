@@ -9,7 +9,9 @@ import entity.card.account.CardTransaction;
 import entity.card.account.CreditCardAccount;
 import entity.card.account.CreditCardOrder;
 import entity.card.account.DebitCardAccount;
+import entity.customer.MainAccount;
 import entity.dams.account.CustomerDepositAccount;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.Local;
 import server.utilities.EnumUtils;
@@ -62,4 +64,9 @@ public interface CardAcctSessionBeanLocal {
     public CardTransaction getSpecificCaedTransactionFromId(Long ccaId);
 
     public String updateCreditCardOrder(CreditCardOrder cco);
+
+    public MainAccount activateCreditCard(String identityNumber, Date birthday, String cardNumber, String cvv);
+    
+    public MainAccount activateDebitCard(String identityNumber, Date birthday, String cardNumber, String cvv);
+
 }

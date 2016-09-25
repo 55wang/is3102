@@ -7,6 +7,7 @@ package customer.card;
 
 import ejb.session.card.CardAcctSessionBeanLocal;
 import ejb.session.cms.CustomerProfileSessionBeanLocal;
+import ejb.session.common.EmailServiceSessionBeanLocal;
 import entity.card.account.CardTransaction;
 import entity.card.account.CreditCardAccount;
 import entity.customer.Customer;
@@ -32,6 +33,8 @@ import utils.SessionUtils;
 @Named(value = "customerCardManagedBean")
 @ViewScoped
 public class CustomerCardManagedBean implements Serializable {
+    @EJB
+    private EmailServiceSessionBeanLocal emailServiceSessionBean;
 
     private Customer customer;
     private List<CreditCardAccount> ccas;
@@ -65,6 +68,8 @@ public class CustomerCardManagedBean implements Serializable {
         String result = cardAcctSessionBean.updateCardAcctTransactionLimit(cca);
         if (result.equals("SUCCESS")) {
             MessageUtils.displayInfo("Transaction limit is updated!");
+            emailServiceSessionBean.sendTransactionLimitChangeNotice(cca.getMainAccount().getCustomer().getEmail());           
+                         
         } else {
             MessageUtils.displayError("Change is unsuccessful!");
 

@@ -197,6 +197,7 @@ public class EntityBuilderBean {
         order.setEmail("raymondlei90s@gmail.com");
         order.setIdentityType(IdentityType.NRIC);
         order.setIdentityNumber("S9876345I");
+        order.setBirthDay(new Date());
         
         utilsBean.persist(order);
     }
@@ -1411,5 +1412,16 @@ public class EntityBuilderBean {
         cc.setCaseStatus(CaseStatus.ONHOLD);
 
         customerCaseSessionBean.saveCase(cc);
+    }
+    
+    public void initProcessedOrder(){
+        CreditCardAccount cca = new CreditCardAccount();
+        cca.setCvv(999);
+        cca.setCreditCardNum("1234567891234567");
+        cca.getMainAccount().setId(Long.getLong(Integer.toString(20)));
+        cca.getMainAccount().getCustomer().setId(Long.getLong(Integer.toString(20)));
+        cca.getMainAccount().getCustomer().setIdentityNumber("987654321");
+        cca.getMainAccount().getCustomer().setBirthDay(new Date());
+        
     }
 }

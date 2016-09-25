@@ -10,10 +10,13 @@ import entity.card.account.CreditCardAccount;
 import entity.card.account.CreditCardOrder;
 import entity.card.account.DebitCardAccount;
 import entity.card.account.PromoCode;
+import entity.customer.MainAccount;
 import entity.dams.account.CustomerDepositAccount;
 import entity.dams.account.DepositAccount;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityExistsException;
@@ -48,7 +51,7 @@ public class CardAcctSessionBean implements CardAcctSessionBeanLocal {
             return null;
         }
     }
-    
+
     @Override
     public List<CreditCardOrder> showAllCreditCardOrder() {
         Query q = em.createQuery("SELECT cco FROM CreditCardOrder cco");
@@ -57,7 +60,7 @@ public class CardAcctSessionBean implements CardAcctSessionBeanLocal {
 
     @Override
     public List<CreditCardOrder> showAllCreditCardOrder(EnumUtils.ApplicationStatus applicationStatus) {
-        
+
         Query q = em.createQuery("SELECT cco FROM CreditCardOrder cco WHERE coo.applicationStatus = :applicationStatus");
         q.setParameter("applicationStatus", applicationStatus);
         return q.getResultList();
@@ -274,8 +277,6 @@ public class CardAcctSessionBean implements CardAcctSessionBeanLocal {
         }
     }
 
-
-
     @Override
     public String updateCardAcctTransactionLimit(CreditCardAccount cca) {
         try {
@@ -351,5 +352,62 @@ public class CardAcctSessionBean implements CardAcctSessionBeanLocal {
             }
         }
     }
-    
+
+    @Override
+    public MainAccount activateCreditCard(String identityNumber, Date birthday, String cardNumber, String cvv) {
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+
+            Query q = em.createQuery("SELECT c FROM CreditCardAccount c WHERE c.creditCardNum =:cardNumber");
+            q.setParameter("cardNumber", cardNumber);
+
+            CreditCardAccount cca = (CreditCardAccount) q.getSingleResult();
+
+            String formattedBirthdayToCheck = sdf.format(birthday);
+            String formattedBirthdayInDB = sdf.format(cca.getMainAccount().getCustomer().getBirthDay());
+
+            if (Integer.toString(cca.getCvv()).equals(cvv) == false) {
+                return null;
+            } else if (formattedBirthdayToCheck.equals(formattedBirthdayInDB) == false) {
+                return null;
+            } else if (identityNumber.equals(cca.getMainAccount().getCustomer().getIdentityNumber()) == false) {
+                return null;
+            } else {
+                cca.setCardStatus(CardAccountStatus.ACTIVE);
+                return cca.getMainAccount();
+            }
+        } catch (Exception ex) {
+            return null;
+        }
+
+    }
+
+    @Override
+    public MainAccount activateDebitCard(String identityNumber, Date birthday, String cardNumber, String cvv) {
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+
+            Query q = em.createQuery("SELECT c FROM DebitCardAccount c WHERE c.creditCardNum =:cardNumber");
+            q.setParameter("cardNumber", cardNumber);
+
+            DebitCardAccount dca = (DebitCardAccount) q.getSingleResult();
+            String formattedBirthdayToCheck = sdf.format(birthday);
+            String formattedBirthdayInDB = sdf.format(dca.getCustomerDepositAccount().getMainAccount().getCustomer().getBirthDay());
+
+            if (Integer.toString(dca.getCvv()).equals(cvv) == false) {
+                return null;
+            } else if (formattedBirthdayToCheck.equals(formattedBirthdayInDB) == false) {
+                return null;
+            } else if (identityNumber.equals(dca.getCustomerDepositAccount().getMainAccount().getCustomer().getIdentityNumber()) == false) {
+                return null;
+            } else {
+                dca.setCardStatus(CardAccountStatus.ACTIVE);
+                return dca.getCustomerDepositAccount().getMainAccount();
+            }
+        } catch (Exception ex) {
+            return null;
+        }
+
+    }
+
 }
