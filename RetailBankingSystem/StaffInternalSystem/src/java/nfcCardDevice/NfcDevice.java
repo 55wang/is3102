@@ -25,13 +25,15 @@ public class NfcDevice {
         //use initialize device + writecard or
         //use initialize device + readcard
         System.out.println("*** Start nfc device ***");
+
+        String ccNum = "0000333322221111";
+        
         try {
             String nfc = creditCardNumberToNFC("1234");
             CardChannel channel = initializeDevice();
-            writeCard(channel, "00010203040506070809000102030405"); //32 digit
+//            writeCard(channel, ccNum); //32 digit
             readCard(channel);
             System.out.println();
-            channel.close();
         } catch (Exception ex) {
             System.out.println("error" + ex);
         }
@@ -45,18 +47,25 @@ public class NfcDevice {
         return nfcFormat;
     }
 
-    public static String writeCard(CardChannel channel, String inputCreditCardNumber) { //16 digit
+    public static boolean writeCard(CardChannel channel, String inputCreditCardNumber) { //16 digit
+        String convertedNumber = "";
+        for (int i = 0; i < inputCreditCardNumber.length(); i++) {
+            convertedNumber += "0" + inputCreditCardNumber.charAt(i);
+        }
+
         ResponseAPDU answer = null;
         try {
             //write value
-            String apdu = "FFD6000510" + inputCreditCardNumber;
+            String apdu = "FFD6000510" + convertedNumber;
             answer = channel.transmit(new CommandAPDU(toByteArray(apdu)));
             System.out.println("Write Result: " + answer.toString());
 
         } catch (Exception ex) {
             System.out.println("NfcDevice.writeCard() write Card Error");
+            System.out.println(ex);
+            return false;
         }
-        return answer.toString();
+        return true;
     }
 
     public static String readCard(CardChannel channel) {
@@ -73,6 +82,7 @@ public class NfcDevice {
             }
         } catch (Exception ex) {
             System.out.println("NfcDevice.readCard() Read Card Error");
+            return null;
         }
         return result;
     }
