@@ -5,9 +5,11 @@
  */
 package staff.card;
 
+
+import ejb.session.utils.UtilsSessionBeanLocal;
+import entity.common.AuditLog;
 import ejb.session.card.CardAcctSessionBeanLocal;
 import entity.card.account.CreditCardAccount;
-import entity.card.account.CreditCardOrder;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -20,6 +22,8 @@ import static nfcCardDevice.NfcDevice.readCard;
 import static nfcCardDevice.NfcDevice.writeCard;
 import server.utilities.EnumUtils;
 import utils.MessageUtils;
+import utils.SessionUtils;
+
 
 /**
  *
@@ -28,7 +32,8 @@ import utils.MessageUtils;
 @Named(value = "cardIssueManagedBean")
 @Dependent
 public class CardIssueManagedBean {
-
+    @EJB
+    private UtilsSessionBeanLocal utilsBean;
     @EJB
     CardAcctSessionBeanLocal cardAcctSessionBean;
 
@@ -42,6 +47,13 @@ public class CardIssueManagedBean {
 
     @PostConstruct
     public void init() {
+        AuditLog a = new AuditLog();
+        a.setActivityLog("System user enter issue_card.xhtml");
+        a.setFunctionName("CardIssueManagedBean @PostConstruct init()");
+        a.setInput("Getting all card applications");
+        a.setStaffAccount(SessionUtils.getStaff());
+        utilsBean.persist(a);
+    
         setCcas(cardAcctSessionBean.showAllPendingCreditCardOrder());
     }
 

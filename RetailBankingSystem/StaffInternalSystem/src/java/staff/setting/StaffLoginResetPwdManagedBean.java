@@ -6,8 +6,11 @@
 package staff.setting;
 
 import ejb.session.staff.StaffAccountSessionBeanLocal;
+import ejb.session.utils.UtilsSessionBeanLocal;
+import entity.common.AuditLog;
 import entity.staff.StaffAccount;
 import java.io.Serializable;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
@@ -26,6 +29,8 @@ public class StaffLoginResetPwdManagedBean implements Serializable {
 
     @EJB
     private StaffAccountSessionBeanLocal staffBean;
+    @EJB
+    private UtilsSessionBeanLocal utilsBean;
 
     private String oldPwd;
     private String newPwd;
@@ -37,6 +42,16 @@ public class StaffLoginResetPwdManagedBean implements Serializable {
     public StaffLoginResetPwdManagedBean() {
     }
 
+    
+    @PostConstruct
+    public void init() {
+        AuditLog a = new AuditLog();
+        a.setActivityLog("System user enter StaffLoginResetPwdManagedBean");
+        a.setFunctionName("StaffLoginResetPwdManagedBean @PostConstruct init()");
+        a.setInput("Getting all StaffLoginResetPwdManagedBean");
+        a.setStaffAccount(SessionUtils.getStaff());
+        utilsBean.persist(a);
+    }
     public Boolean changePwd(){
         if (!HashPwdUtils.hashPwd(oldPwd).equals(sa.getPassword())) {
             String msg = ConstantUtils.OLD_PASSWORD_NOTMTACH;

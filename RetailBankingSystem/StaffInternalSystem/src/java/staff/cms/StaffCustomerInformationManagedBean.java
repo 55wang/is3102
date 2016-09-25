@@ -7,6 +7,7 @@ package staff.cms;
 
 import ejb.session.cms.CustomerProfileSessionBeanLocal;
 import ejb.session.utils.UtilsSessionBeanLocal;
+import entity.common.AuditLog;
 import entity.customer.Customer;
 import java.io.Serializable;
 import java.util.List;
@@ -27,6 +28,7 @@ import server.utilities.EnumUtils.StatusType;
 import utils.CommonUtils;
 import utils.MessageUtils;
 import utils.RedirectUtils;
+import utils.SessionUtils;
 
 /**
  *
@@ -37,7 +39,8 @@ import utils.RedirectUtils;
 public class StaffCustomerInformationManagedBean implements Serializable {
     @EJB
     private UtilsSessionBeanLocal utilsSessionBean;
-
+    @EJB
+    private UtilsSessionBeanLocal utilsBean;
     @EJB
     private CustomerProfileSessionBeanLocal customerProfileSessionBean;
 
@@ -68,7 +71,7 @@ public class StaffCustomerInformationManagedBean implements Serializable {
      */
     public StaffCustomerInformationManagedBean() {
     }
-
+    
     public void search() {
         if (searchText.isEmpty()) {
             setCustomers(getCustomerProfileSessionBean().retrieveActivatedCustomers());
@@ -149,6 +152,12 @@ public class StaffCustomerInformationManagedBean implements Serializable {
     @PostConstruct
     public void setCustomers() {
         this.setCustomers(getCustomerProfileSessionBean().retrieveActivatedCustomers());
+        AuditLog a = new AuditLog();
+        a.setActivityLog("System user enter create_customer_information.xhtml");
+        a.setFunctionName("StaffCustomerInformationCaseManagedBean @PostConstruct setCustomers()");
+        a.setInput("Getting all customer information");
+        a.setStaffAccount(SessionUtils.getStaff());
+        utilsBean.persist(a);
 
     }
 

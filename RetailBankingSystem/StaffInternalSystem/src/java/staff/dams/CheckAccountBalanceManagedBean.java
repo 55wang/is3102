@@ -6,15 +6,19 @@
 package staff.dams;
 
 import ejb.session.dams.CustomerDepositSessionBeanLocal;
+import ejb.session.utils.UtilsSessionBeanLocal;
+import entity.common.AuditLog;
 import entity.dams.account.DepositAccount;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.event.ActionEvent;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import utils.MessageUtils;
+import utils.SessionUtils;
 
 /**
  *
@@ -26,6 +30,8 @@ public class CheckAccountBalanceManagedBean implements Serializable {
 
     @EJB
     private CustomerDepositSessionBeanLocal bankAccountSessionBean;
+    @EJB
+    private UtilsSessionBeanLocal utilsBean;
     /**
      * Creates a new instance of CheckBalanceCurrentAccountManagedBean
      */
@@ -34,6 +40,18 @@ public class CheckAccountBalanceManagedBean implements Serializable {
     
     private String accountNumber;
     private List<DepositAccount> depositAccounts = new ArrayList<>();
+    
+    @PostConstruct
+    public void init() {
+        
+        AuditLog a = new AuditLog();
+        a.setActivityLog("System user enter CheckAccountBalanceManagedBean");
+        a.setFunctionName("CheckAccountBalanceManagedBean @PostConstruct init()");
+        a.setInput("Getting all CheckAccountBalanceManagedBean information");
+        a.setStaffAccount(SessionUtils.getStaff());
+        utilsBean.persist(a);
+
+    }
     
     public void checkBalance(ActionEvent event) {
         DepositAccount newAccount = bankAccountSessionBean.getAccountFromId(getAccountNumber());

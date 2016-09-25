@@ -6,6 +6,8 @@
 package staff.admin;
 
 import ejb.session.staff.StaffRoleSessionBeanLocal;
+import ejb.session.utils.UtilsSessionBeanLocal;
+import entity.common.AuditLog;
 import entity.staff.Role;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -16,6 +18,7 @@ import javax.faces.event.ActionEvent;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import utils.MessageUtils;
+import utils.SessionUtils;
 
 /**
  *
@@ -28,6 +31,9 @@ public class CreateRoleManagedBean implements Serializable {
     @EJB
     private StaffRoleSessionBeanLocal staffRoleSessionBean;
     
+    @EJB
+    private UtilsSessionBeanLocal utilsBean;
+    
     private String roleName;
     private List<Role> roles = new ArrayList<>();
     private Role newRole = new Role();
@@ -37,17 +43,32 @@ public class CreateRoleManagedBean implements Serializable {
     @PostConstruct
     public void init() {
         setRoles(staffRoleSessionBean.getAllRoles());
+        
+        AuditLog a = new AuditLog();
+        a.setActivityLog("System user enter create_role.xhtml");
+        a.setFunctionName("CreateRoleManagedBean @PostConstruct init()");
+        a.setInput("Getting all roles");
+        a.setStaffAccount(SessionUtils.getStaff());
+        utilsBean.persist(a);
     }
     
     public void addRole(ActionEvent event) {
         Role temp = staffRoleSessionBean.addRole(newRole);
+        
+        AuditLog a = new AuditLog();
+        a.setActivityLog("System user add role");
+        a.setFunctionName("CreateRoleManagedBean addRole()");
+        
         if (temp != null) {
             roles.add(temp);
             newRole = new Role();
+            a.setOutput("SUCCESS");
             MessageUtils.displayInfo("New Role Added");
         } else {
+            a.setOutput("FAIL");
             MessageUtils.displayInfo("Role already Added");
         }
+        
     }
 
     /**

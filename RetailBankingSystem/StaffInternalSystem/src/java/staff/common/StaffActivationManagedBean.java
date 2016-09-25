@@ -6,6 +6,8 @@
 package staff.common;
 
 import ejb.session.staff.StaffAccountSessionBeanLocal;
+import ejb.session.utils.UtilsSessionBeanLocal;
+import entity.common.AuditLog;
 import entity.staff.StaffAccount;
 import java.io.Serializable;
 import javax.annotation.PostConstruct;
@@ -27,6 +29,8 @@ public class StaffActivationManagedBean implements Serializable {
     
     @EJB
     private StaffAccountSessionBeanLocal staffBean;
+    @EJB
+    private UtilsSessionBeanLocal utilsBean;
     
     @ManagedProperty(value="#{param.email}")
     private String email;
@@ -52,6 +56,12 @@ public class StaffActivationManagedBean implements Serializable {
         }
         else
             valid = false;
+        AuditLog a = new AuditLog();
+        a.setActivityLog("System user enter create_customer_information.xhtml");
+        a.setFunctionName("StaffActivitionCaseManagedBean @PostConstruct init()");
+        a.setInput("Getting all activition");
+        a.setStaffAccount(SessionUtils.getStaff());
+        utilsBean.persist(a);
     }
 
     /**

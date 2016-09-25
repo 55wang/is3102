@@ -11,6 +11,8 @@ package staff.message;
  */
 import ejb.session.message.ConversationSessionBeanLocal;
 import ejb.session.staff.StaffAccountSessionBeanLocal;
+import ejb.session.utils.UtilsSessionBeanLocal;
+import entity.common.AuditLog;
 import entity.staff.Conversation;
 import entity.staff.StaffAccount;
 import javax.inject.Named;
@@ -36,6 +38,8 @@ public class ChatViewManagedBean implements Serializable {
     private StaffAccountSessionBeanLocal staffBean;
     @EJB
     private ConversationSessionBeanLocal conversationBean;
+    @EJB
+    private UtilsSessionBeanLocal utilsBean;
     
     
     private String searchText;
@@ -55,6 +59,12 @@ public class ChatViewManagedBean implements Serializable {
         removeSelf();
         setConversations(conversationBean.getAllConversationForStaff(SessionUtils.getStaffUsername()));
         LoggingUtils.StaffMessageLog(ChatViewManagedBean.class, "Conversations: " + conversations.size());
+        AuditLog a = new AuditLog();
+        a.setActivityLog("System user enter ChatViewManagedBean");
+        a.setFunctionName("ChatViewManagedBean @PostConstruct init()");
+        a.setInput("Getting all ChatViewManagedBean");
+        a.setStaffAccount(SessionUtils.getStaff());
+        utilsBean.persist(a);
     }
     
     @PreDestroy 

@@ -6,10 +6,13 @@
 package staff.message;
 
 import ejb.session.message.ConversationSessionBeanLocal;
+import ejb.session.utils.UtilsSessionBeanLocal;
+import entity.common.AuditLog;
 import entity.staff.Conversation;
 import entity.staff.Message;
 import entity.staff.StaffAccount;
 import java.io.Serializable;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
@@ -30,6 +33,8 @@ public class MessageViewManagedBean implements Serializable {
 
     @EJB
     private ConversationSessionBeanLocal conversationBean;
+    @EJB
+    private UtilsSessionBeanLocal utilsBean;
 
     private final EventBus eventBus = EventBusFactory.getDefault().eventBus();
     private final static String CHANNEL = "/chat/";
@@ -42,10 +47,16 @@ public class MessageViewManagedBean implements Serializable {
 
     public MessageViewManagedBean() {
     }
-
+    @PostConstruct
     public void init() {
         LoggingUtils.StaffMessageLog(MessageViewManagedBean.class, "@PostConstruct, retriving conversation from id:" + conversationId);
         setCurrentConversation(conversationBean.getConversationById(Long.parseLong(conversationId)));
+        AuditLog a = new AuditLog();
+        a.setActivityLog("System user enter MessageViewManagedBean");
+        a.setFunctionName("MessageViewManagedBean @PostConstruct init()");
+        a.setInput("Getting all MessageViewManagedBean information");
+        a.setStaffAccount(SessionUtils.getStaff());
+        utilsBean.persist(a);
     }
 
     public void sendMessage() {

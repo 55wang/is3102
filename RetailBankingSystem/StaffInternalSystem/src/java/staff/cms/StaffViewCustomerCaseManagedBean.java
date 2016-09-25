@@ -9,7 +9,9 @@ import ejb.session.card.CardTransactionSessionBeanLocal;
 import ejb.session.cms.CustomerCaseSessionBeanLocal;
 import ejb.session.common.EmailServiceSessionBeanLocal;
 import ejb.session.staff.StaffAccountSessionBeanLocal;
+import ejb.session.utils.UtilsSessionBeanLocal;
 import entity.card.account.CardTransaction;
+import entity.common.AuditLog;
 import entity.customer.CustomerCase;
 import entity.staff.StaffAccount;
 import java.io.Serializable;
@@ -43,6 +45,8 @@ public class StaffViewCustomerCaseManagedBean implements Serializable{
     private StaffAccountSessionBeanLocal staffBean;
     @EJB
     private CustomerCaseSessionBeanLocal customerCaseSessionBean;
+    @EJB
+    private UtilsSessionBeanLocal utilsBean;
     
     private List<CustomerCase> cases;
     private String searchText;
@@ -186,6 +190,12 @@ public class StaffViewCustomerCaseManagedBean implements Serializable{
     @PostConstruct
     public void setCases() {
         this.cases = customerCaseSessionBean.getAllCaseUnderCertainStaff(SessionUtils.getStaff());
+        AuditLog a = new AuditLog();
+        a.setActivityLog("System user enter view_customer_information.xhtml");
+        a.setFunctionName("StaffViewCustomerCaseManagedBean @PostConstruct setCases()");
+        a.setInput("Getting all customer cases");
+        a.setStaffAccount(SessionUtils.getStaff());
+        utilsBean.persist(a);
     }
     
     public List<CustomerCase> getCases() {
