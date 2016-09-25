@@ -62,11 +62,6 @@ public class CardViewCreditApplicationManagedBean implements Serializable {
         a.setInput("Getting all credit card applications");
         a.setStaffAccount(SessionUtils.getStaff());
         utilsBean.persist(a);
-    }
-    public void displayCardOrder() {
-//        mcps = newCardProductSessionBean.showAllMileProducts();
-//        rcps = newCardProductSessionBean.showAllRewardProducts();
-//        cbcps = newCardProductSessionBean.showAllCashBackCardProducts();
         ccos = cardAcctSessionBean.showAllCreditCardOrder();
     }
     

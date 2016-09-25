@@ -93,10 +93,9 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
         }
 
     }
-    
+
     @Override
     public Boolean sendCreditCardActivationGmailForCustomer(String recipient, String pwd, String ccNumber) {
-        
         Session session = getSession();
 
         try {
@@ -119,7 +118,7 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
             System.out.println(e);
             return (false);
         }
-        
+
     }
     
     @Override
@@ -427,7 +426,59 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
             return false;
         }
     }
-    
+
+    @Override
+    public void sendTransactionLimitChangeNotice(String recipient) {
+        Session session = getSession();
+
+        try {
+
+            Message message = new MimeMessage(session);
+            message.setFrom(new InternetAddress("merlionbanking@gmail.com"));
+            message.setRecipients(Message.RecipientType.TO,
+                    InternetAddress.parse(recipient));
+            message.setSubject("Your transaction limit is updated - Merlion Bank");
+            message.setText("Dear Customer, \n Your transaction limit of MBS card has been updated. "
+                    + "Click the link to check updated transaction limit: "
+                    + "https://localhost:8181/InternetBankingSystem/customer_card/credit_card_summary.xhtml .");
+
+            Transport.send(message);
+
+            System.out.println("Email send out successfully");
+            return;
+
+        } catch (MessagingException e) {
+            System.out.println(e);
+            return;
+        }
+    }
+
+    @Override
+    public void sendCreditCardApplicationNotice(String recipient) {
+        Session session = getSession();
+
+        try {
+
+            Message message = new MimeMessage(session);
+            message.setFrom(new InternetAddress("merlionbanking@gmail.com"));
+            message.setRecipients(Message.RecipientType.TO,
+                    InternetAddress.parse(recipient));
+            message.setSubject("Your credit card application is submitted - Merlion Bank");
+            message.setText("Dear Customer, \n Your credit card application is submitted."
+                    + "We are processing your application. Meanwhile, you can go to this link to check your application status."
+                    + "https://localhost:8181/InternetBankingSystem/customer_card/credit_card_summary.xhtml .");
+
+            Transport.send(message);
+
+            System.out.println("Email send out successfully");
+            return;
+
+        } catch (MessagingException e) {
+            System.out.println(e);
+            return;
+        }
+    }
+
     private Properties getGmailProperties() {
         Properties props = new Properties();
         props.put("mail.smtp.host", "smtp.gmail.com");
@@ -447,4 +498,6 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
                     }
                 });
     }
+
+
 }

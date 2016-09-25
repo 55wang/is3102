@@ -21,74 +21,21 @@
                     <p:panel header="Credit Card Applications">
                         <p:messages id="messagesStatus" redisplay="false" >
                             <h:panelGrid columns="2" cellpadding="5">
-                                <p:dataTable value="#{cardViewCreditApplicationManagedBean.ccos}" var="cco" >
+                                <p:dataTable value="#{cardIssueManagedBean.ccas}" var="cca" >
 
-                                    <p:column style="width:16px">
-                                        <p:rowToggler />
-                                    </p:column>
-
-                                    <p:column headerText="Card Application Order">
-                                        <h:outputText value="#{cco.id}" />
+                                    <p:column headerText="Card Number">
+                                        <h:outputText value="#{cca.partialHiddenAccountNumber}" />
                                     </p:column>
 
                                     <p:column headerText="Product Name">
-                                        <h:outputText value="#{cco.creditCardProduct.productName}" />
+                                        <h:outputText value="#{cca.creditCardProduct.productName}" />
                                     </p:column>
-
-                                    <p:rowExpansion>
-                                        <p:panelGrid  columns="2" columnClasses="label,value" style="width:500px; margin:auto" >
-                                            <f:facet name="header">
-                                                Basic Information
-                                            </f:facet>
-
-                                            <h:outputText value="Last Name: " />
-                                            <h:outputText value="#{customer.lastname}" style="width:97%"/>
-
-                                            <h:outputText value="Income: " />
-                                            <h:outputText value="#{cco.income}" />
-
-                                            <h:outputText value="Employment Status: " />
-                                            <h:outputText value="#{cco.employmentStatus}" />
-
-                                            <h:outputText value="Education " />
-                                            <h:outputText value="#{cco.eduLevel}" />
-
-                                            <h:outputText value="Industry: " />
-                                            <h:outputText value="#{cco.industry}" />
-
-                                            <h:outputText value="Marital Status: " />
-                                            <h:outputText value="#{cco.maritalStatus}" />
-
-                                            <h:outputText value="No. of Deps: " />
-                                            <h:outputText value="#{cco.numOfDependents}" />
-                                        </p:panelGrid>
-
-
-                                    </p:rowExpansion>
-
 
                                     <p:column headerText="Status">
-                                        <h:outputText value="#{cco.applicationStatus}" />
-                                    </p:column>
-                                    <p:column headerText="Input Bureau CreditScore">
-                                        <p:selectOneMenu value="#{cardViewCreditApplicationManagedBean.bureauCreditScore}" style="width:10px; height: 31px; line-height: 21px; top:8px" rendered="true" required="true">
-                                            <f:selectItem itemLabel="AA" itemValue="AA" />
-                                            <f:selectItem itemLabel="BB" itemValue="BB" />
-                                            <f:selectItem itemLabel="CC" itemValue="CC" />
-                                            <f:selectItem itemLabel="DD" itemValue="DD" />
-                                            <f:selectItem itemLabel="EE" itemValue="EE" />
-                                            <f:selectItem itemLabel="FF" itemValue="FF" />
-                                            <f:selectItem itemLabel="GG" itemValue="GG" />
-                                            <f:selectItem itemLabel="HH" itemValue="HH" />
-                                        </p:selectOneMenu>
-                                    </p:column>
-                                    <p:column headerText="CreditScore">
-                                        <h:outputText value="#{cco.creditScore}" />
+                                        <h:outputText value="#{cca.cardStatus}" />
                                     </p:column>
                                     <p:column headerText="Action">
-                                        <p:commandButton value="Credit Score" action="#{cardViewCreditApplicationManagedBean.calculateCreditScore(cco)}" icon="ui-icon-lightbulb" update="@form" />
-                                        <p:commandButton value="Approve" action="#{cardViewCreditApplicationManagedBean.approveOrder(cco.id)}" icon="ui-icon-check" update="@form" />
-                                        <p:commandButton value="Reject" action="#{cardViewCreditApplicationManagedBean.rejectOrder(cco.id)}" icon="ui-icon-close" update="@form" />
+                                        <p:commandButton value="Issue" action="#{cardIssueManagedBean.issueCard(cca)}" icon="ui-icon-check" update="@form" />
                                     </p:column>
                                 </p:dataTable>
                             </h:panelGrid>
