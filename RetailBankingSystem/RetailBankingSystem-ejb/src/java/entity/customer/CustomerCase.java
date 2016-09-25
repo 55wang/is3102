@@ -20,7 +20,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
+import server.utilities.EnumUtils;
 import server.utilities.EnumUtils.CaseStatus;
+import server.utilities.EnumUtils.cardOperatorChargebackStatus;
 
 /**
  *
@@ -44,7 +46,10 @@ public class CustomerCase implements Serializable {
     private StaffAccount staffAccount;
     @OneToOne
     private CardTransaction chargebackTransaction;
+    @OneToOne
+    private CardTransaction reverseTransaction;
     private Boolean isChargeBackCase = false;
+    private cardOperatorChargebackStatus cardOperatorResponse;
     
 
     public Long getId() {
@@ -142,5 +147,21 @@ public class CustomerCase implements Serializable {
 
     public void setIsChargeBackCase(Boolean isChargeBackCase) {
         this.isChargeBackCase = isChargeBackCase;
+    }
+
+    public cardOperatorChargebackStatus getCardOperatorResponse() {
+        return cardOperatorResponse;
+    }
+
+    public void setCardOperatorResponse(cardOperatorChargebackStatus cardOperatorResponse) {
+        this.cardOperatorResponse = cardOperatorResponse;
+    }
+
+    public CardTransaction getReverseTransaction() {
+        return reverseTransaction;
+    }
+
+    public void setReverseTransaction(CardTransaction reverseTransaction) {
+        this.reverseTransaction = reverseTransaction;
     }
 }

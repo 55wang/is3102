@@ -19,6 +19,7 @@ import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import server.utilities.EnumUtils;
 import server.utilities.EnumUtils.StatusType;
+import utils.JSUtils;
 import utils.MessageUtils;
 import utils.RedirectUtils;
 import utils.SessionUtils;
@@ -48,7 +49,12 @@ public class CustomerDepositAccountSummaryManagedBean implements Serializable {
         setAccounts(depositBean.getAllCustomerAccounts(Long.parseLong(SessionUtils.getUserId())));
     }
     
+    public void confirm() {
+        JSUtils.callJSMethod("PF('close_account').show()");
+    }
+    
     public void closeAccount(DepositAccount da) {
+        System.out.println("Closing account");
         if (da.getBalance().compareTo(BigDecimal.ZERO) == 0) {
             da.setStatus(EnumUtils.StatusType.FREEZE);
             DepositAccount result = depositBean.updateAccount(da);

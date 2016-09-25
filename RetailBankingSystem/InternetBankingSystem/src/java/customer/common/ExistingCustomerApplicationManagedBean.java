@@ -5,7 +5,7 @@
  */
 package customer.common;
 
-import ejb.session.common.EmailServiceSessionBeanLocal;
+
 import ejb.session.common.NewCustomerSessionBeanLocal;
 import ejb.session.dams.CustomerDepositSessionBeanLocal;
 import ejb.session.dams.DepositProductSessionBeanLocal;
@@ -23,7 +23,8 @@ import org.primefaces.event.FlowEvent;
 import server.utilities.ConstantUtils;
 import server.utilities.EnumUtils;
 import utils.CommonUtils;
-import utils.RedirectUtils;
+import utils.MessageUtils;
+
 
 /**
  *
@@ -79,8 +80,9 @@ public class ExistingCustomerApplicationManagedBean implements Serializable {
     }
 
     public void save(Customer thisCustomer) {
-        System.out.print(thisCustomer.getLastname());
-
+        try{
+            System.out.print(thisCustomer.getLastname());
+        
         MainAccount mainAccount = thisCustomer.getMainAccount();
 //        System.out.println(mainAccount);
 
@@ -97,6 +99,11 @@ public class ExistingCustomerApplicationManagedBean implements Serializable {
         depostiAccount.setProduct(depositProductBean.getDepositProductByName(initialDepositAccount));
         
         depositAccountBean.createAccount(depostiAccount);
+        
+        MessageUtils.displayInfo("Your deposit account application is successful!");
+        } catch (Exception ex){
+            System.out.println("Error"+ex.getMessage());
+        }
         
     }
         

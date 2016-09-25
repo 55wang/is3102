@@ -13,19 +13,25 @@
 			<style mode="Opaque" backcolor="#F0EFEF"/>
 		</conditionalStyle>
 	</style>
-	<queryString language="SQL">
-		<![CDATA[SELECT
-     CASHBACKCARDPRODUCT.`ID` AS CASHBACKCARDPRODUCT_ID,
-     CASHBACKCARDPRODUCT.`DININGCASHBACKRATE` AS CASHBACKCARDPRODUCT_DININGCASHBACKRATE,
-     CASHBACKCARDPRODUCT.`GROCERYCASHBACKRATE` AS CASHBACKCARDPRODUCT_GROCERYCASHBACKRATE,
-     CASHBACKCARDPRODUCT.`PETROLCASHBACKRATE` AS CASHBACKCARDPRODUCT_PETROLCASHBACKRATE
-FROM
-     `CASHBACKCARDPRODUCT` CASHBACKCARDPRODUCT]]>
+	<queryString>
+		<![CDATA[SELECT ID,ACTIONTYPE,AMOUNT AS amount,CREDIT as Income,FROMACCOUNT_ACCOUNTNUMBER as transaction from,TOACCOUNT_ACCOUNTNUMBER as transaction to 
+FROM transactionrecord
+]]>
 	</queryString>
-	<field name="CASHBACKCARDPRODUCT_ID" class="java.lang.Long"/>
-	<field name="CASHBACKCARDPRODUCT_DININGCASHBACKRATE" class="java.lang.Double"/>
-	<field name="CASHBACKCARDPRODUCT_GROCERYCASHBACKRATE" class="java.lang.Double"/>
-	<field name="CASHBACKCARDPRODUCT_PETROLCASHBACKRATE" class="java.lang.Double"/>
+	<field name="ID" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="ACTIONTYPE" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="amount" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="Income" class="java.lang.Boolean"/>
+	<field name="transacfrom" class="java.lang.String"/>
+	<field name="TOACCOUNT_ACCOUNTNUMBER" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -42,14 +48,14 @@ FROM
 					<textElement>
 						<font isBold="false"/>
 					</textElement>
-					<text><![CDATA[TEST REPORT]]></text>
+					<text><![CDATA[Bank Statement]]></text>
 				</staticText>
 				<staticText>
 					<reportElement style="SubTitle" x="157" y="66" width="249" height="29" uuid="e49ddfc1-60ec-4839-9531-09b6a5191386"/>
 					<textElement>
 						<font size="22" isBold="false"/>
 					</textElement>
-					<text><![CDATA[FACK THE WORLD]]></text>
+					<text><![CDATA[issued by Merlion Bank]]></text>
 				</staticText>
 			</frame>
 			<frame>

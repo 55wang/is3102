@@ -24,12 +24,13 @@ and open the template in the editor.
             <em:customerHeader context="customer_home" userName="#{customerHomeManagedBean.customer.firstname }"></em:customerHeader>
             <em:customerNavBar context="customer_home" pageName="request_home" ></em:customerNavBar>
             <div class="customer_main_container">
-                <h:form>
 
-                    <p:commandButton value="View your bank statement" action="#{requestManagedBean.requestEStatement}"/> 
-                </h:form>
-                
-            
+
+
+                <iframe src="estatement.pdf" width="500" height="700"/>
+
+
+
             </div>
 
 
@@ -38,3 +39,8 @@ and open the template in the editor.
 
 
 </html>
+
+
+
+
+

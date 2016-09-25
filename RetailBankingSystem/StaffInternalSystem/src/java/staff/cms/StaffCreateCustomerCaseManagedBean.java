@@ -20,6 +20,7 @@ import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import server.utilities.EnumUtils;
+import server.utilities.EnumUtils.CardTransactionStatus;
 import server.utilities.EnumUtils.IssueField;
 import utils.MessageUtils;
 import utils.RedirectUtils;
@@ -39,7 +40,8 @@ public class StaffCreateCustomerCaseManagedBean implements Serializable{
     private String issueField = "CHARGEBACK";
     private String selectChargeBack = "CHARGEBACK";
     private CustomerCase newCase = new CustomerCase();
-    private List<Issue> issues;
+    private List<Issue> issues = new ArrayList<Issue> ();
+    private Issue newIssue = new Issue();
     private String chargebackTransactionID;
     
     
@@ -76,11 +78,16 @@ public class StaffCreateCustomerCaseManagedBean implements Serializable{
     public List<Issue> getIssues() {
         return issues;
     }
+
+    public void setIssues(List<Issue> issues) {
+        this.issues = issues;
+    }
     
     public void addIssue(){
-        Issue newIssue = new Issue();
         newIssue.setField(IssueField.CHARGEBACK);
         this.issues.add(newIssue);
+        newIssue = new Issue();
+        newIssue.setField(IssueField.CHARGEBACK);   
     }
     
     public void createCase(){
@@ -90,9 +97,10 @@ public class StaffCreateCustomerCaseManagedBean implements Serializable{
         }
         if(issueField.equals(selectChargeBack)){
             newCase.setIsChargeBackCase(Boolean.TRUE);
+            if(newCase.getIsChargeBackCase()) newCase.setCardOperatorResponse(EnumUtils.cardOperatorChargebackStatus.PENDING);
             System.out.println("chargebackTransactionID: " + chargebackTransactionID);
             CardTransaction ct = cardAcctSessionBean.getSpecificCaedTransactionFromId(Long.parseLong(chargebackTransactionID));
-            if(ct == null)
+            if(ct == null || ct.getCardTransactionStatus().equals(CardTransactionStatus.CANCELLED))
                 MessageUtils.displayError("Transaction not found");
             else{
                 newCase.setMainAccount(ct.getCreditCardAccount().getMainAccount());
@@ -104,14 +112,6 @@ public class StaffCreateCustomerCaseManagedBean implements Serializable{
         }
     }
 
-    @PostConstruct
-    public void setIssues() {
-        this.issues = new ArrayList<Issue>();
-        Issue newIssue = new Issue();
-        newIssue.setField(IssueField.CHARGEBACK);
-        this.issues.add(newIssue);
-    }
-
     public String getChargebackTransactionID() {
         return chargebackTransactionID;
     }
@@ -119,5 +119,12 @@ public class StaffCreateCustomerCaseManagedBean implements Serializable{
     public void setChargebackTransactionID(String chargebackTransactionID) {
         this.chargebackTransactionID = chargebackTransactionID;
     }
-    
+
+    public Issue getNewIssue() {
+        return newIssue;
+    }
+
+    public void setNewIssue(Issue newIssue) {
+        this.newIssue = newIssue;
+    }
 }

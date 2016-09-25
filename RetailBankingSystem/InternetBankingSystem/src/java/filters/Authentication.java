@@ -128,7 +128,6 @@ public class Authentication implements Filter {
                     || reqURI.contains("/index_card_subpages/")
                     || reqURI.contains("/apply/")
                     || reqURI.contains("/customer_cms/")
-                    || reqURI.contains("/customer_deposit/")
                     || reqURI.contains("/apply_deposit_account.xhtml")
                     || reqURI.contains("/apply_card_account.xhtml")
                     || (ses != null && ses.getAttribute("username") != null)) {
@@ -136,8 +135,9 @@ public class Authentication implements Filter {
                         if(     
                                 (reqURI.contains("/customer_card/")
                                     || reqURI.contains("/customer_cms/")
+                                    || reqURI.contains("/customer_deposit/")
                                     || reqURI.contains("/customer_message/")
-                                    || reqURI.contains("/customer_request/")
+                                    || reqURI.contains("/request/")
                                 ) && (
                                     ses.getAttribute("tokenAuthentication").equals(Boolean.FALSE)
 //                                    SessionUtils.getTokenAuthentication().equals(Boolean.FALSE)

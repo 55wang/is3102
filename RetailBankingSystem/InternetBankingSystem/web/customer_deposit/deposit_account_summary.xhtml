@@ -31,7 +31,6 @@
 
                                     <p:column headerText="Type">
                                         <h:outputText value="#{account.type}" />
-                                        
                                     </p:column>
                                     
 
@@ -41,8 +40,12 @@
                                         </h:outputText>
                                     </p:column>
 
+                                    <p:column headerText="Transaction">
+                                        <p:commandButton value="View" actionListener="#{customerDepositAccountSummaryManagedBean.viewTransaction(account)}"/>
+                                    </p:column>
+                                    
                                     <p:column headerText="Action">
-                                        <p:commandButton value="View Transactions" actionListener="#{customerDepositAccountSummaryManagedBean.viewTransaction(account)}"/>
+                                        <p:commandButton value="Close Account" actionListener="#{customerDepositAccountSummaryManagedBean.closeAccount(account)}" update="@form"/>
                                     </p:column>
                                 </p:dataTable>
 

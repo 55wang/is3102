@@ -6,6 +6,7 @@
 package ejb.session.card;
 
 import entity.card.account.CashBackCardProduct;
+import entity.card.account.CreditCardProduct;
 import entity.card.account.MileCardProduct;
 import entity.card.account.RewardCardProduct;
 import java.util.List;
@@ -35,5 +36,10 @@ public interface NewCardProductSessionBeanLocal {
     public CashBackCardProduct getCashBackCardProductFromId(Long orderNumber);
 
     public void createCashBackProduct(CashBackCardProduct cbcp);
+
+    public List<CreditCardProduct> getAllCreditCardProducts();
+
+    public CreditCardProduct getSingleCreditCardProduct(String productName);
+
 
 }
