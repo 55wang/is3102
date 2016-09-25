@@ -7,6 +7,8 @@ package staff.admin;
 
 import ejb.session.dams.DepositProductSessionBeanLocal;
 import ejb.session.dams.InterestSessionBeanLocal;
+import ejb.session.utils.UtilsSessionBeanLocal;
+import entity.common.AuditLog;
 import entity.dams.account.DepositAccountProduct;
 import entity.dams.account.DepositProduct;
 import entity.dams.account.FixedDepositAccountProduct;
@@ -23,6 +25,7 @@ import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import server.utilities.EnumUtils.DepositAccountType;
 import utils.MessageUtils;
+import utils.SessionUtils;
 
 /**
  *
@@ -36,6 +39,8 @@ public class CreateDepositProductManagedBean implements Serializable {
     private DepositProductSessionBeanLocal depositProductSessionBean;
     @EJB
     private InterestSessionBeanLocal interestSessionBean;
+    @EJB
+    private UtilsSessionBeanLocal utilsBean;
     
     private String[] selectedInterests;
     private Map<String, String> selectInterests = new HashMap<>();
@@ -88,6 +93,13 @@ public class CreateDepositProductManagedBean implements Serializable {
         for (Interest i : interests) {
             selectInterests.put(i.getName(), i.getName());
         }
+        
+        AuditLog a = new AuditLog();
+        a.setActivityLog("System user enter create_deposit_product.xhtml");
+        a.setFunctionName("CreateDepositProductManagedBean @PostConstruct init()");
+        a.setInput("Getting all deposit products");
+        a.setStaffAccount(SessionUtils.getStaff());
+        utilsBean.persist(a);
     }
     
     private void initProductsType(){
@@ -98,42 +110,60 @@ public class CreateDepositProductManagedBean implements Serializable {
     }
     
     public void addProduct(ActionEvent event) {
+        AuditLog a = new AuditLog();
+        a.setActivityLog("System user add product");
+        a.setFunctionName("CreateDepositManagedBean addProduct()");
+        
+        
+        
         if (productType.equals(PRODUCT_TYPE_CUSTOM)) {
             customProduct.setInterestRules(getSelectedInterestsList());
             DepositAccountProduct temp = (DepositAccountProduct)depositProductSessionBean.createDepositProduct(customProduct);
+            a.setInput(temp.getName());
             if (temp != null) {
                 customProducts.add(temp);
                 customProduct = new DepositAccountProduct();
+                a.setOutput("SUCCESS");
                 MessageUtils.displayInfo("Custom Deposit Product Created");
             } else {
+                a.setOutput("FAIL");
                 MessageUtils.displayError("This Deposit Product Exists");
             }
         } else if (productType.equals(PRODUCT_TYPE_CURRENT)) {
             currentProduct.setInterestRules(getSelectedInterestsList());
             DepositAccountProduct temp = (DepositAccountProduct) depositProductSessionBean.createDepositProduct(currentProduct);
+            a.setInput(temp.getName());
             if (temp != null) {
                 currentProducts.add(temp);
                 currentProduct = new DepositAccountProduct();
+                a.setOutput("SUCCESS");
                 MessageUtils.displayInfo("Current Deposit Product Created");
             } else {
+                a.setOutput("FAIL");
                 MessageUtils.displayError("This Deposit Product Exists");
             }
         } else if (productType.equals(PRODUCT_TYPE_SAVING)) {
             savingProduct.setInterestRules(getSelectedInterestsList());
             DepositAccountProduct temp = (DepositAccountProduct) depositProductSessionBean.createDepositProduct(savingProduct);
+            a.setInput(temp.getName());
             if (temp != null) {
                 savingProducts.add(temp);
                 savingProduct = new DepositAccountProduct();
+                a.setOutput("SUCCESS");
                 MessageUtils.displayInfo("Saving Deposit Product Created");
             } else {
+                a.setOutput("FAIL");
                 MessageUtils.displayError("This Deposit Product Exists");
             }
         } else if (productType.equals(PRODUCT_TYPE_FIXED)) {
+            a.setInput(fixedProduct.getName());
             if (depositProductSessionBean.createDepositProduct(fixedProduct) != null) {
                 fixedProducts.add(fixedProduct);
                 fixedProduct = new FixedDepositAccountProduct();
+                a.setOutput("SUCCESS");
                 MessageUtils.displayInfo("Fixed Deposit Product Created");
             } else {
+                a.setOutput("FAIL");
                 MessageUtils.displayError("This Deposit Product Exists");
             }
         } else {

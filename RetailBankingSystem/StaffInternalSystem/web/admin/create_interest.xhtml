@@ -90,8 +90,6 @@
                                         <p:inputText id="contitionInterestInvest" value="#{createInterestManagedBean.conditionInterest.amount}"/>
                                     </c:if>
                                 </c:if>
-
-                                <p:commandButton value="Create" icon="ui-icon-plus" update="@form" actionListener="#{createInterestManagedBean.addInterest}" />
                             </h:panelGrid>
                             <c:if test="#{createInterestManagedBean.interestType == createInterestManagedBean.INTEREST_TYPE_TIME_RANGE}">
                                 <p:outputLabel for="rangeInterestName" value="Interest Name: " />
@@ -231,8 +229,8 @@
                                         </p:cellEditor>
                                     </p:column>
                                 </p:dataTable>
-
                             </c:if>
+                            <p:commandButton value="Create" icon="ui-icon-plus" update="DisplayForm" actionListener="#{createInterestManagedBean.addInterest}" />
                         </p:messages>
                     </p:panel>
                 </h:form>

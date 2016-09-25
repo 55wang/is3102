@@ -16,6 +16,6 @@ import javax.ejb.Local;
 @Local
 public interface AuditSessionBeanLocal {
     public List<AuditLog> getAuditLogByCustomerID(String userID);
-    public List<AuditLog> getAuditLogByStaffID(String staffID);
+    public List<AuditLog> getAuditLogByStaffUsername(String username);
     public Boolean insertAuditLog(AuditLog auditLog);
 }

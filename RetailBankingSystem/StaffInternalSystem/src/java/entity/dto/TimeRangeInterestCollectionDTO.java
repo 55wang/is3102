@@ -5,13 +5,14 @@
  */
 package entity.dto;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 /**
  *
  * @author leiyang
  */
-public class TimeRangeInterestCollectionDTO {
+public class TimeRangeInterestCollectionDTO implements Serializable  {
     private BigDecimal minAmount;
     private BigDecimal maxAmount;
     private BigDecimal amount1;

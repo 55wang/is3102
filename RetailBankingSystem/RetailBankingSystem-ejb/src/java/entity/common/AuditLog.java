@@ -8,9 +8,7 @@ package entity.common;
 import entity.customer.MainAccount;
 import entity.staff.StaffAccount;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -31,15 +29,15 @@ public class AuditLog implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Temporal(value = TemporalType.TIMESTAMP)
-    private Date creationDate;
+    private Date creationDate = new Date();
     private String activityLog; //readable function name
     private String functionName;
     private String input;
     private String output;
     private String ipAddress;
-    @ManyToOne(cascade={CascadeType.PERSIST})
+    @ManyToOne(cascade={CascadeType.MERGE})
     private StaffAccount staffAccount;
-    @ManyToOne(cascade={CascadeType.PERSIST})
+    @ManyToOne(cascade={CascadeType.MERGE})
     private MainAccount mainAccount;
 
     @Override

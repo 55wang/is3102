@@ -43,19 +43,13 @@ public class AuditSessionBean implements AuditSessionBeanLocal {
     }
 
     @Override
-    public List<AuditLog> getAuditLogByStaffID(String staffID) {
-        Query q = em.createQuery("SELECT a FROM StaffAccount a WHERE a.username = :inUserID");
+    public List<AuditLog> getAuditLogByStaffUsername(String username) {
+        
+        Query q = em.createQuery("SELECT a FROM AuditLog a WHERE a.staffAccount.username = :username");
 
-        q.setParameter("inUserID", staffID);
-
-        StaffAccount staffAccount = null;
-
-        try {
-            staffAccount = (StaffAccount) q.getSingleResult();
-            return staffAccount.getAuditLog();
-        } catch (NoResultException ex) {
-            return null;
-        }
+        q.setParameter("username", username);
+        
+        return q.getResultList();
     }
 
     @Override
