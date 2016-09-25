@@ -9,8 +9,8 @@ function handleMessage(message) {
     m.init();
 }
 
-function createNewConversation() {
-    alert();
+function scrollDown() {
+    $("#messages").scrollTop($("#messages")[0].scrollHeight);
 }
 
 function Message(message) {
@@ -44,5 +44,4 @@ function Message(message) {
 Message.prototype.init = function() {
     console.log("Prepending view");
     $("#messages").append(this.view);
-    $("#messages").scrollTop($("#messages")[0].scrollHeight);
 }

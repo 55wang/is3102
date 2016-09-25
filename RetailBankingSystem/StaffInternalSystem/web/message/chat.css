@@ -75,6 +75,7 @@ and open the template in the editor.
     float: left;
     background: lightblue;
     border: 1px solid black;
+    overflow:hidden;
 }
 #messages {
     height: 350px;

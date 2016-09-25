@@ -50,9 +50,9 @@ public class StaffLoginManagedBean implements Serializable {
     public void init() {
         // Set a default super account
         System.out.println("StaffLoginManagedBean @PostConstruct");
-        StaffAccount sa = staffBean.loginAccount("adminadmin", HashPwdUtils.hashPwd("password"));
-        SessionUtils.setStaffAccount(sa);
-        RedirectUtils.redirect(SessionUtils.getContextPath() + "/admin/create_interest.xhtml");
+//        StaffAccount sa = staffBean.loginAccount("adminadmin", HashPwdUtils.hashPwd("password"));
+//        SessionUtils.setStaffAccount(sa);
+//        RedirectUtils.redirect(SessionUtils.getContextPath() + "/admin/create_interest.xhtml");
     }
 
     public void loginStaff(ActionEvent event) {

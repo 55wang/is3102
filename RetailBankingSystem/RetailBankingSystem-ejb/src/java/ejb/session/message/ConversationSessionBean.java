@@ -67,7 +67,11 @@ public class ConversationSessionBean implements ConversationSessionBeanLocal {
     @Override
     public Conversation getConversationById(Long id) {
         if (id != null) {
-            return em.find(Conversation.class, id);
+            Conversation c = em.find(Conversation.class, id);
+            if (c != null) {
+                em.refresh(c);
+            }
+            return c;
         } else {
             return null;
         }
@@ -77,6 +81,9 @@ public class ConversationSessionBean implements ConversationSessionBeanLocal {
     public List<Conversation> getAllConversationForStaff(String username) {
         if (username != null) {
             StaffAccount sa = em.find(StaffAccount.class, username);
+            if (sa != null){
+                em.refresh(sa);
+            }
             System.out.println("Found StaffAccount: " + sa.getFullName());
             List<Conversation> conversations = sa.getReceiverConversation();
             System.out.println("Found StaffAccount: with receiver conversations: " + conversations.size());
