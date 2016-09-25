@@ -54,9 +54,13 @@ public class CardIssueManagedBean {
         try {
             CardChannel channel = initializeDevice();
             writeCard(channel, ccNum); //32 digit
-            readCard(channel);
-            System.out.println();
-            writeStatus = true;
+            if (readCard(channel).equals(ccNum)) {
+                System.out.println("read card to confirm success");
+                writeStatus = true;
+            } else {
+                writeStatus = false;
+            }
+
         } catch (Exception ex) {
             System.out.println("error" + ex);
             writeStatus = false;
