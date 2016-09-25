@@ -62,7 +62,10 @@
                                 </p:selectOneMenu>
 
                                 <h:outputText value="Identity Number: " />
-                                <h:inputText value="#{staffCustomerInformationManagedBean.selectedCustomer.identityNumber}" style="width:81%" />
+                                <h:inputText value="#{staffCustomerInformationManagedBean.selectedCustomer.identityNumber}" style="width:81%" >
+                                      <f:validateRegex
+                                            pattern="^[A-Za-z0-9]{9}$" />
+                                </h:inputText>
 
                                 <h:outputText value="Occupation: " />
                                 <p:selectOneMenu value="#{staffCustomerInformationManagedBean.selectedOccupation}" style="width:70%">
