@@ -13,7 +13,10 @@ public class CreditCardDTO {
     
     private String creditCardNumber;
     private String amount;
-    private String name;
+    private String description;
+    private String errorMessage;
+    private String tCode;
+    private String aCode;
     
     public CreditCardDTO() {
         
@@ -48,16 +51,60 @@ public class CreditCardDTO {
     }
 
     /**
-     * @return the name
+     * @return the description
      */
-    public String getName() {
-        return name;
+    public String getDescription() {
+        return description;
     }
 
     /**
-     * @param name the name to set
+     * @param description the description to set
      */
-    public void setName(String name) {
-        this.name = name;
+    public void setDescription(String description) {
+        this.description = description;
     }
+
+    /**
+     * @return the tCode
+     */
+    public String gettCode() {
+        return tCode;
+    }
+
+    /**
+     * @param tCode the tCode to set
+     */
+    public void settCode(String tCode) {
+        this.tCode = tCode;
+    }
+
+    /**
+     * @return the aCode
+     */
+    public String getaCode() {
+        return aCode;
+    }
+
+    /**
+     * @param aCode the aCode to set
+     */
+    public void setaCode(String aCode) {
+        this.aCode = aCode;
+    }
+
+    /**
+     * @return the errorMessage
+     */
+    public String getErrorMessage() {
+        return errorMessage;
+    }
+
+    /**
+     * @param errorMessage the errorMessage to set
+     */
+    public void setErrorMessage(String errorMessage) {
+        this.errorMessage = errorMessage;
+    }
+
+    
 }

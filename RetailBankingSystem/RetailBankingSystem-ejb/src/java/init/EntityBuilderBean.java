@@ -49,6 +49,7 @@ import javax.ejb.Singleton;
 import javax.ejb.LocalBean;
 import javax.ejb.Startup;
 import server.utilities.ConstantUtils;
+import server.utilities.DateUtils;
 import server.utilities.EnumUtils;
 import server.utilities.EnumUtils.CaseStatus;
 import server.utilities.EnumUtils.ChequeStatus;
@@ -201,8 +202,8 @@ public class EntityBuilderBean {
 
         CreditCardAccount cca = new CreditCardAccount();
         cca.setCreditCardProduct(mca);
-        cca.setNameOnCard(demoMainAccount.getCustomer().getFirstname());
-        cca.setCreditCardNum("4918292292281322");
+        cca.setNameOnCard(demoMainAccount.getCustomer().getFullName());
+        cca.setCreditCardNum("4545454545454545");
         cca.setOutstandingAmount(0);
         cca.setCardStatus(EnumUtils.CardAccountStatus.ACTIVE);
         cca.setMainAccount(demoMainAccount);
@@ -210,11 +211,28 @@ public class EntityBuilderBean {
         List<CardTransaction> cts = new ArrayList<>();
         CardTransaction cardTransaction = new CardTransaction();
         cardTransaction.setCardTransactionType(EnumUtils.CardTransactionType.PENDINGTRANSACTION);
-        cardTransaction.setCreditAmount(500);
+        cardTransaction.setAmount(500);
         cardTransaction.setIsCredit(true);
         cardTransaction.setTransactionCode("MST");
         cardTransaction.setTransactionDescription("AMAZON SERVICE USD378.50");
-        cardTransaction.setTransactionTimeStamp(new Date());
+        
+        cardTransaction = new CardTransaction();
+        cardTransaction.setUpdateDate(DateUtils.getBeginOfMonth());
+        cardTransaction.setCardTransactionType(EnumUtils.CardTransactionType.PENDINGTRANSACTION);
+        cardTransaction.setAmount(200);
+        cardTransaction.setIsCredit(true);
+        cardTransaction.setTransactionCode("MST");
+        cardTransaction.setTransactionDescription("Apple SERVICE USD168.50");
+        
+        cardTransaction = new CardTransaction();
+        cardTransaction.setUpdateDate(DateUtils.getBeginOfMonth());
+        cardTransaction.setCardTransactionType(EnumUtils.CardTransactionType.PENDINGTRANSACTION);
+        cardTransaction.setAmount(100);
+        cardTransaction.setIsCredit(true);
+        cardTransaction.setTransactionCode("MST");
+        cardTransaction.setTransactionDescription("Microsoft SERVICE USD78.50");
+        
+        
 
         cts.add(cardTransaction);
         cca.setCardTransactions(cts);
