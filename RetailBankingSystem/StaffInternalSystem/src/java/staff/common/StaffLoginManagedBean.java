@@ -96,7 +96,7 @@ public class StaffLoginManagedBean implements Serializable {
     }
     
     public void forgotUserID() {
-        StaffAccount forgotAccount = staffBean.getAccountByEmail(findPasswordEmail);
+        StaffAccount forgotAccount = staffBean.getAccountByEmail(findUsernameEmail);
         if (forgotAccount != null) {
             if (emailBean.sendUserNameforForgottenStaff(findUsernameEmail, forgotAccount.getUsername())) {
                 String msg = "User ID has been sent to your email.";

@@ -80,19 +80,19 @@
                                         </p:selectOneMenu>  
 
                                         <h:outputLabel for="mobileNumber" value="Mobile number: " />
-                                        <p:inputText id="mobileNumber" value="#{staffProfileManagedBean.staff.staffInfo.phone}" required="true"/>
+                                        <p:inputText id="mobileNumber" value="#{staffProfileManagedBean.staffInfo.phone}" required="true"/>
 
                                         <h:outputLabel for="email" value="Email: " />
                                         <p:inputText id="email" value="#{staffProfileManagedBean.staff.email}" required ="true"/>
 
                                         <h:outputLabel for="address" value="Address: " />
-                                        <p:inputTextarea id="address" value="#{staffProfileManagedBean.staff.staffInfo.address}" required ="true"/>
+                                        <p:inputTextarea id="address" value="#{staffProfileManagedBean.staffInfo.address}" required ="true"/>
 
                                         <h:outputLabel for="postalCode" value="Postal Code: " />
-                                        <p:inputText id="postalCode" value="#{staffProfileManagedBean.staff.staffInfo.postalCode}" required ="true"/>
+                                        <p:inputText id="postalCode" value="#{staffProfileManagedBean.staffInfo.postalCode}" required ="true"/>
 
                                         <p:outputLabel for="birthday" value="DOB:" />
-                                        <p:calendar id="birthday" value="#{staffProfileManagedBean.staff.staffInfo.birthDay}" />
+                                        <p:calendar id="birthday" value="#{staffProfileManagedBean.staffInfo.birthDay}" />
 
                                         <p:commandButton value="Next" action="#{staffProfileManagedBean.goToConfirmPage}" update="@form"/>
 
