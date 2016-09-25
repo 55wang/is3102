@@ -26,6 +26,7 @@ import entity.card.account.CreditCardAccount;
 import entity.card.account.CreditCardOrder;
 import entity.card.account.CreditCardProduct;
 import entity.card.account.MileCardProduct;
+import entity.card.account.PromoProduct;
 import entity.card.account.RewardCardProduct;
 import entity.customer.Customer;
 import entity.customer.CustomerCase;
@@ -76,6 +77,7 @@ import server.utilities.HashPwdUtils;
 @LocalBean
 @Startup
 public class EntityBuilderBean {
+
     @EJB
     private CustomerProfileSessionBeanLocal customerProfileSessionBean;
     @EJB
@@ -132,12 +134,12 @@ public class EntityBuilderBean {
         StaffAccount sa = staffAccountSessionBean.getAccountByUsername(ConstantUtils.SUPER_ADMIN_USERNAME);
         return sa == null;
     }
-    
+
     private void testCreditCard() {
-        
+
         Date startDate = DateUtils.getBeginOfDay();
         Date endDate = DateUtils.getEndOfDay();
-        
+
         System.out.println(startDate);
         System.out.println(startDate);
         List<CardTransaction> result = cardTransactionBean.retrieveTransactionByDate(startDate, endDate);
@@ -154,7 +156,7 @@ public class EntityBuilderBean {
     }
 
     private void testInterestRules() {
-        
+
         // Get Product
 //        DepositAccount da = customerDepositSessionBean.getAccountFromId(1L);
 //        // Get Interest
@@ -176,15 +178,62 @@ public class EntityBuilderBean {
         initInterest();
         initDepositProducts();
         initDepositAccounts();
-
         initCreditCardProduct();
         initCreditCardOrder();
         initCase();
         initPromoProduct();
     }
-    
+
     public void initPromoProduct() {
-        
+        PromoProduct p1 = new PromoProduct();
+        p1.setName("Golden Village 1 Movie Ticket (Any day)");
+        p1.setTerms("• Voucher will be mail within 7 days from the date of redemption. \n"
+                + "• Valid for movie screenings at any Golden Village cinemas at anytime. \n"
+                + "• Not valid for premium priced films, 3D films, Gold Class, Cinema Europa, group screenings, marathons, festivals and premieres. \n"
+                + "• Not valid for internet, phone, AXS, Imode bookings. \n"
+                + "• Vouchers do not guarantee seating and must be exchanged for movie tickets. \n"
+                + "• Tickets printed out is not refundable. \n"
+                + "• Maximum 10 vouchers allowed per redemption. \n"
+                + "• Movie date should not be later than expiry date on voucher.");
+        p1.setPoints(3500);
+        p1.setType(EnumUtils.PromoType.VOUCHER);
+        utilsBean.persist(p1);
+
+        PromoProduct p2 = new PromoProduct();
+        p2.setName("Crabtree & Evelyn S$25 Voucher");
+        p2.setTerms("• Usage of multiple vouchers allowed.\n"
+                + "• Voucher is not valid for items on special offer, sale or discount.\n"
+                + "• Crabtree & Evelyn reserves the right to make the final decisions concerning the promotion.\n"
+                + "• Voucher is not exchangeable for cash and any unused value of the Voucher will be forfeited.\n"
+                + "• Any balance payment must be made with your DBS Credit Card.\n"
+                + "• Other terms & conditions apply. ");
+        p2.setPoints(5500);
+        p2.setType(EnumUtils.PromoType.VOUCHER);
+        utilsBean.persist(p2);
+
+        PromoProduct p3 = new PromoProduct();
+        p3.setName("Best Denki S$50 Voucher");
+        p3.setTerms("• Usage of multiple vouchers is allowed.\n"
+                + "• Voucher is not valid for use with other Gift Vouchers, discounts or on-going promotions.\n"
+                + "• Voucher is not exchangeable for cash and any unused value of the Voucher will be forfeited.\n"
+                + "• Any balance payment must be made with your DBS Credit Card.\n"
+                + "• Other terms & conditions apply.");
+        p3.setPoints(9500);
+        p3.setType(EnumUtils.PromoType.VOUCHER);
+        utilsBean.persist(p3);
+
+        PromoProduct p4 = new PromoProduct();
+        p4.setName("Takashimaya Department Store S$100 Voucher");
+        p4.setTerms("• Voucher will expire 3 months from date of redemption or date of issue. \n"
+                + "• Voucher will be mail within 7 days from the date of redemption. \n"
+                + "• Voucher is not exchangeable for cash or Takashimaya Gift Voucher and any unused value of the Voucher will be forfeited.  \n"
+                + "• Usage of multiple vouchers is allowed.  \n"
+                + "• Valid at Takashimaya Department Store except supermarket, tenants, services and restaurants.  \n"
+                + "• Any balance payment must be made with your DBS Credit Card.  \n"
+                + "• Other terms & conditions apply.");
+        p4.setPoints(16500);
+        p4.setType(EnumUtils.PromoType.VOUCHER);
+        utilsBean.persist(p4);
     }
 
     public void initCreditCardProduct() {
@@ -253,7 +302,7 @@ public class EntityBuilderBean {
         cardTransaction.setTransactionDescription("AMAZON SERVICE USD378.50");
         cardTransaction.setCreditCardAccount(cca);
         cardAcctSessionBean.createCardAccountTransaction(result.getCreditCardNum(), cardTransaction);
-        
+
         cardTransaction = new CardTransaction();
         cardTransaction.setCardTransactionStatus(CardTransactionStatus.PENDINGTRANSACTION);
         cardTransaction.setAmount(200);
@@ -262,7 +311,7 @@ public class EntityBuilderBean {
         cardTransaction.setTransactionDescription("Apple SERVICE USD168.50");
         cardTransaction.setCreditCardAccount(cca);
         cardAcctSessionBean.createCardAccountTransaction(result.getCreditCardNum(), cardTransaction);
-        
+
         cardTransaction = new CardTransaction();
         cardTransaction.setCardTransactionStatus(CardTransactionStatus.PENDINGTRANSACTION);
         cardTransaction.setAmount(100);
@@ -271,7 +320,7 @@ public class EntityBuilderBean {
         cardTransaction.setTransactionDescription("Microsoft SERVICE USD78.50");
         cardTransaction.setCreditCardAccount(cca);
         cardAcctSessionBean.createCardAccountTransaction(result.getCreditCardNum(), cardTransaction);
-               
+
     }
 
     private void initStaffAndRoles() {
@@ -1398,8 +1447,8 @@ public class EntityBuilderBean {
 
         customerCaseSessionBean.saveCase(cc);
     }
-    
-    public void initCreditCardOrder(){
+
+    public void initCreditCardOrder() {
         CreditCardOrder cco = new CreditCardOrder();
         CreditCardProduct ccp = new MileCardProduct();
         ccp.setProductName("MileCard");
@@ -1418,7 +1467,7 @@ public class EntityBuilderBean {
         cco.setOccupation(Occupation.DIRECTOR);
         cco.setPhone("81567758"); //must use real phone number as we need sms code
         cco.setPostalCode("654321");
-        
+
         cco.setApplicationStatus(EnumUtils.ApplicationStatus.PENDING);
         cco.setCompany("NUS");
         cco.setCpf(null);
@@ -1439,7 +1488,7 @@ public class EntityBuilderBean {
         cco.setResidentialType(EnumUtils.ResidentialType.PARENTS);
         cco.setResultNotes(null);
         cco.setSaluation(EnumUtils.Salutation.DR);
-        
+
         cardAcctSessionBean.createCardOrder(cco);
     }
 }

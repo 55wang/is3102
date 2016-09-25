@@ -15,6 +15,8 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
+import server.utilities.EnumUtils;
+import utils.CommonUtils;
 import utils.MessageUtils;
 
 /**
@@ -30,6 +32,7 @@ public class CreatePromoManagedBean implements Serializable {
 
     private List<PromoProduct> promos;
     private PromoProduct promo = new PromoProduct();
+    private List<String> typeOptions = CommonUtils.getEnumList(EnumUtils.PromoType.class);
     /**
      * Creates a new instance of CreatePromoManagedBean
      */
@@ -82,5 +85,19 @@ public class CreatePromoManagedBean implements Serializable {
      */
     public void setPromo(PromoProduct promo) {
         this.promo = promo;
+    }
+
+    /**
+     * @return the typeOptions
+     */
+    public List<String> getTypeOptions() {
+        return typeOptions;
+    }
+
+    /**
+     * @param typeOptions the typeOptions to set
+     */
+    public void setTypeOptions(List<String> typeOptions) {
+        this.typeOptions = typeOptions;
     }
 }
