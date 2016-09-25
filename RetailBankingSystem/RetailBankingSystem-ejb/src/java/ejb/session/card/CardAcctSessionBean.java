@@ -48,10 +48,18 @@ public class CardAcctSessionBean implements CardAcctSessionBeanLocal {
             return null;
         }
     }
-
+    
     @Override
     public List<CreditCardOrder> showAllCreditCardOrder() {
         Query q = em.createQuery("SELECT cco FROM CreditCardOrder cco");
+        return q.getResultList();
+    }
+
+    @Override
+    public List<CreditCardOrder> showAllCreditCardOrder(EnumUtils.ApplicationStatus applicationStatus) {
+        
+        Query q = em.createQuery("SELECT cco FROM CreditCardOrder cco WHERE coo.applicationStatus = :applicationStatus");
+        q.setParameter("applicationStatus", applicationStatus);
         return q.getResultList();
     }
 
@@ -295,9 +303,8 @@ public class CardAcctSessionBean implements CardAcctSessionBeanLocal {
     }
 
     @Override
-    public String updateCardAcctTransactionMonthlyLimit(CreditCardAccount cca, double newMonthlyLimit) {
+    public String updateCardAcctTransactionLimit(CreditCardAccount cca) {
         try {
-            cca.setTransactionMonthlyLimit(newMonthlyLimit);
             em.merge(cca);
             return "SUCCESS";
         } catch (Exception e) {
@@ -370,4 +377,5 @@ public class CardAcctSessionBean implements CardAcctSessionBeanLocal {
             }
         }
     }
+    
 }

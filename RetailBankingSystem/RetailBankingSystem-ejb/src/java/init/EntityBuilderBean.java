@@ -22,6 +22,8 @@ import ejb.session.utils.UtilsSessionBeanLocal;
 import entity.card.account.CardTransaction;
 import entity.card.account.CashBackCardProduct;
 import entity.card.account.CreditCardAccount;
+import entity.card.account.CreditCardOrder;
+import entity.card.account.CreditCardProduct;
 import entity.card.account.MileCardProduct;
 import entity.card.account.RewardCardProduct;
 import entity.customer.Customer;
@@ -109,6 +111,7 @@ public class EntityBuilderBean {
     private List<Interest> demoConditionalInterestDataForCustomDepositProduct = new ArrayList<>();
     private List<Interest> demoConditionalInterestDataForSavingsDepositProduct = new ArrayList<>();
     private MainAccount demoMainAccount;
+    private RewardCardProduct demoRewardCardProduct;
 
     @PostConstruct
     public void init() {
@@ -173,8 +176,29 @@ public class EntityBuilderBean {
         initDepositAccounts();
 
         initCreditCardProduct();
+        initCreditCardOrder();
         initCase();
 
+    }
+    
+    public void initCreditCardOrder() {
+        CreditCardOrder order = new CreditCardOrder();
+        order.setCreditCardProduct(demoRewardCardProduct);
+        order.setAddress("Some Address");
+        order.setApplicationStatus(EnumUtils.ApplicationStatus.NEW);
+        order.setIncome(Income.FROM_6000_TO_8000);
+        order.setEmploymentStatus(EnumUtils.EmploymentStatus.SELF_EMPLOYED);
+        order.setEduLevel(EnumUtils.Education.UNIVERSITY);
+        order.setIndustry(EnumUtils.Industry.IT_TELCO);
+        order.setMaritalStatus(EnumUtils.MaritalStatus.SINGLE);
+        order.setNumOfDependents(0);
+        order.setFirstName("Yang");
+        order.setLastName("Lei");
+        order.setEmail("raymondlei90s@gmail.com");
+        order.setIdentityType(IdentityType.NRIC);
+        order.setIdentityNumber("S9876345I");
+        
+        utilsBean.persist(order);
     }
 
     public void initCreditCardProduct() {
@@ -208,7 +232,7 @@ public class EntityBuilderBean {
         rcp.setMinSpending(true);
         rcp.setMinSpendingAmount(700);
         rcp.setProductName("Merlion RewardCard2");
-        newCardProductSessionBean.createRewardProduct(rcp);
+        demoRewardCardProduct = newCardProductSessionBean.createRewardProduct(rcp);
 
         CashBackCardProduct cbcp = new CashBackCardProduct();
         cbcp.setDiningCashBackRate(0.9);

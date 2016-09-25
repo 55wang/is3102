@@ -37,16 +37,21 @@
                                     <p:column headerText="Action">
                                         <p:menu>
                                             <p:submenu>
-                                                <p:menuitem value="View transactions" action="#{customerCardManagedBean.sendCCTransactionDetail(cca)}" />
+                                                <p:menuitem value="View transactions" action="#{customerCardManagedBean.sendCCTransactionDetail(cca)}" style="width:100%"/>
                                             </p:submenu>
                                         </p:menu>
-                                        <p:commandButton value="Confirm" action="#{customerCardManagedBean.viewTerminatePage(cca)}" update="@form">
+                                        <p:commandButton value="Confirm" action="#{customerCardManagedBean.viewTerminatePage(cca)}" update="@form" style="width:100%; margin-top:5px; height: 30px ">
                                             <p:confirm header="Confirmation" message="Are you sure you want to close your account?" icon="ui-icon-alert" />
                                             <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
                                                 <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
                                                 <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
                                             </p:confirmDialog>
                                         </p:commandButton>
+<<<<<<< HEAD
+=======
+                                        <p:commandButton value="Change transaction limit" action="#{customerCardManagedBean.redirectToChangeTransactionLimitPage(cca)}" update="@form" style="width:100%; margin-top:5px; height: 30px"/>
+                                    </p:column>
+>>>>>>> e5eb3762977140bea9ab833236e7560aac02857e
 
                                     </p:column>
                                     <p:column headerText="Promo Rewards">
