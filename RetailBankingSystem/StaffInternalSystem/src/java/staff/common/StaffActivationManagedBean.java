@@ -35,6 +35,7 @@ public class StaffActivationManagedBean implements Serializable {
     @ManagedProperty(value="#{param.email}")
     private String email;
     private Boolean valid;
+    private StaffAccount staff;
 
     /**
      * Creates a new instance of StaffActivationFManagedBean
@@ -46,8 +47,9 @@ public class StaffActivationManagedBean implements Serializable {
         System.out.println("Login from activation");
         email = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("email");
         String randomPwd = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("code");
-        StaffAccount sa = staffBean.loginAccount(email, randomPwd);
+        StaffAccount sa = staffBean.loginAccount(staffBean.getAccountByEmail(email).getUsername(), randomPwd);
         if(sa != null ){
+            staff = sa;
             valid = true;
             System.out.println("Status updated");
             sa.setStatus(EnumUtils.StatusType.ACTIVE);
@@ -91,5 +93,12 @@ public class StaffActivationManagedBean implements Serializable {
     public void setValid(Boolean valid) {
         this.valid = valid;
     }
-    
+
+    public StaffAccount getStaff() {
+        return staff;
+    }
+
+    public void setStaff(StaffAccount staff) {
+        this.staff = staff;
+    }
 }
