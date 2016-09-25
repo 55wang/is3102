@@ -28,14 +28,14 @@
                                     </p:column>
 
                                     <p:column headerText="Product Name">
-                                        <h:outputText value="#{cco.creditCardProduct.productName}" />
+                                        <h:outputText value="#{cca.creditCardProduct.productName}" />
                                     </p:column>
 
                                     <p:column headerText="Status">
-                                        <h:outputText value="#{cco.cardStatus}" />
+                                        <h:outputText value="#{cca.cardStatus}" />
                                     </p:column>
                                     <p:column headerText="Action">
-                                        <p:commandButton value="Issue" action="#{cardIssueManagedBean.approveOrder(cco.id)}" icon="ui-icon-check" update="@form" />
+                                        <p:commandButton value="Issue" action="#{cardIssueManagedBean.issueCard(cca)}" icon="ui-icon-check" update="@form" />
                                     </p:column>
                                 </p:dataTable>
                             </h:panelGrid>
