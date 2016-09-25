@@ -74,7 +74,7 @@ public class StaffProfileManagedBean implements Serializable {
         if (result != null) {
             selectedGender = null;
             selectedNationality = null;
-            RedirectUtils.redirect("view_profile.xhtml");
+            RedirectUtils.redirect("staff_view_profile.xhtml");
         }
     }
 
