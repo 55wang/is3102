@@ -22,59 +22,23 @@
 
                     <p:wizard widgetVar="myWizard" showNavBar="false">
                         <c:if test="#{cc.attrs.context == 'apply_card_account'}">
-                            <p:tab id="account" title="1.Credit Card Account">
-                                <p:panel>
+                            <p:tab id="account" title="1. Apply">
+                                <p:panel style=" padding-top: 50px ; margin-left: 8% ">
                                     <p:messages />
-                                    <table style="margin-top:-90px">
+                                    <table style="margin-top:-90px ">
 
-                                        <tr><div style="margin-left:120px;margin-top:0px">
-                                                <h:outputText style="font-weight:bolder" value="Choose Your Credit Card Account: " />
-                                                <p:selectOneMenu value="#{newCardManagedBean.selectedProductName}" style="width:187px; height: 41px; line-height: 21px; top:10px" rendered="true" required="true">
+                                        <tr><div class="h-center"  style="margin-top:80px">
+                                                <h:outputText style="font-weight:bolder" value="Choose your Credit Card account: " />
+                                                <p:selectOneMenu value="#{newCardManagedBean.selectedProductName}" style="width:187px; height: 30px; line-height: 21px; top:10px" rendered="true" required="true">
                                                     <f:selectItems value="#{newCardManagedBean.productNameOptions}" />
-                                                </p:selectOneMenu>
 
-                                                <h:outputText value="Name Appear On Card: " />
-                                                <p:inputText value="#{newCardManagedBean.nameAppearOnCard}" required="true"/><br />
-                                                <h:outputText value="Number of Dependents: " />
-                                                <p:inputText value="#{newCardManagedBean.numOfDependents}" required="true"/><br />
-
-                                                <h:outputText value="Residential Status: " />
-                                                <p:selectOneMenu value="#{newCardManagedBean.selectedResidentialStatus}" style="width:187px; height: 41px; line-height: 21px; top:10px" rendered="true" required="true">
-                                                    <f:selectItems value="#{newCardManagedBean.residentialStatusOptions}" />
                                                 </p:selectOneMenu>
-
-                                                <h:outputText value="Residential Type: " />
-                                                <p:selectOneMenu value="#{newCardManagedBean.selectedResidentialType}" style="width:187px; height: 41px; line-height: 21px; top:10px" rendered="true" required="true">
-                                                    <f:selectItems value="#{newCardManagedBean.residentialTypeOptions}" />
-                                                </p:selectOneMenu>
-
-                                                <h:outputText value="Education Level: " />
-                                                <p:selectOneMenu value="#{newCardManagedBean.selectedEducation}" style="width:187px; height: 41px; line-height: 21px; top:10px" rendered="true" required="true">
-                                                    <f:selectItems value="#{newCardManagedBean.educationOptions}" />
-                                                </p:selectOneMenu>
-
-                                                <h:outputText value="Employment Status: " />
-                                                <p:selectOneMenu value="#{newCardManagedBean.selectedEmploymentStatus}" style="width:187px; height: 41px; line-height: 21px; top:10px" rendered="true" required="true">
-                                                    <f:selectItems value="#{newCardManagedBean.employmentStatusOptions}" />
-                                                </p:selectOneMenu>
-                                                <h:outputText value="Industry: " />
-                                                <p:selectOneMenu value="#{newCardManagedBean.selectedIndustry}" style="width:187px; height: 41px; line-height: 21px; top:10px" rendered="true" required="true">
-                                                    <f:selectItems value="#{newCardManagedBean.industryOptions}" />
-                                                </p:selectOneMenu>
-
-                                                <h:outputText value="Occupation: " />
-                                                <p:selectOneMenu value="#{newCardManagedBean.selectedOccupation}" style="width:187px; height: 41px; line-height: 21px; top:10px" rendered="true" required="true">
-                                                    <f:selectItems value="#{newCardManagedBean.occupationOptions}" />
-                                                </p:selectOneMenu>
-                                                <h:outputText value="Company: " />
-                                                <p:inputText value="#{newCardManagedBean.company}" required="true"/><br />
-                                                <!-- need employmentpass, identitycert,incometax, other cert, payslip, cpf -->
 
                                             </div></tr>
                                         <tr><div>
-                                                <p style="margin-left:120px; margin-top:0px"> Terms and Conditions</p>
+                                                <p style="margin-left:17%; margin-top:30px"> Terms and Conditions</p>
                                             </div></tr>
-                                        <tr><p:scrollPanel mode="native" style="width:500px;height:200px;margin-left:120px;margin-top:0px;border:1px solid grey">
+                                        <tr><p:scrollPanel mode="native" style="width:500px;height:200px;margin-left:17%;margin-top:0px;border:1px solid grey">
                                                 <p>
                                                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean blandit tortor a ipsum vehicula, in semper sapien auctor. Nulla tempor eget est non consequat. Nulla sit amet lorem justo. Cras non tellus eros. Sed ultricies orci ut quam interdum fringilla. Nam vitae massa ac mi elementum mattis vel vitae sem. Ut eros ipsum, scelerisque a erat a, eleifend luctus nibh. Interdum et malesuada fames ac ante ipsum primis in faucibus.
                                                 </p>
@@ -93,59 +57,60 @@
                                             </p:scrollPanel></tr>
 
 
-                                        <tr><div  style="margin-left: 120px; margin-top: 30px" >
+                                        <tr><div  style="margin-left: 17%; margin-top: 30px" >
                                                 <input type="checkbox" name="term" value="Term" id="TCcheck">I acknowledge and agree to the above. </input>
                                             </div></tr>
                                     </table>
-
-                                    <div class="register-form-button" style="margin-top: 52px">
-                                        <p:commandButton  value="Next" type="button" onclick="myFunction()" />
-                                        <script>
-                                            function myFunction() {
-                                                if (document.getElementById("TCcheck").checked === false) {
-                                                    alert("Please read and agree to the Terms and Conditions first!");
-                                                } else {
-                                                    PF('myWizard').next();
-                                                }
-                                            }
-                                        </script>
-                                    </div>
                                 </p:panel>
+                                <div class="register-form-button" style="margin-top: 120px">
+                                    <p:commandButton class="h-center"  value="Next" type="button" onclick="myFunction()" />
+                                    <script>
+                                        function myFunction() {
+                                            if (document.getElementById("TCcheck").checked === false) {
+                                                alert("Please read and agree to the Terms and Conditions first!");
+                                            } else {
+                                                PF('myWizard').next();
+                                            }
+                                        }
+                                    </script>
+                                </div>
                             </p:tab>
                         </c:if>
-
-                        <p:tab id="identity" title="2.Identity" >
+                        <p:tab id="basic" title="2. Basic Information" >
                             <p:panel>
                                 <p:messages />
                                 <h:panelGrid columns="2" columnClasses="label, value">
 
-                                    <h:outputText value="Identity Type: " />
-                                    <p:selectOneMenu value="#{newCardManagedBean.selectedIdentityType}" style="width:187px; height: 41px; line-height: 21px; top:10px" rendered="true" required="true">
-                                        <f:selectItems value="#{newCardManagedBean.identityTypeOptions}" />
-                                    </p:selectOneMenu>
-
-                                    <h:outputText value="Identity Number: " />
-                                    <p:inputText value="#{newCardManagedBean.identityNumber}" required="true"/>
-
-                                    <h:outputText value="Nationality: " />
-                                    <p:selectOneMenu value="#{newCardManagedBean.selectedNationality}" style="width:187px; height: 41px; line-height: 21px; top:10px" rendered="true" required="true">
-                                        <f:selectItems value="#{newCardManagedBean.nationalityOptions}" />
-                                    </p:selectOneMenu>
-
-
                                     <h:outputText value="Saluation: " />
-                                    <p:selectOneMenu value="#{newCardManagedBean.selectedSalutation}" style="width:187px; height: 41px; line-height: 21px; top:10px" rendered="true" required="true">
+                                    <p:selectOneMenu value="#{newCardManagedBean.selectedSalutation}" style="width:187px;  line-height: 21px; top:10px" rendered="true" required="true">
                                         <f:selectItems value="#{newCardManagedBean.saluationOptions}" />
                                     </p:selectOneMenu>
 
                                     <h:outputText value="Last Name: " />
-                                    <p:inputText value="#{newCardManagedBean.lastName}" required="true"/>
+                                    <p:inputText value="#{newCardManagedBean.cco.lastName}" required="true"/>
 
                                     <h:outputText value="First Name: " />
-                                    <p:inputText value="#{newCardManagedBean.firstName}" required="true"/>
+                                    <p:inputText value="#{newCardManagedBean.cco.firstName}" required="true"/>
+
+                                    <h:outputText value="Name Appear On Card: " />
+                                    <p:inputText value="#{newCardManagedBean.cco.nameOnCard}" required="true"/>
+
+                                    <h:outputText value="Identity Type: " />
+                                    <p:selectOneMenu value="#{newCardManagedBean.selectedIdentityType}" style="width:187px; height: 30px; line-height: 21px; top:10px" rendered="true" required="true">
+                                        <f:selectItems value="#{newCardManagedBean.identityTypeOptions}" />
+                                    </p:selectOneMenu>
+
+                                    <h:outputText value="Identity Number: " />
+                                    <p:inputText value="#{newCardManagedBean.cco.identityNumber}" required="true"/>
+
+                                    <h:outputText value="Gender " />
+                                    <p:selectOneMenu value="#{newCardManagedBean.selectedGender}" style="width:187px; height: 30px; line-height: 21px; top:10px" rendered="true" required="true">
+                                        <f:selectItems value="#{newCardManagedBean.genderOptions}" />
+                                    </p:selectOneMenu>
 
                                     <h:outputText value="Date of Birth: " />
-                                    <p:calendar value="#{newCardManagedBean.birthDate}" navigator="true" yearRange="c-100:c+0" required="true" pattern="yyyy-MM-dd"/>
+                                    <p:calendar value="#{newCardManagedBean.cco.birthDay}" navigator="true" yearRange="c-100:c+0" required="true" pattern="yyyy-MM-dd"/>
+
                                 </h:panelGrid>
 
                                 <div class="register-form-button">
@@ -155,49 +120,93 @@
                                 </div>
                             </p:panel>
                         </p:tab>
-
-                        <p:tab id="contact" title="3.Personal">
+                        <p:tab id="next" title="3. More Information" >
                             <p:panel>
                                 <p:messages />
                                 <h:panelGrid columns="2" columnClasses="label, value">
-                                    <h:outputText value="Gender " />
-                                    <p:selectOneMenu value="#{newCardManagedBean.selectedGender}" style="width:187px; height: 41px; line-height: 21px; top:10px" rendered="true" required="true">
-                                        <f:selectItems value="#{newCardManagedBean.genderOptions}" />
-                                    </p:selectOneMenu>
 
-                                    <h:outputText value="Occupation: " />
-                                    <p:selectOneMenu value="#{newCardManagedBean.selectedOccupation}" style="width:187px; height: 41px; line-height: 21px; top:10px" rendered="true" required="true">
-                                        <f:selectItems value="#{newCardManagedBean.occupationOptions}" />
+                                    <h:outputText value="Nationality: " />
+                                    <p:selectOneMenu value="#{newCardManagedBean.selectedNationality}" style="width:187px; height: 30px; line-height: 21px; top:10px" rendered="true" required="true">
+                                        <f:selectItems value="#{newCardManagedBean.nationalityOptions}" />
+                                    </p:selectOneMenu>
+                                    
+                                    <h:outputText value="Number of Dependents: " />
+                                    <p:inputText value="#{newCardManagedBean.cco.numOfDependents}" required="true"/>
+
+
+                                    <h:outputText value="Education Level: " />
+                                    <p:selectOneMenu value="#{newCardManagedBean.selectedEducation}" style="width:187px; height: 30px; line-height: 21px; top:10px" rendered="true" required="true">
+                                        <f:selectItems value="#{newCardManagedBean.educationOptions}" />
                                     </p:selectOneMenu>
 
                                     <h:outputText value="Income " />
-                                    <p:selectOneMenu value="#{newCardManagedBean.selectedIncome}" style="width:187px; height: 41px; line-height: 21px; top:10px" rendered="true" required="true">
+                                    <p:selectOneMenu value="#{newCardManagedBean.selectedIncome}" style="width:187px; height: 30px; line-height: 21px; top:10px" rendered="true" required="true">
                                         <f:selectItems value="#{newCardManagedBean.incomeOptions}" />
                                     </p:selectOneMenu>
-                                    
-                                    <h:outputText value="Email: " />
-                                    <p:inputText value="#{newCardManagedBean.email}" required="true"/>
 
-                                    <h:outputText value="Phone: " />
-                                    <p:inputText value="#{newCardManagedBean.phone}" required="true"/>
+                                    <h:outputText value="Employment Status: " />
+                                    <p:selectOneMenu value="#{newCardManagedBean.selectedEmploymentStatus}" style="width:187px; height: 30px; line-height: 21px; top:10px" rendered="true" required="true">
+                                        <f:selectItems value="#{newCardManagedBean.employmentStatusOptions}" />
+                                    </p:selectOneMenu>
 
-                                    <h:outputText value="Postal Code: " />
-                                    <p:inputText value="#{newCardManagedBean.postalCode}" required="true"/>
+                                    <h:outputText value="Industry: " />
+                                    <p:selectOneMenu value="#{newCardManagedBean.selectedIndustry}" style="width:187px; height: 30px; line-height: 21px; top:10px" rendered="true" required="true">
+                                        <f:selectItems value="#{newCardManagedBean.industryOptions}" />
+                                    </p:selectOneMenu>
 
-                                    <h:outputText value="Address: " />
-                                    <p:inputText value="#{newCardManagedBean.address}" required="true"/>
+                                    <h:outputText value="Occupation: " />
+                                    <p:selectOneMenu value="#{newCardManagedBean.selectedOccupation}" style="width:187px; height: 30px; line-height: 21px; top:10px" rendered="true" required="true">
+                                        <f:selectItems value="#{newCardManagedBean.occupationOptions}" />
+                                    </p:selectOneMenu>
 
-
+                                    <h:outputText value="Company: " />
+                                    <p:inputText value="#{newCardManagedBean.cco.company}" required="true"/>
                                 </h:panelGrid>
 
                                 <div class="register-form-button">
                                     <p:commandButton value="Back" type="button" onclick="PF('myWizard').back();" />
-                                    <p:commandButton  value="Next" type="button" onclick="PF('myWizard').next();"  />
+                                    <p:commandButton value="Next" type="button" onclick="PF('myWizard').next();"/>
+
+                                </div>
+                            </p:panel>
+                        </p:tab>
+                        <p:tab id="identity" title="4. Contact Details" >
+                            <p:panel>
+                                <p:messages />
+                                <h:panelGrid columns="2" columnClasses="label, value">
+                                    <h:outputText value="Email: " />
+                                    <p:inputText value="#{newCardManagedBean.cco.email}" required="true"/>
+
+                                    <h:outputText value="Phone: " />
+                                    <p:inputText value="#{newCardManagedBean.cco.phone}" required="true"/>
+
+                                    <h:outputText value="Postal Code: " />
+                                    <p:inputText value="#{newCardManagedBean.cco.postalCode}" required="true"/>
+
+                                    <h:outputText value="Address: " />
+                                    <p:inputText value="#{newCardManagedBean.cco.address}" required="true"/>
+
+                                    <h:outputText value="Residential Status: " />
+                                    <p:selectOneMenu value="#{newCardManagedBean.selectedResidentialStatus}" style="width:187px; height: 30px; line-height: 21px; top:10px" rendered="true" required="true">
+                                        <f:selectItems value="#{newCardManagedBean.residentialStatusOptions}" />
+                                    </p:selectOneMenu>
+
+                                    <h:outputText value="Residential Type: " />
+                                    <p:selectOneMenu value="#{newCardManagedBean.selectedResidentialType}" style="width:187px; height: 30px; line-height: 21px; top:10px" rendered="true" required="true">
+                                        <f:selectItems value="#{newCardManagedBean.residentialTypeOptions}" />
+                                    </p:selectOneMenu>
+
+                                </h:panelGrid>
+                                <div class="register-form-button">
+                                    <p:commandButton value="Back" type="button" onclick="PF('myWizard').back();" />
+                                    <p:commandButton value="Next" type="button" onclick="PF('myWizard').next();"/>
+
                                 </div>
                             </p:panel>
                         </p:tab>
 
-                        <p:tab id="confirm" title="4.Confirmation">
+
+                        <p:tab id="confirm" title="5. Confirmation">
                             <p:panel>
                                 <p:scrollPanel id="confirmation" style="height:238px">
                                     <h:panelGrid columns="2" columnClasses="label, value">
@@ -205,23 +214,23 @@
                                         <h:outputText value="#{newCardManagedBean.selectedProductName}" styleClass="outputLabel"/>
 
                                         <h:outputText value="Name Appear on Card: " />
-                                        <h:outputText value="#{newCardManagedBean.nameAppearOnCard}" styleClass="outputLabel"/>
+                                        <h:outputText value="#{newCardManagedBean.cco.nameOnCard}" styleClass="outputLabel"/>
 
                                         <h:outputText value="Identity Number: " />
-                                        <h:outputText value="#{newCardManagedBean.identityNumber}" styleClass="outputLabel"/>
+                                        <h:outputText value="#{newCardManagedBean.cco.identityNumber}" styleClass="outputLabel"/>
 
                                         <h:outputText value="Email: " />
-                                        <h:outputText value="#{newCardManagedBean.email}" styleClass="outputLabel"/>
+                                        <h:outputText value="#{newCardManagedBean.cco.email}" styleClass="outputLabel"/>
 
                                         <h:outputText value="Phone: " />
-                                        <h:outputText value="#{newCardManagedBean.phone}" styleClass="outputLabel"/>
+                                        <h:outputText value="#{newCardManagedBean.cco.phone}" styleClass="outputLabel"/>
                                     </h:panelGrid>
 
                                 </p:scrollPanel>
 
                                 <div class="register-form-button" style="margin-top: 0px">
                                     <p:commandButton value="Back" type="button" onclick="PF('myWizard').back();" />
-                                    <p:commandButton value="Confirm" actionListener="#{newCardManagedBean.saveUpdatedCreditCardOrder()}" update="growl" process="@this"/>
+                                    <p:commandButton value="Confirm" action="#{newCardManagedBean.saveUpdatedCreditCardOrder()}" update="growl" process="@this"/>
                                 </div>
                             </p:panel>
                         </p:tab>

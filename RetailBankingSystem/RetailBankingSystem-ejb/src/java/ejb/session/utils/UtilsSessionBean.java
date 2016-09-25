@@ -88,6 +88,7 @@ public class UtilsSessionBean implements UtilsSessionBeanLocal {
             return true;
         } else if (q.getResultList().size() == 1) {
             return q.getSingleResult().equals(customer);
+            
         } else {
             return false;
         }

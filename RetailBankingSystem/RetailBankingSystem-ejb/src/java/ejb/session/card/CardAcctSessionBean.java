@@ -14,7 +14,6 @@ import entity.dams.account.CustomerDepositAccount;
 import entity.dams.account.DepositAccount;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityExistsException;
@@ -38,6 +37,19 @@ public class CardAcctSessionBean implements CardAcctSessionBeanLocal {
     private EntityManager em;
 
     @Override
+    public String updateCreditCardOrder(CreditCardOrder cco) {
+        try {
+            em.merge(cco);
+            return "SUCCESS";
+        } catch (Exception e) {
+            //always print an error msg 
+            System.out.println("NewCardSessionBean.updateCreditScore Error");
+            System.out.println(e);
+            return null;
+        }
+    }
+
+    @Override
     public List<CreditCardOrder> showAllCreditCardOrder() {
         Query q = em.createQuery("SELECT cco FROM CreditCardOrder cco");
         return q.getResultList();
@@ -57,12 +69,12 @@ public class CardAcctSessionBean implements CardAcctSessionBeanLocal {
         System.out.println(cts);
         return cts;
     }
-    
+
     @Override
-    public CardTransaction getSpecificCaedTransactionFromId(Long ccaId){
+    public CardTransaction getSpecificCaedTransactionFromId(Long ccaId) {
         return (CardTransaction) em.find(CardTransaction.class, ccaId);
     }
-    
+
     //try not to use void, always return something or null. and catch it at the caller side.
     @Override
     public String createCardOrder(CreditCardOrder order) {
@@ -128,7 +140,7 @@ public class CardAcctSessionBean implements CardAcctSessionBeanLocal {
         q.setParameter("cardNumber", cardNumber);
         return (CreditCardAccount)q.getSingleResult();
     }
-    
+
     @Override
     public CreditCardAccount validateCreditCardDailyTransactionLimit(CreditCardAccount creditCard, double requestAmount) {
         List<CardTransaction> dailyTransactions = getDailyTransactionFromAccount(creditCard);
@@ -144,10 +156,10 @@ public class CardAcctSessionBean implements CardAcctSessionBeanLocal {
         if ((dailyAmount + requestAmount) > creditCard.getTransactionDailyLimit()) {
             return null;
         }
-        
+
         return creditCard;
     }
-    
+
     @Override
     public CreditCardAccount validateCreditCardMonthlyTransactionLimit(CreditCardAccount creditCard, double requestAmount) {
         List<CardTransaction> monthlyTransactions = getMonthlyTransactionFromAccount(creditCard);
@@ -163,10 +175,10 @@ public class CardAcctSessionBean implements CardAcctSessionBeanLocal {
         if ((monthlyAmount + requestAmount) > creditCard.getTransactionMonthlyLimit()) {
             return null;
         }
-        
+
         return creditCard;
     }
-    
+
     @Override
     public List<CardTransaction> getDailyTransactionFromAccount(CreditCardAccount creditCard) {
         java.sql.Date startDate = new java.sql.Date(DateUtils.getBeginOfDay().getTime());
@@ -179,6 +191,7 @@ public class CardAcctSessionBean implements CardAcctSessionBeanLocal {
         q.setParameter("startDate", startDate);
         q.setParameter("endDate", endDate);
         q.setParameter("ccId", creditCard.getId());
+
         
         try {
             List<CardTransaction> result = q.getResultList();
@@ -190,9 +203,10 @@ public class CardAcctSessionBean implements CardAcctSessionBeanLocal {
             return new ArrayList<>();
         }
     }
-    
+
     @Override
     public List<CardTransaction> getMonthlyTransactionFromAccount(CreditCardAccount creditCard) {
+
         java.sql.Date startDate = new java.sql.Date(DateUtils.getBeginOfDay().getTime());
         java.sql.Date endDate = new java.sql.Date(DateUtils.getEndOfDay().getTime());
         System.out.println("Getting Monthly Transaction");
@@ -215,7 +229,7 @@ public class CardAcctSessionBean implements CardAcctSessionBeanLocal {
             return new ArrayList<>();
         }
     }
-    
+
     @Override
     public CreditCardAccount createCardAccount(CreditCardAccount cca) {
         try {

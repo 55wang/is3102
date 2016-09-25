@@ -29,6 +29,12 @@ import utils.RedirectUtils;
 @ViewScoped
 public class NewCardManagedBean implements Serializable {
 
+    @EJB
+    private NewCardProductSessionBeanLocal newCardProductSessionBean;
+
+    @EJB
+    private CardAcctSessionBeanLocal cardAcctSessionBean;
+
     private CreditCardOrder cco = new CreditCardOrder();
     private List<String> ProductNameOptions = new ArrayList<>();
 
@@ -45,6 +51,10 @@ public class NewCardManagedBean implements Serializable {
     private List<String> MaritalStatusOptions = CommonUtils.getEnumList(MaritalStatus.class);
     private List<String> EducationOptions = CommonUtils.getEnumList(Education.class);
 
+    private List<String> IdentityTypeOptions = CommonUtils.getEnumList(IdentityType.class);
+    private List<String> NationalityOptions = CommonUtils.getEnumList(Nationality.class);
+    private List<String> SaluationOptions = CommonUtils.getEnumList(Salutation.class);
+
     private String selectedProductName;
     private String selectedResidentialStatus;
     private String selectedResidentialType;
@@ -57,22 +67,6 @@ public class NewCardManagedBean implements Serializable {
     private String selectedSalutation;
     private String selectedGender;
     private String selectedIncome;
-    private String phone;
-    private String postalCode;
-    private String address;
-
-    private String nameAppearOnCard;
-    private int numOfDependents;
-    private String company;
-
-    private String identityNumber;
-    private List<String> IdentityTypeOptions = CommonUtils.getEnumList(IdentityType.class);
-    private List<String> NationalityOptions = CommonUtils.getEnumList(Nationality.class);
-    private List<String> SaluationOptions = CommonUtils.getEnumList(Salutation.class);
-    private String lastName;
-    private String firstName;
-    private Date birthDate;
-    private String email;
 
     @PostConstruct
     public void retrieveProducts() {
@@ -82,48 +76,29 @@ public class NewCardManagedBean implements Serializable {
         }
     }
 
-    @EJB
-    private NewCardProductSessionBeanLocal newCardProductSessionBean;
-
-    @EJB
-    private CardAcctSessionBeanLocal cardAcctSessionBean;
-
     public NewCardManagedBean() {
     }
 
     public void saveUpdatedCreditCardOrder() {
         System.out.println("inside saveupdatedCreditcardorder");
-        System.out.println(selectedIncome);
 
-        getCco().setNameOnCard(nameAppearOnCard);
-        getCco().setNumOfDependents(numOfDependents);
+        cco.setResidentialStatus(ResidentialStatus.getEnum(getSelectedResidentialStatus()));
+        cco.setResidentialType(ResidentialType.getEnum(getSelectedResidentialType()));
+        cco.setEmploymentStatus(EmploymentStatus.getEnum(getSelectedEmploymentStatus()));
+        cco.setEduLevel(Education.getEnum(getSelectedEducation()));
+        cco.setOccupation(Occupation.getEnum(getSelectedOccupation()));
+        cco.setIndustry(Industry.getEnum(getSelectedIndustry()));
+        cco.setIncome(Income.getEnum(getSelectedIncome()));
 
-        getCco().setResidentialStatus(ResidentialStatus.getEnum(getSelectedResidentialStatus()));
-        getCco().setResidentialType(ResidentialType.getEnum(getSelectedResidentialType()));
-        getCco().setEmploymentStatus(EmploymentStatus.getEnum(getSelectedEmploymentStatus()));
-        getCco().setEduLevel(Education.getEnum(getSelectedEducation()));
-        getCco().setOccupation(Occupation.getEnum(getSelectedOccupation()));
-        getCco().setIndustry(Industry.getEnum(getSelectedIndustry()));
-        getCco().setIncome(Income.getEnum(getSelectedIncome()));
+        cco.setGender(Gender.getEnum(getSelectedGender()));
+        cco.setIdentityType(IdentityType.getEnum(getSelectedIdentityType()));
+        cco.setNationality(Nationality.getEnum(getSelectedNationality()));
+        cco.setSaluation(Salutation.getEnum(getSelectedSalutation()));
 
-        getCco().setGender(Gender.getEnum(getSelectedGender()));
-        getCco().setIdentityType(IdentityType.getEnum(getSelectedIdentityType()));
-        getCco().setPhone(phone);
-        getCco().setPostalCode(postalCode);
-        getCco().setAddress(address);
-        getCco().setCompany(company);
-        getCco().setIdentityNumber(identityNumber);
-        getCco().setNationality(Nationality.getEnum(getSelectedNationality()));
-        getCco().setSaluation(Salutation.getEnum(getSelectedSalutation()));
-        getCco().setLastName(lastName);
-        getCco().setFirstName(firstName);
-        getCco().setBirthDay(birthDate);
-        getCco().setEmail(email);
-        getCco().setApplicationStatus(ApplicationStatus.NEW);
-        
-        getCco().setCreditCardProduct(newCardProductSessionBean.getSingleCreditCardProduct(selectedProductName));
-        
-        getCardAcctSessionBean().createCardOrder(cco);
+        cco.setApplicationStatus(ApplicationStatus.NEW);
+
+        cco.setCreditCardProduct(newCardProductSessionBean.getSingleCreditCardProduct(selectedProductName));
+        cardAcctSessionBean.createCardOrder(cco);
 
         RedirectUtils.redirect("/InternetBankingSystem/common/application_success.xhtml");
     }
@@ -280,68 +255,12 @@ public class NewCardManagedBean implements Serializable {
         this.selectedIndustry = selectedIndustry;
     }
 
-    public String getNameAppearOnCard() {
-        return nameAppearOnCard;
-    }
-
-    public void setNameAppearOnCard(String nameAppearOnCard) {
-        this.nameAppearOnCard = nameAppearOnCard;
-    }
-
-    public int getNumOfDependents() {
-        return numOfDependents;
-    }
-
-    public void setNumOfDependents(int numOfDependents) {
-        this.numOfDependents = numOfDependents;
-    }
-
-    public String getCompany() {
-        return company;
-    }
-
-    public void setCompany(String company) {
-        this.company = company;
-    }
-
-    public String getIdentityNumber() {
-        return identityNumber;
-    }
-
-    public void setIdentityNumber(String identityNumber) {
-        this.identityNumber = identityNumber;
-    }
-
     public List<String> getSaluationOptions() {
         return SaluationOptions;
     }
 
     public void setSaluationOptions(List<String> SaluationOptions) {
         this.SaluationOptions = SaluationOptions;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public Date getBirthDate() {
-        return birthDate;
-    }
-
-    public void setBirthDate(Date birthDate) {
-        this.birthDate = birthDate;
     }
 
     public CardAcctSessionBeanLocal getCardAcctSessionBean() {
@@ -392,38 +311,7 @@ public class NewCardManagedBean implements Serializable {
         this.selectedIncome = selectedIncome;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public String getPostalCode() {
-        return postalCode;
-    }
-
-    public void setPostalCode(String postalCode) {
-        this.postalCode = postalCode;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
+   
     public List<String> getProductNameOptions() {
         return ProductNameOptions;
     }

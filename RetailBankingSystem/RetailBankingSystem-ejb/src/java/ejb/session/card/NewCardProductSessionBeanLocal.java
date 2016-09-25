@@ -41,4 +41,5 @@ public interface NewCardProductSessionBeanLocal {
 
     public CreditCardProduct getSingleCreditCardProduct(String productName);
 
+
 }

@@ -95,9 +95,8 @@
 
                                     <h:outputText value="Identity Number: " />
                                     <p:inputText value="#{customerApplicationManagedBean.customer.identityNumber}" required="true" requiredMessage="Identity number is required." validatorMessage="Invalid identity number.">
-                                        <f:validateLength minimum="9" maximum="9" />
                                         <f:validateRegex
-                                            pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+                                            pattern="^[A-Za-z0-9]{9}$" />
                                     </p:inputText>
 
                                     <h:outputText value="Nationality: " />
@@ -175,7 +174,6 @@
 
                                 <div class="register-form-button">
                                     <p:commandButton value="Back" type="button" onclick="PF('myWizard').back();" />
-                                    <p:commandButton  value="Next" type="button" onclick="PF('myWizard').next();"  />
                                     <p:commandButton value="Next" actionListener="#{customerApplicationManagedBean.validateInputThreeThenNext}" update="@form:msgs3"/>
 
                                 </div>

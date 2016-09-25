@@ -13,6 +13,9 @@ mysql -u root --password=password < RecreateDatabase.sql
 git update-index --assume-unchanged filename
 ### If pull merge failed and aborted because of the .xml and .properties file, use the below command ###
 git update-index --no-assume-unchanged filename
+git status
+git stash
+git pull
 
     git update-index --assume-unchanged RetailBankingSystem/RetailBankingSystem-ejb/nbproject/build-impl.xml
     git update-index --assume-unchanged RetailBankingSystem/StaffInternalSystem/nbproject/build-impl.xml
