@@ -7,9 +7,7 @@ package caller;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
@@ -38,10 +36,16 @@ public class SimulatedCallManagedBean implements Serializable {
      */
     public SimulatedCallManagedBean() {
     }
+<<<<<<< HEAD
 
     private final String AUTHORIZATION_PATH = "https://localhost:8181/StaffInternalSystem/rest/credit_card_authorization";
     private final String CLEARING_PATH = "https://localhost:8181/StaffInternalSystem/rest/credit_card_clearing";
 
+=======
+    
+    private final String path = "https://localhost:8181/StaffInternalSystem/rest/credit_card";
+    
+>>>>>>> 89bc98d31340f64ec07553aea9fd977c409b8466
     @PostConstruct
     public void init() {
         System.out.println("SimulatedCallManagedBean");
@@ -148,22 +152,22 @@ public class SimulatedCallManagedBean implements Serializable {
             //
     public void initiating() {
         System.out.println("Calling web services");
-//        testGetMethod();
-        testPostMethod();
+        testGetMethod();
     }
 
     private void testGetMethod() {
         List<String> allString = new ArrayList<>();
         Client client = ClientBuilder.newClient();
+
         WebTarget target = client.target(AUTHORIZATION_PATH + "?accountNumber=123456789");// Mapped by @QueryParam("accountNumber") 
+
         // @Get request
-        JsonArray jsonString = target.request(MediaType.APPLICATION_JSON).get(JsonArray.class);
-        for (JsonValue str : jsonString) {
+        JsonArray response = target.request(MediaType.APPLICATION_JSON).get(JsonArray.class);
+        for (JsonValue str : response) {
             allString.add(((JsonString) str).getString());
         }
         System.out.println(allString);
     }
-
     private void testPostMethod() {
         List<String> allString = new ArrayList<>();
         // This will be get from @FormParam("accountNumber")

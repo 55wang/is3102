@@ -1,16 +1,83 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
-    <head>
-        <title>TODO supply a title</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    </head>
-    <body>
-        <div>TODO write content</div>
-    </body>
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:em="http://xmlns.jcp.org/jsf/composite/emcomp"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <!--shift + ctrl + F, format-->
+    <f:view>
+        <h:head>
+            <title>Merlion Internal</title>
+            <em:cssImport></em:cssImport>
+        </h:head>
+        <h:body>
+            <em:staffNavBar context="card"></em:staffNavBar>
+            <em:staffSideBar top="card" side="cardCreate"></em:staffSideBar>
+
+            <div class="container">
+                <h:form id="mainForm">
+                    <p:growl id="msgs" showDetail="true" />
+
+                    <p:tabView>
+                        <p:tab title="New Mile CreditCard Product">
+                            <h:panelGrid columns="2" cellpadding="10">
+                                <p:outputLabel for="mileCardProductName" value="Product Name: " />
+                                <p:inputText id="mileCardProductName" value="#{cardProductManagedBean.mcp.productName}" />
+                                <p:outputLabel for="mileCardMinSpend" value="Min Spending: " />
+                                <p:inputText id="mileCardMinSpend" value="#{cardProductManagedBean.mcp.minSpending}" />
+                                <p:outputLabel for="mileCardMinSpendingAmount" value="Min Spending Amount: " />
+                                <p:inputText id="mileCardMinSpendingAmount" value="#{cardProductManagedBean.mcp.minSpendingAmount}" />
+                                <p:outputLabel for="mileCardLocalMileRate" value="Local Mile Rate: " />
+                                <p:inputText id="mileCardLocalMileRate" value="#{cardProductManagedBean.mcp.localMileRate}" />
+                                <p:outputLabel for="mileCardOverseaMileRate" value="Oversea Mile Rate: " />
+                                <p:inputText id="mileCardOverseaMileRate" value="#{cardProductManagedBean.mcp.overseaMileRate}" />
+                                <p:commandButton value="Confirm" action="#{cardProductManagedBean.addNewMileCreditCard()}" update="@form">
+                                </p:commandButton>
+                            </h:panelGrid>
+                        </p:tab>
+                        <p:tab title="New Reward CreditCard Product">
+                            <h:panelGrid columns="2" cellpadding="10">
+                                <p:outputLabel for="rewardCardProductName" value="Product Name: " />
+                                <p:inputText id="rewardCardProductName" value="#{cardProductManagedBean.rcp.productName}" />
+                                <p:outputLabel for="rewardCardMinSpend" value="Min Spending: " />
+                                <p:inputText id="rewardCardMinSpend" value="#{cardProductManagedBean.rcp.minSpending}" />
+                                <p:outputLabel for="rewardCardMinSpendingAmount" value="Min Spending Amount: " />
+                                <p:inputText id="rewardCardMinSpendingAmount" value="#{cardProductManagedBean.rcp.minSpendingAmount}" />
+                                <p:outputLabel for="rewardCardLocalMileRate" value="Local Mile Rate: " />
+                                <p:inputText id="rewardCardLocalMileRate" value="#{cardProductManagedBean.rcp.localMileRate}" />
+                                <p:outputLabel for="rewardCardLocalPointRate" value="Local Point Rate: " />
+                                <p:inputText id="rewardCardLocalPointRate" value="#{cardProductManagedBean.rcp.localPointRate}" />
+                                <p:commandButton value="Confirm" action="#{cardProductManagedBean.addNewRewardCreditCard()}" update="@form">
+                                </p:commandButton>
+                            </h:panelGrid>
+                        </p:tab>
+                        <p:tab title="New CashBack CreditCard Product">
+                            <h:panelGrid columns="2" cellpadding="10">
+                                <p:outputLabel for="cashBackCardProductName" value="Product Name: " />
+                                <p:inputText id="cashBackCardProductName" value="#{cardProductManagedBean.cbcp.productName}" />
+                                <p:outputLabel for="cashBackCardMinSpend" value="Min Spending: " />
+                                <p:inputText id="cashBackCardMinSpend" value="#{cardProductManagedBean.cbcp.minSpending}" />
+                                <p:outputLabel for="cashBackCardMinSpendingAmount" value="Min Spending Amount: " />
+                                <p:inputText id="cashBackCardMinSpendingAmount" value="#{cardProductManagedBean.cbcp.minSpendingAmount}" />
+                                <p:outputLabel for="cashBackCardPetrol" value="Petrol CashBack Rate: " />
+                                <p:inputText id="cashBackCardPetrol" value="#{cardProductManagedBean.cbcp.petrolCashBackRate}" />
+                                <p:outputLabel for="cashBackCardGrocery" value="Grocery CashBack Rate: " />
+                                <p:inputText id="cashBackCardGrocery" value="#{cardProductManagedBean.cbcp.groceryCashBackRate}" />
+                                <p:outputLabel for="cashBackCardDining" value="Dining CashBack Rate: " />
+                                <p:inputText id="cashBackCardDining" value="#{cardProductManagedBean.cbcp.diningCashBackRate}" />
+                                <p:commandButton value="Confirm" action="#{cardProductManagedBean.addNewCashBackCreditCard()}" update="@form">
+                                </p:commandButton>
+                            </h:panelGrid>
+                        </p:tab>
+                    </p:tabView>
+                </h:form>
+            </div>
+
+        </h:body> 
+    </f:view>
+
+
 </html>
+

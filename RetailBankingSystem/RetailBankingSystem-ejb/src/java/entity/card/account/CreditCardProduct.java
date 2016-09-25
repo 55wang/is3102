@@ -39,6 +39,8 @@ public abstract class CreditCardProduct implements Serializable {
 
     @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "creditCardProduct")
     private List<CreditCardAccount> creditCardAcounts = new ArrayList<>();
+    @OneToMany(mappedBy = "creditCardProduct")
+    private List<CreditCardOrder> creditCardOrders = new ArrayList<>();
 
     /**
      * @return the id

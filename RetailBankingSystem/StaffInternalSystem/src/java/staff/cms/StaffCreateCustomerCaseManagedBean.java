@@ -20,6 +20,7 @@ import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import server.utilities.EnumUtils;
+import server.utilities.EnumUtils.CardTransactionStatus;
 import server.utilities.EnumUtils.IssueField;
 import utils.MessageUtils;
 import utils.RedirectUtils;
@@ -90,9 +91,10 @@ public class StaffCreateCustomerCaseManagedBean implements Serializable{
         }
         if(issueField.equals(selectChargeBack)){
             newCase.setIsChargeBackCase(Boolean.TRUE);
+            if(newCase.getIsChargeBackCase()) newCase.setCardOperatorResponse(EnumUtils.cardOperatorChargebackStatus.PENDING);
             System.out.println("chargebackTransactionID: " + chargebackTransactionID);
             CardTransaction ct = cardAcctSessionBean.getSpecificCaedTransactionFromId(Long.parseLong(chargebackTransactionID));
-            if(ct == null)
+            if(ct == null || ct.getCardTransactionStatus().equals(CardTransactionStatus.CANCELLED))
                 MessageUtils.displayError("Transaction not found");
             else{
                 newCase.setMainAccount(ct.getCreditCardAccount().getMainAccount());
