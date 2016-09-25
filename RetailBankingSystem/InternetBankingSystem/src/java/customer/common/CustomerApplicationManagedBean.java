@@ -24,6 +24,7 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
+import javax.validation.constraints.NotNull;
 import org.primefaces.event.FlowEvent;
 import server.utilities.EnumUtils;
 import server.utilities.ConstantUtils;
@@ -60,6 +61,7 @@ public class CustomerApplicationManagedBean implements Serializable {
     private DepositProductSessionBeanLocal depositProductBean;
 
     private Customer customer = new Customer();
+    @NotNull(message = "Deposit account may not be null")
     private String initialDepositAccount;
 
     private List<String> IdentityTypeOptions = CommonUtils.getEnumList(EnumUtils.IdentityType.class);
@@ -69,6 +71,7 @@ public class CustomerApplicationManagedBean implements Serializable {
     private List<String> IncomeOptions = CommonUtils.getEnumList(EnumUtils.Income.class);
     // TODO: For resend Email Button
     private Boolean emailSuccessFlag = true;
+    @NotNull(message = "Identity type is required.")
     private String selectedIdentityType;
     private String selectedNationality;
     private String selectedGender;
