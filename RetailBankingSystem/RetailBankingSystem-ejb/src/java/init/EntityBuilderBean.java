@@ -43,6 +43,7 @@ import entity.dams.rules.ConditionInterest;
 import entity.dams.rules.Interest;
 import entity.dams.rules.RangeInterest;
 import entity.dams.rules.TimeRangeInterest;
+import entity.embedded.StaffInfo;
 import entity.staff.Role;
 import entity.staff.StaffAccount;
 import java.math.BigDecimal;
