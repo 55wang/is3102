@@ -90,6 +90,14 @@ public class CreditCardAccount implements Serializable {
         );
     }
     
+    public void deductPoints(double amount) {
+        this.merlionPoints -= amount;
+    }
+    
+    public void addPromoCode(PromoCode pc) {
+        this.promoCode.add(pc);
+    }
+    
     public void addOutstandingAmount(double amount) {
         this.outstandingAmount += amount;
     }

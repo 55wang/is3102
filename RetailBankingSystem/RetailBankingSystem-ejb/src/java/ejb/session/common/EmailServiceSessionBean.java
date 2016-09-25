@@ -121,6 +121,62 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
         }
         
     }
+    
+    @Override
+    public Boolean sendchargeBackGmailForSuccessfulCustomer(String recipient, Long ID) {
+        
+        Session session = getSession();
+
+        try {
+
+            Message message = new MimeMessage(session);
+            message.setFrom(new InternetAddress("merlionbanking@gmail.com"));
+            message.setRecipients(Message.RecipientType.TO,
+                    InternetAddress.parse(recipient));
+            message.setSubject("Chargeback notification");
+            message.setText("Dear Customer, Thank you to transact with merionlion banking.\n"
+                    + "Your chargebank request is successful");
+
+            Transport.send(message);
+
+            System.out.println("Email send out successfully");
+            return (true);
+
+        } catch (MessagingException e) {
+            System.out.println(e);
+            return (false);
+        }
+        
+    }
+    
+    @Override
+    public Boolean sendchargeBackGmailForRejectedCustomer(String recipient, Long ID) {
+        
+        Session session = getSession();
+
+        try {
+
+            Message message = new MimeMessage(session);
+            message.setFrom(new InternetAddress("merlionbanking@gmail.com"));
+            message.setRecipients(Message.RecipientType.TO,
+                    InternetAddress.parse(recipient));
+            message.setSubject("Chargeback notification");
+            message.setText("Dear Customer, Thank you to transact with merionlion banking.\n"
+                    + "We are sorry to inform you that your chargebank request is rejected.\n");
+
+            Transport.send(message);
+
+            System.out.println("Email send out successfully");
+            return (true);
+
+        } catch (MessagingException e) {
+            System.out.println(e);
+            return (false);
+        }
+        
+    }
+    
+    
 
     @Override
     public Boolean sendRequireAdditionalInfo(String recipient, String msg) {

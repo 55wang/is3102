@@ -140,6 +140,7 @@ public class StaffViewCustomerCaseManagedBean implements Serializable{
             chargeBackCase.setCaseStatus(CaseStatus.RESOLVED);
             chargeBackCase.setReverseTransaction(reverseTransaction);
             customerCaseSessionBean.updateCase(chargeBackCase);
+            emailServiceSessionBean.sendchargeBackGmailForSuccessfulCustomer(chargeBackCase.getMainAccount().getCustomer().getEmail(), chargeBackCase.getId());
             MessageUtils.displayInfo("The chargeback is approved");
         }else{
             MessageUtils.displayError("Error");
@@ -150,7 +151,11 @@ public class StaffViewCustomerCaseManagedBean implements Serializable{
         chargeBackCase.setCaseStatus(CaseStatus.CANCELLED);
         Boolean result =  customerCaseSessionBean.updateCase(chargeBackCase);
         if(result){
+            if(chargeBackCase.getIsChargeBackCase()){
+            emailServiceSessionBean.sendchargeBackGmailForRejectedCustomer(chargeBackCase.getMainAccount().getCustomer().getEmail(), chargeBackCase.getId());
+            } else
             emailServiceSessionBean.sendCaseStatusChangeToCustomer(chargeBackCase.getMainAccount().getCustomer().getEmail(), chargeBackCase);
+            
             MessageUtils.displayInfo("The case is cancelled");
         }else{
             MessageUtils.displayError("Error");

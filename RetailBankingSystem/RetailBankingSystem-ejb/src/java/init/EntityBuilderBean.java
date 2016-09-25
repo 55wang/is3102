@@ -26,6 +26,7 @@ import entity.card.account.CreditCardAccount;
 import entity.card.account.CreditCardOrder;
 import entity.card.account.CreditCardProduct;
 import entity.card.account.MileCardProduct;
+import entity.card.account.PromoCode;
 import entity.card.account.PromoProduct;
 import entity.card.account.RewardCardProduct;
 import entity.customer.Customer;
@@ -69,6 +70,7 @@ import server.utilities.EnumUtils.Occupation;
 import server.utilities.EnumUtils.StatusType;
 import server.utilities.GenerateAccountAndCCNumber;
 import server.utilities.HashPwdUtils;
+import server.utilities.PincodeGenerationUtils;
 
 /**
  *
@@ -117,6 +119,7 @@ public class EntityBuilderBean {
     private List<Interest> demoConditionalInterestDataForSavingsDepositProduct = new ArrayList<>();
     private MainAccount demoMainAccount;
     private RewardCardProduct demoRewardCardProduct;
+    private PromoProduct demoPromoProduct;
 
     @PostConstruct
     public void init() {
@@ -179,9 +182,9 @@ public class EntityBuilderBean {
         initInterest();
         initDepositProducts();
         initDepositAccounts();
+        initPromoProduct();
         initCreditCardProduct();
         initCase();
-        initPromoProduct();
     }
 
     public void initPromoProduct() {
@@ -197,7 +200,7 @@ public class EntityBuilderBean {
                 + "• Movie date should not be later than expiry date on voucher.");
         p1.setPoints(3500);
         p1.setType(EnumUtils.PromoType.VOUCHER);
-        utilsBean.persist(p1);
+        demoPromoProduct = (PromoProduct) utilsBean.persist(p1);
 
         PromoProduct p2 = new PromoProduct();
         p2.setName("Crabtree & Evelyn S$25 Voucher");
@@ -290,9 +293,18 @@ public class EntityBuilderBean {
         cca.setNameOnCard(demoMainAccount.getCustomer().getFullName());
         cca.setCreditCardNum("4545454545454545");
         cca.setOutstandingAmount(0);
+        cca.setMerlionPoints(100000);
         cca.setCardStatus(EnumUtils.CardAccountStatus.ACTIVE);
         cca.setMainAccount(demoMainAccount);
-        CreditCardAccount result = cardAcctSessionBean.createCardAccount(cca);
+        cca = cardAcctSessionBean.createCardAccount(cca);
+
+        cca.deductPoints(demoPromoProduct.getPoints());
+        PromoCode pc = new PromoCode();
+        pc.setProduct(demoPromoProduct);
+        pc.setPromotionCode(PincodeGenerationUtils.generateRandom(false, 8));
+        pc.setCreditCardAccount(cca);
+        cca.addPromoCode(pc);
+        Object ccaResult = utilsBean.merge(cca);
 
         CardTransaction cardTransaction = new CardTransaction();
         cardTransaction.setCardTransactionStatus(CardTransactionStatus.PENDINGTRANSACTION);
@@ -301,7 +313,7 @@ public class EntityBuilderBean {
         cardTransaction.setTransactionCode("MST");
         cardTransaction.setTransactionDescription("AMAZON SERVICE USD378.50");
         cardTransaction.setCreditCardAccount(cca);
-        cardAcctSessionBean.createCardAccountTransaction(result.getCreditCardNum(), cardTransaction);
+        cardAcctSessionBean.createCardAccountTransaction(cca.getCreditCardNum(), cardTransaction);
 
         cardTransaction = new CardTransaction();
         cardTransaction.setCardTransactionStatus(CardTransactionStatus.PENDINGTRANSACTION);
@@ -310,7 +322,7 @@ public class EntityBuilderBean {
         cardTransaction.setTransactionCode("MST");
         cardTransaction.setTransactionDescription("Apple SERVICE USD168.50");
         cardTransaction.setCreditCardAccount(cca);
-        cardAcctSessionBean.createCardAccountTransaction(result.getCreditCardNum(), cardTransaction);
+        cardAcctSessionBean.createCardAccountTransaction(cca.getCreditCardNum(), cardTransaction);
 
         cardTransaction = new CardTransaction();
         cardTransaction.setCardTransactionStatus(CardTransactionStatus.PENDINGTRANSACTION);
@@ -319,7 +331,7 @@ public class EntityBuilderBean {
         cardTransaction.setTransactionCode("MST");
         cardTransaction.setTransactionDescription("Microsoft SERVICE USD78.50");
         cardTransaction.setCreditCardAccount(cca);
-        cardAcctSessionBean.createCardAccountTransaction(result.getCreditCardNum(), cardTransaction);
+        cardAcctSessionBean.createCardAccountTransaction(cca.getCreditCardNum(), cardTransaction);
 
     }
 
