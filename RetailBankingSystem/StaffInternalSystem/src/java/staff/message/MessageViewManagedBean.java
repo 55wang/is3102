@@ -47,7 +47,7 @@ public class MessageViewManagedBean implements Serializable {
 
     public MessageViewManagedBean() {
     }
-    @PostConstruct
+    
     public void init() {
         LoggingUtils.StaffMessageLog(MessageViewManagedBean.class, "@PostConstruct, retriving conversation from id:" + conversationId);
         setCurrentConversation(conversationBean.getConversationById(Long.parseLong(conversationId)));

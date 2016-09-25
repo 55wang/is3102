@@ -51,9 +51,6 @@ public class Customer implements Serializable {
         this.postalCode = cco.getPostalCode();
         this.occupation = cco.getOccupation();
         this.nationality = cco.getNationality();
-        this.maritalStatus = cco.getMaritalStatus();
-        
-            
         // copy all from cco
     }
     private static final long serialVersionUID = 1L;
