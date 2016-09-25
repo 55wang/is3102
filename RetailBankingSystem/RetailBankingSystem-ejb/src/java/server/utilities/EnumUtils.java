@@ -1104,4 +1104,34 @@ public class EnumUtils {
             throw new IllegalArgumentException();
         }
     }
+    
+    public enum cardOperatorChargebackStatus {
+
+        PENDING("PENDING"),
+        APPROVE("APPROVE"),
+        REJECT("REJECT");
+        private String value;
+
+        cardOperatorChargebackStatus(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        @Override
+        public String toString() {
+            return this.getValue();
+        }
+
+        public static cardOperatorChargebackStatus getEnum(String value) {
+            for (cardOperatorChargebackStatus v : values()) {
+                if (v.getValue().equalsIgnoreCase(value)) {
+                    return v;
+                }
+            }
+            throw new IllegalArgumentException();
+        }
+    }
 }
