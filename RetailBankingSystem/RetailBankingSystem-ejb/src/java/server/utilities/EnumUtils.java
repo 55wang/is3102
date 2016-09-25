@@ -12,13 +12,14 @@ package server.utilities;
 // REMARK: To get the list of enum values, just use e.g. CreditType.values()
 public class EnumUtils {
 
-    public enum CardTransactionType {
+    public enum CardTransactionStatus {
 
         PENDINGTRANSACTION("PENDINGSETTLEMENT"),
-        SETTLEDTRANSACTION("SETTLEDTRANSACTION");
+        SETTLEDTRANSACTION("SETTLEDTRANSACTION"),
+        CANCELLED("CANCELLED");
         private String value;
 
-        CardTransactionType(String value) {
+        CardTransactionStatus(String value) {
             this.value = value;
         }
 
@@ -31,8 +32,8 @@ public class EnumUtils {
             return this.getValue();
         }
 
-        public static CardTransactionType getEnum(String value) {
-            for (CardTransactionType v : values()) {
+        public static CardTransactionStatus getEnum(String value) {
+            for (CardTransactionStatus v : values()) {
                 if (v.getValue().equalsIgnoreCase(value)) {
                     return v;
                 }
@@ -1076,7 +1077,8 @@ public class EnumUtils {
         DEPOSIT("DEPOSIT"),
         CARD("CARD"),
         LOAN("LOAN"),
-        INVESTMENT("INVESTMENT");
+        INVESTMENT("INVESTMENT"),
+        CHARGEBACK("CHARGEBACK");
 
         private String value;
 

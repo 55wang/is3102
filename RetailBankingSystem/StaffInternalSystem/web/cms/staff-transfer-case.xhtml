@@ -18,13 +18,13 @@
             <div class="container">
                 <p:panel header="Search Staff">   
                     <h:form>
-                        <p:inputText value="#{staffCustomerCaseManagedBean.searchStaff}" />
-                        <p:commandButton value="Search" update="staff-table" actionListener="#{staffCustomerCaseManagedBean.searchStaff}"/>
-                        <p:commandButton value="Show All" update="staff-table" actionListener="#{staffCustomerCaseManagedBean.showAllStaff}"/>
+                        <p:inputText value="#{staffViewCustomerCaseManagedBean.searchStaff}" />
+                        <p:commandButton value="Search" update="staff-table" actionListener="#{staffViewCustomerCaseManagedBean.searchStaff}"/>
+                        <p:commandButton value="Show All" update="staff-table" actionListener="#{staffViewCustomerCaseManagedBean.showAllStaff}"/>
                     </h:form>
                 </p:panel>
                 <p:panel header="Case to be Transfered">
-                    <p:dataTable id="caseList" value="#{staffCustomerCaseManagedBean.transferedCase}" var="case" sortMode="multiple" >
+                    <p:dataTable id="caseList" value="#{staffViewCustomerCaseManagedBean.transferedCase}" var="case" sortMode="multiple" >
                             <p:column style="width:16px">
                                 <p:rowToggler />
                             </p:column>
@@ -82,7 +82,7 @@
                 </p:panel>
                     <p:panel header="Staffs">
                         <h:form id="staff-table">
-                            <p:dataTable id="staff-list" value="#{staffCustomerCaseManagedBean.staffs}" var="staff">
+                            <p:dataTable id="staff-list" value="#{staffViewCustomerCaseManagedBean.staffs}" var="staff">
                                 <p:column headerText="ID" sortBy="#{staff.username}">
                                     <h:outputText value="#{staff.username}"></h:outputText>
                                 </p:column>
@@ -93,7 +93,7 @@
                                     <h:outputText value="#{staff.role}"></h:outputText>
                                 </p:column>
                                 <p:column headerText="" sortBy="#{staff.username}">
-                                    <p:commandButton value="Transfer" action="#{staffCustomerCaseManagedBean.transfer(staff)}" update="@form"/>
+                                    <p:commandButton value="Transfer" action="#{staffViewCustomerCaseManagedBean.transfer(staff)}" update="@form"/>
                                 </p:column>
                             </p:dataTable>
                             <p:messages id="messagesStatus" redisplay="false"></p:messages>

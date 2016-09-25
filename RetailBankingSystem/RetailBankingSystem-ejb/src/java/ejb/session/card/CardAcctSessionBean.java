@@ -47,6 +47,11 @@ public class CardAcctSessionBean implements CardAcctSessionBeanLocal {
         return cts;
     }
     
+    @Override
+    public CardTransaction getSpecificCaedTransactionFromId(Long ccaId){
+        return (CardTransaction) em.find(CardTransaction.class, ccaId);
+    }
+    
     //try not to use void, always return something or null. and catch it at the caller side.
     @Override
     public String createCardOrder(CreditCardOrder order) {

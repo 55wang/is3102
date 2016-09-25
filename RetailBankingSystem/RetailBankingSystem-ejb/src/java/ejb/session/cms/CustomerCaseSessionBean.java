@@ -115,10 +115,10 @@ public class CustomerCaseSessionBean implements CustomerCaseSessionBeanLocal {
     @Override
     public List<CustomerCase> searchCaseByTitle(String title){
         Query q = em.createQuery("SELECT a FROM CustomerCase a WHERE "
-                                 + "a.title = :caseTitle AND "
-                                 + "a.caseStatus != :cancelStatus");
+                                 + "a.title LIKE :caseTitle AND "
+                                 + "a.caseStatus != :cancelStatus ORDER BY a.createDate DESC");
         
-        q.setParameter("caseTitle", title);
+        q.setParameter("caseTitle", '%' + title + '%');
         q.setParameter("cancelStatus", CaseStatus.CANCELLED);
         
         try {   
@@ -131,7 +131,7 @@ public class CustomerCaseSessionBean implements CustomerCaseSessionBeanLocal {
     
     @Override
     public List<CustomerCase> getAllCase(){
-        Query q = em.createQuery("SELECT a FROM CustomerCase a WHERE a.caseStatus != :cancelStatus");
+        Query q = em.createQuery("SELECT a FROM CustomerCase a WHERE a.caseStatus != :cancelStatus ORDER BY a.createDate DESC");
         
         q.setParameter("cancelStatus", CaseStatus.CANCELLED);
         

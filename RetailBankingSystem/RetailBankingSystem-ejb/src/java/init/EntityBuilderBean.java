@@ -50,6 +50,7 @@ import javax.ejb.LocalBean;
 import javax.ejb.Startup;
 import server.utilities.ConstantUtils;
 import server.utilities.EnumUtils;
+import server.utilities.EnumUtils.CardTransactionStatus;
 import server.utilities.EnumUtils.CaseStatus;
 import server.utilities.EnumUtils.ChequeStatus;
 import server.utilities.EnumUtils.DepositAccountType;
@@ -209,7 +210,7 @@ public class EntityBuilderBean {
 
         List<CardTransaction> cts = new ArrayList<>();
         CardTransaction cardTransaction = new CardTransaction();
-        cardTransaction.setCardTransactionType(EnumUtils.CardTransactionType.PENDINGTRANSACTION);
+        cardTransaction.setCardTransactionStatus(CardTransactionStatus.PENDINGTRANSACTION);
         cardTransaction.setCreditAmount(500);
         cardTransaction.setIsCredit(true);
         cardTransaction.setTransactionCode("MST");
@@ -1311,6 +1312,7 @@ public class EntityBuilderBean {
 
         cc.setIssues(issues);
         cc.setTitle("My Deposit Account has Some problems");
+        cc.setCreateDate(new Date());
         cc.setMainAccount(demoMainAccount);
         cc.setStaffAccount(staffAccountSessionBean.getAccountByUsername(ConstantUtils.SUPER_ADMIN_USERNAME));
         cc.setCaseStatus(CaseStatus.ONHOLD);
@@ -1339,6 +1341,7 @@ public class EntityBuilderBean {
 
         cc.setIssues(issues);
         cc.setTitle("Loan Problem");
+        cc.setCreateDate(new Date());
         cc.setMainAccount(demoMainAccount);
         cc.setStaffAccount(staffAccountSessionBean.getAccountByUsername(ConstantUtils.SUPER_ADMIN_USERNAME));
         cc.setCaseStatus(CaseStatus.ONHOLD);

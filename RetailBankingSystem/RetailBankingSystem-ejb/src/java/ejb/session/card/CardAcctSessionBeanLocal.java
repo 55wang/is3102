@@ -41,4 +41,5 @@ public interface CardAcctSessionBeanLocal {
     
     public List<CardTransaction> getCardTransactionFromId(Long ccaId);
     
+    public CardTransaction getSpecificCaedTransactionFromId(Long ccaId);
 }

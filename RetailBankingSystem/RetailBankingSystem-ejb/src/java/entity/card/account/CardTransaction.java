@@ -43,7 +43,7 @@ public class CardTransaction implements Serializable {
     private boolean isCredit;
     private double debitAmount;
     private double creditAmount;
-    private CardTransactionType cardTransactionType;
+    private CardTransactionStatus cardTransactionStatus;
     @ManyToOne(cascade = {CascadeType.PERSIST})
     private CreditCardAccount creditCardAccount;
 
@@ -136,12 +136,12 @@ public class CardTransaction implements Serializable {
         this.creditAmount = creditAmount;
     }
 
-    public CardTransactionType getCardTransactionType() {
-        return cardTransactionType;
+    public CardTransactionStatus getCardTransactionStatus() {
+        return cardTransactionStatus;
     }
 
-    public void setCardTransactionType(CardTransactionType cardTransactionType) {
-        this.cardTransactionType = cardTransactionType;
+    public void setCardTransactionStatus(CardTransactionStatus cardTransactionStatus) {
+        this.cardTransactionStatus = cardTransactionStatus;
     }
 
     public CreditCardAccount getCreditCardAccount() {
