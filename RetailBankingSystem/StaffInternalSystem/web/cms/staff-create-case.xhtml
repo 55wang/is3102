@@ -20,16 +20,27 @@
                     <p:panel header="Create Case">
                         <p:messages id="messagesStatus" redisplay="false" >
                             <h:panelGrid columns="2" cellpadding="5">
+                                <p:outputLabel for="caseTitle" value="Case Title: " />
+                                <p:inputText id="caseTitle" value="#{staffCreateCustomerCaseManagedBean.newCase.title}"/> 
+                                
                                 <p:outputLabel for="issueField" value="Issue Field: " />
                                 <p:selectOneButton id="issueField" value="#{staffCreateCustomerCaseManagedBean.issueField}">
                                     <f:selectItem itemLabel="Charge back issue" itemValue="#{staffCreateCustomerCaseManagedBean.selectChargeBack}" />
                                     <f:ajax render="@form" />
                                 </p:selectOneButton>
                                 
-                                <p:outputLabel for="caseTitle" value="Case Title: " />
-                                <p:inputText id="caseTitle" value="#{staffCreateCustomerCaseManagedBean.newCase.title}"/> 
+                                <p:outputLabel for="issueTitle" value="Issue Title: " />
+                                <p:inputText id="issueTitle" value="#{staffCreateCustomerCaseManagedBean.newIssue.title}"/>
+                                
+                                <p:outputLabel for="issueDetail" value="Issue Detail " />
+                                <p:inputTextarea id="issueDetail" value="#{staffCreateCustomerCaseManagedBean.newIssue.details}"/>
+                                
+                                <p:outputLabel for="transaction" value="Chargeback Transaction ID " />
+                                <p:inputText id="transaction" value="#{staffCreateCustomerCaseManagedBean.chargebackTransactionID}"/>
                             </h:panelGrid>
                             
+                            
+                    <p:panel header="Issue List">      
                             <p:dataTable id="issueList" value="#{staffCreateCustomerCaseManagedBean.issues}" var="issue" editable="true" editMode="cell">
                                     <p:column headerText="Issue Title">
                                         <p:cellEditor>
@@ -37,7 +48,7 @@
                                                 <h:outputText value="#{issue.title}" />
                                             </f:facet>
                                             <f:facet name="input">
-                                                <h:inputText value="#{issue.title}" required="true"/>
+                                                <h:inputText value="#{issue.title}"/>
                                             </f:facet>
                                         </p:cellEditor>
                                     </p:column>
@@ -60,18 +71,19 @@
                                     <p:column headerText="Charge back transaction ID">
                                         <p:cellEditor>
                                             <f:facet name="output">
-                                                <h:outputText value="#{staffCreateCustomerCaseManagedBean.chargebackTransactionID}" />
+                                                <h:outputText value="#{staffCreateCustomerCaseManagedBean.chargebackTransactionID}"/>
                                             </f:facet>
                                             <f:facet name="input">
-                                                <h:inputText value="#{staffCreateCustomerCaseManagedBean.chargebackTransactionID}" required="true"/>
+                                                <h:inputText value="#{staffCreateCustomerCaseManagedBean.chargebackTransactionID}"/>
                                             </f:facet>
                                         </p:cellEditor>
                                     </p:column>
                                     
                                 </p:dataTable>
+                        </p:panel> 
                             
-                            <p:commandButton value="Add more issues" action="#{staffCreateCustomerCaseManagedBean.addIssue}" update="@form"/>
-                            <p:commandButton value="Create Case" action="#{staffCreateCustomerCaseManagedBean.createCase}" update="@form" />
+                        <p:commandButton value="Add more issues" action="#{staffCreateCustomerCaseManagedBean.addIssue}" update="@form"/>
+                        <p:commandButton value="Create Case" action="#{staffCreateCustomerCaseManagedBean.createCase}" update="@form" />
                         </p:messages>
                     </p:panel>
                 </h:form>

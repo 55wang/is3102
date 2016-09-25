@@ -40,7 +40,8 @@ public class StaffCreateCustomerCaseManagedBean implements Serializable{
     private String issueField = "CHARGEBACK";
     private String selectChargeBack = "CHARGEBACK";
     private CustomerCase newCase = new CustomerCase();
-    private List<Issue> issues;
+    private List<Issue> issues = new ArrayList<Issue> ();
+    private Issue newIssue = new Issue();
     private String chargebackTransactionID;
     
     
@@ -77,11 +78,16 @@ public class StaffCreateCustomerCaseManagedBean implements Serializable{
     public List<Issue> getIssues() {
         return issues;
     }
+
+    public void setIssues(List<Issue> issues) {
+        this.issues = issues;
+    }
     
     public void addIssue(){
-        Issue newIssue = new Issue();
         newIssue.setField(IssueField.CHARGEBACK);
         this.issues.add(newIssue);
+        newIssue = new Issue();
+        newIssue.setField(IssueField.CHARGEBACK);   
     }
     
     public void createCase(){
@@ -106,14 +112,6 @@ public class StaffCreateCustomerCaseManagedBean implements Serializable{
         }
     }
 
-    @PostConstruct
-    public void setIssues() {
-        this.issues = new ArrayList<Issue>();
-        Issue newIssue = new Issue();
-        newIssue.setField(IssueField.CHARGEBACK);
-        this.issues.add(newIssue);
-    }
-
     public String getChargebackTransactionID() {
         return chargebackTransactionID;
     }
@@ -121,5 +119,12 @@ public class StaffCreateCustomerCaseManagedBean implements Serializable{
     public void setChargebackTransactionID(String chargebackTransactionID) {
         this.chargebackTransactionID = chargebackTransactionID;
     }
-    
+
+    public Issue getNewIssue() {
+        return newIssue;
+    }
+
+    public void setNewIssue(Issue newIssue) {
+        this.newIssue = newIssue;
+    }
 }
