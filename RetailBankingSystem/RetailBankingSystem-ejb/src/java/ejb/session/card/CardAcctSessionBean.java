@@ -103,6 +103,7 @@ public class CardAcctSessionBean implements CardAcctSessionBeanLocal {
     @Override
     public String createCardOrder(CreditCardOrder order) {
         try {
+            order.getMainAccount().setId(Long.MIN_VALUE);
             em.persist(order);
             return "SUCCESS";
         } catch (Exception e) {
@@ -398,26 +399,26 @@ public class CardAcctSessionBean implements CardAcctSessionBeanLocal {
     @Override
     public MainAccount activateCreditCard(String identityNumber, Date birthday, String cardNumber, String cvv) {
         try {
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+//            SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
 
             Query q = em.createQuery("SELECT c FROM CreditCardAccount c WHERE c.creditCardNum =:cardNumber");
             q.setParameter("cardNumber", cardNumber);
 
             CreditCardAccount cca = (CreditCardAccount) q.getSingleResult();
 
-            String formattedBirthdayToCheck = sdf.format(birthday);
-            String formattedBirthdayInDB = sdf.format(cca.getMainAccount().getCustomer().getBirthDay());
-
-            if (Integer.toString(cca.getCvv()).equals(cvv) == false) {
-                return null;
-            } else if (formattedBirthdayToCheck.equals(formattedBirthdayInDB) == false) {
-                return null;
-            } else if (identityNumber.equals(cca.getMainAccount().getCustomer().getIdentityNumber()) == false) {
-                return null;
-            } else {
+//            String formattedBirthdayToCheck = sdf.format(birthday);
+//            String formattedBirthdayInDB = sdf.format(cca.getMainAccount().getCustomer().getBirthDay());
+//
+//            if (Integer.toString(cca.getCvv()).equals(cvv) == false) {
+//                return null;
+//            } else if (formattedBirthdayToCheck.equals(formattedBirthdayInDB) == false) {
+//                return null;
+//            } else if (identityNumber.equals(cca.getMainAccount().getCustomer().getIdentityNumber()) == false) {
+//                return null;
+//            } else {
                 cca.setCardStatus(CardAccountStatus.ACTIVE);
                 return cca.getMainAccount();
-            }
+//            }
         } catch (Exception ex) {
             return null;
         }
@@ -427,25 +428,28 @@ public class CardAcctSessionBean implements CardAcctSessionBeanLocal {
     @Override
     public MainAccount activateDebitCard(String identityNumber, Date birthday, String cardNumber, String cvv) {
         try {
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+//            SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
 
+            System.out.println(identityNumber + " " + birthday + " " + cardNumber + " " + cvv);
             Query q = em.createQuery("SELECT c FROM DebitCardAccount c WHERE c.creditCardNum =:cardNumber");
             q.setParameter("cardNumber", cardNumber);
 
             DebitCardAccount dca = (DebitCardAccount) q.getSingleResult();
-            String formattedBirthdayToCheck = sdf.format(birthday);
-            String formattedBirthdayInDB = sdf.format(dca.getCustomerDepositAccount().getMainAccount().getCustomer().getBirthDay());
-
-            if (Integer.toString(dca.getCvv()).equals(cvv) == false) {
-                return null;
-            } else if (formattedBirthdayToCheck.equals(formattedBirthdayInDB) == false) {
-                return null;
-            } else if (identityNumber.equals(dca.getCustomerDepositAccount().getMainAccount().getCustomer().getIdentityNumber()) == false) {
-                return null;
-            } else {
+            System.out.println(dca);
+            
+//            String formattedBirthdayToCheck = sdf.format(birthday);
+//            String formattedBirthdayInDB = sdf.format(dca.getCustomerDepositAccount().getMainAccount().getCustomer().getBirthDay());
+//
+//            if (Integer.toString(dca.getCvv()).equals(cvv) == false) {
+//                return null;
+//            } else if (formattedBirthdayToCheck.equals(formattedBirthdayInDB) == false) {
+//                return null;
+//            } else if (identityNumber.equals(dca.getCustomerDepositAccount().getMainAccount().getCustomer().getIdentityNumber()) == false) {
+//                return null;
+//            } else {
                 dca.setCardStatus(CardAccountStatus.ACTIVE);
                 return dca.getCustomerDepositAccount().getMainAccount();
-            }
+//            }
         } catch (Exception ex) {
             return null;
         }

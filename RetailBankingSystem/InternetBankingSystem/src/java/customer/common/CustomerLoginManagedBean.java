@@ -8,8 +8,11 @@ package customer.common;
 import ejb.session.audit.AuditSessionBeanLocal;
 import ejb.session.common.EmailServiceSessionBeanLocal;
 import ejb.session.common.LoginSessionBeanLocal;
+import ejb.session.utils.UtilsSessionBeanLocal;
+import entity.common.AuditLog;
 import entity.customer.MainAccount;
 import java.io.Serializable;
+import java.util.Date;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
@@ -32,6 +35,8 @@ public class CustomerLoginManagedBean implements Serializable {
     private EmailServiceSessionBeanLocal emailServiceSessionBean;
     @EJB
     private LoginSessionBeanLocal loginSessionBean;
+    @EJB
+    private UtilsSessionBeanLocal utilsBean;
 
 //    @EJB
 //    private AuditSessionBeanLocal auditSessionBean;
@@ -45,7 +50,6 @@ public class CustomerLoginManagedBean implements Serializable {
      */
     public CustomerLoginManagedBean() {
     }
-
 
     public MainAccount getLoginAccount() {
         return loginAccount;
@@ -79,8 +83,13 @@ public class CustomerLoginManagedBean implements Serializable {
                 SessionUtils.setUserName(userName);
 
                 SessionUtils.setTokenAuthentication(Boolean.FALSE);
-
-//                RedirectUtils.redirect("../customer_cms/customer_home.xhtml");
+                System.out.println("Successed");
+                AuditLog a = new AuditLog();
+                a.setActivityLog("Login in at: " + new Date());
+                a.setFunctionName("CustomerLoginManagedBean loginCustomer()");
+                a.setMainAccount(ma);
+                utilsBean.persist(a);
+                RedirectUtils.redirect("../customer_cms/customer_home.xhtml");
                 return "SUCCESS";
             }
         } catch (NullPointerException e) {

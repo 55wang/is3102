@@ -8,6 +8,7 @@ package staff.setting;
 import ejb.session.staff.StaffAccountSessionBeanLocal;
 import ejb.session.utils.UtilsSessionBeanLocal;
 import entity.common.AuditLog;
+import entity.embedded.StaffInfo;
 import entity.staff.StaffAccount;
 import java.io.Serializable;
 import java.util.List;
@@ -37,6 +38,7 @@ public class StaffProfileManagedBean implements Serializable {
     private StaffAccount staff = SessionUtils.getStaff();
     private Boolean editingPage = false;
     private Boolean profileEdited = false;
+    private StaffInfo staffInfo; 
     private String selectedGender;
     private String selectedNationality;
     private List<String> genderOptions = CommonUtils.getEnumList(Gender.class);
@@ -55,6 +57,7 @@ public class StaffProfileManagedBean implements Serializable {
         a.setInput("Getting all StaffProfileManagedBean");
         a.setStaffAccount(SessionUtils.getStaff());
         utilsBean.persist(a);
+        staffInfo = staff.getStaffInfo();
     }
     
     public void goToEditPage (){
@@ -67,8 +70,9 @@ public class StaffProfileManagedBean implements Serializable {
     }
     
     public void save(){
-        staff.getStaffInfo().setGender(Gender.getEnum(selectedGender));
-        staff.getStaffInfo().setNationality(Nationality.getEnum(selectedNationality));
+        staffInfo.setGender(Gender.getEnum(selectedGender));
+        staffInfo.setNationality(Nationality.getEnum(selectedNationality));
+        staff.setStaffInfo(staffInfo);
         StaffAccount result = staffBean.updateAccount(staff);
         SessionUtils.setStaffAccount(result);
         if (result != null) {
@@ -175,5 +179,12 @@ public class StaffProfileManagedBean implements Serializable {
     public void setNationalityOptions(List<String> nationalityOptions) {
         this.nationalityOptions = nationalityOptions;
     }
-    
+
+    public StaffInfo getStaffInfo() {
+        return staffInfo;
+    }
+
+    public void setStaffInfo(StaffInfo staffInfo) {
+        this.staffInfo = staffInfo;
+    }
 }

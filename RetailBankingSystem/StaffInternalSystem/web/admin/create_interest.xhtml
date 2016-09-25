@@ -230,11 +230,9 @@
                                     </p:column>
                                 </p:dataTable>
                             </c:if>
-                            <p:commandButton value="Create" icon="ui-icon-plus" update="DisplayForm" actionListener="#{createInterestManagedBean.addInterest}" />
+                            <p:commandButton value="Create" icon="ui-icon-plus" update="@form" actionListener="#{createInterestManagedBean.addInterest}" />
                         </p:messages>
                     </p:panel>
-                </h:form>
-                <h:form id="DisplayForm">
                     <p:panel header="Normal Interests">
                         <p:dataTable id="normalInterests" value="#{createInterestManagedBean.normalInterests}" var="interest">
                             <p:column headerText="Name" sortBy="#{interest.name}">
@@ -266,6 +264,7 @@
                         </p:dataTable>
                     </p:panel>
                     <p:panel header="Time Range Interests">
+                        <p:outputLabel value="Current Time Range Interest Rate"/>
                         <p:panelGrid columns="#{createInterestManagedBean.colSize}">
                             <c:forEach items="#{createInterestManagedBean.rowIndex}" var="row">
                                 <c:forEach items="#{createInterestManagedBean.colIndex}" var="col">

@@ -44,6 +44,7 @@ import entity.dams.rules.Interest;
 import entity.dams.rules.RangeInterest;
 import entity.dams.rules.TimeRangeInterest;
 import entity.embedded.StaffInfo;
+import entity.staff.Announcement;
 import entity.staff.Role;
 import entity.staff.StaffAccount;
 import java.math.BigDecimal;
@@ -185,6 +186,7 @@ public class EntityBuilderBean {
         initPromoProduct();
         initCreditCardProduct();
         initCase();
+        initNotification();
     }
 
     public void initPromoProduct() {
@@ -1343,7 +1345,7 @@ public class EntityBuilderBean {
         savingAccount.setType(DepositAccountType.SAVING);
         savingAccount.setStatus(StatusType.ACTIVE);
         savingAccount.setProduct(depositProductSessionBean.getDepositProductByName(ConstantUtils.DEMO_SAVING1_DEPOSIT_PRODUCT_NAME));
-        savingAccount.setBalance(new BigDecimal(1000));
+        savingAccount.setBalance(new BigDecimal(0));
         savingAccount.setMainAccount(demoMainAccount);
         customerDepositSessionBean.createAccount(savingAccount);
 
@@ -1510,5 +1512,11 @@ public class EntityBuilderBean {
         cco.setSaluation(EnumUtils.Salutation.DR);
 
         cardAcctSessionBean.createCardOrder(cco);
+    }
+    
+    public void initNotification() {
+        Announcement n1 = new Announcement();
+        n1.setTitle("Happy Holidy!!");
+        n1.setTitle("Happy Holidy!!");
     }
 }
