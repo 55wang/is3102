@@ -36,7 +36,7 @@ public class StaffAccount implements Serializable {
     private String email;
     private StatusType status = StatusType.PENDING;
     @Embedded
-    private StaffInfo staffInfo;
+    private StaffInfo staffInfo = new StaffInfo();
     
     // Loose connection
     @ManyToOne(cascade = {CascadeType.MERGE})
