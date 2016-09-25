@@ -131,6 +131,7 @@ public class CreditCardAuthorizationService {
 
             CreditCardAccount cca = ccBean.getCardByCardNumber(ccNumber);
             String phoneNumber = cca.getMainAccount().getCustomer().getPhone();
+            System.out.println("######## "+phoneNumber+" #######");
             Calendar currentDate = Calendar.getInstance();
             SimpleDateFormat dateOnly = new SimpleDateFormat("dd/MM/yyyy");
 
