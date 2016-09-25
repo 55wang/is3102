@@ -62,4 +62,6 @@ public interface CardAcctSessionBeanLocal {
     public CardTransaction getSpecificCaedTransactionFromId(Long ccaId);
 
     public String updateCreditCardOrder(CreditCardOrder cco);
+
+    public String updateDebitAccountStatus(DebitCardAccount dca, EnumUtils.CardAccountStatus status);
 }

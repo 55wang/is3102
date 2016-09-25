@@ -267,6 +267,20 @@ public class CardAcctSessionBean implements CardAcctSessionBeanLocal {
     }
 
     @Override
+    public String updateDebitAccountStatus(DebitCardAccount dca, CardAccountStatus status) {
+        try {
+            dca.setCardStatus(status);
+            em.merge(dca);
+            return "SUCCESS";
+        } catch (Exception e) {
+            //always print an error msg 
+            System.out.println("NewCardSessionBean.updateCardAccountStatus Error");
+            System.out.println(e);
+            return null;
+        }
+    }
+
+    @Override
     public String updateCardAcctTransactionDailyLimit(CreditCardAccount cca, double newDailyLimit) {
         try {
             cca.setTransactionDailyLimit(newDailyLimit);

@@ -47,8 +47,11 @@
                                                 <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
                                             </p:confirmDialog>
                                         </p:commandButton>
-                                    </p:column>
 
+                                    </p:column>
+                                    <p:column headerText="Promo Rewards">
+                                        <p:commandButton value="Redeem" action="#{customerCardManagedBean.viewRedeemPage()}" ></p:commandButton>
+                                    </p:column>
 
 
                                 </p:dataTable>
