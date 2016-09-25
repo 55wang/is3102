@@ -53,8 +53,9 @@ public class NewCardProductSessionBean implements NewCardProductSessionBeanLocal
     }
 
     @Override
-    public void createRewardProduct(RewardCardProduct rcp) {
+    public RewardCardProduct createRewardProduct(RewardCardProduct rcp) {
         em.persist(rcp);
+        return rcp;
     }
 
     @Override

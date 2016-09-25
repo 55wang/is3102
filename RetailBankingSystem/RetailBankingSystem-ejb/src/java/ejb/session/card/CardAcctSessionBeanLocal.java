@@ -21,6 +21,8 @@ import server.utilities.EnumUtils;
 public interface CardAcctSessionBeanLocal {
 
     public List<CreditCardOrder> showAllCreditCardOrder();
+    
+    public List<CreditCardOrder> showAllCreditCardOrder(EnumUtils.ApplicationStatus status);
 
     public CreditCardOrder getCardOrderFromId(Long orderNumber);
 

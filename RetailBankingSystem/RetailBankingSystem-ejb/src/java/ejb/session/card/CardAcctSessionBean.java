@@ -48,10 +48,18 @@ public class CardAcctSessionBean implements CardAcctSessionBeanLocal {
             return null;
         }
     }
-
+    
     @Override
     public List<CreditCardOrder> showAllCreditCardOrder() {
         Query q = em.createQuery("SELECT cco FROM CreditCardOrder cco");
+        return q.getResultList();
+    }
+
+    @Override
+    public List<CreditCardOrder> showAllCreditCardOrder(EnumUtils.ApplicationStatus applicationStatus) {
+        
+        Query q = em.createQuery("SELECT cco FROM CreditCardOrder cco WHERE coo.applicationStatus = :applicationStatus");
+        q.setParameter("applicationStatus", applicationStatus);
         return q.getResultList();
     }
 
