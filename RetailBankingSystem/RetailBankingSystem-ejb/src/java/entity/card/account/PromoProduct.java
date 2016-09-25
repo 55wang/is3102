@@ -6,6 +6,7 @@
 package entity.card.account;
 
 import java.io.Serializable;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -24,6 +25,7 @@ public class PromoProduct implements Serializable {
     private String description;
     private PromoType type;
     private Integer points;
+    @Column(length = 4000)
     private String terms;
     
     // Amount

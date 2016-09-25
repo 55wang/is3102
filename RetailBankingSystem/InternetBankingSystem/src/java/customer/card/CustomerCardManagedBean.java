@@ -19,8 +19,6 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
-import javax.transaction.Transaction;
-import static org.codehaus.groovy.runtime.DateGroovyMethods.updated;
 import server.utilities.EnumUtils.CardAccountStatus;
 import utils.MessageUtils;
 import utils.RedirectUtils;
@@ -63,8 +61,12 @@ public class CustomerCardManagedBean implements Serializable {
         RedirectUtils.redirect("/InternetBankingSystem/customer_card/debit_card_summary.xhtml");
     }
     
-    public void viewRedeemPage() {
-        RedirectUtils.redirect("/InternetBankingSystem/customer_card/card_promotion.xhtml");
+    public void viewRedeemPage(CreditCardAccount cca) {
+        // Go to Message View
+        Map<String, String> map = new HashMap<>();
+        map.put("creditCardId", cca.getId().toString());
+        String params = RedirectUtils.generateParameters(map);
+        RedirectUtils.redirect("redeem_rewards.xhtml" + params);
     }
 
     public void redirectToChangeTransactionLimitPage(CreditCardAccount aCca) {
