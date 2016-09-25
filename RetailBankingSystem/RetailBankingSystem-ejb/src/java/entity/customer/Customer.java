@@ -72,6 +72,10 @@ public class Customer implements Serializable {
 
     @OneToOne(cascade = {CascadeType.PERSIST})
     private MainAccount mainAccount;
+    
+    public String getFullName() {
+        return this.getFirstname()+ " " + this.getLastname();
+    }
 
     public Long getId() {
         return id;

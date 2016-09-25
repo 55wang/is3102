@@ -16,7 +16,7 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.context.FacesContext;
 import utils.MessageUtils;
 import utils.SessionUtils;
-import utils.PincodeGenerationUtils;
+import server.utilities.PincodeGenerationUtils;
 import utils.RedirectUtils;
 
 /**

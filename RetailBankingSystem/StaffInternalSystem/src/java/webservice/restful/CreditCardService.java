@@ -5,6 +5,8 @@
  */
 package webservice.restful;
 
+import ejb.session.card.CardAcctSessionBeanLocal;
+import entity.card.account.CreditCardAccount;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
@@ -13,44 +15,85 @@ import javax.json.JsonArray;
 import javax.json.JsonArrayBuilder;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
-import javax.ws.rs.PUT;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import javax.xml.bind.JAXBElement;
 import org.primefaces.json.JSONObject;
+import server.utilities.PincodeGenerationUtils;
 
 /**
  *
  * @author leiyang
  */
-@Path("credit_card")
+@Path("credit_card_authorization")
 public class CreditCardService {
-
+    
     @Context
     private UriInfo context;
 
-//    @EJB
-//    StudentSessionBeanLocal studentSessionBeanLocal;
+    @EJB
+    private CardAcctSessionBeanLocal ccBean;
+    
     public CreditCardService() {
         System.out.println("CreditCardService");
     }
 
-//    @PUT
-//    @Consumes(MediaType.APPLICATION_XML)
-//    @Produces(MediaType.APPLICATION_XML)
-//    public Student createStudent(JAXBElement<Student> student)
-//    {
-//        return studentSessionBeanLocal.createStudent(student.getValue());
-//    }
+    // check authorization, check creditcard, check valiation
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    public Response authorizeCC (
+            @FormParam("ccNumber") String ccNumber,
+            @FormParam("ccAmount") String ccAmount,
+            @FormParam("ccTcode") String ccTcode,
+            @FormParam("ccDescription") String ccDescription
+            ) {
+        // get value from form
+        System.out.println("Getting String list with cc number: " + ccNumber);
+        // return value
+        Boolean authorized = true;
+        // validate
+        // if fail, code = -1;
+        String code = "-1";
+        // after it is done
+        CreditCardDTO c = new CreditCardDTO();
+        c.setAmount(ccAmount);
+        c.setDescription(ccDescription);
+        c.setCreditCardNumber(ccNumber);
+        c.settCode(ccTcode);
+        
+        CreditCardAccount thisAccount = ccBean.getCardByCardNumber(ccNumber);
+        if (thisAccount != null) {
+            thisAccount = ccBean.validateCreditCardDailyTransactionLimit(thisAccount, Double.parseDouble(ccAmount));
+        }
+        if (thisAccount == null) {
+            authorized = false;
+            c.setErrorMessage("Exceed daily transaction limit!");
+        } else {
+            thisAccount = ccBean.validateCreditCardMonthlyTransactionLimit(thisAccount, Double.parseDouble(ccAmount));
+        }
+        
+        if (thisAccount == null) {
+            authorized = false;
+            c.setErrorMessage("Exceed monthly transaction limit!");
+        }
+        
+        if (authorized) {
+            code = PincodeGenerationUtils.generateRandom(true, 8);
+            c.setaCode(code);
+        }
+        
+        String jsonString = new JSONObject(c).toString();
+        return Response.ok(jsonString, MediaType.APPLICATION_JSON).build();
+    }
+    
+    
     @GET
     @Produces(MediaType.APPLICATION_JSON) 
     public JsonArray getStringList(@QueryParam("accountNumber") String accountNumber) {
@@ -67,21 +110,5 @@ public class CreditCardService {
         }
         
         return arrayBld.build();
-    }
-
-    @POST
-    @Produces(MediaType.APPLICATION_JSON)
-    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-    public Response updateStudent(@FormParam("accountNumber") String accountNumber) {
-        // get value from form
-        System.out.println("Getting String list with account number:" + accountNumber);
-        // return value
-        CreditCardDTO c = new CreditCardDTO();
-        c.setAmount("123355333.00");
-        c.setName("Lei Yang");
-        c.setCreditCardNumber("4545454545454545");
-        String jsonString = new JSONObject(c).toString();
-        
-        return Response.ok(jsonString, MediaType.APPLICATION_JSON).build();
     }
 }

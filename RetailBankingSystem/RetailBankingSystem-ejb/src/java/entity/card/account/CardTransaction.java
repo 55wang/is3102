@@ -36,14 +36,14 @@ public class CardTransaction implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
-    private Date transactionTimeStamp;
+    private Date createDate = new Date();
+    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
+    private Date updateDate = new Date();
     private String transactionCode;
     private String transactionDescription;
-    private boolean isDebit;
     private boolean isCredit;
-    private double debitAmount;
-    private double creditAmount;
-    private CardTransactionType cardTransactionType;
+    private double amount;
+    private CardTransactionStatus cardTransactionStatus;
     @ManyToOne(cascade = {CascadeType.PERSIST})
     private CreditCardAccount creditCardAccount;
     
@@ -81,14 +81,6 @@ public class CardTransaction implements Serializable {
         return "entity.card.account.Transaction[ id=" + id + " ]";
     }
 
-    public Date getTransactionTimeStamp() {
-        return transactionTimeStamp;
-    }
-
-    public void setTransactionTimeStamp(Date transactionTimeStamp) {
-        this.transactionTimeStamp = transactionTimeStamp;
-    }
-
     public String getTransactionCode() {
         return transactionCode;
     }
@@ -105,14 +97,6 @@ public class CardTransaction implements Serializable {
         this.transactionDescription = transactionDescription;
     }
 
-    public boolean isIsDebit() {
-        return isDebit;
-    }
-
-    public void setIsDebit(boolean isDebit) {
-        this.isDebit = isDebit;
-    }
-
     public boolean isIsCredit() {
         return isCredit;
     }
@@ -120,29 +104,13 @@ public class CardTransaction implements Serializable {
     public void setIsCredit(boolean isCredit) {
         this.isCredit = isCredit;
     }
-
-    public double getDebitAmount() {
-        return debitAmount;
+    
+    public CardTransactionStatus getCardTransactionStatus() {
+        return cardTransactionStatus;
     }
 
-    public void setDebitAmount(double debitAmount) {
-        this.debitAmount = debitAmount;
-    }
-
-    public double getCreditAmount() {
-        return creditAmount;
-    }
-
-    public void setCreditAmount(double creditAmount) {
-        this.creditAmount = creditAmount;
-    }
-
-    public CardTransactionType getCardTransactionType() {
-        return cardTransactionType;
-    }
-
-    public void setCardTransactionType(CardTransactionType cardTransactionType) {
-        this.cardTransactionType = cardTransactionType;
+    public void setCardTransactionStatus(CardTransactionStatus cardTransactionStatus) {
+        this.cardTransactionStatus = cardTransactionStatus;
     }
 
     public CreditCardAccount getCreditCardAccount() {
@@ -151,6 +119,48 @@ public class CardTransaction implements Serializable {
 
     public void setCreditCardAccount(CreditCardAccount creditCardAccount) {
         this.creditCardAccount = creditCardAccount;
+    }
+
+    /**
+     * @return the createDate
+     */
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    /**
+     * @param createDate the createDate to set
+     */
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
+    }
+
+    /**
+     * @return the updateDate
+     */
+    public Date getUpdateDate() {
+        return updateDate;
+    }
+
+    /**
+     * @param updateDate the updateDate to set
+     */
+    public void setUpdateDate(Date updateDate) {
+        this.updateDate = updateDate;
+    }
+
+    /**
+     * @return the amount
+     */
+    public double getAmount() {
+        return amount;
+    }
+
+    /**
+     * @param amount the amount to set
+     */
+    public void setAmount(double amount) {
+        this.amount = amount;
     }
 
 }

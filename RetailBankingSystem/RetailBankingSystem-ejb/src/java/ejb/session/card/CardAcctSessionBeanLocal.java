@@ -31,6 +31,12 @@ public interface CardAcctSessionBeanLocal {
     public List<CreditCardAccount> showAllCreditCardAccount(EnumUtils.CardAccountStatus status, Long id);
 
     public CreditCardAccount getCardAccountFromId(Long cardID);
+    
+    public CreditCardAccount getCardByCardNumber(String cardNumber);
+    
+    public CreditCardAccount validateCreditCardDailyTransactionLimit(CreditCardAccount creditCard, Double requestAmount);
+    
+    public CreditCardAccount validateCreditCardMonthlyTransactionLimit(CreditCardAccount creditCard, Double requestAmount);
 
     public String createCardAccount(CreditCardAccount cca);
 
@@ -44,4 +50,9 @@ public interface CardAcctSessionBeanLocal {
 
     public DebitCardAccount createDebitAccount(DebitCardAccount dba, Long depositAccountId);
     
+    public List<CardTransaction> getDailyTransactionFromAccount(CreditCardAccount creditCard);
+    
+    public List<CardTransaction> getMonthlyTransactionFromAccount(CreditCardAccount creditCard);
+    
+    public CardTransaction getSpecificCaedTransactionFromId(Long ccaId);
 }
