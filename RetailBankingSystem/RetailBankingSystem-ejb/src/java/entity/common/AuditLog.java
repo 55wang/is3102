@@ -17,6 +17,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import server.utilities.EncryptMethods;
 
 /**
  *
@@ -35,16 +36,16 @@ public class AuditLog implements Serializable {
     private String input;
     private String output;
     private String ipAddress;
-    @ManyToOne(cascade={CascadeType.MERGE})
+    @ManyToOne(cascade = {CascadeType.MERGE})
     private StaffAccount staffAccount;
-    @ManyToOne(cascade={CascadeType.MERGE})
+    @ManyToOne(cascade = {CascadeType.MERGE})
     private MainAccount mainAccount;
-
+    
     @Override
     public String toString() {
         return "AuditLog{" + "id=" + id + ", creationDate=" + creationDate + ", activityLog=" + activityLog + ", functionName=" + functionName + ", input=" + input + ", output=" + output + ", ipAddress=" + ipAddress + ", staffAccount=" + staffAccount + ", mainAccount=" + mainAccount + '}';
     }
-    
+
     public Long getId() {
         return id;
     }
@@ -54,11 +55,12 @@ public class AuditLog implements Serializable {
     }
 
     public String getActivityLog() {
-        return activityLog;
+        return EncryptMethods.AESDecrypt(activityLog);
+//        return activityLog;
     }
 
     public void setActivityLog(String activityLog) {
-        this.activityLog = activityLog;
+        this.activityLog = EncryptMethods.AESEncrypt(activityLog);
     }
 
     public StaffAccount getStaffAccount() {
@@ -92,27 +94,28 @@ public class AuditLog implements Serializable {
     }
 
     public String getFunctionName() {
-        return functionName;
+        return EncryptMethods.AESDecrypt(functionName);
     }
 
     public void setFunctionName(String functionName) {
-        this.functionName = functionName;
+        this.functionName = EncryptMethods.AESEncrypt(functionName);
     }
 
     public String getInput() {
-        return input;
+        return EncryptMethods.AESDecrypt(input);
     }
 
     public void setInput(String input) {
-        this.input = input;
+        this.input = EncryptMethods.AESEncrypt(input);
     }
 
     public String getOutput() {
-        return output;
+        
+        return EncryptMethods.AESDecrypt(output);
     }
 
     public void setOutput(String output) {
-        this.output = output;
+        this.output = EncryptMethods.AESEncrypt(output);
     }
 
     public String getIpAddress() {
@@ -122,5 +125,5 @@ public class AuditLog implements Serializable {
     public void setIpAddress(String ipAddress) {
         this.ipAddress = ipAddress;
     }
-    
+
 }
