@@ -84,6 +84,7 @@ public class CustomerProfileManagedBean implements Serializable {
         }
 
     }
+    
 
     public Customer getCustomer() {
         return customer;

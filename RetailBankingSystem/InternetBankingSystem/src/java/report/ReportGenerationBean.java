@@ -5,22 +5,27 @@
  */
 package report;
 
+import java.awt.Toolkit;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
 import java.io.Serializable;
 import java.io.File;
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.sf.jasperreports.engine.JRDataSource;
-import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.design.JasperDesign;
+import net.sf.jasperreports.engine.xml.JRXmlLoader;
+import net.sf.jasperreports.view.JasperViewer;
 
 /**
  *
@@ -34,39 +39,42 @@ public class ReportGenerationBean implements Serializable {
     // "Insert Code > Add Business Method")
     public ReportGenerationBean() {
     }
-    
-    public void generateTestReport() throws JRException, IOException {
-        String filePath = "/Users/litong/Documents/IS3102/is3102/RetailBankingSystem/InternetBankingSystem/src/java/report/testReport.jrxml";
-//                new File("").getAbsolutePath();
-//        filePath += "/src/java/report/testReport.jrxml";
-//        System.out.println(filePath);
-        // Compile jrxml file.
-        JasperReport jasperReport = JasperCompileManager
-                .compileReport(filePath);
 
-          // Parameters for report
-        Map<String, Object> parameters = new HashMap<String, Object>();
+    public boolean generateTestReport() throws JRException, IOException, SQLException, ClassNotFoundException {
+//        String filePath = "/Users/litong/Documents/IS3102/is3102/RetailBankingSystem/InternetBankingSystem/src/java/report/testReport.jrxml";
 
-        // DataSource
-        // This is simple example, no database.
-        // then using empty datasource.
-        JRDataSource dataSource = new JREmptyDataSource();
-
-        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport,
-                parameters, dataSource);
-
-        // Make sure the output directory exists.
-
-        filePath = "/Users/litong/Downloads/test.pdf";
-        System.out.println(filePath);
-        // Export to PDF.
-        JasperExportManager.exportReportToPdfFile(jasperPrint, filePath);
-        System.out.println("Done!");
+        //Load Driver
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+        } catch (Exception ex) {
+        }
+        
+        System.out.println("DBAAAAA");
+        Connection a;
+        a = DriverManager.getConnection("jdbc:mysql://localhost:3306/RetailBankingSystem?zeroDateTimeBehavior=convertToNull", "root", "password");
+        
+        System.out.println("DB");
+        String relativePath = new File("").getAbsolutePath();
+        System.out.println("DB2222");
+        JasperDesign jd = JRXmlLoader.load("/Users/litong/Documents/IS3102/is3102/RetailBankingSystem/InternetBankingSystem/src/java/report/report.jrxml");
+        JasperReport jr = JasperCompileManager.compileReport("/Users/litong/Documents/IS3102/is3102/RetailBankingSystem/InternetBankingSystem/src/java/report/report.jrxml");
+        System.out.println("Path");
+        
+        JasperPrint jp = JasperFillManager.fillReport(jr, new HashMap(), a);
+           System.out.println("Path2222");
+        //JasperViewer.viewReport(jp);
+        System.out.println("View");
+//        JasperExportManager.exportReportToPdfFile(jp, "/Users/litong/Downloads/testPDF.pdf");
+        System.out.println(relativePath);
+        JasperExportManager.exportReportToPdfFile(jp, "/Users/litong/Documents/IS3102/is3102/RetailBankingSystem/InternetBankingSystem/web/request/estatement.pdf");
+       
+// JasperExportManager.exportReportToPdfFile(jp, "http:///localhost:8181/InternetBankingSystem/src/java/report/testPDF.pdf");
+               System.out.println("Done!");
+        return true;
     }
-    
-    public static void main(String args[]) throws Exception{
+
+    public static void main(String args[]) throws Exception {
         ReportGenerationBean bean = new ReportGenerationBean();
         bean.generateTestReport();
     }
 }
-
