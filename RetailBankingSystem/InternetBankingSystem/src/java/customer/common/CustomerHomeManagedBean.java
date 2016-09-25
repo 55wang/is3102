@@ -8,7 +8,10 @@ package customer.common;
 import interceptor.audit.Audit;
 import ejb.session.common.ChangePasswordSessionBeanLocal;
 import ejb.session.common.LoginSessionBeanLocal;
+import ejb.session.utils.UtilsSessionBeanLocal;
+import entity.common.AuditLog;
 import entity.customer.Customer;
+import entity.customer.MainAccount;
 import java.io.Serializable;
 import java.util.Date;
 import javax.annotation.PostConstruct;
@@ -31,6 +34,8 @@ public class CustomerHomeManagedBean implements Serializable {
     private ChangePasswordSessionBeanLocal changePasswordSessionBean;
     @EJB
     private LoginSessionBeanLocal loginSessionBean;
+    @EJB
+    private UtilsSessionBeanLocal utilsBean;
     private Customer customer;
     private String newPwd;
     private Date currentDate = new Date();
@@ -44,6 +49,11 @@ public class CustomerHomeManagedBean implements Serializable {
     @Audit(activtyLog = "home managed")
     public Boolean changePwd() {
         try {
+            AuditLog a = new AuditLog();
+            a.setActivityLog("Log off at: " + new Date());
+            a.setFunctionName("CustomerLogoutManagedBean logoutCustomer()");
+            a.setMainAccount((MainAccount) utilsBean.find(MainAccount.class, Long.parseLong(SessionUtils.getUserId())));
+            utilsBean.persist(a);
             changePasswordSessionBean.changePwd(HashPwdUtils.hashPwd(newPwd), customer.getMainAccount());
             String msg = "Successful! You have reset your password. ";
             MessageUtils.displayInfo(msg);

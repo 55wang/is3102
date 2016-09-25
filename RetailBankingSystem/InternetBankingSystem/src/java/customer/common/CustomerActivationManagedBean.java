@@ -8,9 +8,12 @@ package customer.common;
 import ejb.session.common.CustomerActivationSessionBeanLocal;
 import ejb.session.common.LoginSessionBeanLocal;
 import ejb.session.dams.CustomerDepositSessionBeanLocal;
+import ejb.session.utils.UtilsSessionBeanLocal;
+import entity.common.AuditLog;
 import entity.customer.MainAccount;
 import entity.dams.account.DepositAccount;
 import java.io.Serializable;
+import java.util.Date;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
@@ -27,19 +30,22 @@ import utils.SessionUtils;
 @Named(value = "customerActivationManagedBean")
 @RequestScoped
 public class CustomerActivationManagedBean implements Serializable {
+
     @EJB
     private LoginSessionBeanLocal loginSessionBean;
     @EJB
     private CustomerActivationSessionBeanLocal customerActivationSessionBean;
     @EJB
     private CustomerDepositSessionBeanLocal depositAccountBean;
-    
-    @ManagedProperty(value="#{param.email}")
+    @EJB
+    private UtilsSessionBeanLocal utilsBean;
+
+    @ManagedProperty(value = "#{param.email}")
     private String email;
     private Boolean valid;
-    
+
     private MainAccount mainAccount;
-   
+
     @PostConstruct
     public void init() {
         email = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("email");
@@ -47,26 +53,30 @@ public class CustomerActivationManagedBean implements Serializable {
         System.out.println(email);
         System.out.println(randomPwd);
         mainAccount = customerActivationSessionBean.getMainAccountByEmail(email);
-        if(mainAccount.getStatus().equals(EnumUtils.StatusType.PENDING) && randomPwd.equals(mainAccount.getPassword())){
+        if (mainAccount.getStatus().equals(EnumUtils.StatusType.PENDING) && randomPwd.equals(mainAccount.getPassword())) {
             valid = true; // And auto-login if valid?
-            try{
+            try {
                 customerActivationSessionBean.updateAccountStatus(mainAccount);
                 loginSessionBean.loginAccount(mainAccount.getUserID(), mainAccount.getPassword());
                 SessionUtils.setUserId(Long.toString(mainAccount.getId()));
                 SessionUtils.setUserName(mainAccount.getUserID());
                 SessionUtils.setTokenAuthentication(false);
-                for (DepositAccount a : mainAccount.getBankAcounts()) {
-                    a.setStatus(EnumUtils.StatusType.ACTIVE);
-                    depositAccountBean.updateAccount(a);
+                AuditLog a = new AuditLog();
+                a.setActivityLog("Account Activated at: " + new Date());
+                a.setFunctionName("activateCustomer()");
+                a.setMainAccount(mainAccount);
+                utilsBean.persist(a);
+                for (DepositAccount da : mainAccount.getBankAcounts()) {
+                    da.setStatus(EnumUtils.StatusType.ACTIVE);
+                    depositAccountBean.updateAccount(da);
                 }
                 // TODO: Activate all the deposit account
+            } catch (Exception ex) {
+
             }
-            catch(Exception ex){
-                
-            }
-        }
-        else
+        } else {
             valid = false;
+        }
     }
 
     /**

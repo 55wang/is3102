@@ -33,7 +33,7 @@
                         <li id="header-overview" class="#{cc.attrs.context == 'button' ? 'active' : ''}" value="button"><a href="#">Loan</a></li>
                         <li id="header-overview" class="#{cc.attrs.context == 'button' ? 'active' : ''}" value="button"><a href="#">Invest</a></li>
                         <li id="header-overview" class="#{cc.attrs.context == 'button' ? 'active' : ''}" value="button"><a href="#">Promotions</a></li>
-                        <li id="header-overview" class="#{cc.attrs.context == 'button' ? 'active' : ''}" value="button"><a href="#">button</a></li>
+                        <li id="header-overview" class="#{cc.attrs.context == 'button' ? 'active' : ''}" value="button"><a href="#">Wealth</a></li>
                     </c:if>
                     <c:if test="#{cc.attrs.context == 'customer_home'}">
                         <h:form>
@@ -72,7 +72,7 @@
                             </p:menu>
                         </p:overlayPanel>
                         
-                        <li id="header-overview" class="#{cc.attrs.pageName == 'button' ? 'active' : ''}" value="button"><a href="#">button</a></li>
+                        <li id="header-overview" class="#{cc.attrs.pageName == 'button' ? 'active' : ''}" value="button"><a href="#">Wealth</a></li>
                         
                         <li id="navbar-apply-tab" class="#{cc.attrs.pageName == 'apply_home' ? 'active' : ''}" value="myapply"><a href="../apply/apply_home.xhtml"><p:outputLabel id="tab-myApply" value="Apply" style="cursor: pointer"/></a></li>
                         <p:overlayPanel class="nav-overlay-panel-apply" for="tab-myApply" showEvent="mouseover" hideEvent="mousedown" dismissable="true">

@@ -6,10 +6,12 @@
 package customer.dams;
 
 import ejb.session.dams.CustomerDepositSessionBeanLocal;
+import entity.common.AuditLog;
 import entity.dams.account.DepositAccount;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,25 +36,26 @@ public class CustomerDepositAccountSummaryManagedBean implements Serializable {
 
     @EJB
     private CustomerDepositSessionBeanLocal depositBean;
-    
+
     private final StatusType ACCOUNT_ACTIVE = StatusType.ACTIVE;
-    
+
     private List<DepositAccount> accounts = new ArrayList<>();
+
     /**
      * Creates a new instance of CustomerDepositAccountSummaryManagedBean
      */
     public CustomerDepositAccountSummaryManagedBean() {
     }
-    
+
     @PostConstruct
     public void init() {
         setAccounts(depositBean.getAllCustomerAccounts(Long.parseLong(SessionUtils.getUserId())));
     }
-    
+
     public void confirm() {
         JSUtils.callJSMethod("PF('close_account').show()");
     }
-    
+
     public void closeAccount(DepositAccount da) {
         System.out.println("Closing account");
         if (da.getBalance().compareTo(BigDecimal.ZERO) == 0) {
@@ -67,7 +70,7 @@ public class CustomerDepositAccountSummaryManagedBean implements Serializable {
             MessageUtils.displayError("Make sure your account balance is zero before closure!");
         }
     }
-    
+
     public void viewTransaction(DepositAccount da) {
         // Go to Message View
         Map<String, String> map = new HashMap<>();
@@ -96,6 +99,5 @@ public class CustomerDepositAccountSummaryManagedBean implements Serializable {
     public StatusType getACCOUNT_ACTIVE() {
         return ACCOUNT_ACTIVE;
     }
-    
-}
 
+}

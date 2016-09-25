@@ -1345,7 +1345,7 @@ public class EntityBuilderBean {
         savingAccount.setType(DepositAccountType.SAVING);
         savingAccount.setStatus(StatusType.ACTIVE);
         savingAccount.setProduct(depositProductSessionBean.getDepositProductByName(ConstantUtils.DEMO_SAVING1_DEPOSIT_PRODUCT_NAME));
-        savingAccount.setBalance(new BigDecimal(1000));
+        savingAccount.setBalance(new BigDecimal(0));
         savingAccount.setMainAccount(demoMainAccount);
         customerDepositSessionBean.createAccount(savingAccount);
 
