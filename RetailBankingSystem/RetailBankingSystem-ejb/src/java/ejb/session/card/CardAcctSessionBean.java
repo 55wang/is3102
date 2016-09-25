@@ -356,33 +356,7 @@ public class CardAcctSessionBean implements CardAcctSessionBeanLocal {
     }
 
     // redeem credit card reward generate code
-    public String redeemPromoCode(CreditCardAccount cca, String PromoName) {
-        String code = null;
-        do {
-            try {
-                code = server.utilities.CommonHelper.generateRandom(true, 12);
-                Query q = em.createQuery("SELECT pc FROM PromoCode pc WHERE pc.promotionCode =:inCode");
-                q.setParameter("inCode", code);
-                Object result = q.getSingleResult();
-                if (result != null) {
-                    code = null;
-                }
-            } catch (NullPointerException npe) {
-            }
-        } while (code != null); //generate a code that is not found in database
-
-        try {
-            PromoCode pc = new PromoCode();
-            pc.setPromotionName(PromoName);
-            pc.setPromotionCode(code);
-            pc.setCreditCardAccount(cca);
-            cca.getPromoCode().add(pc);
-            em.merge(cca);
-            return code;
-        } catch (Exception e) {
-            return null;
-        }
-    }
+    
 
     @Override
     public DebitCardAccount createDebitAccount(CustomerDepositAccount da) {

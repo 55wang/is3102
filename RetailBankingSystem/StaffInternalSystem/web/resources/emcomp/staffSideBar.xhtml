@@ -96,9 +96,15 @@
                         </li>
                         
                         <li class="side-menu-item #{cc.attrs.side == 'cardIssue' ? 'active' : ''}">
-                            <h:link outcome="card-Issue" value="Issue Card" />
+                            <h:link outcome="card-issue" value="Issue Card" />
                         </li>
                         
+                    </c:if>
+                    
+                    <c:if test="#{cc.attrs.top == 'promo'}">
+                        <li class="side-menu-item #{cc.attrs.side == 'viewPromo' ? 'active' : ''}">
+                            <h:link outcome="staff-view-promo" value="Promo Products" />
+                        </li>
                     </c:if>
                 </ul>
             </div>
