@@ -15,6 +15,11 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.Dependent;
+import javax.smartcardio.CardChannel;
+import static nfcCardDevice.NfcDevice.creditCardNumberToNFC;
+import static nfcCardDevice.NfcDevice.initializeDevice;
+import static nfcCardDevice.NfcDevice.readCard;
+import static nfcCardDevice.NfcDevice.writeCard;
 import server.utilities.EnumUtils;
 import utils.MessageUtils;
 import utils.SessionUtils;
@@ -31,14 +36,15 @@ public class CardIssueManagedBean {
     private UtilsSessionBeanLocal utilsBean;
     @EJB
     CardAcctSessionBeanLocal cardAcctSessionBean;
-    
+
     private List<CreditCardAccount> ccas;
+
     /**
      * Creates a new instance of CardIssueManagedBean
      */
     public CardIssueManagedBean() {
     }
-    
+
     @PostConstruct
     public void init() {
         AuditLog a = new AuditLog();
@@ -50,17 +56,39 @@ public class CardIssueManagedBean {
     
         setCcas(cardAcctSessionBean.showAllPendingCreditCardOrder());
     }
-    
+
     public void issueCard(CreditCardAccount cca) {
-        // TODO: Read to card
-        
-        cca.setCardStatus(EnumUtils.CardAccountStatus.ISSUED);
-        CreditCardAccount result = cardAcctSessionBean.updateCreditCardAccount(cca);
-        if (result == null) {
-            MessageUtils.displayError("Something went wrong!");
-        } else {
-            MessageUtils.displayInfo("Credit Card Issued!");
+        // TODO: write to card
+        String ccNum = cca.getCreditCardNum();
+        System.out.println("*** Start nfc device ***");
+        boolean writeStatus = false;
+
+        try {
+            CardChannel channel = initializeDevice();
+            writeCard(channel, ccNum); //32 digit
+            if (readCard(channel).equals(ccNum)) {
+                System.out.println("read card to confirm success");
+                writeStatus = true;
+            } else {
+                writeStatus = false;
+            }
+
+        } catch (Exception ex) {
+            System.out.println("error" + ex);
+            writeStatus = false;
         }
+
+        if (writeStatus) {
+            cca.setCardStatus(EnumUtils.CardAccountStatus.ISSUED);
+            CreditCardAccount result = cardAcctSessionBean.updateCreditCardAccount(cca);
+            if (result == null) {
+                MessageUtils.displayError("Something went wrong!");
+            } else {
+                MessageUtils.displayInfo("Credit Card Issued!");
+            }
+        }
+        //if success then continue
+
     }
 
     /**
