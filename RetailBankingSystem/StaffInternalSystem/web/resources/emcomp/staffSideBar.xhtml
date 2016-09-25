@@ -73,14 +73,18 @@
                     </c:if>
                     <c:if test="#{cc.attrs.top == 'setting'}">
                         <li class="side-menu-item #{cc.attrs.side == 'viewProfile' ? 'active' : ''}">
-                            <h:link outcome="staff_view_profile" value="View Profile" />
+                            <h:link outcome="staff_view_profile" value="Profile" />
                         </li>
                         <li class="side-menu-item #{cc.attrs.side == 'resetPassword' ? 'active' : ''}">
                             <h:link outcome="staff_login_reset_pwd" value="Reset Password" />
                         </li>
                         <li class="side-menu-item #{cc.attrs.side == 'viewAccess' ? 'active' : ''}">
-                            <h:link outcome="staff_view_access" value="View Access" />
+                            <h:link outcome="staff_view_access" value="Access List" />
                         </li>
+                        <li class="side-menu-item #{cc.attrs.side == 'viewActivities' ? 'active' : ''}">
+                            <h:link outcome="staff_view_auditlog" value="Activities" />
+                        </li>
+                        
                     </c:if>
                     <c:if test="#{cc.attrs.top == 'card'}">
                         <li class="side-menu-item #{cc.attrs.side == 'viewCard' ? 'active' : ''}">
