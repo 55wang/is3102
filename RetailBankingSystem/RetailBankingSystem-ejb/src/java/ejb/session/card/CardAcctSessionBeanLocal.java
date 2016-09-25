@@ -55,4 +55,6 @@ public interface CardAcctSessionBeanLocal {
     public List<CardTransaction> getMonthlyTransactionFromAccount(CreditCardAccount creditCard);
     
     public CardTransaction getSpecificCaedTransactionFromId(Long ccaId);
+    
+    public String updateCreditCardOrder(CreditCardOrder cco);
 }
