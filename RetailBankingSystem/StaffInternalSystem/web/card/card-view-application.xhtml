@@ -14,7 +14,7 @@
         </h:head>
         <h:body>
             <em:staffNavBar context="card"></em:staffNavBar>
-            <em:staffSideBar top="card" side="viewCard"></em:staffSideBar>
+            <em:staffSideBar top="card" side="cardAppView"></em:staffSideBar>
 
             <div class="container">
                 <h:form id="mainForm">
@@ -22,6 +22,10 @@
                         <p:messages id="messagesStatus" redisplay="false" >
                             <h:panelGrid columns="2" cellpadding="5">
                                 <p:dataTable value="#{cardViewCreditApplicationManagedBean.ccos}" var="cco" >
+
+                                    <p:column style="width:16px">
+                                        <p:rowToggler />
+                                    </p:column>
 
                                     <p:column headerText="Card Application Order">
                                         <h:outputText value="#{cco.id}" />
@@ -31,29 +35,37 @@
                                         <h:outputText value="#{cco.creditCardProduct.productName}" />
                                     </p:column>
 
-                                    <p:column headerText="Income">
-                                        <h:outputText value="#{cco.income}" />
-                                    </p:column>
+                                    <p:rowExpansion>
+                                        <p:panelGrid  columns="2" columnClasses="label,value" style="width:500px; margin:auto" >
+                                            <f:facet name="header">
+                                                Basic Information
+                                            </f:facet>
 
-                                    <p:column headerText="Employment Status">
-                                        <h:outputText value="#{cco.employmentStatus}" />
-                                    </p:column>
+                                            <h:outputText value="Last Name: " />
+                                            <h:outputText value="#{customer.lastname}" style="width:97%"/>
 
-                                    <p:column headerText="Education">
-                                        <h:outputText value="#{cco.eduLevel}" />
-                                    </p:column>
+                                            <h:outputText value="Income: " />
+                                            <h:outputText value="#{cco.income}" />
 
-                                    <p:column headerText="Industry">
-                                        <h:outputText value="#{cco.industry}" />
-                                    </p:column>
+                                            <h:outputText value="Employment Status: " />
+                                            <h:outputText value="#{cco.employmentStatus}" />
 
-                                    <p:column headerText="Marital Status">
-                                        <h:outputText value="#{cco.maritalStatus}" />
-                                    </p:column>
+                                            <h:outputText value="Education " />
+                                            <h:outputText value="#{cco.eduLevel}" />
 
-                                    <p:column headerText="No. of Deps">
-                                        <h:outputText value="#{cco.numOfDependents}" />
-                                    </p:column>
+                                            <h:outputText value="Industry: " />
+                                            <h:outputText value="#{cco.industry}" />
+
+                                            <h:outputText value="Marital Status: " />
+                                            <h:outputText value="#{cco.maritalStatus}" />
+
+                                            <h:outputText value="No. of Deps: " />
+                                            <h:outputText value="#{cco.numOfDependents}" />
+                                        </p:panelGrid>
+
+
+                                    </p:rowExpansion>
+
 
                                     <p:column headerText="Status">
                                         <h:outputText value="#{cco.applicationStatus}" />
@@ -74,9 +86,9 @@
                                         <h:outputText value="#{cco.creditScore}" />
                                     </p:column>
                                     <p:column headerText="Action">
-                                        <p:commandButton value="Credit Score" action="#{cardViewCreditApplicationManagedBean.calculateCreditScore(cco.id)}" icon="ui-icon-lightbulb" update="@form" />
-                                        <p:commandButton value="Approve" action="#{cardViewCreditApplicationManagedBean.approveOrder(cco.id)}" icon="ui-icon-check" update="@form" />
-                                        <p:commandButton value="Reject" action="#{cardViewCreditApplicationManagedBean.rejectOrder(cco.id)}" icon="ui-icon-close" update="@form" />
+                                        <p:commandButton value="Credit Score" action="#{cardViewCreditApplicationManagedBean.calculateCreditScore(cco)}" icon="ui-icon-lightbulb" update="@form" />
+                                        <p:commandButton value="Approve" action="#{cardViewCreditApplicationManagedBean.approveOrder(cco)}" icon="ui-icon-check" update="@form" />
+                                        <p:commandButton value="Reject" action="#{cardViewCreditApplicationManagedBean.rejectOrder(cco)}" icon="ui-icon-close" update="@form" />
                                     </p:column>
                                 </p:dataTable>
                             </h:panelGrid>

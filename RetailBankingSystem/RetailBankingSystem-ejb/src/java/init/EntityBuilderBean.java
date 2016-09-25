@@ -113,6 +113,7 @@ public class EntityBuilderBean {
     private List<Interest> demoConditionalInterestDataForCustomDepositProduct = new ArrayList<>();
     private List<Interest> demoConditionalInterestDataForSavingsDepositProduct = new ArrayList<>();
     private MainAccount demoMainAccount;
+    private RewardCardProduct demoRewardCardProduct;
 
     @PostConstruct
     public void init() {
@@ -177,6 +178,7 @@ public class EntityBuilderBean {
         initDepositAccounts();
 
         initCreditCardProduct();
+        initCreditCardOrder();
         initCase();
         initCreditCardOrder();
 
@@ -213,7 +215,7 @@ public class EntityBuilderBean {
         rcp.setMinSpending(true);
         rcp.setMinSpendingAmount(700);
         rcp.setProductName("Merlion RewardCard2");
-        newCardProductSessionBean.createRewardProduct(rcp);
+        demoRewardCardProduct = newCardProductSessionBean.createRewardProduct(rcp);
 
         CashBackCardProduct cbcp = new CashBackCardProduct();
         cbcp.setDiningCashBackRate(0.9);

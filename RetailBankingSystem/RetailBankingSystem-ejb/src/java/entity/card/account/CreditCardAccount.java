@@ -5,6 +5,7 @@
  */
 package entity.card.account;
 
+import entity.customer.Customer;
 import entity.customer.MainAccount;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -35,13 +36,20 @@ import server.utilities.EnumUtils.*;
 // LY: What if Bank needs to create a new credit card type with attractive offers?
 public class CreditCardAccount implements Serializable {
 
+    public CreditCardAccount() {}
+    public CreditCardAccount(CreditCardOrder cco, Customer c) {
+        this.creditCardProduct = cco.getCreditCardProduct();
+        this.mainAccount = c.getMainAccount();
+        this.CardStatus = CardAccountStatus.PENDING;
+    }
+    
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(cascade = CascadeType.MERGE)
     private MainAccount mainAccount;
-    @ManyToOne(cascade = {CascadeType.PERSIST})
+    @ManyToOne(cascade = {CascadeType.MERGE})
     private CreditCardProduct creditCardProduct;
     @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "creditCardAccount")
     private List<PromoCode> promoCode = new ArrayList<>();
@@ -74,6 +82,13 @@ public class CreditCardAccount implements Serializable {
 
     @Temporal(value = TemporalType.DATE)
     private Date overDueDuration;
+    
+    public String getPartialHiddenAccountNumber() {
+        return this.creditCardNum.substring(
+                this.creditCardNum.length() - 4, 
+                this.creditCardNum.length()
+        );
+    }
     
     public void addOutstandingAmount(double amount) {
         this.outstandingAmount += amount;
