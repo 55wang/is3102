@@ -29,7 +29,7 @@
 
                                         <tr><div style="margin-left:120px;margin-top:40px">
                                                 <h:outputText style="font-weight:bolder" value="Choose Your Deposit Account: " />
-                                                <p:selectOneMenu value="#{customerApplicationManagedBean.initialDepositAccount}" style="width:187px; height: 31px; line-height: 21px; top:8px" rendered="true" required="true" requiredMessage="Deposit account is required.">
+                                                <p:selectOneMenu value="#{customerApplicationManagedBean.initialDepositAccount}" style="width:187px; height: 31px; line-height: 21px; top:8px" rendered="true" >
                                                     <f:selectItem itemLabel="Please Select..." itemValue="" />
                                                     <f:selectItem itemLabel="MBS Current Account" itemValue="MBS Current Account" />
                                                     <f:selectItem itemLabel="Merlion Account" itemValue="Merlion Account" />
@@ -88,7 +88,7 @@
 
 
                                     <h:outputText value="Identity Type: " />
-                                    <p:selectOneMenu value="#{customerApplicationManagedBean.selectedIdentityType}" style="width:187px; height: 31px; line-height: 21px; top:8px" rendered="true" label="identityType" required="true" requiredMessage="Identity type is required.">
+                                    <p:selectOneMenu value="#{customerApplicationManagedBean.selectedIdentityType}" style="width:187px; height: 31px; line-height: 21px; top:8px" rendered="true" label="identityType" >
                                         <f:selectItem itemLabel="Please select.." itemValue=""/>                                                    
                                         <f:selectItems value="#{customerApplicationManagedBean.identityTypeOptions}" />
                                     </p:selectOneMenu>
@@ -96,6 +96,8 @@
                                     <h:outputText value="Identity Number: " />
                                     <p:inputText value="#{customerApplicationManagedBean.customer.identityNumber}" required="true" requiredMessage="Identity number is required." validatorMessage="Invalid identity number.">
                                         <f:validateLength minimum="9" maximum="9" />
+                                        <f:validateRegex
+                                            pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
                                     </p:inputText>
 
                                     <h:outputText value="Nationality: " />

@@ -29,31 +29,45 @@
 
                                         <tr><div style="margin-left:120px;margin-top:0px">
                                                 <h:outputText style="font-weight:bolder" value="Choose Your Credit Card Account: " />
-                                                <p:selectOneMenu value="#{customerApplicationManagedBean.initialDepositAccount}" style="width:187px; height: 41px; line-height: 21px; top:10px" rendered="true" required="true">
-                                                    <f:selectItem itemLabel="Please Select..." itemValue="" />
-                                                    <f:selectItem itemLabel="MBS Miles Credit Card" itemValue="MILES" />
-                                                    <f:selectItem itemLabel="MBS Reward Credit Card" itemValue="REWARD" />
-                                                    <f:selectItem itemLabel="MBS Fixed Credit Card" itemValue="FIXED" />
+                                                <p:selectOneMenu value="#{newCardManagedBean.selectedProductName}" style="width:187px; height: 41px; line-height: 21px; top:10px" rendered="true" required="true">
+                                                    <f:selectItems value="#{newCardManagedBean.productNameOptions}" />
                                                 </p:selectOneMenu>
 
                                                 <h:outputText value="Name Appear On Card: " />
-                                                <p:inputText value="#{customerApplicationManagedBean.customer.firstname}" required="true"/><br />
+                                                <p:inputText value="#{newCardManagedBean.nameAppearOnCard}" required="true"/><br />
                                                 <h:outputText value="Number of Dependents: " />
-                                                <p:inputText value="#{customerApplicationManagedBean.customer.occupation}" required="true"/><br />
+                                                <p:inputText value="#{newCardManagedBean.numOfDependents}" required="true"/><br />
+
                                                 <h:outputText value="Residential Status: " />
-                                                <p:inputText value="#{customerApplicationManagedBean.customer.occupation}" required="true"/><br />
+                                                <p:selectOneMenu value="#{newCardManagedBean.selectedResidentialStatus}" style="width:187px; height: 41px; line-height: 21px; top:10px" rendered="true" required="true">
+                                                    <f:selectItems value="#{newCardManagedBean.residentialStatusOptions}" />
+                                                </p:selectOneMenu>
+
                                                 <h:outputText value="Residential Type: " />
-                                                <p:inputText value="#{customerApplicationManagedBean.customer.occupation}" required="true"/><br />
+                                                <p:selectOneMenu value="#{newCardManagedBean.selectedResidentialType}" style="width:187px; height: 41px; line-height: 21px; top:10px" rendered="true" required="true">
+                                                    <f:selectItems value="#{newCardManagedBean.residentialTypeOptions}" />
+                                                </p:selectOneMenu>
+
                                                 <h:outputText value="Education Level: " />
-                                                <p:inputText value="#{customerApplicationManagedBean.customer.occupation}" required="true"/><br />
+                                                <p:selectOneMenu value="#{newCardManagedBean.selectedEducation}" style="width:187px; height: 41px; line-height: 21px; top:10px" rendered="true" required="true">
+                                                    <f:selectItems value="#{newCardManagedBean.educationOptions}" />
+                                                </p:selectOneMenu>
+
                                                 <h:outputText value="Employment Status: " />
-                                                <p:inputText value="#{customerApplicationManagedBean.customer.occupation}" required="true"/><br />
+                                                <p:selectOneMenu value="#{newCardManagedBean.selectedEmploymentStatus}" style="width:187px; height: 41px; line-height: 21px; top:10px" rendered="true" required="true">
+                                                    <f:selectItems value="#{newCardManagedBean.employmentStatusOptions}" />
+                                                </p:selectOneMenu>
                                                 <h:outputText value="Industry: " />
-                                                <p:inputText value="#{customerApplicationManagedBean.customer.occupation}" required="true"/><br />
-                                                <h:outputText value="Position: " />
-                                                <p:inputText value="#{customerApplicationManagedBean.customer.occupation}" required="true"/><br />
+                                                <p:selectOneMenu value="#{newCardManagedBean.selectedIndustry}" style="width:187px; height: 41px; line-height: 21px; top:10px" rendered="true" required="true">
+                                                    <f:selectItems value="#{newCardManagedBean.industryOptions}" />
+                                                </p:selectOneMenu>
+
+                                                <h:outputText value="Occupation: " />
+                                                <p:selectOneMenu value="#{newCardManagedBean.selectedOccupation}" style="width:187px; height: 41px; line-height: 21px; top:10px" rendered="true" required="true">
+                                                    <f:selectItems value="#{newCardManagedBean.occupationOptions}" />
+                                                </p:selectOneMenu>
                                                 <h:outputText value="Company: " />
-                                                <p:inputText value="#{customerApplicationManagedBean.customer.occupation}" required="true"/><br />
+                                                <p:inputText value="#{newCardManagedBean.company}" required="true"/><br />
                                                 <!-- need employmentpass, identitycert,incometax, other cert, payslip, cpf -->
 
                                             </div></tr>
@@ -106,30 +120,32 @@
                                 <h:panelGrid columns="2" columnClasses="label, value">
 
                                     <h:outputText value="Identity Type: " />
-                                    <p:selectOneMenu value="#{customerApplicationManagedBean.customer.identityType}" style="width:187px; height: 31px; line-height: 21px; top:8px" rendered="true" label="identityType" required="true">
-                                        <f:selectItem itemLabel="Please Select..." />
-                                        <f:selectItem itemLabel="Singaporean/PR NRIC" itemValue="NRIC" />
-                                        <f:selectItem itemLabel="Passport" itemValue="PASSPORT" />
+                                    <p:selectOneMenu value="#{newCardManagedBean.selectedIdentityType}" style="width:187px; height: 41px; line-height: 21px; top:10px" rendered="true" required="true">
+                                        <f:selectItems value="#{newCardManagedBean.identityTypeOptions}" />
                                     </p:selectOneMenu>
 
                                     <h:outputText value="Identity Number: " />
-                                    <p:inputText value="#{customerApplicationManagedBean.customer.identityNumber}" required="true"/>
+                                    <p:inputText value="#{newCardManagedBean.identityNumber}" required="true"/>
 
                                     <h:outputText value="Nationality: " />
-                                    <p:inputText value="#{customerApplicationManagedBean.customer.nationality}" required="true"/>
+                                    <p:selectOneMenu value="#{newCardManagedBean.selectedNationality}" style="width:187px; height: 41px; line-height: 21px; top:10px" rendered="true" required="true">
+                                        <f:selectItems value="#{newCardManagedBean.nationalityOptions}" />
+                                    </p:selectOneMenu>
 
-                                    
+
                                     <h:outputText value="Saluation: " />
-                                    <p:inputText value="#{customerApplicationManagedBean.customer.lastname}" required="true"/>
-                                    
+                                    <p:selectOneMenu value="#{newCardManagedBean.selectedSalutation}" style="width:187px; height: 41px; line-height: 21px; top:10px" rendered="true" required="true">
+                                        <f:selectItems value="#{newCardManagedBean.saluationOptions}" />
+                                    </p:selectOneMenu>
+
                                     <h:outputText value="Last Name: " />
-                                    <p:inputText value="#{customerApplicationManagedBean.customer.lastname}" required="true"/>
+                                    <p:inputText value="#{newCardManagedBean.lastName}" required="true"/>
 
                                     <h:outputText value="First Name: " />
-                                    <p:inputText value="#{customerApplicationManagedBean.customer.firstname}" required="true"/>
+                                    <p:inputText value="#{newCardManagedBean.firstName}" required="true"/>
 
                                     <h:outputText value="Date of Birth: " />
-                                    <p:calendar value="#{customerApplicationManagedBean.customer.birthDay}" navigator="true" yearRange="c-100:c+0" required="true" pattern="yyyy-MM-dd"/>
+                                    <p:calendar value="#{newCardManagedBean.birthDate}" navigator="true" yearRange="c-100:c+0" required="true" pattern="yyyy-MM-dd"/>
                                 </h:panelGrid>
 
                                 <div class="register-form-button">
@@ -145,29 +161,31 @@
                                 <p:messages />
                                 <h:panelGrid columns="2" columnClasses="label, value">
                                     <h:outputText value="Gender " />
-                                    <p:selectOneMenu value="#{customerApplicationManagedBean.customer.gender}" style="width:187px; height: 31px; line-height: 21px; top:8px" rendered="true" label="income" required="true">
-                                        <f:selectItem itemLabel="Please Select..." />
-                                        <f:selectItem itemLabel="Male" itemValue="MALE" />
-                                        <f:selectItem itemLabel="Female" itemValue="FEMALE" />
+                                    <p:selectOneMenu value="#{newCardManagedBean.selectedGender}" style="width:187px; height: 41px; line-height: 21px; top:10px" rendered="true" required="true">
+                                        <f:selectItems value="#{newCardManagedBean.genderOptions}" />
                                     </p:selectOneMenu>
 
                                     <h:outputText value="Occupation: " />
-                                    <p:inputText value="#{customerApplicationManagedBean.customer.occupation}" required="true"/>
+                                    <p:selectOneMenu value="#{newCardManagedBean.selectedOccupation}" style="width:187px; height: 41px; line-height: 21px; top:10px" rendered="true" required="true">
+                                        <f:selectItems value="#{newCardManagedBean.occupationOptions}" />
+                                    </p:selectOneMenu>
 
                                     <h:outputText value="Income " />
-                                    <p:inputText value="#{customerApplicationManagedBean.customer.income}" required="true"/>
-
+                                    <p:selectOneMenu value="#{newCardManagedBean.selectedIncome}" style="width:187px; height: 41px; line-height: 21px; top:10px" rendered="true" required="true">
+                                        <f:selectItems value="#{newCardManagedBean.incomeOptions}" />
+                                    </p:selectOneMenu>
+                                    
                                     <h:outputText value="Email: " />
-                                    <p:inputText value="#{customerApplicationManagedBean.customer.email}" required="true"/>
+                                    <p:inputText value="#{newCardManagedBean.email}" required="true"/>
 
                                     <h:outputText value="Phone: " />
-                                    <p:inputText value="#{customerApplicationManagedBean.customer.phone}" required="true"/>
+                                    <p:inputText value="#{newCardManagedBean.phone}" required="true"/>
 
                                     <h:outputText value="Postal Code: " />
-                                    <p:inputText value="#{customerApplicationManagedBean.customer.postalCode}" required="true"/>
+                                    <p:inputText value="#{newCardManagedBean.postalCode}" required="true"/>
 
                                     <h:outputText value="Address: " />
-                                    <p:inputText value="#{customerApplicationManagedBean.customer.address}" required="true"/>
+                                    <p:inputText value="#{newCardManagedBean.address}" required="true"/>
 
 
                                 </h:panelGrid>
@@ -183,57 +201,27 @@
                             <p:panel>
                                 <p:scrollPanel id="confirmation" style="height:238px">
                                     <h:panelGrid columns="2" columnClasses="label, value">
-                                        <h:outputText value="Initial Deposit Account: " />
-                                        <h:outputText value="#{customerApplicationManagedBean.initialDepositAccount}" styleClass="outputLabel"/>
+                                        <h:outputText value="Credit Card Account: " />
+                                        <h:outputText value="#{newCardManagedBean.selectedProductName}" styleClass="outputLabel"/>
 
-                                        <h:outputText value="Identity Type: " />
-                                        <h:outputText value="#{customerApplicationManagedBean.customer.identityType}" styleClass="outputLabel"/>
+                                        <h:outputText value="Name Appear on Card: " />
+                                        <h:outputText value="#{newCardManagedBean.nameAppearOnCard}" styleClass="outputLabel"/>
 
                                         <h:outputText value="Identity Number: " />
-                                        <h:outputText value="#{customerApplicationManagedBean.customer.identityNumber}" styleClass="outputLabel"/>
-
-                                        <h:outputText value="Nationality: " />
-                                        <h:outputText value="#{customerApplicationManagedBean.customer.nationality}" styleClass="outputLabel"/>
-
-                                        <h:outputText value="Last Name: " />
-                                        <h:outputText value="#{customerApplicationManagedBean.customer.lastname}" styleClass="outputLabel"/>
-
-                                        <h:outputText value="First Name: " />
-                                        <h:outputText value="#{customerApplicationManagedBean.customer.firstname}" styleClass="outputLabel"/>
-
-                                        <h:outputText value="Date of Birth: " />
-                                        <h:outputText value="#{customerApplicationManagedBean.customer.birthDay}" styleClass="outputLabel">
-                                            <f:convertDateTime type="date" pattern="dd-MM-yyyy"/>
-                                        </h:outputText>
-
-                                        <h:outputText value="Gender: " />
-                                        <h:outputText value="#{customerApplicationManagedBean.customer.gender}" styleClass="outputLabel"/>
-
-                                        <h:outputText value="Occupation " />
-                                        <h:outputText value="#{customerApplicationManagedBean.customer.occupation}" styleClass="outputLabel"/>
-
-                                        <h:outputText value="Income " />
-                                        <h:outputText value="#{customerApplicationManagedBean.customer.income}" styleClass="outputLabel"/>
+                                        <h:outputText value="#{newCardManagedBean.identityNumber}" styleClass="outputLabel"/>
 
                                         <h:outputText value="Email: " />
-                                        <h:outputText value="#{customerApplicationManagedBean.customer.email}" styleClass="outputLabel"/>
+                                        <h:outputText value="#{newCardManagedBean.email}" styleClass="outputLabel"/>
 
                                         <h:outputText value="Phone: " />
-                                        <h:outputText value="#{customerApplicationManagedBean.customer.phone}" styleClass="outputLabel"/>
-
-                                        <h:outputText value="Postal Code: " />
-                                        <h:outputText value="#{customerApplicationManagedBean.customer.postalCode}" styleClass="outputLabel"/>
-
-                                        <h:outputText value="Address: " />
-                                        <h:outputText value="#{customerApplicationManagedBean.customer.address}" styleClass="outputLabel"/>
+                                        <h:outputText value="#{newCardManagedBean.phone}" styleClass="outputLabel"/>
                                     </h:panelGrid>
-
 
                                 </p:scrollPanel>
 
                                 <div class="register-form-button" style="margin-top: 0px">
                                     <p:commandButton value="Back" type="button" onclick="PF('myWizard').back();" />
-                                    <p:commandButton value="Confirm" actionListener="#{customerApplicationManagedBean.save}" update="growl" process="@this"/>
+                                    <p:commandButton value="Confirm" actionListener="#{newCardManagedBean.saveUpdatedCreditCardOrder()}" update="growl" process="@this"/>
                                 </div>
                             </p:panel>
                         </p:tab>

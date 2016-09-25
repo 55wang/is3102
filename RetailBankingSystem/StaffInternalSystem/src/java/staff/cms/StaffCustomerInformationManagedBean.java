@@ -88,6 +88,7 @@ public class StaffCustomerInformationManagedBean implements Serializable {
         selectedCustomer.setMaritalStatus(MaritalStatus.getEnum(selectedMaritalStatus));
         selectedCustomer.setEducation(Education.getEnum(selectedEducation));
        
+
         if (utilsSessionBean.checkUpdatedEmailIsUnique(selectedCustomer) == false) {
             MessageUtils.displayInfo("Email is registered!");
 

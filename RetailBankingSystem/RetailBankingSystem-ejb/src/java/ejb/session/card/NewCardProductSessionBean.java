@@ -6,6 +6,7 @@
 package ejb.session.card;
 
 import entity.card.account.CashBackCardProduct;
+import entity.card.account.CreditCardProduct;
 import entity.card.account.MileCardProduct;
 import entity.card.account.RewardCardProduct;
 import java.util.List;
@@ -70,6 +71,19 @@ public class NewCardProductSessionBean implements NewCardProductSessionBeanLocal
     @Override
     public void createCashBackProduct(CashBackCardProduct cbcp) {
         em.persist(cbcp);
+    }
+
+    @Override
+    public List<CreditCardProduct> getAllCreditCardProducts() {
+        Query q = em.createQuery("SELECT ccp FROM CreditCardProduct ccp");
+        return q.getResultList();
+    }
+
+    @Override
+    public CreditCardProduct getSingleCreditCardProduct(String productName) {
+        Query q = em.createQuery("SELECT ccp FROM CreditCardProduct ccp WHERE ccp.productName=:inPName");
+        q.setParameter("inPName", productName);
+        return (CreditCardProduct)q.getSingleResult();
     }
 
 }
