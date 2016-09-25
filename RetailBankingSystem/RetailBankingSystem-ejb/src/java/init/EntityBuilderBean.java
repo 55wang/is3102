@@ -7,6 +7,7 @@ package init;
 
 import BatchProcess.InterestAccrualSessionBeanLocal;
 import ejb.session.card.CardAcctSessionBeanLocal;
+import ejb.session.card.CardTransactionSessionBeanLocal;
 import ejb.session.card.NewCardProductSessionBeanLocal;
 import ejb.session.cms.CustomerCaseSessionBeanLocal;
 import ejb.session.common.NewCustomerSessionBeanLocal;
@@ -99,6 +100,8 @@ public class EntityBuilderBean {
     private CardAcctSessionBeanLocal cardAcctSessionBean;
     @EJB
     private CurrentAccountChequeSessionBeanLocal chequeBean;
+    @EJB
+    private CardTransactionSessionBeanLocal cardTransactionBean;
 
     private Interest demoNormalInterestData;
     private List<Interest> demoRangeInterestData = new ArrayList<>();
@@ -115,6 +118,7 @@ public class EntityBuilderBean {
             buildEntities();
         } else {
             testInterestRules();
+            testCreditCard();
         }
     }
 
@@ -123,8 +127,29 @@ public class EntityBuilderBean {
         StaffAccount sa = staffAccountSessionBean.getAccountByUsername(ConstantUtils.SUPER_ADMIN_USERNAME);
         return sa == null;
     }
+    
+    private void testCreditCard() {
+        
+        Date startDate = DateUtils.getBeginOfDay();
+        Date endDate = DateUtils.getEndOfDay();
+        
+        System.out.println(startDate);
+        System.out.println(startDate);
+        List<CardTransaction> result = cardTransactionBean.retrieveTransactionByDate(startDate, endDate);
+        System.out.println(result);
+//        System.out.println("testCreditCard");
+//        try {
+//            CreditCardAccount c = cardAcctSessionBean.getCardByCardNumber("4545454545454545");
+//            System.out.println(c);
+//        } catch(Exception e) {
+////            e.printStackTrace();
+//        }
+//        List<CreditCardAccount> cards = cardAcctSessionBean.showAllCreditCardAccount(EnumUtils.CardAccountStatus.CLOSED, 8L);
+//        System.out.println(cards);
+    }
 
     private void testInterestRules() {
+        
         // Get Product
 //        DepositAccount da = customerDepositSessionBean.getAccountFromId(1L);
 //        // Get Interest
@@ -208,38 +233,35 @@ public class EntityBuilderBean {
         cca.setOutstandingAmount(0);
         cca.setCardStatus(EnumUtils.CardAccountStatus.ACTIVE);
         cca.setMainAccount(demoMainAccount);
+        CreditCardAccount result = cardAcctSessionBean.createCardAccount(cca);
 
-        List<CardTransaction> cts = new ArrayList<>();
         CardTransaction cardTransaction = new CardTransaction();
         cardTransaction.setCardTransactionStatus(CardTransactionStatus.PENDINGTRANSACTION);
         cardTransaction.setAmount(500);
         cardTransaction.setIsCredit(true);
         cardTransaction.setTransactionCode("MST");
         cardTransaction.setTransactionDescription("AMAZON SERVICE USD378.50");
+        cardTransaction.setCreditCardAccount(cca);
+        cardAcctSessionBean.createCardAccountTransaction(result.getCreditCardNum(), cardTransaction);
         
         cardTransaction = new CardTransaction();
-        cardTransaction.setUpdateDate(DateUtils.getBeginOfMonth());
         cardTransaction.setCardTransactionStatus(CardTransactionStatus.PENDINGTRANSACTION);
         cardTransaction.setAmount(200);
         cardTransaction.setIsCredit(true);
         cardTransaction.setTransactionCode("MST");
         cardTransaction.setTransactionDescription("Apple SERVICE USD168.50");
+        cardTransaction.setCreditCardAccount(cca);
+        cardAcctSessionBean.createCardAccountTransaction(result.getCreditCardNum(), cardTransaction);
         
         cardTransaction = new CardTransaction();
-        cardTransaction.setUpdateDate(DateUtils.getBeginOfMonth());
         cardTransaction.setCardTransactionStatus(CardTransactionStatus.PENDINGTRANSACTION);
         cardTransaction.setAmount(100);
         cardTransaction.setIsCredit(true);
         cardTransaction.setTransactionCode("MST");
         cardTransaction.setTransactionDescription("Microsoft SERVICE USD78.50");
-        
-        
-
-        cts.add(cardTransaction);
-        cca.setCardTransactions(cts);
         cardTransaction.setCreditCardAccount(cca);
-
-        cardAcctSessionBean.createCardAccount(cca);
+        cardAcctSessionBean.createCardAccountTransaction(result.getCreditCardNum(), cardTransaction);
+               
     }
 
     private void initStaffAndRoles() {

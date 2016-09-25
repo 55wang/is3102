@@ -62,6 +62,18 @@ public class DateUtils {
         setTimeToEndofDay(calendar);
         return calendar.getTime();
     }
+    
+    public static Date getBeginOfDay() {
+        Calendar calendar = getCalendarForNow();
+        setTimeToBeginningOfDay(calendar);
+        return calendar.getTime();
+    }
+
+    public static Date getEndOfDay() {
+        Calendar calendar = getCalendarForNow();
+        setTimeToEndofDay(calendar);
+        return calendar.getTime();
+    }
 
     public static Calendar getCalendarForNow() {
         Calendar calendar = GregorianCalendar.getInstance();

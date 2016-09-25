@@ -6,6 +6,8 @@
 package staff.admin;
 
 import ejb.session.dams.InterestSessionBeanLocal;
+import ejb.session.utils.UtilsSessionBeanLocal;
+import entity.common.AuditLog;
 import entity.dams.rules.ConditionInterest;
 import entity.dams.rules.Interest;
 import entity.dams.rules.RangeInterest;
@@ -26,6 +28,7 @@ import javax.faces.view.ViewScoped;
 import server.utilities.EnumUtils.InterestConditionType;
 import server.utilities.EnumUtils.InterestType;
 import utils.MessageUtils;
+import utils.SessionUtils;
 
 /**
  *
@@ -37,6 +40,8 @@ public class CreateInterestManagedBean implements Serializable {
     
     @EJB
     private InterestSessionBeanLocal interestSessionBean;
+    @EJB
+    private UtilsSessionBeanLocal utilsBean;
     
     private List<TimeRangeInterestCollectionDTO> collectionDTOs = new ArrayList<>();
     private List<Integer> colIndex = new ArrayList<>();
@@ -73,6 +78,12 @@ public class CreateInterestManagedBean implements Serializable {
 
     @PostConstruct
     public void init() {
+        AuditLog a = new AuditLog();
+        a.setActivityLog("System user enter create_interest.xhtml");
+        a.setFunctionName("CreateInterestManagedBean @PostConstruct init()");
+        a.setStaffAccount(SessionUtils.getStaff());
+        utilsBean.persist(a);
+        
         initCollection();
         interestType = INTEREST_TYPE_NORMAL;
         List<Interest> interests = interestSessionBean.showAllInterests();

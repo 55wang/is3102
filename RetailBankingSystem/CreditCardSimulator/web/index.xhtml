@@ -17,7 +17,10 @@ and open the template in the editor.
         </h:head>
         <h:body style="background-color: #f9f9f9">
             <h:form id="formMain">
-                <p:commandButton id="submit" value="Send" actionListener="#{simulatedCallManagedBean.initiating}" />
+                <h:outputText value="Transaction Amount:" />
+                <h:inputText required="true" value="#{simulatedCallManagedBean.transactionAmount}">
+                </h:inputText>
+                <p:commandButton id="success" value="Success Test" actionListener="#{simulatedCallManagedBean.sendSuccessAuthorization}" />
             </h:form>
         </h:body>
     </f:view>
