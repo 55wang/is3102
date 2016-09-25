@@ -5,6 +5,7 @@
  */
 package entity.card.account;
 
+import entity.customer.MainAccount;
 import java.io.Serializable;
 import java.sql.Blob;
 import java.util.Date;
@@ -30,7 +31,7 @@ public class CreditCardOrder implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(cascade = CascadeType.MERGE)
+    @ManyToOne(cascade = CascadeType.ALL)
     private CreditCardProduct creditCardProduct;
 
     private Salutation saluation;
@@ -68,6 +69,9 @@ public class CreditCardOrder implements Serializable {
     private Occupation occupation;
 
     private Industry industry;
+    
+    @ManyToOne
+    private MainAccount mainAccount;
 
     private String company;
     @Lob
@@ -407,4 +411,11 @@ public class CreditCardOrder implements Serializable {
         this.creditCardProduct = creditCardProduct;
     }
 
+    public MainAccount getMainAccount() {
+        return mainAccount;
+    }
+
+    public void setMainAccount(MainAccount mainAccount) {
+        this.mainAccount = mainAccount;
+    }
 }

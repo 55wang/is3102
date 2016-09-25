@@ -9,7 +9,9 @@ import ejb.session.card.CardAcctSessionBeanLocal;
 import ejb.session.card.NewCardProductSessionBeanLocal;
 import ejb.session.common.EmailServiceSessionBeanLocal;
 import ejb.session.common.NewCustomerSessionBeanLocal;
+
 import ejb.session.utils.UtilsSessionBeanLocal;
+import entity.card.account.CreditCardAccount;
 import entity.card.account.CreditCardOrder;
 import entity.common.AuditLog;
 import entity.customer.Customer;
@@ -82,10 +84,18 @@ public class CardViewCreditApplicationManagedBean implements Serializable {
         String randomPwd = generatePwd();
         mainAccount.setPassword(randomPwd);
         customer.setMainAccount(mainAccount);
-        newCustomerSessionBean.createCustomer(customer);
+        customer = newCustomerSessionBean.createCustomer(customer);
         System.out.println("Customer Saved");
+        CreditCardAccount cca = new CreditCardAccount(cco, customer);
+        cca = cardAcctSessionBean.createCardAccount(cca);
+        System.out.println("ccNumber:" + cca.getCreditCardNum());
+        System.out.println("ccNumberHidden" + cca.getPartialHiddenAccountNumber());
         try {
-            emailServiceSessionBean.sendCreditCardActivationGmailForCustomer(customer.getEmail(), randomPwd);
+            emailServiceSessionBean.sendCreditCardActivationGmailForCustomer(
+                    customer.getEmail(), 
+                    randomPwd, 
+                    cca.getCreditCardNum()
+            );
             MessageUtils.displayInfo("Order Approved!");
         } catch (Exception ex) {
             MessageUtils.displayError("Order Approved! But email send failed");

@@ -25,6 +25,7 @@ import server.utilities.EnumUtils;
 import server.utilities.EnumUtils.ApplicationStatus;
 import server.utilities.EnumUtils.CardAccountStatus;
 import server.utilities.GenerateAccountAndCCNumber;
+import server.utilities.PincodeGenerationUtils;
 
 /**
  *
@@ -50,8 +51,21 @@ public class CardAcctSessionBean implements CardAcctSessionBeanLocal {
     }
     
     @Override
+    public CreditCardAccount updateCreditCardAccount(CreditCardAccount cca) {
+        em.merge(cca);
+        return cca;
+    }
+    
+    @Override
     public List<CreditCardOrder> showAllCreditCardOrder() {
         Query q = em.createQuery("SELECT cco FROM CreditCardOrder cco");
+        return q.getResultList();
+    }
+    
+    @Override
+    public List<CreditCardAccount> showAllPendingCreditCardOrder() {
+        Query q = em.createQuery("SELECT cca FROM CreditCardAccount cca WHERE cca.CardStatus = :status");
+        q.setParameter("status", CardAccountStatus.PENDING);
         return q.getResultList();
     }
 
@@ -249,6 +263,12 @@ public class CardAcctSessionBean implements CardAcctSessionBeanLocal {
     @Override
     public CreditCardAccount createCardAccount(CreditCardAccount cca) {
         try {
+            if (cca.getCreditCardNum() == null || cca.getCreditCardNum().isEmpty()) {
+                cca.setCreditCardNum(generateMasterCardNumber());
+                cca.setCvv(Integer.parseInt(generateCVVNumber()));
+            }
+            System.out.println("Saving cca:" + cca.getCreditCardNum());
+            System.out.println("cca:" + cca.getPartialHiddenAccountNumber());
             em.persist(cca);
             return cca;
         } catch (Exception e) {
@@ -257,6 +277,26 @@ public class CardAcctSessionBean implements CardAcctSessionBeanLocal {
             System.out.println(e);
             return null;
         }
+    }
+    
+    private String generateMasterCardNumber() {
+        String ccNumber = "";
+        for(;;) {
+             ccNumber = GenerateAccountAndCCNumber.generateMasterCardNumber();
+             CreditCardAccount a = null;
+             try {
+                 a = getCardByCardNumber(ccNumber);
+             } catch (Exception e) {
+                 System.out.println("No cc number found in database");
+             }
+             if (a == null) {
+                 return ccNumber;
+             }
+        }
+    }
+    
+    private String generateCVVNumber() {
+        return PincodeGenerationUtils.generateRandom(true, 3);
     }
 
     //update cardaccount status 
@@ -274,7 +314,33 @@ public class CardAcctSessionBean implements CardAcctSessionBeanLocal {
         }
     }
 
+    @Override
+    public String updateDebitAccountStatus(DebitCardAccount dca, CardAccountStatus status) {
+        try {
+            dca.setCardStatus(status);
+            em.merge(dca);
+            return "SUCCESS";
+        } catch (Exception e) {
+            //always print an error msg 
+            System.out.println("NewCardSessionBean.updateCardAccountStatus Error");
+            System.out.println(e);
+            return null;
+        }
+    }
 
+    @Override
+    public String updateCardAcctTransactionDailyLimit(CreditCardAccount cca, double newDailyLimit) {
+        try {
+            cca.setTransactionDailyLimit(newDailyLimit);
+            em.merge(cca);
+            return "SUCCESS";
+        } catch (Exception e) {
+            //always print an error msg 
+            System.out.println("NewCardSessionBean.updateCardAcctTransactionDailyLimit Error");
+            System.out.println(e);
+            return null;
+        }
+    }
 
     @Override
     public String updateCardAcctTransactionLimit(CreditCardAccount cca) {
@@ -290,33 +356,7 @@ public class CardAcctSessionBean implements CardAcctSessionBeanLocal {
     }
 
     // redeem credit card reward generate code
-    public String redeemPromoCode(CreditCardAccount cca, String PromoName) {
-        String code = null;
-        do {
-            try {
-                code = server.utilities.CommonHelper.generateRandom(true, 12);
-                Query q = em.createQuery("SELECT pc FROM PromoCode pc WHERE pc.promotionCode =:inCode");
-                q.setParameter("inCode", code);
-                Object result = q.getSingleResult();
-                if (result != null) {
-                    code = null;
-                }
-            } catch (NullPointerException npe) {
-            }
-        } while (code != null); //generate a code that is not found in database
-
-        try {
-            PromoCode pc = new PromoCode();
-            pc.setPromotionName(PromoName);
-            pc.setPromotionCode(code);
-            pc.setCreditCardAccount(cca);
-            cca.getPromoCode().add(pc);
-            em.merge(cca);
-            return code;
-        } catch (Exception e) {
-            return null;
-        }
-    }
+    
 
     @Override
     public DebitCardAccount createDebitAccount(CustomerDepositAccount da) {

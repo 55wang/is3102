@@ -6,6 +6,7 @@
 package entity.customer;
 
 import entity.card.account.CreditCardAccount;
+import entity.card.account.CreditCardOrder;
 import entity.common.AuditLog;
 import entity.dams.account.DepositAccount;
 import java.io.Serializable;
@@ -46,6 +47,8 @@ public class MainAccount implements Serializable {
     private List<AuditLog> auditLog = new ArrayList<AuditLog>();
     @OneToMany(cascade = {CascadeType.ALL}, mappedBy = "mainAccount")
     private List<CustomerCase> cases = new ArrayList<CustomerCase>();
+    @OneToMany(cascade = {CascadeType.ALL}, mappedBy = "mainAccount")
+    private List<CreditCardOrder> creditCardOrder = new ArrayList<CreditCardOrder>();
     
     public void addDepositAccount(DepositAccount da) {
         this.bankAcounts.add(da);
@@ -150,5 +153,13 @@ public class MainAccount implements Serializable {
 
     public void setCreditCardAccounts(List<CreditCardAccount> creditCardAccounts) {
         this.creditCardAccounts = creditCardAccounts;
+    }
+
+    public List<CreditCardOrder> getCreditCardOrder() {
+        return creditCardOrder;
+    }
+
+    public void setCreditCardOrder(List<CreditCardOrder> creditCardOrder) {
+        this.creditCardOrder = creditCardOrder;
     }
 }

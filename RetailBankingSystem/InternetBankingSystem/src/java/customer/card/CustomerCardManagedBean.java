@@ -9,6 +9,7 @@ import ejb.session.card.CardAcctSessionBeanLocal;
 import ejb.session.cms.CustomerProfileSessionBeanLocal;
 import entity.card.account.CardTransaction;
 import entity.card.account.CreditCardAccount;
+import entity.card.account.DebitCardAccount;
 import entity.customer.Customer;
 import java.io.Serializable;
 import java.util.HashMap;
@@ -52,8 +53,18 @@ public class CustomerCardManagedBean implements Serializable {
 
     public void viewTerminatePage(CreditCardAccount aCca) {
         System.out.println("in viewTerminatePage");
-        cardAcctSessionBean.updateCardAccountStatus(aCca, CardAccountStatus.CLOSED);
-        RedirectUtils.redirect("/InternetBankingSystem/customer_card/application_success.xhtml");
+        cardAcctSessionBean.updateCardAccountStatus(cca, CardAccountStatus.CLOSED);
+        RedirectUtils.redirect("/InternetBankingSystem/customer_card/debit_card_summary.xhtml");
+    }
+
+    public void viewTerminateDebitPage(DebitCardAccount dca) {
+        System.out.println("in viewTerminatePage");
+        cardAcctSessionBean.updateDebitAccountStatus(dca, CardAccountStatus.CLOSED);
+        RedirectUtils.redirect("/InternetBankingSystem/customer_card/debit_card_summary.xhtml");
+    }
+    
+    public void viewRedeemPage() {
+        RedirectUtils.redirect("/InternetBankingSystem/customer_card/card_promotion.xhtml");
     }
 
     public void redirectToChangeTransactionLimitPage(CreditCardAccount aCca) {
