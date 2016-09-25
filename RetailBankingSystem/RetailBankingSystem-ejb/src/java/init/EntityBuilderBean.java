@@ -7,6 +7,7 @@ package init;
 
 import BatchProcess.InterestAccrualSessionBeanLocal;
 import ejb.session.card.CardAcctSessionBeanLocal;
+import ejb.session.card.CardTransactionSessionBeanLocal;
 import ejb.session.card.NewCardProductSessionBeanLocal;
 import ejb.session.cms.CustomerCaseSessionBeanLocal;
 import ejb.session.common.NewCustomerSessionBeanLocal;
@@ -99,6 +100,8 @@ public class EntityBuilderBean {
     private CardAcctSessionBeanLocal cardAcctSessionBean;
     @EJB
     private CurrentAccountChequeSessionBeanLocal chequeBean;
+    @EJB
+    private CardTransactionSessionBeanLocal cardTransactionBean;
 
     private Interest demoNormalInterestData;
     private List<Interest> demoRangeInterestData = new ArrayList<>();
@@ -115,7 +118,6 @@ public class EntityBuilderBean {
             buildEntities();
         } else {
             testInterestRules();
-            
             testCreditCard();
         }
     }
@@ -127,6 +129,14 @@ public class EntityBuilderBean {
     }
     
     private void testCreditCard() {
+        
+        Date startDate = DateUtils.getBeginOfDay();
+        Date endDate = DateUtils.getEndOfDay();
+        
+        System.out.println(startDate);
+        System.out.println(startDate);
+        List<CardTransaction> result = cardTransactionBean.retrieveTransactionByDate(startDate, endDate);
+        System.out.println(result);
 //        System.out.println("testCreditCard");
 //        try {
 //            CreditCardAccount c = cardAcctSessionBean.getCardByCardNumber("4545454545454545");
@@ -139,6 +149,7 @@ public class EntityBuilderBean {
     }
 
     private void testInterestRules() {
+        
         // Get Product
 //        DepositAccount da = customerDepositSessionBean.getAccountFromId(1L);
 //        // Get Interest

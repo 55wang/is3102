@@ -31,6 +31,7 @@ import utils.OTPUtils;
 @ViewScoped
 public class SimulatedCallManagedBean implements Serializable {
 
+    private String transactionAmount;
     /**
      * Creates a new instance of SimulatedCallManagedBean
      */
@@ -95,13 +96,13 @@ public class SimulatedCallManagedBean implements Serializable {
     public void sendSuccessAuthorization() {
         Form form = new Form();
         form.param("ccNumber", "4545454545454545");
-        form.param("ccAmount", "100"); // 500 is daily limit and 1000 for monthly limist, current out standing is 800
+        form.param("ccAmount", transactionAmount); // 500 is daily limit and 1000 for monthly limist, current out standing is 800
         form.param("ccTcode", "MDS");
         form.param("ccDescription", "Test Success authorization");
         
         System.out.println("Calling bank to check credit card transaction");
         System.out.println("Credit Card number 4545454545454545");
-        System.out.println("Requesting amount 100");
+        System.out.println("Requesting amount " + transactionAmount);
         
         // Start calling
         Client client = ClientBuilder.newClient();
@@ -111,12 +112,14 @@ public class SimulatedCallManagedBean implements Serializable {
         JsonObject jsonString = target.request(MediaType.APPLICATION_JSON).post(Entity.entity(form, MediaType.APPLICATION_FORM_URLENCODED), JsonObject.class);
         CreditCardDTO cc = new CreditCardDTO(jsonString); 
         
-        if (cc.getAuthorizationCode() != null && !cc.getAuthorizationCode().isEmpty()) {
+        if (!cc.getAuthorizationCode().equals("-1") && !cc.getAuthorizationCode().equals("-2")) {
             // check code validation
             System.out.println("Getting Authorizaed response with code: " + cc.getAuthorizationCode());
             String returnCode = OTPUtils.generateSingleToken(Integer.parseInt(cc.getAuthorizationCode()));
             // call for clearing
             sendSuccessClearing(returnCode, cc.getAuthorizationCode());
+        } else {
+            System.out.println(cc.getMessage());
         }
     }
     
@@ -125,13 +128,13 @@ public class SimulatedCallManagedBean implements Serializable {
         form.param("token", returnCode);
         form.param("aCode", aCode);
         form.param("ccNumber", "4545454545454545");
-        form.param("ccAmount", "400"); // 500 is daily limit and 1000 for monthly limist, current out standing is 800
+        form.param("ccAmount", transactionAmount); // 500 is daily limit and 1000 for monthly limist, current out standing is 800
         form.param("ccTcode", "MDS");
         form.param("ccDescription", "Test failed monthly authorization");
         
         System.out.println("Calling bank to check credit card transaction");
         System.out.println("Credit Card number 4545454545454545");
-        System.out.println("Requesting amount 400");
+        System.out.println("Requesting amount " + transactionAmount);
         System.out.println("Requesting with token:" + returnCode);
         
         // Start calling
@@ -180,5 +183,19 @@ public class SimulatedCallManagedBean implements Serializable {
         System.out.println("amount: " + jsonString.getString("amount"));
 
         // Do necessary process
+    }
+
+    /**
+     * @return the transactionAmount
+     */
+    public String getTransactionAmount() {
+        return transactionAmount;
+    }
+
+    /**
+     * @param transactionAmount the transactionAmount to set
+     */
+    public void setTransactionAmount(String transactionAmount) {
+        this.transactionAmount = transactionAmount;
     }
 }

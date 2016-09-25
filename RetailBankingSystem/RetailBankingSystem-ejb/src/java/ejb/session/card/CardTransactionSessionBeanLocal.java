@@ -6,6 +6,8 @@
 package ejb.session.card;
 
 import entity.card.account.CardTransaction;
+import java.util.Date;
+import java.util.List;
 import javax.ejb.Local;
 
 /**
@@ -15,4 +17,5 @@ import javax.ejb.Local;
 @Local
 public interface CardTransactionSessionBeanLocal {
      public Boolean createCardTransaction(CardTransaction ct);
+     public List<CardTransaction> retrieveTransactionByDate(Date start, Date end);
 }

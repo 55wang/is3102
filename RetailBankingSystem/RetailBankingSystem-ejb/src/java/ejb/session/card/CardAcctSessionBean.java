@@ -83,7 +83,9 @@ public class CardAcctSessionBean implements CardAcctSessionBeanLocal {
         if (ca != null) {
             System.out.println("Adding Transaction for card:" + ccNumber);
             ct.setCreditCardAccount(ca);
+            ca.addOutstandingAmount(ct.getAmount());
             em.persist(ct);
+            em.merge(ca);
             return ct;
         } else {
             return null;
@@ -167,8 +169,8 @@ public class CardAcctSessionBean implements CardAcctSessionBeanLocal {
     
     @Override
     public List<CardTransaction> getDailyTransactionFromAccount(CreditCardAccount creditCard) {
-        Date startDate = DateUtils.getBeginOfDay();
-        Date endDate = DateUtils.getEndOfDay();
+        java.sql.Date startDate = new java.sql.Date(DateUtils.getBeginOfDay().getTime());
+        java.sql.Date endDate = new java.sql.Date(DateUtils.getEndOfDay().getTime());
         System.out.println("Getting Daily Transaction");
         Query q = em.createQuery("SELECT ct FROM CardTransaction ct WHERE "
                 + "ct.creditCardAccount.id =:ccId AND "
@@ -191,8 +193,8 @@ public class CardAcctSessionBean implements CardAcctSessionBeanLocal {
     
     @Override
     public List<CardTransaction> getMonthlyTransactionFromAccount(CreditCardAccount creditCard) {
-        Date startDate = DateUtils.getBeginOfMonth();
-        Date endDate = DateUtils.getBeginOfMonth();
+        java.sql.Date startDate = new java.sql.Date(DateUtils.getBeginOfDay().getTime());
+        java.sql.Date endDate = new java.sql.Date(DateUtils.getEndOfDay().getTime());
         System.out.println("Getting Monthly Transaction");
         Query q = em.createQuery("SELECT ct FROM CardTransaction ct WHERE "
                 + "ct.creditCardAccount.id =:ccId AND "

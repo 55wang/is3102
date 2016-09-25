@@ -44,6 +44,13 @@ public class CreditCardAuthorizationService {
         System.out.println("CreditCardService");
     }
 
+    private Boolean checkAbnormalAction(String ccAmount) {
+        System.out.println(ccAmount);
+        Double amount = Double.parseDouble(ccAmount);
+        System.out.println(amount > 1000);
+        return amount > 1000;
+    }
+
     // check authorization, check creditcard, check valiation
     @POST
     @Produces(MediaType.APPLICATION_JSON)
@@ -54,6 +61,7 @@ public class CreditCardAuthorizationService {
             @FormParam("ccTcode") String ccTcode,
             @FormParam("ccDescription") String ccDescription
     ) {
+
         // get value from form
         System.out.println("Authorizing with cc number: " + ccNumber);
         System.out.println("Authorizing with ccAmount: " + ccAmount);
@@ -71,48 +79,55 @@ public class CreditCardAuthorizationService {
         c.setCreditCardNumber(ccNumber);
         c.setTransactionCode(ccTcode);
 
-        System.out.println("Retrieving card: " + ccNumber);
-        CreditCardAccount thisAccount = null;
-        try {
-            thisAccount = ccBean.getCardByCardNumber(ccNumber);
-        } catch (Exception e) {
-            System.out.println("No account retrieved");
-        }
-
-        System.out.println(thisAccount);
-        if (thisAccount != null) {
-            System.out.println("Validateing daily transaction limit");
+        if (!checkAbnormalAction(ccAmount)) {
+            System.out.println("Retrieving card: " + ccNumber);
+            CreditCardAccount thisAccount = null;
             try {
-                thisAccount = ccBean.validateCreditCardDailyTransactionLimit(thisAccount, Double.parseDouble(ccAmount));
+                thisAccount = ccBean.getCardByCardNumber(ccNumber);
             } catch (Exception e) {
-                System.out.println("Exceed daily transaction");
+                System.out.println("No account retrieved");
             }
-        }
-        if (thisAccount == null) {
-            authorized = false;
-            c.setMessage("Exceed daily transaction limit!");
-        } else {
-            try {
-                thisAccount = ccBean.validateCreditCardMonthlyTransactionLimit(thisAccount, Double.parseDouble(ccAmount));
-            } catch (Exception e) {
-                System.out.println("Exceed monthly transaction");
+
+            System.out.println(thisAccount);
+            if (thisAccount != null) {
+                System.out.println("Validateing daily transaction limit");
+                try {
+                    thisAccount = ccBean.validateCreditCardDailyTransactionLimit(thisAccount, Double.parseDouble(ccAmount));
+                } catch (Exception e) {
+                    System.out.println("Exceed daily transaction");
+                }
             }
             if (thisAccount == null) {
-                c.setMessage("Exceed monthly transaction limit!");
+                authorized = false;
+                c.setMessage("Exceed daily transaction limit!");
+            } else {
+                try {
+                    thisAccount = ccBean.validateCreditCardMonthlyTransactionLimit(thisAccount, Double.parseDouble(ccAmount));
+                } catch (Exception e) {
+                    System.out.println("Exceed monthly transaction");
+                }
+                if (thisAccount == null) {
+                    c.setMessage("Exceed monthly transaction limit!");
+                }
             }
+
+            if (thisAccount == null) {
+                authorized = false;
+            }
+
+            if (authorized) {
+                code = PincodeGenerationUtils.generateRandom(true, 8);
+                c.setMessage("Authorized");
+            }
+            c.setAuthorizationCode(code);
+        } else {
+            c.setAuthorizationCode("-2");
+            c.setMessage("Not Authorized!");
+            // TODO: Send Notification message
         }
 
-        if (thisAccount == null) {
-            authorized = false;
-        }
-
-        if (authorized) {
-            code = PincodeGenerationUtils.generateRandom(true, 8);
-            c.setMessage("Authorized");
-        }
-        c.setAuthorizationCode(code);
         System.out.println("Sending back result with single code: " + c.getAuthorizationCode());
-       
+
         String jsonString = new JSONObject(c).toString();
         System.out.println(jsonString);
         return Response.ok(jsonString, MediaType.APPLICATION_JSON).build();

@@ -62,7 +62,7 @@ public class CreditCardAccount implements Serializable {
     private Date creationDate = new Date();
     private double minPayDue;
     private double annualInterestRate; //24% annual interest rate
-    private double outstandingAmount;
+    private double outstandingAmount = 0.0;
     private double cashBackAmount;
     private double merlionMiles;
     private double merlionPoints;
@@ -74,6 +74,10 @@ public class CreditCardAccount implements Serializable {
 
     @Temporal(value = TemporalType.DATE)
     private Date overDueDuration;
+    
+    public void addOutstandingAmount(double amount) {
+        this.outstandingAmount += amount;
+    }
 
     public Long getId() {
         return id;
