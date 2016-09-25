@@ -5,13 +5,16 @@
  */
 package staff.cms;
 
+import ejb.session.card.CardTransactionSessionBeanLocal;
 import ejb.session.cms.CustomerCaseSessionBeanLocal;
 import ejb.session.common.EmailServiceSessionBeanLocal;
 import ejb.session.staff.StaffAccountSessionBeanLocal;
+import entity.card.account.CardTransaction;
 import entity.customer.CustomerCase;
 import entity.staff.StaffAccount;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -19,6 +22,7 @@ import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import server.utilities.EnumUtils;
 import server.utilities.EnumUtils.CaseStatus;
+import server.utilities.EnumUtils.cardOperatorChargebackStatus;
 import utils.CommonUtils;
 import utils.MessageUtils;
 import utils.RedirectUtils;
@@ -31,6 +35,8 @@ import utils.SessionUtils;
 @Named(value = "staffViewCustomerCaseManagedBean")
 @ViewScoped
 public class StaffViewCustomerCaseManagedBean implements Serializable{
+    @EJB
+    private CardTransactionSessionBeanLocal cardTransactionSessionBean;
     @EJB
     private EmailServiceSessionBeanLocal emailServiceSessionBean;
     @EJB
@@ -70,6 +76,12 @@ public class StaffViewCustomerCaseManagedBean implements Serializable{
     
     public void start(CustomerCase cc) {
         cc.setCaseStatus(EnumUtils.CaseStatus.ONGOING);
+        if(cc.getIsChargeBackCase()){ 
+            if(cardOperatorSimulator())
+                cc.setCardOperatorResponse(cardOperatorChargebackStatus.APPROVE);
+            else
+                cc.setCardOperatorResponse(cardOperatorChargebackStatus.REJECT);
+        }
         Boolean result = customerCaseSessionBean.updateCase(cc);
         if (result == false) {
             MessageUtils.displayError("Case not found!");
@@ -97,6 +109,58 @@ public class StaffViewCustomerCaseManagedBean implements Serializable{
         } else {
             transferedCase = new CustomerCase();
             RedirectUtils.redirect("staff-view-case.xhtml");
+        }
+    }
+    
+    public Boolean cardOperatorSimulator(){
+        return Math.random() < 0.5;
+    }
+    
+    public void approveChargeBack(CustomerCase chargeBackCase){
+        CardTransaction originalTransaction = chargeBackCase.getChargebackTransaction();
+        CardTransaction reverseTransaction = new CardTransaction();
+        reverseTransaction.setAmount(originalTransaction.getAmount());
+        if(originalTransaction.isIsCredit())
+            reverseTransaction.setIsCredit(false);
+        else
+            reverseTransaction.setIsCredit(true);
+        reverseTransaction.setCreateDate(new Date());
+        reverseTransaction.setCardTransactionStatus(EnumUtils.CardTransactionStatus.PENDINGTRANSACTION);
+        reverseTransaction.setCreditCardAccount(originalTransaction.getCreditCardAccount());
+        reverseTransaction.setTransactionCode(originalTransaction.getTransactionCode());
+        reverseTransaction.setTransactionDescription("This is a reversed transaction. Original transaction is " 
+                + originalTransaction.getTransactionDescription());
+     
+        Boolean result = cardTransactionSessionBean.createCardTransaction(reverseTransaction);
+        if(result){
+            chargeBackCase.setCaseStatus(CaseStatus.RESOLVED);
+            chargeBackCase.setReverseTransaction(reverseTransaction);
+            customerCaseSessionBean.updateCase(chargeBackCase);
+            MessageUtils.displayInfo("The chargeback is approved");
+        }else{
+            MessageUtils.displayError("Error");
+        }
+    }
+    
+    public void cancelCase(CustomerCase chargeBackCase){
+        chargeBackCase.setCaseStatus(CaseStatus.CANCELLED);
+        Boolean result =  customerCaseSessionBean.updateCase(chargeBackCase);
+        if(result){
+            emailServiceSessionBean.sendCaseStatusChangeToCustomer(chargeBackCase.getMainAccount().getCustomer().getEmail(), chargeBackCase);
+            MessageUtils.displayInfo("The case is cancelled");
+        }else{
+            MessageUtils.displayError("Error");
+        }
+    }
+    
+    public void resolveCase(CustomerCase chargeBackCase){
+        chargeBackCase.setCaseStatus(CaseStatus.RESOLVED);
+        Boolean result =  customerCaseSessionBean.updateCase(chargeBackCase);
+        if(result){
+            emailServiceSessionBean.sendCaseStatusChangeToCustomer(chargeBackCase.getMainAccount().getCustomer().getEmail(), chargeBackCase);
+            MessageUtils.displayInfo("The case is resolved");
+        }else{
+            MessageUtils.displayError("Error");
         }
     }
     

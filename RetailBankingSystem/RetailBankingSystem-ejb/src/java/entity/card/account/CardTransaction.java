@@ -33,7 +33,7 @@ public class CardTransaction implements Serializable {
         serialVersionUID = aSerialVersionUID;
     }
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date createDate = new Date();
@@ -46,6 +46,7 @@ public class CardTransaction implements Serializable {
     private CardTransactionStatus cardTransactionStatus;
     @ManyToOne(cascade = {CascadeType.PERSIST})
     private CreditCardAccount creditCardAccount;
+    
 
     public Long getId() {
         return id;

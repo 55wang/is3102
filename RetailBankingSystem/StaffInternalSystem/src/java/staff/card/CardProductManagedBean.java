@@ -14,7 +14,7 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
-import javax.persistence.Query;
+import utils.RedirectUtils;
 
 /**
  *
@@ -26,6 +26,10 @@ public class CardProductManagedBean implements Serializable {
 
     @EJB
     private NewCardProductSessionBeanLocal newProductSessionBean;
+
+    private MileCardProduct mcp = new MileCardProduct();
+    private RewardCardProduct rcp = new RewardCardProduct();
+    private CashBackCardProduct cbcp = new CashBackCardProduct();
 
     /**
      * Creates a new instance of CardProductManagedBean
@@ -45,66 +49,85 @@ public class CardProductManagedBean implements Serializable {
         return newProductSessionBean.showAllMileProducts();
     }
 
-    public String addNewMileCreditCard(String productName, double minSpendingAmount,
-            boolean minSpending, double overseaMileRate, double localMileRate) {
+    public void addNewMileCreditCard() {
         try {
-            MileCardProduct mcp = new MileCardProduct();
-            mcp.setProductName(productName);
-            mcp.setMinSpendingAmount(minSpendingAmount);
-            mcp.setMinSpending(minSpending);
-            mcp.setOverseaMileRate(overseaMileRate);
-            mcp.setLocalMileRate(localMileRate);
+            mcp.setProductName(mcp.getProductName());
+            mcp.setMinSpendingAmount(mcp.getMinSpendingAmount());
+            mcp.setMinSpending(mcp.isMinSpending());
+            mcp.setOverseaMileRate(mcp.getOverseaMileRate());
+            mcp.setLocalMileRate(mcp.getLocalMileRate());
 
             newProductSessionBean.createMileProduct(mcp);
 
-            return "SUCCESS"; //set the return to webpage path
+            RedirectUtils.redirect("/StaffInternalSystem/card/staff-view-card.xhtml");
+
         } catch (Exception ex) {
             System.out.println("CardProductManagedBean.addNewMileCreditCard Error");
             System.out.println(ex);
-            return "FAIL";
+
+            RedirectUtils.redirect("/StaffInternalSystem/card/card-create-product.xhtml");
         }
     }
 
-    public String addNewRewardCreditCard(String productName, double minSpendingAmount,
-            boolean minSpending, double localMileRate, double localPointRate) {
+    public void addNewRewardCreditCard() {
         try {
-            RewardCardProduct rcp = new RewardCardProduct();
-            rcp.setProductName(productName);
-            rcp.setMinSpendingAmount(minSpendingAmount);
-            rcp.setMinSpending(minSpending);
-            rcp.setLocalMileRate(localMileRate);
-            rcp.setLocalPointRate(localPointRate);
+            rcp.setProductName(rcp.getProductName());
+            rcp.setMinSpendingAmount(rcp.getMinSpendingAmount());
+            rcp.setMinSpending(rcp.isMinSpending());
+            rcp.setLocalMileRate(rcp.getLocalMileRate());
+            rcp.setLocalPointRate(rcp.getLocalPointRate());
 
             newProductSessionBean.createRewardProduct(rcp);
 
-            return "SUCCESS"; //set the return to webpage path
+            RedirectUtils.redirect("/StaffInternalSystem/card/staff-view-card.xhtml");
         } catch (Exception ex) {
             System.out.println("CardProductManagedBean.addNewRewardCreditCard Error");
             System.out.println(ex);
-            return "FAIL";
+            RedirectUtils.redirect("/StaffInternalSystem/card/card-create-product.xhtml");
         }
     }
 
-    public String addNewCashBackCreditCard(String productName, double minSpendingAmount,
-            boolean minSpending, double petrolCashBackRate, double groceryCashBackRate,
-            double diningCashBackRate) {
+    public void addNewCashBackCreditCard() {
         try {
-            CashBackCardProduct cbcp = new CashBackCardProduct();
-            cbcp.setProductName(productName);
-            cbcp.setMinSpendingAmount(minSpendingAmount);
-            cbcp.setMinSpending(minSpending);
-            cbcp.setPetrolCashBackRate(petrolCashBackRate);
-            cbcp.setGroceryCashBackRate(groceryCashBackRate);
-            cbcp.setDiningCashBackRate(diningCashBackRate);
+            cbcp.setProductName(cbcp.getProductName());
+            cbcp.setMinSpendingAmount(cbcp.getMinSpendingAmount());
+            cbcp.setMinSpending(cbcp.isMinSpending());
+            cbcp.setPetrolCashBackRate(cbcp.getPetrolCashBackRate());
+            cbcp.setGroceryCashBackRate(cbcp.getGroceryCashBackRate());
+            cbcp.setDiningCashBackRate(cbcp.getDiningCashBackRate());
 
             newProductSessionBean.createCashBackProduct(cbcp);
 
-            return "SUCCESS"; //set the return to webpage path
+            RedirectUtils.redirect("/StaffInternalSystem/card/staff-view-card.xhtml");
         } catch (Exception ex) {
             System.out.println("CardProductManagedBean.addNewCashBackCreditCard Error");
             System.out.println(ex);
-            return "FAIL";
+            RedirectUtils.redirect("/StaffInternalSystem/card/card-create-product.xhtml");
         }
+    }
+
+    public RewardCardProduct getRcp() {
+        return rcp;
+    }
+
+    public void setRcp(RewardCardProduct rcp) {
+        this.rcp = rcp;
+    }
+
+    public CashBackCardProduct getCbcp() {
+        return cbcp;
+    }
+
+    public void setCbcp(CashBackCardProduct cbcp) {
+        this.cbcp = cbcp;
+    }
+
+    public MileCardProduct getMcp() {
+        return mcp;
+    }
+
+    public void setMcp(MileCardProduct mcp) {
+        this.mcp = mcp;
     }
 
 }

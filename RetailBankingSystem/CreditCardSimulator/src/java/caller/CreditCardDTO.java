@@ -3,14 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package webservice.restful;
+package caller;
+
+import javax.json.JsonObject;
 
 /**
  *
  * @author leiyang
  */
 public class CreditCardDTO {
-    
     private String creditCardNumber;
     private String amount;
     private String description;
@@ -20,6 +21,15 @@ public class CreditCardDTO {
     
     public CreditCardDTO() {
         
+    }
+    
+    public CreditCardDTO(JsonObject jsonString) {
+        this.creditCardNumber = jsonString.getString("creditCardNumber");
+        this.amount = jsonString.getString("amount");
+        this.description = jsonString.getString("description");
+        this.message = jsonString.getString("message");
+        this.transactionCode = jsonString.getString("transactionCode");
+        this.authorizationCode = jsonString.getString("authorizationCode");
     }
 
     /**
@@ -64,7 +74,6 @@ public class CreditCardDTO {
         this.description = description;
     }
 
-
     /**
      * @return the message
      */
@@ -106,4 +115,5 @@ public class CreditCardDTO {
     public void setAuthorizationCode(String authorizationCode) {
         this.authorizationCode = authorizationCode;
     }
+
 }
