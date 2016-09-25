@@ -178,7 +178,6 @@ public class EntityBuilderBean {
         initDepositAccounts();
 
         initCreditCardProduct();
-        initCreditCardOrder();
         initCase();
         initCreditCardOrder();
 
@@ -1399,7 +1398,7 @@ public class EntityBuilderBean {
     public void initCreditCardOrder(){
         CreditCardOrder cco = new CreditCardOrder();
         CreditCardProduct ccp = new MileCardProduct();
-        ccp.setProductName("MileCard");
+        ccp.setProductName("MileCard Ver2");
         cco.setMainAccount(demoMainAccount);
         Customer cms = customerProfileSessionBean.getCustomerByID(3L);
         cco.setAddress("some fake address"); //make it a bit more real
