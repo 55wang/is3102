@@ -7,7 +7,9 @@ package staff.cms;
 
 import ejb.session.card.CardAcctSessionBeanLocal;
 import ejb.session.cms.CustomerCaseSessionBeanLocal;
+import ejb.session.utils.UtilsSessionBeanLocal;
 import entity.card.account.CardTransaction;
+import entity.common.AuditLog;
 import entity.customer.CustomerCase;
 import entity.customer.Issue;
 import java.io.Serializable;
@@ -24,6 +26,7 @@ import server.utilities.EnumUtils.CardTransactionStatus;
 import server.utilities.EnumUtils.IssueField;
 import utils.MessageUtils;
 import utils.RedirectUtils;
+import utils.SessionUtils;
 
 /**
  *
@@ -36,6 +39,8 @@ public class StaffCreateCustomerCaseManagedBean implements Serializable{
     private CustomerCaseSessionBeanLocal customerCaseSessionBean;
     @EJB
     private CardAcctSessionBeanLocal cardAcctSessionBean;
+    @EJB
+    private UtilsSessionBeanLocal utilsBean;
     
     private String issueField = "CHARGEBACK";
     private String selectChargeBack = "CHARGEBACK";
@@ -49,6 +54,16 @@ public class StaffCreateCustomerCaseManagedBean implements Serializable{
      * Creates a new instance of StaffCreateCustomerCaseManagedBean
      */
     public StaffCreateCustomerCaseManagedBean() {
+    }
+    
+    @PostConstruct
+    public void init() {
+        AuditLog a = new AuditLog();
+        a.setActivityLog("System user enter create_customer_case.xhtml");
+        a.setFunctionName("StaffCreateCustomerCaseManagedBean @PostConstruct init()");
+        a.setInput("Getting all customer cases");
+        a.setStaffAccount(SessionUtils.getStaff());
+        utilsBean.persist(a);
     }
 
     public String getIssueField() {

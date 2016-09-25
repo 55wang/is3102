@@ -18,6 +18,7 @@ import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import server.utilities.EnumUtils;
+import utils.MessageUtils;
 import utils.RedirectUtils;
 import utils.SessionUtils;
 
@@ -63,6 +64,7 @@ public class ApplyDebitCardAccountManagedBean implements Serializable {
 //            cardAcctSessionBean.createDebitAccount(dca, );
             System.out.println("inside the loop");
             cardAcctSessionBean.createDebitAccount(selectedAccount);
+            MessageUtils.displayInfo("Your application is successful!");
             RedirectUtils.redirect("/InternetBankingSystem/customer_card/debit_card_summary.xhtml");
             
         }

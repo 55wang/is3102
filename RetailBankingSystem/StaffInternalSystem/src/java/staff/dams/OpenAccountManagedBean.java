@@ -7,6 +7,8 @@ package staff.dams;
 
 import ejb.session.dams.CustomerDepositSessionBeanLocal;
 import ejb.session.dams.InterestSessionBeanLocal;
+import ejb.session.utils.UtilsSessionBeanLocal;
+import entity.common.AuditLog;
 import entity.common.TransactionRecord;
 import entity.dams.account.CustomerDepositAccount;
 import entity.dams.account.CustomerFixedDepositAccount;
@@ -22,6 +24,7 @@ import javax.faces.view.ViewScoped;
 import server.utilities.EnumUtils;
 import server.utilities.EnumUtils.DepositAccountType;
 import utils.MessageUtils;
+import utils.SessionUtils;
 
 /**
  *
@@ -35,6 +38,8 @@ public class OpenAccountManagedBean implements Serializable {
     private CustomerDepositSessionBeanLocal customerDepositSessionBean;
     @EJB
     private InterestSessionBeanLocal interestSessionBean;
+    @EJB
+    private UtilsSessionBeanLocal utilsBean;
 
     private String accountType;
     private CustomerDepositAccount newCurrentAccount;
@@ -74,6 +79,12 @@ public class OpenAccountManagedBean implements Serializable {
             }
             
         }
+        AuditLog a = new AuditLog();
+        a.setActivityLog("System user enter OpenAccountManagedBean");
+        a.setFunctionName("OpenAccountManagedBean @PostConstruct init()");
+        a.setInput("Getting all OpenAccountManagedBean information");
+        a.setStaffAccount(SessionUtils.getStaff());
+        utilsBean.persist(a);
     }
 
     public void addAccount(ActionEvent event) {

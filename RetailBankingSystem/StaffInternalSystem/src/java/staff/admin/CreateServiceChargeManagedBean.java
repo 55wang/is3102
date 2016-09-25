@@ -6,6 +6,7 @@
 package staff.admin;
 
 import ejb.session.utils.UtilsSessionBeanLocal;
+import entity.common.AuditLog;
 import entity.staff.ServiceCharge;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -16,6 +17,7 @@ import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import server.utilities.ConstantUtils;
 import utils.MessageUtils;
+import utils.SessionUtils;
 
 /**
  *
@@ -44,15 +46,28 @@ public class CreateServiceChargeManagedBean implements Serializable {
                 getCharges().add((ServiceCharge) o);
             }
         }
+        AuditLog a = new AuditLog();
+        a.setActivityLog("System user enter create_service_charge.xhtml");
+        a.setFunctionName("CreateServiceChargeProductManagedBean @PostConstruct init()");
+        a.setInput("Getting all service charges");
+        a.setStaffAccount(SessionUtils.getStaff());
+        utilsBean.persist(a);
     }
     
     public void addCharge() {
         ServiceCharge result = (ServiceCharge) utilsBean.persist(getNewCharge());
+        
+        AuditLog a = new AuditLog();
+        a.setActivityLog("System user add charge");
+        a.setFunctionName("CreateServiceChargeManagedBean addCharge()");
         if (result != null) {
             getCharges().add(result);
             setNewCharge(new ServiceCharge());
+            
+            a.setOutput("SUCCESS");
             MessageUtils.displayInfo("New Charges Added");
         } else {
+            a.setOutput("FAIL");
             MessageUtils.displayInfo("Charges already Added");
         }
     }
