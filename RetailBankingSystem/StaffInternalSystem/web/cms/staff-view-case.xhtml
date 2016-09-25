@@ -64,28 +64,28 @@
                             
                             <p:column headerText="Action" style="width:140px" rendered="#{case.caseStatus == 'ONHOLD'}">
                                 <p:splitButton value="Start" action="#{staffViewCustomerCaseManagedBean.start(case)}" update="@form" icon="ui-icon-disk">
-                                    <p:menuitem value="Transfer" action="#{staffViewCustomerCaseManagedBean.redirectToTransferPage(case)}" icon="ui-icon-arrowrefresh-1-w" /> 
-                                    <p:menuitem value="Resolve" action="#{staffViewCustomerCaseManagedBean.resolveCase(case)}" icon="ui-icon-arrowrefresh-1-w" /> 
-                                    <p:menuitem value="Cancel" action="#{staffViewCustomerCaseManagedBean.cancelCase(case)}" icon="ui-icon-arrowrefresh-1-w" /> 
+                                    <p:menuitem value="Transfer" action="#{staffViewCustomerCaseManagedBean.redirectToTransferPage(case)}" update="@form" icon="ui-icon-arrowrefresh-1-w" /> 
+                                    <p:menuitem value="Resolve" action="#{staffViewCustomerCaseManagedBean.resolveCase(case)}" update="@form" icon="ui-icon-arrowrefresh-1-w" /> 
+                                    <p:menuitem value="Cancel" action="#{staffViewCustomerCaseManagedBean.cancelCase(case)}" update="@form" icon="ui-icon-arrowrefresh-1-w" /> 
                                 </p:splitButton>
                             </p:column>
                             <p:column headerText="Action" style="width:140px" rendered="#{case.caseStatus != 'ONHOLD' and !case.isChargeBackCase and case.caseStatus != 'RESOLVED' and case.caseStatus != 'CANCELLED'}">
                                 <p:splitButton value="Update" action="#{staffViewCustomerCaseManagedBean.update(case)}" update="@form" icon="ui-icon-disk">
-                                    <p:menuitem value="Transfer" action="#{staffViewCustomerCaseManagedBean.redirectToTransferPage(case)}" icon="ui-icon-arrowrefresh-1-w" />
-                                    <p:menuitem value="Resolve" action="#{staffViewCustomerCaseManagedBean.resolveCase(case)}" icon="ui-icon-arrowrefresh-1-w" /> 
-                                    <p:menuitem value="Cancel" action="#{staffViewCustomerCaseManagedBean.cancelCase(case)}" icon="ui-icon-arrowrefresh-1-w" /> 
+                                    <p:menuitem value="Transfer" action="#{staffViewCustomerCaseManagedBean.redirectToTransferPage(case)}" update="@form" icon="ui-icon-arrowrefresh-1-w" />
+                                    <p:menuitem value="Resolve" action="#{staffViewCustomerCaseManagedBean.resolveCase(case)}" update="@form" icon="ui-icon-arrowrefresh-1-w" /> 
+                                    <p:menuitem value="Cancel" action="#{staffViewCustomerCaseManagedBean.cancelCase(case)}" update="@form" icon="ui-icon-arrowrefresh-1-w" /> 
                                 </p:splitButton>
                             </p:column>
                             <p:column headerText="Action" style="width:140px" rendered="#{case.caseStatus != 'ONHOLD' and case.isChargeBackCase and case.cardOperatorResponse != 'REJECT' and case.caseStatus != 'RESOLVED' and case.caseStatus != 'CANCELLED'}">
                                 <p:splitButton value="Approve" action="#{staffViewCustomerCaseManagedBean.approveChargeBack(case)}" update="@form" icon="ui-icon-disk">
-                                    <p:menuitem value="Reject" action="#{staffViewCustomerCaseManagedBean.cancelCase(case)}" icon="ui-icon-arrowrefresh-1-w" />                       
-                                    <p:menuitem value="Transfer" action="#{staffViewCustomerCaseManagedBean.redirectToTransferPage(case)}" icon="ui-icon-arrowrefresh-1-w" />                                  
+                                    <p:menuitem value="Reject" action="#{staffViewCustomerCaseManagedBean.cancelCase(case)}" update="@form" icon="ui-icon-arrowrefresh-1-w" />                       
+                                    <p:menuitem value="Transfer" action="#{staffViewCustomerCaseManagedBean.redirectToTransferPage(case)}" update="@form" icon="ui-icon-arrowrefresh-1-w" />                                  
                                 </p:splitButton>
                             </p:column>
                             <p:column headerText="Action" style="width:140px" rendered="#{case.caseStatus != 'ONHOLD' and case.isChargeBackCase and case.cardOperatorResponse == 'REJECT' and case.caseStatus != 'RESOLVED' and case.caseStatus != 'CANCELLED'}">
                                 <p:splitButton value="Reject" action="#{staffViewCustomerCaseManagedBean.cancelCase(case)}" update="@form" icon="ui-icon-disk">
-                                    <p:menuitem value="Transfer" action="#{staffViewCustomerCaseManagedBean.redirectToTransferPage(case)}" icon="ui-icon-arrowrefresh-1-w" />
-                                    <p:menuitem value="Cancel" action="#{staffViewCustomerCaseManagedBean.cancelCase(case)}" icon="ui-icon-arrowrefresh-1-w" /> 
+                                    <p:menuitem value="Transfer" action="#{staffViewCustomerCaseManagedBean.redirectToTransferPage(case)}" update="@form" icon="ui-icon-arrowrefresh-1-w" />
+                                    <p:menuitem value="Cancel" action="#{staffViewCustomerCaseManagedBean.cancelCase(case)}" update="@form" icon="ui-icon-arrowrefresh-1-w" /> 
                                 </p:splitButton>
                             </p:column>
                             <p:column headerText="Action" style="width:140px" rendered="#{case.caseStatus == 'RESOLVED' || case.caseStatus == 'CANCELLED'}">
