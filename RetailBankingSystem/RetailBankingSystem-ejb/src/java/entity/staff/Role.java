@@ -6,6 +6,7 @@
 package entity.staff;
 
 import java.io.Serializable;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
@@ -19,6 +20,7 @@ public class Role implements Serializable {
     @Id
     private String roleName;
     //set not null
+    @Column(length = 4000)
     private String description;
     
     public Role() {

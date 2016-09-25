@@ -336,7 +336,10 @@ public class EntityBuilderBean {
 
     private void initStaffAndRoles() {
         Role superAdminRole = new Role(EnumUtils.UserRole.SUPER_ADMIN.toString());
-        superAdminRole.setDescription("Everything includes front end services and back end administrations");
+        superAdminRole.setDescription("- Manage staffs in the workspace\n"
+                + "- Possess highest accessibility to the functionalities in the system\n"
+                + "- Guarantee the system to function normally\n"
+                + "- Prevent unexpected operations from unauthorised access\n");
         superAdminRole = staffRoleSessionBean.addRole(superAdminRole);
         Role customerServiceRole = new Role(EnumUtils.UserRole.CUSTOMER_SERVICE.toString());
         customerServiceRole = staffRoleSessionBean.addRole(customerServiceRole);
@@ -350,11 +353,16 @@ public class EntityBuilderBean {
         Role generalTellerRole = new Role(EnumUtils.UserRole.GENERAL_TELLER.toString());
         generalTellerRole = staffRoleSessionBean.addRole(generalTellerRole);
         Role loanOfficerRole = new Role(EnumUtils.UserRole.LOAN_OFFICIER.toString());
-        loanOfficerRole.setDescription("Provide loan-related services to the customers\n"
-                + "(Provide service but do not design loan products)");
+        loanOfficerRole.setDescription("- Provide loan-related services to the customers\n"
+                + "- Process loan applications based on security requirements\n"
+                + "- Assess customers' credit scoring\n"
+                + "- Promote loan products\n");
         loanOfficerRole = staffRoleSessionBean.addRole(loanOfficerRole);
         Role productManagerRole = new Role(EnumUtils.UserRole.PRODUCT_MANAGER.toString());
-        productManagerRole.setDescription("Design, adjust, and launch financial products to the market");
+        productManagerRole.setDescription("- Carry out decision making practices according to analytic result\n"
+                + "- Design new financial products\n"
+                + "- Adjust existing financial products\n"
+                + "- Launch financial products to the market\n");
         productManagerRole = staffRoleSessionBean.addRole(productManagerRole);
 
         StaffAccount superAdminAccount = new StaffAccount();
