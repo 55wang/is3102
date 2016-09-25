@@ -46,7 +46,6 @@
                             <p:menu>
                                 <p:submenu style="display:none">
                                     <p:menuitem value="Profile" url="../customer_cms/view_profile.xhtml" />
-                                    <p:menuitem value="ABCDE" />
                                 </p:submenu>
                             </p:menu>
                         </p:overlayPanel>
@@ -56,7 +55,6 @@
                             <p:menu>
                                 <p:submenu style="display:none">
                                     <p:menuitem value="Deposit" url="../customer_deposit/deposit_account_summary.xhtml" />
-                                    <p:menuitem value="Account" />
                                 </p:submenu>
                             </p:menu>
                         </p:overlayPanel>
@@ -99,7 +97,7 @@
                                 </p:submenu>
                             </p:menu>
                         </p:overlayPanel>
-                        <li id="header-overview" class="#{cc.attrs.context == 'index_activity_history' ? 'active' : ''}" value="Activity"><a href="index_activity_history.xhtml">Activity History</a></li>
+                        <li id="header-overview" class="#{cc.attrs.context == 'index_activity_history' ? 'active' : ''}" value="Activity"><a href="../customer_cms/index_activity_history.xhtml">Activity History</a></li>
                         </h:form>
                     </c:if>
                 </ul>

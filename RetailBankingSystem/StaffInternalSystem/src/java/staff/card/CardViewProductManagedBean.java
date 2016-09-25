@@ -51,6 +51,7 @@ public class CardViewProductManagedBean implements Serializable {
         a.setInput("Getting all credit card products");
         a.setStaffAccount(SessionUtils.getStaff());
         utilsBean.persist(a);
+        displayCards();
     }
     public void displayCards() {
         mcps = newCardProductSessionBean.showAllMileProducts();

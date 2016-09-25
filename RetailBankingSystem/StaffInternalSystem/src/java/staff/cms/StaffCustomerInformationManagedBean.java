@@ -102,7 +102,7 @@ public class StaffCustomerInformationManagedBean implements Serializable {
             Customer result = customerProfileSessionBean.saveProfile(selectedCustomer);
             if (result != null) {
                 MessageUtils.displayInfo("Profile successfully updated!");
-                RedirectUtils.redirect("view_profile.xhtml");
+                RedirectUtils.redirect("staff-view-customer.xhtml");
             } else {
                 MessageUtils.displayInfo("Update is unsuccessful, please check your input.");
             }
