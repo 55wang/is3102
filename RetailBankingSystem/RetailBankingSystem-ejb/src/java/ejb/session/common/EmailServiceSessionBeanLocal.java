@@ -21,6 +21,8 @@ public interface EmailServiceSessionBeanLocal {
     
     public Boolean sendUserIDforForgottenCustomer(String recipient, MainAccount forgotAccount);
     public Boolean sendResetPwdLinkforForgottenCustomer(String recipient, MainAccount forgotAccount);
+    public Boolean sendchargeBackGmailForSuccessfulCustomer(String recipient, Long ID);
+    public Boolean sendchargeBackGmailForRejectedCustomer(String recipient, Long ID);
     public Boolean sendActivationGmailForStaff(String recipient, String pwd);
     public Boolean sendRequireAdditionalInfo(String recipient, String msg);
     public Boolean sendUserNameforForgottenStaff(String recipient, String username);

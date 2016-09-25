@@ -459,7 +459,7 @@ public class EntityBuilderBean {
         Customer c2 = new Customer();
         c2.setAddress("19 Tanglin Road, 131-1-1"); //make it a bit more real
         c2.setBirthDay(new Date()); //make some real birthday.
-        c2.setEmail("wangzhe.lynx@gmail.com");
+        c2.setEmail("wangzhe.lynx2@gmail.com");
         c2.setFirstname("Zhe");
         c2.setGender(Gender.MALE); // pls modify gender to enum type
         c2.setIdentityNumber("S1234223Z");

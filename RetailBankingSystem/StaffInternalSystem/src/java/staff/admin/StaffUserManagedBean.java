@@ -5,12 +5,15 @@
  */
 package staff.admin;
 
+import ejb.session.utils.UtilsSessionBeanLocal;
+import entity.common.AuditLog;
 import entity.staff.StaffAccount;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import javax.ejb.EJB;
 import server.utilities.EnumUtils;
 import utils.LoggingUtils;
 import utils.SessionUtils;
@@ -23,12 +26,21 @@ import utils.UserUtils;
 @Named(value = "staffUserManagedBean")
 @SessionScoped
 public class StaffUserManagedBean implements Serializable {
+    
+    @EJB
+    private UtilsSessionBeanLocal utilsBean;
 
     private String SUPER_ADMIN = EnumUtils.UserRole.SUPER_ADMIN.toString();
     
     @PostConstruct
     public void init() {
         LoggingUtils.StaffMessageLog(StaffUserManagedBean.class, "StaffUserManagedBean @PostConstruct init");
+        AuditLog a = new AuditLog();
+        a.setActivityLog("System user enter create_staffUser.xhtml");
+        a.setFunctionName("StaffUserManagedBean @PostConstruct init()");
+        a.setInput("Getting all staff users");
+        a.setStaffAccount(SessionUtils.getStaff());
+        utilsBean.persist(a);
     }
     @PreDestroy
     public void deinit() {

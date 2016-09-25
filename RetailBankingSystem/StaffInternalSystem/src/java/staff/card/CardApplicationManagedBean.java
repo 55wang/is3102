@@ -8,8 +8,10 @@ package staff.card;
 import ejb.session.card.CardAcctSessionBeanLocal;
 import ejb.session.common.EmailServiceSessionBeanLocal;
 import ejb.session.common.NewCustomerSessionBeanLocal;
+import ejb.session.utils.UtilsSessionBeanLocal;
 import entity.card.account.CreditCardAccount;
 import entity.card.account.CreditCardOrder;
+import entity.common.AuditLog;
 import entity.customer.Customer;
 import entity.customer.MainAccount;
 import java.io.Serializable;
@@ -17,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
@@ -25,6 +28,7 @@ import org.primefaces.push.EventBusFactory;
 import server.utilities.EnumUtils.*;
 import server.utilities.CommonHelper;
 import server.utilities.GenerateAccountAndCCNumber;
+import utils.SessionUtils;
 
 /**
  *
@@ -44,11 +48,23 @@ public class CardApplicationManagedBean implements Serializable {
     private EmailServiceSessionBeanLocal emailServiceSessionBean;
     @EJB
     private NewCustomerSessionBeanLocal newCustomerSessionBean;
+    @EJB
+    private UtilsSessionBeanLocal utilsBean;
 
     /**
      * Creates a new instance of CardApplicationManagedBean
      */
     public CardApplicationManagedBean() {
+    }
+    
+    @PostConstruct
+    public void init() {
+        AuditLog a = new AuditLog();
+        a.setActivityLog("System user enter apply_card.xhtml");
+        a.setFunctionName("CardApplicationManagedBean @PostConstruct init()");
+        a.setInput("Getting all card applications");
+        a.setStaffAccount(SessionUtils.getStaff());
+        utilsBean.persist(a);
     }
     
     public String processChargeBack(String notification, String creditCard, String status) {

@@ -9,7 +9,9 @@ import ejb.session.card.CardTransactionSessionBeanLocal;
 import ejb.session.cms.CustomerCaseSessionBeanLocal;
 import ejb.session.common.EmailServiceSessionBeanLocal;
 import ejb.session.staff.StaffAccountSessionBeanLocal;
+import ejb.session.utils.UtilsSessionBeanLocal;
 import entity.card.account.CardTransaction;
+import entity.common.AuditLog;
 import entity.customer.CustomerCase;
 import entity.staff.StaffAccount;
 import java.io.Serializable;
@@ -43,6 +45,8 @@ public class StaffViewCustomerCaseManagedBean implements Serializable{
     private StaffAccountSessionBeanLocal staffBean;
     @EJB
     private CustomerCaseSessionBeanLocal customerCaseSessionBean;
+    @EJB
+    private UtilsSessionBeanLocal utilsBean;
     
     private List<CustomerCase> cases;
     private String searchText;
@@ -136,6 +140,7 @@ public class StaffViewCustomerCaseManagedBean implements Serializable{
             chargeBackCase.setCaseStatus(CaseStatus.RESOLVED);
             chargeBackCase.setReverseTransaction(reverseTransaction);
             customerCaseSessionBean.updateCase(chargeBackCase);
+            emailServiceSessionBean.sendchargeBackGmailForSuccessfulCustomer(chargeBackCase.getMainAccount().getCustomer().getEmail(), chargeBackCase.getId());
             MessageUtils.displayInfo("The chargeback is approved");
         }else{
             MessageUtils.displayError("Error");
@@ -146,7 +151,11 @@ public class StaffViewCustomerCaseManagedBean implements Serializable{
         chargeBackCase.setCaseStatus(CaseStatus.CANCELLED);
         Boolean result =  customerCaseSessionBean.updateCase(chargeBackCase);
         if(result){
+            if(chargeBackCase.getIsChargeBackCase()){
+            emailServiceSessionBean.sendchargeBackGmailForRejectedCustomer(chargeBackCase.getMainAccount().getCustomer().getEmail(), chargeBackCase.getId());
+            } else
             emailServiceSessionBean.sendCaseStatusChangeToCustomer(chargeBackCase.getMainAccount().getCustomer().getEmail(), chargeBackCase);
+            
             MessageUtils.displayInfo("The case is cancelled");
         }else{
             MessageUtils.displayError("Error");
@@ -186,6 +195,12 @@ public class StaffViewCustomerCaseManagedBean implements Serializable{
     @PostConstruct
     public void setCases() {
         this.cases = customerCaseSessionBean.getAllCaseUnderCertainStaff(SessionUtils.getStaff());
+        AuditLog a = new AuditLog();
+        a.setActivityLog("System user enter view_customer_information.xhtml");
+        a.setFunctionName("StaffViewCustomerCaseManagedBean @PostConstruct setCases()");
+        a.setInput("Getting all customer cases");
+        a.setStaffAccount(SessionUtils.getStaff());
+        utilsBean.persist(a);
     }
     
     public List<CustomerCase> getCases() {
