@@ -44,6 +44,7 @@ import entity.dams.rules.Interest;
 import entity.dams.rules.RangeInterest;
 import entity.dams.rules.TimeRangeInterest;
 import entity.embedded.StaffInfo;
+import entity.staff.Announcement;
 import entity.staff.Role;
 import entity.staff.StaffAccount;
 import java.math.BigDecimal;
@@ -185,6 +186,7 @@ public class EntityBuilderBean {
         initPromoProduct();
         initCreditCardProduct();
         initCase();
+        initNotification();
     }
 
     public void initPromoProduct() {
@@ -1510,5 +1512,11 @@ public class EntityBuilderBean {
         cco.setSaluation(EnumUtils.Salutation.DR);
 
         cardAcctSessionBean.createCardOrder(cco);
+    }
+    
+    public void initNotification() {
+        Announcement n1 = new Announcement();
+        n1.setTitle("Happy Holidy!!");
+        n1.setTitle("Happy Holidy!!");
     }
 }

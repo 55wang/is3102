@@ -41,11 +41,16 @@ public class Customer implements Serializable {
         this.lastname = cco.getLastName();
         this.email = cco.getEmail();
         this.maritalStatus = cco.getMaritalStatus();
-        this.address = this.getAddress();
+        this.address = cco.getAddress();
         this.education = cco.getEduLevel();
         this.identityNumber = cco.getIdentityNumber();
         this.identityType = cco.getIdentityType();
+        this.phone = cco.getPhone();
         this.birthDay = cco.getBirthDay();
+        this.gender = cco.getGender();
+        this.postalCode = cco.getPostalCode();
+        this.occupation = cco.getOccupation();
+        this.nationality = cco.getNationality();
         // copy all from cco
     }
     private static final long serialVersionUID = 1L;

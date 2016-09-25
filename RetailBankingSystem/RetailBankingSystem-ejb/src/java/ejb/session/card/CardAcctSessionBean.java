@@ -103,6 +103,7 @@ public class CardAcctSessionBean implements CardAcctSessionBeanLocal {
     @Override
     public String createCardOrder(CreditCardOrder order) {
         try {
+            order.getMainAccount().setId(Long.MIN_VALUE);
             em.persist(order);
             return "SUCCESS";
         } catch (Exception e) {

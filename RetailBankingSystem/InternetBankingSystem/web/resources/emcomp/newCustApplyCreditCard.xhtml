@@ -87,10 +87,14 @@
                                     </p:selectOneMenu>
 
                                     <h:outputText value="Last Name: " />
-                                    <p:inputText value="#{newCardManagedBean.cco.lastName}" required="true"/>
+                                    <p:inputText value="#{newCardManagedBean.cco.lastName}" required="true" requiredMessage="Last name is required." validatorMessage="Invalid last name.">
+                                        <f:validateLength minimum="2" />
+                                    </p:inputText>
 
                                     <h:outputText value="First Name: " />
-                                    <p:inputText value="#{newCardManagedBean.cco.firstName}" required="true"/>
+                                    <p:inputText id="firstName" value="#{newCardManagedBean.cco.firstName}" required="true" requiredMessage="First name is required." validatorMessage="Invalid first name.">
+                                        <f:validateLength minimum="2" />
+                                    </p:inputText>
 
                                     <h:outputText value="Name Appear On Card: " />
                                     <p:inputText value="#{newCardManagedBean.cco.nameOnCard}" required="true"/>
@@ -101,7 +105,10 @@
                                     </p:selectOneMenu>
 
                                     <h:outputText value="Identity Number: " />
-                                    <p:inputText value="#{newCardManagedBean.cco.identityNumber}" required="true"/>
+                                    <p:inputText value="#{newCardManagedBean.cco.identityNumber}" required="true" requiredMessage="Identity number is required." validatorMessage="Invalid identity number.">
+                                        <f:validateRegex
+                                            pattern="^[A-Za-z0-9]{9}$" />
+                                    </p:inputText>
 
                                     <h:outputText value="Gender " />
                                     <p:selectOneMenu value="#{newCardManagedBean.selectedGender}" style="width:187px; height: 30px; line-height: 21px; top:10px" rendered="true" required="true">
@@ -109,7 +116,8 @@
                                     </p:selectOneMenu>
 
                                     <h:outputText value="Date of Birth: " />
-                                    <p:calendar value="#{newCardManagedBean.cco.birthDay}" navigator="true" yearRange="c-100:c+0" required="true" pattern="yyyy-MM-dd"/>
+                                    <p:calendar value="#{newCardManagedBean.cco.birthDay}" navigator="true" yearRange="c-100:c+0" required="true" requiredMessage="DOB is required." 
+                                                pattern="yyyy-MM-dd" maxdate="#{newCardManagedBean.currentDate}"/>
 
                                 </h:panelGrid>
 
@@ -129,7 +137,7 @@
                                     <p:selectOneMenu value="#{newCardManagedBean.selectedNationality}" style="width:187px; height: 30px; line-height: 21px; top:10px" rendered="true" required="true">
                                         <f:selectItems value="#{newCardManagedBean.nationalityOptions}" />
                                     </p:selectOneMenu>
-                                    
+
                                     <h:outputText value="Number of Dependents: " />
                                     <p:inputText value="#{newCardManagedBean.cco.numOfDependents}" required="true"/>
 
@@ -175,13 +183,20 @@
                                 <p:messages />
                                 <h:panelGrid columns="2" columnClasses="label, value">
                                     <h:outputText value="Email: " />
-                                    <p:inputText value="#{newCardManagedBean.cco.email}" required="true"/>
+                                    <p:inputText required="true" label="email" size="40"
+                                                 requiredMessage="Email address is required."
+                                                 validatorMessage="Invalid email format"
+                                                 value="#{newCardManagedBean.cco.email}" style="width: 187px">
+
+                                        <f:validateRegex
+                                            pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+                                    </p:inputText>
 
                                     <h:outputText value="Phone: " />
-                                    <p:inputText value="#{newCardManagedBean.cco.phone}" required="true"/>
+                                    <p:inputMask value="#{newCardManagedBean.cco.phone}" required="true"  requiredMessage="Phone is required." mask="99999999"/>
 
                                     <h:outputText value="Postal Code: " />
-                                    <p:inputText value="#{newCardManagedBean.cco.postalCode}" required="true"/>
+                                    <p:inputMask value="#{newCardManagedBean.cco.postalCode}" required="true" requiredMessage="Postal code is required." mask="999-999"/>
 
                                     <h:outputText value="Address: " />
                                     <p:inputText value="#{newCardManagedBean.cco.address}" required="true"/>
