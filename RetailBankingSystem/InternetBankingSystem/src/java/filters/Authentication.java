@@ -137,7 +137,7 @@ public class Authentication implements Filter {
                                     || reqURI.contains("/customer_cms/")
                                     || reqURI.contains("/customer_deposit/")
                                     || reqURI.contains("/customer_message/")
-                                    || reqURI.contains("/customer_request/")
+                                    || reqURI.contains("/request/")
                                 ) && (
                                     ses.getAttribute("tokenAuthentication").equals(Boolean.FALSE)
 //                                    SessionUtils.getTokenAuthentication().equals(Boolean.FALSE)

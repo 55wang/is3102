@@ -21,32 +21,34 @@ and open the template in the editor.
         <h:body>
             <em:customerHeader context="index_deposit" userName="Log in"></em:customerHeader>
             <em:customerNavBar context="index_deposit" pageName="index_deposit" ></em:customerNavBar>
+            <h:form>
+                <div style="margin-top: 200px;margin-left: 70px;position: absolute"> 
+                    <c:forEach items="#{displayCurrentDepositProductManagedBean.currentDepositProducts}" var="currentProduct">
+                        <h1>#{currentProduct.name}</h1>
+                        <p:panel style="width: 550px">
+                            <p:panelGrid columns="2" style="width: 500px">
+                                <f:facet name="header">
+                                    <p:row>
+                                        <p:column colspan="7">Current Account Interest Rate</p:column>
+                                    </p:row>
+                                </f:facet>
+                                <c:forEach items="#{currentProduct.rangeInterest}" var="i">
+                                    <h:outputText value="#{i.name}" />
+                                    <h:outputText value="#{i.percentage}">
+                                        <f:convertNumber type="percent" minFractionDigits="4"/>
+                                    </h:outputText>
+                                </c:forEach>
+                            </p:panelGrid>
+                        </p:panel>
+                    </c:forEach>
 
-            <div style="margin-top: 200px;margin-left: 70px;position: absolute"> 
-                <c:forEach items="#{displayCurrentDepositProductManagedBean.currentDepositProducts}" var="currentProduct">
-                    <h1>#{currentProduct.name}</h1>
-                    <p:panel style="width: 550px">
-                        <p:panelGrid columns="2" style="width: 500px">
-                            <f:facet name="header">
-                                <p:row>
-                                    <p:column colspan="7">Current Account Interest Rate</p:column>
-                                </p:row>
-                            </f:facet>
-                            <c:forEach items="#{currentProduct.rangeInterest}" var="i">
-                                <h:outputText value="#{i.name}" />
-                                <h:outputText value="#{i.percentage}">
-                                    <f:convertNumber type="percent" minFractionDigits="4"/>
-                                </h:outputText>
-                            </c:forEach>
-                        </p:panelGrid>
-                    </p:panel>
-                </c:forEach>
-
-                <div style="margin-top: 20px">
-                    <button style="margin-left: 30px" type="button" onclick="window.location.href = '../index_deposit_subpages/apply_deposit_account.xhtml'">New Customer Apply</button>
-                    <button style="margin-left: 50px" type="button" onclick="window.location.href = '.../common/customer_login.xhtml'">Existing customer Login</button>
+                    <div style="margin-top: 30px">
+                        <button style="margin-left: 130px" type="button" onclick="window.location.href = '../index_deposit_subpages/apply_deposit_account.xhtml'">New Customer Apply</button>
+                        <button style="margin-left: 50px" type="button" onclick="window.location.href = '../common/customer_login.xhtml'">Existing customer Login</button>
+                    </div>
                 </div>
-            </div>
+            </h:form>
+
         </h:body>
     </f:view>
 </html>
