@@ -7,14 +7,15 @@ package customer.card;
 
 import ejb.session.card.CardAcctSessionBeanLocal;
 import entity.card.account.CreditCardOrder;
-import entity.customer.Customer;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import server.utilities.EnumUtils.*;
 import utils.CommonUtils;
+import utils.RedirectUtils;
 
 /**
  *
@@ -33,9 +34,7 @@ public class NewCardManagedBean implements Serializable {
     private List<String> IndustryOptions = CommonUtils.getEnumList(Industry.class);
     private List<String> StatusOptions = CommonUtils.getEnumList(StatusType.class);
     private List<String> GenderOptions = CommonUtils.getEnumList(Gender.class);
-    private List<String> NationalityOptions = CommonUtils.getEnumList(Nationality.class);
-    private List<String> IdentityTypeOptions = CommonUtils.getEnumList(IdentityType.class);
-    private List<String> CitizenOptions = CommonUtils.getEnumList(Citizenship.class);
+
     private List<String> OccupationOptions = CommonUtils.getEnumList(Occupation.class);
     private List<String> IncomeOptions = CommonUtils.getEnumList(Income.class);
     private List<String> MaritalStatusOptions = CommonUtils.getEnumList(MaritalStatus.class);
@@ -48,6 +47,30 @@ public class NewCardManagedBean implements Serializable {
     private String selectedEducation;
     private String selectedOccupation;
     private String selectedIndustry;
+    private String selectedIdentityType;
+    private String selectedNationality;
+    private String selectedSalutation;
+    private String selectedGender;
+    private String selectedIncome;
+    private String phone;
+    private String postalCode;
+    private String address;
+
+    private String nameAppearOnCard;
+    private int numOfDependents;
+    private String company;
+
+    private String identityNumber;
+    private List<String> IdentityTypeOptions = CommonUtils.getEnumList(IdentityType.class);
+    private List<String> NationalityOptions = CommonUtils.getEnumList(Nationality.class);
+    private List<String> SaluationOptions = CommonUtils.getEnumList(Salutation.class);
+    private String lastName;
+    private String firstName;
+    private Date birthDate;
+    private String email;
+    
+    
+
     @EJB
     private CardAcctSessionBeanLocal cardAcctSessionBean;
 
@@ -55,10 +78,38 @@ public class NewCardManagedBean implements Serializable {
     }
 
     public void saveUpdatedCreditCardOrder() {
+        System.out.println("inside saveupdatedCreditcardorder");
+        System.out.println(selectedIncome);
+                
+        getCco().setNameOnCard(nameAppearOnCard);
+        getCco().setNumOfDependents(numOfDependents);
+
         getCco().setCreditType(CreditType.getEnum(getSelectedCreditType()));
         getCco().setResidentialStatus(ResidentialStatus.getEnum(getSelectedResidentialStatus()));
-        //continue from here
+        getCco().setResidentialType(ResidentialType.getEnum(getSelectedResidentialType()));
+        getCco().setEmploymentStatus(EmploymentStatus.getEnum(getSelectedEmploymentStatus()));
+        getCco().setEduLevel(Education.getEnum(getSelectedEducation()));
+        getCco().setOccupation(Occupation.getEnum(getSelectedOccupation()));
+        getCco().setIndustry(Industry.getEnum(getSelectedIndustry()));
+        getCco().setIncome(Income.getEnum(getSelectedIncome()));
         
+        getCco().setGender(Gender.getEnum(getSelectedGender()));
+        getCco().setIdentityType(IdentityType.getEnum(getSelectedIdentityType()));
+        getCco().setPhone(phone);
+        getCco().setPostalCode(postalCode);
+        getCco().setAddress(address);
+        getCco().setCompany(company);
+        getCco().setIdentityNumber(identityNumber);
+        getCco().setNationality(Nationality.getEnum(getSelectedNationality()));
+        getCco().setSaluation(Salutation.getEnum(getSelectedSalutation()));
+        getCco().setLastName(lastName);
+        getCco().setFirstName(firstName);
+        getCco().setBirthDay(birthDate);
+        getCco().setEmail(email);
+        getCco().setApplicationStatus(ApplicationStatus.NEW);
+        getCardAcctSessionBean().createCardOrder(cco);
+        
+        RedirectUtils.redirect("/InternetBankingSystem/customer_card/credit_card_summary.xhtml");
     }
 
     public CreditCardOrder getCco() {
@@ -139,14 +190,6 @@ public class NewCardManagedBean implements Serializable {
 
     public void setIdentityTypeOptions(List<String> IdentityTypeOptions) {
         this.IdentityTypeOptions = IdentityTypeOptions;
-    }
-
-    public List<String> getCitizenOptions() {
-        return CitizenOptions;
-    }
-
-    public void setCitizenOptions(List<String> CitizenOptions) {
-        this.CitizenOptions = CitizenOptions;
     }
 
     public List<String> getOccupationOptions() {
@@ -235,5 +278,149 @@ public class NewCardManagedBean implements Serializable {
 
     public void setSelectedIndustry(String selectedIndustry) {
         this.selectedIndustry = selectedIndustry;
+    }
+
+    public String getNameAppearOnCard() {
+        return nameAppearOnCard;
+    }
+
+    public void setNameAppearOnCard(String nameAppearOnCard) {
+        this.nameAppearOnCard = nameAppearOnCard;
+    }
+
+    public int getNumOfDependents() {
+        return numOfDependents;
+    }
+
+    public void setNumOfDependents(int numOfDependents) {
+        this.numOfDependents = numOfDependents;
+    }
+
+    public String getCompany() {
+        return company;
+    }
+
+    public void setCompany(String company) {
+        this.company = company;
+    }
+
+    public String getIdentityNumber() {
+        return identityNumber;
+    }
+
+    public void setIdentityNumber(String identityNumber) {
+        this.identityNumber = identityNumber;
+    }
+
+    public List<String> getSaluationOptions() {
+        return SaluationOptions;
+    }
+
+    public void setSaluationOptions(List<String> SaluationOptions) {
+        this.SaluationOptions = SaluationOptions;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public Date getBirthDate() {
+        return birthDate;
+    }
+
+    public void setBirthDate(Date birthDate) {
+        this.birthDate = birthDate;
+    }
+
+    public CardAcctSessionBeanLocal getCardAcctSessionBean() {
+        return cardAcctSessionBean;
+    }
+
+    public void setCardAcctSessionBean(CardAcctSessionBeanLocal cardAcctSessionBean) {
+        this.cardAcctSessionBean = cardAcctSessionBean;
+    }
+
+    public String getSelectedIdentityType() {
+        return selectedIdentityType;
+    }
+
+    public void setSelectedIdentityType(String selectedIdentityType) {
+        this.selectedIdentityType = selectedIdentityType;
+    }
+
+    public String getSelectedNationality() {
+        return selectedNationality;
+    }
+
+    public void setSelectedNationality(String selectedNationality) {
+        this.selectedNationality = selectedNationality;
+    }
+
+    public String getSelectedSalutation() {
+        return selectedSalutation;
+    }
+
+    public void setSelectedSalutation(String selectedSalutation) {
+        this.selectedSalutation = selectedSalutation;
+    }
+
+    public String getSelectedGender() {
+        return selectedGender;
+    }
+
+    public void setSelectedGender(String selectedGender) {
+        this.selectedGender = selectedGender;
+    }
+
+    public String getSelectedIncome() {
+        return selectedIncome;
+    }
+
+    public void setSelectedIncome(String selectedIncome) {
+        this.selectedIncome = selectedIncome;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getPostalCode() {
+        return postalCode;
+    }
+
+    public void setPostalCode(String postalCode) {
+        this.postalCode = postalCode;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 }

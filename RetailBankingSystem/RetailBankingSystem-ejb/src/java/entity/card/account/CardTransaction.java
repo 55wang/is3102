@@ -46,6 +46,7 @@ public class CardTransaction implements Serializable {
     private CardTransactionType cardTransactionType;
     @ManyToOne(cascade = {CascadeType.PERSIST})
     private CreditCardAccount creditCardAccount;
+    
 
     public Long getId() {
         return id;
