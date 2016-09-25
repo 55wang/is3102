@@ -13,6 +13,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import server.utilities.EnumUtils.*;
 
@@ -28,8 +29,10 @@ public class CreditCardOrder implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @ManyToOne
+    private CreditCardProduct creditCardProduct;
+
     private Salutation saluation;
-    private CreditType creditType;
     private String firstName;
     private String lastName;
     private String nameOnCard;
@@ -42,7 +45,7 @@ public class CreditCardOrder implements Serializable {
 
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date birthDay;
-    
+
     private double creditScore;
     private String bureaCreditScore;
     private Gender gender;
@@ -275,14 +278,6 @@ public class CreditCardOrder implements Serializable {
         this.saluation = saluation;
     }
 
-    public CreditType getCreditType() {
-        return creditType;
-    }
-
-    public void setCreditType(CreditType creditType) {
-        this.creditType = creditType;
-    }
-
     public Nationality getNationality() {
         return nationality;
     }
@@ -371,7 +366,6 @@ public class CreditCardOrder implements Serializable {
         this.industry = industry;
     }
 
-
     public ApplicationStatus getApplicationStatus() {
         return applicationStatus;
     }
@@ -402,6 +396,14 @@ public class CreditCardOrder implements Serializable {
 
     public void setBureaCreditScore(String bureaCreditScore) {
         this.bureaCreditScore = bureaCreditScore;
+    }
+
+    public CreditCardProduct getCreditCardProduct() {
+        return creditCardProduct;
+    }
+
+    public void setCreditCardProduct(CreditCardProduct creditCardProduct) {
+        this.creditCardProduct = creditCardProduct;
     }
 
 }

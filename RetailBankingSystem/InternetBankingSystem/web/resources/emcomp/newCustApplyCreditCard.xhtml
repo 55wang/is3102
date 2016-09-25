@@ -29,8 +29,8 @@
 
                                         <tr><div style="margin-left:120px;margin-top:0px">
                                                 <h:outputText style="font-weight:bolder" value="Choose Your Credit Card Account: " />
-                                                <p:selectOneMenu value="#{newCardManagedBean.selectedCreditType}" style="width:187px; height: 41px; line-height: 21px; top:10px" rendered="true" required="true">
-                                                    <f:selectItems value="#{newCardManagedBean.creditTypeOptions}" />
+                                                <p:selectOneMenu value="#{newCardManagedBean.selectedProductName}" style="width:187px; height: 41px; line-height: 21px; top:10px" rendered="true" required="true">
+                                                    <f:selectItems value="#{newCardManagedBean.productNameOptions}" />
                                                 </p:selectOneMenu>
 
                                                 <h:outputText value="Name Appear On Card: " />
@@ -202,7 +202,7 @@
                                 <p:scrollPanel id="confirmation" style="height:238px">
                                     <h:panelGrid columns="2" columnClasses="label, value">
                                         <h:outputText value="Credit Card Account: " />
-                                        <h:outputText value="#{newCardManagedBean.selectedCreditType}" styleClass="outputLabel"/>
+                                        <h:outputText value="#{newCardManagedBean.selectedProductName}" styleClass="outputLabel"/>
 
                                         <h:outputText value="Name Appear on Card: " />
                                         <h:outputText value="#{newCardManagedBean.nameAppearOnCard}" styleClass="outputLabel"/>

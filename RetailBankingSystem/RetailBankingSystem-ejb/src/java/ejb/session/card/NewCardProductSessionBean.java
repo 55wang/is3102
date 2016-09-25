@@ -6,22 +6,14 @@
 package ejb.session.card;
 
 import entity.card.account.CashBackCardProduct;
-import entity.card.account.DebitCardAccount;
+import entity.card.account.CreditCardProduct;
 import entity.card.account.MileCardProduct;
 import entity.card.account.RewardCardProduct;
-import entity.common.TransactionRecord;
-import entity.customer.MainAccount;
-import entity.dams.account.CustomerDepositAccount;
-import entity.dams.account.DepositAccount;
-import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;
-import javax.persistence.EntityExistsException;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import server.utilities.EnumUtils;
-import server.utilities.GenerateAccountAndCCNumber;
 
 /**
  *
@@ -79,6 +71,19 @@ public class NewCardProductSessionBean implements NewCardProductSessionBeanLocal
     @Override
     public void createCashBackProduct(CashBackCardProduct cbcp) {
         em.persist(cbcp);
+    }
+
+    @Override
+    public List<CreditCardProduct> getAllCreditCardProducts() {
+        Query q = em.createQuery("SELECT ccp FROM CreditCardProduct ccp");
+        return q.getResultList();
+    }
+
+    @Override
+    public CreditCardProduct getSingleCreditCardProduct(String productName) {
+        Query q = em.createQuery("SELECT ccp FROM CreditCardProduct ccp WHERE ccp.productName=:inPName");
+        q.setParameter("inPName", productName);
+        return (CreditCardProduct)q.getSingleResult();
     }
 
 }

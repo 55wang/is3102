@@ -8,12 +8,8 @@ package staff.card;
 import ejb.session.card.CardAcctSessionBeanLocal;
 import ejb.session.common.EmailServiceSessionBeanLocal;
 import ejb.session.common.NewCustomerSessionBeanLocal;
-import entity.card.account.CashBackCardProduct;
 import entity.card.account.CreditCardAccount;
 import entity.card.account.CreditCardOrder;
-import entity.card.account.CreditCardProduct;
-import entity.card.account.MileCardProduct;
-import entity.card.account.RewardCardProduct;
 import entity.customer.Customer;
 import entity.customer.MainAccount;
 import java.io.Serializable;
@@ -93,15 +89,15 @@ public class CardApplicationManagedBean implements Serializable {
         Calendar cal = Calendar.getInstance();
         cca.setCreationDate(cal.getTime());
 
-        CreditCardProduct cp = null;
-        if (cco.getCreditType().getValue().equals("MILE")) {
-            cp = new MileCardProduct();
-        } else if (cco.getCreditType().getValue().equals("REWARD")) {
-            cp = new RewardCardProduct();
-        } else if (cco.getCreditType().getValue().equals("CASHBACK")) {
-            cp = new CashBackCardProduct();
-        }
-        cca.setCreditCardProduct(cp);
+//        CreditCardProduct cp = null;
+//        if (cco.getCreditType().getValue().equals("MILE")) {
+//            cp = new MileCardProduct();
+//        } else if (cco.getCreditType().getValue().equals("REWARD")) {
+//            cp = new RewardCardProduct();
+//        } else if (cco.getCreditType().getValue().equals("CASHBACK")) {
+//            cp = new CashBackCardProduct();
+//        }
+//        cca.setCreditCardProduct(cp);
         cca.setCvv(Integer.parseInt(CommonHelper.generateRandom(true, 3)));
         cal.set(Calendar.YEAR, 2);
         cca.setValidDate(cal.getTime());
