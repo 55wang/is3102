@@ -16,115 +16,122 @@
             <em:staffNavBar context="customer"></em:staffNavBar>
             <em:staffSideBar top="customer" side="viewCustomer"></em:staffSideBar>
             <div class="container">
+                <p:growl id="growl" sticky="true" showDetail="true"/>
+
+                <p:messages>
+                    <p:panel header="List of Customers">
+                        <h:form id="update-form">
 
 
-                <p:panel header="List of Customers">
-                    <h:form id="update-form">
+                            <p:panelGrid  columns="2" columnClasses="label,value" style="width:500px; margin:0 auto " >
+                                <f:facet name="header">
+                                    Basic Information
+                                </f:facet>
+
+                                <h:outputText value="Last Name: " style="width: 250px"/>
+                                <h:inputText value="#{staffCustomerInformationManagedBean.selectedCustomer.lastname}"  style="width:81%"/>
+
+                                <h:outputText value="Last Name: " style="width: 250px"/>
+                                <h:inputText value="#{staffCustomerInformationManagedBean.selectedCustomer.firstname}"  style="width:81%"/>
 
 
-                        <p:panelGrid  columns="2" columnClasses="label,value" style="width:500px; margin:0 auto " >
+                                <h:outputText value="Status: " />
+                                <p:selectOneMenu value="#{staffCustomerInformationManagedBean.selectedCustomer.mainAccount.status}" style="width:70%">
+                                    <f:selectItems value="#{staffCustomerInformationManagedBean.statusOptions}" />
+                                </p:selectOneMenu>
+
+                                <h:outputText value="Gender: " />
+                                <p:selectOneMenu value="#{staffCustomerInformationManagedBean.selectedGender}" style="width:70%">
+                                    <f:selectItems value="#{staffCustomerInformationManagedBean.genderOptions}" />
+                                </p:selectOneMenu>
+
+
+                                <h:outputText value="Citizenship: " />
+                                <p:selectOneMenu value="#{staffCustomerInformationManagedBean.selectedCitizenship}" style="width:70%">
+                                    <f:selectItems value="#{staffCustomerInformationManagedBean.citizenOptions}" />
+                                </p:selectOneMenu>
+
+                                <h:outputText value="Nationality: " />
+                                <p:selectOneMenu value="#{staffCustomerInformationManagedBean.selectedNationality}" style="width:70%">
+                                    <f:selectItems value="#{staffCustomerInformationManagedBean.nationalityOptions}" />
+                                </p:selectOneMenu>
+
+                                <h:outputText value="Identity Type: " />
+                                <p:selectOneMenu value="#{staffCustomerInformationManagedBean.selectedIdentityType}" style="width:70%">
+                                    <f:selectItems value="#{staffCustomerInformationManagedBean.identityTypeOptions}" />
+                                </p:selectOneMenu>
+
+                                <h:outputText value="Identity Number: " />
+                                <h:inputText value="#{staffCustomerInformationManagedBean.selectedCustomer.identityNumber}" style="width:81%" />
+
+                                <h:outputText value="Occupation: " />
+                                <p:selectOneMenu value="#{staffCustomerInformationManagedBean.selectedOccupation}" style="width:70%">
+                                    <f:selectItems value="#{staffCustomerInformationManagedBean.occupationOptions}" />
+                                </p:selectOneMenu>
+
+                                <h:outputText value="Income (S$): " />
+                                <p:selectOneMenu value="#{staffCustomerInformationManagedBean.selectedIncome}" style="width:70%">
+                                    <f:selectItems value="#{staffCustomerInformationManagedBean.incomeOptions}" />
+                                </p:selectOneMenu>
+
+                                <h:outputText value="Marital Status: " />
+                                <p:selectOneMenu value="#{staffCustomerInformationManagedBean.selectedMaritalStatus}" style="width:70%">
+                                    <f:selectItems value="#{staffCustomerInformationManagedBean.maritalStatusOptions}" />
+                                </p:selectOneMenu>
+
+                                <h:outputText value="Education: " />
+                                <p:selectOneMenu value="#{staffCustomerInformationManagedBean.selectedEducation}" style="width:70%">
+                                    <f:selectItems value="#{staffCustomerInformationManagedBean.educationOptions}" />
+                                </p:selectOneMenu>
+
+                                <h:outputText value="DOB: " />
+                                <p:calendar value="#{staffCustomerInformationManagedBean.selectedCustomer.birthDay}" navigator="true" yearRange="c-100:c+0" required="true" pattern="yyyy-MM-dd" />
+
+                                <h:outputText value="Credit Score" />
+                                <h:inputText value="#{staffCustomerInformationManagedBean.selectedCustomer.creditScore}" style="width:81%"/>
+                            </p:panelGrid>
+                            <br/>
                             <f:facet name="header">
-                                Basic Information
-                            </f:facet>
-
-                            <h:outputText value="Last Name: " style="width: 250px"/>
-                            <h:inputText value="#{staffCustomerInformationManagedBean.selectedCustomer.lastname}"  style="width:81%"/>
-
-                             <h:outputText value="Last Name: " style="width: 250px"/>
-                             <h:inputText value="#{staffCustomerInformationManagedBean.selectedCustomer.firstname}"  style="width:81%"/>
-
-                           
-                            <h:outputText value="Status: " />
-                            <p:selectOneMenu value="#{staffCustomerInformationManagedBean.selectedCustomer.mainAccount.status}" style="width:70%">
-                                <f:selectItems value="#{staffCustomerInformationManagedBean.statusOptions}" />
-                            </p:selectOneMenu>
-
-                            <h:outputText value="Gender: " />
-                            <p:selectOneMenu value="#{staffCustomerInformationManagedBean.selectedGender}" style="width:70%">
-                                <f:selectItems value="#{staffCustomerInformationManagedBean.genderOptions}" />
-                            </p:selectOneMenu>
-
-
-                            <h:outputText value="Citizenship: " />
-                            <p:selectOneMenu value="#{staffCustomerInformationManagedBean.selectedCitizenship}" style="width:70%">
-                                <f:selectItems value="#{staffCustomerInformationManagedBean.citizenOptions}" />
-                            </p:selectOneMenu>
-
-                            <h:outputText value="Nationality: " />
-                            <p:selectOneMenu value="#{staffCustomerInformationManagedBean.selectedNationality}" style="width:70%">
-                                <f:selectItems value="#{staffCustomerInformationManagedBean.nationalityOptions}" />
-                            </p:selectOneMenu>
-
-                            <h:outputText value="Identity Type: " />
-                            <p:selectOneMenu value="#{staffCustomerInformationManagedBean.selectedIdentityType}" style="width:70%">
-                                <f:selectItems value="#{staffCustomerInformationManagedBean.identityTypeOptions}" />
-                            </p:selectOneMenu>
-
-                            <h:outputText value="Identity Number: " />
-                            <h:inputText value="#{staffCustomerInformationManagedBean.selectedCustomer.identityNumber}" style="width:81%" />
-
-                            <h:outputText value="Occupation: " />
-                            <p:selectOneMenu value="#{staffCustomerInformationManagedBean.selectedOccupation}" style="width:70%">
-                                <f:selectItems value="#{staffCustomerInformationManagedBean.occupationOptions}" />
-                            </p:selectOneMenu>
-
-                            <h:outputText value="Income (S$): " />
-                            <p:selectOneMenu value="#{staffCustomerInformationManagedBean.selectedIncome}" style="width:70%">
-                                <f:selectItems value="#{staffCustomerInformationManagedBean.incomeOptions}" />
-                            </p:selectOneMenu>
-
-                            <h:outputText value="Marital Status: " />
-                            <p:selectOneMenu value="#{staffCustomerInformationManagedBean.selectedMaritalStatus}" style="width:70%">
-                                <f:selectItems value="#{staffCustomerInformationManagedBean.maritalStatusOptions}" />
-                            </p:selectOneMenu>
-
-                            <h:outputText value="Education: " />
-                            <p:selectOneMenu value="#{staffCustomerInformationManagedBean.selectedEducation}" style="width:70%">
-                                <f:selectItems value="#{staffCustomerInformationManagedBean.educationOptions}" />
-                            </p:selectOneMenu>
-
-                            <h:outputText value="DOB: " />
-                            <p:calendar value="#{staffCustomerInformationManagedBean.selectedCustomer.birthDay}" navigator="true" yearRange="c-100:c+0" required="true" pattern="yyyy-MM-dd" />
-
-                            <h:outputText value="Credit Score" />
-                            <h:inputText value="#{staffCustomerInformationManagedBean.selectedCustomer.creditScore}" style="width:81%"/>
-                        </p:panelGrid>
-<br/>
-                        <f:facet name="header">
-                            Contact Details 
-                        </f:facet>
-
-                        <p:panelGrid  columns="2" columnClasses="label,value" style="width:500px; margin: auto" >
-                            <f:facet name="header" >
                                 Contact Details 
                             </f:facet>
 
-                            <h:outputText value="Phone Number: " />
-                            <h:inputText value="#{staffCustomerInformationManagedBean.selectedCustomer.phone}"  style="width:81%"/>
+                            <p:panelGrid  columns="2" columnClasses="label,value" style="width:500px; margin: auto" >
+                                <f:facet name="header" >
+                                    Contact Details 
+                                </f:facet>
 
-                            <h:outputText value="Email: " />
-                            <h:inputText value="#{staffCustomerInformationManagedBean.selectedCustomer.email}"  style="width:81%"/>                                   
+                                <h:outputText value="Phone Number: " />
+                                <p:inputMask value="#{staffCustomerInformationManagedBean.selectedCustomer.phone}"  style="width:250px" mask="99999999"/>
 
-                            <h:outputText value="Address: " />
-                            <h:inputText value="#{staffCustomerInformationManagedBean.selectedCustomer.address}" style="width:81%"/>
+                                <h:outputText value="Email: " />
+                                <p:inputText required="true" label="email" size="40"
+                                             requiredMessage="Please enter your email address."
+                                             validatorMessage="Invalid email format"
+                                             value="#{staffCustomerInformationManagedBean.selectedCustomer.email}" style="width:250px">
+                                    <f:validateRegex
+                                        pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+                                </p:inputText>
 
-                            <h:outputText value="Postal Code: " />
-                            <h:inputText value="#{staffCustomerInformationManagedBean.selectedCustomer.postalCode}" style="width:81%"/>
+                                <h:outputText value="Address: " />
+                                <h:inputText value="#{staffCustomerInformationManagedBean.selectedCustomer.address}" style="width:250px"/>
+
+                                <h:outputText value="Postal Code: " />
+                                <p:inputMask value="#{staffCustomerInformationManagedBean.selectedCustomer.postalCode}" style="width:250px" mask="999-999"/>
 
 
-                        </p:panelGrid>
+                            </p:panelGrid>
 
 
-                        <br/><br/>
-                        <p:outputPanel>
+                            <br/><br/>
+                            <p:outputPanel>
 
-                            <p:commandButton class="h-center" value="Update"  action="#{staffCustomerInformationManagedBean.saveUpdatedCustomerInformation()}" />
+                                <p:commandButton class="h-center" value="Update"  action="#{staffCustomerInformationManagedBean.saveUpdatedCustomerInformation()}" update="growl"/>
 
-                        </p:outputPanel>
+                            </p:outputPanel>
 
-                    </h:form>
-                </p:panel>
-                <!--                </p:messages>-->
+                        </h:form>
+                    </p:panel>
+                </p:messages>
             </div>
         </h:body> 
     </f:view>

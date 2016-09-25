@@ -6,6 +6,7 @@
 package staff.cms;
 
 import ejb.session.cms.CustomerProfileSessionBeanLocal;
+import ejb.session.utils.UtilsSessionBeanLocal;
 import entity.customer.Customer;
 import java.io.Serializable;
 import java.util.List;
@@ -34,6 +35,8 @@ import utils.RedirectUtils;
 @Named(value = "staffCustomerInformationManagedBean")
 @ViewScoped
 public class StaffCustomerInformationManagedBean implements Serializable {
+    @EJB
+    private UtilsSessionBeanLocal utilsSessionBean;
 
     @EJB
     private CustomerProfileSessionBeanLocal customerProfileSessionBean;
@@ -84,16 +87,23 @@ public class StaffCustomerInformationManagedBean implements Serializable {
         selectedCustomer.setIncome(Income.getEnum(selectedIncome));
         selectedCustomer.setMaritalStatus(MaritalStatus.getEnum(selectedMaritalStatus));
         selectedCustomer.setEducation(Education.getEnum(selectedEducation));
+       
+        if (utilsSessionBean.checkUpdatedEmailIsUnique(selectedCustomer) == false) {
+            MessageUtils.displayInfo("Email is registered!");
 
-        Customer result = getCustomerProfileSessionBean().saveProfile(selectedCustomer);
+        } else if (utilsSessionBean.checkUpdatedPhoneIsUnique(selectedCustomer) == false) {
+            MessageUtils.displayInfo("Phone is registered!");
 
-        if (result == null) {
-            MessageUtils.displayError("Customer not found!");
         } else {
-            MessageUtils.displayInfo("Cusotmer information is updated!");
-            RedirectUtils.redirect("staff-edit-customer.xhtml");
-
+            Customer result = customerProfileSessionBean.saveProfile(selectedCustomer);
+            if (result != null) {
+                MessageUtils.displayInfo("Profile successfully updated!");
+                RedirectUtils.redirect("view_profile.xhtml");
+            } else {
+                MessageUtils.displayInfo("Update is unsuccessful, please check your input.");
+            }
         }
+
 
     }
 

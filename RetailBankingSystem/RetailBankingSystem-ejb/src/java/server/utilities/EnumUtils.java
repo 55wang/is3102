@@ -592,12 +592,12 @@ public class EnumUtils {
 
     public enum Income {
 
-        BELOW_2000("< 2000"),
-        FROM_2000_TO_4000("2000 to 4000"),
-        FROM_4000_TO_6000("4000 to 6000"),
-        FROM_6000_TO_8000("6000 to 8000"),
-        FROM_8000_TO_10000("8000 to 10000"),
-        OVER_10000("> 10000");
+        BELOW_2000("< S$2000"),
+        FROM_2000_TO_4000("S$2000 to 4000"),
+        FROM_4000_TO_6000("S$4000 to 6000"),
+        FROM_6000_TO_8000("S$6000 to 8000"),
+        FROM_8000_TO_10000("S$8000 to 10000"),
+        OVER_10000("> S$10000");
 
         private String value;
 
