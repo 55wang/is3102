@@ -6,6 +6,8 @@
 package staff.common;
 
 import ejb.session.staff.StaffAccountSessionBeanLocal;
+import ejb.session.utils.UtilsSessionBeanLocal;
+import entity.common.AuditLog;
 import entity.staff.StaffAccount;
 import java.io.Serializable;
 import javax.annotation.PostConstruct;
@@ -27,10 +29,13 @@ public class StaffActivationManagedBean implements Serializable {
     
     @EJB
     private StaffAccountSessionBeanLocal staffBean;
+    @EJB
+    private UtilsSessionBeanLocal utilsBean;
     
     @ManagedProperty(value="#{param.email}")
     private String email;
     private Boolean valid;
+    private StaffAccount staff;
 
     /**
      * Creates a new instance of StaffActivationFManagedBean
@@ -42,8 +47,9 @@ public class StaffActivationManagedBean implements Serializable {
         System.out.println("Login from activation");
         email = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("email");
         String randomPwd = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("code");
-        StaffAccount sa = staffBean.loginAccount(email, randomPwd);
+        StaffAccount sa = staffBean.loginAccount(staffBean.getAccountByEmail(email).getUsername(), randomPwd);
         if(sa != null ){
+            staff = sa;
             valid = true;
             System.out.println("Status updated");
             sa.setStatus(EnumUtils.StatusType.ACTIVE);
@@ -52,6 +58,12 @@ public class StaffActivationManagedBean implements Serializable {
         }
         else
             valid = false;
+        AuditLog a = new AuditLog();
+        a.setActivityLog("System user enter create_customer_information.xhtml");
+        a.setFunctionName("StaffActivitionCaseManagedBean @PostConstruct init()");
+        a.setInput("Getting all activition");
+        a.setStaffAccount(SessionUtils.getStaff());
+        utilsBean.persist(a);
     }
 
     /**
@@ -81,5 +93,12 @@ public class StaffActivationManagedBean implements Serializable {
     public void setValid(Boolean valid) {
         this.valid = valid;
     }
-    
+
+    public StaffAccount getStaff() {
+        return staff;
+    }
+
+    public void setStaff(StaffAccount staff) {
+        this.staff = staff;
+    }
 }

@@ -79,4 +79,7 @@ public class CustomerProfileSessionBean implements CustomerProfileSessionBeanLoc
         return q.getResultList();
     }
 
+    public Customer getCustomerByID(Long ID){
+        return (Customer) em.find(Customer.class, ID);
+    }
 }

@@ -10,6 +10,7 @@ import ejb.session.cms.CustomerProfileSessionBeanLocal;
 import ejb.session.common.EmailServiceSessionBeanLocal;
 import entity.card.account.CardTransaction;
 import entity.card.account.CreditCardAccount;
+import entity.card.account.DebitCardAccount;
 import entity.customer.Customer;
 import java.io.Serializable;
 import java.util.HashMap;
@@ -19,8 +20,6 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
-import javax.transaction.Transaction;
-import static org.codehaus.groovy.runtime.DateGroovyMethods.updated;
 import server.utilities.EnumUtils.CardAccountStatus;
 import utils.MessageUtils;
 import utils.RedirectUtils;
@@ -55,8 +54,22 @@ public class CustomerCardManagedBean implements Serializable {
 
     public void viewTerminatePage(CreditCardAccount aCca) {
         System.out.println("in viewTerminatePage");
-        cardAcctSessionBean.updateCardAccountStatus(aCca, CardAccountStatus.CLOSED);
-        RedirectUtils.redirect("/InternetBankingSystem/customer_card/application_success.xhtml");
+        cardAcctSessionBean.updateCardAccountStatus(cca, CardAccountStatus.CLOSED);
+        RedirectUtils.redirect("/InternetBankingSystem/customer_card/debit_card_summary.xhtml");
+    }
+
+    public void viewTerminateDebitPage(DebitCardAccount dca) {
+        System.out.println("in viewTerminatePage");
+        cardAcctSessionBean.updateDebitAccountStatus(dca, CardAccountStatus.CLOSED);
+        RedirectUtils.redirect("/InternetBankingSystem/customer_card/debit_card_summary.xhtml");
+    }
+    
+    public void viewRedeemPage(CreditCardAccount cca) {
+        // Go to Message View
+        Map<String, String> map = new HashMap<>();
+        map.put("creditCardId", cca.getId().toString());
+        String params = RedirectUtils.generateParameters(map);
+        RedirectUtils.redirect("redeem_rewards.xhtml" + params);
     }
 
     public void redirectToChangeTransactionLimitPage(CreditCardAccount aCca) {

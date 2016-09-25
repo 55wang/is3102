@@ -8,6 +8,8 @@ package staff.common;
 import ejb.session.common.EmailServiceSessionBeanLocal;
 import ejb.session.staff.StaffAccountSessionBeanLocal;
 import ejb.session.staff.StaffRoleSessionBeanLocal;
+import ejb.session.utils.UtilsSessionBeanLocal;
+import entity.common.AuditLog;
 import entity.staff.StaffAccount;
 import java.io.Serializable;
 import javax.annotation.PostConstruct;
@@ -36,6 +38,8 @@ public class StaffLoginManagedBean implements Serializable {
     private StaffRoleSessionBeanLocal roleBean;
     @EJB
     private EmailServiceSessionBeanLocal emailBean;
+    @EJB
+    private UtilsSessionBeanLocal utilsBean;
     
     private String username;
     private String password;
@@ -50,6 +54,12 @@ public class StaffLoginManagedBean implements Serializable {
     public void init() {
         // Set a default super account
         System.out.println("StaffLoginManagedBean @PostConstruct");
+        AuditLog a = new AuditLog();
+        a.setActivityLog("System StaffLoginManagedBean.xhtml");
+        a.setFunctionName("StaffLoginManagedBean @PostConstruct init()");
+        a.setInput("Getting all customer information");
+        a.setStaffAccount(SessionUtils.getStaff());
+        utilsBean.persist(a);
 //        StaffAccount sa = staffBean.loginAccount("adminadmin", HashPwdUtils.hashPwd("password"));
 //        SessionUtils.setStaffAccount(sa);
 //        RedirectUtils.redirect(SessionUtils.getContextPath() + "/admin/create_interest.xhtml");

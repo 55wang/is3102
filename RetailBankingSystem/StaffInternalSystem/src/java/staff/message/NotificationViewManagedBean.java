@@ -7,6 +7,8 @@ package staff.message;
 
 import ejb.session.message.AnnouncementSessionBeanLocal;
 import ejb.session.staff.StaffRoleSessionBeanLocal;
+import ejb.session.utils.UtilsSessionBeanLocal;
+import entity.common.AuditLog;
 import entity.staff.Announcement;
 import entity.staff.Role;
 import java.io.Serializable;
@@ -40,6 +42,8 @@ public class NotificationViewManagedBean implements Serializable {
     private AnnouncementSessionBeanLocal announcementBean;
     @EJB
     private StaffRoleSessionBeanLocal staffRoleSessionBean;
+    @EJB
+    private UtilsSessionBeanLocal utilsBean;
 
     private final static String STAFF_NOTIFY_CHANNEL = "/staff_notify";
     private final static String CUSTOMER_NOTIFY_CHANNEL = "/customer_notify";
@@ -68,6 +72,12 @@ public class NotificationViewManagedBean implements Serializable {
         for (Role r : roles) {
             rolesOption.put(r.getRoleName(), r.getRoleName());
         }
+        AuditLog a = new AuditLog();
+        a.setActivityLog("System user enter NotificationViewManagedBean");
+        a.setFunctionName("NotificationViewManagedBean @PostConstruct init()");
+        a.setInput("Getting all NotificationViewManagedBean information");
+        a.setStaffAccount(SessionUtils.getStaff());
+        utilsBean.persist(a);
     }
 
     public void send() { 

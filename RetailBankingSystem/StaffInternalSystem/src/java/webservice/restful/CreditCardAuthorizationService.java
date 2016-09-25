@@ -5,9 +5,12 @@
  */
 package webservice.restful;
 
+import SMSMessaging.SendTextMessage;
 import ejb.session.card.CardAcctSessionBeanLocal;
 import entity.card.account.CreditCardAccount;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.json.Json;
@@ -24,6 +27,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import org.apache.commons.lang.StringUtils;
 import org.primefaces.json.JSONObject;
 import server.utilities.PincodeGenerationUtils;
 
@@ -124,6 +128,19 @@ public class CreditCardAuthorizationService {
             c.setAuthorizationCode("-2");
             c.setMessage("Not Authorized!");
             // TODO: Send Notification message
+
+            CreditCardAccount cca = ccBean.getCardByCardNumber(ccNumber);
+            String phoneNumber = cca.getMainAccount().getCustomer().getPhone();
+            Calendar currentDate = Calendar.getInstance();
+            SimpleDateFormat dateOnly = new SimpleDateFormat("dd/MM/yyyy");
+
+            String lastFourDigit = StringUtils.substring(ccNumber, ccNumber.length() - 4);
+            System.out.println("print last 4 digit: " + lastFourDigit);
+            String msg = "Card Transaction of SGD " + ccAmount + " was performed on your MBS account ending with "
+                    + lastFourDigit + " on " + dateOnly.format(currentDate.getTime()) + ". If unauthorised, pls call "
+                    + "1800 222 2313.";
+            SendTextMessage.sendText(phoneNumber, msg);
+
         }
 
         System.out.println("Sending back result with single code: " + c.getAuthorizationCode());

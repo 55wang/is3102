@@ -5,8 +5,12 @@
  */
 package staff.setting;
 
+import ejb.session.utils.UtilsSessionBeanLocal;
+import entity.common.AuditLog;
 import entity.staff.Role;
 import java.io.Serializable;
+import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import utils.SessionUtils;
@@ -18,6 +22,8 @@ import utils.SessionUtils;
 @Named(value = "staffViewAccessManagedBean")
 @ViewScoped
 public class StaffViewAccessManagedBean implements Serializable {
+    @EJB
+    private UtilsSessionBeanLocal utilsBean;
 
     private Role role = SessionUtils.getStaff().getRole();
     /**
@@ -29,6 +35,17 @@ public class StaffViewAccessManagedBean implements Serializable {
     /**
      * @return the role
      */
+    
+    @PostConstruct
+    public void init() {
+        AuditLog a = new AuditLog();
+        a.setActivityLog("System user enter StaffViewAccessManagedBean");
+        a.setFunctionName("StaffViewAccessManagedBean @PostConstruct init()");
+        a.setInput("Getting all StaffViewAccessManagedBean");
+        a.setStaffAccount(SessionUtils.getStaff());
+        utilsBean.persist(a);
+    }
+    
     public Role getRole() {
         return role;
     }

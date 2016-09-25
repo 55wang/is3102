@@ -9,7 +9,11 @@ import ejb.session.card.CardAcctSessionBeanLocal;
 import ejb.session.card.NewCardProductSessionBeanLocal;
 import ejb.session.common.EmailServiceSessionBeanLocal;
 import ejb.session.common.NewCustomerSessionBeanLocal;
+
+import ejb.session.utils.UtilsSessionBeanLocal;
+import entity.card.account.CreditCardAccount;
 import entity.card.account.CreditCardOrder;
+import entity.common.AuditLog;
 import entity.customer.Customer;
 import entity.customer.MainAccount;
 import java.io.Serializable;
@@ -23,6 +27,7 @@ import javax.faces.view.ViewScoped;
 import server.utilities.EnumUtils;
 import utils.MessageUtils;
 import utils.RedirectUtils;
+import utils.SessionUtils;
 
 /**
  *
@@ -40,6 +45,8 @@ public class CardViewCreditApplicationManagedBean implements Serializable {
     private EmailServiceSessionBeanLocal emailServiceSessionBean;
     @EJB
     private NewCustomerSessionBeanLocal newCustomerSessionBean;
+    @EJB
+    private UtilsSessionBeanLocal utilsBean;
     
     private List<CreditCardOrder> ccos;
     private String bureauCreditScore;
@@ -48,10 +55,13 @@ public class CardViewCreditApplicationManagedBean implements Serializable {
     }
     
     @PostConstruct
-    public void displayCardOrder() {
-//        mcps = newCardProductSessionBean.showAllMileProducts();
-//        rcps = newCardProductSessionBean.showAllRewardProducts();
-//        cbcps = newCardProductSessionBean.showAllCashBackCardProducts();
+    public void init() {
+        AuditLog a = new AuditLog();
+        a.setActivityLog("System user enter view_credit_card.xhtml");
+        a.setFunctionName("CardViewCreditApplicationManagedBean @PostConstruct init()");
+        a.setInput("Getting all credit card applications");
+        a.setStaffAccount(SessionUtils.getStaff());
+        utilsBean.persist(a);
         ccos = cardAcctSessionBean.showAllCreditCardOrder();
     }
     
@@ -69,10 +79,18 @@ public class CardViewCreditApplicationManagedBean implements Serializable {
         String randomPwd = generatePwd();
         mainAccount.setPassword(randomPwd);
         customer.setMainAccount(mainAccount);
-        newCustomerSessionBean.createCustomer(customer);
+        customer = newCustomerSessionBean.createCustomer(customer);
         System.out.println("Customer Saved");
+        CreditCardAccount cca = new CreditCardAccount(cco, customer);
+        cca = cardAcctSessionBean.createCardAccount(cca);
+        System.out.println("ccNumber:" + cca.getCreditCardNum());
+        System.out.println("ccNumberHidden" + cca.getPartialHiddenAccountNumber());
         try {
-            emailServiceSessionBean.sendCreditCardActivationGmailForCustomer(customer.getEmail(), randomPwd);
+            emailServiceSessionBean.sendCreditCardActivationGmailForCustomer(
+                    customer.getEmail(), 
+                    randomPwd, 
+                    cca.getCreditCardNum()
+            );
             MessageUtils.displayInfo("Order Approved!");
         } catch (Exception ex) {
             MessageUtils.displayError("Order Approved! But email send failed");

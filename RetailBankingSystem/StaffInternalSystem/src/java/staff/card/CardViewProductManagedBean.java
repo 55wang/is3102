@@ -7,15 +7,18 @@ package staff.card;
 
 import ejb.session.card.CardAcctSessionBeanLocal;
 import ejb.session.card.NewCardProductSessionBeanLocal;
+import ejb.session.utils.UtilsSessionBeanLocal;
 import entity.card.account.CashBackCardProduct;
 import entity.card.account.MileCardProduct;
 import entity.card.account.RewardCardProduct;
+import entity.common.AuditLog;
 import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
+import utils.SessionUtils;
 
 /**
  *
@@ -30,6 +33,9 @@ public class CardViewProductManagedBean implements Serializable {
      */
     @EJB
     NewCardProductSessionBeanLocal newCardProductSessionBean;
+    @EJB
+    private UtilsSessionBeanLocal utilsBean;
+    
     private List<MileCardProduct> mcps;
     private List<RewardCardProduct> rcps;
     private List<CashBackCardProduct> cbcps;
@@ -38,6 +44,15 @@ public class CardViewProductManagedBean implements Serializable {
     }
 
     @PostConstruct
+    public void init() {
+        AuditLog a = new AuditLog();
+        a.setActivityLog("System user enter view_card_product.xhtml");
+        a.setFunctionName("CardViewProductManagedBean @PostConstruct init()");
+        a.setInput("Getting all credit card products");
+        a.setStaffAccount(SessionUtils.getStaff());
+        utilsBean.persist(a);
+        displayCards();
+    }
     public void displayCards() {
         mcps = newCardProductSessionBean.showAllMileProducts();
         rcps = newCardProductSessionBean.showAllRewardProducts();

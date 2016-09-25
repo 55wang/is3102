@@ -27,10 +27,10 @@ public class PromoCode implements Serializable {
     private Long id;
     @Column(unique = true, nullable = false)
     private String promotionCode;
-    private String promotionName;
+    @ManyToOne(cascade = {CascadeType.MERGE})
+    private PromoProduct product;
     @ManyToOne(cascade = {CascadeType.PERSIST})
-    private CreditCardAccount creditCardAccount ;
-    
+    private CreditCardAccount creditCardAccount;
 
     public Long getId() {
         return id;
@@ -73,18 +73,30 @@ public class PromoCode implements Serializable {
         this.promotionCode = promotionCode;
     }
 
-    public String getPromotionName() {
-        return promotionName;
+    /**
+     * @return the product
+     */
+    public PromoProduct getProduct() {
+        return product;
     }
 
-    public void setPromotionName(String promotionName) {
-        this.promotionName = promotionName;
+    /**
+     * @param product the product to set
+     */
+    public void setProduct(PromoProduct product) {
+        this.product = product;
     }
 
+    /**
+     * @return the creditCardAccount
+     */
     public CreditCardAccount getCreditCardAccount() {
         return creditCardAccount;
     }
 
+    /**
+     * @param creditCardAccount the creditCardAccount to set
+     */
     public void setCreditCardAccount(CreditCardAccount creditCardAccount) {
         this.creditCardAccount = creditCardAccount;
     }

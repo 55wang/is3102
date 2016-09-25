@@ -8,6 +8,8 @@ package staff.admin;
 import ejb.session.common.EmailServiceSessionBeanLocal;
 import ejb.session.staff.StaffAccountSessionBeanLocal;
 import ejb.session.staff.StaffRoleSessionBeanLocal;
+import ejb.session.utils.UtilsSessionBeanLocal;
+import entity.common.AuditLog;
 import entity.staff.Role;
 import entity.staff.StaffAccount;
 import java.io.Serializable;
@@ -25,6 +27,7 @@ import server.utilities.EnumUtils.StatusType;
 import utils.CommonUtils;
 import utils.HashPwdUtils;
 import utils.MessageUtils;
+import utils.SessionUtils;
 
 /**
  *
@@ -40,6 +43,9 @@ public class CreateStaffManagedBean implements Serializable {
     private StaffRoleSessionBeanLocal staffRoleSessionBean;
     @EJB
     private EmailServiceSessionBeanLocal emailServiceSessionBean;
+    @EJB
+    private UtilsSessionBeanLocal utilsBean;
+   
     
     private StaffAccount newStaff = new StaffAccount();
     private List<StaffAccount> staffs = new ArrayList<>();
@@ -59,6 +65,13 @@ public class CreateStaffManagedBean implements Serializable {
         for (Role r : roles) {
             getSelectRoles().put(r.getRoleName(), r.getRoleName());
         }
+        
+        AuditLog a = new AuditLog();
+        a.setActivityLog("System user enter create_role.xhtml");
+        a.setFunctionName("CreateRoleManagedBean @PostConstruct init()");
+        a.setInput("Getting all roles");
+        a.setStaffAccount(SessionUtils.getStaff());
+        utilsBean.persist(a);
     }
     
     public void addStaff(ActionEvent event) {

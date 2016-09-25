@@ -79,8 +79,8 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
             message.setRecipients(Message.RecipientType.TO,
                     InternetAddress.parse(recipient));
             message.setSubject("Welcome to Merlion Banking");
-            message.setText("Dear Customer, Thank you to register merionlion banking.\n");
-            message.setText("Link to activate your member account: https://localhost:8181/InternetBankingSystem/common/customer_activate_account.xhtml?email=" + recipient + "&code=" + pwd);
+            message.setText("Dear Customer, Thank you to register merionlion banking.\n"
+                    + "Link to activate your member account: https://localhost:8181/InternetBankingSystem/common/customer_activate_account.xhtml?email=" + recipient + "&code=" + pwd);
 
             Transport.send(message);
 
@@ -95,8 +95,7 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
     }
 
     @Override
-    public Boolean sendCreditCardActivationGmailForCustomer(String recipient, String pwd) {
-
+    public Boolean sendCreditCardActivationGmailForCustomer(String recipient, String pwd, String ccNumber) {
         Session session = getSession();
 
         try {
@@ -106,9 +105,9 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
             message.setRecipients(Message.RecipientType.TO,
                     InternetAddress.parse(recipient));
             message.setSubject("Welcome to Merlion Banking");
-            message.setText("Dear Customer, Thank you to register merionlion banking.\n");
-            message.setText("Your Reward Credit Card xxxx-xxxx-xxxx-9834 is on the way.\n");
-            message.setText("Click to activate your member account: https://localhost:8181/InternetBankingSystem/common/customer_activate_account.xhtml?email=" + recipient + "&code=" + pwd);
+            message.setText("Dear Customer, Thank you to register merionlion banking.\n"
+                    + "Your Reward Credit Card xxxx-xxxx-xxxx-"+ccNumber.substring(ccNumber.length() - 4, ccNumber.length() )+" is on the way.\n"
+                    + "Click to activate your member account: https://localhost:8181/InternetBankingSystem/common/customer_activate_account.xhtml?email=" + recipient + "&code=" + pwd);
 
             Transport.send(message);
 
@@ -121,6 +120,62 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
         }
 
     }
+    
+    @Override
+    public Boolean sendchargeBackGmailForSuccessfulCustomer(String recipient, Long ID) {
+        
+        Session session = getSession();
+
+        try {
+
+            Message message = new MimeMessage(session);
+            message.setFrom(new InternetAddress("merlionbanking@gmail.com"));
+            message.setRecipients(Message.RecipientType.TO,
+                    InternetAddress.parse(recipient));
+            message.setSubject("Chargeback notification");
+            message.setText("Dear Customer, Thank you to transact with merionlion banking.\n"
+                    + "Your chargebank request is successful");
+
+            Transport.send(message);
+
+            System.out.println("Email send out successfully");
+            return (true);
+
+        } catch (MessagingException e) {
+            System.out.println(e);
+            return (false);
+        }
+        
+    }
+    
+    @Override
+    public Boolean sendchargeBackGmailForRejectedCustomer(String recipient, Long ID) {
+        
+        Session session = getSession();
+
+        try {
+
+            Message message = new MimeMessage(session);
+            message.setFrom(new InternetAddress("merlionbanking@gmail.com"));
+            message.setRecipients(Message.RecipientType.TO,
+                    InternetAddress.parse(recipient));
+            message.setSubject("Chargeback notification");
+            message.setText("Dear Customer, Thank you to transact with merionlion banking.\n"
+                    + "We are sorry to inform you that your chargebank request is rejected.\n");
+
+            Transport.send(message);
+
+            System.out.println("Email send out successfully");
+            return (true);
+
+        } catch (MessagingException e) {
+            System.out.println(e);
+            return (false);
+        }
+        
+    }
+    
+    
 
     @Override
     public Boolean sendRequireAdditionalInfo(String recipient, String msg) {
@@ -134,8 +189,7 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
             message.setRecipients(Message.RecipientType.TO,
                     InternetAddress.parse(recipient));
             message.setSubject("Welcome to Merlion Banking");
-            message.setText("Dear Customer, \n");
-            message.setText(msg);
+            message.setText("Dear Customer, \n" + msg);
 
             Transport.send(message);
 
@@ -161,8 +215,8 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
             message.setRecipients(Message.RecipientType.TO,
                     InternetAddress.parse(recipient));
             message.setSubject("Welcome to Merlion Banking");
-            message.setText("Dear Staff, Thank you to work for merionlion banking.\n");
-            message.setText("Link to activate your staff account: https://localhost:8181/StaffInternalSystem/common/staff_activate_account.xhtml?email=" + recipient + "&code=" + pwd);
+            message.setText("Dear Staff, Thank you to work for merionlion banking.\n"
+                    + "Link to activate your staff account: https://localhost:8181/StaffInternalSystem/common/staff_activate_account.xhtml?email=" + recipient + "&code=" + pwd);
 
             Transport.send(message);
 
@@ -283,9 +337,8 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
             message.setRecipients(Message.RecipientType.TO,
                     InternetAddress.parse(recipient));
             message.setSubject("You have submitted a new case");
-            message.setText("Dear Customer, here is your case ID(which you can use to retrieve your case): ");
-            message.setText("Case: " + cc.getTitle());
-            message.setText("ID: " + cc.getId());
+            message.setText("Dear Customer, here is your case ID(which you can use to retrieve your case): "
+                    + "Case: " + cc.getTitle() + "ID: " + cc.getId());
 
             Transport.send(message);
 
@@ -309,10 +362,8 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
             message.setRecipients(Message.RecipientType.TO,
                     InternetAddress.parse(recipient));
             message.setSubject("You have cancelled a case");
-            message.setText("Dear Customer, you have cancelled the following case: ");
-            message.setText("Case: " + cc.getTitle());
-            message.setText("ID: " + cc.getId());
-            message.setText("If the action is not done by you, please contact our staff.");
+            message.setText("Dear Customer, \nyou have cancelled the following case: "
+                    + "Case: " + cc.getTitle() + "ID: " + cc.getId() + "If the action is not done by you, please contact our staff.");
 
             Transport.send(message);
 

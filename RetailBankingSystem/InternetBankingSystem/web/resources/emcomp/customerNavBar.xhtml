@@ -46,7 +46,6 @@
                             <p:menu>
                                 <p:submenu style="display:none">
                                     <p:menuitem value="Profile" url="../customer_cms/view_profile.xhtml" />
-                                    <p:menuitem value="ABCDE" />
                                 </p:submenu>
                             </p:menu>
                         </p:overlayPanel>
@@ -56,7 +55,6 @@
                             <p:menu>
                                 <p:submenu style="display:none">
                                     <p:menuitem value="Deposit" url="../customer_deposit/deposit_account_summary.xhtml" />
-                                    <p:menuitem value="Account" />
                                 </p:submenu>
                             </p:menu>
                         </p:overlayPanel>
@@ -83,7 +81,7 @@
                                     <p:menuitem value="Deposit Accounts" url="../apply/existing_apply_deposit.xhtml" />
                                     <p:menuitem value="Debit cards" url="../apply/existing_apply_debit_card.xhtml" />
                                     <p:menuitem value="Credit Cards" url="../apply/existing_apply_credit_card.xhtml" />
-                                    <p:menuitem value="Credit Cards Status" url="../apply/view_credit_card.xhtml" />
+                                    <p:menuitem value="Credit Cards Status" url="../apply/view_credit_card_application.xhtml" />
                                 </p:submenu>
                             </p:menu>
                         </p:overlayPanel>
@@ -99,7 +97,7 @@
                                 </p:submenu>
                             </p:menu>
                         </p:overlayPanel>
-                        <li id="header-overview" class="#{cc.attrs.context == 'index_activity_history' ? 'active' : ''}" value="Activity"><a href="index_activity_history.xhtml">Activity History</a></li>
+                        <li id="header-overview" class="#{cc.attrs.context == 'index_activity_history' ? 'active' : ''}" value="Activity"><a href="../customer_cms/index_activity_history.xhtml">Activity History</a></li>
                         </h:form>
                     </c:if>
                 </ul>
@@ -111,6 +109,7 @@
             <script type="text/javascript">
                 function handleAnnouncement(facesmessage) {
                     console.log(facesmessage);
+                    facesmessage.severity = "info";
                     PF('growl').show([facesmessage]);
                 }
             </script>

@@ -24,10 +24,14 @@ import server.utilities.EnumUtils;
 public interface CardAcctSessionBeanLocal {
 
     public List<CreditCardOrder> showAllCreditCardOrder();
-    
+
     public List<CreditCardOrder> showAllCreditCardOrder(EnumUtils.ApplicationStatus status);
+    
+    public List<CreditCardAccount> showAllPendingCreditCardOrder();
 
     public CreditCardOrder getCardOrderFromId(Long orderNumber);
+    
+    public CreditCardAccount updateCreditCardAccount(CreditCardAccount cca);
 
     public String createCardOrder(CreditCardOrder order);
 
@@ -51,6 +55,8 @@ public interface CardAcctSessionBeanLocal {
 
     public String updateCardAcctTransactionLimit(CreditCardAccount cca);
 
+    public String updateCardAcctTransactionDailyLimit(CreditCardAccount cca, double newDailyLimit);
+
     public List<CardTransaction> getCardTransactionFromId(Long ccaId);
 
     public DebitCardAccount createDebitAccount(CustomerDepositAccount da);
@@ -69,4 +75,5 @@ public interface CardAcctSessionBeanLocal {
     
     public MainAccount activateDebitCard(String identityNumber, Date birthday, String cardNumber, String cvv);
 
+    public String updateDebitAccountStatus(DebitCardAccount dca, EnumUtils.CardAccountStatus status);
 }

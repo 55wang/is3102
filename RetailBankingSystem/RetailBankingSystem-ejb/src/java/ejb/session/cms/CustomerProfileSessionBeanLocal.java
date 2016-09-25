@@ -20,6 +20,6 @@ public interface CustomerProfileSessionBeanLocal {
     public Customer saveProfile(Customer customer);
     public List<Customer> retrieveActivatedCustomers();   
     public List<Customer> searchCustomerByIdentityNumber(String id);     
- 
+    public Customer getCustomerByID(Long ID);
 }
 

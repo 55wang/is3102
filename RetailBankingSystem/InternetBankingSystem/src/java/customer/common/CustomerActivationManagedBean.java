@@ -54,6 +54,7 @@ public class CustomerActivationManagedBean implements Serializable {
                 loginSessionBean.loginAccount(mainAccount.getUserID(), mainAccount.getPassword());
                 SessionUtils.setUserId(Long.toString(mainAccount.getId()));
                 SessionUtils.setUserName(mainAccount.getUserID());
+                SessionUtils.setTokenAuthentication(false);
                 for (DepositAccount a : mainAccount.getBankAcounts()) {
                     a.setStatus(EnumUtils.StatusType.ACTIVE);
                     depositAccountBean.updateAccount(a);

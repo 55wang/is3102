@@ -18,10 +18,12 @@ import javax.ejb.Local;
 public interface EmailServiceSessionBeanLocal {
     public Boolean sendActivationEmailForCustomer(String recipient);
     public Boolean sendActivationGmailForCustomer(String recipient, String pwd);
-    public Boolean sendCreditCardActivationGmailForCustomer(String recipient, String pwd);
+    public Boolean sendCreditCardActivationGmailForCustomer(String recipient, String pwd, String ccNumber);
     
     public Boolean sendUserIDforForgottenCustomer(String recipient, MainAccount forgotAccount);
     public Boolean sendResetPwdLinkforForgottenCustomer(String recipient, MainAccount forgotAccount);
+    public Boolean sendchargeBackGmailForSuccessfulCustomer(String recipient, Long ID);
+    public Boolean sendchargeBackGmailForRejectedCustomer(String recipient, Long ID);
     public Boolean sendActivationGmailForStaff(String recipient, String pwd);
     public Boolean sendRequireAdditionalInfo(String recipient, String msg);
     public Boolean sendUserNameforForgottenStaff(String recipient, String username);

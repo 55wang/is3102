@@ -5,7 +5,11 @@
  */
 package staff.common;
 
+import ejb.session.utils.UtilsSessionBeanLocal;
+import entity.common.AuditLog;
 import java.io.Serializable;
+import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import javax.servlet.http.HttpSession;
@@ -19,11 +23,24 @@ import utils.SessionUtils;
 @Named(value = "staffLogoutManagedBean")
 @ViewScoped
 public class StaffLogoutManagedBean implements Serializable {
-
+    @EJB
+    private UtilsSessionBeanLocal utilsBean;
     /**
      * Creates a new instance of StaffLogoutManagedBean
      */
     public StaffLogoutManagedBean() {
+    }
+    
+    @PostConstruct
+    public void init() {
+        
+        AuditLog a = new AuditLog();
+        a.setActivityLog("System user enter logou.xhtml");
+        a.setFunctionName("StaffLogoutManagedBean @PostConstruct init()");
+        a.setInput("Getting all customer information");
+        a.setStaffAccount(SessionUtils.getStaff());
+        utilsBean.persist(a);
+
     }
     
     public void logout(){
