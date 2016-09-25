@@ -20,12 +20,21 @@
                 <h:form id="mainForm">
                     <p:panel header="Promo Product">
                         <p:messages id="messagesStatus" redisplay="false" >
-                            <h:panelGrid columns="2" cellpadding="5">
+                            <h:panelGrid columns="4" cellpadding="5">
                                 <p:outputLabel for="promoName" value="Promo Name: " />
                                 <p:inputText id="promoName" value="#{createPromoManagedBean.promo.name}" required="true"/>
-                                
+                                <p:outputLabel for="promoPoint" value="Points: " />
+                                <p:inputText id="promoPoint" value="#{createPromoManagedBean.promo.points}" required="true"/>
+
                                 <p:outputLabel for="promoDescription" value="Promo Description " />
-                                <p:inputText id="promoDescription" value="#{createPromoManagedBean.promo.description}"/>
+                                <p:inputTextarea id="promoDescription" value="#{createPromoManagedBean.promo.description}" required="true"/>
+
+                                <p:outputLabel for="promoTerms" value="Promo Terms " />
+                                <p:inputTextarea id="promoTerms" value="#{createPromoManagedBean.promo.description}" required="true"/>
+                                
+                                <p:selectOneMenu value="#{createPromoManagedBean.promo.type}">
+                                    <f:selectItems value="#{createPromoManagedBean.typeOptions}" var="selectedField" itemDisabled="#{staffViewCustomerCaseManagedBean.isChargeBack(selectedField)}"/>
+                                </p:selectOneMenu>
 
                                 <p:commandButton value="Create" icon="ui-icon-plus" update="@form" actionListener="#{createPromoManagedBean.createProduct}" />
                             </h:panelGrid>
@@ -37,8 +46,11 @@
                             <p:column headerText="Name" sortBy="#{promo.name}">
                                 <h:outputText value="#{promo.name}"></h:outputText>
                             </p:column>
-                            <p:column headerText="Description" sortBy="#{promo.description}">
-                                <h:outputText value="#{promo.description}"></h:outputText>
+                            <p:column headerText="Points" sortBy="#{promo.points}">
+                                <h:outputText value="#{promo.points}"></h:outputText>
+                            </p:column>
+                            <p:column headerText="Type" sortBy="#{promo.type}">
+                                <h:outputText value="#{promo.type}"></h:outputText>
                             </p:column>
                         </p:dataTable>
                     </p:panel>

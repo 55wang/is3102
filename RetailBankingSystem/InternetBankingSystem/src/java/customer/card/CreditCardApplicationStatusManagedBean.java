@@ -6,7 +6,9 @@
 package customer.card;
 
 import ejb.session.card.CreditCardOrderSessionBeanLocal;
+import ejb.session.common.LoginSessionBeanLocal;
 import entity.card.account.CreditCardOrder;
+import entity.customer.MainAccount;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +17,7 @@ import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import utils.MessageUtils;
+import utils.SessionUtils;
 
 /**
  *
@@ -24,10 +27,13 @@ import utils.MessageUtils;
 @ViewScoped
 public class CreditCardApplicationStatusManagedBean implements Serializable {
     @EJB
+    private LoginSessionBeanLocal loginSessionBean;
+    @EJB
     private CreditCardOrderSessionBeanLocal creditCardOrderSessionBean;
     
     private String searchText="";
     private List<CreditCardOrder> applications;
+    private MainAccount ma;
     /**
      * Creates a new instance of CreditCardApplicationStaticsManagedBean
      */
@@ -36,11 +42,21 @@ public class CreditCardApplicationStatusManagedBean implements Serializable {
     
     public void searchApplication(){
         applications = new ArrayList<CreditCardOrder>();
-        CreditCardOrder cco = creditCardOrderSessionBean.searchCreditCardOrderByID(searchText);
+        CreditCardOrder cco = creditCardOrderSessionBean.searchMainAccountCreditCardOrderByID(ma, searchText);
         if(cco == null){
             MessageUtils.displayInfo("Application record not found!");
         }else
             applications.add(creditCardOrderSessionBean.searchCreditCardOrderByID(searchText));
+    }
+    
+    public void cancel(CreditCardOrder cco){
+        Boolean result = creditCardOrderSessionBean.cancelCreditCardOrder(cco);
+        if(result){
+            applications.remove(cco);
+            MessageUtils.displayInfo("Cancel successfully");
+        }
+        else
+            MessageUtils.displayError("Error");
     }
     
     public void showAllApplication(){
@@ -61,6 +77,7 @@ public class CreditCardApplicationStatusManagedBean implements Serializable {
 
     @PostConstruct
     public void setApplications() {
-        this.applications = creditCardOrderSessionBean.getAllCreditCardOrders();
+        this.ma = loginSessionBean.getMainAccountByUserID(SessionUtils.getUserName());
+        this.applications = creditCardOrderSessionBean.getMainAccountAllCreditCardOrders(ma);      
     }
 }
