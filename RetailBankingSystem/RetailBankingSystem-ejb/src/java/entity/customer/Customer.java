@@ -45,6 +45,7 @@ public class Customer implements Serializable {
         this.education = cco.getEduLevel();
         this.identityNumber = cco.getIdentityNumber();
         this.identityType = cco.getIdentityType();
+        this.birthDay = cco.getBirthDay();
         // copy all from cco
     }
     private static final long serialVersionUID = 1L;

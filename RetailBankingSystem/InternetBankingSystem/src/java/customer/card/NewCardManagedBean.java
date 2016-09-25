@@ -7,6 +7,7 @@ package customer.card;
 
 import ejb.session.card.CardAcctSessionBeanLocal;
 import ejb.session.card.NewCardProductSessionBeanLocal;
+import ejb.session.common.EmailServiceSessionBeanLocal;
 import entity.card.account.CreditCardOrder;
 import entity.card.account.CreditCardProduct;
 import java.io.Serializable;
@@ -28,6 +29,9 @@ import utils.RedirectUtils;
 @Named(value = "newCardManagedBean")
 @ViewScoped
 public class NewCardManagedBean implements Serializable {
+
+    @EJB
+    private EmailServiceSessionBeanLocal emailServiceSessionBean;
 
     @EJB
     private NewCardProductSessionBeanLocal newCardProductSessionBean;
@@ -99,8 +103,9 @@ public class NewCardManagedBean implements Serializable {
 
         cco.setCreditCardProduct(newCardProductSessionBean.getSingleCreditCardProduct(selectedProductName));
         cardAcctSessionBean.createCardOrder(cco);
-
+        emailServiceSessionBean.sendCreditCardApplicationNotice(cco.getEmail());
         RedirectUtils.redirect("/InternetBankingSystem/common/application_success.xhtml");
+
     }
 
     public CreditCardOrder getCco() {
@@ -311,7 +316,6 @@ public class NewCardManagedBean implements Serializable {
         this.selectedIncome = selectedIncome;
     }
 
-   
     public List<String> getProductNameOptions() {
         return ProductNameOptions;
     }
