@@ -32,7 +32,7 @@ public class DebitCardAccount implements Serializable {
     /*
      many to 1 deposit account
      */
-    @ManyToOne(cascade = {CascadeType.PERSIST})
+    @ManyToOne()
     private CustomerDepositAccount customerDepositAccount;
     private EnumUtils.CardNetwork cardNetwork;
     private EnumUtils.CardAccountStatus CardStatus;
