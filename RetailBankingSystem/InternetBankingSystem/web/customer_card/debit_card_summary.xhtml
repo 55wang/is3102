@@ -21,15 +21,11 @@
                         <p:messages id="messagesStatus" redisplay="false" >
                             <h:panelGrid columns="2" cellpadding="5">
                                 <p:dataTable var="dca" value="#{customerDebitManagedBean.dcas}">
-                                    <p:column headerText="Type">
-                                        <h:outputText value="#{dca.nameOnCard}" />
-                                    </p:column>
-
                                     <p:column headerText="Debit Card Number">
                                         <h:outputText value="#{dca.creditCardNum}" />
                                     </p:column>
 
-                                    <p:column headerText="Balance">
+                                    <p:column headerText="Status">
                                         <h:outputText value="#{dca.cardStatus}" />
                                     </p:column>
 

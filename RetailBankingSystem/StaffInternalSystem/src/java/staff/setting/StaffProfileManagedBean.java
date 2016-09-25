@@ -6,9 +6,12 @@
 package staff.setting;
 
 import ejb.session.staff.StaffAccountSessionBeanLocal;
+import ejb.session.utils.UtilsSessionBeanLocal;
+import entity.common.AuditLog;
 import entity.staff.StaffAccount;
 import java.io.Serializable;
 import java.util.List;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
@@ -28,6 +31,8 @@ public class StaffProfileManagedBean implements Serializable {
 
     @EJB
     private StaffAccountSessionBeanLocal staffBean;
+    @EJB
+    private UtilsSessionBeanLocal utilsBean;
     
     private StaffAccount staff = SessionUtils.getStaff();
     private Boolean editingPage = false;
@@ -40,6 +45,16 @@ public class StaffProfileManagedBean implements Serializable {
      * Creates a new instance of StaffProfileManagedBean
      */
     public StaffProfileManagedBean() {
+    }
+    
+    @PostConstruct
+    public void init() {
+        AuditLog a = new AuditLog();
+        a.setActivityLog("System user enter StaffProfileManagedBean");
+        a.setFunctionName("StaffProfileManagedBean @PostConstruct init()");
+        a.setInput("Getting all StaffProfileManagedBean");
+        a.setStaffAccount(SessionUtils.getStaff());
+        utilsBean.persist(a);
     }
     
     public void goToEditPage (){

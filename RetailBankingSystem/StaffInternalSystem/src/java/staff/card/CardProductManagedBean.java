@@ -6,15 +6,19 @@
 package staff.card;
 
 import ejb.session.card.NewCardProductSessionBeanLocal;
+import ejb.session.utils.UtilsSessionBeanLocal;
 import entity.card.account.CashBackCardProduct;
 import entity.card.account.MileCardProduct;
 import entity.card.account.RewardCardProduct;
+import entity.common.AuditLog;
 import java.io.Serializable;
 import java.util.List;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import utils.RedirectUtils;
+import utils.SessionUtils;
 
 /**
  *
@@ -26,6 +30,8 @@ public class CardProductManagedBean implements Serializable {
 
     @EJB
     private NewCardProductSessionBeanLocal newProductSessionBean;
+    @EJB
+    private UtilsSessionBeanLocal utilsBean;
 
     private MileCardProduct mcp = new MileCardProduct();
     private RewardCardProduct rcp = new RewardCardProduct();
@@ -37,6 +43,16 @@ public class CardProductManagedBean implements Serializable {
     public CardProductManagedBean() {
     }
 
+    
+    @PostConstruct
+    public void init() {
+        AuditLog a = new AuditLog();
+        a.setActivityLog("System user enter card_product.xhtml");
+        a.setFunctionName("CardProductManagedBean @PostConstruct init()");
+        a.setInput("Getting all card products");
+        a.setStaffAccount(SessionUtils.getStaff());
+        utilsBean.persist(a);
+    }
     public List<RewardCardProduct> showAllRewardProducts() {
         return newProductSessionBean.showAllRewardProducts();
     }

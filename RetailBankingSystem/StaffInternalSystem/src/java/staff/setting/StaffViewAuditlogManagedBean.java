@@ -6,6 +6,7 @@
 package staff.setting;
 
 import ejb.session.audit.AuditSessionBeanLocal;
+import ejb.session.utils.UtilsSessionBeanLocal;
 import entity.common.AuditLog;
 import java.io.Serializable;
 import java.util.List;
@@ -25,6 +26,8 @@ public class StaffViewAuditlogManagedBean implements Serializable {
 
     @EJB
     private AuditSessionBeanLocal auditBean;
+    @EJB
+    private UtilsSessionBeanLocal utilsBean;
     
     private List<AuditLog> auditLogs;
     
@@ -37,6 +40,12 @@ public class StaffViewAuditlogManagedBean implements Serializable {
     @PostConstruct
     public void init() {
         auditLogs = auditBean.getAuditLogByStaffUsername(SessionUtils.getStaffUsername());
+        AuditLog a = new AuditLog();
+        a.setActivityLog("System user enter StaffViewAuditlogManagedBean");
+        a.setFunctionName("StaffViewAuditlogManagedBean @PostConstruct init()");
+        a.setInput("Getting all StaffViewAuditlogManagedBean");
+        a.setStaffAccount(SessionUtils.getStaff());
+        utilsBean.persist(a);
     }
 
     /**

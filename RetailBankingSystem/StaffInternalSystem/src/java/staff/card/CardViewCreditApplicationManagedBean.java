@@ -9,7 +9,9 @@ import ejb.session.card.CardAcctSessionBeanLocal;
 import ejb.session.card.NewCardProductSessionBeanLocal;
 import ejb.session.common.EmailServiceSessionBeanLocal;
 import ejb.session.common.NewCustomerSessionBeanLocal;
+import ejb.session.utils.UtilsSessionBeanLocal;
 import entity.card.account.CreditCardOrder;
+import entity.common.AuditLog;
 import entity.customer.Customer;
 import entity.customer.MainAccount;
 import java.io.Serializable;
@@ -23,6 +25,7 @@ import javax.faces.view.ViewScoped;
 import server.utilities.EnumUtils;
 import utils.MessageUtils;
 import utils.RedirectUtils;
+import utils.SessionUtils;
 
 /**
  *
@@ -40,6 +43,8 @@ public class CardViewCreditApplicationManagedBean implements Serializable {
     private EmailServiceSessionBeanLocal emailServiceSessionBean;
     @EJB
     private NewCustomerSessionBeanLocal newCustomerSessionBean;
+    @EJB
+    private UtilsSessionBeanLocal utilsBean;
     
     private List<CreditCardOrder> ccos;
     private String bureauCreditScore;
@@ -48,6 +53,14 @@ public class CardViewCreditApplicationManagedBean implements Serializable {
     }
     
     @PostConstruct
+    public void init() {
+        AuditLog a = new AuditLog();
+        a.setActivityLog("System user enter view_credit_card.xhtml");
+        a.setFunctionName("CardViewCreditApplicationManagedBean @PostConstruct init()");
+        a.setInput("Getting all credit card applications");
+        a.setStaffAccount(SessionUtils.getStaff());
+        utilsBean.persist(a);
+    }
     public void displayCardOrder() {
 //        mcps = newCardProductSessionBean.showAllMileProducts();
 //        rcps = newCardProductSessionBean.showAllRewardProducts();

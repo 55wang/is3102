@@ -61,7 +61,7 @@ public class CustomerLoginManagedBean implements Serializable {
         SessionUtils.setUserId(userID);
         SessionUtils.setUserName(userName);
         SessionUtils.setTokenAuthentication(Boolean.TRUE);
-        RedirectUtils.redirect("/InternetBankingSystem/customer_card/apply_debit_card_account.xhtml");
+        RedirectUtils.redirect("/InternetBankingSystem/customer_cms/customer_home.xhtml");
 
     }
 

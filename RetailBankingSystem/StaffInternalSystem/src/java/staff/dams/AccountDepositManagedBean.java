@@ -6,14 +6,18 @@
 package staff.dams;
 
 import ejb.session.dams.CustomerDepositSessionBeanLocal;
+import ejb.session.utils.UtilsSessionBeanLocal;
+import entity.common.AuditLog;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.event.ActionEvent;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import server.utilities.EnumUtils;
 import utils.MessageUtils;
+import utils.SessionUtils;
 
 /**
  *
@@ -25,6 +29,8 @@ public class AccountDepositManagedBean implements Serializable {
 
     @EJB
     private CustomerDepositSessionBeanLocal customerDepositSessionBean;
+    @EJB
+    private UtilsSessionBeanLocal utilsBean;
     
     private String accountType;
     private String ACCOUNT_TYPE_CURRENT = EnumUtils.DepositAccountType.CURRENT.toString();
@@ -34,6 +40,18 @@ public class AccountDepositManagedBean implements Serializable {
     private BigDecimal depositAmount;
     
     public AccountDepositManagedBean() {}
+    
+    @PostConstruct
+    public void init() {
+        
+        AuditLog a = new AuditLog();
+        a.setActivityLog("System user enter deposit account.xhtml");
+        a.setFunctionName("AccountDepositManagedBean @PostConstruct init()");
+        a.setInput("Getting all AccountDepositManagedBean information");
+        a.setStaffAccount(SessionUtils.getStaff());
+        utilsBean.persist(a);
+
+    }
     
     public void depositIntoAccount(ActionEvent event) {
         String message = customerDepositSessionBean.depositIntoAccount(getAccountNumber(), getDepositAmount());

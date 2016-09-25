@@ -6,6 +6,8 @@
 package staff.common;
 
 import ejb.session.staff.StaffAccountSessionBeanLocal;
+import ejb.session.utils.UtilsSessionBeanLocal;
+import entity.common.AuditLog;
 import entity.staff.StaffAccount;
 import java.io.Serializable;
 import javax.annotation.PostConstruct;
@@ -27,6 +29,8 @@ public class StaffResetPwdManagedBean implements Serializable{
     
     @EJB
     private StaffAccountSessionBeanLocal staffBean;
+    @EJB
+    private UtilsSessionBeanLocal utilsBean;
 
     private String newPwd;
     private StaffAccount sa;
@@ -38,6 +42,12 @@ public class StaffResetPwdManagedBean implements Serializable{
     @PostConstruct
     public void init() {
         this.sa = staffBean.getAccountByUsername(SessionUtils.getStaffUsername());
+        AuditLog a = new AuditLog();
+        a.setActivityLog("System user enter resetpassword.xhtml");
+        a.setFunctionName("StaffResetPwdManagedBean @PostConstruct init()");
+        a.setInput("Getting all customer information");
+        a.setStaffAccount(SessionUtils.getStaff());
+        utilsBean.persist(a);
     }
     
     public Boolean changePwd(){
