@@ -20,17 +20,17 @@
                     <p:panel header="Debit Cards">
                         <p:messages id="messagesStatus" redisplay="false" >
                             <h:panelGrid columns="2" cellpadding="5">
-                                <p:dataTable var="auditLog" value="#{customerProfileManagedBean.auditLogs}">
+                                <p:dataTable var="dca" value="#{customerDebitManagedBean.dcas}">
                                     <p:column headerText="Type">
-                                        <h:outputText value="#{auditLog.creationDate}" />
+                                        <h:outputText value="#{dca.nameOnCard}" />
                                     </p:column>
 
-                                    <p:column headerText="Account">
-                                        <h:outputText value="#{auditLog.activityLog}" />
+                                    <p:column headerText="Debit Card Number">
+                                        <h:outputText value="#{dca.creditCardNum}" />
                                     </p:column>
 
                                     <p:column headerText="Balance">
-                                        <h:outputText value="#{auditLog.activityLog}" />
+                                        <h:outputText value="#{dca.cardStatus}" />
                                     </p:column>
 
                                     <p:column headerText="Action">
