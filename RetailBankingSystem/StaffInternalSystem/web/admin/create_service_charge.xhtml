@@ -25,7 +25,7 @@
                                 <p:outputLabel for="name" value="Name: " />
                                 <p:inputText id="name" value="#{createServiceChargeManagedBean.newCharge.name}" required="true"/>
 
-                                <p:outputLabel for="charge" value="Charge: " />
+                                <p:outputLabel for="charge" value="Charge(S$): " />
                                 <p:inputText id="charge" value="#{createServiceChargeManagedBean.newCharge.charges}" required="true"/>
 
                                 <p:commandButton value="Create" icon="ui-icon-plus" update="@form" actionListener="#{createServiceChargeManagedBean.addCharge()}" />
@@ -42,7 +42,7 @@
                             <p:column headerText="Name" sortBy="#{sc.name}">
                                 <h:outputText value="#{sc.name}"></h:outputText>
                             </p:column>
-                            <p:column headerText="Status" sortBy="#{sc.charges}">
+                            <p:column headerText="Charge Amount(S$)" sortBy="#{sc.charges}">
                                 <p:cellEditor>
                                     <f:facet name="output">
                                         <h:outputText value="#{sc.charges}" />
