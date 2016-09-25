@@ -10,6 +10,7 @@ import ejb.session.card.CardAcctSessionBeanLocal;
 import ejb.session.card.CardTransactionSessionBeanLocal;
 import ejb.session.card.NewCardProductSessionBeanLocal;
 import ejb.session.cms.CustomerCaseSessionBeanLocal;
+import ejb.session.cms.CustomerProfileSessionBeanLocal;
 import ejb.session.common.NewCustomerSessionBeanLocal;
 import ejb.session.dams.CurrentAccountChequeSessionBeanLocal;
 import ejb.session.dams.InterestSessionBeanLocal;
@@ -22,6 +23,8 @@ import ejb.session.utils.UtilsSessionBeanLocal;
 import entity.card.account.CardTransaction;
 import entity.card.account.CashBackCardProduct;
 import entity.card.account.CreditCardAccount;
+import entity.card.account.CreditCardOrder;
+import entity.card.account.CreditCardProduct;
 import entity.card.account.MileCardProduct;
 import entity.card.account.RewardCardProduct;
 import entity.customer.Customer;
@@ -73,7 +76,8 @@ import server.utilities.HashPwdUtils;
 @LocalBean
 @Startup
 public class EntityBuilderBean {
-
+    @EJB
+    private CustomerProfileSessionBeanLocal customerProfileSessionBean;
     @EJB
     private CustomerCaseSessionBeanLocal customerCaseSessionBean;
     @EJB
@@ -174,6 +178,7 @@ public class EntityBuilderBean {
 
         initCreditCardProduct();
         initCase();
+        initCreditCardOrder();
 
     }
 
@@ -1387,5 +1392,49 @@ public class EntityBuilderBean {
         cc.setCaseStatus(CaseStatus.ONHOLD);
 
         customerCaseSessionBean.saveCase(cc);
+    }
+    
+    public void initCreditCardOrder(){
+        CreditCardOrder cco = new CreditCardOrder();
+        CreditCardProduct ccp = new MileCardProduct();
+        ccp.setProductName("MileCard");
+        cco.setMainAccount(demoMainAccount);
+        Customer cms = customerProfileSessionBean.getCustomerByID(3L);
+        cco.setAddress("some fake address"); //make it a bit more real
+        cco.setBirthDay(new Date()); //make some real birthday.
+        cco.setEmail("wangzhe.lynx@gmail.com");
+        cco.setFirstName("Yifan");
+        cco.setGender(Gender.MALE); // pls modify gender to enum type
+        cco.setIdentityNumber("S1234567Z");
+        cco.setIdentityType(IdentityType.NRIC); // same for this to enum type
+        cco.setIncome(Income.FROM_2000_TO_4000);
+        cco.setLastName("Chen");
+        cco.setNationality(Nationality.CHINA); //enum type if possible
+        cco.setOccupation(Occupation.DIRECTOR);
+        cco.setPhone("81567758"); //must use real phone number as we need sms code
+        cco.setPostalCode("654321");
+        
+        cco.setApplicationStatus(EnumUtils.ApplicationStatus.PENDING);
+        cco.setCompany("NUS");
+        cco.setCpf(null);
+        cco.setCreditCardProduct(ccp);
+        cco.setCredit_limit(2000);
+        cco.setEduLevel(EnumUtils.Education.DIPLOMA);
+        cco.setEmploymentPass(null);
+        cco.setEmploymentStatus(EnumUtils.EmploymentStatus.OTHERS);
+        cco.setGender(Gender.MALE);
+        cco.setIncome(Income.BELOW_2000);
+        cco.setIncomeTax(null);
+        cco.setIndustry(EnumUtils.Industry.IT_TELCO);
+        cco.setMaritalStatus(EnumUtils.MaritalStatus.SINGLE);
+        cco.setNameOnCard("yifan");
+        cco.setNationality(Nationality.SINGAPORE);
+        cco.setNumOfDependents(1);
+        cco.setResidentialStatus(EnumUtils.ResidentialStatus.OTHERS);
+        cco.setResidentialType(EnumUtils.ResidentialType.PARENTS);
+        cco.setResultNotes(null);
+        cco.setSaluation(EnumUtils.Salutation.DR);
+        
+        cardAcctSessionBean.createCardOrder(cco);
     }
 }

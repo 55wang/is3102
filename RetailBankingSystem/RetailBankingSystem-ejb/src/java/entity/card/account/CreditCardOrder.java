@@ -5,15 +5,18 @@
  */
 package entity.card.account;
 
+import entity.customer.MainAccount;
 import java.io.Serializable;
 import java.sql.Blob;
 import java.util.Date;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import server.utilities.EnumUtils.*;
 
@@ -29,7 +32,7 @@ public class CreditCardOrder implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private CreditCardProduct creditCardProduct;
 
     private Salutation saluation;
@@ -67,6 +70,9 @@ public class CreditCardOrder implements Serializable {
     private Occupation occupation;
 
     private Industry industry;
+    
+    @ManyToOne
+    private MainAccount mainAccount;
 
     private String company;
     @Lob
@@ -406,4 +412,11 @@ public class CreditCardOrder implements Serializable {
         this.creditCardProduct = creditCardProduct;
     }
 
+    public MainAccount getMainAccount() {
+        return mainAccount;
+    }
+
+    public void setMainAccount(MainAccount mainAccount) {
+        this.mainAccount = mainAccount;
+    }
 }
