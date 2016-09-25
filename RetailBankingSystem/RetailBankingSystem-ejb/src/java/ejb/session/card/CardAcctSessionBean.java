@@ -12,6 +12,7 @@ import entity.card.account.DebitCardAccount;
 import entity.card.account.PromoCode;
 import entity.dams.account.CustomerDepositAccount;
 import entity.dams.account.DepositAccount;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -75,6 +76,19 @@ public class CardAcctSessionBean implements CardAcctSessionBeanLocal {
             return null;
         }
     }
+    
+    @Override
+    public CardTransaction createCardAccountTransaction(String ccNumber, CardTransaction ct) {
+        CreditCardAccount ca = getCardByCardNumber(ccNumber);
+        if (ca != null) {
+            System.out.println("Adding Transaction for card:" + ccNumber);
+            ct.setCreditCardAccount(ca);
+            em.persist(ct);
+            return ct;
+        } else {
+            return null;
+        }
+    }
 
     //update cardorder application status which can be cancel or approve and etc.
     @Override
@@ -107,26 +121,25 @@ public class CardAcctSessionBean implements CardAcctSessionBeanLocal {
 
     @Override
     public CreditCardAccount getCardByCardNumber(String cardNumber) {
-        Query q = em.createQuery("SELECT cca FROM CreditCardAccount cca WHERE cca.creditCardNum =:cardNumber");
+        System.out.println("EJB getCardByCardNumber " + cardNumber);
+        Query q = em.createQuery("SELECT cca FROM CreditCardAccount cca WHERE cca.creditCardNum = :cardNumber");
         q.setParameter("cardNumber", cardNumber);
-        List<CreditCardAccount> ccas = q.getResultList();
-        if (ccas != null && ccas.isEmpty() && ccas.size() == 1) {
-            return ccas.get(0);
-        } else {
-            return null;
-        }
+        return (CreditCardAccount)q.getSingleResult();
     }
     
     @Override
-    public CreditCardAccount validateCreditCardDailyTransactionLimit(CreditCardAccount creditCard, Double requestAmount) {
+    public CreditCardAccount validateCreditCardDailyTransactionLimit(CreditCardAccount creditCard, double requestAmount) {
         List<CardTransaction> dailyTransactions = getDailyTransactionFromAccount(creditCard);
-        
-        Double dailyAmount = 0.0;
+        System.out.println(dailyTransactions);
+        double dailyAmount = 0.0;
         for (CardTransaction ct : dailyTransactions) {
             dailyAmount += ct.getAmount();
         }
         
-        if (dailyAmount + requestAmount > creditCard.getTransactionDailyLimit()) {
+        System.out.println("Daily amount is: " + dailyAmount);
+        System.out.println("Request amount is: " + requestAmount);
+        System.out.println("Daily Limit is: " + creditCard.getTransactionDailyLimit());
+        if ((dailyAmount + requestAmount) > creditCard.getTransactionDailyLimit()) {
             return null;
         }
         
@@ -134,15 +147,18 @@ public class CardAcctSessionBean implements CardAcctSessionBeanLocal {
     }
     
     @Override
-    public CreditCardAccount validateCreditCardMonthlyTransactionLimit(CreditCardAccount creditCard, Double requestAmount) {
+    public CreditCardAccount validateCreditCardMonthlyTransactionLimit(CreditCardAccount creditCard, double requestAmount) {
         List<CardTransaction> monthlyTransactions = getMonthlyTransactionFromAccount(creditCard);
         
-        Double monthlyAmount = 0.0;
+        double monthlyAmount = 0.0;
         for (CardTransaction ct : monthlyTransactions) {
             monthlyAmount += ct.getAmount();
         }
         
-        if (monthlyAmount + requestAmount > creditCard.getTransactionMonthlyLimit()) {
+        System.out.println("Monthly amount is: " + monthlyAmount);
+        System.out.println("Request amount is: " + requestAmount);
+        System.out.println("Monthly limit is: " + creditCard.getTransactionMonthlyLimit());
+        if ((monthlyAmount + requestAmount) > creditCard.getTransactionMonthlyLimit()) {
             return null;
         }
         
@@ -151,38 +167,58 @@ public class CardAcctSessionBean implements CardAcctSessionBeanLocal {
     
     @Override
     public List<CardTransaction> getDailyTransactionFromAccount(CreditCardAccount creditCard) {
-        
-        Date now = new Date();
+        Date startDate = DateUtils.getBeginOfDay();
+        Date endDate = DateUtils.getEndOfDay();
+        System.out.println("Getting Daily Transaction");
         Query q = em.createQuery("SELECT ct FROM CardTransaction ct WHERE "
-                + "datediff(day, ct.updateDate, :now) = 0 AND"
-                + "ct.creditCardAccount.id =: ccId"
+                + "ct.creditCardAccount.id =:ccId AND "
+                + "ct.updateDate BETWEEN :startDate AND :endDate"
         );
-        q.setParameter("now", now);
+        q.setParameter("startDate", startDate);
+        q.setParameter("endDate", endDate);
         q.setParameter("ccId", creditCard.getId());
         
-        return q.getResultList();
+        try {
+            List<CardTransaction> result = q.getResultList();
+            if (result == null) {
+                return new ArrayList<>();
+            }
+            return result;
+        } catch (Exception e) {
+            return new ArrayList<>();
+        }
     }
     
     @Override
     public List<CardTransaction> getMonthlyTransactionFromAccount(CreditCardAccount creditCard) {
         Date startDate = DateUtils.getBeginOfMonth();
         Date endDate = DateUtils.getBeginOfMonth();
-        
+        System.out.println("Getting Monthly Transaction");
         Query q = em.createQuery("SELECT ct FROM CardTransaction ct WHERE "
-                + "ct.updateTime BETWEEN :startDate AND :endDate AND"
-                + "ct.creditCardAccount.id =: ccId"// TODO: Add status
+                + "ct.creditCardAccount.id =:ccId AND "
+                + "ct.updateDate BETWEEN :startDate AND :endDate"
+                // TODO: Add status
         );
         q.setParameter("startDate", startDate);
         q.setParameter("endDate", endDate);
         q.setParameter("ccId", creditCard.getId());
-        return q.getResultList();
+        
+        try {
+            List<CardTransaction> result = q.getResultList();
+            if (result == null) {
+                return new ArrayList<>();
+            }
+            return result;
+        } catch (Exception e) {
+            return new ArrayList<>();
+        }
     }
     
     @Override
-    public String createCardAccount(CreditCardAccount cca) {
+    public CreditCardAccount createCardAccount(CreditCardAccount cca) {
         try {
             em.persist(cca);
-            return "SUCCESS";
+            return cca;
         } catch (Exception e) {
             //always print an error msg 
             System.out.println("NewCardSessionBean.createCardAccount Error");
