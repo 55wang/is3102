@@ -17,16 +17,16 @@
             <em:staffSideBar top="customer" side="viewCase"></em:staffSideBar>
             <div class="container">
                 <h:form id="mainForm">
-                    <p:panel header="Search Customer">   
+                    <p:panel header="Search Case">   
                         <p:outputPanel>
-                                <p:inputText id="idFilter" style="width:180px" value="#{staffCustomerCaseManagedBean.searchText}" placeholder="Enter Case ID"  />
-                                <p:commandButton value="Search" actionListener="#{staffCustomerCaseManagedBean.search}" update="@form"/>
+                                <p:inputText id="idFilter" style="width:180px" value="#{staffViewCustomerCaseManagedBean.searchText}" placeholder="Enter Case ID"  />
+                                <p:commandButton value="Search" actionListener="#{staffViewCustomerCaseManagedBean.search}" update="@form"/>
                         </p:outputPanel>
                     </p:panel>
 
 
                 <p:panel header="List of My Cases">
-                        <p:dataTable id="caseList" value="#{staffCustomerCaseManagedBean.cases}" var="case" sortMode="multiple" >
+                        <p:dataTable id="caseList" value="#{staffViewCustomerCaseManagedBean.cases}" var="case" sortMode="multiple" >
                             <p:column style="width:16px">
                                 <p:rowToggler />
                             </p:column>
@@ -34,14 +34,26 @@
                             <p:column headerText="ID" sortBy="#{case.id}">
                                 <h:outputText value="#{case.id}" />
                             </p:column>
+                            
+                            <p:column headerText="Create Date" sortBy="#{case.createDate}">
+                                <h:outputText value="#{case.createDate}"/>
+                            </p:column>
 
                             <p:column headerText="Title" sortBy="#{customer.title}">
                                 <h:outputText value="#{case.title}" />
                             </p:column>
 
-                            <p:column headerText="Status" sortBy="#{case.caseStatus}" style="width:140px">
+                            <p:column headerText="Status" sortBy="#{case.caseStatus}" style="width:140px" rendered="#{!case.isChargeBackCase}">
                                 <p:selectOneMenu value="#{case.caseStatus}">
-                                    <f:selectItems value="#{staffCustomerCaseManagedBean.caseStatusList}" />
+                                    <f:selectItems value="#{staffViewCustomerCaseManagedBean.caseStatusList}"/>
+                                </p:selectOneMenu>
+                            </p:column>
+                            <p:column headerText="Status" sortBy="#{case.caseStatus}" style="width:140px" rendered="#{case.isChargeBackCase and case.caseStatus == 'CANCELLED'}">
+                                <h:outputText value="#{case.caseStatus}" />
+                            </p:column>
+                            <p:column headerText="Status" sortBy="#{case.caseStatus}" style="width:140px" rendered="#{case.isChargeBackCase and case.caseStatus != 'CANCELLED'}">
+                                <p:selectOneMenu value="#{case.caseStatus}">
+                                    <f:selectItems value="#{staffViewCustomerCaseManagedBean.caseStatusList}"/>
                                 </p:selectOneMenu>
                             </p:column>
 
@@ -54,13 +66,19 @@
                             </p:column>
                             
                             <p:column headerText="Action" style="width:140px" rendered="#{case.caseStatus == 'ONHOLD'}">
-                                <p:splitButton value="Start" action="#{staffCustomerCaseManagedBean.start(case)}" update="@form" icon="ui-icon-disk">
-                                    <p:menuitem value="Transfer" action="#{staffCustomerCaseManagedBean.redirectToTransferPage(case)}" icon="ui-icon-arrowrefresh-1-w" />                                  
+                                <p:splitButton value="Start" action="#{staffViewCustomerCaseManagedBean.start(case)}" update="@form" icon="ui-icon-disk">
+                                    <p:menuitem value="Transfer" action="#{staffViewCustomerCaseManagedBean.redirectToTransferPage(case)}" icon="ui-icon-arrowrefresh-1-w" />                                  
                                 </p:splitButton>
                             </p:column>
-                            <p:column headerText="Action" style="width:140px" rendered="#{case.caseStatus != 'ONHOLD'}">
-                                <p:splitButton value="Update" action="#{staffCustomerCaseManagedBean.update(case)}" update="@form" icon="ui-icon-disk">
-                                    <p:menuitem value="Transfer" action="#{staffCustomerCaseManagedBean.redirectToTransferPage(case)}" icon="ui-icon-arrowrefresh-1-w" />                                  
+                            <p:column headerText="Action" style="width:140px" rendered="#{case.caseStatus != 'ONHOLD' and !case.isChargeBackCase}">
+                                <p:splitButton value="Update" action="#{staffViewCustomerCaseManagedBean.update(case)}" update="@form" icon="ui-icon-disk">
+                                    <p:menuitem value="Transfer" action="#{staffViewCustomerCaseManagedBean.redirectToTransferPage(case)}" icon="ui-icon-arrowrefresh-1-w" />                                  
+                                </p:splitButton>
+                            </p:column>
+                            <p:column headerText="Action" style="width:140px" rendered="#{case.caseStatus != 'ONHOLD' and case.isChargeBackCase}">
+                                <p:splitButton value="Approve" action="#{staffViewCustomerCaseManagedBean.approveChargeBack(case)}" update="@form" icon="ui-icon-disk">
+                                    <p:menuitem value="Aisapprove" action="#{staffViewCustomerCaseManagedBean.cancelChargeBack(case)}" icon="ui-icon-arrowrefresh-1-w" />                       
+                                    <p:menuitem value="Transfer" action="#{staffViewCustomerCaseManagedBean.redirectToTransferPage(case)}" icon="ui-icon-arrowrefresh-1-w" />                                  
                                 </p:splitButton>
                             </p:column>
                             
@@ -79,7 +97,12 @@
                                         <h:outputText value="#{issue.title}" />
                                     </p:column>
                                     
-                                    <p:column headerText="Field" sortBy="#{issue.field}">
+                                    <p:column headerText="Field" sortBy="#{issue.field}" rendered="#{issue.field != 'CHARGEBACK'}">
+                                        <p:selectOneMenu value="#{issue.field}">
+                                            <f:selectItems value="#{staffViewCustomerCaseManagedBean.issueFieldList}" var="selectedField" itemDisabled="#{staffViewCustomerCaseManagedBean.isChargeBack(selectedField)}"/>
+                                        </p:selectOneMenu>
+                                    </p:column>
+                                    <p:column headerText="Field" sortBy="#{issue.field}" rendered="#{issue.field == 'CHARGEBACK'}">
                                         <h:outputText value="#{issue.field}" />
                                     </p:column>
                                     
@@ -91,6 +114,32 @@
                                         <c:if test="#{issue.attachmentName != null}">
                                             <h:outputText value="#{issue.attachmentName}" />
                                         </c:if>
+                                    </p:column>
+                                </p:dataTable>
+                                
+                                <p:dataTable id="transaction" value="#{case.chargebackTransaction}" var="transaction" sortMode="multiple" rendered="#{case.isChargeBackCase}">
+                                    <f:facet name="header">
+                                        Charge back Transaction
+                                    </f:facet>
+                                    
+                                    <p:column headerText="Date" sortBy="#{transaction.transactionTimeStamp}">
+                                        <h:outputText value="#{transaction.transactionTimeStamp}" />
+                                    </p:column>
+                                    
+                                    <p:column headerText="Description" sortBy="#{transaction.transactionDescription}">
+                                        <h:outputText value="#{transaction.transactionDescription}" />
+                                    </p:column>
+                                    
+                                    <p:column headerText="Credit">
+                                        <h:outputText value="#{transaction.creditAmount}"/>
+                                    </p:column>
+                                    
+                                    <p:column headerText="Debit">
+                                        <h:outputText value="#{transaction.debitAmount}"/>
+                                    </p:column>
+                                    
+                                    <p:column headerText="Type">
+                                        <h:outputText value="#{transaction.cardTransactionStatus}"/>
                                     </p:column>
                                 </p:dataTable>
                             </p:rowExpansion>

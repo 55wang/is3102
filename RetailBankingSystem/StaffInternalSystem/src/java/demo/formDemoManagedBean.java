@@ -28,7 +28,7 @@ public class formDemoManagedBean implements Serializable {
     private Customer customer;
     private String selectedIncome;
     private List<String> incomeOptions = CommonUtils.getEnumList(EnumUtils.Income.class);
-
+private String messageInput;
 
     /**
      * Creates a new instance of formDemoManagedBean
@@ -115,6 +115,20 @@ public class formDemoManagedBean implements Serializable {
      */
     public void setSelectedIncome(String selectedIncome) {
         this.selectedIncome = selectedIncome;
+    }
+
+    /**
+     * @return the messageInput
+     */
+    public String getMessageInput() {
+        return messageInput;
+    }
+
+    /**
+     * @param messageInput the messageInput to set
+     */
+    public void setMessageInput(String messageInput) {
+        this.messageInput = messageInput;
     }
 
 

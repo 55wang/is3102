@@ -28,9 +28,9 @@ import utils.SessionUtils;
  *
  * @author VIN-S
  */
-@Named(value = "staffCustomerCaseManagedBean")
+@Named(value = "staffViewCustomerCaseManagedBean")
 @ViewScoped
-public class StaffCustomerCaseManagedBean implements Serializable{
+public class StaffViewCustomerCaseManagedBean implements Serializable{
     @EJB
     private EmailServiceSessionBeanLocal emailServiceSessionBean;
     @EJB
@@ -50,7 +50,7 @@ public class StaffCustomerCaseManagedBean implements Serializable{
     /**
      * Creates a new instance of StaffCutomerCaseManagedBean
      */
-    public StaffCustomerCaseManagedBean() {
+    public StaffViewCustomerCaseManagedBean() {
     }
     
     public void search() {
@@ -103,6 +103,10 @@ public class StaffCustomerCaseManagedBean implements Serializable{
     public void redirectToTransferPage(CustomerCase cc){
         this.transferedCase = cc;
         RedirectUtils.redirect("staff-transfer-case.xhtml");
+    }
+    
+    public Boolean isChargeBack(String selectedField){
+        return selectedField.equals("CHARGEBACK");
     }
     
     public void searchStaff() {

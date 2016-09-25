@@ -50,4 +50,6 @@ public interface CardAcctSessionBeanLocal {
     public List<CardTransaction> getDailyTransactionFromAccount(CreditCardAccount creditCard);
     
     public List<CardTransaction> getMonthlyTransactionFromAccount(CreditCardAccount creditCard);
+    
+    public CardTransaction getSpecificCaedTransactionFromId(Long ccaId);
 }

@@ -111,7 +111,7 @@
                                     <h:outputText value="#{customer.birthDay}" style="width:100%"><f:convertDateTime pattern="dd-MM-yyyy" /></h:outputText>
 
                                     <h:outputText value="Credit Score" />
-                                    <h:outputText value="#{customer.creditScore}" />
+                                    <h:outputText value="#{customer.creditScore}" ><f:convertNumber pattern="#0.00" /></h:outputText>
                                 </p:panelGrid>
 
                                 <f:facet name="header">
@@ -147,7 +147,7 @@
                                     </p:column>
 
                                     <p:column headerText="Balance">
-                                        <h:outputText value="#{account.balance}" />
+                                        <h:outputText value="#{account.balance}" ><f:convertNumber pattern="#0.00" /></h:outputText>
                                     </p:column>
 
                                 </p:dataTable>

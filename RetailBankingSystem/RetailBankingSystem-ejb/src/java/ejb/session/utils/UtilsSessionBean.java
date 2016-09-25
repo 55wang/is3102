@@ -5,6 +5,7 @@
  */
 package ejb.session.utils;
 
+import entity.customer.Customer;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -64,5 +65,31 @@ public class UtilsSessionBean implements UtilsSessionBeanLocal {
         Query q = em.createQuery("SELECT c FROM Customer c WHERE c.phone = :phone");
         q.setParameter("phone", phone);
         return q.getResultList().isEmpty();
+    }
+
+    @Override
+    public Boolean checkUpdatedEmailIsUnique(Customer customer) {
+        Query q = em.createQuery("SELECT c FROM Customer c WHERE c.email = :email");
+        q.setParameter("email", customer.getEmail());
+        if (q.getResultList().size() < 1) {
+            return true;
+        } else if (q.getResultList().size() == 1) {
+            return q.getSingleResult().equals(customer);
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public Boolean checkUpdatedPhoneIsUnique(Customer customer) {
+        Query q = em.createQuery("SELECT c FROM Customer c WHERE c.phone = :phone");
+        q.setParameter("phone", customer.getPhone());
+        if (q.getResultList().size() < 1) {
+            return true;
+        } else if (q.getResultList().size() == 1) {
+            return q.getSingleResult().equals(customer);
+        } else {
+            return false;
+        }
     }
 }

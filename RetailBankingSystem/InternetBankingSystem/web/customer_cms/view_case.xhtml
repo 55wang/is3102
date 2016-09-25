@@ -40,6 +40,7 @@
                                     <p:separator></p:separator>
                                     <p:repeat value="#{customerCaseManagedBean.allCaseList}" var="resultCase" size="#{customerCaseManagedBean.allCaseList.size()}" offset="0" step="1" varStatus="">
                                         <h3>#{resultCase.title} (ID: #{resultCase.id})</h3>
+                                        <p>Date: #{resultCase.createDate}</p>
                                         <p:repeat value="#{resultCase.issues}" var="issue" size="#{resultCase.issues.size()}" offset="0" step="1" varStatus="">
                                             <p:panel id="toggleable" class="issue-toggleable" header="Issue: #{issue.title}" style="margin-bottom:20px">
                                                 <h:panelGrid columns="2" cellpadding="10">
@@ -91,7 +92,11 @@
                                 <h3>Cases Found: #{customerCaseManagedBean.searchResultList.size()}</h3>
                                 <p:separator></p:separator>
                                 <p:repeat value="#{customerCaseManagedBean.searchResultList}" var="resultCase" size="#{customerCaseManagedBean.searchResultList.size()}" offset="0" step="1" varStatus="">
+
                                     <h3>Case: #{resultCase.title}</h3>
+
+                                    <p>Date: #{resultCase.createDate}</p>
+
                                     <p:repeat value="#{resultCase.issues}" var="issue" size="#{resultCase.issues.size()}" offset="0" step="1" varStatus="">
                                         <p:panel id="toggleable" class="issue-toggleable" header="Issue: #{issue.title}" style="margin-bottom:20px">
                                             <h:panelGrid columns="2" cellpadding="10">

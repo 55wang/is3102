@@ -17,6 +17,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import javax.annotation.PostConstruct;
@@ -32,6 +33,7 @@ import org.primefaces.model.UploadedFile;
 import org.primefaces.push.EventBus;
 import org.primefaces.push.EventBusFactory;
 import server.utilities.EnumUtils;
+import server.utilities.EnumUtils.IssueField;
 import utils.CommonUtils;
 import utils.SessionUtils;
 import utils.MessageUtils;
@@ -68,7 +70,7 @@ public class CustomerCaseManagedBean implements Serializable {
     private List<CustomerCase> allCaseList;
     private String searchCaseID;
     private String searchCaseTitle;
-    private List<String> issueFieldList = CommonUtils.getEnumList(EnumUtils.IssueField.class);
+    private List<String> issueFieldList;
     
     private final static String NOTIFY_CHANNEL = "/notify";//TODO: notify to specific staff roll
     /**
@@ -90,6 +92,8 @@ public class CustomerCaseManagedBean implements Serializable {
     }
     
     public void saveCase(){
+        Date date = new Date();
+        customerCase.setCreateDate(date);
         customerCase.setIssues(issues);
         customerCase.setMainAccount(mainAccount);
         mainAccount.addCase(customerCase);
@@ -188,9 +192,15 @@ public class CustomerCaseManagedBean implements Serializable {
         
         emailServiceSessionBean.sendCancelCaseConfirmationToCustomer(mainAccount.getCustomer().getEmail(), customerCase);
     }
+    
+    public Boolean isChargeBackSelected(String issueFieldSelected){
+        return issueFieldSelected.equals("CHARGEBACK");
+    }
 
     @PostConstruct
     public void setMainAccount() {
+        this.issueFieldList = CommonUtils.getEnumList(EnumUtils.IssueField.class);
+        this.issueFieldList.remove(IssueField.CHARGEBACK.toString());
         this.mainAccount = customerCaseSessionBean.getMainAccountByUserID(SessionUtils.getUserName());
         this.allCaseList = customerCaseSessionBean.getAllCase();
         this.auditLogs = auditSessionBean.getAuditLogByCustomerID(SessionUtils.getUserName());
