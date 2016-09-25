@@ -258,24 +258,11 @@ public class CardAcctSessionBean implements CardAcctSessionBeanLocal {
         }
     }
 
-    @Override
-    public String updateCardAcctTransactionDailyLimit(CreditCardAccount cca, double newDailyLimit) {
-        try {
-            cca.setTransactionDailyLimit(newDailyLimit);
-            em.merge(cca);
-            return "SUCCESS";
-        } catch (Exception e) {
-            //always print an error msg 
-            System.out.println("NewCardSessionBean.updateCardAcctTransactionDailyLimit Error");
-            System.out.println(e);
-            return null;
-        }
-    }
+
 
     @Override
-    public String updateCardAcctTransactionMonthlyLimit(CreditCardAccount cca, double newMonthlyLimit) {
+    public String updateCardAcctTransactionLimit(CreditCardAccount cca) {
         try {
-            cca.setTransactionMonthlyLimit(newMonthlyLimit);
             em.merge(cca);
             return "SUCCESS";
         } catch (Exception e) {
@@ -345,4 +332,5 @@ public class CardAcctSessionBean implements CardAcctSessionBeanLocal {
             }
         }
     }
+    
 }

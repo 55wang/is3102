@@ -44,9 +44,7 @@ public interface CardAcctSessionBeanLocal {
 
     public String updateCardAccountStatus(CreditCardAccount cca, EnumUtils.CardAccountStatus status);
 
-    public String updateCardAcctTransactionDailyLimit(CreditCardAccount cca, double newDailyLimit);
-
-    public String updateCardAcctTransactionMonthlyLimit(CreditCardAccount cca, double newMonthlyLimit);
+    public String updateCardAcctTransactionLimit(CreditCardAccount cca);
 
     public List<CardTransaction> getCardTransactionFromId(Long ccaId);
 
