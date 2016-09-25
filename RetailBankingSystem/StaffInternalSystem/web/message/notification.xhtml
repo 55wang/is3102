@@ -18,37 +18,39 @@
             <div class="container">
                 <h:form>
                     <!-- TODO: This Function is only accessable to Some Role -->
-                    <p:messages id="messagesStatus" redisplay="false" >
-                        <h:panelGrid columns="2">
-                            <p:outputLabel for="target" value="Annoucement Target: " />
-                            <p:selectOneButton id="target" value="#{notificationViewManagedBean.annocementTarget}">
-                                <f:selectItem itemLabel="Staff" itemValue="#{notificationViewManagedBean.annocementForStaff}" />
-                                <f:selectItem itemLabel="Customer" itemValue="#{notificationViewManagedBean.annocementForCustomer}" />
-                                <f:ajax render="@form" />
-                            </p:selectOneButton>
-                            
-                            <h:outputText value="For all staff: " rendered="#{notificationViewManagedBean.annocementTarget == notificationViewManagedBean.annocementForStaff}"/>
-                            <p:selectBooleanButton id="forAllStaff" value="#{notificationViewManagedBean.forAllStaff}" onLabel="Yes" offLabel="No" style="width:60px" rendered="#{notificationViewManagedBean.annocementTarget == notificationViewManagedBean.annocementForStaff}">
-                                <f:ajax render="@form" />
-                            </p:selectBooleanButton>
-                            
-                            <h:outputText value="For all customer: " rendered="#{notificationViewManagedBean.annocementTarget == notificationViewManagedBean.annocementForCustomer}"/>
-                            <p:selectBooleanButton id="forAllCustomer" value="#{notificationViewManagedBean.forAllCustomer}" onLabel="Yes" offLabel="No" style="width:60px" rendered="#{notificationViewManagedBean.annocementTarget == notificationViewManagedBean.annocementForCustomer}">
-                                <f:ajax render="@form" />
-                            </p:selectBooleanButton>
-                            
-                            <h:outputText value="Select Role: " rendered="#{!notificationViewManagedBean.forAllStaff}"/>
-                            <p:selectOneMenu id="staffrole" value="#{notificationViewManagedBean.selectedRoleName}" style="width:125px" rendered="#{!notificationViewManagedBean.forAllStaff}">
-                                <f:selectItems value="#{notificationViewManagedBean.rolesOption}" />
-                            </p:selectOneMenu>
-                            <p:outputLabel for="title" value="Title: " /> 
-                            <p:inputText id="title" value="#{notificationViewManagedBean.newAnnouncement.title}" required="true" />
+                    <c:if test="#{staffUserManagedBean.isUserInRole(staffUserManagedBean.SUPER_ADMIN)}">
+                        <p:messages id="messagesStatus" redisplay="false" >
+                            <h:panelGrid columns="2">
+                                <p:outputLabel for="target" value="Annoucement Target: " />
+                                <p:selectOneButton id="target" value="#{notificationViewManagedBean.annocementTarget}">
+                                    <f:selectItem itemLabel="Staff" itemValue="#{notificationViewManagedBean.annocementForStaff}" />
+                                    <f:selectItem itemLabel="Customer" itemValue="#{notificationViewManagedBean.annocementForCustomer}" />
+                                    <f:ajax render="@form" />
+                                </p:selectOneButton>
 
-                            <p:outputLabel for="content" value="Content: " /> 
-                            <p:inputTextarea id="content" value="#{notificationViewManagedBean.newAnnouncement.content}" required="true" />
-                        </h:panelGrid>
-                        <p:commandButton value="Send" actionListener="#{notificationViewManagedBean.send}" update="@form"/>
-                    </p:messages>
+                                <h:outputText value="For all staff: " rendered="#{notificationViewManagedBean.annocementTarget == notificationViewManagedBean.annocementForStaff}"/>
+                                <p:selectBooleanButton id="forAllStaff" value="#{notificationViewManagedBean.forAllStaff}" onLabel="Yes" offLabel="No" style="width:60px" rendered="#{notificationViewManagedBean.annocementTarget == notificationViewManagedBean.annocementForStaff}">
+                                    <f:ajax render="@form" />
+                                </p:selectBooleanButton>
+
+                                <h:outputText value="For all customer: " rendered="#{notificationViewManagedBean.annocementTarget == notificationViewManagedBean.annocementForCustomer}"/>
+                                <p:selectBooleanButton id="forAllCustomer" value="#{notificationViewManagedBean.forAllCustomer}" onLabel="Yes" offLabel="No" style="width:60px" rendered="#{notificationViewManagedBean.annocementTarget == notificationViewManagedBean.annocementForCustomer}">
+                                    <f:ajax render="@form" />
+                                </p:selectBooleanButton>
+
+                                <h:outputText value="Select Role: " rendered="#{!notificationViewManagedBean.forAllStaff}"/>
+                                <p:selectOneMenu id="staffrole" value="#{notificationViewManagedBean.selectedRoleName}" style="width:125px" rendered="#{!notificationViewManagedBean.forAllStaff}">
+                                    <f:selectItems value="#{notificationViewManagedBean.rolesOption}" />
+                                </p:selectOneMenu>
+                                <p:outputLabel for="title" value="Title: " /> 
+                                <p:inputText id="title" value="#{notificationViewManagedBean.newAnnouncement.title}" required="true" />
+
+                                <p:outputLabel for="content" value="Content: " /> 
+                                <p:inputTextarea id="content" value="#{notificationViewManagedBean.newAnnouncement.content}" required="true" />
+                            </h:panelGrid>
+                            <p:commandButton value="Send" actionListener="#{notificationViewManagedBean.send}" update="@form"/>
+                        </p:messages>
+                    </c:if>
                     <p:panel header="Announcements">
                         <div id="output">
                             <c:forEach items="#{notificationViewManagedBean.announcements}" var="announcement">
