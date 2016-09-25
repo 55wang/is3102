@@ -131,7 +131,7 @@ public class Authentication implements Filter {
                     || reqURI.contains("/apply_deposit_account.xhtml")
                     || reqURI.contains("/apply_card_account.xhtml")
                     || (ses != null && ses.getAttribute("username") != null)) {
-                System.out.println("Before token checker");
+//                System.out.println("Before token checker");
                         if(     
                                 (reqURI.contains("/customer_card/")
                                     || reqURI.contains("/customer_cms/")

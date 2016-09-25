@@ -109,6 +109,7 @@
             <script type="text/javascript">
                 function handleAnnouncement(facesmessage) {
                     console.log(facesmessage);
+                    facesmessage.severity = "info";
                     PF('growl').show([facesmessage]);
                 }
             </script>

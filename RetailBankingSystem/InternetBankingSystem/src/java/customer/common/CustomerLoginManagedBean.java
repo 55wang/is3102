@@ -78,7 +78,7 @@ public class CustomerLoginManagedBean implements Serializable {
                 SessionUtils.setUserId(userID);
                 SessionUtils.setUserName(userName);
 
-                SessionUtils.setTokenAuthentication(Boolean.TRUE);
+                SessionUtils.setTokenAuthentication(Boolean.FALSE);
 
 //                RedirectUtils.redirect("../customer_cms/customer_home.xhtml");
                 return "SUCCESS";
