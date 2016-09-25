@@ -44,7 +44,40 @@ public class SimulatedCallManagedBean implements Serializable {
     public void init() {
         System.out.println("SimulatedCallManagedBean");
     }
+    
+    public void sendFailedDailyAuhorization() {
+        Form form = new Form();
+        form.param("ccNumber", "4545454545454545");
+        form.param("ccAmount", "3000");
+        form.param("ccTcode", "MDS");
+        form.param("ccDescription", "Test failed authorization");
+        
+        // Start calling
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(path);
+        
+        // This is the response
+        JsonObject jsonString = target.request(MediaType.APPLICATION_JSON).post(Entity.entity(form, MediaType.APPLICATION_FORM_URLENCODED), JsonObject.class);
 
+        
+//        private String creditCardNumber;
+//    private String amount;
+//    private String description;
+//    private String errorMessage;
+//    private String tCode;
+//    private String aCode;
+    }
+    
+    public void sendFailedMonthlyAuhorization() {
+        
+    }
+    
+    public void sendSuccessAuhorization() {
+        
+    }
+
+            
+            //
     public void initiating() {
         System.out.println("Calling web services");
 //        testGetMethod();

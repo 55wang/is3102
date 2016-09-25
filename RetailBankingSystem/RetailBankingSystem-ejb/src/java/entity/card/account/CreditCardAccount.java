@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -48,13 +49,14 @@ public class CreditCardAccount implements Serializable {
 
     private CardNetwork cardNetwork;
     private CardAccountStatus CardStatus;
+    @Column(unique = true)
     private String creditCardNum;
     private Integer cvv; // LY: Use Integer instead of int
     private String nameOnCard;
     @Temporal(value = TemporalType.DATE)
     private Date validDate;
-    private double transactionMonthlyLimit;
-    private double transactionDailyLimit;
+    private double transactionMonthlyLimit = 1000;
+    private double transactionDailyLimit = 500;
     @Temporal(value = TemporalType.TIMESTAMP)
     private Date creationDate = new Date();
     private double minPayDue;

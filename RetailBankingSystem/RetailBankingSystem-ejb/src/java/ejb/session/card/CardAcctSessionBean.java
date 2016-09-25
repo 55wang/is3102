@@ -9,11 +9,13 @@ import entity.card.account.CardTransaction;
 import entity.card.account.CreditCardAccount;
 import entity.card.account.CreditCardOrder;
 import entity.card.account.PromoCode;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import server.utilities.DateUtils;
 import server.utilities.EnumUtils.*;
 
 /**
@@ -45,6 +47,11 @@ public class CardAcctSessionBean implements CardAcctSessionBeanLocal {
         List<CardTransaction> cts = q.getResultList();
         System.out.println(cts);
         return cts;
+    }
+    
+    @Override
+    public CardTransaction getSpecificCaedTransactionFromId(Long ccaId){
+        return (CardTransaction) em.find(CardTransaction.class, ccaId);
     }
     
     //try not to use void, always return something or null. and catch it at the caller side.
@@ -88,6 +95,79 @@ public class CardAcctSessionBean implements CardAcctSessionBeanLocal {
     @Override
     public CreditCardAccount getCardAccountFromId(Long cardID) {
         return em.find(CreditCardAccount.class, cardID);
+    }
+    
+    @Override
+    public CreditCardAccount getCardByCardNumber(String cardNumber) {
+        Query q = em.createQuery("SELECT cca FROM CreditCardAccount cca WHERE cca.creditCardNum =:cardNumber");
+        q.setParameter("cardNumber", cardNumber);
+        List<CreditCardAccount> ccas = q.getResultList();
+        if (ccas != null && ccas.isEmpty() && ccas.size() == 1) {
+            return ccas.get(0);
+        } else {
+            return null;
+        }
+    }
+    
+    @Override
+    public CreditCardAccount validateCreditCardDailyTransactionLimit(CreditCardAccount creditCard, Double requestAmount) {
+        List<CardTransaction> dailyTransactions = getDailyTransactionFromAccount(creditCard);
+        
+        Double dailyAmount = 0.0;
+        for (CardTransaction ct : dailyTransactions) {
+            dailyAmount += ct.getAmount();
+        }
+        
+        if (dailyAmount + requestAmount > creditCard.getTransactionDailyLimit()) {
+            return null;
+        }
+        
+        return creditCard;
+    }
+    
+    @Override
+    public CreditCardAccount validateCreditCardMonthlyTransactionLimit(CreditCardAccount creditCard, Double requestAmount) {
+        List<CardTransaction> monthlyTransactions = getMonthlyTransactionFromAccount(creditCard);
+        
+        Double monthlyAmount = 0.0;
+        for (CardTransaction ct : monthlyTransactions) {
+            monthlyAmount += ct.getAmount();
+        }
+        
+        if (monthlyAmount + requestAmount > creditCard.getTransactionMonthlyLimit()) {
+            return null;
+        }
+        
+        return creditCard;
+    }
+    
+    @Override
+    public List<CardTransaction> getDailyTransactionFromAccount(CreditCardAccount creditCard) {
+        
+        Date now = new Date();
+        Query q = em.createQuery("SELECT ct FROM CardTransaction ct WHERE "
+                + "datediff(day, ct.updateDate, :now) = 0 AND"
+                + "ct.creditCardAccount.id =: ccId"
+        );
+        q.setParameter("now", now);
+        q.setParameter("ccId", creditCard.getId());
+        
+        return q.getResultList();
+    }
+    
+    @Override
+    public List<CardTransaction> getMonthlyTransactionFromAccount(CreditCardAccount creditCard) {
+        Date startDate = DateUtils.getBeginOfMonth();
+        Date endDate = DateUtils.getBeginOfMonth();
+        
+        Query q = em.createQuery("SELECT ct FROM CardTransaction ct WHERE "
+                + "ct.updateTime BETWEEN :startDate AND :endDate AND"
+                + "ct.creditCardAccount.id =: ccId"// TODO: Add status
+        );
+        q.setParameter("startDate", startDate);
+        q.setParameter("endDate", endDate);
+        q.setParameter("ccId", creditCard.getId());
+        return q.getResultList();
     }
     
     @Override

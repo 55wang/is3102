@@ -5,9 +5,11 @@
  */
 package entity.customer;
 
+import entity.card.account.CardTransaction;
 import entity.staff.StaffAccount;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -16,6 +18,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Temporal;
 import server.utilities.EnumUtils.CaseStatus;
 
 /**
@@ -30,12 +34,17 @@ public class CustomerCase implements Serializable {
     private Long id;
     private String title;
     private CaseStatus caseStatus;
+    @Temporal(javax.persistence.TemporalType.DATE)
+    private Date createDate;
     @OneToMany(cascade = {CascadeType.ALL}, mappedBy = "customerCase")
     private List<Issue> issues = new ArrayList<Issue>(); 
     @ManyToOne(cascade = {CascadeType.MERGE})
     private MainAccount mainAccount;
     @ManyToOne
     private StaffAccount staffAccount;
+    @OneToOne
+    private CardTransaction chargebackTransaction;
+    private Boolean isChargeBackCase = false;
     
 
     public Long getId() {
@@ -110,4 +119,28 @@ public class CustomerCase implements Serializable {
     public String toString() {
         return "entity.customer.Case[ id=" + id + " ]";
     }   
+
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
+    }
+
+    public CardTransaction getChargebackTransaction() {
+        return chargebackTransaction;
+    }
+
+    public void setChargebackTransaction(CardTransaction chargebackTransaction) {
+        this.chargebackTransaction = chargebackTransaction;
+    }
+
+    public Boolean getIsChargeBackCase() {
+        return isChargeBackCase;
+    }
+
+    public void setIsChargeBackCase(Boolean isChargeBackCase) {
+        this.isChargeBackCase = isChargeBackCase;
+    }
 }
