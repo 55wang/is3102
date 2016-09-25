@@ -21,7 +21,7 @@
             <em:customerNavBar context="customer_home" pageName="customer_home" ></em:customerNavBar>
             <div class="customer_main_container">
                 <h:form id="mainForm">
-                    <p:panel header="Transactions for account #{customerDepositAccountTransactionHistoryManagedBean.account.id }">
+                    <p:panel header="Transactions for account #{customerDepositAccountTransactionHistoryManagedBean.account.accountNumber }">
                         <p:messages id="messagesStatus" redisplay="false" >
 
                             <p:dataTable id="transactions" value="#{customerDepositAccountTransactionHistoryManagedBean.account.transactions}" var="transaction">
