@@ -25,6 +25,7 @@ import server.utilities.EnumUtils;
 import server.utilities.EnumUtils.ApplicationStatus;
 import server.utilities.EnumUtils.CardAccountStatus;
 import server.utilities.GenerateAccountAndCCNumber;
+import server.utilities.PincodeGenerationUtils;
 
 /**
  *
@@ -50,8 +51,21 @@ public class CardAcctSessionBean implements CardAcctSessionBeanLocal {
     }
     
     @Override
+    public CreditCardAccount updateCreditCardAccount(CreditCardAccount cca) {
+        em.merge(cca);
+        return cca;
+    }
+    
+    @Override
     public List<CreditCardOrder> showAllCreditCardOrder() {
         Query q = em.createQuery("SELECT cco FROM CreditCardOrder cco");
+        return q.getResultList();
+    }
+    
+    @Override
+    public List<CreditCardAccount> showAllPendingCreditCardOrder() {
+        Query q = em.createQuery("SELECT cca FROM CreditCardAccount cca WHERE cca.CardStatus = :status");
+        q.setParameter("status", CardAccountStatus.PENDING);
         return q.getResultList();
     }
 
@@ -249,6 +263,12 @@ public class CardAcctSessionBean implements CardAcctSessionBeanLocal {
     @Override
     public CreditCardAccount createCardAccount(CreditCardAccount cca) {
         try {
+            if (cca.getCreditCardNum() == null || cca.getCreditCardNum().isEmpty()) {
+                cca.setCreditCardNum(generateMasterCardNumber());
+                cca.setCvv(Integer.parseInt(generateCVVNumber()));
+            }
+            System.out.println("Saving cca:" + cca.getCreditCardNum());
+            System.out.println("cca:" + cca.getPartialHiddenAccountNumber());
             em.persist(cca);
             return cca;
         } catch (Exception e) {
@@ -257,6 +277,26 @@ public class CardAcctSessionBean implements CardAcctSessionBeanLocal {
             System.out.println(e);
             return null;
         }
+    }
+    
+    private String generateMasterCardNumber() {
+        String ccNumber = "";
+        for(;;) {
+             ccNumber = GenerateAccountAndCCNumber.generateMasterCardNumber();
+             CreditCardAccount a = null;
+             try {
+                 a = getCardByCardNumber(ccNumber);
+             } catch (Exception e) {
+                 System.out.println("No cc number found in database");
+             }
+             if (a == null) {
+                 return ccNumber;
+             }
+        }
+    }
+    
+    private String generateCVVNumber() {
+        return PincodeGenerationUtils.generateRandom(true, 3);
     }
 
     //update cardaccount status 

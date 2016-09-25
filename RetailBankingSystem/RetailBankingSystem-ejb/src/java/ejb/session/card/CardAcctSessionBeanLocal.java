@@ -24,8 +24,12 @@ public interface CardAcctSessionBeanLocal {
     public List<CreditCardOrder> showAllCreditCardOrder();
     
     public List<CreditCardOrder> showAllCreditCardOrder(EnumUtils.ApplicationStatus status);
+    
+    public List<CreditCardAccount> showAllPendingCreditCardOrder();
 
     public CreditCardOrder getCardOrderFromId(Long orderNumber);
+    
+    public CreditCardAccount updateCreditCardAccount(CreditCardAccount cca);
 
     public String createCardOrder(CreditCardOrder order);
 

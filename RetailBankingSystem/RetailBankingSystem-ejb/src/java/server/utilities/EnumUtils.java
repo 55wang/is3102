@@ -108,6 +108,7 @@ public class EnumUtils {
     public enum CardAccountStatus {
 
         PENDING("PENDING"),
+        ISSUED("ISSUED"),
         ACTIVE("ACTIVE"),
         FREEZE("FREEZE"),
         CLOSED("CLOSED");
