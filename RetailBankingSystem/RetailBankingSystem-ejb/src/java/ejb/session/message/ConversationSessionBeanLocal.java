@@ -7,6 +7,7 @@ package ejb.session.message;
 
 import entity.staff.Conversation;
 import entity.staff.Message;
+import entity.staff.StaffAccount;
 import java.util.List;
 import javax.ejb.Local;
 
@@ -16,9 +17,10 @@ import javax.ejb.Local;
  */
 @Local
 public interface ConversationSessionBeanLocal {
-    public Boolean createConversation(Conversation c);
+    public Conversation createConversation(Conversation c);
     public Boolean updateConversation(Conversation c);
     public Boolean addMessage(Conversation c, Message m);
     public Conversation getConversationById(Long id);
     public List<Conversation> getAllConversationForStaff(String username);
+    public String checkIfConversationExists(StaffAccount a, StaffAccount b);
 }

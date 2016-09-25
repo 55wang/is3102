@@ -40,18 +40,17 @@ public class ChatViewManagedBean implements Serializable {
     private ConversationSessionBeanLocal conversationBean;
     @EJB
     private UtilsSessionBeanLocal utilsBean;
-    
-    
+
     private String searchText;
     private String conversationId;
     private List<StaffAccount> staffs = new ArrayList<>();
     private List<Conversation> conversations = new ArrayList<>();
     private Conversation currentConversation;
-    
+
     public ChatViewManagedBean() {
         LoggingUtils.StaffMessageLog(ChatViewManagedBean.class, "ChatViewManagedBean() Created");
     }
-    
+
     @PostConstruct
     public void init() {
         LoggingUtils.StaffMessageLog(ChatViewManagedBean.class, "@PostConstruct init() Created");
@@ -66,51 +65,44 @@ public class ChatViewManagedBean implements Serializable {
         a.setStaffAccount(SessionUtils.getStaff());
         utilsBean.persist(a);
     }
-    
-    @PreDestroy 
+
+    @PreDestroy
     public void deinit() {
         LoggingUtils.StaffMessageLog(ChatViewManagedBean.class, "@PreDestroy deinit() Called");
     }
-    
+
     public void search() {
         staffs = staffBean.searchStaffByUsernameOrName(searchText);
         removeSelf();
     }
-    
+
     public void showall() {
         setStaffs(staffBean.getAllStaffs());
         removeSelf();
     }
-    
+
     public void newConversation(StaffAccount staff) {
         LoggingUtils.StaffMessageLog(ChatViewManagedBean.class, "New Conversation with staff " + staff.getUsername());
         StaffAccount sa = SessionUtils.getStaff();
-        Conversation conversation = checkIfSenderConversationExists(sa);
-        if (conversation == null) {
-            conversation = new Conversation();
+        String conversationId = conversationBean.checkIfConversationExists(sa, staff);
+
+        System.out.println(conversationId);
+        if (conversationId.equals("NOT_FOUND") || conversationId.equals("EXCEPTION")) {
+            Conversation conversation = new Conversation();
             conversation.setReceiver(staff);
             conversation.setSender(SessionUtils.getStaff());
-            conversationBean.createConversation(conversation);
+            conversation = conversationBean.createConversation(conversation);
+            setCurrentConversation(conversation);
+            conversationId = conversation.getId().toString();
         }
-        setCurrentConversation(conversation);
+
         // Go to Message View
         Map<String, String> map = new HashMap<>();
-        map.put("conversationId", conversation.getId().toString());
+        map.put("conversationId", conversationId);
         String params = RedirectUtils.generateParameters(map);
         RedirectUtils.redirect("message.xhtml" + params);
     }
-    
-    private Conversation checkIfSenderConversationExists(StaffAccount sa) {
-        List<Conversation> cs = sa.getSenderConversation();
-        for (Conversation c : cs) {
-            if (c.getSender().equals(SessionUtils.getStaff()) && c.getReceiver().equals(sa)) {
-                LoggingUtils.StaffMessageLog(ChatViewManagedBean.class, "Found Existing Conversation, not creating new one");
-                return c;
-            }
-        }
-        return null;
-    }
-    
+
     public Boolean isReceiver(Conversation conversation) {
         StaffAccount sa = SessionUtils.getStaff();
         for (Conversation c : sa.getReceiverConversation()) {
@@ -120,7 +112,7 @@ public class ChatViewManagedBean implements Serializable {
         }
         return false;
     }
-    
+
     public void removeSelf() {
         List<StaffAccount> result = new ArrayList<>();
         StaffAccount self = SessionUtils.getStaff();
@@ -131,11 +123,11 @@ public class ChatViewManagedBean implements Serializable {
         }
         staffs = result;
     }
-    
+
     public String randColor() {
         return ColorUtils.randomColor();
     }
-     
+
     // Getter and Setters
     /**
      * @return the staffs
