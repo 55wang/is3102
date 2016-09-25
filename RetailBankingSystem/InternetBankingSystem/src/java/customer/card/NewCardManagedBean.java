@@ -71,6 +71,7 @@ public class NewCardManagedBean implements Serializable {
     private String selectedSalutation;
     private String selectedGender;
     private String selectedIncome;
+    private Date currentDate = new Date();
 
     @PostConstruct
     public void retrieveProducts() {
@@ -103,6 +104,7 @@ public class NewCardManagedBean implements Serializable {
 
         cco.setCreditCardProduct(newCardProductSessionBean.getSingleCreditCardProduct(selectedProductName));
         cardAcctSessionBean.createCardOrder(cco);
+        
         emailServiceSessionBean.sendCreditCardApplicationNotice(cco.getEmail());
         RedirectUtils.redirect("/InternetBankingSystem/common/application_success.xhtml");
 
@@ -330,5 +332,19 @@ public class NewCardManagedBean implements Serializable {
 
     public void setSelectedProductName(String selectedProductName) {
         this.selectedProductName = selectedProductName;
+    }
+
+    /**
+     * @return the currentDate
+     */
+    public Date getCurrentDate() {
+        return currentDate;
+    }
+
+    /**
+     * @param currentDate the currentDate to set
+     */
+    public void setCurrentDate(Date currentDate) {
+        this.currentDate = currentDate;
     }
 }

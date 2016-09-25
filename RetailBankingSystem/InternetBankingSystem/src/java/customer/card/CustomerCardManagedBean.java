@@ -13,6 +13,7 @@ import entity.card.account.CreditCardAccount;
 import entity.card.account.DebitCardAccount;
 import entity.customer.Customer;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,6 +40,8 @@ public class CustomerCardManagedBean implements Serializable {
     private List<CreditCardAccount> ccas;
     private List<CardTransaction> cardTransactions;
     private static CreditCardAccount cca;
+    private Date currentDate = new Date();
+
 
     @EJB
     private CardAcctSessionBeanLocal cardAcctSessionBean;
@@ -135,5 +138,19 @@ public class CustomerCardManagedBean implements Serializable {
      */
     public void setCca(CreditCardAccount cca) {
         this.cca = cca;
+    }
+
+    /**
+     * @return the currentDate
+     */
+    public Date getCurrentDate() {
+        return currentDate;
+    }
+
+    /**
+     * @param currentDate the currentDate to set
+     */
+    public void setCurrentDate(Date currentDate) {
+        this.currentDate = currentDate;
     }
 }
