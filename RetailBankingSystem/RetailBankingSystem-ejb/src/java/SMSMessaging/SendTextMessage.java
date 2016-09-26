@@ -25,7 +25,7 @@ public class SendTextMessage {
     public static void sendText(String SMS_TO, String SMS_TEXT) {
 
         // Create a client for submitting to Nexmo
-
+        SMS_TO = "65"+SMS_TO; 
         NexmoSmsClient client = null;
         try {
             client = new NexmoSmsClient(API_KEY, API_SECRET);
