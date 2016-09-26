@@ -361,7 +361,7 @@ and open the template in the editor.
     transform: translate(-50%, -50%);
 }
 
-v-center {
+.v-center {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
