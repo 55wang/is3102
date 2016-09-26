@@ -11,7 +11,6 @@ import org.primefaces.push.RemoteEndpoint;
 import org.primefaces.push.annotation.OnClose;
 import org.primefaces.push.annotation.OnMessage;
 import org.primefaces.push.annotation.OnOpen;
-import org.primefaces.push.annotation.PathParam;
 import org.primefaces.push.annotation.PushEndpoint;
 import org.primefaces.push.annotation.Singleton;
 import org.primefaces.push.impl.JSONEncoder;
@@ -23,9 +22,6 @@ import org.primefaces.push.impl.JSONEncoder;
 @PushEndpoint("/customer_notify")
 @Singleton
 public class CustomerAnnouncementResource {
-    
-    @PathParam("customer")
-    private String customer;
     
     @OnOpen
     public void onOpen(RemoteEndpoint r, EventBus eventBus) {

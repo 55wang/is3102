@@ -36,19 +36,26 @@ public class AnnouncementSessionBean implements AnnouncementSessionBeanLocal {
     }
     
     @Override
-    public List<Announcement> getAllAnnouncements(Role r) {
+    public List<Announcement> getAllAnnouncements(Role r, Boolean isforStaff) {
         Query q = null;
         // customer side
         if (r == null) {
-            q = em.createQuery("SELECT a FROM Announcement a WHERE "
+            if (isforStaff) {
+                q = em.createQuery("SELECT a FROM Announcement a WHERE "
+                    + "a.isForStaff = true ORDER BY a.creationDate DESC"
+                );
+            }else {
+                q = em.createQuery("SELECT a FROM Announcement a WHERE "
                     + "a.isForStaff = false ORDER BY a.creationDate DESC"
-            );
+                );
+            }
+            
         } else {
             if (r.getRoleName().equals(UserRole.SUPER_ADMIN.toString())) {
                 // retrieve all
                 q = em.createQuery("SELECT a FROM Announcement a ORDER BY a.creationDate DESC"); 
             } else {
-                q = em.createQuery("SELECT a FROM Announcement a WHERE a.role = :r ORDER BY a.creationDate DESC"); 
+                q = em.createQuery("SELECT a FROM Announcement a WHERE a.isForStaff = true OR a.role = :r ORDER BY a.creationDate DESC"); 
                 q.setParameter("r", r);
             }
         }

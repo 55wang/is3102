@@ -67,7 +67,7 @@ public class NotificationViewManagedBean implements Serializable {
 
     @PostConstruct
     public void init() {
-        announcements = announcementBean.getAllAnnouncements(SessionUtils.getStaff().getRole());
+        announcements = announcementBean.getAllAnnouncements(SessionUtils.getStaff().getRole(), true);
         setRoles(staffRoleSessionBean.getAllRoles());
         for (Role r : roles) {
             rolesOption.put(r.getRoleName(), r.getRoleName());
@@ -101,7 +101,7 @@ public class NotificationViewManagedBean implements Serializable {
         if (!isForStaff()) {
             System.out.println("Runs here and pushed to:" + CUSTOMER_NOTIFY_CHANNEL);
             eventBus.publish(CUSTOMER_NOTIFY_CHANNEL, m);
-            eventBus.publish(ROLE_NOTIFY_CHANNEL + UserRole.SUPER_ADMIN.toString(), m);
+//            eventBus.publish(ROLE_NOTIFY_CHANNEL + UserRole.SUPER_ADMIN.toString(), m);
         } else {
             if (getForAllStaff() == false) {
                 eventBus.publish(ROLE_NOTIFY_CHANNEL + selectedRoleName, m);

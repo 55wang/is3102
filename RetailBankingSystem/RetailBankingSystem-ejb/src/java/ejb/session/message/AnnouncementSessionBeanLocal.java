@@ -17,5 +17,5 @@ import javax.ejb.Local;
 @Local
 public interface AnnouncementSessionBeanLocal {
     public Boolean createAnnouncement(Announcement a);
-    public List<Announcement> getAllAnnouncements(Role role);
+    public List<Announcement> getAllAnnouncements(Role role, Boolean isforStaff);
 }
