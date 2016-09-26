@@ -59,9 +59,10 @@ public class CustomerDepositAccountSummaryManagedBean implements Serializable {
     public void closeAccount(DepositAccount da) {
         System.out.println("Closing account");
         if (da.getBalance().compareTo(BigDecimal.ZERO) == 0) {
-            da.setStatus(EnumUtils.StatusType.FREEZE);
+            da.setStatus(EnumUtils.StatusType.CLOSED);
             DepositAccount result = depositBean.updateAccount(da);
             if (result != null) {
+                accounts.remove(da);
                 MessageUtils.displayInfo("Your account has been closed!");
             } else {
                 MessageUtils.displayInfo("Your account close failed! Please contact our staffs!");

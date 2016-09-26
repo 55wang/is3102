@@ -1340,6 +1340,7 @@ public class EntityBuilderBean {
         DepositAccount dp = customerDepositSessionBean.createAccount(customAccount);
         initTransactions(dp);
         initCheques(dp);
+        cardAcctSessionBean.createDebitAccount(customAccount);
 
         CustomerDepositAccount savingAccount = new CustomerDepositAccount();
         savingAccount.setType(DepositAccountType.SAVING);
@@ -1348,6 +1349,7 @@ public class EntityBuilderBean {
         savingAccount.setBalance(new BigDecimal(0));
         savingAccount.setMainAccount(demoMainAccount);
         customerDepositSessionBean.createAccount(savingAccount);
+        cardAcctSessionBean.createDebitAccount(savingAccount);
 
         CustomerDepositAccount savingAccount2 = new CustomerDepositAccount();
         savingAccount2.setType(DepositAccountType.SAVING);
@@ -1356,6 +1358,7 @@ public class EntityBuilderBean {
         savingAccount2.setBalance(new BigDecimal(1000));
         savingAccount2.setMainAccount(demoMainAccount);
         customerDepositSessionBean.createAccount(savingAccount2);
+        cardAcctSessionBean.createDebitAccount(savingAccount2);
 
         CustomerDepositAccount currentAccount = new CustomerDepositAccount();
         currentAccount.setType(DepositAccountType.SAVING);
@@ -1364,6 +1367,7 @@ public class EntityBuilderBean {
         currentAccount.setBalance(new BigDecimal(1000));
         currentAccount.setMainAccount(demoMainAccount);
         customerDepositSessionBean.createAccount(currentAccount);
+        cardAcctSessionBean.createDebitAccount(currentAccount);
 
         CustomerFixedDepositAccount fixedAccount = new CustomerFixedDepositAccount();
         fixedAccount.setType(DepositAccountType.FIXED);
