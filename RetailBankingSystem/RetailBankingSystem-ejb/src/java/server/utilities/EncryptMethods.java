@@ -28,7 +28,7 @@ import org.apache.commons.codec.binary.Base64;
 public class EncryptMethods {
 
     public static void main(String[] args) {
-        String a = "apple";
+        String a = null;
         String ciperText = AESEncrypt(a);
         System.out.println(ciperText);
 
@@ -48,8 +48,9 @@ public class EncryptMethods {
             cipher.init(Cipher.ENCRYPT_MODE, key, ivspec);
             byte[] plainTextByte = cipher.doFinal(plaintext.getBytes());
             ciphertext = Base64.encodeBase64String(plainTextByte);
-        } catch (UnsupportedEncodingException | InvalidKeyException | NoSuchAlgorithmException | NoSuchProviderException | BadPaddingException | IllegalBlockSizeException | NoSuchPaddingException | InvalidAlgorithmParameterException ex) {
+        } catch (Exception ex) {
             System.out.println(ex.getMessage());
+            return "";
         }
         return ciphertext;
     }
@@ -63,8 +64,9 @@ public class EncryptMethods {
             byte[] cipherTextByte = Base64.decodeBase64(ciphertext);
             byte[] plainTextByte = cipher.doFinal(cipherTextByte);
             plaintext = new String(plainTextByte);
-        } catch (InvalidKeyException | NoSuchAlgorithmException | NoSuchProviderException | BadPaddingException | IllegalBlockSizeException | NoSuchPaddingException | IOException | InvalidAlgorithmParameterException ex) {
+        } catch (Exception ex) {
             System.out.println(ex.getMessage());
+            return "";
         }
         return plaintext;
     }
@@ -80,8 +82,9 @@ public class EncryptMethods {
             for (int i = 0; i < byteArray.length; i++) {
                 stringBuilder.append(Integer.toString((byteArray[i] & 0xff) + 0x100, 16).substring(1));
             }
-        } catch (NoSuchAlgorithmException ex) {
+        } catch (Exception ex) {
             System.out.println(ex.getMessage());
+            return "";
         }
         return stringBuilder.toString();
     }
