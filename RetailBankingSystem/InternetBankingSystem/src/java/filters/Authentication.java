@@ -133,6 +133,7 @@ public class Authentication implements Filter {
 //                System.out.println("Before token checker");
                         if(     
                                 (reqURI.contains("/customer_card/")
+                                    || reqURI.contains("*/customer_reset_pwd.xhtml")
                                     || reqURI.contains("/customer_cms/")
                                     || reqURI.contains("/customer_deposit/")
                                     || reqURI.contains("/customer_message/")
