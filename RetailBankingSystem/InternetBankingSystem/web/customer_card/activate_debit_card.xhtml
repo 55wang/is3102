@@ -13,12 +13,12 @@
             <h:outputStylesheet library="css" name="theme.css"/>
         </h:head>
         <h:body>
-            <em:customerHeader context="index_card" userName="Log in"></em:customerHeader>
-            <em:customerNavBar context="index_card" pageName="index_card" ></em:customerNavBar>
+            <em:customerHeader context="customer_home" userName="#{customerHomeManagedBean.customer.firstname }"></em:customerHeader>
+            <em:customerNavBar context="customer_home" pageName="cards_home" ></em:customerNavBar>
 
             <h:form id="mainForm">
 
-                <p:panel header="Activate your credit card" style="padding-top: 200px;margin-left: 70px; width:90%">
+                <p:panel header="Activate your debit card" style="padding-top: 200px;margin-left: 70px; width:90%">
 
                     <h:outputText value="Please enter:" style="margin-left: 350px; margin-top: 30px; font-weight:bolder"/>
                     <p:growl id="growl" sticky="true" showDetail="true"/>
@@ -44,7 +44,7 @@
 
                     </p:panelGrid>
 
-                    <p:commandButton style="margin-top:40px" class="h-center" value="Confirm" action="#{cardActivationManagedBean.activateCreditCard()}" update="growl"/>
+                    <p:commandButton style="margin-top:40px" class="h-center" value="Confirm" action="#{cardActivationManagedBean.activateDebitCard()}" update="growl"/>
 
                 </p:panel>
             </h:form>
