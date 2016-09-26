@@ -16,12 +16,11 @@
 
     <cc:implementation>
         <f:view>
+            <!-- Global Notification -->
+            <p:growl id="msgs" widgetVar="globalGrowl" showDetail="true" sticky="true"/>
             <div id="customer-navbar" class="h-center">
                 <ul class="header-navigation">
                     <c:if test="#{cc.attrs.context.contains('index')}">
-                        <!--http://stackoverflow.com/questions/7915134/how-to-use-the-spring-security-facelets-tag-library-in-jsf-->
-                        <!--sec:authorize access="hasAnyRole('counterStaff')"></sec:authorize-->
-                        <!--TODO: wrap menu option with sec tag -->
                         <c:if test="#{cc.attrs.context == 'index'}">
                             <li id="header-overview" class="#{cc.attrs.pageName == 'index' ? 'active' : ''}" value="Home"><a href=".">Home</a></li>
                         </c:if>
@@ -37,10 +36,6 @@
                     </c:if>
                     <c:if test="#{cc.attrs.context == 'customer_home'}">
                         <h:form>
-                        <!--<em:sessionTimeoutNotification></em:sessionTimeoutNotification>-->
-                        <!--http://stackoverflow.com/questions/7915134/how-to-use-the-spring-security-facelets-tag-library-in-jsf-->
-                        <!--sec:authorize access="hasAnyRole('counterStaff')"></sec:authorize-->
-                        <!--TODO: wrap menu option with sec tag -->
                         <li id="navbar-myhome-tab" class="#{cc.attrs.pageName == 'customer_home' ? 'active' : ''}" value="myhome"><a href="../customer_cms/customer_home.xhtml"><p:outputLabel id="tab-myHome" value="My Home" style="cursor: pointer"/></a></li>
                         <p:overlayPanel class="nav-overlay-panel-home" for="tab-myHome" showEvent="mouseover" hideEvent="mousedown" dismissable="true">
                             <p:menu>
@@ -66,8 +61,6 @@
                                     <p:menuitem value="Credit Card Summary" url="../customer_card/credit_card_summary.xhtml" />
                                     <p:menuitem value="Activate Debit Card" url="../index_card_subpages/activate_debit_card.xhtml" />
                                     <p:menuitem value="Activate Credit Card" url="../index_card_subpages/activate_credit_card.xhtml" />
-                                    <p:menuitem value="Debit Card Limit" url="../customer_card/change_debit_card_limit.xhtml" />
-                                    <p:menuitem value="Credit Card Limit" url="../customer_card/change_credit_card_limit.xhtml" />
                                 </p:submenu>
                             </p:menu>
                         </p:overlayPanel>
@@ -102,15 +95,14 @@
                     </c:if>
                 </ul>
             </div>
-            <!-- Global Notification -->
-            <p:growl id="msgs" widgetVar="growl" showDetail="true" sticky="true"/>
+            
             <p:socket onMessage="handleAnnouncement" channel="/customer_notify"/>
             <p:socket onMessage="handleAnnouncement" channel="/single_notification/#{customerInfoManagedBean.userId}"/>
             <script type="text/javascript">
                 function handleAnnouncement(facesmessage) {
                     console.log(facesmessage);
                     facesmessage.severity = "info";
-                    PF('growl').show([facesmessage]);
+                    PF('globalGrowl').show([facesmessage]);
                 }
             </script>
         </f:view>

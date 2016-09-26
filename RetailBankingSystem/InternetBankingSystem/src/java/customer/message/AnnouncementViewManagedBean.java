@@ -34,7 +34,7 @@ public class AnnouncementViewManagedBean implements Serializable {
     }
     @PostConstruct
     public void init() {
-        setAnnouncements(announcementBean.getAllAnnouncements(null));
+        setAnnouncements(announcementBean.getAllAnnouncements(null, false));
     }
 
     /**
