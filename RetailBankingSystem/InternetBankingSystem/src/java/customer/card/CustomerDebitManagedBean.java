@@ -19,7 +19,10 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
+import net.sf.jasperreports.engine.type.EnumUtil;
+import server.utilities.EnumUtils;
 import server.utilities.EnumUtils.CardAccountStatus;
+import utils.CommonUtils;
 import utils.RedirectUtils;
 import utils.SessionUtils;
 
@@ -34,6 +37,7 @@ public class CustomerDebitManagedBean implements Serializable {
     private Customer customer;
     private List<DebitCardAccount> dcas;
     private List<CardTransaction> cardTransactions;
+    private String APPLICATION_STATUS_PENDING = EnumUtils.ApplicationStatus.PENDING.toString();
 
     @EJB
     private CardAcctSessionBeanLocal cardAcctSessionBean;
@@ -71,7 +75,6 @@ public class CustomerDebitManagedBean implements Serializable {
         this.customer = customer;
     }
 
-
     public List<CardTransaction> getCardTransactions() {
         return cardTransactions;
     }
@@ -86,5 +89,13 @@ public class CustomerDebitManagedBean implements Serializable {
 
     public void setDcas(List<DebitCardAccount> dcas) {
         this.dcas = dcas;
+    }
+
+    public String getAPPLICATION_STATUS_PENDING() {
+        return APPLICATION_STATUS_PENDING;
+    }
+
+    public void setAPPLICATION_STATUS_PENDING(String APPLICATION_STATUS_PENDING) {
+        this.APPLICATION_STATUS_PENDING = APPLICATION_STATUS_PENDING;
     }
 }

@@ -31,7 +31,7 @@ public class CreditCardOrder implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.ALL})
     private CreditCardProduct creditCardProduct;
 
     private Salutation saluation;
