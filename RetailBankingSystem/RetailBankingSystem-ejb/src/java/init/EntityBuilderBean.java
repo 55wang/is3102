@@ -187,6 +187,7 @@ public class EntityBuilderBean {
         initCreditCardProduct();
         initCase();
         initNotification();
+        initCreditCardOrder();
     }
 
     public void initPromoProduct() {
