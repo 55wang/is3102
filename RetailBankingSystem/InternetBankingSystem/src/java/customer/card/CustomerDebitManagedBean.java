@@ -37,7 +37,7 @@ public class CustomerDebitManagedBean implements Serializable {
     private Customer customer;
     private List<DebitCardAccount> dcas;
     private List<CardTransaction> cardTransactions;
-    private String APPLICATION_STATUS_PENDING = EnumUtils.ApplicationStatus.PENDING.toString();
+    private String APPLICATION_STATUS_PENDING = EnumUtils.CardAccountStatus.PENDING.toString();
 
     @EJB
     private CardAcctSessionBeanLocal cardAcctSessionBean;

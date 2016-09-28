@@ -14,6 +14,10 @@ import com.nexmo.messaging.sdk.messages.TextMessage;
  * @author wang
  */
 public class SendTextMessage {
+    
+    public static void main(String[] args) {
+        sendText("81567758", "testing");
+    }
 
     public static final String API_KEY = "a951310f";
     public static final String API_SECRET = "0072360644c262f8";
