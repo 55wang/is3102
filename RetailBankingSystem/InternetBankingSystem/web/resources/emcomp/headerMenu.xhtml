@@ -17,17 +17,10 @@
         <f:view>
             <em:cssImport></em:cssImport>
             <div id="customer-header-nav">
-                <c:if test="#{cc.attrs.context == 'index'}">
+                <c:if test="#{cc.attrs.context == 'main'}">
                     <ul>
                         <li>
-                            <a href="common/customer_login.xhtml">Log in</a>
-                        </li>
-                    </ul> 
-                </c:if>
-                <c:if test="#{cc.attrs.context.contains('index_')}">
-                    <ul>
-                        <li>
-                            <a href="../common/customer_login.xhtml">Log in</a>
+                            <a href="https://localhost:8181/InternetBankingSystem/common/customer_login.xhtml">Log in</a>
                         </li>
                     </ul> 
                 </c:if>

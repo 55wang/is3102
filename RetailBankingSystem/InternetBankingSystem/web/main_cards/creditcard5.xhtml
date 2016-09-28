@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:em="http://xmlns.jcp.org/jsf/composite/emcomp">
+    <f:view>
+        <h:head>
+
+            <title>Merlion Bank</title>
+            <h:outputStylesheet library="css" name="reset.css"/>
+            <h:outputStylesheet library="css" name="theme.css"/>
+        </h:head>
+
+
+
+        <body>
+            <style>
+                div.img {
+                    margin: 5px;
+                    border: 1px solid #ccc;
+                    float: left;
+                    width: 400px;
+                }
+
+                div.img:hover {
+                    border: 1px solid #777;
+                }
+
+                div.img img {
+                    width: 100%;
+                    height: 230px;
+
+                }
+
+                div.desc {
+                    padding: 15px;
+                    text-align: center;
+                }
+
+                /*                .floating-menu {
+                                    font-family: sans-serif;
+                                    background: gainsboro;
+                                    position: fixed;
+                                    right: 0;
+                                    top: 40%;
+                                    width: 200px;
+                                    height: 300px;
+                                    margin-top: -2.5em;
+                                }
+                
+                                .floating-menu a, 
+                                .floating-menu h3 {
+                                    font-size: 0.9em;
+                                    display: block;
+                                    margin: 0 0.5em;
+                                    color: white;
+                                }*/
+
+
+            </style>
+            <em:customerHeader context="main" userName="Log in"></em:customerHeader>
+            <em:customerNavBar context="main" mainPage="mainCards" ></em:customerNavBar>
+            <em:floating_menu context="credit"></em:floating_menu>
+            <div style="margin-top:650px;margin-left: 70px;position: absolute;width: 1100px"   >    
+
+                <h3 style="margin-top:0">Product Details</h3>
+                <p:tabView style="width:600px">
+
+                    <p:tab title="Eligibility">
+
+                        <table border="1" class="tg">
+                            <tr>
+                                <th class="tg-yw4l"></th>
+                                <th class="tg-yw4l">Credit Card</th>
+                            </tr>
+                            <tr>
+                                <td class="tg-yw4l" rowspan="2">Required personal information</td>
+                                <td class="tg-yw4l">Through home page:<br></br>salutation, name, name to appear on the card, mobile, email, nationality, NRIC/passport number, DOB, gender, income, credit limit, marital status, number of dependents, address, residential status, education level, job status, occupation, job industry and company</td>
+                            </tr>
+                            <tr>
+                                <td class="tg-yw4l">Through IMBanking:<br></br>name to appear on card, salutation, home country, marital status, number of dependents, education level, residence type and status, occupation, job industry, company, income</td>
+                            </tr>
+                            <tr>
+                                <td class="tg-yw4l" rowspan="2">Required documents</td>
+                                <td class="tg-yw4l">Singapore Citizens/ PR:<br></br>Soft copies of NRIC (front and back), latest 12 months’ CPF contribution history statement, latest 3 months’ computerized payslip, latest Income Tax Notice of Assessment</td>
+                            </tr>
+                            <tr>
+                                <td class="tg-yw4l">Foreigners:<br></br>Soft copies of valid passport, employment pass, latest 3 months’ computerized payslip, company letter certifying employment and salary</td>
+                            </tr>
+                        </table>
+                    </p:tab>
+                    <p:tab title="Benefits and Privileges">
+                        <h:panelGrid columns="1" cellpadding="10">
+
+                            <h:outputText value="Enjoy true benefits when purchasing from Visa cooperated merchants" />
+
+                        </h:panelGrid>
+                        <table border="1" class="tg">
+                            <tr>
+                                <th class="tg-yw4l"></th>
+                                <th class="tg-yw4l">Benefit</th>
+                                <th class="tg-yw4l">Redeem</th>
+                            </tr>
+                            <tr>
+                                <td class="tg-yw4l">Cash Back Card</td>
+                                <td class="tg-yw4l">● Petrol: 8% cash back at all petrol stations<br></br>● Grocery: 8% cash back at all grocery stores worldwide<br></br>● Dining: 8% cash back all,food and beverage outlets globally</td>
+                                <td class="tg-yw4l">● Once customers accumulate S$50 or more cash back in a month, it will be automatically credited to customers’ statement in multiples of S$10.</td>
+                            </tr>
+                        </table>
+                    </p:tab>
+                </p:tabView>
+
+            </div>
+
+
+            <div style="margin-top:200px;margin-left: 70px;position:absolute">
+                <h1>Credit Cards</h1>
+
+                <div style="background-image: url(../resources/img/credit_card_5_background.jpg);height:400px;width: 800px;background-repeat:no-repeat"> 
+                    <h1 style="margin-left:50px;margin-top: 50px;position: absolute"> Enjoy Visa with credit card</h1>
+
+                </div>
+
+            </div>
+            <!--            <nav class="floating-menu">
+                            <p:button style="margin-top: 30px;margin-left: 20px;width: 180px;height: 60px" value="Login now" onclick="location.href = 'www.google.com'">
+                            </p:button>
+                            <p:button style="margin-top: 20px;margin-left: 20px;width: 180px;height: 60px" value="Apply now" >
+                            </p:button>
+                            <p:button style="margin-top: 20px;margin-left: 20px;width: 180px;height: 60px" value="Contact us" >
+                            </p:button>
+            
+            
+                        </nav>  -->
+
+
+
+        </body>
+    </f:view>
+</html>
+

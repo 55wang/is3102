@@ -18,8 +18,8 @@ and open the template in the editor.
         </h:head>
 
         <h:body>
-            <em:customerHeader context="index_deposit" userName="Log in"></em:customerHeader>
-            <em:customerNavBar context="index_deposit" pageName="index_deposit" ></em:customerNavBar>
+            <em:customerHeader context="main" userName="Log in"></em:customerHeader>
+            <em:customerNavBar context="main" mainPage="mainDeposit"></em:customerNavBar>
 
             <div style="margin-top: 200px;margin-left: 70px;position:absolute">
                 <h:form>
@@ -39,7 +39,7 @@ and open the template in the editor.
                         </c:forEach>
                     </c:forEach>
                     <div style="margin-top: 30px">
-                        <button style="margin-left: 130px" type="button" onclick="window.location.href = '../index_deposit_subpages/apply_deposit_account.xhtml'">New Customer Apply</button>
+                        <button style="margin-left: 130px" type="button" onclick="window.location.href = 'apply_deposit_account.xhtml'">New Customer Apply</button>
                         <button style="margin-left: 50px" type="button" onclick="window.location.href = '../common/customer_login.xhtml'">Existing customer Login</button>
                     </div>
                 </h:form>
