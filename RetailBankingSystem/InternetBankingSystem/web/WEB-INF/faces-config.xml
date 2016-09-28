@@ -8,7 +8,7 @@
         <navigation-case>
             <from-action>#{customerLoginManagedBean.loginCustomer(customerLoginManagedBean.loginAccount.userID,customerLoginManagedBean.loginAccount.password)}</from-action>
             <from-outcome>SUCCESS</from-outcome>
-            <to-view-id>/customer_cms/customer_home.xhtml</to-view-id>
+            <to-view-id>/personal_home/customer_home.xhtml</to-view-id>
         </navigation-case>
         <navigation-case>
             <from-action>#{customerLoginManagedBean.loginCustomer(customerLoginManagedBean.loginAccount.userID,customerLoginManagedBean.loginAccount.password)}</from-action>

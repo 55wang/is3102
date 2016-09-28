@@ -58,13 +58,13 @@ public class CustomerCardManagedBean implements Serializable {
     public void viewTerminatePage(CreditCardAccount aCca) {
         System.out.println("in viewTerminatePage");
         cardAcctSessionBean.updateCardAccountStatus(cca, CardAccountStatus.CLOSED);
-        RedirectUtils.redirect("/InternetBankingSystem/customer_card/debit_card_summary.xhtml");
+        RedirectUtils.redirect("/InternetBankingSystem/personal_cards/debit_card_summary.xhtml");
     }
 
     public void viewTerminateDebitPage(DebitCardAccount dca) {
         System.out.println("in viewTerminatePage");
         cardAcctSessionBean.updateDebitAccountStatus(dca, CardAccountStatus.CLOSED);
-        RedirectUtils.redirect("/InternetBankingSystem/customer_card/debit_card_summary.xhtml");
+        RedirectUtils.redirect("/InternetBankingSystem/personal_cards/debit_card_summary.xhtml");
     }
     
     public void viewRedeemPage(CreditCardAccount cca) {
@@ -77,7 +77,7 @@ public class CustomerCardManagedBean implements Serializable {
 
     public void redirectToChangeTransactionLimitPage(CreditCardAccount aCca) {
         cca = aCca;
-        RedirectUtils.redirect("/InternetBankingSystem/customer_card/change_transaction_limit.xhtml");
+        RedirectUtils.redirect("/InternetBankingSystem/personal_cards/change_transaction_limit.xhtml");
     }
 
     public void updateTransactionLimit() {

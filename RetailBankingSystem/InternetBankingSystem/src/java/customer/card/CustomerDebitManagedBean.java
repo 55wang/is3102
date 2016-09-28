@@ -54,7 +54,7 @@ public class CustomerDebitManagedBean implements Serializable {
     public void viewTerminatePage(CreditCardAccount cca) {
         System.out.println("in viewTerminatePage");
         cardAcctSessionBean.updateCardAccountStatus(cca, CardAccountStatus.CLOSED);
-        RedirectUtils.redirect("/InternetBankingSystem/customer_card/application_success.xhtml");
+        RedirectUtils.redirect("/InternetBankingSystem/personal_cards/application_success.xhtml");
     }
 
     public CustomerDebitManagedBean() {

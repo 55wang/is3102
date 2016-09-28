@@ -24,7 +24,7 @@ and open the template in the editor.
                     <h:outputText value="Your account is successfully activated!"/>
                     <h:outputText value="Your User ID(used for Login) is:"/>
                     <h:outputText value="#{customerActivationManagedBean.mainAccount.userID}" style="font-size:32px; color: black" />
-                    <h:link outcome="/customer_cms/customer_reset_pwd" value="Reset your password now!"></h:link>
+                    <h:link outcome="/header_user/customer_reset_pwd" value="Reset your password now!"></h:link>
                 </h:panelGrid>    
                 <h:panelGrid columns="1" cellpadding="5" class="h-center" style="top:35%;text-align: center;" rendered="#{!customerActivationManagedBean.valid}">
                     <p>The account has been activated or freezed!</p> 

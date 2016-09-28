@@ -12,7 +12,7 @@ package utils;
 public class TokenAuthenticationUtils {
     public static void checkAuthentication(String targetPage){
         if(!SessionUtils.getTokenAuthentication()){
-            RedirectUtils.redirect("../customer_token/token_authentication.xhtml?target="+targetPage);
+            RedirectUtils.redirect("../token/token_authentication.xhtml?target="+targetPage);
         }
     }
 }

@@ -24,15 +24,15 @@
                         </li>
                     </ul> 
                 </c:if>
-                <c:if test="#{cc.attrs.context == 'customer_home'}">
+                <c:if test="#{cc.attrs.context == 'personal'}">
                     <ul>
                         <h:form>
                         <li>
                             <p:outputLabel id="header-nav-contact" value="Contact us"/>
                             <p:menu overlay="true" trigger="header-nav-contact" my="left top" at="left bottom">
                                 <p:submenu label="Navigations">
-                                    <p:menuitem value="Raise Case" url="../customer_cms/create_case.xhtml"/>
-                                    <p:menuitem value="View Case" url="../customer_cms/view_case.xhtml"/>
+                                    <p:menuitem value="Raise Case" url="../header_contactUs/create_case.xhtml"/>
+                                    <p:menuitem value="View Case" url="../header_contactUs/view_case.xhtml"/>
                                 </p:submenu>
                             </p:menu>
                         </li>
@@ -40,7 +40,7 @@
                             <p:outputLabel id="header-nav-message" value="Message"/>
                             <p:menu overlay="true" trigger="header-nav-message" my="left top" at="left bottom">
                                 <p:submenu label="Navigations">
-                                    <p:menuitem value="announcement" outcome="/customer_message/announcement"/>
+                                    <p:menuitem value="announcement" outcome="/header_message/announcement"/>
                                 </p:submenu>
                             </p:menu>
                         </li>
@@ -48,8 +48,8 @@
                             <p:outputLabel id="header-nav-profile" value="#{cc.attrs.userName}"/>
                             <p:menu overlay="true" trigger="header-nav-profile" my="left top" at="left bottom">
                                 <p:submenu label="Navigations">
-                                    <p:menuitem value="Profile" url="../customer_cms/view_profile.xhtml"/>
-                                    <p:menuitem value="Reset Password" url="../customer_cms/customer_reset_pwd.xhtml" />
+                                    <p:menuitem value="Profile" url="../header_user/view_profile.xhtml"/>
+                                    <p:menuitem value="Reset Password" url="../header_user/customer_reset_pwd.xhtml" />
                                     <p:menuitem value="Logout" onclick="PF('logout').show()" />
                                 </p:submenu>
                             </p:menu>
