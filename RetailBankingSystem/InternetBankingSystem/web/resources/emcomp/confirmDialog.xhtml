@@ -14,7 +14,7 @@
 
     <cc:implementation>
         <f:view>
-                <p:confirmDialog widgetVar="#{cc.attrs.clientName}" header="Confirmation" global="true" message="#{cc.attrs.message}">
+            <p:confirmDialog widgetVar="#{cc.attrs.clientName}" header="Confirmation" global="true" message="#{cc.attrs.message}" style="display: none">
     
                         <p:commandButton value="Yes" icon="ui-icon-check" action="#{cc.attrs.action}"/>
                         <p:commandButton value="No" icon="ui-icon-close" onclick="PF('#{cc.attrs.clientName}').hide()"/>

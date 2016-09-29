@@ -123,22 +123,12 @@ public class Authentication implements Filter {
                     || reqURI.contains("/javax.faces.resource/")
                     || reqURI.contains("/index.xhtml")
                     || reqURI.contains("/common/")
-                    || reqURI.contains("/index_subpages/")
-                    || reqURI.contains("/index_deposit_subpages/")
-                    || reqURI.contains("/index_card_subpages/")
-                    || reqURI.contains("/apply/")
-                    || reqURI.contains("/apply_deposit_account.xhtml")
-                    || reqURI.contains("/apply_card_account.xhtml")
+                    || reqURI.contains("/main_")
                     || (ses != null && ses.getAttribute("username") != null)) {
 //                System.out.println("Before token checker");
                         if(     
-                                (reqURI.contains("/customer_card/")
-                                    || reqURI.contains("*/customer_reset_pwd.xhtml")
-                                    || reqURI.contains("/customer_cms/")
-                                    || reqURI.contains("/customer_deposit/")
-                                    || reqURI.contains("/customer_message/")
-                                    || reqURI.contains("/request/")
-                                    || reqURI.contains("/apply/")
+                                (reqURI.contains("/personal_")
+                                    || reqURI.contains("/header_")
                                 ) && (
                                     !reqURI.contains("/customer_home.xhtml") &&
                                     ses.getAttribute("tokenAuthentication").equals(Boolean.FALSE)
@@ -146,8 +136,8 @@ public class Authentication implements Filter {
                                 )       
                            ){
                             System.out.println("need token authenticated");
-                            String targetPage = reqURI.replace("/InternetBankingSystem", "");
-                            resp.sendRedirect(reqt.getContextPath() + "/customer_token/token_authentication.xhtml?target="+targetPage);
+                            String targetPage = reqURI.replace("/InternetBankingSystem/", "");
+                            resp.sendRedirect(reqt.getContextPath() + "/token/token_authentication.xhtml?target="+targetPage);
                             }
                         else
                             chain.doFilter(request, response);

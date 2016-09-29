@@ -1,0 +1,100 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:em="http://xmlns.jcp.org/jsf/composite/emcomp"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    
+    <!--shift + ctrl + F, format-->
+    <f:view>
+        <h:head>
+            <title>Merlion Bank</title>
+            <em:cssImport></em:cssImport>
+        </h:head>
+        <h:body>
+            <em:customerHeader context="personal" userName="#{customerHomeManagedBean.customer.firstname }"></em:customerHeader>
+            <em:customerNavBar context="personal"></em:customerNavBar>
+                <div class="customer_main_container">
+                    <c:choose>
+                        <c:when test="#{customerCaseManagedBean.issuePage == false}">
+                            <c:if test="#{customerCaseManagedBean.issues.size() == 0}">
+                            <h:form id="mainForm">
+                                <p:panel header="Raise Case">
+                                    <p:messages id="messagesStatus" redisplay="false">
+                                        <h:panelGrid columns="2" cellpadding="5">
+                                            <h:outputLabel for="title" value="Case Title " />
+                                            <h:inputText id="title" value="#{customerCaseManagedBean.customerCase.title}" required="true"/>
+                                            
+                                            <p:commandButton value="Next" action="#{customerCaseManagedBean.goToIssuePage}" update="@form"/>
+                                        </h:panelGrid>
+                                    </p:messages>
+                                </p:panel>
+                            </h:form>
+                            </c:if>
+                            <c:if test="#{customerCaseManagedBean.issues.size() > 0}">
+                                <h:form id="mainForm">
+                                <p:panel header="Raise Case">
+                                    <p:messages id="messagesStatus" redisplay="false">
+                                        <h:panelGrid columns="2" cellpadding="5">
+                                            <h3>Case Title: #{customerCaseManagedBean.customerCase.title}</h3>
+                                        </h:panelGrid>
+                                        <p:repeat value="#{customerCaseManagedBean.issues}" var="issue" size="#{customerCaseManagedBean.issues.size()}" offset="0" step="1" varStatus="">
+                                            <p:panel id="toggleable" class="issue-toggleable" header="Issue: #{issue.title}" toggleable="true" closable="true" toggleSpeed="500" closeSpeed="500" widgetVar="panel#{issue.title}" style="margin-bottom:20px">
+                                                <p:ajax event="close" listener="#{customerCaseManagedBean.removeIssue(issue.toString())}"/>
+                                                
+                                                <h:panelGrid columns="2" cellpadding="10">
+                                                    <h:outputLabel for="field" value="Issue Field " />
+                                                    <h:outputText id="field" value="#{issue.field}"/>
+                                                    
+                                                    <h:outputLabel for="details" value="Details " />
+                                                    <h:outputText id="details" value="#{issue.details}"/>
+                                                                                                       
+                                                    <h:outputLabel for="attachment" value="Attachment " />
+                                                    <h:outputText  id="attachment" value="#{issue.attachmentFileName}"/>                                                    
+                                                </h:panelGrid>
+                                            </p:panel>
+                                        </p:repeat>
+                                        <p:commandButton value="Cancel" onclick="window.location.replace(window.location.href);"/>
+                                        <p:commandButton value="Add Another Issue" action="#{customerCaseManagedBean.goToIssuePage}" update="@form"/>
+                                        <p:commandButton value="Submit Case" action="#{customerCaseManagedBean.saveCase}" update="@form"/>
+                                    </p:messages>
+                                </p:panel>
+                            </h:form>
+                            </c:if>
+                        </c:when>
+                        <c:otherwise test="#{customerCaseManagedBean.issuePage == true}">
+                            <h:form id="mainForm" enctype="multipart/form-data">
+                                <p:panel header="Raise Case">
+                                    <h3>New Issue</h3>
+                                    <p:messages id="messagesStatus" redisplay="false">
+                                        <h:panelGrid columns="2" cellpadding="5">
+                                            <h:outputLabel for="title" value="Issue Title " />
+                                            <h:inputText id="title" value="#{customerCaseManagedBean.newIssue.title}" required="true"/>
+                                            
+                                            <h:outputLabel for="field" value="Issue Field " />
+                                            <p:selectOneMenu id="field" value="#{customerCaseManagedBean.newIssue.field}" required="true">
+                                                <f:selectItems value="#{customerCaseManagedBean.issueFieldList}"/>
+                                            </p:selectOneMenu>
+                                            
+                                            <h:outputLabel for="details" value="Issue Details " />
+                                            <h:inputTextarea id="details" value="#{customerCaseManagedBean.newIssue.details}" rows="6" cols="33" required="true" />
+                                            
+                                            <h:outputLabel for="upload" value="Attachments " />
+                                            <p:fileUpload id="upload" skinSimple="true" mode="advanced" fileUploadListener="#{customerCaseManagedBean.uploadPhoto}" allowTypes="/(\.|\/)(gif|jpe?g|png)$/"/>
+                                                
+                                            <p:commandButton value="Add Issue" action="#{customerCaseManagedBean.addIssue}" update="@form"/>
+                                        </h:panelGrid>
+                                    </p:messages>
+                                </p:panel>
+                            </h:form>
+                        </c:otherwise>
+                    </c:choose>
+            </div>
+        </h:body>
+    </f:view>
+
+
+</html>
+

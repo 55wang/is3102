@@ -65,7 +65,7 @@ public class ApplyDebitCardAccountManagedBean implements Serializable {
             System.out.println("inside the loop");
             cardAcctSessionBean.createDebitAccount(selectedAccount);
             MessageUtils.displayInfo("Your application is successful!");
-            RedirectUtils.redirect("/InternetBankingSystem/customer_card/debit_card_summary.xhtml");
+            RedirectUtils.redirect("/InternetBankingSystem/personal_cards/debit_card_summary.xhtml");
             
         }
         

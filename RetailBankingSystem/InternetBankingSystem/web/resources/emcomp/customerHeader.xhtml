@@ -14,14 +14,55 @@
     </cc:interface>
 
     <cc:implementation>
-        
-            <h:outputStylesheet library="css" name="theme.css"/>
+            <em:cssImport></em:cssImport>
             <div id="header">
                 <div id="logo-wrapper" class="header-navigation">
                     <h:graphicImage library="img" name="merlionLogo3.png" style="width:150px" />
                 </div>
                 
-                <em:headerMenu context="#{cc.attrs.context}" userName="#{cc.attrs.userName}"></em:headerMenu>
+                <div id="customer-header-nav">
+                    <c:if test="#{cc.attrs.context == 'main'}">
+                        <ul>
+                            <li>
+                                <a href="https://localhost:8181/InternetBankingSystem/common/customer_login.xhtml">Log in</a>
+                            </li>
+                        </ul> 
+                    </c:if>
+                    <c:if test="#{cc.attrs.context == 'personal'}">
+                        <ul>
+                            <h:form>
+                            <li>
+                                <p:outputLabel id="header-nav-contact" value="Contact us"/>
+                                <p:menu overlay="true" trigger="header-nav-contact" my="left top" at="left bottom" style="display:none">
+                                    <p:submenu label="Navigations" style="display:none">
+                                        <p:menuitem value="Raise Case" outcome="/header_contactUs/create_case"/>
+                                        <p:menuitem value="View Case" outcome="/header_contactUs/view_case"/>
+                                    </p:submenu>
+                                </p:menu>
+                            </li>
+                            <li>
+                                <p:outputLabel id="header-nav-message" value="Message"/>
+                                <p:menu overlay="true" trigger="header-nav-message" my="left top" at="left bottom" style="display:none">
+                                    <p:submenu label="Navigations" style="display:none">
+                                        <p:menuitem value="announcement" outcome="/header_message/announcement"/>
+                                    </p:submenu>
+                                </p:menu>
+                            </li>
+                            <li>    
+                                <p:outputLabel id="header-nav-profile" value="#{cc.attrs.userName}"/>
+                                <p:menu overlay="true" trigger="header-nav-profile" my="left top" at="left bottom" style="display:none">
+                                    <p:submenu label="Navigations" style="display:none">
+                                        <p:menuitem value="Profile" outcome="/header_user/view_profile"/>
+                                        <p:menuitem value="Reset Password" outcome="/header_user/customer_reset_pwd" />
+                                        <p:menuitem value="Logout" onclick="PF('logout').show()" />
+                                    </p:submenu>
+                                </p:menu>
+                                <em:confirmDialog clientName="logout" message="Do you want to log out?" action="#{customerLogoutManagedBean.logout}"></em:confirmDialog>
+                            </li>
+                            </h:form>
+                        </ul> 
+                    </c:if>
+                </div>
             </div>
         
     </cc:implementation>

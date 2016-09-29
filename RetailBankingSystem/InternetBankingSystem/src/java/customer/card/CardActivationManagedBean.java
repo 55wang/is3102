@@ -51,7 +51,7 @@ public class CardActivationManagedBean implements Serializable {
                 Thread.sleep(200);
             } catch (Exception e) {
             }
-            RedirectUtils.redirect("https://localhost:8181/InternetBankingSystem/customer_card/activation_success.xhtml");
+            RedirectUtils.redirect("https://localhost:8181/InternetBankingSystem/personal_cards/activation_success.xhtml");
 
         }
 
@@ -67,7 +67,7 @@ public class CardActivationManagedBean implements Serializable {
                 Thread.sleep(200);
             } catch (Exception e) {
             }
-            RedirectUtils.redirect("https://localhost:8181/InternetBankingSystem/customer_card/activation_success.xhtml");
+            RedirectUtils.redirect("https://localhost:8181/InternetBankingSystem/personal_cards/activation_success.xhtml");
 
         }
 

@@ -89,7 +89,7 @@ public class CustomerLoginManagedBean implements Serializable {
                 a.setFunctionName("CustomerLoginManagedBean loginCustomer()");
                 a.setMainAccount(ma);
                 utilsBean.persist(a);
-                RedirectUtils.redirect("../customer_cms/customer_home.xhtml");
+                RedirectUtils.redirect("../personal_home/customer_home.xhtml");
                 return "SUCCESS";
             }
         } catch (NullPointerException e) {
