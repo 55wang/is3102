@@ -65,11 +65,11 @@ public class CustomerApplicationManagedBean implements Serializable {
     @NotNull(message = "Deposit account may not be null")
     private String initialDepositAccount;
 
-    private List<String> IdentityTypeOptions = CommonUtils.getEnumList(EnumUtils.IdentityType.class);
-    private List<String> NationalityOptions = CommonUtils.getEnumList(EnumUtils.Nationality.class);
-    private List<String> GenderOptions = CommonUtils.getEnumList(EnumUtils.Gender.class);
-    private List<String> OccupationOptions = CommonUtils.getEnumList(EnumUtils.Occupation.class);
-    private List<String> IncomeOptions = CommonUtils.getEnumList(EnumUtils.Income.class);
+    private List<String> identityTypeOptions = CommonUtils.getEnumList(EnumUtils.IdentityType.class);
+    private List<String> nationalityOptions = CommonUtils.getEnumList(EnumUtils.Nationality.class);
+    private List<String> genderOptions = CommonUtils.getEnumList(EnumUtils.Gender.class);
+    private List<String> occupationOptions = CommonUtils.getEnumList(EnumUtils.Occupation.class);
+    private List<String> incomeOptions = CommonUtils.getEnumList(EnumUtils.Income.class);
     // TODO: For resend Email Button
     private Boolean emailSuccessFlag = true;
     @NotNull(message = "Identity type is required.")
@@ -266,77 +266,6 @@ public class CustomerApplicationManagedBean implements Serializable {
     public void setSelectedOccupation(String selectedOccupation) {
         this.selectedOccupation = selectedOccupation;
     }
-
-    /**
-     * @return the IdentityTypeOptions
-     */
-    public List<String> getIdentityTypeOptions() {
-        return IdentityTypeOptions;
-    }
-
-    /**
-     * @param IdentityTypeOptions the IdentityTypeOptions to set
-     */
-    public void setIdentityTypeOptions(List<String> IdentityTypeOptions) {
-        this.IdentityTypeOptions = IdentityTypeOptions;
-    }
-
-    /**
-     * @return the NationalityOptions
-     */
-    public List<String> getNationalityOptions() {
-        return NationalityOptions;
-    }
-
-    /**
-     * @param NationalityOptions the NationalityOptions to set
-     */
-    public void setNationalityOptions(List<String> NationalityOptions) {
-        this.NationalityOptions = NationalityOptions;
-    }
-
-    /**
-     * @return the GenderOptions
-     */
-    public List<String> getGenderOptions() {
-        return GenderOptions;
-    }
-
-    /**
-     * @param GenderOptions the GenderOptions to set
-     */
-    public void setGenderOptions(List<String> GenderOptions) {
-        this.GenderOptions = GenderOptions;
-    }
-
-    /**
-     * @return the OccupationOptions
-     */
-    public List<String> getOccupationOptions() {
-        return OccupationOptions;
-    }
-
-    /**
-     * @param OccupationOptions the OccupationOptions to set
-     */
-    public void setOccupationOptions(List<String> OccupationOptions) {
-        this.OccupationOptions = OccupationOptions;
-    }
-
-    /**
-     * @return the IncomeOptions
-     */
-    public List<String> getIncomeOptions() {
-        return IncomeOptions;
-    }
-
-    /**
-     * @param IncomeOptions the IncomeOptions to set
-     */
-    public void setIncomeOptions(List<String> IncomeOptions) {
-        this.IncomeOptions = IncomeOptions;
-    }
-
     /**
      * @return the currentDate
      */
@@ -349,6 +278,76 @@ public class CustomerApplicationManagedBean implements Serializable {
      */
     public void setCurrentDate(Date currentDate) {
         this.currentDate = currentDate;
+    }
+
+    /**
+     * @return the identityTypeOptions
+     */
+    public List<String> getIdentityTypeOptions() {
+        return identityTypeOptions;
+    }
+
+    /**
+     * @param identityTypeOptions the identityTypeOptions to set
+     */
+    public void setIdentityTypeOptions(List<String> identityTypeOptions) {
+        this.identityTypeOptions = identityTypeOptions;
+    }
+
+    /**
+     * @return the nationalityOptions
+     */
+    public List<String> getNationalityOptions() {
+        return nationalityOptions;
+    }
+
+    /**
+     * @param nationalityOptions the nationalityOptions to set
+     */
+    public void setNationalityOptions(List<String> nationalityOptions) {
+        this.nationalityOptions = nationalityOptions;
+    }
+
+    /**
+     * @return the genderOptions
+     */
+    public List<String> getGenderOptions() {
+        return genderOptions;
+    }
+
+    /**
+     * @param genderOptions the genderOptions to set
+     */
+    public void setGenderOptions(List<String> genderOptions) {
+        this.genderOptions = genderOptions;
+    }
+
+    /**
+     * @return the occupationOptions
+     */
+    public List<String> getOccupationOptions() {
+        return occupationOptions;
+    }
+
+    /**
+     * @param occupationOptions the occupationOptions to set
+     */
+    public void setOccupationOptions(List<String> occupationOptions) {
+        this.occupationOptions = occupationOptions;
+    }
+
+    /**
+     * @return the incomeOptions
+     */
+    public List<String> getIncomeOptions() {
+        return incomeOptions;
+    }
+
+    /**
+     * @param incomeOptions the incomeOptions to set
+     */
+    public void setIncomeOptions(List<String> incomeOptions) {
+        this.incomeOptions = incomeOptions;
     }
 
 }
