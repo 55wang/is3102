@@ -6,6 +6,7 @@
 package webservice.restful;
 
 import ejb.session.card.CardAcctSessionBeanLocal;
+import ejb.session.card.CardTransactionSessionBeanLocal;
 import ejb.session.token.TokenSecurityLocal;
 import entity.card.account.CardTransaction;
 import entity.card.account.CreditCardAccount;
@@ -37,6 +38,10 @@ public class CreditCardClearingService {
     private CardAcctSessionBeanLocal ccBean;
     @EJB
     private TokenSecurityLocal tokenBean;
+    @EJB
+    private CardTransactionSessionBeanLocal cardTransactionSessionBean;
+    @EJB
+    private CardAcctSessionBeanLocal cardAcctSessionBean;
     
     @POST
     @Produces(MediaType.APPLICATION_JSON)
@@ -76,7 +81,8 @@ public class CreditCardClearingService {
         ct.setIsCredit(true);
         ct.setTransactionCode(c.getTransactionCode());
         ct.setTransactionDescription(c.getDescription());
-        ct = ccBean.createCardAccountTransaction(c.getCreditCardNumber(), ct);
+        CreditCardAccount cca = cardAcctSessionBean.getCreditCardAccountByCardNumber(c.getCreditCardNumber());
+        ct = cardTransactionSessionBean.createCardAccountTransaction(cca, ct);
         return ct != null;
     } 
 }

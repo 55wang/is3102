@@ -5,11 +5,11 @@
  */
 package staff.card;
 
-import ejb.session.card.NewCardProductSessionBeanLocal;
+import ejb.session.card.CardProductSessionBeanLocal;
 import ejb.session.utils.UtilsSessionBeanLocal;
-import entity.card.account.CashBackCardProduct;
-import entity.card.account.MileCardProduct;
-import entity.card.account.RewardCardProduct;
+import entity.card.product.CashBackCardProduct;
+import entity.card.product.MileCardProduct;
+import entity.card.product.RewardCardProduct;
 import entity.common.AuditLog;
 import java.io.Serializable;
 import java.util.List;
@@ -29,7 +29,7 @@ import utils.SessionUtils;
 public class CardProductManagedBean implements Serializable {
 
     @EJB
-    private NewCardProductSessionBeanLocal newProductSessionBean;
+    private CardProductSessionBeanLocal cardProductSessionBean;
     @EJB
     private UtilsSessionBeanLocal utilsBean;
 
@@ -53,16 +53,16 @@ public class CardProductManagedBean implements Serializable {
         a.setStaffAccount(SessionUtils.getStaff());
         utilsBean.persist(a);
     }
-    public List<RewardCardProduct> showAllRewardProducts() {
-        return newProductSessionBean.showAllRewardProducts();
+    public List<RewardCardProduct> getListRewardProducts() {
+        return cardProductSessionBean.getListRewardProducts();
     }
 
-    public List<CashBackCardProduct> showAllCashBackCardProducts() {
-        return newProductSessionBean.showAllCashBackCardProducts();
+    public List<CashBackCardProduct> getListCashBackCardProducts() {
+        return cardProductSessionBean.getListCashBackCardProducts();
     }
 
-    public List<MileCardProduct> showAllMileProducts() {
-        return newProductSessionBean.showAllMileProducts();
+    public List<MileCardProduct> getListMileProducts() {
+        return cardProductSessionBean.getListMileProducts();
     }
 
     public void addNewMileCreditCard() {
@@ -73,7 +73,7 @@ public class CardProductManagedBean implements Serializable {
             mcp.setOverseaMileRate(mcp.getOverseaMileRate());
             mcp.setLocalMileRate(mcp.getLocalMileRate());
 
-            newProductSessionBean.createMileProduct(mcp);
+            cardProductSessionBean.createMileProduct(mcp);
 
             RedirectUtils.redirect("/StaffInternalSystem/card/staff-view-card.xhtml");
 
@@ -93,7 +93,7 @@ public class CardProductManagedBean implements Serializable {
             rcp.setLocalMileRate(rcp.getLocalMileRate());
             rcp.setLocalPointRate(rcp.getLocalPointRate());
 
-            newProductSessionBean.createRewardProduct(rcp);
+            cardProductSessionBean.createRewardProduct(rcp);
 
             RedirectUtils.redirect("/StaffInternalSystem/card/staff-view-card.xhtml");
         } catch (Exception ex) {
@@ -112,7 +112,7 @@ public class CardProductManagedBean implements Serializable {
             cbcp.setGroceryCashBackRate(cbcp.getGroceryCashBackRate());
             cbcp.setDiningCashBackRate(cbcp.getDiningCashBackRate());
 
-            newProductSessionBean.createCashBackProduct(cbcp);
+            cardProductSessionBean.createCashBackProduct(cbcp);
 
             RedirectUtils.redirect("/StaffInternalSystem/card/staff-view-card.xhtml");
         } catch (Exception ex) {

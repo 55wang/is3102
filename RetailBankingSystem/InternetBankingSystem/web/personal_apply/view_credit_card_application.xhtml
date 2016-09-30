@@ -32,11 +32,11 @@
                                         <p:column headerText="ID" sortBy="#{app.id}">
                                             <h:outputText value="#{app.id}"></h:outputText>
                                         </p:column>
-                                        <p:column headerText="Card Product" sortBy="#{app.creditCardProduct.productName}">
-                                            <h:outputText value="#{app.creditCardProduct.productName}"></h:outputText>
+                                        <p:column headerText="Card Product" sortBy="#{app.creditCardAccount.creditCardProduct.productName}">
+                                            <h:outputText value="#{app.creditCardAccount.creditCardProduct.productName}"></h:outputText>
                                         </p:column>
-                                        <p:column headerText="Credit Limit" sortBy="#{app.credit_limit}">
-                                            <h:outputText value="#{app.credit_limit}"></h:outputText>
+                                        <p:column headerText="Credit Limit" sortBy="#{app.creditCardAccount.creditLimit}">
+                                            <h:outputText value="#{app.creditCardAccount.creditLimit}"></h:outputText>
                                         </p:column>
                                         <p:column headerText="Status" sortBy="#{app.applicationStatus}">
                                             <h:outputText value="#{app.applicationStatus}"></h:outputText>

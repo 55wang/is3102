@@ -6,15 +6,14 @@
 package staff.card;
 
 import ejb.session.card.CardAcctSessionBeanLocal;
-import ejb.session.card.NewCardProductSessionBeanLocal;
+import ejb.session.card.CardProductSessionBeanLocal;
+import ejb.session.card.CreditCardOrderSessionBeanLocal;
 import ejb.session.common.EmailServiceSessionBeanLocal;
 import ejb.session.common.NewCustomerSessionBeanLocal;
 
 import ejb.session.utils.UtilsSessionBeanLocal;
-import entity.card.account.CreditCardAccount;
-import entity.card.account.CreditCardOrder;
+import entity.card.order.CreditCardOrder;
 import entity.common.AuditLog;
-import entity.customer.Customer;
 import entity.customer.MainAccount;
 import java.io.Serializable;
 import java.security.SecureRandom;
@@ -25,8 +24,8 @@ import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import server.utilities.EnumUtils;
+import server.utilities.CommonHelper;
 import utils.MessageUtils;
-import utils.RedirectUtils;
 import utils.SessionUtils;
 
 /**
@@ -38,7 +37,9 @@ import utils.SessionUtils;
 public class CardViewCreditApplicationManagedBean implements Serializable {
     
     @EJB
-    NewCardProductSessionBeanLocal newCardProductSessionBean;
+    CardProductSessionBeanLocal cardProductSessionBean;
+    @EJB
+    CreditCardOrderSessionBeanLocal creditCardOrderSessionBean;
     @EJB
     CardAcctSessionBeanLocal cardAcctSessionBean;
     @EJB
@@ -62,34 +63,23 @@ public class CardViewCreditApplicationManagedBean implements Serializable {
         a.setInput("Getting all credit card applications");
         a.setStaffAccount(SessionUtils.getStaff());
         utilsBean.persist(a);
-        ccos = cardAcctSessionBean.showAllCreditCardOrder();
+        ccos = creditCardOrderSessionBean.getListCreditCardOrdersByApplicationStatus(EnumUtils.ApplicationStatus.NEW);
     }
     
     public void approveOrder(CreditCardOrder cco) {
-        cardAcctSessionBean.updateCardOrderStatus(cco, EnumUtils.ApplicationStatus.APPROVED);
+        creditCardOrderSessionBean.updateCreditCardOrderStatus(cco, EnumUtils.ApplicationStatus.APPROVED);
         // Create Main Account 
         // Create Customer
         // 
-        System.out.println("Creating New Customer");
-        Customer customer = new Customer(cco);
-        System.out.println("Customer created from cco");
-        MainAccount mainAccount = new MainAccount();
+        MainAccount mainAccount = cco.getMainAccount();
         mainAccount.setStatus(EnumUtils.StatusType.PENDING);
-        mainAccount.setUserID(generateUserID(customer.getIdentityType(), customer.getIdentityNumber()));
-        String randomPwd = generatePwd();
+        String randomPwd = CommonHelper.generatePwd();
         mainAccount.setPassword(randomPwd);
-        customer.setMainAccount(mainAccount);
-        customer = newCustomerSessionBean.createCustomer(customer);
-        System.out.println("Customer Saved");
-        CreditCardAccount cca = new CreditCardAccount(cco, customer);
-        cca = cardAcctSessionBean.createCardAccount(cca);
-        System.out.println("ccNumber:" + cca.getCreditCardNum());
-        System.out.println("ccNumberHidden" + cca.getPartialHiddenAccountNumber());
         try {
             emailServiceSessionBean.sendCreditCardActivationGmailForCustomer(
-                    customer.getEmail(), 
+                    cco.getMainAccount().getCustomer().getEmail(), 
                     randomPwd, 
-                    cca.getCreditCardNum()
+                    cco.getCreditCardAccount().getCreditCardNum()
             );
             MessageUtils.displayInfo("Order Approved!");
         } catch (Exception ex) {
@@ -98,16 +88,16 @@ public class CardViewCreditApplicationManagedBean implements Serializable {
     }
     
     public void rejectOrder(CreditCardOrder cco) {
-        cardAcctSessionBean.updateCardOrderStatus(cco, EnumUtils.ApplicationStatus.REJECT);
+        creditCardOrderSessionBean.updateCreditCardOrderStatus(cco, EnumUtils.ApplicationStatus.REJECT);
         MessageUtils.displayInfo("Order Rejected!");
     }
     
     public void calculateCreditScore(CreditCardOrder cco) {
         try {
-            cco.setBureaCreditScore(bureauCreditScore);
+            cco.getMainAccount().getCustomer().setBureaCreditScore(bureauCreditScore);
             double creditScore = calculateCreditLvl(cco, bureauCreditScore);
-            cco.setCreditScore(creditScore);
-            cardAcctSessionBean.updateCreditCardOrder(cco);
+            cco.getMainAccount().getCustomer().setCreditScore(creditScore);
+            creditCardOrderSessionBean.updateCreditCardOrder(cco);
             MessageUtils.displayInfo("Credit Score Updated!");
         } catch (Exception ex) {
             System.out.println("error");
@@ -130,7 +120,7 @@ public class CardViewCreditApplicationManagedBean implements Serializable {
             System.out.println(cco.getApplicationStatus());
             double creditScore = 0;
             //check annual gross income
-            EnumUtils.Income income = cco.getIncome();
+            EnumUtils.Income income = cco.getMainAccount().getCustomer().getIncome();
             if (income.equals(EnumUtils.Income.BELOW_2000)) {
                 creditScore += 5;
             } else if (income.equals(EnumUtils.Income.FROM_2000_TO_4000)) {
@@ -145,8 +135,8 @@ public class CardViewCreditApplicationManagedBean implements Serializable {
                 creditScore += 80;
             }
 
-            //check annual gross income
-            Date birthday = cco.getBirthDay();
+            System.out.println("calculated income");
+            Date birthday = cco.getMainAccount().getCustomer().getBirthDay();
             Date now = new Date();
             Long age = getAge(birthday, now);
             if (age < 50) {
@@ -156,6 +146,7 @@ public class CardViewCreditApplicationManagedBean implements Serializable {
             } else if (age >= 60) {
                 creditScore += 0;
             }
+            System.out.println("calculated age");
 //
 //            EnumUtils.MaritalStatus martialStatus = cco.getMaritalStatus();
 //            if (martialStatus.equals(EnumUtils.MaritalStatus.DIVORCED)) {
@@ -167,17 +158,8 @@ public class CardViewCreditApplicationManagedBean implements Serializable {
 //            } else if (martialStatus.equals(EnumUtils.MaritalStatus.OTHERS)) {
 //                creditScore += 0;
 //            }
-
-            int dependents = cco.getNumOfDependents();
-            if (dependents < 3) {
-                creditScore += 25;
-            } else if (dependents >= 3 && dependents < 5) {
-                creditScore += 10;
-            } else if (dependents >= 6) {
-                creditScore += 0;
-            }
             
-            EnumUtils.Education education = cco.getEduLevel();
+            EnumUtils.Education education = cco.getMainAccount().getCustomer().getEducation();
             if (education.equals(EnumUtils.Education.POSTGRAD)) {
                 creditScore += 50;
             } else if (education.equals(EnumUtils.Education.UNIVERSITY)) {
@@ -193,6 +175,7 @@ public class CardViewCreditApplicationManagedBean implements Serializable {
             } else if (education.equals(EnumUtils.Education.OTHERS)) {
                 creditScore += 0;
             }
+            System.out.println("calculated education");
 //        AA, BB, CC, DD, EE, FF, GG, HH, HX, HZ, GX, BX, CX
             if (creditBureauScore.equals("AA")) {
                 creditScore += 100;
@@ -213,6 +196,7 @@ public class CardViewCreditApplicationManagedBean implements Serializable {
             } else {
                 creditScore += 0;
             }
+            System.out.println("calculated bureau credit score");
             return creditScore;
         } catch (Exception ex) {
             System.out.println("error in credit score");
@@ -229,29 +213,6 @@ public class CardViewCreditApplicationManagedBean implements Serializable {
         
         delta = delta / 365;
         return delta;
-    }
-    
-    public String generateUserID(EnumUtils.IdentityType identityType, String identityNum) {
-
-        if (identityType.equals(EnumUtils.IdentityType.NRIC)) {
-            return "c" + identityNum.substring(1, identityNum.length() - 1);
-        } else if (identityType.equals(EnumUtils.IdentityType.PASSPORT)) {
-            return "c" + identityNum.substring(1);
-        } else {
-            return "error";
-        }
-    }
-
-    private String generatePwd() {
-        int pwdLen = 10;
-        SecureRandom rnd = new SecureRandom();
-
-        String AB = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-        StringBuilder sb = new StringBuilder(pwdLen);
-        for (int i = 0; i < pwdLen; i++) {
-            sb.append(AB.charAt(rnd.nextInt(AB.length())));
-        }
-        return sb.toString();
     }
     
     public List<CreditCardOrder> getCcos() {

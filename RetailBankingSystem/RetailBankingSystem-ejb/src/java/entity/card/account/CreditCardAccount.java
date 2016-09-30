@@ -5,7 +5,9 @@
  */
 package entity.card.account;
 
-import entity.customer.Customer;
+import entity.card.order.CreditCardOrder;
+import entity.card.product.PromoCode;
+import entity.card.product.CreditCardProduct;
 import entity.customer.MainAccount;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -22,6 +24,7 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import server.utilities.EnumUtils.*;
@@ -36,13 +39,9 @@ import server.utilities.EnumUtils.*;
 // LY: What if Bank needs to create a new credit card type with attractive offers?
 public class CreditCardAccount implements Serializable {
 
-    public CreditCardAccount() {}
-    public CreditCardAccount(CreditCardOrder cco, Customer c) {
-        this.creditCardProduct = cco.getCreditCardProduct();
-        this.mainAccount = c.getMainAccount();
-        this.CardStatus = CardAccountStatus.PENDING;
+    public CreditCardAccount() {
     }
-    
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -51,13 +50,14 @@ public class CreditCardAccount implements Serializable {
     private MainAccount mainAccount;
     @ManyToOne(cascade = {CascadeType.MERGE})
     private CreditCardProduct creditCardProduct;
-    @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "creditCardAccount")
+    @OneToMany(cascade = {CascadeType.MERGE}, mappedBy = "creditCardAccount")
     private List<PromoCode> promoCode = new ArrayList<>();
-    @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "creditCardAccount")
+    @OneToMany(cascade = {CascadeType.MERGE}, mappedBy = "creditCardAccount")
     private List<CardTransaction> cardTransactions = new ArrayList<>();
+    @OneToOne(cascade = {CascadeType.MERGE})
+    private CreditCardOrder creditCardOrder;
 
-    private CardNetwork cardNetwork;
-    private CardAccountStatus CardStatus;
+    private CardAccountStatus CardStatus = CardAccountStatus.NEW;
     @Column(unique = true)
     private String creditCardNum;
     private Integer cvv; // LY: Use Integer instead of int
@@ -66,38 +66,39 @@ public class CreditCardAccount implements Serializable {
     private Date validDate;
     private double transactionMonthlyLimit = 1000.0;
     private double transactionDailyLimit = 500.0;
+    private double creditLimit = 1000;
     @Temporal(value = TemporalType.TIMESTAMP)
     private Date creationDate = new Date();
-    private double minPayDue;
-    private double annualInterestRate; //24% annual interest rate
+    private double minPayDue = 0;
+    private double annualInterestRate = 0.24; //24% annual interest rate
     private double outstandingAmount = 0.0;
-    private double cashBackAmount;
-    private double merlionMiles;
-    private double merlionPoints;
+    private double cashBackAmount = 0;
+    private double merlionMiles = 0;
+    private double merlionPoints = 0;
     //for bad credit record
-    private int numOfLatePayment; //count of total late payment
-    private int numOf_30_59_LatePayment; //count of 30-59 days overdue
-    private int numOf_60_89_LatePayment; //count of 60-89 days overdue
-    private int numOf_90_LatePayment; //count of >= 90 days overdue
+    private int numOfLatePayment = 0; //count of total late payment
+    private int numOf_30_59_LatePayment = 0; //count of 30-59 days overdue
+    private int numOf_60_89_LatePayment = 0; //count of 60-89 days overdue
+    private int numOf_90_LatePayment = 0; //count of >= 90 days overdue
 
     @Temporal(value = TemporalType.DATE)
     private Date overDueDuration;
-    
+
     public String getPartialHiddenAccountNumber() {
         return this.creditCardNum.substring(
-                this.creditCardNum.length() - 4, 
+                this.creditCardNum.length() - 4,
                 this.creditCardNum.length()
         );
     }
-    
+
     public void deductPoints(double amount) {
         this.merlionPoints -= amount;
     }
-    
+
     public void addPromoCode(PromoCode pc) {
         this.promoCode.add(pc);
     }
-    
+
     public void addOutstandingAmount(double amount) {
         this.outstandingAmount += amount;
     }
@@ -139,22 +140,18 @@ public class CreditCardAccount implements Serializable {
         }
         return true;
     }
-    
-    
 
     @Override
     public String toString() {
-        return "CreditCardAccount{" + "id=" + id + ", mainAccount=" + mainAccount + ", creditCardProduct=" + creditCardProduct + ", promoCode=" + promoCode + ", cardTransactions=" + cardTransactions + ", cardNetwork=" + cardNetwork + ", CardStatus=" + CardStatus + ", creditCardNum=" + creditCardNum + ", cvv=" + cvv + ", nameOnCard=" + nameOnCard + ", validDate=" + validDate + ", transactionMonthlyLimit=" + transactionMonthlyLimit + ", transactionDailyLimit=" + transactionDailyLimit + ", creationDate=" + creationDate + ", minPayDue=" + minPayDue + ", annualInterestRate=" + annualInterestRate + ", outstandingAmount=" + outstandingAmount + ", cashBackAmount=" + cashBackAmount + ", merlionMiles=" + merlionMiles + ", merlionPoints=" + merlionPoints + ", numOfLatePayment=" + numOfLatePayment + ", numOf_30_59_LatePayment=" + numOf_30_59_LatePayment + ", numOf_60_89_LatePayment=" + numOf_60_89_LatePayment + ", numOf_90_LatePayment=" + numOf_90_LatePayment + ", overDueDuration=" + overDueDuration + '}';
+        return "CreditCardAccount{" + "id=" + id + ", mainAccount=" + mainAccount + ", CardStatus=" + CardStatus + ", creditCardNum=" + creditCardNum + ", cvv=" + cvv + ", nameOnCard=" + nameOnCard + ", validDate=" + validDate + ", transactionMonthlyLimit=" + transactionMonthlyLimit + ", transactionDailyLimit=" + transactionDailyLimit + ", creationDate=" + creationDate + ", minPayDue=" + minPayDue + ", annualInterestRate=" + annualInterestRate + ", outstandingAmount=" + outstandingAmount + ", cashBackAmount=" + cashBackAmount + ", merlionMiles=" + merlionMiles + ", merlionPoints=" + merlionPoints + ", numOfLatePayment=" + numOfLatePayment + ", numOf_30_59_LatePayment=" + numOf_30_59_LatePayment + ", numOf_60_89_LatePayment=" + numOf_60_89_LatePayment + ", numOf_90_LatePayment=" + numOf_90_LatePayment + ", overDueDuration=" + overDueDuration + '}';
     }
-    
-    
 
     public int getCvv() {
         return cvv;
     }
 
     public void setCvv(int cvv) {
-        this.cvv = cvv;
+        this.setCvv((Integer) cvv);
     }
 
     public String getNameOnCard() {
@@ -325,20 +322,32 @@ public class CreditCardAccount implements Serializable {
         this.creditCardNum = creditCardNum;
     }
 
-    public CardNetwork getCardNetwork() {
-        return cardNetwork;
-    }
-
-    public void setCardNetwork(CardNetwork cardNetwork) {
-        this.cardNetwork = cardNetwork;
-    }
-
     public List<CardTransaction> getCardTransactions() {
         return cardTransactions;
     }
 
     public void setCardTransactions(List<CardTransaction> cardTransactions) {
         this.cardTransactions = cardTransactions;
+    }
+
+    public CreditCardOrder getCreditCardOrder() {
+        return creditCardOrder;
+    }
+
+    public void setCreditCardOrder(CreditCardOrder creditCardOrder) {
+        this.creditCardOrder = creditCardOrder;
+    }
+
+    public void setCvv(Integer cvv) {
+        this.cvv = cvv;
+    }
+
+    public double getCreditLimit() {
+        return creditLimit;
+    }
+
+    public void setCreditLimit(double creditLimit) {
+        this.creditLimit = creditLimit;
     }
 
 }

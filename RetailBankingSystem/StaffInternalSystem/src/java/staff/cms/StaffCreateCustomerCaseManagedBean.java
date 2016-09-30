@@ -6,6 +6,7 @@
 package staff.cms;
 
 import ejb.session.card.CardAcctSessionBeanLocal;
+import ejb.session.card.CardTransactionSessionBeanLocal;
 import ejb.session.cms.CustomerCaseSessionBeanLocal;
 import ejb.session.utils.UtilsSessionBeanLocal;
 import entity.card.account.CardTransaction;
@@ -15,7 +16,6 @@ import entity.customer.Issue;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -41,11 +41,13 @@ public class StaffCreateCustomerCaseManagedBean implements Serializable{
     private CardAcctSessionBeanLocal cardAcctSessionBean;
     @EJB
     private UtilsSessionBeanLocal utilsBean;
+    @EJB
+    private CardTransactionSessionBeanLocal cardTransactionSessionBean;
     
     private String issueField = "CHARGEBACK";
     private String selectChargeBack = "CHARGEBACK";
     private CustomerCase newCase = new CustomerCase();
-    private List<Issue> issues = new ArrayList<Issue> ();
+    private List<Issue> issues = new ArrayList<> ();
     private Issue newIssue = new Issue();
     private String chargebackTransactionID;
     
@@ -114,7 +116,7 @@ public class StaffCreateCustomerCaseManagedBean implements Serializable{
             newCase.setIsChargeBackCase(Boolean.TRUE);
             if(newCase.getIsChargeBackCase()) newCase.setCardOperatorResponse(EnumUtils.cardOperatorChargebackStatus.PENDING);
             System.out.println("chargebackTransactionID: " + chargebackTransactionID);
-            CardTransaction ct = cardAcctSessionBean.getSpecificCaedTransactionFromId(Long.parseLong(chargebackTransactionID));
+            CardTransaction ct = cardTransactionSessionBean.getCardTransactionByCcaId(Long.parseLong(chargebackTransactionID));
             if(ct == null || ct.getCardTransactionStatus().equals(CardTransactionStatus.CANCELLED))
                 MessageUtils.displayError("Transaction not found");
             else{

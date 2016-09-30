@@ -105,10 +105,11 @@ public class EnumUtils {
     }
 
     // LY: Can this conbimed with Status?
+    //for card account only
     public enum CardAccountStatus {
 
+        NEW("NEW"),
         PENDING("PENDING"),
-        ISSUED("ISSUED"),
         ACTIVE("ACTIVE"),
         FREEZE("FREEZE"),
         CLOSED("CLOSED");
@@ -138,8 +139,10 @@ public class EnumUtils {
         }
     }
 
+    //main account
     public enum StatusType {
 
+        NEW("NEW"),
         ACTIVE("ACTIVE"),
         PENDING("PENDING"),
         FREEZE("FREEZE"),
@@ -170,13 +173,14 @@ public class EnumUtils {
         }
     }
 
+    //for card application
     public enum ApplicationStatus {
 
         NEW("NEW"),
         PENDING("PENDING"),
-        EDITABLE("EDITABLE"),
-        REJECT("REJECT"),
         APPROVED("APPROVED"),
+        REJECT("REJECT"),
+        EDITABLE("EDITABLE"),
         CANCELLED("CANCELLED");
 
         private String value;
@@ -203,8 +207,9 @@ public class EnumUtils {
             throw new IllegalArgumentException();
         }
     }
-    
+
     public enum PromoType {
+
         DISCOUNT("DISCOUNT"),
         VOUCHER("VOUCHER");
 
@@ -271,7 +276,6 @@ public class EnumUtils {
 //            throw new IllegalArgumentException();
 //        }
 //    }
-
     public enum Industry {
 
         BUILDING_CONSTRUCTION("BUILDING_CONSTRUCTION"),
@@ -1004,7 +1008,7 @@ public class EnumUtils {
             throw new IllegalArgumentException();
         }
     }
-    
+
     public enum ChequeStatus {
 
         UNTOUCHED("UNTOUCHED"),
@@ -1134,7 +1138,7 @@ public class EnumUtils {
             throw new IllegalArgumentException();
         }
     }
-    
+
     public enum cardOperatorChargebackStatus {
 
         PENDING("PENDING"),

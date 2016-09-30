@@ -3,8 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package entity.card.account;
+package entity.card.product;
 
+import entity.card.account.CreditCardAccount;
+import entity.card.order.CreditCardOrder;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,8 +41,6 @@ public abstract class CreditCardProduct implements Serializable {
 
     @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "creditCardProduct")
     private List<CreditCardAccount> creditCardAcounts = new ArrayList<>();
-    @OneToMany(cascade = {CascadeType.ALL}, mappedBy = "creditCardProduct")
-    private List<CreditCardOrder> creditCardOrders = new ArrayList<>();
 
     /**
      * @return the id

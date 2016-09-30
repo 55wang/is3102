@@ -24,8 +24,6 @@ public class NewCustomerSessionBean implements NewCustomerSessionBeanLocal {
     public Customer createCustomer(Customer customer) {
         em.persist(customer);
         return customer;
-        //temporary comment the sms away to save credit
-        //SendTextMessage.sendText("6581567758", "testing2");
     }
     @Override
     public Customer updateCustomer(Customer customer) {

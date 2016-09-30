@@ -5,9 +5,8 @@
  */
 package ejb.session.card;
 
-import entity.card.account.CreditCardOrder;
-import entity.customer.MainAccount;
-import java.util.ArrayList;
+import entity.card.account.CreditCardAccount;
+import entity.card.order.CreditCardOrder;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -23,103 +22,106 @@ import server.utilities.EnumUtils.ApplicationStatus;
  */
 @Stateless
 public class CreditCardOrderSessionBean implements CreditCardOrderSessionBeanLocal {
+
     @PersistenceContext(unitName = "RetailBankingSystem-ejbPU")
     private EntityManager em;
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")
+
+    //get all creditcardorders that is not cancelled.
     @Override
-    public List<CreditCardOrder> getAllCreditCardOrders (){
-        Query q = em.createQuery("SELECT a FROM CreditCardOrder a WHERE a.applicationStatus != :cancelStatus");
-        
+    public List<CreditCardOrder> getListCreditCardOrders() {
+        Query q = em.createQuery("SELECT cco FROM CreditCardOrder cco");
+        return q.getResultList();
+    }
+
+    @Override
+    public List<CreditCardOrder> getListCreditCardOrdersByNotCancelStatus() {
+        Query q = em.createQuery("SELECT cco FROM CreditCardOrder cco WHERE cco.applicationStatus != :cancelStatus");
+
         q.setParameter("cancelStatus", ApplicationStatus.CANCELLED);
-        
-        try {   
+
+        try {
             return q.getResultList();
         } catch (NoResultException ex) {
-            System.out.println("CreditCardOrderSessionBean.getAllCreditCardOrders: "+ex.toString());
+            System.out.println("CreditCardOrderSessionBean.getAllCreditCardOrders: " + ex.toString());
             return null;
         }
     }
-    
+
+    //get 
     @Override
-    public List<CreditCardOrder> getMainAccountAllCreditCardOrders (MainAccount mainAccount){
-        Query q = em.createQuery("SELECT a FROM CreditCardOrder a WHERE a.applicationStatus != :cancelStatus "
-                + "AND a.mainAccount.id = :id");
-        
+    public List<CreditCardOrder> getListCreditCardOrdersByMainIdAndNotCancelStatus(Long mainAccountId) {
+        Query q = em.createQuery("SELECT cco FROM CreditCardOrder cco WHERE cco.applicationStatus != :cancelStatus "
+                + "AND cco.mainAccount.id = :id");
+
         q.setParameter("cancelStatus", ApplicationStatus.CANCELLED);
-        q.setParameter("id", mainAccount.getId());
-        
-        try {   
+        q.setParameter("id", mainAccountId);
+
+        try {
             return q.getResultList();
         } catch (NoResultException ex) {
-            System.out.println("CreditCardOrderSessionBean.getMainAccountAllCreditCardOrders: "+ex.toString());
+            System.out.println("CreditCardOrderSessionBean.getMainAccountAllCreditCardOrders: " + ex.toString());
             return null;
         }
     }
-    
+
     @Override
-    public CreditCardOrder searchCreditCardOrderByID(String id){
+    public CreditCardOrder getCreditCardOrderById(Long ccoId) {
         Query q = em.createQuery("SELECT a FROM CreditCardOrder a WHERE "
-                                  + "a.id = :ID AND " 
-                                  + "a.applicationStatus != :cancelStatus");
-        
-        try{
-            q.setParameter("ID", Long.parseLong(id));
-        }catch (Exception ex) {
-            System.out.println("CreditCardOrderSessionBean.searchCreditCardOrderByID: "+ex.toString());
-            return null;
-        }
+                + "a.id = :id AND "
+                + "a.applicationStatus != :cancelStatus");
+
+        q.setParameter("id", ccoId);
         q.setParameter("cancelStatus", ApplicationStatus.CANCELLED);
-        
-        CreditCardOrder cco = null;
-          
-        try {
-            cco = (CreditCardOrder) q.getSingleResult();       
-            return cco;
-        } catch (NoResultException ex) {
-            System.out.println("CreditCardOrderSessionBean.searchCreditCardOrderByID: "+ex.toString());
-            return null;
-        }
+
+        return (CreditCardOrder) q.getSingleResult();
     }
-    
+
     @Override
-    public CreditCardOrder searchMainAccountCreditCardOrderByID(MainAccount ma, String id){
-        Query q = em.createQuery("SELECT a FROM CreditCardOrder a WHERE "
-                                  + "a.id = :ID AND " 
-                                  + "a.applicationStatus != :cancelStatus "
-                                  + "AND a.mainAccount.id = :mainAccountId");
-        
-        try{
-            q.setParameter("ID", Long.parseLong(id));
-            q.setParameter("mainAccountId", ma.getId());
-        }catch (Exception ex) {
-            System.out.println("CreditCardOrderSessionBean.searchMainAccountCreditCardOrderByID: "+ex.toString());
-            return null;
-        }
+    public CreditCardOrder getCreditCardOrderByIdMainId(Long ccoId, Long mainId) {
+        Query q = em.createQuery("SELECT cco FROM CreditCardOrder cco WHERE "
+                + "cco.id = :ccoId AND cco.mainAccount.id = :mainId"
+                + " AND cco.applicationStatus != :cancelStatus");
+
+        q.setParameter("ccoId", ccoId);
+        q.setParameter("mainId", mainId);
         q.setParameter("cancelStatus", ApplicationStatus.CANCELLED);
-        
-        CreditCardOrder cco = null;
-          
-        try {
-            cco = (CreditCardOrder) q.getSingleResult();       
-            return cco;
-        } catch (NoResultException ex) {
-            System.out.println("CreditCardOrderSessionBean.searchMainAccountCreditCardOrderByID: "+ex.toString());
-            return null;
-        }
-  
+
+        return (CreditCardOrder) q.getSingleResult();
     }
-    
+
     @Override
-    public Boolean cancelCreditCardOrder(CreditCardOrder cco){
-        try{
-            cco.setApplicationStatus(ApplicationStatus.CANCELLED);
-            em.merge(cco);
-            em.flush();
-            return true;
-        }catch(Exception ex){
-            System.out.println("CreditCardOrderSessionBean.cancelCreditCardOrder: "+ex.toString());
-            return false;
-        }
+    public CreditCardOrder updateCreditCardOrderStatus(CreditCardOrder cco, ApplicationStatus status) {
+        cco.setApplicationStatus(status);
+        em.merge(cco);
+        return cco;
+    }
+
+    @Override
+    public List<CreditCardAccount> getListCreditCardOrdersByPendingStatus() {
+        Query q = em.createQuery("SELECT cca FROM CreditCardAccount cca WHERE cca.CardStatus = :status");
+        q.setParameter("status", EnumUtils.CardAccountStatus.PENDING);
+        return q.getResultList();
+    }
+
+    @Override
+    public List<CreditCardOrder> getListCreditCardOrdersByApplicationStatus(EnumUtils.ApplicationStatus applicationStatus) {
+        Query q = em.createQuery("SELECT cco FROM CreditCardOrder cco WHERE cco.applicationStatus = :applicationStatus");
+        q.setParameter("applicationStatus", applicationStatus);
+        return q.getResultList();
+    }
+
+    //try not to use void, always return something or null. and catch it at the caller side.
+    @Override
+    public CreditCardOrder createCardOrder(CreditCardOrder order) {
+        em.persist(order);
+        return order;
+    }
+
+    @Override
+    public CreditCardOrder updateCreditCardOrder(CreditCardOrder cco) {
+        em.merge(cco);
+        return cco;
     }
 }

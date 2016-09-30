@@ -7,7 +7,7 @@ package staff.card;
  */
 
 import ejb.session.utils.UtilsSessionBeanLocal;
-import entity.card.account.PromoProduct;
+import entity.card.product.PromoProduct;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;

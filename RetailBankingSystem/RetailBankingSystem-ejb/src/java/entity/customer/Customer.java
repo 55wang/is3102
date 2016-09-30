@@ -5,99 +5,75 @@
  */
 package entity.customer;
 
-import entity.card.account.CreditCardOrder;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Temporal;
 import javax.persistence.OneToOne;
-import server.utilities.EnumUtils.Citizenship;
 import server.utilities.EnumUtils.Education;
+import server.utilities.EnumUtils.EmploymentStatus;
 import server.utilities.EnumUtils.Gender;
 import server.utilities.EnumUtils.IdentityType;
 import server.utilities.EnumUtils.Income;
+import server.utilities.EnumUtils.Industry;
 import server.utilities.EnumUtils.MaritalStatus;
 import server.utilities.EnumUtils.Nationality;
-import server.utilities.EnumUtils.Occupation;
+import server.utilities.EnumUtils.ResidentialStatus;
+import server.utilities.EnumUtils.ResidentialType;
 
-/**
- *
- * @author VIN-S
- */
 @Entity
 public class Customer implements Serializable {
 
-    public Customer () {
-        
+    public Customer() {
     }
-    
-    public Customer (CreditCardOrder cco) {
-        this.income = cco.getIncome();
-        this.firstname = cco.getFirstName();
-        this.lastname = cco.getLastName();
-        this.email = cco.getEmail();
-        this.maritalStatus = cco.getMaritalStatus();
-        this.address = cco.getAddress();
-        this.education = cco.getEduLevel();
-        this.identityNumber = cco.getIdentityNumber();
-        this.identityType = cco.getIdentityType();
-        this.phone = cco.getPhone();
-        this.birthDay = cco.getBirthDay();
-        this.gender = cco.getGender();
-        this.postalCode = cco.getPostalCode();
-        this.occupation = cco.getOccupation();
-        this.nationality = cco.getNationality();
-        // copy all from cco
-    }
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    //personal info
     private IdentityType identityType;
 
+    @Column(unique = true)
     private String identityNumber;
-
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date birthDay;
-
     private String firstname;
-
     private String lastname;
-
-    private String address;
-
-    private String postalCode;
-    // TODO: Need to make this a unique attributes
-    private String email;
-
     private String phone;
-
-    private Occupation occupation;
-
-    private Income income;
-
     private Nationality nationality;
+    private MaritalStatus maritalStatus;
+    private String address;
+    private String postalCode;
+    @Column(unique = true)
+    private String email;
+    private Industry industry;
+
+    private ResidentialStatus residentialStatus;
+
+    private ResidentialType residentialType;
+
+    private EmploymentStatus employmentStatus;
+    private Income income;
 
     private Gender gender;
 
-    private double creditScore; //0-1000
-
-    private MaritalStatus maritalStatus;
-
-    private Citizenship citizenship;
+    private double creditScore;
+    private String BureaCreditScore;
 
     private Education education;
 
-    @OneToOne(cascade = {CascadeType.PERSIST})
+    @OneToOne(cascade = {CascadeType.MERGE})
     private MainAccount mainAccount;
-    
+
     public String getFullName() {
-        return this.getFirstname()+ " " + this.getLastname();
+        return this.getFirstname() + " " + this.getLastname();
     }
 
     public Long getId() {
@@ -115,8 +91,6 @@ public class Customer implements Serializable {
     public void setIdentityNumber(String identityNumber) {
         this.identityNumber = identityNumber;
     }
-
-
 
     public String getFirstname() {
         return firstname;
@@ -166,8 +140,6 @@ public class Customer implements Serializable {
         this.phone = phone;
     }
 
-
-
     @Override
     public int hashCode() {
         int hash = 0;
@@ -209,24 +181,6 @@ public class Customer implements Serializable {
         this.creditScore = creditScore;
     }
 
-
-
-
-    /**
-     * @return the identityType
-     */
-    public IdentityType getIdentityType() {
-        return identityType;
-    }
-
-    /**
-     * @param identityType the identityType to set
-     */
-    public void setIdentityType(IdentityType identityType) {
-        this.identityType = identityType;
-    }
-
-
     /**
      * @return the maritalStatus
      */
@@ -239,20 +193,6 @@ public class Customer implements Serializable {
      */
     public void setMaritalStatus(MaritalStatus maritalStatus) {
         this.maritalStatus = maritalStatus;
-    }
-
-    /**
-     * @return the citizenship
-     */
-    public Citizenship getCitizenship() {
-        return citizenship;
-    }
-
-    /**
-     * @param citizenship the citizenship to set
-     */
-    public void setCitizenship(Citizenship citizenship) {
-        this.citizenship = citizenship;
     }
 
     /**
@@ -298,20 +238,6 @@ public class Customer implements Serializable {
     }
 
     /**
-     * @return the occupation
-     */
-    public Occupation getOccupation() {
-        return occupation;
-    }
-
-    /**
-     * @param occupation the occupation to set
-     */
-    public void setOccupation(Occupation occupation) {
-        this.occupation = occupation;
-    }
-
-    /**
      * @return the income
      */
     public Income getIncome() {
@@ -339,5 +265,52 @@ public class Customer implements Serializable {
         this.birthDay = birthDay;
     }
 
+    public Industry getIndustry() {
+        return industry;
+    }
+
+    public void setIndustry(Industry industry) {
+        this.industry = industry;
+    }
+
+    public ResidentialStatus getResidentialStatus() {
+        return residentialStatus;
+    }
+
+    public void setResidentialStatus(ResidentialStatus residentialStatus) {
+        this.residentialStatus = residentialStatus;
+    }
+
+    public ResidentialType getResidentialType() {
+        return residentialType;
+    }
+
+    public void setResidentialType(ResidentialType residentialType) {
+        this.residentialType = residentialType;
+    }
+
+    public EmploymentStatus getEmploymentStatus() {
+        return employmentStatus;
+    }
+
+    public void setEmploymentStatus(EmploymentStatus employmentStatus) {
+        this.employmentStatus = employmentStatus;
+    }
+
+    public String getBureaCreditScore() {
+        return BureaCreditScore;
+    }
+
+    public void setBureaCreditScore(String BureaCreditScore) {
+        this.BureaCreditScore = BureaCreditScore;
+    }
+
+    public IdentityType getIdentityType() {
+        return identityType;
+    }
+
+    public void setIdentityType(IdentityType identityType) {
+        this.identityType = identityType;
+    }
 
 }

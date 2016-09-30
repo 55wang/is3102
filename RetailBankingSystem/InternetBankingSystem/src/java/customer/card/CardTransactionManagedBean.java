@@ -6,6 +6,8 @@
 package customer.card;
 
 import ejb.session.card.CardAcctSessionBeanLocal;
+import ejb.session.card.CardTransactionSessionBean;
+import ejb.session.card.CardTransactionSessionBeanLocal;
 import ejb.session.cms.CustomerProfileSessionBeanLocal;
 import entity.card.account.CardTransaction;
 import entity.card.account.CreditCardAccount;
@@ -37,10 +39,12 @@ public class CardTransactionManagedBean implements Serializable {
     private CardAcctSessionBeanLocal cardAcctSessionBean;
     @EJB
     private CustomerProfileSessionBeanLocal customerProfileSessionBean;
-
+    @EJB
+    private CardTransactionSessionBeanLocal cardTransactionSessionBean;
+    
     public void viewCCTransactionDetail() {
         System.out.println("ccaId: " +ccaId);
-        this.cardTransactions = cardAcctSessionBean.getCardTransactionFromId(Long.parseLong(ccaId));
+        this.cardTransactions = cardTransactionSessionBean.getListCardTransactionsByCcaId(Long.parseLong(ccaId));
     }
 
     public CardTransactionManagedBean() {
