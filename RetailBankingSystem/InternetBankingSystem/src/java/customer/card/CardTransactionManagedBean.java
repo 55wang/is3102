@@ -32,6 +32,7 @@ public class CardTransactionManagedBean implements Serializable {
     private Customer customer;
     private List<CardTransaction> cardTransactions;
     private String ccaId;
+    private String dcaId;
 
     @EJB
     private CardAcctSessionBeanLocal cardAcctSessionBean;
@@ -41,6 +42,11 @@ public class CardTransactionManagedBean implements Serializable {
     public void viewCCTransactionDetail() {
         System.out.println("ccaId: " +ccaId);
         this.cardTransactions = cardAcctSessionBean.getCardTransactionFromId(Long.parseLong(ccaId));
+    }
+    
+    public void viewDebitCardTransactionDetail() {
+        System.out.println("dcaId: " +dcaId);
+        this.cardTransactions = cardAcctSessionBean.getCardTransactionFromId(Long.parseLong(dcaId));
     }
 
     public CardTransactionManagedBean() {
@@ -74,5 +80,19 @@ public class CardTransactionManagedBean implements Serializable {
 
     public void setCcaId(String ccaId) {
         this.ccaId = ccaId;
+    }
+
+    /**
+     * @return the dcaId
+     */
+    public String getDcaId() {
+        return dcaId;
+    }
+
+    /**
+     * @param dcaId the dcaId to set
+     */
+    public void setDcaId(String dcaId) {
+        this.dcaId = dcaId;
     }
 }
