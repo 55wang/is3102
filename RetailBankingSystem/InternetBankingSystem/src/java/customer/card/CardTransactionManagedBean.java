@@ -50,7 +50,7 @@ public class CardTransactionManagedBean implements Serializable {
     
     public void viewDebitCardTransactionDetail() {
         System.out.println("dcaId: " +dcaId);
-        this.cardTransactions = cardAcctSessionBean.getCardTransactionFromId(Long.parseLong(dcaId));
+        this.cardTransactions = cardTransactionSessionBean.getListCardTransactionsByCcaId(Long.parseLong(dcaId));
     }
 
     public CardTransactionManagedBean() {
