@@ -7,14 +7,14 @@ package ejb.session.staff;
 
 import entity.staff.Role;
 import java.util.List;
-import javax.ejb.Local;
+import javax.ejb.Remote;
 
 /**
  *
  * @author leiyang
  */
-@Local
-public interface StaffRoleSessionBeanLocal {
+@Remote
+public interface StaffRoleSessionBeanRemote {
     public List<Role> getAllRoles();
     public Role addRole(Role r);
     public Role updateRole(Role r);

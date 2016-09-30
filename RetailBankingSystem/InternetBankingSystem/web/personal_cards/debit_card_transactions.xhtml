@@ -8,8 +8,13 @@
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     <!--shift + ctrl + F, format-->
     <f:view>
+        <f:metadata>
+            <f:viewParam name="dcaId" value="#{cardTransactionManagedBean.dcaId}" />
+            <f:viewAction action="#{cardTransactionManagedBean.viewDebitCardTransactionDetail()}"></f:viewAction>
+        </f:metadata>
+
         <h:head>
-            <title>Transactions</title>
+            <title>Your Debit Card Summary</title>
             <em:cssImport></em:cssImport>
         </h:head>
         <h:body>
@@ -17,31 +22,36 @@
             <em:customerNavBar context="personal" personalPage="cards" ></em:customerNavBar>
             <div class="customer_main_container">
                 <h:form id="mainForm">
-                    <p:panel header="Transactions">
+                    <p:panel header="Debit Cards">
                         <p:messages id="messagesStatus" redisplay="false" >
                             <h:panelGrid columns="2" cellpadding="5">
-                                <p:dataTable var="auditLog" value="#{customerProfileManagedBean.auditLogs}">
+                                <p:dataTable value="#{cardTransactionManagedBean.cardTransactions}" var="tran" >
+
                                     <p:column headerText="Date">
-                                        <h:outputText value="#{auditLog.creationDate}" />
+                                        <h:outputText value="#{tran.createDate}" />
                                     </p:column>
 
-                                    <p:column headerText="Counterparty">
-                                        <h:outputText value="#{auditLog.activityLog}" />
-                                    </p:column>
-                                    
-                                    <p:column headerText="Credit">
-                                        <h:outputText value="#{auditLog.activityLog}" />
-                                    </p:column>
-                                    
-                                    <p:column headerText="Debit">
-                                        <h:outputText value="#{auditLog.activityLog}" />
-                                    </p:column>
-                                    
-                                    <p:column headerText="Amount">
-                                        <h:outputText value="#{auditLog.activityLog}" />
+                                    <p:column headerText="Code">
+                                        <h:outputText value="#{tran.transactionCode}" />
                                     </p:column>
 
-                                    
+                                    <p:column headerText="Description">
+                                        <h:outputText value="#{tran.transactionDescription}" />
+                                    </p:column>
+
+                                    <c:if test="#{tran.isCredit}">
+                                        <p:column headerText="Credit">
+                                            <h:outputText value="#{tran.amount}" />
+                                        </p:column>
+                                    </c:if>
+                                    <c:otherwise>
+                                        <p:column headerText="Debit">
+                                            <h:outputText value="#{tran.amount}" />
+                                        </p:column>
+                                    </c:otherwise>
+
+
+
 
                                 </p:dataTable>
 
@@ -53,6 +63,7 @@
 
         </h:body>
     </f:view>
+
 
 
 </html>

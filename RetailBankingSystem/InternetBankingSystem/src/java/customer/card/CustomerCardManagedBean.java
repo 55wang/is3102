@@ -54,6 +54,13 @@ public class CustomerCardManagedBean implements Serializable {
         String params = RedirectUtils.generateParameters(map);
         RedirectUtils.redirect("credit_card_transactions.xhtml" + params);
     }
+    
+    public void sendDCTransactionDetail(DebitCardAccount aDca) {
+        Map<String, String> map = new HashMap<>();
+        map.put("dcaId", aDca.getId().toString());
+        String params = RedirectUtils.generateParameters(map);
+        RedirectUtils.redirect("debit_card_transactions.xhtml" + params);
+    }
 
     public void viewTerminatePage(CreditCardAccount aCca) {
         System.out.println("in viewTerminatePage");
