@@ -44,7 +44,7 @@ public class CardTransaction implements Serializable {
     private boolean isCredit;
     private double amount;
     private CardTransactionStatus cardTransactionStatus;
-    @ManyToOne(cascade = {CascadeType.PERSIST})
+    @ManyToOne(cascade = {CascadeType.MERGE})
     private CreditCardAccount creditCardAccount;
     
 
