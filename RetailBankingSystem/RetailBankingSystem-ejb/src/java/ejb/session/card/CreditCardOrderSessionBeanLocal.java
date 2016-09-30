@@ -5,11 +5,11 @@
  */
 package ejb.session.card;
 
-import entity.card.account.CreditCardOrder;
-import entity.customer.MainAccount;
-import java.util.ArrayList;
+import entity.card.account.CreditCardAccount;
+import entity.card.order.CreditCardOrder;
 import java.util.List;
 import javax.ejb.Local;
+import server.utilities.EnumUtils;
 
 /**
  *
@@ -17,9 +17,24 @@ import javax.ejb.Local;
  */
 @Local
 public interface CreditCardOrderSessionBeanLocal {
-      public List<CreditCardOrder> getAllCreditCardOrders ();
-      public CreditCardOrder searchCreditCardOrderByID(String id);
-      public List<CreditCardOrder> getMainAccountAllCreditCardOrders (MainAccount mainAccount);
-      public CreditCardOrder searchMainAccountCreditCardOrderByID(MainAccount ma, String id);
-      public Boolean cancelCreditCardOrder(CreditCardOrder cco);
+
+    public List<CreditCardOrder> getListCreditCardOrders();
+
+    public List<CreditCardOrder> getListCreditCardOrdersByNotCancelStatus();
+
+    public List<CreditCardOrder> getListCreditCardOrdersByMainIdAndNotCancelStatus(Long mainAccountId);
+
+    public CreditCardOrder getCreditCardOrderById(Long ccoId);
+
+    public CreditCardOrder getCreditCardOrderByIdMainId(Long ccoId, Long mainId);
+
+    public CreditCardOrder updateCreditCardOrderStatus(CreditCardOrder cco, EnumUtils.ApplicationStatus status);
+
+    public List<CreditCardAccount> getListCreditCardOrdersByPendingStatus();
+
+    public List<CreditCardOrder> getListCreditCardOrdersByApplicationStatus(EnumUtils.ApplicationStatus applicationStatus);
+
+    public CreditCardOrder createCardOrder(CreditCardOrder order);
+
+    public CreditCardOrder updateCreditCardOrder(CreditCardOrder cco);
 }

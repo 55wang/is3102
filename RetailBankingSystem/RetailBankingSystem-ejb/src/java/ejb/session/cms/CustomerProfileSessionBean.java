@@ -23,7 +23,7 @@ import server.utilities.EnumUtils.StatusType;
  * @author qiuxiaqing
  */
 @Stateless
-public class CustomerProfileSessionBean implements CustomerProfileSessionBeanLocal {
+public class CustomerProfileSessionBean implements CustomerProfileSessionBeanLocal, CustomerProfileSessionBeanRemote {
 
     @EJB
     private EmailServiceSessionBeanLocal emailServiceSessionBean;
@@ -65,7 +65,7 @@ public class CustomerProfileSessionBean implements CustomerProfileSessionBeanLoc
     }
 
     @Override
-    public List<Customer> searchCustomerByIdentityNumber(String id) {
+    public Customer searchCustomerByIdentityNumber(String id) {
 
         Query q = em.createQuery(
                 "SELECT c FROM Customer c WHERE "
@@ -76,7 +76,7 @@ public class CustomerProfileSessionBean implements CustomerProfileSessionBeanLoc
         q.setParameter("identityNumber", id);
         System.out.print("DB search ---------------" + q.getResultList().size());
 
-        return q.getResultList();
+        return (Customer) q.getSingleResult();
     }
 
     public Customer getCustomerByID(Long ID){

@@ -44,32 +44,49 @@ public class ReportGenerationBean implements Serializable {
 //        String filePath = "/Users/litong/Documents/IS3102/is3102/RetailBankingSystem/InternetBankingSystem/src/java/report/testReport.jrxml";
 
         //Load Driver
+        String systemUser = System.getProperty("user.name");
+        String prependingPath = "";
+        if (systemUser.equals("wang")) {
+            prependingPath = "/Users/wang/NEW_IS3102/";
+        } else if (systemUser.equals("litong")) {
+            prependingPath = "/Users/litong/Documents/IS3102/";
+        } else if (systemUser.equals("leiyang")) {
+
+        } else if (systemUser.equals("syx")) {
+
+        } else if (systemUser.equals("xiaqing")) {
+
+        } else if (systemUser.equals("yifan")) {
+
+        }
         try {
             Class.forName("com.mysql.jdbc.Driver");
         } catch (Exception ex) {
         }
-        
+
         System.out.println("DBAAAAA");
         Connection a;
         a = DriverManager.getConnection("jdbc:mysql://localhost:3306/RetailBankingSystem?zeroDateTimeBehavior=convertToNull", "root", "password");
-        
+
         System.out.println("DB");
         String relativePath = new File("").getAbsolutePath();
         System.out.println("DB2222");
-        JasperDesign jd = JRXmlLoader.load("/Users/leiyang/Desktop/IS3102/workspace/is3102/RetailBankingSystem/InternetBankingSystem/src/java/report/report.jrxml");
-        JasperReport jr = JasperCompileManager.compileReport("/Users/leiyang/Desktop/IS3102/workspace/is3102/RetailBankingSystem/InternetBankingSystem/src/java/report/report.jrxml");
+
+        JasperDesign jd = JRXmlLoader.load(prependingPath+"is3102/RetailBankingSystem/InternetBankingSystem/src/java/report/report.jrxml");
+        JasperReport jr = JasperCompileManager.compileReport(prependingPath+"is3102/RetailBankingSystem/InternetBankingSystem/src/java/report/report.jrxml");
         System.out.println("Path");
-        
+
         JasperPrint jp = JasperFillManager.fillReport(jr, new HashMap(), a);
-           System.out.println("Path2222");
+        System.out.println("Path2222");
         //JasperViewer.viewReport(jp);
         System.out.println("View");
 //        JasperExportManager.exportReportToPdfFile(jp, "/Users/litong/Downloads/testPDF.pdf");
         System.out.println(relativePath);
-        JasperExportManager.exportReportToPdfFile(jp, "/Users/leiyang/Desktop/IS3102/workspace/is3102/RetailBankingSystem/InternetBankingSystem/web/request/estatement.pdf");
-       
+
+        JasperExportManager.exportReportToPdfFile(jp, prependingPath+"is3102/RetailBankingSystem/InternetBankingSystem/web/request/estatement.pdf");
+
 // JasperExportManager.exportReportToPdfFile(jp, "http:///localhost:8181/InternetBankingSystem/src/java/report/testPDF.pdf");
-               System.out.println("Done!");
+        System.out.println("Done!");
         return true;
     }
 

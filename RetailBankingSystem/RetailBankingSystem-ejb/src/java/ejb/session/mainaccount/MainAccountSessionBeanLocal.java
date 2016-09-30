@@ -16,4 +16,5 @@ import javax.ejb.Local;
 public interface MainAccountSessionBeanLocal {
     public MainAccount updateMainAccount(MainAccount ma);
     public MainAccount getMainAccountByUserId(String userID);
+    public MainAccount createMainAccount(MainAccount ma);
 }

@@ -7,9 +7,7 @@ package ejb.session.card;
 
 import entity.card.account.CardTransaction;
 import entity.card.account.CreditCardAccount;
-import entity.card.account.CreditCardOrder;
 import entity.card.account.DebitCardAccount;
-import entity.customer.MainAccount;
 import entity.dams.account.CustomerDepositAccount;
 import java.util.Date;
 import java.util.List;
@@ -23,57 +21,33 @@ import server.utilities.EnumUtils;
 @Local
 public interface CardAcctSessionBeanLocal {
 
-    public List<CreditCardOrder> showAllCreditCardOrder();
-
-    public List<CreditCardOrder> showAllCreditCardOrder(EnumUtils.ApplicationStatus status);
-    
-    public List<CreditCardAccount> showAllPendingCreditCardOrder();
-
-    public CreditCardOrder getCardOrderFromId(Long orderNumber);
-    
+    // create
+    // update
+    // get
     public CreditCardAccount updateCreditCardAccount(CreditCardAccount cca);
 
-    public String createCardOrder(CreditCardOrder order);
+    public List<CreditCardAccount> getListCreditCardAccountsByIdAndNotStatus(Long id, EnumUtils.CardAccountStatus status);
 
-    public String updateCardOrderStatus(CreditCardOrder order, EnumUtils.ApplicationStatus status);
+    public List<DebitCardAccount> getListDebitCardAccountsByIdAndNotStatus(Long id, EnumUtils.CardAccountStatus status);
 
-    public List<CreditCardAccount> showAllCreditCardAccount(EnumUtils.CardAccountStatus status, Long id);
+    public CreditCardAccount getCardAccountById(Long cardID);
 
-    public CreditCardAccount getCardAccountFromId(Long cardID);
-
-    public CreditCardAccount getCardByCardNumber(String cardNumber);
-
-    public CreditCardAccount validateCreditCardDailyTransactionLimit(CreditCardAccount creditCard, double requestAmount);
-
-    public CreditCardAccount validateCreditCardMonthlyTransactionLimit(CreditCardAccount creditCard, double requestAmount);
+    public CreditCardAccount getCreditCardAccountByCardNumber(String cardNumber);
 
     public CreditCardAccount createCardAccount(CreditCardAccount cca);
 
-    public CardTransaction createCardAccountTransaction(String ccNumber, CardTransaction ct);
+    public CreditCardAccount updateCardAccountStatus(CreditCardAccount cca, EnumUtils.CardAccountStatus status);
 
-    public String updateCardAccountStatus(CreditCardAccount cca, EnumUtils.CardAccountStatus status);
+    public DebitCardAccount updateDebitAccountStatus(DebitCardAccount dca, EnumUtils.CardAccountStatus status);
 
-    public String updateCardAcctTransactionLimit(CreditCardAccount cca);
-
-    public String updateCardAcctTransactionDailyLimit(CreditCardAccount cca, double newDailyLimit);
-
-    public List<CardTransaction> getCardTransactionFromId(Long ccaId);
+    public CreditCardAccount updateCardAcctTransactionDailyLimit(CreditCardAccount cca, double newDailyLimit);
 
     public DebitCardAccount createDebitAccount(CustomerDepositAccount da);
 
-    public List<DebitCardAccount> showAllDebitCardAccount(EnumUtils.CardAccountStatus status, Long id);
+    public CreditCardAccount activateCreditCard(String identityNumber, Date birthday, String cardNumber, String cvv);
 
-    public List<CardTransaction> getDailyTransactionFromAccount(CreditCardAccount creditCard);
+    public DebitCardAccount activateDebitCard(String identityNumber, Date birthday, String cardNumber, String cvv);
 
-    public List<CardTransaction> getMonthlyTransactionFromAccount(CreditCardAccount creditCard);
+    public List<CreditCardAccount> getListCreditCardAccountsByCardStatusAndAppStatus(EnumUtils.CardAccountStatus cardAccountStatus, EnumUtils.ApplicationStatus cardApplicationStatus);
 
-    public CardTransaction getSpecificCaedTransactionFromId(Long ccaId);
-
-    public String updateCreditCardOrder(CreditCardOrder cco);
-
-    public MainAccount activateCreditCard(String identityNumber, Date birthday, String cardNumber, String cvv);
-    
-    public MainAccount activateDebitCard(String identityNumber, Date birthday, String cardNumber, String cvv);
-
-    public String updateDebitAccountStatus(DebitCardAccount dca, EnumUtils.CardAccountStatus status);
 }

@@ -54,17 +54,24 @@ public class CustomerCardManagedBean implements Serializable {
         String params = RedirectUtils.generateParameters(map);
         RedirectUtils.redirect("credit_card_transactions.xhtml" + params);
     }
+    
+    public void sendDCTransactionDetail(DebitCardAccount aDca) {
+        Map<String, String> map = new HashMap<>();
+        map.put("dcaId", aDca.getId().toString());
+        String params = RedirectUtils.generateParameters(map);
+        RedirectUtils.redirect("debit_card_transactions.xhtml" + params);
+    }
 
     public void viewTerminatePage(CreditCardAccount aCca) {
         System.out.println("in viewTerminatePage");
         cardAcctSessionBean.updateCardAccountStatus(cca, CardAccountStatus.CLOSED);
-        RedirectUtils.redirect("/InternetBankingSystem/customer_card/debit_card_summary.xhtml");
+        RedirectUtils.redirect("/InternetBankingSystem/personal_cards/debit_card_summary.xhtml");
     }
 
     public void viewTerminateDebitPage(DebitCardAccount dca) {
         System.out.println("in viewTerminatePage");
         cardAcctSessionBean.updateDebitAccountStatus(dca, CardAccountStatus.CLOSED);
-        RedirectUtils.redirect("/InternetBankingSystem/customer_card/debit_card_summary.xhtml");
+        RedirectUtils.redirect("/InternetBankingSystem/personal_cards/debit_card_summary.xhtml");
     }
     
     public void viewRedeemPage(CreditCardAccount cca) {
@@ -77,15 +84,14 @@ public class CustomerCardManagedBean implements Serializable {
 
     public void redirectToChangeTransactionLimitPage(CreditCardAccount aCca) {
         cca = aCca;
-        RedirectUtils.redirect("/InternetBankingSystem/customer_card/change_transaction_limit.xhtml");
+        RedirectUtils.redirect("/InternetBankingSystem/personal_cards/change_transaction_limit.xhtml");
     }
 
     public void updateTransactionLimit() {
-        String result = cardAcctSessionBean.updateCardAcctTransactionLimit(cca);
-        if (result.equals("SUCCESS")) {
+        CreditCardAccount result = cardAcctSessionBean.updateCreditCardAccount(cca);
+        if (result!=null) {
             MessageUtils.displayInfo("Transaction limit is updated!");
             emailServiceSessionBean.sendTransactionLimitChangeNotice(cca.getMainAccount().getCustomer().getEmail());           
-                         
         } else {
             MessageUtils.displayError("Change is unsuccessful!");
 
@@ -99,7 +105,7 @@ public class CustomerCardManagedBean implements Serializable {
     public void setCustomer() {
         System.out.println("@POSTCONSTRUCT INIT CustomerCardManagedBean");
         this.customer = customerProfileSessionBean.getCustomerByUserID(SessionUtils.getUserName());
-        this.setCcas(cardAcctSessionBean.showAllCreditCardAccount(CardAccountStatus.CLOSED, customer.getMainAccount().getId())); //that is not closed
+        this.setCcas(cardAcctSessionBean.getListCreditCardAccountsByIdAndNotStatus(customer.getMainAccount().getId(), CardAccountStatus.CLOSED)); //that is not closed
     }
 
     public Customer getCustomer() {

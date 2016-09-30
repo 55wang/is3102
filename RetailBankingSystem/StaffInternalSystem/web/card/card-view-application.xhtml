@@ -32,7 +32,7 @@
                                     </p:column>
 
                                     <p:column headerText="Product Name">
-                                        <h:outputText value="#{cco.creditCardProduct.productName}" />
+                                        <h:outputText value="#{cco.creditCardAccount.creditCardProduct.productName}" />
                                     </p:column>
 
                                     <p:rowExpansion>
@@ -45,22 +45,20 @@
                                             <h:outputText value="#{customer.lastname}" style="width:97%"/>
 
                                             <h:outputText value="Income: " />
-                                            <h:outputText value="#{cco.income}" />
+                                            <h:outputText value="#{cco.mainAccount.customer.income}" />
 
                                             <h:outputText value="Employment Status: " />
-                                            <h:outputText value="#{cco.employmentStatus}" />
+                                            <h:outputText value="#{cco.mainAccount.customer.employmentStatus}" />
 
                                             <h:outputText value="Education " />
-                                            <h:outputText value="#{cco.eduLevel}" />
+                                            <h:outputText value="#{cco.mainAccount.customer.education}" />
 
                                             <h:outputText value="Industry: " />
-                                            <h:outputText value="#{cco.industry}" />
+                                            <h:outputText value="#{cco.mainAccount.customer.industry}" />
 
                                             <h:outputText value="Marital Status: " />
-                                            <h:outputText value="#{cco.maritalStatus}" />
+                                            <h:outputText value="#{cco.mainAccount.customer.maritalStatus}" />
 
-                                            <h:outputText value="No. of Deps: " />
-                                            <h:outputText value="#{cco.numOfDependents}" />
                                         </p:panelGrid>
 
 
@@ -83,7 +81,7 @@
                                         </p:selectOneMenu>
                                     </p:column>
                                     <p:column headerText="CreditScore">
-                                        <h:outputText value="#{cco.creditScore}" />
+                                        <h:outputText value="#{cco.mainAccount.customer.creditScore}" />
                                     </p:column>
                                     <p:column headerText="Action">
                                         <p:commandButton value="Credit Score" action="#{cardViewCreditApplicationManagedBean.calculateCreditScore(cco)}" icon="ui-icon-lightbulb" update="@form" />

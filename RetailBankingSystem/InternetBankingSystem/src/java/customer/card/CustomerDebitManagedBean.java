@@ -37,7 +37,7 @@ public class CustomerDebitManagedBean implements Serializable {
     private Customer customer;
     private List<DebitCardAccount> dcas;
     private List<CardTransaction> cardTransactions;
-    private String APPLICATION_STATUS_PENDING = EnumUtils.ApplicationStatus.PENDING.toString();
+    private String APPLICATION_STATUS_PENDING = EnumUtils.CardAccountStatus.PENDING.toString();
 
     @EJB
     private CardAcctSessionBeanLocal cardAcctSessionBean;
@@ -54,7 +54,7 @@ public class CustomerDebitManagedBean implements Serializable {
     public void viewTerminatePage(CreditCardAccount cca) {
         System.out.println("in viewTerminatePage");
         cardAcctSessionBean.updateCardAccountStatus(cca, CardAccountStatus.CLOSED);
-        RedirectUtils.redirect("/InternetBankingSystem/customer_card/application_success.xhtml");
+        RedirectUtils.redirect("/InternetBankingSystem/personal_cards/application_success.xhtml");
     }
 
     public CustomerDebitManagedBean() {
@@ -64,7 +64,7 @@ public class CustomerDebitManagedBean implements Serializable {
     public void setCustomer() {
         System.out.println("@POSTCONSTRUCT INIT CustomerCardManagedBean");
         this.customer = customerProfileSessionBean.getCustomerByUserID(SessionUtils.getUserName());
-        this.setDcas(cardAcctSessionBean.showAllDebitCardAccount(CardAccountStatus.CLOSED, customer.getMainAccount().getId())); //that is not closed
+        this.setDcas(cardAcctSessionBean.getListDebitCardAccountsByIdAndNotStatus(customer.getMainAccount().getId(),CardAccountStatus.CLOSED)); //that is not closed
     }
 
     public Customer getCustomer() {

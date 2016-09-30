@@ -1,0 +1,105 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:em="http://xmlns.jcp.org/jsf/composite/emcomp">
+    <!--shift + ctrl + F, format-->
+    <f:view>
+        <h:head>
+            <title>Merlion Bank</title>
+            <h:outputStylesheet library="css" name="reset.css"/>
+            <h:outputStylesheet library="css" name="theme.css"/>
+        </h:head>
+        <h:body>
+            <em:customerHeader context="main" userName="Log in"></em:customerHeader>
+            <em:customerNavBar context="main" mainPage="mainDeposit"></em:customerNavBar>
+            
+            <table style="margin-left: 70px" align="center">
+                <tr>
+                    <td>
+                        <p:panel id="Currentaccount" header="Current Account"  style="margin-top:200px;margin-bottom:20px">
+                            <h:panelGrid columns="2" cellpadding="10">
+                                <p:graphicImage library="img" style="width: 300px;height: 200px" name="bank-image.jpg" />
+                                <h:outputText
+                                    value="Current account is suitable for your daily banking needs." rendered="#{displayDepositProductManagedBean.hasCurrentDepositProduct}"/>
+                                <h:outputText
+                                    value="Current account product is coming soon!" rendered="#{!displayDepositProductManagedBean.hasCurrentDepositProduct}" />
+                            </h:panelGrid>
+                            <p>
+                                <c:if test="#{displayDepositProductManagedBean.hasCurrentDepositProduct}">
+                                    <a href="current_deposit.xhtml" style="text-decoration: none;color:grey">View Details</a>
+                                </c:if>
+                            </p>
+                        </p:panel>
+                    </td>
+                    <td style="column-width: 20px">
+                    </td>
+                    <td>
+                        <p:panel id="Savingsaccount" header="Savings Account" style="margin-top:200px;margin-bottom:20px">
+                            <h:panelGrid columns="2" cellpadding="10">
+                                <p:graphicImage library="img" style="width: 300px;height: 200px" name="deposit.jpg" />
+                                <h:outputText
+                                    value="Grow your savings with these accounts." rendered="#{displayDepositProductManagedBean.hasSavingsDepositProduct}" />
+                                <h:outputText
+                                    value="Savings account product is coming soon!" rendered="#{!displayDepositProductManagedBean.hasSavingsDepositProduct}" />
+                            </h:panelGrid>
+                            <p>
+                                <c:if test="#{displayDepositProductManagedBean.hasSavingsDepositProduct}">
+                                    <a href="savings_account.xhtml" style="text-decoration: none;color:grey" >View Details</a>
+                                </c:if>
+                            </p>
+                        </p:panel>
+                    </td>
+               </tr>
+
+                <tr>
+                    <td>
+                        <p:panel id="Timedeposit" header="Time Deposit"  style="margin-bottom:20px">
+                            <h:panelGrid columns="2" cellpadding="10">
+                                <p:graphicImage library="img" style="width: 300px;height: 200px" name="fixed-deposit.jpg" />
+                                <h:outputText
+                                    value="Stand a chance to earn 0.8% return." rendered="#{displayDepositProductManagedBean.hasTimeDepositProduct}"/>
+                                <h:outputText
+                                    value="Time Deposit product is coming soon!" rendered="#{!displayDepositProductManagedBean.hasTimeDepositProduct}"/>
+                            </h:panelGrid>
+                            <p>
+                                <c:if test="#{displayDepositProductManagedBean.hasTimeDepositProduct}">
+                                    <a href="time_deposit.xhtml" style="text-decoration: none;color:grey">View Details</a>
+                                </c:if>
+                            </p>
+                        </p:panel>
+                    </td>
+                    <td style="column-width: 20px"></td>
+                    <td>
+                        <p:panel id="Merlionuniqueaccount" header="Merlion Unique Account"  style="margin-bottom:20px">
+                            <h:panelGrid columns="2" cellpadding="10">
+                                <p:graphicImage library="img" style="width: 300px;height: 200px" name="growth-of-money-market-in-india.jpg" />
+                                <h:outputText
+                                    value="Enjoy exclusive bonus Merlion deposit customers." rendered="#{displayDepositProductManagedBean.hasCustomDepositProduct}"/>
+                                <h:outputText
+                                    value="Merlion exclusive products coming soon! " rendered="#{!displayDepositProductManagedBean.hasCustomDepositProduct}"/>
+                            </h:panelGrid>
+                            <p>
+                                <c:if test="#{displayDepositProductManagedBean.hasCustomDepositProduct}">
+                                    <a href="merlion_custom_deposit.xhtml" style="text-decoration: none;color:grey">View Details</a>
+                                </c:if>
+                            </p>
+                        </p:panel>
+                    </td>
+                </tr>
+            </table>
+            
+            <p:panel>
+                <div align="center">
+                    <button type="button" onclick="window.location.href='apply_deposit_account.xhtml'">Apply</button>
+                </div>
+            </p:panel>
+            
+
+        </h:body>
+    </f:view>
+</html>
+

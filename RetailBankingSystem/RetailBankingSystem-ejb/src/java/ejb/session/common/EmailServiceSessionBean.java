@@ -389,7 +389,7 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
             message.setSubject("Your profile is updated - Merlion Bank");
             message.setText("Dear Customer, \n Your profile has been updated. "
                     + "Click the link to check updated profile: "
-                    + "https://localhost:8181/InternetBankingSystem/customer_cms/view_profile.xhtml .");
+                    + "https://localhost:8181/InternetBankingSystem/header_user/view_profile.xhtml .");
 
             Transport.send(message);
 
@@ -440,7 +440,7 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
             message.setSubject("Your transaction limit is updated - Merlion Bank");
             message.setText("Dear Customer, \n Your transaction limit of MBS card has been updated. "
                     + "Click the link to check updated transaction limit: "
-                    + "https://localhost:8181/InternetBankingSystem/customer_card/credit_card_summary.xhtml .");
+                    + "https://localhost:8181/InternetBankingSystem/personal_cards/credit_card_summary.xhtml .");
 
             Transport.send(message);
 
@@ -466,7 +466,7 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
             message.setSubject("Your credit card application is submitted - Merlion Bank");
             message.setText("Dear Customer, \n Your credit card application is submitted."
                     + "We are processing your application. Meanwhile, you can go to this link to check your application status."
-                    + "https://localhost:8181/InternetBankingSystem/customer_card/credit_card_summary.xhtml .");
+                    + "https://localhost:8181/InternetBankingSystem/personal_cards/credit_card_summary.xhtml .");
 
             Transport.send(message);
 

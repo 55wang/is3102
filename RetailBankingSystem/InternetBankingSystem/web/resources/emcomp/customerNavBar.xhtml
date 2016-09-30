@@ -11,92 +11,84 @@
 
     <cc:interface>
         <cc:attribute name="context" required="true"/>
-        <cc:attribute name="pageName"/>
+        <cc:attribute name="mainPage"/>
+        <cc:attribute name="personalPage"/>
     </cc:interface>
 
     <cc:implementation>
-        <f:view>
-            <!-- Global Notification -->
-            <p:growl id="msgs" widgetVar="globalGrowl" showDetail="true" sticky="true"/>
-            <div id="customer-navbar" class="h-center">
-                <ul class="header-navigation">
-                    <c:if test="#{cc.attrs.context.contains('index')}">
-                        <c:if test="#{cc.attrs.context == 'index'}">
-                            <li id="header-overview" class="#{cc.attrs.pageName == 'index' ? 'active' : ''}" value="Home"><a href=".">Home</a></li>
-                        </c:if>
-                        <c:if test="#{cc.attrs.context.contains('index_')}">
-                            <li id="header-overview" class="#{cc.attrs.pageName == 'index' ? 'active' : ''}" value="Home"><a href="../index.xhtml">Home</a></li>
-                        </c:if>
-                        <li id="header-overview" class="#{cc.attrs.pageName == 'index_deposit' ? 'active' : ''}" value="Deposit"><a href="https://localhost:8181/InternetBankingSystem/index_subpages/index_deposit.xhtml">Deposit</a></li>
-                        <li id="header-overview" class="#{cc.attrs.context == 'index_card' ? 'active' : ''}" value="Card"><a href="https://localhost:8181/InternetBankingSystem/index_subpages/index_card.xhtml">Cards</a></li>
-                        <li id="header-overview" class="#{cc.attrs.context == 'button' ? 'active' : ''}" value="button"><a href="#">Loan</a></li>
-                        <li id="header-overview" class="#{cc.attrs.context == 'button' ? 'active' : ''}" value="button"><a href="#">Invest</a></li>
-                        <li id="header-overview" class="#{cc.attrs.context == 'button' ? 'active' : ''}" value="button"><a href="#">Promotions</a></li>
-                        <li id="header-overview" class="#{cc.attrs.context == 'button' ? 'active' : ''}" value="button"><a href="#">Wealth</a></li>
+        <f:view>          
+                    <c:if test="#{cc.attrs.context == 'main'}">
+                         <div id="customer-index-navbar">
+                            <ul class="header-navigation">
+                                <li id="header-overview" class="#{cc.attrs.mainPage == 'index' ? 'active' : ''}" value="Home">
+                                    <a href="https://localhost:8181/InternetBankingSystem/index.xhtml">Home</a>
+                                </li>
+                                <li id="header-overview" class="#{cc.attrs.mainPage == 'mainDeposit' ? 'active' : ''}" value="Deposit">
+                                    <a href="https://localhost:8181/InternetBankingSystem/main_deposit/default.xhtml">Deposit</a>
+                                </li>
+                                <li id="header-overview" class="#{cc.attrs.mainPage == 'mainCards' ? 'active' : ''}" value="Card">
+                                    <a href="https://localhost:8181/InternetBankingSystem/main_cards/default.xhtml">Cards</a>
+                                </li>
+                                <li id="header-overview" class="#{cc.attrs.mainPage == 'mainLoan' ? 'active' : ''}" value="Loan">
+                                    <a href="#">Loan</a>
+                                </li>
+                                <li id="header-overview" class="#{cc.attrs.mainPage == 'mainInvest' ? 'active' : ''}" value="Invest">
+                                    <a href="#">Invest</a>
+                                </li>
+                                <li id="header-overview" class="#{cc.attrs.mainPage == 'mainPromotion' ? 'active' : ''}" value="Promotions">
+                                    <a href="#">Promotions</a>
+                                </li>
+                                <li id="header-overview" class="#{cc.attrs.mainPage == 'mainWwalth' ? 'active' : ''}" value="Wealth">
+                                    <a href="#">Wealth</a>
+                                </li>
+                             </ul>
+                        </div>
                     </c:if>
-                    <c:if test="#{cc.attrs.context == 'customer_home'}">
-                        <h:form>
-                        <li id="navbar-myhome-tab" class="#{cc.attrs.pageName == 'customer_home' ? 'active' : ''}" value="myhome"><a href="../customer_cms/customer_home.xhtml"><p:outputLabel id="tab-myHome" value="My Home" style="cursor: pointer"/></a></li>
-                        <p:overlayPanel class="nav-overlay-panel-home" for="tab-myHome" showEvent="mouseover" hideEvent="mousedown" dismissable="true">
-                            <p:menu>
-                                <p:submenu style="display:none">
-                                    <p:menuitem value="Profile" url="../customer_cms/view_profile.xhtml" />
-                                </p:submenu>
-                            </p:menu>
-                        </p:overlayPanel>
-                        
-                        <li id="navbar-myaccount-tab" class="#{cc.attrs.pageName == 'dams_home' ? 'active' : ''}" value="myAccount"><a href="../customer_deposit/deposit_account_summary.xhtml"><p:outputLabel id="tab-myAccount" value="Accounts" style="cursor: pointer"/></a></li>
-                        <p:overlayPanel class="nav-overlay-panel-account" for="tab-myAccount" showEvent="mouseover" hideEvent="mousedown" dismissable="true">
-                            <p:menu>
-                                <p:submenu style="display:none">
-                                    <p:menuitem value="Deposit" url="../customer_deposit/deposit_account_summary.xhtml" />
-                                </p:submenu>
-                            </p:menu>
-                        </p:overlayPanel>
-                        <li id="navbar-cards-tab" class="#{cc.attrs.pageName == 'cards_home' ? 'active' : ''}" value="mycards"><a href="../customer_card/cards_home.xhtml"><p:outputLabel id="tab-myCard" value="Cards" style="cursor: pointer"/></a></li>
-                        <p:overlayPanel class="nav-overlay-panel-cards" for="tab-myCard" showEvent="mouseover" hideEvent="mousedown" dismissable="true">
-                            <p:menu>
-                                <p:submenu style="display:none">
-                                    <p:menuitem value="Debit Card Summary" url="../customer_card/debit_card_summary.xhtml" />
-                                    <p:menuitem value="Credit Card Summary" url="../customer_card/credit_card_summary.xhtml" />
-                                    <p:menuitem value="Activate Debit Card" url="../customer_card/activate_debit_card.xhtml" />
-                                    <p:menuitem value="Activate Credit Card" url="../customer_card/activate_credit_card.xhtml" />
-                                    <p:menuitem value="Debit Card Limit" url="../customer_card/change_debit_card_limit.xhtml" />
-                                    <p:menuitem value="Credit Card Limit" url="../customer_card/change_credit_card_limit.xhtml" />
-                                </p:submenu>
-                            </p:menu>
-                        </p:overlayPanel>
-                        
-                        <li id="header-overview" class="#{cc.attrs.pageName == 'button' ? 'active' : ''}" value="button"><a href="#">Wealth</a></li>
-                        
-                        <li id="navbar-apply-tab" class="#{cc.attrs.pageName == 'apply_home' ? 'active' : ''}" value="myapply"><a href="../apply/apply_home.xhtml"><p:outputLabel id="tab-myApply" value="Apply" style="cursor: pointer"/></a></li>
-                        <p:overlayPanel class="nav-overlay-panel-apply" for="tab-myApply" showEvent="mouseover" hideEvent="mousedown" dismissable="true">
-                            <p:menu>
-                                <p:submenu style="display:none">
-                                    <p:menuitem value="Deposit Accounts" url="../apply/existing_apply_deposit.xhtml" />
-                                    <p:menuitem value="Debit cards" url="../apply/existing_apply_debit_card.xhtml" />
-                                    <p:menuitem value="Credit Cards" url="#" />
-                                    <p:menuitem value="Credit Card Application Status" url="../apply/view_credit_card_application.xhtml" />
-                                </p:submenu>
-                            </p:menu>
-                        </p:overlayPanel>
-                        
-                        <li id="navbar-request-tab" class="#{cc.attrs.pageName == 'request_home' ? 'active' : ''}" value="myRequest"><a href="../request/request_home.xhtml"><p:outputLabel id="tab-myRequest" value="Request" style="cursor: pointer"/></a></li>
-                        <p:overlayPanel class="nav-overlay-panel-request" for="tab-myRequest" showEvent="mouseover" hideEvent="mousedown" dismissable="true">
-                            <p:menu>
-                                <p:submenu style="display:none">
+                
+                <c:if test="#{cc.attrs.context == 'personal'}">
+                    <div id="customer-personal-navbar">
+                        <h:form>  
+                            <p:growl id="messages"/>
 
-                                    <p:menuitem value="E-statement" url="../request/request_statement.xhtml"/>
-                                    <p:menuitem value="Cheque Status" url="../request/current_account_cheque_status.xhtml" />
-                                    
+                            <p:menubar>
+                                <p:submenu label="Home"  class="navbar-submenu #{cc.attrs.personalPage == 'home' ? 'active' : ''}">
+                                    <p:menuitem value="To My Home" url="../personal_home/customer_home.xhtml" />
                                 </p:submenu>
-                            </p:menu>
-                        </p:overlayPanel>
-                        <li id="header-overview" class="#{cc.attrs.pageName == 'index_activity_history' ? 'active' : ''}" value="Activity"><a href="../customer_cms/index_activity_history.xhtml">Activity History</a></li>
+
+                                <p:submenu label="Deposit" class="navbar-submenu #{cc.attrs.personalPage == 'deposit' ? 'active' : ''}">
+                                    <p:menuitem value="To Deposit Home" url="../personal_deposit/deposit_account_summary.xhtml" />
+                                </p:submenu>
+
+                                <p:submenu label="Cards" class="navbar-submenu #{cc.attrs.personalPage == 'cards' ? 'active' : ''}">
+                                    <p:menuitem value="Debit Card Summary" url="../personal_cards/debit_card_summary.xhtml" />
+                                    <p:menuitem value="Credit Card Summary" url="../personal_cards/credit_card_summary.xhtml" />
+                                    <p:menuitem value="Activate Debit Card" url="../personal_cards/activate_debit_card.xhtml" />
+                                    <p:menuitem value="Activate Credit Card" url="../personal_cards/activate_credit_card.xhtml" />
+                                </p:submenu>
+
+                                <p:submenu label="Wealth" class="navbar-submenu #{cc.attrs.personalPage == 'wealth' ? 'active' : ''}">
+                                </p:submenu>
+
+                                <p:submenu label="Apply" class="navbar-submenu #{cc.attrs.personalPage == 'apply' ? 'active' : ''}">
+                                    <p:menuitem value="Deposit Accounts" url="../personal_apply/existing_apply_deposit.xhtml" />
+                                    <p:menuitem value="Debit Cards" url="../personal_apply/existing_apply_debit_card.xhtml" />
+                                    <p:menuitem value="Credit Cards" url="../personal_apply/existing_apply_credit_card.xhtml" />
+                                    <p:menuitem value="Credit Card Application Status" url="../personal_apply/view_credit_card_application.xhtml" />
+                                </p:submenu>
+
+                                <p:submenu label="Request" class="navbar-submenu #{cc.attrs.personalPage == 'request' ? 'active' : ''}">
+                                    <p:menuitem value="E-statement" url="../personal_request/request_statement.xhtml" />
+                                    <p:menuitem value="Cheque Status" url="../personal_request/current_account_cheque_status.xhtml" />
+                                </p:submenu>
+
+                                <p:submenu label="History" class="navbar-submenu #{cc.attrs.personalPage == 'history' ? 'active' : ''}">
+                                    <p:menuitem value="Activity History" url="../personal_history/activity_history.xhtml" />
+                                </p:submenu>
+                            </p:menubar>
                         </h:form>
-                    </c:if>
-                </ul>
-            </div>
+                    </div>
+                </c:if>
+               
             
             <p:socket onMessage="handleAnnouncement" channel="/customer_notify"/>
             <p:socket onMessage="handleAnnouncement" channel="/single_notification/#{customerInfoManagedBean.userId}"/>

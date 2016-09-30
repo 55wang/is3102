@@ -5,31 +5,24 @@
  */
 package init;
 
-import BatchProcess.InterestAccrualSessionBeanLocal;
 import ejb.session.card.CardAcctSessionBeanLocal;
 import ejb.session.card.CardTransactionSessionBeanLocal;
-import ejb.session.card.NewCardProductSessionBeanLocal;
+import ejb.session.card.CardProductSessionBeanLocal;
 import ejb.session.cms.CustomerCaseSessionBeanLocal;
-import ejb.session.cms.CustomerProfileSessionBeanLocal;
-import ejb.session.common.NewCustomerSessionBeanLocal;
 import ejb.session.dams.CurrentAccountChequeSessionBeanLocal;
 import ejb.session.dams.InterestSessionBeanLocal;
 import ejb.session.dams.CustomerDepositSessionBeanLocal;
 import ejb.session.dams.DepositProductSessionBeanLocal;
-import ejb.session.mainaccount.MainAccountSessionBeanLocal;
 import ejb.session.staff.StaffAccountSessionBeanLocal;
 import ejb.session.staff.StaffRoleSessionBeanLocal;
 import ejb.session.utils.UtilsSessionBeanLocal;
 import entity.card.account.CardTransaction;
-import entity.card.account.CashBackCardProduct;
+import entity.card.product.CashBackCardProduct;
 import entity.card.account.CreditCardAccount;
-import entity.card.account.CreditCardOrder;
-import entity.card.account.CreditCardProduct;
-import entity.card.account.MileCardProduct;
-import entity.card.account.PromoCode;
-import entity.card.account.PromoProduct;
-import entity.card.account.RewardCardProduct;
-import entity.customer.Customer;
+import entity.card.product.MileCardProduct;
+import entity.card.product.PromoCode;
+import entity.card.product.PromoProduct;
+import entity.card.product.RewardCardProduct;
 import entity.customer.CustomerCase;
 import entity.customer.Issue;
 import entity.customer.MainAccount;
@@ -43,7 +36,6 @@ import entity.dams.rules.ConditionInterest;
 import entity.dams.rules.Interest;
 import entity.dams.rules.RangeInterest;
 import entity.dams.rules.TimeRangeInterest;
-import entity.embedded.StaffInfo;
 import entity.staff.Announcement;
 import entity.staff.Role;
 import entity.staff.StaffAccount;
@@ -63,14 +55,8 @@ import server.utilities.EnumUtils.CardTransactionStatus;
 import server.utilities.EnumUtils.CaseStatus;
 import server.utilities.EnumUtils.ChequeStatus;
 import server.utilities.EnumUtils.DepositAccountType;
-import server.utilities.EnumUtils.Gender;
-import server.utilities.EnumUtils.IdentityType;
-import server.utilities.EnumUtils.Income;
-import server.utilities.EnumUtils.Nationality;
-import server.utilities.EnumUtils.Occupation;
 import server.utilities.EnumUtils.StatusType;
 import server.utilities.GenerateAccountAndCCNumber;
-import server.utilities.HashPwdUtils;
 import server.utilities.PincodeGenerationUtils;
 
 /**
@@ -83,29 +69,31 @@ import server.utilities.PincodeGenerationUtils;
 public class EntityBuilderBean {
 
     @EJB
-    private CustomerProfileSessionBeanLocal customerProfileSessionBean;
+    private EntityCustomerBuilder entityCustomerBuilder;
+
+    @EJB
+    private EntityCreditCardOrderBuilder entityCreditCardOrderBuilder;
+
+    @EJB
+    private EntityCreditCardProductBuilder entityCreditCardProductBuilder;
+    
+    @EJB
+    private EntityPromoProductBuilder entityPromoProductBuilder;
+
     @EJB
     private CustomerCaseSessionBeanLocal customerCaseSessionBean;
-    @EJB
-    private UtilsSessionBeanLocal utilsBean;
+
     @EJB
     private StaffAccountSessionBeanLocal staffAccountSessionBean;
     @EJB
     private StaffRoleSessionBeanLocal staffRoleSessionBean;
-    @EJB
-    private NewCustomerSessionBeanLocal newCustomerSessionBean;
+
     @EJB
     private InterestSessionBeanLocal interestSessionBean;
     @EJB
     private CustomerDepositSessionBeanLocal customerDepositSessionBean;
     @EJB
-    private InterestAccrualSessionBeanLocal interestAccrualSessionBean;
-    @EJB
     private DepositProductSessionBeanLocal depositProductSessionBean;
-    @EJB
-    private NewCardProductSessionBeanLocal newCardProductSessionBean;
-    @EJB
-    private MainAccountSessionBeanLocal mainAccountSessionBean;
     @EJB
     private CardAcctSessionBeanLocal cardAcctSessionBean;
     @EJB
@@ -130,7 +118,7 @@ public class EntityBuilderBean {
             buildEntities();
         } else {
             testInterestRules();
-            testCreditCard();
+//            testCreditCard();
         }
     }
 
@@ -140,202 +128,24 @@ public class EntityBuilderBean {
         return sa == null;
     }
 
-    private void testCreditCard() {
-
-        Date startDate = DateUtils.getBeginOfDay();
-        Date endDate = DateUtils.getEndOfDay();
-
-        System.out.println(startDate);
-        System.out.println(startDate);
-        List<CardTransaction> result = cardTransactionBean.retrieveTransactionByDate(startDate, endDate);
-        System.out.println(result);
-//        System.out.println("testCreditCard");
-//        try {
-//            CreditCardAccount c = cardAcctSessionBean.getCardByCardNumber("4545454545454545");
-//            System.out.println(c);
-//        } catch(Exception e) {
-////            e.printStackTrace();
-//        }
-//        List<CreditCardAccount> cards = cardAcctSessionBean.showAllCreditCardAccount(EnumUtils.CardAccountStatus.CLOSED, 8L);
-//        System.out.println(cards);
-    }
-
-    private void testInterestRules() {
-
-        // Get Product
-//        DepositAccount da = customerDepositSessionBean.getAccountFromId(1L);
-//        // Get Interest
-//        List<Interest> interests = ((DepositAccountProduct) da.getProduct()).getInterestRules();
-//        for (Interest i : interests) {
-//            if (i instanceof ConditionInterest) {
-//                System.out.print(interestAccrualSessionBean.isAccountMeetCondition(da, (ConditionInterest) i));
-//            }
-//        }
-    }
-
     private void buildEntities() {
         // TODO: init other entities here
         // TODO: init with an organized flow structure
         // these are just temporary data for emergency use.
         // Yifan pls help edit for me on top of these.
         initStaffAndRoles();
-        initCustomer();
+        demoMainAccount = entityCustomerBuilder.initCustomer();
+
         initInterest();
         initDepositProducts();
         initDepositAccounts();
-        initPromoProduct();
-        initCreditCardProduct();
+        demoPromoProduct = entityPromoProductBuilder.initPromoProduct(demoPromoProduct);
+        demoRewardCardProduct = entityCreditCardProductBuilder.initCreditCardProduct(demoMainAccount, demoPromoProduct);
         initCase();
         initNotification();
-        initCreditCardOrder();
-    }
 
-    public void initPromoProduct() {
-        PromoProduct p1 = new PromoProduct();
-        p1.setName("Golden Village 1 Movie Ticket (Any day)");
-        p1.setTerms("• Voucher will be mail within 7 days from the date of redemption. \n"
-                + "• Valid for movie screenings at any Golden Village cinemas at anytime. \n"
-                + "• Not valid for premium priced films, 3D films, Gold Class, Cinema Europa, group screenings, marathons, festivals and premieres. \n"
-                + "• Not valid for internet, phone, AXS, Imode bookings. \n"
-                + "• Vouchers do not guarantee seating and must be exchanged for movie tickets. \n"
-                + "• Tickets printed out is not refundable. \n"
-                + "• Maximum 10 vouchers allowed per redemption. \n"
-                + "• Movie date should not be later than expiry date on voucher.");
-        p1.setPoints(3500);
-        p1.setType(EnumUtils.PromoType.VOUCHER);
-        demoPromoProduct = (PromoProduct) utilsBean.persist(p1);
-
-        PromoProduct p2 = new PromoProduct();
-        p2.setName("Crabtree & Evelyn S$25 Voucher");
-        p2.setTerms("• Usage of multiple vouchers allowed.\n"
-                + "• Voucher is not valid for items on special offer, sale or discount.\n"
-                + "• Crabtree & Evelyn reserves the right to make the final decisions concerning the promotion.\n"
-                + "• Voucher is not exchangeable for cash and any unused value of the Voucher will be forfeited.\n"
-                + "• Any balance payment must be made with your DBS Credit Card.\n"
-                + "• Other terms & conditions apply. ");
-        p2.setPoints(5500);
-        p2.setType(EnumUtils.PromoType.VOUCHER);
-        utilsBean.persist(p2);
-
-        PromoProduct p3 = new PromoProduct();
-        p3.setName("Best Denki S$50 Voucher");
-        p3.setTerms("• Usage of multiple vouchers is allowed.\n"
-                + "• Voucher is not valid for use with other Gift Vouchers, discounts or on-going promotions.\n"
-                + "• Voucher is not exchangeable for cash and any unused value of the Voucher will be forfeited.\n"
-                + "• Any balance payment must be made with your DBS Credit Card.\n"
-                + "• Other terms & conditions apply.");
-        p3.setPoints(9500);
-        p3.setType(EnumUtils.PromoType.VOUCHER);
-        utilsBean.persist(p3);
-
-        PromoProduct p4 = new PromoProduct();
-        p4.setName("Takashimaya Department Store S$100 Voucher");
-        p4.setTerms("• Voucher will expire 3 months from date of redemption or date of issue. \n"
-                + "• Voucher will be mail within 7 days from the date of redemption. \n"
-                + "• Voucher is not exchangeable for cash or Takashimaya Gift Voucher and any unused value of the Voucher will be forfeited.  \n"
-                + "• Usage of multiple vouchers is allowed.  \n"
-                + "• Valid at Takashimaya Department Store except supermarket, tenants, services and restaurants.  \n"
-                + "• Any balance payment must be made with your DBS Credit Card.  \n"
-                + "• Other terms & conditions apply.");
-        p4.setPoints(16500);
-        p4.setType(EnumUtils.PromoType.VOUCHER);
-        utilsBean.persist(p4);
-    }
-
-    public void initCreditCardProduct() {
-        MileCardProduct mca = new MileCardProduct();
-        mca.setLocalMileRate(1.3);
-        mca.setOverseaMileRate(2);
-        mca.setMinSpending(true);
-        mca.setMinSpendingAmount(2000);
-        mca.setProductName("Merlion MileCard");
-        newCardProductSessionBean.createMileProduct(mca);
-
-        mca = new MileCardProduct();
-        mca.setLocalMileRate(1.5);
-        mca.setOverseaMileRate(2.1);
-        mca.setMinSpending(true);
-        mca.setMinSpendingAmount(3000);
-        mca.setProductName("Merlion MileCard2");
-        newCardProductSessionBean.createMileProduct(mca);
-
-        RewardCardProduct rcp = new RewardCardProduct();
-        rcp.setLocalMileRate(1.3);
-        rcp.setLocalPointRate(3);
-        rcp.setMinSpending(true);
-        rcp.setMinSpendingAmount(500);
-        rcp.setProductName("Merlion RewardCard");
-        newCardProductSessionBean.createRewardProduct(rcp);
-
-        rcp = new RewardCardProduct();
-        rcp.setLocalMileRate(1.4);
-        rcp.setLocalPointRate(3.1);
-        rcp.setMinSpending(true);
-        rcp.setMinSpendingAmount(700);
-        rcp.setProductName("Merlion RewardCard2");
-        demoRewardCardProduct = newCardProductSessionBean.createRewardProduct(rcp);
-
-        CashBackCardProduct cbcp = new CashBackCardProduct();
-        cbcp.setDiningCashBackRate(0.9);
-        cbcp.setGroceryCashBackRate(1.2);
-        cbcp.setPetrolCashBackRate(0.7);
-        cbcp.setMinSpendingAmount(2000);
-        cbcp.setProductName("Merlion CashBackCard");
-        newCardProductSessionBean.createCashBackProduct(cbcp);
-
-        cbcp = new CashBackCardProduct();
-        cbcp.setDiningCashBackRate(1.1);
-        cbcp.setGroceryCashBackRate(1.3);
-        cbcp.setPetrolCashBackRate(0.6);
-        cbcp.setMinSpendingAmount(2000);
-        cbcp.setProductName("Merlion CashBackCard2");
-        newCardProductSessionBean.createCashBackProduct(cbcp);
-
-        CreditCardAccount cca = new CreditCardAccount();
-        cca.setCreditCardProduct(mca);
-        cca.setNameOnCard(demoMainAccount.getCustomer().getFullName());
-        cca.setCreditCardNum("4545454545454545");
-        cca.setOutstandingAmount(0);
-        cca.setMerlionPoints(100000);
-        cca.setCardStatus(EnumUtils.CardAccountStatus.ACTIVE);
-        cca.setMainAccount(demoMainAccount);
-        cca = cardAcctSessionBean.createCardAccount(cca);
-
-        cca.deductPoints(demoPromoProduct.getPoints());
-        PromoCode pc = new PromoCode();
-        pc.setProduct(demoPromoProduct);
-        pc.setPromotionCode(PincodeGenerationUtils.generateRandom(false, 8));
-        pc.setCreditCardAccount(cca);
-        cca.addPromoCode(pc);
-        Object ccaResult = utilsBean.merge(cca);
-
-        CardTransaction cardTransaction = new CardTransaction();
-        cardTransaction.setCardTransactionStatus(CardTransactionStatus.PENDINGTRANSACTION);
-        cardTransaction.setAmount(500);
-        cardTransaction.setIsCredit(true);
-        cardTransaction.setTransactionCode("MST");
-        cardTransaction.setTransactionDescription("AMAZON SERVICE USD378.50");
-        cardTransaction.setCreditCardAccount(cca);
-        cardAcctSessionBean.createCardAccountTransaction(cca.getCreditCardNum(), cardTransaction);
-
-        cardTransaction = new CardTransaction();
-        cardTransaction.setCardTransactionStatus(CardTransactionStatus.PENDINGTRANSACTION);
-        cardTransaction.setAmount(200);
-        cardTransaction.setIsCredit(true);
-        cardTransaction.setTransactionCode("MST");
-        cardTransaction.setTransactionDescription("Apple SERVICE USD168.50");
-        cardTransaction.setCreditCardAccount(cca);
-        cardAcctSessionBean.createCardAccountTransaction(cca.getCreditCardNum(), cardTransaction);
-
-        cardTransaction = new CardTransaction();
-        cardTransaction.setCardTransactionStatus(CardTransactionStatus.PENDINGTRANSACTION);
-        cardTransaction.setAmount(100);
-        cardTransaction.setIsCredit(true);
-        cardTransaction.setTransactionCode("MST");
-        cardTransaction.setTransactionDescription("Microsoft SERVICE USD78.50");
-        cardTransaction.setCreditCardAccount(cca);
-        cardAcctSessionBean.createCardAccountTransaction(cca.getCreditCardNum(), cardTransaction);
-
+//        initCreditCardOrder();
+        entityCreditCardOrderBuilder.initCreditCardOrder(demoMainAccount, demoRewardCardProduct, demoPromoProduct);
     }
 
     private void initStaffAndRoles() {
@@ -438,232 +248,6 @@ public class EntityBuilderBean {
         productManagerAccount.setStatus(StatusType.ACTIVE);
         productManagerAccount.setRole(productManagerRole);
         staffAccountSessionBean.createAccount(productManagerAccount);
-    }
-
-    private void initCustomer() {
-        String p = HashPwdUtils.hashPwd("password");
-
-        Customer c = new Customer();
-        c.setAddress("some fake address"); //make it a bit more real
-        c.setBirthDay(new Date()); //make some real birthday.
-        c.setEmail("wangzhe.lynx@gmail.com");
-        c.setFirstname("Yifan");
-        c.setGender(Gender.MALE); // pls modify gender to enum type
-        c.setIdentityNumber("S1234567Z");
-        c.setIdentityType(IdentityType.NRIC); // same for this to enum type
-        c.setIncome(Income.FROM_2000_TO_4000);
-        c.setLastname("Chen");
-        c.setNationality(Nationality.CHINA); //enum type if possible
-        c.setOccupation(Occupation.DIRECTOR);
-        c.setPhone("81567758"); //must use real phone number as we need sms code
-        c.setPostalCode("654321");
-        c.setMainAccount(new MainAccount());
-        c.getMainAccount().setUserID(ConstantUtils.DEMO_MAIN_ACCOUNT_USER_ID);
-        c.getMainAccount().setPassword(p);
-        c.getMainAccount().setStatus(EnumUtils.StatusType.ACTIVE);
-        c.getMainAccount().setCustomer(c);
-
-        demoMainAccount = newCustomerSessionBean.createCustomer(c).getMainAccount();
-
-        String u2 = "c0000002";
-        String p2 = HashPwdUtils.hashPwd("password");
-
-        Customer c2 = new Customer();
-        c2.setAddress("19 Tanglin Road, 131-1-1"); //make it a bit more real
-        c2.setBirthDay(new Date()); //make some real birthday.
-        c2.setEmail("wangzhe.lynx2@gmail.com");
-        c2.setFirstname("Zhe");
-        c2.setGender(Gender.MALE); // pls modify gender to enum type
-        c2.setIdentityNumber("S1234223Z");
-        c2.setIdentityType(IdentityType.PASSPORT); // same for this to enum type
-        c2.setIncome(Income.FROM_4000_TO_6000);
-        c2.setLastname("Wang");
-        c2.setNationality(Nationality.CHINA_HONG_KONG); //enum type if possible
-        c2.setOccupation(Occupation.FREELANCER);
-        c2.setPhone("81567712"); //must use real phone number as we need sms code
-        c2.setPostalCode("654302");
-        c2.setMainAccount(new MainAccount());
-        c2.getMainAccount().setUserID(u2);
-        c2.getMainAccount().setPassword(p2);
-        c2.getMainAccount().setStatus(EnumUtils.StatusType.ACTIVE);
-        c2.getMainAccount().setCustomer(c2);
-
-        newCustomerSessionBean.createCustomer(c2);
-
-        String u3 = "c0000003";
-        String p3 = HashPwdUtils.hashPwd("password");
-
-        Customer c3 = new Customer();
-        c3.setAddress("9 Thomson Road, 9-1-B"); //make it a bit more real
-        c3.setBirthDay(new Date()); //make some real birthday.
-        c3.setEmail("leiyang007@gmail.com");
-        c3.setFirstname("Yang");
-        c3.setGender(Gender.FEMALE); // pls modify gender to enum type
-        c3.setIdentityNumber("S1234902Z");
-        c3.setIdentityType(IdentityType.PASSPORT); // same for this to enum type
-        c3.setIncome(Income.FROM_6000_TO_8000);
-        c3.setLastname("Lei");
-        c3.setNationality(Nationality.GERMANY); //enum type if possible
-        c3.setOccupation(Occupation.MANAGERIAL);
-        c3.setPhone("89212758"); //must use real phone number as we need sms code
-        c3.setPostalCode("654111");
-        c3.setMainAccount(new MainAccount());
-        c3.getMainAccount().setUserID(u3);
-        c3.getMainAccount().setPassword(p3);
-        c3.getMainAccount().setStatus(EnumUtils.StatusType.ACTIVE);
-        c3.getMainAccount().setCustomer(c3);
-
-        newCustomerSessionBean.createCustomer(c3);
-
-        String u4 = "c0000004";
-        String p4 = HashPwdUtils.hashPwd("password");
-
-        Customer c4 = new Customer();
-        c4.setAddress("3 Sim Lim Avenue, 898B-501"); //make it a bit more real
-        c4.setBirthDay(new Date()); //make some real birthday.
-        c4.setEmail("sunyuxuan123@gmail.com");
-        c4.setFirstname("Yuxuan");
-        c4.setGender(Gender.MALE); // pls modify gender to enum type
-        c4.setIdentityNumber("S1243267Z");
-        c4.setIdentityType(IdentityType.PASSPORT); // same for this to enum type
-        c4.setIncome(Income.FROM_8000_TO_10000);
-        c4.setLastname("Sun");
-        c4.setNationality(Nationality.INDONESIA); //enum type if possible
-        c4.setOccupation(Occupation.EXECUTIVE);
-        c4.setPhone("81123558"); //must use real phone number as we need sms code
-        c4.setPostalCode("621329");
-        c4.setMainAccount(new MainAccount());
-        c4.getMainAccount().setUserID(u4);
-        c4.getMainAccount().setPassword(p4);
-        c4.getMainAccount().setStatus(EnumUtils.StatusType.ACTIVE);
-        c4.getMainAccount().setCustomer(c4);
-
-        newCustomerSessionBean.createCustomer(c4);
-
-        String u5 = "c0000005";
-        String p5 = HashPwdUtils.hashPwd("password");
-
-        Customer c5 = new Customer();
-        c5.setAddress("28 West Coast Road, B-2"); //make it a bit more real
-        c5.setBirthDay(new Date()); //make some real birthday.
-        c5.setEmail("lilitong01@gmail.com");
-        c5.setFirstname("Litong");
-        c5.setGender(Gender.MALE); // pls modify gender to enum type
-        c5.setIdentityNumber("S1289812Z");
-        c5.setIdentityType(IdentityType.PASSPORT); // same for this to enum type
-        c5.setIncome(Income.FROM_2000_TO_4000);
-        c5.setLastname("Chen");
-        c5.setNationality(Nationality.JAPAN); //enum type if possible
-        c5.setOccupation(Occupation.MANAGERIAL);
-        c5.setPhone("90028125");//must use real phone number as we need sms code
-        c5.setPostalCode("001409");
-        c5.setMainAccount(new MainAccount());
-        c5.getMainAccount().setUserID(u5);
-        c5.getMainAccount().setPassword(p5);
-        c5.getMainAccount().setStatus(EnumUtils.StatusType.ACTIVE);
-        c5.getMainAccount().setCustomer(c5);
-
-        newCustomerSessionBean.createCustomer(c5);
-
-        String u6 = "c0000006";
-        String p6 = HashPwdUtils.hashPwd("password");
-
-        Customer c6 = new Customer();
-        c6.setAddress("67 Ang Mo Kio Avenue, 256-1"); //make it a bit more real
-        c6.setBirthDay(new Date()); //make some real birthday.
-        c6.setEmail("daisyqiu@gmail.com");
-        c6.setFirstname("Xiaqing");
-        c6.setGender(Gender.MALE); // pls modify gender to enum type
-        c6.setIdentityNumber("S1209183Z");
-        c6.setIdentityType(IdentityType.PASSPORT); // same for this to enum type
-        c6.setIncome(Income.FROM_2000_TO_4000);
-        c6.setLastname("Qiu");
-        c6.setNationality(Nationality.INDONESIA); //enum type if possible
-        c6.setOccupation(Occupation.EXECUTIVE);
-        c6.setPhone("81509281"); //must use real phone number as we need sms code
-        c6.setPostalCode("118921");
-        c6.setMainAccount(new MainAccount());
-        c6.getMainAccount().setUserID(u6);
-        c6.getMainAccount().setPassword(p6);
-        c6.getMainAccount().setStatus(EnumUtils.StatusType.ACTIVE);
-        c6.getMainAccount().setCustomer(c6);
-
-        newCustomerSessionBean.createCustomer(c6);
-
-        String u7 = "c0000007";
-        String p7 = HashPwdUtils.hashPwd("password");
-
-        Customer c7 = new Customer();
-        c7.setAddress("555 Clementi Road, 419-807"); //make it a bit more real
-        c7.setBirthDay(new Date()); //make some real birthday.
-        c7.setEmail("daisykoo@gmail.com");
-        c7.setFirstname("Daisy");
-        c7.setGender(Gender.MALE); // pls modify gender to enum type
-        c7.setIdentityNumber("S1290528Z");
-        c7.setIdentityType(IdentityType.PASSPORT); // same for this to enum type
-        c7.setIncome(Income.FROM_2000_TO_4000);
-        c7.setLastname("Koo");
-        c7.setNationality(Nationality.INDONESIA); //enum type if possible
-        c7.setOccupation(Occupation.TEACHER);
-        c7.setPhone("91027903"); //must use real phone number as we need sms code
-        c7.setPostalCode("002987");
-        c7.setMainAccount(new MainAccount());
-        c7.getMainAccount().setUserID(u7);
-        c7.getMainAccount().setPassword(p7);
-        c7.getMainAccount().setStatus(EnumUtils.StatusType.ACTIVE);
-        c7.getMainAccount().setCustomer(c7);
-
-        newCustomerSessionBean.createCustomer(c7);
-
-        String u8 = "c0000008";
-        String p8 = HashPwdUtils.hashPwd("password");
-
-        Customer c8 = new Customer();
-        c8.setAddress("9 Hougang Road, 193-303"); //make it a bit more real
-        c8.setBirthDay(new Date()); //make some real birthday.
-        c8.setEmail("vincentlee@gmail.com");
-        c8.setFirstname("Vincent");
-        c8.setGender(Gender.MALE); // pls modify gender to enum type
-        c8.setIdentityNumber("S12091235Z");
-        c8.setIdentityType(IdentityType.PASSPORT); // same for this to enum type
-        c8.setIncome(Income.FROM_6000_TO_8000);
-        c8.setLastname("Lee");
-        c8.setNationality(Nationality.SINGAPORE); //enum type if possible
-        c8.setOccupation(Occupation.SUPERVISOR);
-        c8.setPhone("99910888"); //must use real phone number as we need sms code
-        c8.setPostalCode("020988");
-        c8.setMainAccount(new MainAccount());
-        c8.getMainAccount().setUserID(u8);
-        c8.getMainAccount().setPassword(p8);
-        c8.getMainAccount().setStatus(EnumUtils.StatusType.ACTIVE);
-        c8.getMainAccount().setCustomer(c8);
-
-        newCustomerSessionBean.createCustomer(c8);
-
-        String u9 = "c0000009";
-        String p9 = HashPwdUtils.hashPwd("password");
-
-        Customer c9 = new Customer();
-        c9.setAddress("17 South Buona Vista Road, 29-905"); //make it a bit more real
-        c9.setBirthDay(new Date()); //make some real birthday.
-        c9.setEmail("cassychoi@gmail.com");
-        c9.setFirstname("Cassy");
-        c9.setGender(Gender.FEMALE); // pls modify gender to enum type
-        c9.setIdentityNumber("S1234567Z");
-        c9.setIdentityType(IdentityType.NRIC); // same for this to enum type
-        c9.setIncome(Income.FROM_6000_TO_8000);
-        c9.setLastname("Choi");
-        c9.setNationality(Nationality.UNITED_STATES); //enum type if possible
-        c9.setOccupation(Occupation.SELF_EMPLOYED);
-        c9.setPhone("80031182"); //must use real phone number as we need sms code
-        c9.setPostalCode("019090");
-        c9.setMainAccount(new MainAccount());
-        c9.getMainAccount().setUserID(u9);
-        c9.getMainAccount().setPassword(p9);
-        c9.getMainAccount().setStatus(EnumUtils.StatusType.ACTIVE);
-        c9.getMainAccount().setCustomer(c9);
-
-        newCustomerSessionBean.createCustomer(c9);
     }
 
     private void initInterest() {
@@ -1475,53 +1059,42 @@ public class EntityBuilderBean {
         customerCaseSessionBean.saveCase(cc);
     }
 
-    public void initCreditCardOrder() {
-        CreditCardOrder cco = new CreditCardOrder();
-        CreditCardProduct ccp = new MileCardProduct();
-        ccp.setProductName("MileCard Ver2");
-        cco.setMainAccount(demoMainAccount);
-        Customer cms = customerProfileSessionBean.getCustomerByID(3L);
-        cco.setAddress("some fake address"); //make it a bit more real
-        cco.setBirthDay(new Date()); //make some real birthday.
-        cco.setEmail("wangzhe.lynx@gmail.com");
-        cco.setFirstName("Yifan");
-        cco.setGender(Gender.MALE); // pls modify gender to enum type
-        cco.setIdentityNumber("S1234567Z");
-        cco.setIdentityType(IdentityType.NRIC); // same for this to enum type
-        cco.setIncome(Income.FROM_2000_TO_4000);
-        cco.setLastName("Chen");
-        cco.setNationality(Nationality.CHINA); //enum type if possible
-        cco.setOccupation(Occupation.DIRECTOR);
-        cco.setPhone("81567758"); //must use real phone number as we need sms code
-        cco.setPostalCode("654321");
-
-        cco.setApplicationStatus(EnumUtils.ApplicationStatus.PENDING);
-        cco.setCompany("NUS");
-        cco.setCpf(null);
-        cco.setCreditCardProduct(ccp);
-        cco.setCredit_limit(2000);
-        cco.setEduLevel(EnumUtils.Education.DIPLOMA);
-        cco.setEmploymentPass(null);
-        cco.setEmploymentStatus(EnumUtils.EmploymentStatus.OTHERS);
-        cco.setGender(Gender.MALE);
-        cco.setIncome(Income.BELOW_2000);
-        cco.setIncomeTax(null);
-        cco.setIndustry(EnumUtils.Industry.IT_TELCO);
-        cco.setMaritalStatus(EnumUtils.MaritalStatus.SINGLE);
-        cco.setNameOnCard("yifan");
-        cco.setNationality(Nationality.SINGAPORE);
-        cco.setNumOfDependents(1);
-        cco.setResidentialStatus(EnumUtils.ResidentialStatus.OTHERS);
-        cco.setResidentialType(EnumUtils.ResidentialType.PARENTS);
-        cco.setResultNotes(null);
-        cco.setSaluation(EnumUtils.Salutation.DR);
-
-        cardAcctSessionBean.createCardOrder(cco);
-    }
-    
     public void initNotification() {
         Announcement n1 = new Announcement();
         n1.setTitle("Happy Holidy!!");
         n1.setTitle("Happy Holidy!!");
+    }
+
+    private void testCreditCard() {
+
+        Date startDate = DateUtils.getBeginOfDay();
+        Date endDate = DateUtils.getEndOfDay();
+
+        System.out.println(startDate);
+        System.out.println(startDate);
+        List<CardTransaction> result = cardTransactionBean.getTransactionByStartDateAndEndDate(startDate, endDate);
+        System.out.println(result);
+//        System.out.println("testCreditCard");
+//        try {
+//            CreditCardAccount c = cardAcctSessionBean.getCardByCardNumber("4545454545454545");
+//            System.out.println(c);
+//        } catch(Exception e) {
+////            e.printStackTrace();
+//        }
+//        List<CreditCardAccount> cards = cardAcctSessionBean.showAllCreditCardAccount(EnumUtils.CardAccountStatus.CLOSED, 8L);
+//        System.out.println(cards);
+    }
+
+    private void testInterestRules() {
+
+        // Get Product
+//        DepositAccount da = customerDepositSessionBean.getAccountFromId(1L);
+//        // Get Interest
+//        List<Interest> interests = ((DepositAccountProduct) da.getProduct()).getInterestRules();
+//        for (Interest i : interests) {
+//            if (i instanceof ConditionInterest) {
+//                System.out.print(interestAccrualSessionBean.isAccountMeetCondition(da, (ConditionInterest) i));
+//            }
+//        }
     }
 }

@@ -66,7 +66,6 @@ public class CustomerProfileManagedBean implements Serializable {
 
     public void save() {
         customer.setIncome(Income.getEnum(selectedIncome));
-        customer.setOccupation(Occupation.getEnum(selectedOccupation));
         if (utilsSessionBean.checkUpdatedEmailIsUnique(customer) == false) {
             MessageUtils.displayInfo("Email is registered!");
 
@@ -95,7 +94,6 @@ public class CustomerProfileManagedBean implements Serializable {
         this.customer = customerProfileSessionBean.getCustomerByUserID(SessionUtils.getUserName());
         this.auditLogs = auditSessionBean.getAuditLogByCustomerID(SessionUtils.getUserName());
         selectedIncome = customer.getIncome().toString();
-        selectedOccupation = customer.getOccupation().toString();
     }
 
     /**

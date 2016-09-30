@@ -6,10 +6,16 @@
 package customer.card;
 
 import ejb.session.card.CardAcctSessionBeanLocal;
-import ejb.session.card.NewCardProductSessionBeanLocal;
+import ejb.session.card.CardProductSessionBeanLocal;
+import ejb.session.card.CreditCardOrderSessionBeanLocal;
 import ejb.session.common.EmailServiceSessionBeanLocal;
-import entity.card.account.CreditCardOrder;
-import entity.card.account.CreditCardProduct;
+import ejb.session.common.NewCustomerSessionBeanLocal;
+import ejb.session.mainaccount.MainAccountSessionBeanLocal;
+import entity.card.account.CreditCardAccount;
+import entity.card.order.CreditCardOrder;
+import entity.card.product.CreditCardProduct;
+import entity.customer.Customer;
+import entity.customer.MainAccount;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -18,9 +24,10 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
-import server.utilities.EnumUtils.*;
 import utils.CommonUtils;
 import utils.RedirectUtils;
+import server.utilities.EnumUtils.*;
+import server.utilities.CommonHelper;
 
 /**
  *
@@ -34,12 +41,25 @@ public class NewCardManagedBean implements Serializable {
     private EmailServiceSessionBeanLocal emailServiceSessionBean;
 
     @EJB
-    private NewCardProductSessionBeanLocal newCardProductSessionBean;
+    private CardProductSessionBeanLocal newCardProductSessionBean;
+
+    @EJB
+    private MainAccountSessionBeanLocal mainAccountSessionBean;
+
+    @EJB
+    private NewCustomerSessionBeanLocal newCustomerSessionBean;
 
     @EJB
     private CardAcctSessionBeanLocal cardAcctSessionBean;
 
-    private CreditCardOrder cco = new CreditCardOrder();
+    @EJB
+    private CreditCardOrderSessionBeanLocal creditCardOrderSessionBean;
+
+    private CreditCardOrder cco;
+    private MainAccount ma;
+    private Customer c;
+    private CreditCardAccount cca;
+
     private List<String> ProductNameOptions = new ArrayList<>();
 
     private List<String> ResidentialStatusOptions = CommonUtils.getEnumList(ResidentialStatus.class);
@@ -64,18 +84,20 @@ public class NewCardManagedBean implements Serializable {
     private String selectedResidentialType;
     private String selectedEmploymentStatus;
     private String selectedEducation;
-    private String selectedOccupation;
     private String selectedIndustry;
     private String selectedIdentityType;
     private String selectedNationality;
-    private String selectedSalutation;
     private String selectedGender;
     private String selectedIncome;
     private Date currentDate = new Date();
 
     @PostConstruct
     public void retrieveProducts() {
-        List<CreditCardProduct> ccps = newCardProductSessionBean.getAllCreditCardProducts();
+        cco = new CreditCardOrder();
+        setMa(new MainAccount());
+        setC(new Customer());
+        setCca(new CreditCardAccount());
+        List<CreditCardProduct> ccps = newCardProductSessionBean.getListCreditCardProducts();
         for (CreditCardProduct ccp : ccps) {
             ProductNameOptions.add(ccp.getProductName());
         }
@@ -86,26 +108,42 @@ public class NewCardManagedBean implements Serializable {
 
     public void saveUpdatedCreditCardOrder() {
         System.out.println("inside saveupdatedCreditcardorder");
+        //persist
+        getC().setResidentialStatus(ResidentialStatus.getEnum(getSelectedResidentialStatus()));
+        getC().setResidentialType(ResidentialType.getEnum(getSelectedResidentialType()));
+        getC().setEmploymentStatus(EmploymentStatus.getEnum(getSelectedEmploymentStatus()));
+        getC().setEducation(Education.getEnum(getSelectedEducation()));
+        getC().setIndustry(Industry.getEnum(getSelectedIndustry()));
+        getC().setIncome(Income.getEnum(getSelectedIncome()));
+        getC().setIdentityType(IdentityType.getEnum(getSelectedIdentityType()));
+        getC().setGender(Gender.getEnum(getSelectedGender()));
+        getC().setNationality(Nationality.getEnum(getSelectedNationality()));
+        newCustomerSessionBean.createCustomer(getC());
 
-        cco.setResidentialStatus(ResidentialStatus.getEnum(getSelectedResidentialStatus()));
-        cco.setResidentialType(ResidentialType.getEnum(getSelectedResidentialType()));
-        cco.setEmploymentStatus(EmploymentStatus.getEnum(getSelectedEmploymentStatus()));
-        cco.setEduLevel(Education.getEnum(getSelectedEducation()));
-        cco.setOccupation(Occupation.getEnum(getSelectedOccupation()));
-        cco.setIndustry(Industry.getEnum(getSelectedIndustry()));
-        cco.setIncome(Income.getEnum(getSelectedIncome()));
-
-        cco.setGender(Gender.getEnum(getSelectedGender()));
-        cco.setIdentityType(IdentityType.getEnum(getSelectedIdentityType()));
-        cco.setNationality(Nationality.getEnum(getSelectedNationality()));
-        cco.setSaluation(Salutation.getEnum(getSelectedSalutation()));
+        setMa(new MainAccount());
+        getMa().setUserID(CommonHelper.generateUserID(getC().getIdentityType(), getC().getIdentityNumber()));
+        getMa().setStatus(StatusType.NEW);
+        mainAccountSessionBean.createMainAccount(getMa());
+        
+        cca.setCardStatus(CardAccountStatus.NEW);
+        cardAcctSessionBean.createCardAccount(cca);
 
         cco.setApplicationStatus(ApplicationStatus.NEW);
-
-        cco.setCreditCardProduct(newCardProductSessionBean.getSingleCreditCardProduct(selectedProductName));
-        cardAcctSessionBean.createCardOrder(cco);
+        creditCardOrderSessionBean.createCardOrder(cco);
         
-        emailServiceSessionBean.sendCreditCardApplicationNotice(cco.getEmail());
+        //update relations
+        c.setMainAccount(ma);
+        newCustomerSessionBean.updateCustomer(c);
+        
+        cca.setMainAccount(ma);
+        cca.setCreditCardProduct(newCardProductSessionBean.getCreditCardProductByProductName(selectedProductName));
+        cca.setCreditCardOrder(cco);
+        cardAcctSessionBean.updateCreditCardAccount(cca);
+        
+        cco.setMainAccount(ma);
+        creditCardOrderSessionBean.updateCreditCardOrder(cco);
+        
+        emailServiceSessionBean.sendCreditCardApplicationNotice(c.getEmail());
         RedirectUtils.redirect("/InternetBankingSystem/common/application_success.xhtml");
 
     }
@@ -246,14 +284,6 @@ public class NewCardManagedBean implements Serializable {
         this.selectedEducation = selectedEducation;
     }
 
-    public String getSelectedOccupation() {
-        return selectedOccupation;
-    }
-
-    public void setSelectedOccupation(String selectedOccupation) {
-        this.selectedOccupation = selectedOccupation;
-    }
-
     public String getSelectedIndustry() {
         return selectedIndustry;
     }
@@ -292,14 +322,6 @@ public class NewCardManagedBean implements Serializable {
 
     public void setSelectedNationality(String selectedNationality) {
         this.selectedNationality = selectedNationality;
-    }
-
-    public String getSelectedSalutation() {
-        return selectedSalutation;
-    }
-
-    public void setSelectedSalutation(String selectedSalutation) {
-        this.selectedSalutation = selectedSalutation;
     }
 
     public String getSelectedGender() {
@@ -346,5 +368,29 @@ public class NewCardManagedBean implements Serializable {
      */
     public void setCurrentDate(Date currentDate) {
         this.currentDate = currentDate;
+    }
+
+    public CreditCardAccount getCca() {
+        return cca;
+    }
+
+    public void setCca(CreditCardAccount cca) {
+        this.cca = cca;
+    }
+
+    public MainAccount getMa() {
+        return ma;
+    }
+
+    public void setMa(MainAccount ma) {
+        this.ma = ma;
+    }
+
+    public Customer getC() {
+        return c;
+    }
+
+    public void setC(Customer c) {
+        this.c = c;
     }
 }

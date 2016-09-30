@@ -7,6 +7,7 @@ package webservice.restful.creditcard;
 
 import SMSMessaging.SendTextMessage;
 import ejb.session.card.CardAcctSessionBeanLocal;
+import ejb.session.card.CardTransactionSessionBeanLocal;
 import entity.card.account.CreditCardAccount;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -43,6 +44,8 @@ public class CreditCardAuthorizationService {
 
     @EJB
     private CardAcctSessionBeanLocal ccBean;
+    @EJB
+    private CardTransactionSessionBeanLocal cardTransactionSessionBean;
 
     public CreditCardAuthorizationService() {
         System.out.println("CreditCardService");
@@ -82,12 +85,14 @@ public class CreditCardAuthorizationService {
         c.setDescription(ccDescription);
         c.setCreditCardNumber(ccNumber);
         c.setTransactionCode(ccTcode);
+        boolean validDailyStatus = false;
+        boolean validMonthlyStatus = false;
 
         if (!checkAbnormalAction(ccAmount)) {
             System.out.println("Retrieving card: " + ccNumber);
             CreditCardAccount thisAccount = null;
             try {
-                thisAccount = ccBean.getCardByCardNumber(ccNumber);
+                thisAccount = ccBean.getCreditCardAccountByCardNumber(ccNumber);
             } catch (Exception e) {
                 System.out.println("No account retrieved");
             }
@@ -96,21 +101,21 @@ public class CreditCardAuthorizationService {
             if (thisAccount != null) {
                 System.out.println("Validateing daily transaction limit");
                 try {
-                    thisAccount = ccBean.validateCreditCardDailyTransactionLimit(thisAccount, Double.parseDouble(ccAmount));
+                    validDailyStatus = cardTransactionSessionBean.validateCreditCardDailyTransactionLimit(thisAccount, Double.parseDouble(ccAmount));
                 } catch (Exception e) {
                     System.out.println("Exceed daily transaction");
                 }
             }
-            if (thisAccount == null) {
+            if (validDailyStatus == false) {
                 authorized = false;
                 c.setMessage("Exceed daily transaction limit!");
             } else {
                 try {
-                    thisAccount = ccBean.validateCreditCardMonthlyTransactionLimit(thisAccount, Double.parseDouble(ccAmount));
+                    validMonthlyStatus = cardTransactionSessionBean.validateCreditCardMonthlyTransactionLimit(thisAccount, Double.parseDouble(ccAmount));
                 } catch (Exception e) {
                     System.out.println("Exceed monthly transaction");
                 }
-                if (thisAccount == null) {
+                if (validMonthlyStatus == false) {
                     c.setMessage("Exceed monthly transaction limit!");
                 }
             }
@@ -129,9 +134,9 @@ public class CreditCardAuthorizationService {
             c.setMessage("Not Authorized!");
             // TODO: Send Notification message
 
-            CreditCardAccount cca = ccBean.getCardByCardNumber(ccNumber);
+            CreditCardAccount cca = ccBean.getCreditCardAccountByCardNumber(ccNumber);
             String phoneNumber = cca.getMainAccount().getCustomer().getPhone();
-            System.out.println("######## "+phoneNumber+" #######");
+            System.out.println("######## " + phoneNumber + " #######");
             Calendar currentDate = Calendar.getInstance();
             SimpleDateFormat dateOnly = new SimpleDateFormat("dd/MM/yyyy");
 

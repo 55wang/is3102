@@ -81,4 +81,26 @@ public class CommonHelper {
         return sb.toString();
     }
 
+    public static String generateUserID(EnumUtils.IdentityType identityType, String identityNum) {
+
+        if (identityType.equals(EnumUtils.IdentityType.NRIC)) {
+            return "c" + identityNum.substring(1, identityNum.length() - 1);
+        } else if (identityType.equals(EnumUtils.IdentityType.PASSPORT)) {
+            return "c" + identityNum.substring(1);
+        } else {
+            return "error";
+        }
+    }
+
+    public static String generatePwd() {
+        int pwdLen = 10;
+        SecureRandom rnd = new SecureRandom();
+
+        String AB = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+        StringBuilder sb = new StringBuilder(pwdLen);
+        for (int i = 0; i < pwdLen; i++) {
+            sb.append(AB.charAt(rnd.nextInt(AB.length())));
+        }
+        return sb.toString();
+    }
 }

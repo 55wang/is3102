@@ -1,0 +1,53 @@
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:em="http://xmlns.jcp.org/jsf/composite/emcomp"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <f:view>
+        <h:head>
+            <title>Merlion Bank</title>
+            <h:outputStylesheet library="css" name="reset.css"/>
+            <h:outputStylesheet library="css" name="theme.css"/>
+        </h:head>
+
+        <h:body>
+            <em:customerHeader context="main" userName="Log in"></em:customerHeader>
+            <em:customerNavBar context="main" mainPage="mainDeposit" ></em:customerNavBar>
+
+            <div style="margin-top: 200px;margin-left: 70px;position: absolute"> 
+                <h1>Time Deposit</h1> 
+                <p:panel style="width: 750px">
+                    <p:panelGrid columns="#{displayFixedDepositProductManagedBean.colSize}">
+                        <f:facet name="header">
+                            <p:row>
+                                <p:column colspan="7">Time Deposit Interest Rate</p:column>
+                            </p:row>
+                        </f:facet>
+
+                        <c:forEach items="#{displayFixedDepositProductManagedBean.rowIndex}" var="row">
+                            <c:forEach items="#{displayFixedDepositProductManagedBean.colIndex}" var="col">
+                                <h:outputText value="#{displayFixedDepositProductManagedBean.getDisplayCell(row, col)}" />
+                            </c:forEach>
+                        </c:forEach>
+                    </p:panelGrid>
+
+
+                    <div style="margin-top: 20px">
+                        <button style="margin-left: 100px" type="button" onclick="window.location.href = 'apply_deposit_account.xhtml'">New Customer Apply</button>
+                        <button style="margin-left: 50px" type="button" onclick="window.location.href = '../common/customer_login.xhtml'">Existing customer Login</button>
+                    </div>
+
+                </p:panel></div>
+
+
+
+        </h:body>
+    </f:view>
+</html>
