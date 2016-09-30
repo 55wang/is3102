@@ -9,6 +9,7 @@ package staff.card;
 import ejb.session.utils.UtilsSessionBeanLocal;
 import entity.common.AuditLog;
 import ejb.session.card.CardAcctSessionBeanLocal;
+import ejb.session.card.CreditCardOrderSessionBeanLocal;
 import entity.card.account.CreditCardAccount;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -36,6 +37,8 @@ public class CardIssueManagedBean {
     private UtilsSessionBeanLocal utilsBean;
     @EJB
     CardAcctSessionBeanLocal cardAcctSessionBean;
+    @EJB
+    CreditCardOrderSessionBeanLocal creditOrderSessionBean;
 
     private List<CreditCardAccount> ccas;
 
@@ -54,7 +57,8 @@ public class CardIssueManagedBean {
         a.setStaffAccount(SessionUtils.getStaff());
         utilsBean.persist(a);
     
-        setCcas(cardAcctSessionBean.showAllPendingCreditCardOrder());
+        setCcas(cardAcctSessionBean.getListCreditCardAccountsByCardStatusAndAppStatus(EnumUtils.CardAccountStatus.NEW, 
+                EnumUtils.ApplicationStatus.APPROVED));
     }
 
     public void issueCard(CreditCardAccount cca) {
@@ -64,6 +68,7 @@ public class CardIssueManagedBean {
         boolean writeStatus = false;
 
         try {
+            /*
             CardChannel channel = initializeDevice();
             writeCard(channel, ccNum); //32 digit
             if (readCard(channel).equals(ccNum)) {
@@ -72,6 +77,8 @@ public class CardIssueManagedBean {
             } else {
                 writeStatus = false;
             }
+            */
+            writeStatus = true;
 
         } catch (Exception ex) {
             System.out.println("error" + ex);
@@ -79,7 +86,7 @@ public class CardIssueManagedBean {
         }
 
         if (writeStatus) {
-            cca.setCardStatus(EnumUtils.CardAccountStatus.ISSUED);
+            cca.setCardStatus(EnumUtils.CardAccountStatus.PENDING);
             CreditCardAccount result = cardAcctSessionBean.updateCreditCardAccount(cca);
             if (result == null) {
                 MessageUtils.displayError("Something went wrong!");

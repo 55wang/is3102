@@ -6,11 +6,11 @@
 package staff.card;
 
 import ejb.session.card.CardAcctSessionBeanLocal;
-import ejb.session.card.NewCardProductSessionBeanLocal;
+import ejb.session.card.CardProductSessionBeanLocal;
 import ejb.session.utils.UtilsSessionBeanLocal;
-import entity.card.account.CashBackCardProduct;
-import entity.card.account.MileCardProduct;
-import entity.card.account.RewardCardProduct;
+import entity.card.product.CashBackCardProduct;
+import entity.card.product.MileCardProduct;
+import entity.card.product.RewardCardProduct;
 import entity.common.AuditLog;
 import java.io.Serializable;
 import java.util.List;
@@ -32,7 +32,7 @@ public class CardViewProductManagedBean implements Serializable {
      * Creates a new instance of CardViewProductManagedBean
      */
     @EJB
-    NewCardProductSessionBeanLocal newCardProductSessionBean;
+    CardProductSessionBeanLocal newCardProductSessionBean;
     @EJB
     private UtilsSessionBeanLocal utilsBean;
     
@@ -54,9 +54,9 @@ public class CardViewProductManagedBean implements Serializable {
         displayCards();
     }
     public void displayCards() {
-        mcps = newCardProductSessionBean.showAllMileProducts();
-        rcps = newCardProductSessionBean.showAllRewardProducts();
-        cbcps = newCardProductSessionBean.showAllCashBackCardProducts();
+        mcps = newCardProductSessionBean.getListMileProducts();
+        rcps = newCardProductSessionBean.getListRewardProducts();
+        cbcps = newCardProductSessionBean.getListCashBackCardProducts();
     }
 
     public List<MileCardProduct> getMcps() {

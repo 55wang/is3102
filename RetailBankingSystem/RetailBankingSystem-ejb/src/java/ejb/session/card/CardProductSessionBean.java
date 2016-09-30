@@ -5,10 +5,10 @@
  */
 package ejb.session.card;
 
-import entity.card.account.CashBackCardProduct;
-import entity.card.account.CreditCardProduct;
-import entity.card.account.MileCardProduct;
-import entity.card.account.RewardCardProduct;
+import entity.card.product.CashBackCardProduct;
+import entity.card.product.CreditCardProduct;
+import entity.card.product.MileCardProduct;
+import entity.card.product.RewardCardProduct;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -20,20 +20,20 @@ import javax.persistence.Query;
  * @author wang
  */
 @Stateless
-public class NewCardProductSessionBean implements NewCardProductSessionBeanLocal {
+public class CardProductSessionBean implements CardProductSessionBeanLocal {
 
     @PersistenceContext(unitName = "RetailBankingSystem-ejbPU")
     private EntityManager em;
 
     @Override
-    public List<MileCardProduct> showAllMileProducts() {
+    public List<MileCardProduct> getListMileProducts() {
         Query q = em.createQuery("SELECT mcp FROM MileCardProduct mcp");
         return q.getResultList();
     }
 
     @Override
-    public MileCardProduct getMileProductFromId(Long orderNumber) {
-        return em.find(MileCardProduct.class, orderNumber);
+    public MileCardProduct getMileProductById(Long productId) {
+        return em.find(MileCardProduct.class, productId);
     }
 
     @Override
@@ -42,14 +42,14 @@ public class NewCardProductSessionBean implements NewCardProductSessionBeanLocal
     }
 
     @Override
-    public List<RewardCardProduct> showAllRewardProducts() {
+    public List<RewardCardProduct> getListRewardProducts() {
         Query q = em.createQuery("SELECT rcp FROM RewardCardProduct rcp");
         return q.getResultList();
     }
 
     @Override
-    public RewardCardProduct getRewardProductFromId(Long orderNumber) {
-        return em.find(RewardCardProduct.class, orderNumber);
+    public RewardCardProduct getRewardProductById(Long productId) {
+        return em.find(RewardCardProduct.class, productId);
     }
 
     @Override
@@ -59,14 +59,14 @@ public class NewCardProductSessionBean implements NewCardProductSessionBeanLocal
     }
 
     @Override
-    public List<CashBackCardProduct> showAllCashBackCardProducts() {
+    public List<CashBackCardProduct> getListCashBackCardProducts() {
         Query q = em.createQuery("SELECT cbcp FROM CashBackCardProduct cbcp");
         return q.getResultList();
     }
 
     @Override
-    public CashBackCardProduct getCashBackCardProductFromId(Long orderNumber) {
-        return em.find(CashBackCardProduct.class, orderNumber);
+    public CashBackCardProduct getCashBackCardProductById(Long productId) {
+        return em.find(CashBackCardProduct.class, productId);
     }
 
     @Override
@@ -75,13 +75,13 @@ public class NewCardProductSessionBean implements NewCardProductSessionBeanLocal
     }
 
     @Override
-    public List<CreditCardProduct> getAllCreditCardProducts() {
+    public List<CreditCardProduct> getListCreditCardProducts() {
         Query q = em.createQuery("SELECT ccp FROM CreditCardProduct ccp");
         return q.getResultList();
     }
 
     @Override
-    public CreditCardProduct getSingleCreditCardProduct(String productName) {
+    public CreditCardProduct getCreditCardProductByProductName(String productName) {
         Query q = em.createQuery("SELECT ccp FROM CreditCardProduct ccp WHERE ccp.productName=:inPName");
         q.setParameter("inPName", productName);
         return (CreditCardProduct)q.getSingleResult();

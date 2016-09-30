@@ -6,6 +6,7 @@
 package ejb.session.card;
 
 import entity.card.account.CardTransaction;
+import entity.card.account.CreditCardAccount;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.Local;
@@ -17,5 +18,12 @@ import javax.ejb.Local;
 @Local
 public interface CardTransactionSessionBeanLocal {
      public Boolean createCardTransaction(CardTransaction ct);
-     public List<CardTransaction> retrieveTransactionByDate(Date start, Date end);
+     public List<CardTransaction> getTransactionByStartDateAndEndDate(Date start, Date end);
+     public List<CardTransaction> getListCardTransactionsByCcaId(Long ccaId);
+     public CardTransaction getCardTransactionByCcaId(Long ccaId);
+     public CardTransaction createCardAccountTransaction(CreditCardAccount cca, CardTransaction ct);
+     public List<CardTransaction> getListDailyTransactionsByCreditCardAccount(CreditCardAccount cca);
+     public List<CardTransaction> getListMonthlyTransactionsByCreditCardAccount(CreditCardAccount cca);
+     public boolean validateCreditCardDailyTransactionLimit(CreditCardAccount creditCard, double requestAmount);
+     public boolean validateCreditCardMonthlyTransactionLimit(CreditCardAccount creditCard, double requestAmount);
 }

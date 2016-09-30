@@ -3,8 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package entity.card.account;
+package entity.card.product;
 
+import entity.card.account.CreditCardAccount;
+import entity.card.product.PromoProduct;
 import java.io.Serializable;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;

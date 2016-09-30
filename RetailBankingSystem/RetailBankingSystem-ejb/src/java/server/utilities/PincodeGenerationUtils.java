@@ -34,4 +34,16 @@ public class PincodeGenerationUtils {
         return sb.toString();
     }
 
+    public static String generatePwd() {
+        int pwdLen = 10;
+        SecureRandom rnd = new SecureRandom();
+
+        String AB = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+        StringBuilder sb = new StringBuilder(pwdLen);
+        for (int i = 0; i < pwdLen; i++) {
+            sb.append(AB.charAt(rnd.nextInt(AB.length())));
+        }
+        return sb.toString();
+    }
+
 }

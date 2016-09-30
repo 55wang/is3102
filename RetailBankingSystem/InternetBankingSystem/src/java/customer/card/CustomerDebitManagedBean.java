@@ -64,7 +64,7 @@ public class CustomerDebitManagedBean implements Serializable {
     public void setCustomer() {
         System.out.println("@POSTCONSTRUCT INIT CustomerCardManagedBean");
         this.customer = customerProfileSessionBean.getCustomerByUserID(SessionUtils.getUserName());
-        this.setDcas(cardAcctSessionBean.showAllDebitCardAccount(CardAccountStatus.CLOSED, customer.getMainAccount().getId())); //that is not closed
+        this.setDcas(cardAcctSessionBean.getListDebitCardAccountsByIdAndNotStatus(customer.getMainAccount().getId(),CardAccountStatus.CLOSED)); //that is not closed
     }
 
     public Customer getCustomer() {

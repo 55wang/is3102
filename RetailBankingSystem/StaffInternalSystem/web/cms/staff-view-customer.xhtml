@@ -54,10 +54,6 @@
                                 <h:outputText value="#{customer.identityNumber}" />
                             </p:column>
 
-                            <p:column headerText="Occupation" sortBy="#{customer.occupation.toString()}">
-                                <h:outputText value="#{customer.occupation.toString()}" />
-                            </p:column>
-
                             <p:column headerText="Income" sortBy="#{customer.income.toString()}">
                                 <h:outputText value="#{customer.income.toString()}" />                                 
                             </p:column>
@@ -82,9 +78,6 @@
 
                                     <h:outputText value="Gender: " />
                                     <h:outputText value="#{customer.gender.toString()}" style="width:100%"/>
-
-                                    <h:outputText value="Citizenship: " />
-                                    <h:outputText value="#{customer.citizenship.toString()}" style="width:100%"/>
                                      
                                     <h:outputText value="Nationality: " />
                                     <h:outputText value="#{customer.nationality.toString()}" style="width:100%"/>
@@ -94,9 +87,6 @@
                                      
                                     <h:outputText value="Identity Number: " />
                                     <h:outputText value="#{customer.identityNumber}" />
-
-                                    <h:outputText value="Occupation: " />
-                                    <h:outputText value="#{customer.occupation.toString()}" style="width:100%"/>
                                       
                                     <h:outputText value="Income (S$): " />
                                     <h:outputText value="#{customer.income.toString()}" style="width:100%"/>

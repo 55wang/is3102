@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package entity.card.account;
+package entity.card.product;
 
+import entity.card.product.CreditCardProduct;
 import javax.persistence.Entity;
 
 /**

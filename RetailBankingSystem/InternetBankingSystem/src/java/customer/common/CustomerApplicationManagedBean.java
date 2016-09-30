@@ -9,15 +9,13 @@ import ejb.session.common.EmailServiceSessionBeanLocal;
 import ejb.session.common.NewCustomerSessionBeanLocal;
 import ejb.session.dams.CustomerDepositSessionBeanLocal;
 import ejb.session.dams.DepositProductSessionBeanLocal;
+import ejb.session.mainaccount.MainAccountSessionBean;
+import ejb.session.mainaccount.MainAccountSessionBeanLocal;
 import ejb.session.utils.UtilsSessionBeanLocal;
 import entity.customer.Customer;
 import entity.customer.MainAccount;
 import entity.dams.account.CustomerDepositAccount;
-import entity.dams.account.DepositAccount;
 import java.io.Serializable;
-import java.math.BigDecimal;
-import java.security.SecureRandom;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -33,8 +31,8 @@ import server.utilities.EnumUtils.Gender;
 import server.utilities.EnumUtils.IdentityType;
 import server.utilities.EnumUtils.Income;
 import server.utilities.EnumUtils.Nationality;
-import server.utilities.EnumUtils.Occupation;
 import server.utilities.EnumUtils.StatusType;
+import server.utilities.PincodeGenerationUtils;
 import utils.CommonUtils;
 import utils.JSUtils;
 import utils.MessageUtils;
@@ -50,6 +48,9 @@ public class CustomerApplicationManagedBean implements Serializable {
 
     @EJB
     private UtilsSessionBeanLocal utilsSessionBean;
+    
+    @EJB
+    private MainAccountSessionBeanLocal mainAccountSessionBean;
 
     @EJB
     private EmailServiceSessionBeanLocal emailServiceSessionBean;
@@ -119,19 +120,18 @@ public class CustomerApplicationManagedBean implements Serializable {
     }
 
     public void save() {
+
+        MainAccount mainAccount = new MainAccount();
+        mainAccount.setStatus(StatusType.PENDING);
+        mainAccount.setUserID(generateUserID(IdentityType.NRIC, customer.getIdentityNumber()));
+        String randomPwd = PincodeGenerationUtils.generatePwd();
+        mainAccount.setPassword(randomPwd);
+        mainAccount = mainAccountSessionBean.createMainAccount(mainAccount);
+
         customer.setIncome(Income.getEnum(selectedIncome));
-        customer.setIdentityType(IdentityType.getEnum(selectedIdentityType));
         customer.setNationality(Nationality.getEnum(selectedNationality));
         customer.setGender(Gender.getEnum(selectedGender));
-        customer.setOccupation(Occupation.getEnum(selectedOccupation));
-
-        customer.setMainAccount(new MainAccount());
-        MainAccount mainAccount = customer.getMainAccount();
-        mainAccount.setStatus(StatusType.PENDING);
-        mainAccount.setUserID(generateUserID(customer.getIdentityType(), customer.getIdentityNumber()));
-        String randomPwd = generatePwd();
-        mainAccount.setPassword(randomPwd);
-
+        customer.setMainAccount(mainAccount);
         newCustomerSessionBean.createCustomer(customer);
 
         CustomerDepositAccount depostiAccount = new CustomerDepositAccount();
@@ -164,23 +164,9 @@ public class CustomerApplicationManagedBean implements Serializable {
 
         if (identityType.equals(IdentityType.NRIC)) {
             return "c" + identityNum.substring(1, identityNum.length() - 1);
-        } else if (identityType.equals(IdentityType.PASSPORT)) {
-            return "c" + identityNum.substring(1);
         } else {
             return "error";
         }
-    }
-
-    private String generatePwd() {
-        int pwdLen = 10;
-        SecureRandom rnd = new SecureRandom();
-
-        String AB = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-        StringBuilder sb = new StringBuilder(pwdLen);
-        for (int i = 0; i < pwdLen; i++) {
-            sb.append(AB.charAt(rnd.nextInt(AB.length())));
-        }
-        return sb.toString();
     }
 
     /**

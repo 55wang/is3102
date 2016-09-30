@@ -20,7 +20,7 @@ import javax.persistence.Query;
  */
 @Stateless
 public class MainAccountSessionBean implements MainAccountSessionBeanLocal {
-    
+
     @PersistenceContext(unitName = "RetailBankingSystem-ejbPU")
     private EntityManager em;
 
@@ -29,16 +29,16 @@ public class MainAccountSessionBean implements MainAccountSessionBeanLocal {
         em.merge(ma);
         return ma;
     }
-    
+
     @Override
     public MainAccount getMainAccountByUserId(String userID) {
-        
+
         Query q = em.createQuery("SELECT ma FROM MainAccount ma WHERE ma.userID = :userID");
-        
+
         q.setParameter("userID", userID);
-        
+
         MainAccount sa = null;
-          
+
         try {
             List<MainAccount> accounts = q.getResultList();
             if (accounts != null && !accounts.isEmpty() && accounts.size() == 1) {
@@ -49,5 +49,11 @@ public class MainAccountSessionBean implements MainAccountSessionBeanLocal {
         } catch (NoResultException ex) {
             return null;
         }
+    }
+    
+    @Override
+    public MainAccount createMainAccount(MainAccount ma) {
+        em.persist(ma);
+        return ma;
     }
 }

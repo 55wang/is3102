@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package entity.card.account;
+package entity.card.product;
 
+import entity.card.product.CreditCardProduct;
 import javax.persistence.Entity;
 
 /**
@@ -12,18 +13,10 @@ import javax.persistence.Entity;
  * @author wang
  */
 @Entity
-public class MileCardProduct extends CreditCardProduct {
+public class RewardCardProduct extends CreditCardProduct {
 
-    private double overseaMileRate; // USD$1 = 2 Miles
-    private double localMileRate; // SGD$1 = 1.3 Miles
-
-    public double getOverseaMileRate() {
-        return overseaMileRate;
-    }
-
-    public void setOverseaMileRate(double overseaMileRate) {
-        this.overseaMileRate = overseaMileRate;
-    }
+    private double localMileRate; // SGD$1 = 4 Miles
+    private double localPointRate; //SGD$1 = 10 points
 
     public double getLocalMileRate() {
         return localMileRate;
@@ -31,6 +24,14 @@ public class MileCardProduct extends CreditCardProduct {
 
     public void setLocalMileRate(double localMileRate) {
         this.localMileRate = localMileRate;
+    }
+
+    public double getLocalPointRate() {
+        return localPointRate;
+    }
+
+    public void setLocalPointRate(double localPointRate) {
+        this.localPointRate = localPointRate;
     }
 
 }

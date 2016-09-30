@@ -54,6 +54,13 @@ public class CustomerCardManagedBean implements Serializable {
         String params = RedirectUtils.generateParameters(map);
         RedirectUtils.redirect("credit_card_transactions.xhtml" + params);
     }
+    
+    public void sendDCTransactionDetail(DebitCardAccount aDca) {
+        Map<String, String> map = new HashMap<>();
+        map.put("dcaId", aDca.getId().toString());
+        String params = RedirectUtils.generateParameters(map);
+        RedirectUtils.redirect("debit_card_transactions.xhtml" + params);
+    }
 
     public void viewTerminatePage(CreditCardAccount aCca) {
         System.out.println("in viewTerminatePage");
@@ -81,11 +88,10 @@ public class CustomerCardManagedBean implements Serializable {
     }
 
     public void updateTransactionLimit() {
-        String result = cardAcctSessionBean.updateCardAcctTransactionLimit(cca);
-        if (result.equals("SUCCESS")) {
+        CreditCardAccount result = cardAcctSessionBean.updateCreditCardAccount(cca);
+        if (result!=null) {
             MessageUtils.displayInfo("Transaction limit is updated!");
             emailServiceSessionBean.sendTransactionLimitChangeNotice(cca.getMainAccount().getCustomer().getEmail());           
-                         
         } else {
             MessageUtils.displayError("Change is unsuccessful!");
 
@@ -99,7 +105,7 @@ public class CustomerCardManagedBean implements Serializable {
     public void setCustomer() {
         System.out.println("@POSTCONSTRUCT INIT CustomerCardManagedBean");
         this.customer = customerProfileSessionBean.getCustomerByUserID(SessionUtils.getUserName());
-        this.setCcas(cardAcctSessionBean.showAllCreditCardAccount(CardAccountStatus.CLOSED, customer.getMainAccount().getId())); //that is not closed
+        this.setCcas(cardAcctSessionBean.getListCreditCardAccountsByIdAndNotStatus(customer.getMainAccount().getId(), CardAccountStatus.CLOSED)); //that is not closed
     }
 
     public Customer getCustomer() {

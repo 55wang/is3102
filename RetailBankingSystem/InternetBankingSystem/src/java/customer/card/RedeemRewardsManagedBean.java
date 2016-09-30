@@ -8,9 +8,8 @@ package customer.card;
 import ejb.session.card.CardAcctSessionBeanLocal;
 import ejb.session.utils.UtilsSessionBeanLocal;
 import entity.card.account.CreditCardAccount;
-import entity.card.account.CreditCardProduct;
-import entity.card.account.PromoCode;
-import entity.card.account.PromoProduct;
+import entity.card.product.PromoCode;
+import entity.card.product.PromoProduct;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -44,7 +43,7 @@ public class RedeemRewardsManagedBean implements Serializable {
 
     public void init() {
 
-        cca = cardBean.getCardAccountFromId(Long.parseLong(getCreditCardId()));
+        cca = cardBean.getCardAccountById(Long.parseLong(creditCardId));
         System.out.println(cca.getCreditCardNum());
 
         setProducts(new ArrayList<>());

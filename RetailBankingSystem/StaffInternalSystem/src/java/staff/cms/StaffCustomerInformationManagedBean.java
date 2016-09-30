@@ -17,15 +17,11 @@ import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import server.utilities.EnumUtils;
-import server.utilities.EnumUtils.Citizenship;
 import server.utilities.EnumUtils.Education;
 import server.utilities.EnumUtils.Gender;
-import server.utilities.EnumUtils.IdentityType;
 import server.utilities.EnumUtils.Income;
 import server.utilities.EnumUtils.MaritalStatus;
 import server.utilities.EnumUtils.Nationality;
-import server.utilities.EnumUtils.Occupation;
-import server.utilities.EnumUtils.StatusType;
 import utils.CommonUtils;
 import utils.MessageUtils;
 import utils.RedirectUtils;
@@ -88,9 +84,6 @@ public class StaffCustomerInformationManagedBean implements Serializable {
     public void saveUpdatedCustomerInformation() {
         selectedCustomer.setGender(Gender.getEnum(selectedGender));
         selectedCustomer.setNationality(Nationality.getEnum(selectedNationality));
-        selectedCustomer.setIdentityType(IdentityType.getEnum(selectedIdentityType));
-        selectedCustomer.setCitizenship(Citizenship.getEnum(selectedCitizenship));
-        selectedCustomer.setOccupation(Occupation.getEnum(selectedOccupation));
         selectedCustomer.setIncome(Income.getEnum(selectedIncome));
         selectedCustomer.setMaritalStatus(MaritalStatus.getEnum(selectedMaritalStatus));
         selectedCustomer.setEducation(Education.getEnum(selectedEducation));
@@ -122,12 +115,6 @@ public class StaffCustomerInformationManagedBean implements Serializable {
         }
         if (customer.getNationality() != null) {
             setSelectedNationality(customer.getNationality().toString());
-        }
-        if (customer.getIdentityType() != null) {
-            setSelectedIdentityType(customer.getIdentityType().toString());
-        }
-        if (customer.getCitizenship() != null) {
-            setSelectedCitizenship(customer.getCitizenship().toString());
         }
         if (customer.getIncome() != null) {
             setSelectedIncome(customer.getIncome().toString());
