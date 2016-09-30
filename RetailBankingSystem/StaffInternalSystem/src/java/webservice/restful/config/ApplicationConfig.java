@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package webservice.restful;
+package webservice.restful.config;
 
 import java.util.Set;
 import javax.ws.rs.core.Application;
@@ -30,8 +30,10 @@ public class ApplicationConfig extends Application {
      * If required, comment out calling this method in getClasses().
      */
     private void addRestResourceClasses(Set<Class<?>> resources) {
-        resources.add(webservice.restful.CreditCardAuthorizationService.class);
-        resources.add(webservice.restful.CreditCardClearingService.class);
+        resources.add(filters.CORSFilter.class);
+        resources.add(webservice.restful.creditcard.CreditCardAuthorizationService.class);
+        resources.add(webservice.restful.creditcard.CreditCardClearingService.class);
+        resources.add(webservice.restful.mobile.MobileUserLoginService.class);
     }
     
 }

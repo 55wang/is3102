@@ -56,8 +56,8 @@ public class ReportGenerationBean implements Serializable {
         System.out.println("DB");
         String relativePath = new File("").getAbsolutePath();
         System.out.println("DB2222");
-        JasperDesign jd = JRXmlLoader.load("/Users/qiuxiaqing/Documents/is3102/RetailBankingSystem/InternetBankingSystem/src/java/report/report.jrxml");
-        JasperReport jr = JasperCompileManager.compileReport("/Users/qiuxiaqing/Documents/is3102/RetailBankingSystem/InternetBankingSystem/src/java/report/report.jrxml");
+        JasperDesign jd = JRXmlLoader.load("/Users/leiyang/Desktop/IS3102/workspace/is3102/RetailBankingSystem/InternetBankingSystem/src/java/report/report.jrxml");
+        JasperReport jr = JasperCompileManager.compileReport("/Users/leiyang/Desktop/IS3102/workspace/is3102/RetailBankingSystem/InternetBankingSystem/src/java/report/report.jrxml");
         System.out.println("Path");
         
         JasperPrint jp = JasperFillManager.fillReport(jr, new HashMap(), a);
@@ -66,7 +66,7 @@ public class ReportGenerationBean implements Serializable {
         System.out.println("View");
 //        JasperExportManager.exportReportToPdfFile(jp, "/Users/litong/Downloads/testPDF.pdf");
         System.out.println(relativePath);
-        JasperExportManager.exportReportToPdfFile(jp, "/Users/qiuxiaqing/Documents/is3102/RetailBankingSystem/InternetBankingSystem/web/request/estatement.pdf");
+        JasperExportManager.exportReportToPdfFile(jp, "/Users/leiyang/Desktop/IS3102/workspace/is3102/RetailBankingSystem/InternetBankingSystem/web/request/estatement.pdf");
        
 // JasperExportManager.exportReportToPdfFile(jp, "http:///localhost:8181/InternetBankingSystem/src/java/report/testPDF.pdf");
                System.out.println("Done!");
