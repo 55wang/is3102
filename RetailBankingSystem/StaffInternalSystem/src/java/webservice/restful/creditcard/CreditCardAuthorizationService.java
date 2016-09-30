@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package webservice.restful;
+package webservice.restful.creditcard;
 
 import SMSMessaging.SendTextMessage;
 import ejb.session.card.CardAcctSessionBeanLocal;

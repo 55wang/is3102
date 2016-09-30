@@ -8,6 +8,7 @@ package customer.cms;
 import ejb.session.audit.AuditSessionBeanLocal;
 import ejb.session.cms.CustomerCaseSessionBeanLocal;
 import ejb.session.common.EmailServiceSessionBeanLocal;
+import ejb.session.common.LoginSessionBeanLocal;
 import entity.common.AuditLog;
 import entity.customer.CustomerCase;
 import entity.customer.Issue;
@@ -47,11 +48,14 @@ import utils.RedirectUtils;
 @ViewScoped
 public class CustomerCaseManagedBean implements Serializable {
     @EJB
+    private LoginSessionBeanLocal loginSessionBean;
+    @EJB
     private EmailServiceSessionBeanLocal emailServiceSessionBean;
     @EJB
     private CustomerCaseSessionBeanLocal customerCaseSessionBean;
     @EJB
     private AuditSessionBeanLocal auditSessionBean;
+    
     
     
     private MainAccount mainAccount; 
@@ -201,7 +205,7 @@ public class CustomerCaseManagedBean implements Serializable {
     public void setMainAccount() {
         this.issueFieldList = CommonUtils.getEnumList(EnumUtils.IssueField.class);
         this.issueFieldList.remove(IssueField.CHARGEBACK.toString());
-        this.mainAccount = customerCaseSessionBean.getMainAccountByUserID(SessionUtils.getUserName());
+        this.mainAccount = loginSessionBean.getMainAccountByUserID(SessionUtils.getUserName());
         this.allCaseList = customerCaseSessionBean.getAllCase();
         this.auditLogs = auditSessionBean.getAuditLogByCustomerID(SessionUtils.getUserName());
     }

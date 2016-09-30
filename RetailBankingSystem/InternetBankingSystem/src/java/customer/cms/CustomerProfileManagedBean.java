@@ -43,8 +43,8 @@ public class CustomerProfileManagedBean implements Serializable {
     private List<AuditLog> auditLogs;
     private Boolean editingPage = false;
     private Boolean profileEdited = false;
-    private List<String> OccupationOptions = CommonUtils.getEnumList(EnumUtils.Occupation.class);
-    private List<String> IncomeOptions = CommonUtils.getEnumList(EnumUtils.Income.class);
+    private List<String> occupationOptions = CommonUtils.getEnumList(EnumUtils.Occupation.class);
+    private List<String> incomeOptions = CommonUtils.getEnumList(EnumUtils.Income.class);
     private String selectedOccupation;
     private String selectedIncome;
 
@@ -133,34 +133,6 @@ public class CustomerProfileManagedBean implements Serializable {
     }
 
     /**
-     * @return the OccupationOptions
-     */
-    public List<String> getOccupationOptions() {
-        return OccupationOptions;
-    }
-
-    /**
-     * @param OccupationOptions the OccupationOptions to set
-     */
-    public void setOccupationOptions(List<String> OccupationOptions) {
-        this.OccupationOptions = OccupationOptions;
-    }
-
-    /**
-     * @return the IncomeOptions
-     */
-    public List<String> getIncomeOptions() {
-        return IncomeOptions;
-    }
-
-    /**
-     * @param IncomeOptions the IncomeOptions to set
-     */
-    public void setIncomeOptions(List<String> IncomeOptions) {
-        this.IncomeOptions = IncomeOptions;
-    }
-
-    /**
      * @return the selectedOccupation
      */
     public String getSelectedOccupation() {
@@ -186,6 +158,34 @@ public class CustomerProfileManagedBean implements Serializable {
      */
     public void setSelectedIncome(String selectedIncome) {
         this.selectedIncome = selectedIncome;
+    }
+
+    /**
+     * @return the occupationOptions
+     */
+    public List<String> getOccupationOptions() {
+        return occupationOptions;
+    }
+
+    /**
+     * @param occupationOptions the occupationOptions to set
+     */
+    public void setOccupationOptions(List<String> occupationOptions) {
+        this.occupationOptions = occupationOptions;
+    }
+
+    /**
+     * @return the incomeOptions
+     */
+    public List<String> getIncomeOptions() {
+        return incomeOptions;
+    }
+
+    /**
+     * @param incomeOptions the incomeOptions to set
+     */
+    public void setIncomeOptions(List<String> incomeOptions) {
+        this.incomeOptions = incomeOptions;
     }
 
 }

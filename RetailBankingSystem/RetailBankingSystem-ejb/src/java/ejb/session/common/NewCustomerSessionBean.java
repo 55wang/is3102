@@ -25,6 +25,7 @@ public class NewCustomerSessionBean implements NewCustomerSessionBeanLocal {
         em.persist(customer);
         return customer;
     }
+    
     @Override
     public Customer updateCustomer(Customer customer) {
         em.merge(customer);

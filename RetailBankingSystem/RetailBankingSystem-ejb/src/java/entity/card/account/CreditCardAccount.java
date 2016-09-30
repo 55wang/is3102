@@ -143,15 +143,7 @@ public class CreditCardAccount implements Serializable {
 
     @Override
     public String toString() {
-        return "CreditCardAccount{" + "id=" + id + ", mainAccount=" + mainAccount + ", CardStatus=" + CardStatus + ", creditCardNum=" + creditCardNum + ", cvv=" + cvv + ", nameOnCard=" + nameOnCard + ", validDate=" + validDate + ", transactionMonthlyLimit=" + transactionMonthlyLimit + ", transactionDailyLimit=" + transactionDailyLimit + ", creationDate=" + creationDate + ", minPayDue=" + minPayDue + ", annualInterestRate=" + annualInterestRate + ", outstandingAmount=" + outstandingAmount + ", cashBackAmount=" + cashBackAmount + ", merlionMiles=" + merlionMiles + ", merlionPoints=" + merlionPoints + ", numOfLatePayment=" + numOfLatePayment + ", numOf_30_59_LatePayment=" + numOf_30_59_LatePayment + ", numOf_60_89_LatePayment=" + numOf_60_89_LatePayment + ", numOf_90_LatePayment=" + numOf_90_LatePayment + ", overDueDuration=" + overDueDuration + '}';
-    }
-
-    public int getCvv() {
-        return cvv;
-    }
-
-    public void setCvv(int cvv) {
-        this.setCvv((Integer) cvv);
+        return "CreditCardAccount{" + "id=" + id + ", mainAccount=" + mainAccount + ", CardStatus=" + CardStatus + ", creditCardNum=" + creditCardNum + ", cvv=" + getCvv() + ", nameOnCard=" + nameOnCard + ", validDate=" + validDate + ", transactionMonthlyLimit=" + transactionMonthlyLimit + ", transactionDailyLimit=" + transactionDailyLimit + ", creationDate=" + creationDate + ", minPayDue=" + minPayDue + ", annualInterestRate=" + annualInterestRate + ", outstandingAmount=" + outstandingAmount + ", cashBackAmount=" + cashBackAmount + ", merlionMiles=" + merlionMiles + ", merlionPoints=" + merlionPoints + ", numOfLatePayment=" + numOfLatePayment + ", numOf_30_59_LatePayment=" + numOf_30_59_LatePayment + ", numOf_60_89_LatePayment=" + numOf_60_89_LatePayment + ", numOf_90_LatePayment=" + numOf_90_LatePayment + ", overDueDuration=" + overDueDuration + '}';
     }
 
     public String getNameOnCard() {
@@ -348,6 +340,13 @@ public class CreditCardAccount implements Serializable {
 
     public void setCreditLimit(double creditLimit) {
         this.creditLimit = creditLimit;
+    }
+
+    /**
+     * @return the cvv
+     */
+    public Integer getCvv() {
+        return cvv;
     }
 
 }
