@@ -27,9 +27,4 @@ public class NewCustomerSessionBean implements NewCustomerSessionBeanLocal {
         //temporary comment the sms away to save credit
         //SendTextMessage.sendText("6581567758", "testing2");
     }
-    @Override
-    public Customer updateCustomer(Customer customer) {
-        em.merge(customer);
-        return customer;
-    }
 }

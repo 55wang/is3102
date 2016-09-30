@@ -10,6 +10,7 @@ import ejb.session.utils.UtilsSessionBeanLocal;
 import entity.common.AuditLog;
 import entity.customer.Customer;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -76,7 +77,10 @@ public class StaffCustomerInformationManagedBean implements Serializable {
         if (searchText.isEmpty()) {
             setCustomers(getCustomerProfileSessionBean().retrieveActivatedCustomers());
         } else {
-            setCustomers(getCustomerProfileSessionBean().searchCustomerByIdentityNumber(searchText));
+            Customer c =  getCustomerProfileSessionBean().searchCustomerByIdentityNumber(searchText);
+            customers  = new ArrayList<Customer>();
+            customers.add(c);
+            setCustomers(customers);
         }
 
     }

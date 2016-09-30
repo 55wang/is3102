@@ -21,27 +21,12 @@ import server.utilities.EnumUtils.CaseStatus;
  * @author VIN-S
  */
 @Stateless
-public class CustomerCaseSessionBean implements CustomerCaseSessionBeanLocal {
+public class CustomerCaseSessionBean implements CustomerCaseSessionBeanLocal, CustomerCaseSessionBeanRemote {
     @PersistenceContext(unitName = "RetailBankingSystem-ejbPU")
     private EntityManager em;
 
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")
-    @Override
-    public MainAccount getMainAccountByUserID(String userID){    
-        Query q = em.createQuery("SELECT a FROM MainAccount a WHERE a.userID = :inUserID");
-        
-        q.setParameter("inUserID", userID);
-        
-        MainAccount mainAccount = null;
-          
-        try {
-            mainAccount = (MainAccount) q.getSingleResult();       
-            return mainAccount;
-        } catch (NoResultException ex) {
-            return null;
-        }
-    }
     
     @Override
     public Boolean saveCase(CustomerCase customerCase){

@@ -7,14 +7,14 @@ package ejb.session.cms;
 
 import entity.customer.Customer;
 import java.util.List;
-import javax.ejb.Local;
+import javax.ejb.Remote;
 
 /**
  *
  * @author qiuxiaqing
  */
-@Local
-public interface CustomerProfileSessionBeanLocal {
+@Remote
+public interface CustomerProfileSessionBeanRemote {
 
     public Customer getCustomerByUserID(String userID);
     public Customer saveProfile(Customer customer);

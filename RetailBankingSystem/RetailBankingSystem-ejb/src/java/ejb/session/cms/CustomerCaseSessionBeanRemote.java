@@ -9,14 +9,14 @@ import entity.customer.CustomerCase;
 import entity.customer.MainAccount;
 import entity.staff.StaffAccount;
 import java.util.List;
-import javax.ejb.Local;
+import javax.ejb.Remote;
 
 /**
  *
  * @author VIN-S
  */
-@Local
-public interface CustomerCaseSessionBeanLocal {
+@Remote
+public interface CustomerCaseSessionBeanRemote {
     public Boolean saveCase(CustomerCase customerCase);
     public Boolean updateCase(CustomerCase customerCase);
     public CustomerCase searchCaseByID(String id);
