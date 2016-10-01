@@ -23,20 +23,21 @@ import javax.persistence.OneToMany;
 @Entity // TODO: Only Current Account has cheque
 public class CustomerDepositAccount extends DepositAccount {
     
+    // info
     // Counter to decrease
     private Integer waivedFeesCounter = 0;
     private Integer waivedChargesCounter = 0;
     @Embedded
     private TransferLimits transferLimits = new TransferLimits();
+    @Column(precision=30, scale=20)
+    private BigDecimal previousBalance = new BigDecimal(0);
+    
+    // mapping
     @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "")
     private List<DebitCardAccount> debitCardAccount = new ArrayList<>();
-    
     // REMARK: Type != SAVING
     @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "account")
     private List<Cheque> cheques = new ArrayList<>();
-    
-    @Column(precision=30, scale=20)
-    private BigDecimal previousBalance = new BigDecimal(0);
     
     /**
      * @return the waivedFeesCounter

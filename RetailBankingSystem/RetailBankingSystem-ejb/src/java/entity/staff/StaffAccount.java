@@ -27,6 +27,7 @@ import server.utilities.EnumUtils.StatusType;
 @Entity
 public class StaffAccount implements Serializable {
 
+    // info
     @Id
     private String username;
     private String firstName;
@@ -38,7 +39,7 @@ public class StaffAccount implements Serializable {
     @Embedded
     private StaffInfo staffInfo = new StaffInfo();
     
-    // Loose connection
+    // mapping
     @ManyToOne(cascade = {CascadeType.MERGE})
     private Role role; // Role already consist of list of permissions
     @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "staffAccount")

@@ -25,13 +25,18 @@ public class Message implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private String message;
     @Temporal(value = TemporalType.TIMESTAMP)
     private Date createDate = new Date();
-    @ManyToOne
-    private Conversation conversation;
+    
+    // info
+    private String message;
     private String receiver;
     private String sender;
+    
+    // mapping
+    @ManyToOne
+    private Conversation conversation;
+    
 
     public Long getId() {
         return id;

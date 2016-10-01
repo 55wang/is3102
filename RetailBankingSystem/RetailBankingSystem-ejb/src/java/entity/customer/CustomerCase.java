@@ -20,7 +20,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
-import server.utilities.EnumUtils;
 import server.utilities.EnumUtils.CaseStatus;
 import server.utilities.EnumUtils.cardOperatorChargebackStatus;
 
@@ -34,12 +33,18 @@ public class CustomerCase implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String title;
-    private CaseStatus caseStatus;
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date createDate;
+    
+    // info
+    private String title;
+    private CaseStatus caseStatus;
+    private Boolean isChargeBackCase = false;
+    private cardOperatorChargebackStatus cardOperatorResponse;
+    
+    // mappings
     @OneToMany(cascade = {CascadeType.ALL}, mappedBy = "customerCase")
-    private List<Issue> issues = new ArrayList<Issue>(); 
+    private List<Issue> issues = new ArrayList<>(); 
     @ManyToOne(cascade = {CascadeType.MERGE})
     private MainAccount mainAccount;
     @ManyToOne
@@ -48,9 +53,6 @@ public class CustomerCase implements Serializable {
     private CardTransaction chargebackTransaction;
     @OneToOne
     private CardTransaction reverseTransaction;
-    private Boolean isChargeBackCase = false;
-    private cardOperatorChargebackStatus cardOperatorResponse;
-    
 
     public Long getId() {
         return id;

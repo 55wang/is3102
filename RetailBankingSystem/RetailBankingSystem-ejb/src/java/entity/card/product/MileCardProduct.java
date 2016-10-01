@@ -5,7 +5,6 @@
  */
 package entity.card.product;
 
-import entity.card.product.CreditCardProduct;
 import javax.persistence.Entity;
 
 /**
@@ -15,6 +14,7 @@ import javax.persistence.Entity;
 @Entity
 public class MileCardProduct extends CreditCardProduct {
 
+    // info
     private Double overseaMileRate; // USD$1 = 2 Miles
     private Double localMileRate; // SGD$1 = 1.3 Miles
 

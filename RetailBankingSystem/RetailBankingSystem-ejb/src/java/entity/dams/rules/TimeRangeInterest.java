@@ -14,8 +14,7 @@ import javax.persistence.Entity;
 @Entity
 public class TimeRangeInterest extends RangeInterest implements Comparable<TimeRangeInterest> {
 
-    // if endMonth is 0, assume > startMonth will apply this interest
-
+    // info
     private Integer startMonth;
     private Integer endMonth;
 

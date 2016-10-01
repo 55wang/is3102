@@ -82,7 +82,7 @@ public class OpenAccountManagedBean implements Serializable {
         AuditLog a = new AuditLog();
         a.setActivityLog("System user enter OpenAccountManagedBean");
         a.setFunctionName("OpenAccountManagedBean @PostConstruct init()");
-        a.setInput("Getting all OpenAccountManagedBean information");
+        a.setFunctionInput("Getting all OpenAccountManagedBean information");
         a.setStaffAccount(SessionUtils.getStaff());
         utilsBean.persist(a);
     }

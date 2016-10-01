@@ -11,7 +11,6 @@ import entity.staff.StaffAccount;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
-import utils.SessionUtils;
 
 /**
  *
@@ -28,8 +27,8 @@ public class AuditUtils implements Serializable {
         al.setCreationDate(date);
         al.setActivityLog(activityLog);
         al.setFunctionName(functionName);
-        al.setInput(input.toString());
-        al.setOutput(output);
+        al.setFunctionInput(input.toString());
+        al.setFunctionOutput(output);
         String ip = SessionUtils.getIpAddress();
         al.setIpAddress(ip);
 

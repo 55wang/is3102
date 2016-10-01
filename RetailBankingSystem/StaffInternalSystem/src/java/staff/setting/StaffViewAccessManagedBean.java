@@ -41,7 +41,7 @@ public class StaffViewAccessManagedBean implements Serializable {
         AuditLog a = new AuditLog();
         a.setActivityLog("System user enter StaffViewAccessManagedBean");
         a.setFunctionName("StaffViewAccessManagedBean @PostConstruct init()");
-        a.setInput("Getting all StaffViewAccessManagedBean");
+        a.setFunctionInput("Getting all StaffViewAccessManagedBean");
         a.setStaffAccount(SessionUtils.getStaff());
         utilsBean.persist(a);
     }

@@ -25,8 +25,6 @@ import javax.faces.view.ViewScoped;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.primefaces.push.EventBus;
 import org.primefaces.push.EventBusFactory;
-import server.utilities.EnumUtils;
-import server.utilities.EnumUtils.UserRole;
 import utils.MessageUtils;
 import utils.SessionUtils;
 
@@ -75,7 +73,7 @@ public class NotificationViewManagedBean implements Serializable {
         AuditLog a = new AuditLog();
         a.setActivityLog("System user enter NotificationViewManagedBean");
         a.setFunctionName("NotificationViewManagedBean @PostConstruct init()");
-        a.setInput("Getting all NotificationViewManagedBean information");
+        a.setFunctionInput("Getting all NotificationViewManagedBean information");
         a.setStaffAccount(SessionUtils.getStaff());
         utilsBean.persist(a);
     }

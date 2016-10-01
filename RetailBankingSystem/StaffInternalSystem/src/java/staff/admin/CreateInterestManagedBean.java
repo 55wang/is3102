@@ -100,7 +100,7 @@ public class CreateInterestManagedBean implements Serializable {
         AuditLog a = new AuditLog();
         a.setActivityLog("System user enter create_interest.xhtml");
         a.setFunctionName("CreateInterestManagedBean @PostConstruct init()");
-        a.setInput("Getting all interests");
+        a.setFunctionInput("Getting all interests");
         a.setStaffAccount(SessionUtils.getStaff());
         utilsBean.persist(a);
     }
@@ -226,27 +226,27 @@ public class CreateInterestManagedBean implements Serializable {
         
         
         if (interestType.equals(INTEREST_TYPE_NORMAL)) {
-            a.setInput(normalInterest.getName());
+            a.setFunctionInput(normalInterest.getName());
             if (interestSessionBean.addInterest(normalInterest) != null) {
                 normalInterests.add(normalInterest);
-                a.setOutput("SUCCESS");
+                a.setFunctionOutput("SUCCESS");
                 MessageUtils.displayInfo("Normal Interest Created");
             } else {
-                a.setOutput("FAIL");
+                a.setFunctionOutput("FAIL");
                 MessageUtils.displayError("This Interest Exists");
             }
         } else if (interestType.equals(INTEREST_TYPE_RANGE)) {
-            a.setInput(rangeInterest.getName());
+            a.setFunctionInput(rangeInterest.getName());
             if (interestSessionBean.addInterest(rangeInterest) != null) {
                 rangeInterests.add(rangeInterest);
-                a.setOutput("SUCCESS");
+                a.setFunctionOutput("SUCCESS");
                 MessageUtils.displayInfo("Range Interest Created");
             } else {
-                a.setOutput("SUCCESS");
+                a.setFunctionOutput("SUCCESS");
                 MessageUtils.displayError("This Interest Exists");
             }
         } else if (interestType.equals(INTEREST_TYPE_TIME_RANGE)) {
-            a.setInput(timeRangeInterestName);
+            a.setFunctionInput(timeRangeInterestName);
             List<TimeRangeInterest> tobeSaved = new ArrayList<>();
             for (TimeRangeInterestCollectionDTO i : getCollectionDTOs()) {
                 TimeRangeInterest i1 = new TimeRangeInterest();
@@ -326,20 +326,20 @@ public class CreateInterestManagedBean implements Serializable {
             List<TimeRangeInterest> result = interestSessionBean.addAllTimeRangeInterest(tobeSaved);
             if (result != null) {
                 timeRangeInterests = result;
-                a.setOutput("SUCCESS");
+                a.setFunctionOutput("SUCCESS");
                 MessageUtils.displayInfo("Time Range Interest Created");
             } else {
-                a.setOutput("FAIL");
+                a.setFunctionOutput("FAIL");
                 MessageUtils.displayError("This Interest Exists");
             }
         } else if (interestType.equals(INTEREST_TYPE_CONDITION)) {
-            a.setInput(conditionInterest.getName());
+            a.setFunctionInput(conditionInterest.getName());
             if (interestSessionBean.addInterest(conditionInterest) != null) {
                 conditionInterests.add(conditionInterest);
-                a.setOutput("SUCCESS");
+                a.setFunctionOutput("SUCCESS");
                 MessageUtils.displayInfo("Condition Interest Created");
             } else {
-                a.setOutput("FAIL");
+                a.setFunctionOutput("FAIL");
                 MessageUtils.displayError("This Interest Exists");
             }
         } else {

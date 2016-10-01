@@ -31,17 +31,21 @@ public class TransactionRecord implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @ManyToOne(cascade={CascadeType.MERGE})
-    private DepositAccount fromAccount;
-    @ManyToOne(cascade={CascadeType.MERGE})
-    private DepositAccount toAccount;// can be null
+    @Temporal(value = TemporalType.TIMESTAMP)
+    private Date creationDate = new Date();
+    
+    // info
     private String referenceNumber;
     private TransactionType actionType;
     private Boolean credit;
     @Column(precision=30, scale=20)
     private BigDecimal amount;
-    @Temporal(value = TemporalType.TIMESTAMP)
-    private Date creationDate = new Date();
+    
+    // mapping
+    @ManyToOne(cascade={CascadeType.MERGE})
+    private DepositAccount fromAccount;
+    @ManyToOne(cascade={CascadeType.MERGE})
+    private DepositAccount toAccount;// can be null
 
     public Long getId() {
         return id;

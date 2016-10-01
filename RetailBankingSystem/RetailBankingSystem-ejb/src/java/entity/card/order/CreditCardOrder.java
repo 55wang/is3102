@@ -6,7 +6,6 @@
 package entity.card.order;
 
 import entity.card.account.CreditCardAccount;
-import entity.customer.Customer;
 import entity.customer.MainAccount;
 import java.io.Serializable;
 import javax.persistence.CascadeType;
@@ -29,13 +28,17 @@ public class CreditCardOrder implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    
+    // info
+    private ApplicationStatus applicationStatus;
 
+    // mapping
     @ManyToOne
     private MainAccount mainAccount;
     @OneToOne(cascade = {CascadeType.MERGE}, mappedBy = "creditCardOrder")
     private CreditCardAccount creditCardAccount;
 
-    private ApplicationStatus applicationStatus;
+    
     
     public CreditCardOrder() {
     }

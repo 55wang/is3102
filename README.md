@@ -6,12 +6,45 @@ A+, A-, B+, B, B-
 ## How to import data? run this in cmdline ##
 mysql -u root --password=password < RecreateDatabase.sql
 
-EJB standard
-public Entity createEntity(Entity en) return entity
-public Entity getEntityById(Long id) return Entity
-public Entity updateEntity(Entity en) return Entity
-public List<Entity> getListEntityByEntity(Entity en) return List<Entity>
+# EJB standard
 
+    public Entity createEntity(Entity en) return entity
+    public Entity getEntityById(Long id) return Entity
+    public Entity updateEntity(Entity en) return Entity
+    public List<Entity> getListEntityByEntity(Entity en) return List<Entity>
+
+# Managed Bean Standard
+
+```java
+    @EJB // place all ejb at the most top
+    private SomeSessionBeanLocal someBean;
+
+    // Followed by other variables/attributes
+    private String someField;
+
+    // Followed by default constructor
+    public SomeManagedBean(){}
+
+    // Followed by @PostConstruct
+    @PostConstruct
+    public void init() {
+        // some init
+    }
+
+    // Followed by some public functions
+    public void someAction() {
+
+    }
+
+    // Followed by some private functions
+    private void somePrivateFunction() {
+
+    }
+
+    // Last, place setters and getters at the back
+    public getters and setters () {}
+
+```
 
 ### Change the project name accordingly ###
 
@@ -43,6 +76,8 @@ Standardize Error Handingly Message from server.utilities.ConstantUtils.java
 
 
 # ENUM Follow the Following Practices: #
+
+```java
 	public enum UserRole {
 
         GENERAL_TELLER("General Teller"),
@@ -77,6 +112,7 @@ Standardize Error Handingly Message from server.utilities.ConstantUtils.java
             throw new IllegalArgumentException();
         }
     }
+```
 
 ## To convert a string back to enum: ##
 	EnumType.getEnum("The String");

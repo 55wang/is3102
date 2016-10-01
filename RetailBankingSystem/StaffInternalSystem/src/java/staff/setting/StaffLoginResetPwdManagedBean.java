@@ -48,7 +48,7 @@ public class StaffLoginResetPwdManagedBean implements Serializable {
         AuditLog a = new AuditLog();
         a.setActivityLog("System user enter StaffLoginResetPwdManagedBean");
         a.setFunctionName("StaffLoginResetPwdManagedBean @PostConstruct init()");
-        a.setInput("Getting all StaffLoginResetPwdManagedBean");
+        a.setFunctionInput("Getting all StaffLoginResetPwdManagedBean");
         a.setStaffAccount(SessionUtils.getStaff());
         utilsBean.persist(a);
     }

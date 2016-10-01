@@ -16,6 +16,8 @@ import javax.persistence.Embeddable;
  */
 @Embeddable
 public class TransferLimits implements Serializable {
+    
+    // info
     @Column(precision=12, scale=2)
     private BigDecimal dailyWithdrawLimit = new BigDecimal(3000);
     @Column(precision=12, scale=2)

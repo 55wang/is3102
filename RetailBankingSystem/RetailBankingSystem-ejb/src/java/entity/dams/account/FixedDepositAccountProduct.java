@@ -15,14 +15,14 @@ import javax.persistence.Entity;
  */
 @Entity
 public class FixedDepositAccountProduct extends DepositProduct {
-    // Only one copy
+    
+    // info
     @Column(precision=12, scale=2)
     private BigDecimal minAmount;
     @Column(precision=12, scale=2)
     private BigDecimal maxAmount;
     private Integer maximumMaturityMonths = 36; // interest follow this rule
     private Integer minimumMaturityMonths = 1;
-
 
     /**
      * @return the minAmount

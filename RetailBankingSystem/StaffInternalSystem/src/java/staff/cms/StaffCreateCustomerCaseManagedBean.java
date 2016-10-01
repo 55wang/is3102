@@ -63,7 +63,7 @@ public class StaffCreateCustomerCaseManagedBean implements Serializable{
         AuditLog a = new AuditLog();
         a.setActivityLog("System user enter create_customer_case.xhtml");
         a.setFunctionName("StaffCreateCustomerCaseManagedBean @PostConstruct init()");
-        a.setInput("Getting all customer cases");
+        a.setFunctionInput("Getting all customer cases");
         a.setStaffAccount(SessionUtils.getStaff());
         utilsBean.persist(a);
     }

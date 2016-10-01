@@ -46,29 +46,22 @@ public class CreditCardAccount implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @ManyToOne(cascade = CascadeType.MERGE)
-    private MainAccount mainAccount;
-    @ManyToOne(cascade = {CascadeType.MERGE})
-    private CreditCardProduct creditCardProduct;
-    @OneToMany(cascade = {CascadeType.MERGE}, mappedBy = "creditCardAccount")
-    private List<PromoCode> promoCode = new ArrayList<>();
-    @OneToMany(cascade = {CascadeType.MERGE}, mappedBy = "creditCardAccount")
-    private List<CardTransaction> cardTransactions = new ArrayList<>();
-    @OneToOne(cascade = {CascadeType.MERGE})
-    private CreditCardOrder creditCardOrder;
-
+    @Temporal(value = TemporalType.TIMESTAMP)
+    private Date creationDate = new Date();
+    
+    // info
+    @Temporal(value = TemporalType.DATE)
+    private Date validDate;
     private CardAccountStatus CardStatus = CardAccountStatus.NEW;
     @Column(unique = true)
     private String creditCardNum;
     private Integer cvv; // LY: Use Integer instead of Integer
     private String nameOnCard;
-    @Temporal(value = TemporalType.DATE)
-    private Date validDate;
+    
     private Double transactionMonthlyLimit = 1000.0;
     private Double transactionDailyLimit = 500.0;
     private Double creditLimit = 1000.0;
-    @Temporal(value = TemporalType.TIMESTAMP)
-    private Date creationDate = new Date();
+    
     private Double minPayDue = 0.0;
     private Double annualInterestRate = 0.24; //24% annual Integererest rate
     private Double outstandingAmount = 0.0;
@@ -83,6 +76,18 @@ public class CreditCardAccount implements Serializable {
 
     @Temporal(value = TemporalType.DATE)
     private Date overDueDuration;
+    
+    // mappings 
+    @ManyToOne(cascade = CascadeType.MERGE)
+    private MainAccount mainAccount;
+    @ManyToOne(cascade = {CascadeType.MERGE})
+    private CreditCardProduct creditCardProduct;
+    @OneToMany(cascade = {CascadeType.MERGE}, mappedBy = "creditCardAccount")
+    private List<PromoCode> promoCode = new ArrayList<>();
+    @OneToMany(cascade = {CascadeType.MERGE}, mappedBy = "creditCardAccount")
+    private List<CardTransaction> cardTransactions = new ArrayList<>();
+    @OneToOne(cascade = {CascadeType.MERGE})
+    private CreditCardOrder creditCardOrder;
 
     public String getPartialHiddenAccountNumber() {
         return this.creditCardNum.substring(

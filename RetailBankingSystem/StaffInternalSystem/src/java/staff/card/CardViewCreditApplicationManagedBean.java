@@ -16,7 +16,6 @@ import entity.card.order.CreditCardOrder;
 import entity.common.AuditLog;
 import entity.customer.MainAccount;
 import java.io.Serializable;
-import java.security.SecureRandom;
 import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -60,7 +59,7 @@ public class CardViewCreditApplicationManagedBean implements Serializable {
         AuditLog a = new AuditLog();
         a.setActivityLog("System user enter view_credit_card.xhtml");
         a.setFunctionName("CardViewCreditApplicationManagedBean @PostConstruct init()");
-        a.setInput("Getting all credit card applications");
+        a.setFunctionInput("Getting all credit card applications");
         a.setStaffAccount(SessionUtils.getStaff());
         utilsBean.persist(a);
         ccos = creditCardOrderSessionBean.getListCreditCardOrdersByApplicationStatus(EnumUtils.ApplicationStatus.NEW);

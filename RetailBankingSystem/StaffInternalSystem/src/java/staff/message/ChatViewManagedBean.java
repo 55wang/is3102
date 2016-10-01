@@ -61,7 +61,7 @@ public class ChatViewManagedBean implements Serializable {
         AuditLog a = new AuditLog();
         a.setActivityLog("System user enter ChatViewManagedBean");
         a.setFunctionName("ChatViewManagedBean @PostConstruct init()");
-        a.setInput("Getting all ChatViewManagedBean");
+        a.setFunctionInput("Getting all ChatViewManagedBean");
         a.setStaffAccount(SessionUtils.getStaff());
         utilsBean.persist(a);
     }

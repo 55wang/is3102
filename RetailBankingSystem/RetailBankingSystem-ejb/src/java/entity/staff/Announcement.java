@@ -27,15 +27,19 @@ public class Announcement implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    @Temporal(value = TemporalType.TIMESTAMP)
+    private Date creationDate = new Date();
+    
+    // info
     private String title;
     @Column(length = 4000)
     private String content;
     private Boolean isForStaff;
-    // Can be notified to other role
+    
+    // mapping
     @ManyToOne(cascade = {CascadeType.MERGE})
     private Role role;
-    @Temporal(value = TemporalType.TIMESTAMP)
-    private Date creationDate = new Date();
+    
 
     public Long getId() {
         return id;
