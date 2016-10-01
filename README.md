@@ -15,6 +15,7 @@ mysql -u root --password=password < RecreateDatabase.sql
 
 # Managed Bean Standard
 
+```java
     @EJB // place all ejb at the most top
     private SomeSessionBeanLocal someBean;
 

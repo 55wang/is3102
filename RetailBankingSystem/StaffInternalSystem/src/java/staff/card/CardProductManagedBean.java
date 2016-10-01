@@ -49,7 +49,7 @@ public class CardProductManagedBean implements Serializable {
         AuditLog a = new AuditLog();
         a.setActivityLog("System user enter card_product.xhtml");
         a.setFunctionName("CardProductManagedBean @PostConstruct init()");
-        a.setInput("Getting all card products");
+        a.setFunctionInput("Getting all card products");
         a.setStaffAccount(SessionUtils.getStaff());
         utilsBean.persist(a);
     }

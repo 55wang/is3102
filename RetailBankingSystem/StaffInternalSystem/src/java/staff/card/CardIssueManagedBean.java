@@ -16,11 +16,6 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.Dependent;
-import javax.smartcardio.CardChannel;
-import static nfcCardDevice.NfcDevice.creditCardNumberToNFC;
-import static nfcCardDevice.NfcDevice.initializeDevice;
-import static nfcCardDevice.NfcDevice.readCard;
-import static nfcCardDevice.NfcDevice.writeCard;
 import server.utilities.EnumUtils;
 import utils.MessageUtils;
 import utils.SessionUtils;
@@ -53,7 +48,7 @@ public class CardIssueManagedBean {
         AuditLog a = new AuditLog();
         a.setActivityLog("System user enter issue_card.xhtml");
         a.setFunctionName("CardIssueManagedBean @PostConstruct init()");
-        a.setInput("Getting all card applications");
+        a.setFunctionInput("Getting all card applications");
         a.setStaffAccount(SessionUtils.getStaff());
         utilsBean.persist(a);
     
