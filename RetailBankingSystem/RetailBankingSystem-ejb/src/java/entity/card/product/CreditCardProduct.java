@@ -36,8 +36,8 @@ public abstract class CreditCardProduct implements Serializable {
     @Column(unique = true, nullable = false)
     private String productName;
 
-    private double minSpendingAmount = 0;
-    private boolean minSpending = false; //default = false
+    private Double minSpendingAmount = 0;
+    private Boolean minSpending = false; //default = false
 
     @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "creditCardProduct")
     private List<CreditCardAccount> creditCardAcounts = new ArrayList<>();
@@ -64,19 +64,19 @@ public abstract class CreditCardProduct implements Serializable {
         this.productName = productName;
     }
 
-    public double getMinSpendingAmount() {
+    public Double getMinSpendingAmount() {
         return minSpendingAmount;
     }
 
-    public void setMinSpendingAmount(double minSpendingAmount) {
+    public void setMinSpendingAmount(Double minSpendingAmount) {
         this.minSpendingAmount = minSpendingAmount;
     }
 
-    public boolean isMinSpending() {
+    public Boolean isMinSpending() {
         return minSpending;
     }
 
-    public void setMinSpending(boolean minSpending) {
+    public void setMinSpending(Boolean minSpending) {
         this.minSpending = minSpending;
     }
 

@@ -15,22 +15,22 @@ import javax.persistence.Entity;
 @Entity
 public class MileCardProduct extends CreditCardProduct {
 
-    private double overseaMileRate; // USD$1 = 2 Miles
-    private double localMileRate; // SGD$1 = 1.3 Miles
+    private Double overseaMileRate; // USD$1 = 2 Miles
+    private Double localMileRate; // SGD$1 = 1.3 Miles
 
-    public double getOverseaMileRate() {
+    public Double getOverseaMileRate() {
         return overseaMileRate;
     }
 
-    public void setOverseaMileRate(double overseaMileRate) {
+    public void setOverseaMileRate(Double overseaMileRate) {
         this.overseaMileRate = overseaMileRate;
     }
 
-    public double getLocalMileRate() {
+    public Double getLocalMileRate() {
         return localMileRate;
     }
 
-    public void setLocalMileRate(double localMileRate) {
+    public void setLocalMileRate(Double localMileRate) {
         this.localMileRate = localMileRate;
     }
 
