@@ -82,12 +82,12 @@
                                 <h:panelGrid columns="2" columnClasses="label, value">
 
                                     <h:outputText value="Last Name: " />
-                                    <p:inputText value="#{newCardManagedBean.c.lastname}" required="true" requiredMessage="Last name is required." validatorMessage="Invalid last name.">
+                                    <p:inputText value="#{newCardManagedBean.customer.lastname}" required="true" requiredMessage="Last name is required." validatorMessage="Invalid last name.">
                                         <f:validateLength minimum="2" />
                                     </p:inputText>
 
                                     <h:outputText value="First Name: " />
-                                    <p:inputText id="firstName" value="#{newCardManagedBean.c.firstname}" required="true" requiredMessage="First name is required." validatorMessage="Invalid first name.">
+                                    <p:inputText id="firstName" value="#{newCardManagedBean.customer.firstname}" required="true" requiredMessage="First name is required." validatorMessage="Invalid first name.">
                                         <f:validateLength minimum="2" />
                                     </p:inputText>
 
@@ -100,7 +100,7 @@
                                     </p:selectOneMenu>
 
                                     <h:outputText value="Identity Number: " />
-                                    <p:inputText value="#{newCardManagedBean.c.identityNumber}" required="true" requiredMessage="Identity number is required." validatorMessage="Invalid identity number.">
+                                    <p:inputText value="#{newCardManagedBean.customer.identityNumber}" required="true" requiredMessage="Identity number is required." validatorMessage="Invalid identity number.">
                                         <f:validateRegex
                                             pattern="^[A-Za-z0-9]{9}$" />
                                     </p:inputText>
@@ -111,7 +111,7 @@
                                     </p:selectOneMenu>
 
                                     <h:outputText value="Date of Birth: " />
-                                    <p:calendar value="#{newCardManagedBean.c.birthDay}" navigator="true" yearRange="c-100:c+0" required="true" requiredMessage="DOB is required." 
+                                    <p:calendar value="#{newCardManagedBean.customer.birthDay}" navigator="true" yearRange="c-100:c+0" required="true" requiredMessage="DOB is required." 
                                                 pattern="yyyy-MM-dd" maxdate="#{newCardManagedBean.currentDate}"/>
 
                                 </h:panelGrid>
@@ -170,20 +170,20 @@
                                     <p:inputText required="true" label="email" size="40"
                                                  requiredMessage="Email address is required."
                                                  validatorMessage="Invalid email format"
-                                                 value="#{newCardManagedBean.c.email}" style="width: 187px">
+                                                 value="#{newCardManagedBean.customer.email}" style="width: 187px">
 
                                         <f:validateRegex
                                             pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
                                     </p:inputText>
 
                                     <h:outputText value="Phone: " />
-                                    <p:inputMask value="#{newCardManagedBean.c.phone}" required="true"  requiredMessage="Phone is required." mask="99999999"/>
+                                    <p:inputMask value="#{newCardManagedBean.customer.phone}" required="true"  requiredMessage="Phone is required." mask="99999999"/>
 
                                     <h:outputText value="Postal Code: " />
-                                    <p:inputMask value="#{newCardManagedBean.c.postalCode}" required="true" requiredMessage="Postal code is required." mask="999-999"/>
+                                    <p:inputMask value="#{newCardManagedBean.customer.postalCode}" required="true" requiredMessage="Postal code is required." mask="999-999"/>
 
                                     <h:outputText value="Address: " />
-                                    <p:inputText value="#{newCardManagedBean.c.address}" required="true"/>
+                                    <p:inputText value="#{newCardManagedBean.customer.address}" required="true"/>
 
                                     <h:outputText value="Residential Status: " />
                                     <p:selectOneMenu value="#{newCardManagedBean.selectedResidentialStatus}" style="width:187px; height: 30px; line-height: 21px; top:10px" rendered="true" required="true">
@@ -216,20 +216,20 @@
                                         <h:outputText value="#{newCardManagedBean.cca.nameOnCard}" styleClass="outputLabel"/>
 
                                         <h:outputText value="Identity Number: " />
-                                        <h:outputText value="#{newCardManagedBean.c.identityNumber}" styleClass="outputLabel"/>
+                                        <h:outputText value="#{newCardManagedBean.customer.identityNumber}" styleClass="outputLabel"/>
 
                                         <h:outputText value="Email: " />
-                                        <h:outputText value="#{newCardManagedBean.c.email}" styleClass="outputLabel"/>
+                                        <h:outputText value="#{newCardManagedBean.customer.email}" styleClass="outputLabel"/>
 
                                         <h:outputText value="Phone: " />
-                                        <h:outputText value="#{newCardManagedBean.c.phone}" styleClass="outputLabel"/>
+                                        <h:outputText value="#{newCardManagedBean.customer.phone}" styleClass="outputLabel"/>
                                     </h:panelGrid>
 
                                 </p:scrollPanel>
 
                                 <div class="register-form-button" style="margin-top: 0px">
                                     <p:commandButton value="Back" type="button" onclick="PF('myWizard').back();" />
-                                    <p:commandButton value="Confirm" action="#{newCardManagedBean.saveUpdatedCreditCardOrder()}" update="growl" process="@this"/>
+                                    <p:commandButton value="Confirm" action="#{newCardManagedBean.saveUpdatedCreditCardOrderForNewCustomer()}" update="growl" process="@this"/>
                                 </div>
                             </p:panel>
                         </p:tab>

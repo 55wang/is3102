@@ -8,6 +8,7 @@ package customer.card;
 import ejb.session.card.CardAcctSessionBeanLocal;
 import ejb.session.card.CardProductSessionBeanLocal;
 import ejb.session.card.CreditCardOrderSessionBeanLocal;
+import ejb.session.cms.CustomerProfileSessionBeanLocal;
 import ejb.session.common.EmailServiceSessionBeanLocal;
 import ejb.session.common.NewCustomerSessionBeanLocal;
 import ejb.session.mainaccount.MainAccountSessionBeanLocal;
@@ -28,6 +29,7 @@ import server.utilities.CommonUtils;
 import utils.RedirectUtils;
 import server.utilities.EnumUtils.*;
 import server.utilities.CommonHelper;
+import utils.SessionUtils;
 
 /**
  *
@@ -36,6 +38,8 @@ import server.utilities.CommonHelper;
 @Named(value = "newCardManagedBean")
 @ViewScoped
 public class NewCardManagedBean implements Serializable {
+    @EJB
+    private CustomerProfileSessionBeanLocal customerProfileSessionBean;
 
     @EJB
     private EmailServiceSessionBeanLocal emailServiceSessionBean;
@@ -57,7 +61,8 @@ public class NewCardManagedBean implements Serializable {
 
     private CreditCardOrder cco;
     private MainAccount ma;
-    private Customer c;
+    private Customer customer;
+    private Customer existingCustomer;
     private CreditCardAccount cca;
 
     private List<String> productNameOptions = new ArrayList<>();
@@ -95,7 +100,7 @@ public class NewCardManagedBean implements Serializable {
     public void retrieveProducts() {
         cco = new CreditCardOrder();
         setMa(new MainAccount());
-        setC(new Customer());
+        setCustomer(new Customer());
         setCca(new CreditCardAccount());
         List<CreditCardProduct> ccps = newCardProductSessionBean.getListCreditCardProducts();
         for (CreditCardProduct ccp : ccps) {
@@ -106,46 +111,75 @@ public class NewCardManagedBean implements Serializable {
     public NewCardManagedBean() {
     }
 
-    public void saveUpdatedCreditCardOrder() {
+    public void saveUpdatedCreditCardOrderForNewCustomer() {
         System.out.println("inside saveupdatedCreditcardorder");
         //persist
-        getC().setResidentialStatus(ResidentialStatus.getEnum(getSelectedResidentialStatus()));
-        getC().setResidentialType(ResidentialType.getEnum(getSelectedResidentialType()));
-        getC().setEmploymentStatus(EmploymentStatus.getEnum(getSelectedEmploymentStatus()));
-        getC().setEducation(Education.getEnum(getSelectedEducation()));
-        getC().setIndustry(Industry.getEnum(getSelectedIndustry()));
-        getC().setIncome(Income.getEnum(getSelectedIncome()));
-        getC().setIdentityType(IdentityType.getEnum(getSelectedIdentityType()));
-        getC().setGender(Gender.getEnum(getSelectedGender()));
-        getC().setNationality(Nationality.getEnum(getSelectedNationality()));
-        newCustomerSessionBean.createCustomer(getC());
+        customer.setResidentialStatus(ResidentialStatus.getEnum(getSelectedResidentialStatus()));
+        customer.setResidentialType(ResidentialType.getEnum(getSelectedResidentialType()));
+        customer.setEmploymentStatus(EmploymentStatus.getEnum(getSelectedEmploymentStatus()));
+        customer.setEducation(Education.getEnum(getSelectedEducation()));
+        customer.setIndustry(Industry.getEnum(getSelectedIndustry()));
+        customer.setIncome(Income.getEnum(getSelectedIncome()));
+        customer.setIdentityType(IdentityType.getEnum(getSelectedIdentityType()));
+        customer.setGender(Gender.getEnum(getSelectedGender()));
+        customer.setNationality(Nationality.getEnum(getSelectedNationality()));
+        newCustomerSessionBean.createCustomer(customer);
 
         setMa(new MainAccount());
-        getMa().setUserID(CommonHelper.generateUserID(getC().getIdentityType(), getC().getIdentityNumber()));
+        getMa().setUserID(CommonHelper.generateUserID(customer.getIdentityType(), customer.getIdentityNumber()));
         getMa().setStatus(StatusType.NEW);
         mainAccountSessionBean.createMainAccount(getMa());
-        
+
         cca.setCardStatus(CardAccountStatus.NEW);
         cardAcctSessionBean.createCardAccount(cca);
 
         cco.setApplicationStatus(ApplicationStatus.NEW);
         creditCardOrderSessionBean.createCardOrder(cco);
-        
+
         //update relations
-        c.setMainAccount(ma);
-        newCustomerSessionBean.updateCustomer(c);
-        
+        getCustomer().setMainAccount(ma);
+        newCustomerSessionBean.updateCustomer(customer);
+
         cca.setMainAccount(ma);
         cca.setCreditCardProduct(newCardProductSessionBean.getCreditCardProductByProductName(selectedProductName));
         cca.setCreditCardOrder(cco);
         cardAcctSessionBean.updateCreditCardAccount(cca);
-        
+
         cco.setMainAccount(ma);
         creditCardOrderSessionBean.updateCreditCardOrder(cco);
-        
-        emailServiceSessionBean.sendCreditCardApplicationNotice(c.getEmail());
+
+        emailServiceSessionBean.sendCreditCardApplicationNotice(customer.getEmail());
         RedirectUtils.redirect("/InternetBankingSystem/common/application_success.xhtml");
 
+    }
+
+    public void saveUpdatedCreditCardOrderForExistingCustomer() {
+        System.out.println("inside saveupdatedCreditcardorder");
+
+        //persist
+
+        cca.setCardStatus(CardAccountStatus.NEW);
+        cardAcctSessionBean.createCardAccount(cca);
+
+        cco.setApplicationStatus(ApplicationStatus.NEW);
+        creditCardOrderSessionBean.createCardOrder(cco);
+
+        cca.setMainAccount(existingCustomer.getMainAccount());
+        cca.setCreditCardProduct(newCardProductSessionBean.getCreditCardProductByProductName(selectedProductName));
+        cca.setCreditCardOrder(cco);
+        cardAcctSessionBean.updateCreditCardAccount(cca);
+
+        cco.setMainAccount(existingCustomer.getMainAccount());
+        creditCardOrderSessionBean.updateCreditCardOrder(cco);
+
+        emailServiceSessionBean.sendCreditCardApplicationNotice(existingCustomer.getEmail());
+        RedirectUtils.redirect("https://localhost:8181/InternetBankingSystem/personal_cards/credit_card_summary.xhtml");
+
+    }
+    
+        
+    public void setExistingCustomerForCardApplication() {
+        existingCustomer = customerProfileSessionBean.getCustomerByUserID(SessionUtils.getUserName());
     }
 
     public CreditCardOrder getCco() {
@@ -275,17 +309,30 @@ public class NewCardManagedBean implements Serializable {
         this.ma = ma;
     }
 
-    public Customer getC() {
-        return c;
-    }
-
-    public void setC(Customer c) {
-        this.c = c;
+    /**
+     * @return the customer
+     */
+    public Customer getCustomer() {
+        return customer;
     }
 
     /**
-     * @return the productNameOptions
+     * @param customer the customer to set
      */
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
+
+    public Customer getExistingCustomer() {
+        return existingCustomer;
+    }
+
+
+    public void setExistingCustomer(Customer existingCustomer) {
+        this.existingCustomer = existingCustomer;
+    }
+
+
     public List<String> getProductNameOptions() {
         return productNameOptions;
     }

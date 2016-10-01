@@ -6,36 +6,32 @@
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     <!--shift + ctrl + F, format-->
     <f:view>
+        <f:metadata>
+            <f:viewAction action="#{newCardManagedBean.setExistingCustomerForCardApplication()}"></f:viewAction>
+        </f:metadata>
         <h:head>
             <title>Existing_Apply</title>
             <em:cssImport></em:cssImport>
         </h:head>
         <h:body>
             <em:customerHeader context="personal" userName="#{customerHomeManagedBean.customer.firstname }"></em:customerHeader>
-            <em:customerNavBar context="personal" personalPage="apply" ></em:customerNavBar>      
+            <em:customerNavBar context="personal" personalPage="apply" ></em:customerNavBar>    
+
             <h:form style="margin-top: 200px;margin-left: 300px;position: absolute">
                 <h1>Apply a new credit card</h1>
                 <p:growl id="growl" sticky="true" showDetail="true"/>
                 <p:wizard widgetVar="myWizard" showNavBar="false">
 
-                    -->                    <p:tab id="account" title="1.Deposit Account">
+                    <p:tab id="account" title="1.Deposit Account">
                         <p:panel>
                             <p:messages />
                             <table>
 
                                 <tr><div style="margin-top:30px">
                                         <h:outputText style="font-weight:bolder" value="Choose Your Credit Card: " />
-                                        <p:selectOneMenu value="#{customerApplicationManagedBean.initialDepositAccount}" style="width:187px; height: 31px; line-height: 21px; top:8px" rendered="true" required="true">
-                                            <f:selectItem itemLabel="Please Select..." itemValue="" />
-                                            <f:selectItem itemLabel="MBS Student Credit Card with Visa" itemValue="MBS Student Credit Card with Visa" />
-                                            <f:selectItem itemLabel="MBS Student Credit Card with MasterCard" itemValue="MBS Student Credit Card with MasterCard" />
-                                            <f:selectItem itemLabel="MBS Mile Credit Card with Visa" itemValue="MBS Mile Credit Card with Visa" />
-                                            <f:selectItem itemLabel="MBS Mile Credit Card with MasterCard" itemValue="MBS Mile Credit Card with MasterCard" />
-                                            <f:selectItem itemLabel="MBS Reward Credit Card with Visa" itemValue="MBS Reward Credit Card with Visa" />
-                                            <f:selectItem itemLabel="MBS Reward Credit Card with MasterCard" itemValue="MBS Reward Credit Card with MasterCard" />
-                                            <f:selectItem itemLabel="MBS Cash Back Card with Visa" itemValue="MBS Cash Back Card with Visa" />
-                                            <f:selectItem itemLabel="MBS Cash Back Card with MasterCard" itemValue="MBS Cash Back Card with MasterCard" />
-                                            
+                                        <p:selectOneMenu value="#{newCardManagedBean.selectedProductName}" style="width:187px; height: 30px; line-height: 21px; top:10px" rendered="true" required="true">
+                                            <f:selectItems value="#{newCardManagedBean.productNameOptions}" />
+
                                         </p:selectOneMenu>
 
 
@@ -80,22 +76,20 @@
                                 </script>
                             </div>
                         </p:panel>
-                    </p:tab><!--
-
-
-                    -->                <p:tab id="details" title="2.Personal Details" >
+                    </p:tab>
+                    <p:tab id="details" title="2.Personal Details" >
                         <p:panel>
                             <p:messages />
                             <h:panelGrid columns="2" columnClasses="label, value">
 
                                 <h:outputLabel for="mobileNumber" value="Mobile number (for OTP): " />
-                                <h:outputText id="mobileNumber" value="#{customerProfileManagedBean.customer.phone}"/>
+                                <h:outputText id="mobileNumber" value="#{newCardManagedBean.existingCustomer.phone}"/>
 
                                 <h:outputLabel for="email" value="Email: " />
-                                <h:outputText id="email" value="#{customerProfileManagedBean.customer.email}"/>
+                                <h:outputText id="email" value="#{newCardManagedBean.existingCustomer.email}"/>
 
                                 <h:outputLabel for="address" value="Address: " />
-                                <h:outputText id="address" value="#{customerProfileManagedBean.customer.address}"/>
+                                <h:outputText id="address" value="#{newCardManagedBean.existingCustomer.address}"/>
 
                             </h:panelGrid>
 
@@ -103,7 +97,7 @@
 
                             <div class="register-form-button" style="margin-top: 20px">
                                 <p:commandButton value="Back" type="button" onclick="PF('myWizard').back();" />
-                                <p:commandButton value="Confirm" actionListener="#{customerApplicationManagedBean.save}" update="growl" process="@this"/>
+                                <p:commandButton value="Confirm" actionListener="#{newCardManagedBean.saveUpdatedCreditCardOrderForExistingCustomer()}" update="growl" process="@this"/>
                             </div>
                         </p:panel>
                     </p:tab>
