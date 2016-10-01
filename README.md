@@ -44,6 +44,8 @@ mysql -u root --password=password < RecreateDatabase.sql
     // Last, place setters and getters at the back
     public getters and setters () {}
 
+```
+
 ### Change the project name accordingly ###
 
 ### Do no commit .xml and .properties file ###
