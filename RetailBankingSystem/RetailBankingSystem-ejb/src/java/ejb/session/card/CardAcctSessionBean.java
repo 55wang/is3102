@@ -147,7 +147,8 @@ public class CardAcctSessionBean implements CardAcctSessionBeanLocal {
         try {
 //            SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
 
-            Query q = em.createQuery("SELECT c FROM CreditCardAccount c WHERE c.creditCardNum =:cardNumber");
+            Query q = em.createQuery("SELECT c FROM CreditCardAccount c WHERE c.creditCardNum =:cardNumber AND c.CardStatus =:inStatus");
+            q.setParameter("inStatus", CardAccountStatus.PENDING);
             q.setParameter("cardNumber", cardNumber);
 
             CreditCardAccount cca = (CreditCardAccount) q.getSingleResult();
