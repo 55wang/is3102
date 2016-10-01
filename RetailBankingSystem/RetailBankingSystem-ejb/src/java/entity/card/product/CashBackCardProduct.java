@@ -15,31 +15,31 @@ import javax.persistence.Entity;
 @Entity
 public class CashBackCardProduct extends CreditCardProduct {
 
-    private double petrolCashBackRate = 0.08; // 8%
-    private double groceryCashBackRate = 0.08; //8%
-    private double diningCashBackRate = 0.08; //8%
+    private Double petrolCashBackRate = 0.08; // 8%
+    private Double groceryCashBackRate = 0.08; //8%
+    private Double diningCashBackRate = 0.08; //8%
 
-    public double getPetrolCashBackRate() {
+    public Double getPetrolCashBackRate() {
         return petrolCashBackRate;
     }
 
-    public void setPetrolCashBackRate(double petrolCashBackRate) {
+    public void setPetrolCashBackRate(Double petrolCashBackRate) {
         this.petrolCashBackRate = petrolCashBackRate;
     }
 
-    public double getGroceryCashBackRate() {
+    public Double getGroceryCashBackRate() {
         return groceryCashBackRate;
     }
 
-    public void setGroceryCashBackRate(double groceryCashBackRate) {
+    public void setGroceryCashBackRate(Double groceryCashBackRate) {
         this.groceryCashBackRate = groceryCashBackRate;
     }
 
-    public double getDiningCashBackRate() {
+    public Double getDiningCashBackRate() {
         return diningCashBackRate;
     }
 
-    public void setDiningCashBackRate(double diningCashBackRate) {
+    public void setDiningCashBackRate(Double diningCashBackRate) {
         this.diningCashBackRate = diningCashBackRate;
     }
 

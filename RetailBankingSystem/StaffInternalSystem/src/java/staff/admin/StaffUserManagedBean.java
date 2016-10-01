@@ -15,7 +15,7 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.ejb.EJB;
 import server.utilities.EnumUtils;
-import utils.LoggingUtils;
+import server.utilities.LoggingUtils;
 import utils.SessionUtils;
 import utils.UserUtils;
 

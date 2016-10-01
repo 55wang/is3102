@@ -5,7 +5,6 @@
  */
 package customer.common;
 
-import ejb.session.audit.AuditSessionBeanLocal;
 import ejb.session.common.EmailServiceSessionBeanLocal;
 import ejb.session.common.LoginSessionBeanLocal;
 import ejb.session.utils.UtilsSessionBeanLocal;
@@ -13,12 +12,11 @@ import entity.common.AuditLog;
 import entity.customer.MainAccount;
 import java.io.Serializable;
 import java.util.Date;
-import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import server.utilities.EnumUtils;
-import utils.HashPwdUtils;
+import server.utilities.HashPwdUtils;
 import utils.MessageUtils;
 import utils.RedirectUtils;
 import utils.SessionUtils;

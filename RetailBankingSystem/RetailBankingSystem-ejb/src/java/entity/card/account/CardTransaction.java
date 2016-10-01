@@ -41,10 +41,10 @@ public class CardTransaction implements Serializable {
     private Date updateDate = new Date();
     private String transactionCode;
     private String transactionDescription;
-    private boolean isCredit;
-    private double amount;
+    private Boolean isCredit;
+    private Double amount;
     private CardTransactionStatus cardTransactionStatus;
-    @ManyToOne(cascade = {CascadeType.PERSIST})
+    @ManyToOne(cascade = {CascadeType.MERGE})
     private CreditCardAccount creditCardAccount;
     
 
@@ -61,19 +61,6 @@ public class CardTransaction implements Serializable {
         int hash = 0;
         hash += (id != null ? id.hashCode() : 0);
         return hash;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof CardTransaction)) {
-            return false;
-        }
-        CardTransaction other = (CardTransaction) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
-            return false;
-        }
-        return true;
     }
 
     @Override
@@ -97,11 +84,11 @@ public class CardTransaction implements Serializable {
         this.transactionDescription = transactionDescription;
     }
 
-    public boolean isIsCredit() {
+    public Boolean isIsCredit() {
         return isCredit;
     }
 
-    public void setIsCredit(boolean isCredit) {
+    public void setIsCredit(Boolean isCredit) {
         this.isCredit = isCredit;
     }
     
@@ -152,14 +139,14 @@ public class CardTransaction implements Serializable {
     /**
      * @return the amount
      */
-    public double getAmount() {
+    public Double getAmount() {
         return amount;
     }
 
     /**
      * @param amount the amount to set
      */
-    public void setAmount(double amount) {
+    public void setAmount(Double amount) {
         this.amount = amount;
     }
 

@@ -24,8 +24,8 @@ import javax.faces.event.ActionEvent;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import server.utilities.EnumUtils.StatusType;
-import utils.CommonUtils;
-import utils.HashPwdUtils;
+import server.utilities.CommonUtils;
+import server.utilities.HashPwdUtils;
 import utils.MessageUtils;
 import utils.SessionUtils;
 

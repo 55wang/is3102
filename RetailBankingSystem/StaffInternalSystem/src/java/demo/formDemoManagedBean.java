@@ -12,7 +12,7 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
-import utils.CommonUtils;
+import server.utilities.CommonUtils;
 import server.utilities.EnumUtils;
 
 /**

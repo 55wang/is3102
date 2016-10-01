@@ -25,7 +25,7 @@ import javax.faces.view.ViewScoped;
 import server.utilities.EnumUtils;
 import server.utilities.EnumUtils.CaseStatus;
 import server.utilities.EnumUtils.cardOperatorChargebackStatus;
-import utils.CommonUtils;
+import server.utilities.CommonUtils;
 import utils.MessageUtils;
 import utils.RedirectUtils;
 import utils.SessionUtils;

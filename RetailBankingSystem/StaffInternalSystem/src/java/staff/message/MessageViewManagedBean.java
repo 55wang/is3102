@@ -18,9 +18,9 @@ import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import org.primefaces.push.EventBus;
 import org.primefaces.push.EventBusFactory;
-import utils.ColorUtils;
+import server.utilities.ColorUtils;
 import utils.JSUtils;
-import utils.LoggingUtils;
+import server.utilities.LoggingUtils;
 import utils.SessionUtils;
 
 /**

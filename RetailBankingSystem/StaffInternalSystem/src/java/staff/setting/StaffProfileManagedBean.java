@@ -18,7 +18,7 @@ import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import server.utilities.EnumUtils.Gender;
 import server.utilities.EnumUtils.Nationality;
-import utils.CommonUtils;
+import server.utilities.CommonUtils;
 import utils.RedirectUtils;
 import utils.SessionUtils;
 

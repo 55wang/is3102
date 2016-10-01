@@ -6,7 +6,7 @@
 package staff.message;
 
 import org.primefaces.push.Decoder;
-import utils.LoggingUtils;
+import server.utilities.LoggingUtils;
 
 /**
  *

@@ -25,7 +25,7 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
-import utils.CommonUtils;
+import server.utilities.CommonUtils;
 import utils.RedirectUtils;
 import server.utilities.EnumUtils.*;
 import server.utilities.CommonHelper;
@@ -65,24 +65,24 @@ public class NewCardManagedBean implements Serializable {
     private Customer existingCustomer;
     private CreditCardAccount cca;
 
-    private List<String> ProductNameOptions = new ArrayList<>();
+    private List<String> productNameOptions = new ArrayList<>();
 
-    private List<String> ResidentialStatusOptions = CommonUtils.getEnumList(ResidentialStatus.class);
-    private List<String> ResidentialTypeOptions = CommonUtils.getEnumList(ResidentialType.class);
+    private List<String> residentialStatusOptions = CommonUtils.getEnumList(ResidentialStatus.class);
+    private List<String> residentialTypeOptions = CommonUtils.getEnumList(ResidentialType.class);
 
-    private List<String> EmploymentStatusOptions = CommonUtils.getEnumList(EmploymentStatus.class);
-    private List<String> IndustryOptions = CommonUtils.getEnumList(Industry.class);
-    private List<String> StatusOptions = CommonUtils.getEnumList(StatusType.class);
-    private List<String> GenderOptions = CommonUtils.getEnumList(Gender.class);
+    private List<String> employmentStatusOptions = CommonUtils.getEnumList(EmploymentStatus.class);
+    private List<String> industryOptions = CommonUtils.getEnumList(Industry.class);
+    private List<String> statusOptions = CommonUtils.getEnumList(StatusType.class);
+    private List<String> genderOptions = CommonUtils.getEnumList(Gender.class);
 
-    private List<String> OccupationOptions = CommonUtils.getEnumList(Occupation.class);
-    private List<String> IncomeOptions = CommonUtils.getEnumList(Income.class);
-    private List<String> MaritalStatusOptions = CommonUtils.getEnumList(MaritalStatus.class);
-    private List<String> EducationOptions = CommonUtils.getEnumList(Education.class);
+    private List<String> occupationOptions = CommonUtils.getEnumList(Occupation.class);
+    private List<String> incomeOptions = CommonUtils.getEnumList(Income.class);
+    private List<String> maritalStatusOptions = CommonUtils.getEnumList(MaritalStatus.class);
+    private List<String> educationOptions = CommonUtils.getEnumList(Education.class);
 
-    private List<String> IdentityTypeOptions = CommonUtils.getEnumList(IdentityType.class);
-    private List<String> NationalityOptions = CommonUtils.getEnumList(Nationality.class);
-    private List<String> SaluationOptions = CommonUtils.getEnumList(Salutation.class);
+    private List<String> identityTypeOptions = CommonUtils.getEnumList(IdentityType.class);
+    private List<String> nationalityOptions = CommonUtils.getEnumList(Nationality.class);
+    private List<String> saluationOptions = CommonUtils.getEnumList(Salutation.class);
 
     private String selectedProductName;
     private String selectedResidentialStatus;
@@ -104,7 +104,7 @@ public class NewCardManagedBean implements Serializable {
         setCca(new CreditCardAccount());
         List<CreditCardProduct> ccps = newCardProductSessionBean.getListCreditCardProducts();
         for (CreditCardProduct ccp : ccps) {
-            ProductNameOptions.add(ccp.getProductName());
+            getProductNameOptions().add(ccp.getProductName());
         }
     }
 
@@ -190,101 +190,6 @@ public class NewCardManagedBean implements Serializable {
         this.cco = cco;
     }
 
-    public List<String> getResidentialStatusOptions() {
-        return ResidentialStatusOptions;
-    }
-
-    public void setResidentialStatusOptions(List<String> ResidentialStatusOptions) {
-        this.ResidentialStatusOptions = ResidentialStatusOptions;
-    }
-
-    public List<String> getResidentialTypeOptions() {
-        return ResidentialTypeOptions;
-    }
-
-    public void setResidentialTypeOptions(List<String> ResidentialTypeOptions) {
-        this.ResidentialTypeOptions = ResidentialTypeOptions;
-    }
-
-    public List<String> getEmploymentStatusOptions() {
-        return EmploymentStatusOptions;
-    }
-
-    public void setEmploymentStatusOptions(List<String> EmploymentStatusOptions) {
-        this.EmploymentStatusOptions = EmploymentStatusOptions;
-    }
-
-    public List<String> getIndustryOptions() {
-        return IndustryOptions;
-    }
-
-    public void setIndustryOptions(List<String> IndustryOptions) {
-        this.IndustryOptions = IndustryOptions;
-    }
-
-    public List<String> getStatusOptions() {
-        return StatusOptions;
-    }
-
-    public void setStatusOptions(List<String> StatusOptions) {
-        this.StatusOptions = StatusOptions;
-    }
-
-    public List<String> getGenderOptions() {
-        return GenderOptions;
-    }
-
-    public void setGenderOptions(List<String> GenderOptions) {
-        this.GenderOptions = GenderOptions;
-    }
-
-    public List<String> getNationalityOptions() {
-        return NationalityOptions;
-    }
-
-    public void setNationalityOptions(List<String> NationalityOptions) {
-        this.NationalityOptions = NationalityOptions;
-    }
-
-    public List<String> getIdentityTypeOptions() {
-        return IdentityTypeOptions;
-    }
-
-    public void setIdentityTypeOptions(List<String> IdentityTypeOptions) {
-        this.IdentityTypeOptions = IdentityTypeOptions;
-    }
-
-    public List<String> getOccupationOptions() {
-        return OccupationOptions;
-    }
-
-    public void setOccupationOptions(List<String> OccupationOptions) {
-        this.OccupationOptions = OccupationOptions;
-    }
-
-    public List<String> getIncomeOptions() {
-        return IncomeOptions;
-    }
-
-    public void setIncomeOptions(List<String> IncomeOptions) {
-        this.IncomeOptions = IncomeOptions;
-    }
-
-    public List<String> getMaritalStatusOptions() {
-        return MaritalStatusOptions;
-    }
-
-    public void setMaritalStatusOptions(List<String> MaritalStatusOptions) {
-        this.MaritalStatusOptions = MaritalStatusOptions;
-    }
-
-    public List<String> getEducationOptions() {
-        return EducationOptions;
-    }
-
-    public void setEducationOptions(List<String> EducationOptions) {
-        this.EducationOptions = EducationOptions;
-    }
 
     public String getSelectedResidentialStatus() {
         return selectedResidentialStatus;
@@ -326,14 +231,6 @@ public class NewCardManagedBean implements Serializable {
         this.selectedIndustry = selectedIndustry;
     }
 
-    public List<String> getSaluationOptions() {
-        return SaluationOptions;
-    }
-
-    public void setSaluationOptions(List<String> SaluationOptions) {
-        this.SaluationOptions = SaluationOptions;
-    }
-
     public CardAcctSessionBeanLocal getCardAcctSessionBean() {
         return cardAcctSessionBean;
     }
@@ -372,14 +269,6 @@ public class NewCardManagedBean implements Serializable {
 
     public void setSelectedIncome(String selectedIncome) {
         this.selectedIncome = selectedIncome;
-    }
-
-    public List<String> getProductNameOptions() {
-        return ProductNameOptions;
-    }
-
-    public void setProductNameOptions(List<String> ProductNameOptions) {
-        this.ProductNameOptions = ProductNameOptions;
     }
 
     public String getSelectedProductName() {
@@ -442,6 +331,7 @@ public class NewCardManagedBean implements Serializable {
     }
 
     /**
+<<<<<<< HEAD
      * @param existingCustomer the existingCustomer to set
      */
     public void setExistingCustomer(Customer existingCustomer) {
@@ -449,4 +339,200 @@ public class NewCardManagedBean implements Serializable {
     }
 
 
+=======
+     * @return the productNameOptions
+     */
+    public List<String> getProductNameOptions() {
+        return productNameOptions;
+    }
+
+    /**
+     * @param productNameOptions the productNameOptions to set
+     */
+    public void setProductNameOptions(List<String> productNameOptions) {
+        this.productNameOptions = productNameOptions;
+    }
+
+    /**
+     * @return the residentialStatusOptions
+     */
+    public List<String> getResidentialStatusOptions() {
+        return residentialStatusOptions;
+    }
+
+    /**
+     * @param residentialStatusOptions the residentialStatusOptions to set
+     */
+    public void setResidentialStatusOptions(List<String> residentialStatusOptions) {
+        this.residentialStatusOptions = residentialStatusOptions;
+    }
+
+    /**
+     * @return the residentialTypeOptions
+     */
+    public List<String> getResidentialTypeOptions() {
+        return residentialTypeOptions;
+    }
+
+    /**
+     * @param residentialTypeOptions the residentialTypeOptions to set
+     */
+    public void setResidentialTypeOptions(List<String> residentialTypeOptions) {
+        this.residentialTypeOptions = residentialTypeOptions;
+    }
+
+    /**
+     * @return the employmentStatusOptions
+     */
+    public List<String> getEmploymentStatusOptions() {
+        return employmentStatusOptions;
+    }
+
+    /**
+     * @param employmentStatusOptions the employmentStatusOptions to set
+     */
+    public void setEmploymentStatusOptions(List<String> employmentStatusOptions) {
+        this.employmentStatusOptions = employmentStatusOptions;
+    }
+
+    /**
+     * @return the industryOptions
+     */
+    public List<String> getIndustryOptions() {
+        return industryOptions;
+    }
+
+    /**
+     * @param industryOptions the industryOptions to set
+     */
+    public void setIndustryOptions(List<String> industryOptions) {
+        this.industryOptions = industryOptions;
+    }
+
+    /**
+     * @return the statusOptions
+     */
+    public List<String> getStatusOptions() {
+        return statusOptions;
+    }
+
+    /**
+     * @param statusOptions the statusOptions to set
+     */
+    public void setStatusOptions(List<String> statusOptions) {
+        this.statusOptions = statusOptions;
+    }
+
+    /**
+     * @return the genderOptions
+     */
+    public List<String> getGenderOptions() {
+        return genderOptions;
+    }
+
+    /**
+     * @param genderOptions the genderOptions to set
+     */
+    public void setGenderOptions(List<String> genderOptions) {
+        this.genderOptions = genderOptions;
+    }
+
+    /**
+     * @return the occupationOptions
+     */
+    public List<String> getOccupationOptions() {
+        return occupationOptions;
+    }
+
+    /**
+     * @param occupationOptions the occupationOptions to set
+     */
+    public void setOccupationOptions(List<String> occupationOptions) {
+        this.occupationOptions = occupationOptions;
+    }
+
+    /**
+     * @return the incomeOptions
+     */
+    public List<String> getIncomeOptions() {
+        return incomeOptions;
+    }
+
+    /**
+     * @param incomeOptions the incomeOptions to set
+     */
+    public void setIncomeOptions(List<String> incomeOptions) {
+        this.incomeOptions = incomeOptions;
+    }
+
+    /**
+     * @return the maritalStatusOptions
+     */
+    public List<String> getMaritalStatusOptions() {
+        return maritalStatusOptions;
+    }
+
+    /**
+     * @param maritalStatusOptions the maritalStatusOptions to set
+     */
+    public void setMaritalStatusOptions(List<String> maritalStatusOptions) {
+        this.maritalStatusOptions = maritalStatusOptions;
+    }
+
+    /**
+     * @return the educationOptions
+     */
+    public List<String> getEducationOptions() {
+        return educationOptions;
+    }
+
+    /**
+     * @param educationOptions the educationOptions to set
+     */
+    public void setEducationOptions(List<String> educationOptions) {
+        this.educationOptions = educationOptions;
+    }
+
+    /**
+     * @return the identityTypeOptions
+     */
+    public List<String> getIdentityTypeOptions() {
+        return identityTypeOptions;
+    }
+
+    /**
+     * @param identityTypeOptions the identityTypeOptions to set
+     */
+    public void setIdentityTypeOptions(List<String> identityTypeOptions) {
+        this.identityTypeOptions = identityTypeOptions;
+    }
+
+    /**
+     * @return the nationalityOptions
+     */
+    public List<String> getNationalityOptions() {
+        return nationalityOptions;
+    }
+
+    /**
+     * @param nationalityOptions the nationalityOptions to set
+     */
+    public void setNationalityOptions(List<String> nationalityOptions) {
+        this.nationalityOptions = nationalityOptions;
+    }
+
+    /**
+     * @return the saluationOptions
+     */
+    public List<String> getSaluationOptions() {
+        return saluationOptions;
+    }
+
+    /**
+     * @param saluationOptions the saluationOptions to set
+     */
+    public void setSaluationOptions(List<String> saluationOptions) {
+        this.saluationOptions = saluationOptions;
+    }
+>>>>>>> 98e0e10c9ce42f60e7330aad3e9e48471a0352ae
 }

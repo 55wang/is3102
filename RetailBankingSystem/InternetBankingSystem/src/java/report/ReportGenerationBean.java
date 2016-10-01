@@ -71,6 +71,7 @@ public class ReportGenerationBean implements Serializable {
         System.out.println("DB");
         String relativePath = new File("").getAbsolutePath();
         System.out.println("DB2222");
+
         JasperDesign jd = JRXmlLoader.load(prependingPath+"is3102/RetailBankingSystem/InternetBankingSystem/src/java/report/report.jrxml");
         JasperReport jr = JasperCompileManager.compileReport(prependingPath+"is3102/RetailBankingSystem/InternetBankingSystem/src/java/report/report.jrxml");
         System.out.println("Path");
@@ -81,6 +82,7 @@ public class ReportGenerationBean implements Serializable {
         System.out.println("View");
 //        JasperExportManager.exportReportToPdfFile(jp, "/Users/litong/Downloads/testPDF.pdf");
         System.out.println(relativePath);
+
         JasperExportManager.exportReportToPdfFile(jp, prependingPath+"is3102/RetailBankingSystem/InternetBankingSystem/web/request/estatement.pdf");
 
 // JasperExportManager.exportReportToPdfFile(jp, "http:///localhost:8181/InternetBankingSystem/src/java/report/testPDF.pdf");

@@ -64,7 +64,7 @@ public class Customer implements Serializable {
 
     private Gender gender;
 
-    private double creditScore;
+    private Double creditScore;
     private String BureaCreditScore;
 
     private Education education;
@@ -173,11 +173,11 @@ public class Customer implements Serializable {
         this.mainAccount = mainAccount;
     }
 
-    public double getCreditScore() {
+    public Double getCreditScore() {
         return creditScore;
     }
 
-    public void setCreditScore(double creditScore) {
+    public void setCreditScore(Double creditScore) {
         this.creditScore = creditScore;
     }
 
