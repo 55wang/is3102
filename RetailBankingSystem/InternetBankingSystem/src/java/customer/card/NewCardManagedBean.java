@@ -323,25 +323,16 @@ public class NewCardManagedBean implements Serializable {
         this.customer = customer;
     }
 
-    /**
-     * @return the existingCustomer
-     */
     public Customer getExistingCustomer() {
         return existingCustomer;
     }
 
-    /**
-<<<<<<< HEAD
-     * @param existingCustomer the existingCustomer to set
-     */
+
     public void setExistingCustomer(Customer existingCustomer) {
         this.existingCustomer = existingCustomer;
     }
 
 
-=======
-     * @return the productNameOptions
-     */
     public List<String> getProductNameOptions() {
         return productNameOptions;
     }
@@ -534,5 +525,4 @@ public class NewCardManagedBean implements Serializable {
     public void setSaluationOptions(List<String> saluationOptions) {
         this.saluationOptions = saluationOptions;
     }
->>>>>>> 98e0e10c9ce42f60e7330aad3e9e48471a0352ae
 }
