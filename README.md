@@ -6,12 +6,50 @@ A+, A-, B+, B, B-
 ## How to import data? run this in cmdline ##
 mysql -u root --password=password < RecreateDatabase.sql
 
+# Entity standard
+
+```java
+@Entity
+//Optional if you want to make it as a parent
+//@Inheritance(strategy=InheritanceType.JOINED) 
+public /*abstract*/ class SomeClass implements Serializable {
+
+    // basic id and timestamp
+    @Id
+    private Long id;
+    @Temporal(value = TemporalType.TIMESTAMP)
+    private final Date creationDate = new Date();
+
+    // info
+    private String someOtherInfos;
+    //...more
+
+    // mapping
+    @ManyToOne(cascade = CascadeType.MERGE)
+    private MainAccount mainAccount;
+    //... more
+
+    // functions
+    public String getFullName() {
+        // some 
+    }
+
+    // Buildin functions
+    // toString
+    // equal
+
+    // getters and setters
+}
+```
+
 # EJB standard
 
+```java
     public Entity createEntity(Entity en) return entity
     public Entity getEntityById(Long id) return Entity
     public Entity updateEntity(Entity en) return Entity
     public List<Entity> getListEntityByEntity(Entity en) return List<Entity>
+```
 
 # Managed Bean Standard
 
