@@ -76,6 +76,8 @@ Standardize Error Handingly Message from server.utilities.ConstantUtils.java
 
 
 # ENUM Follow the Following Practices: #
+
+```java
 	public enum UserRole {
 
         GENERAL_TELLER("General Teller"),
@@ -110,6 +112,7 @@ Standardize Error Handingly Message from server.utilities.ConstantUtils.java
             throw new IllegalArgumentException();
         }
     }
+```
 
 ## To convert a string back to enum: ##
 	EnumType.getEnum("The String");
