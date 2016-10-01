@@ -109,6 +109,11 @@ public class CreateDepositProductManagedBean implements Serializable {
         getFixedProduct().setType(PRODUCT_TYPE_FIXED);
     }
     
+    public void toggleProductStatus(DepositProduct dp) {
+        dp.setIsHistory(!dp.getIsHistory());
+        depositProductSessionBean.updateDepositProduct(dp);
+    } 
+    
     public void addProduct(ActionEvent event) {
         AuditLog a = new AuditLog();
         a.setActivityLog("System user add product");

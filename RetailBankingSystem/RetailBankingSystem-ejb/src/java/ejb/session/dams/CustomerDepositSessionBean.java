@@ -8,7 +8,9 @@ package ejb.session.dams;
 import entity.dams.account.CustomerDepositAccount;
 import entity.common.TransactionRecord;
 import entity.dams.account.DepositAccount;
+import entity.embedded.CumulatedInterest;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityExistsException;
@@ -280,8 +282,9 @@ public class CustomerDepositSessionBean implements CustomerDepositSessionBeanLoc
     
     @Override
     public DepositAccount creditInterestAccount(DepositAccount account) {
-        BigDecimal interestAmount = account.getCumulatedInterest().getCummulativeAmount();
-        if (account == null || interestAmount == null || interestAmount.compareTo(new BigDecimal(0.001)) >= 0) {
+        BigDecimal interestAmount = account.getCumulatedInterest().getCummulativeAmount().setScale(20, RoundingMode.HALF_UP);
+        System.out.println("Interest Amount: " + interestAmount + " and greater than 0.001: " + interestAmount.compareTo(new BigDecimal(0.001)));
+        if (account == null || interestAmount == null || interestAmount.compareTo(new BigDecimal(0.001)) < 0) {
             return null;
         } else {
             TransactionRecord t = new TransactionRecord();
@@ -293,6 +296,7 @@ public class CustomerDepositSessionBean implements CustomerDepositSessionBeanLoc
             account.addBalance(interestAmount);
             account.getCumulatedInterest().reset();
             em.merge(account);
+            em.flush();
             return account;
         }
     }

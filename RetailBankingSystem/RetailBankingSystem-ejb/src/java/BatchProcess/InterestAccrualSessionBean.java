@@ -72,6 +72,7 @@ public class InterestAccrualSessionBean implements InterestAccrualSessionBeanLoc
         return result;
     }
 
+    // for single account
     @Override
     public DepositAccount calculateMonthlyInterestForDepositAccount(DepositAccount a) {
         return depositBean.creditInterestAccount(a);
@@ -141,7 +142,7 @@ public class InterestAccrualSessionBean implements InterestAccrualSessionBeanLoc
         BigDecimal dailyInterval = new BigDecimal(30 * 12 / a.getProduct().getInterestInterval());
 
         // Get highest base interest
-        BigDecimal baseInterest = BigDecimal.ZERO;
+        BigDecimal baseInterest = BigDecimal.ZERO.setScale(30);
         for (Interest i : normalInterests) {
             if (baseInterest.compareTo(i.getPercentage()) < 0) {
                 baseInterest = i.getPercentage();
@@ -169,8 +170,8 @@ public class InterestAccrualSessionBean implements InterestAccrualSessionBeanLoc
         }
         // Assume not be overlapped
         BigDecimal leftOver = originalAmount;
-        BigDecimal tempInterest = baseInterest;
         for (RangeInterest i : rangeInterests) {
+            BigDecimal tempInterest = baseInterest;
             if (tempInterest.compareTo(i.getPercentage()) < 0) {
                 tempInterest = i.getPercentage();
             }
@@ -186,12 +187,12 @@ public class InterestAccrualSessionBean implements InterestAccrualSessionBeanLoc
                 // not apply, originalAmount too small
                 continue;
             }
-            BigDecimal percentage = baseInterest.divide(dailyInterval, 30, RoundingMode.HALF_UP);
+            BigDecimal percentage = tempInterest.divide(dailyInterval, 30, RoundingMode.HALF_UP);
             totalInterest = totalInterest.add(interval.multiply(percentage));
             leftOver = leftOver.subtract(interval);
         }
 
-        BigDecimal percentage = tempInterest.divide(dailyInterval, 30, RoundingMode.HALF_UP);
+        BigDecimal percentage = baseInterest.divide(dailyInterval, 30, RoundingMode.HALF_UP);
         totalInterest = totalInterest.add(leftOver.multiply(percentage));
 
         System.out.println("Total interest for the day: " + totalInterest);

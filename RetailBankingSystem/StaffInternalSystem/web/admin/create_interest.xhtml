@@ -92,10 +92,10 @@
                                 </c:if>
                             </h:panelGrid>
                             <c:if test="#{createInterestManagedBean.interestType == createInterestManagedBean.INTEREST_TYPE_TIME_RANGE}">
-                                <p:outputLabel for="rangeInterestName" value="Interest Name: " />
-                                <p:inputText id="rangeInterestName" value="#{createInterestManagedBean.timeRangeInterestName}" required="true"/>
+                                <p:outputLabel for="timeRangeInterestName" value="Interest Name: " />
+                                <p:inputText id="timeRangeInterestName" value="#{createInterestManagedBean.timeRangeInterestName}" required="true"/>
                                 <br/>
-                                <p:dataTable id="conditionInterests" value="#{createInterestManagedBean.collectionDTOs}" var="interest" editable="true" editMode="cell">
+                                <p:dataTable id="timeRangeInterests" value="#{createInterestManagedBean.collectionDTOs}" var="interest" editable="true" editMode="cell">
                                     <p:column headerText="Min Amt" sortBy="#{interest.minAmount}">
                                         <p:cellEditor>
                                             <f:facet name="output">

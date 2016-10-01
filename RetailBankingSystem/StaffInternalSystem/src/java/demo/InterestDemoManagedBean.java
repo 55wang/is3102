@@ -98,7 +98,7 @@ public class InterestDemoManagedBean implements Serializable {
     }
 
     public BigDecimal getTotalInterest(DepositAccount account) {
-        System.out.println("getTotalInterest starting");
+        System.out.println("getTotalInterest starting: account balance:" + account.getBalance());
         // TODO: Seperate from fixed deposit account
         BigDecimal totalInterest = BigDecimal.ZERO.setScale(20);
         
@@ -119,6 +119,7 @@ public class InterestDemoManagedBean implements Serializable {
         rangeInterests = new ArrayList<>();
         conditionInterests = new ArrayList<>();
         normalInterests = new ArrayList<>();
+        timeRangeInterests = new ArrayList<>();
         
         if (showingAccount instanceof CustomerDepositAccount) {
 

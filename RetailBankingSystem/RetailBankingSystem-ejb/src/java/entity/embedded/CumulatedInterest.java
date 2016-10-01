@@ -34,7 +34,7 @@ public class CumulatedInterest implements Serializable {
     
     public void reset() {
         this.times = 0;
-        cummulativeAmount = BigDecimal.ZERO;
+        this.cummulativeAmount = BigDecimal.ZERO;
         this.updatedDate = new Date();
     }
     /**

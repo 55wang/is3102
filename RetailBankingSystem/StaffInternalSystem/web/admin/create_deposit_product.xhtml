@@ -49,7 +49,7 @@
                                     <p:outputLabel for="customProductWaivedMonths" value="Waived N Months: " />
                                     <p:inputText id="customProductWaivedMonths" value="#{createDepositProductManagedBean.customProduct.waivedMonths}" required="true"/>
                                 </c:if>
-                                
+
                                 <c:if test="#{createDepositProductManagedBean.productType == createDepositProductManagedBean.PRODUCT_TYPE_CURRENT}">
                                     <p:outputLabel for="currentProductName" value="Name: " />
                                     <p:inputText id="currentProductName" value="#{createDepositProductManagedBean.currentProduct.name}" required="true"/>
@@ -70,7 +70,7 @@
                                     <p:outputLabel for="currentProductWaivedMonths" value="Waived N Months: " />
                                     <p:inputText id="currentProductWaivedMonths" value="#{createDepositProductManagedBean.currentProduct.waivedMonths}" required="true"/>
                                 </c:if>
-                                
+
                                 <c:if test="#{createDepositProductManagedBean.productType == createDepositProductManagedBean.PRODUCT_TYPE_SAVING}">
                                     <p:outputLabel for="savingProductName" value="Name: " />
                                     <p:inputText id="savingProductName" value="#{createDepositProductManagedBean.savingProduct.name}" required="true"/>
@@ -91,18 +91,9 @@
                                     <p:outputLabel for="savingProductWaivedMonths" value="Waived N Months: " />
                                     <p:inputText id="savingProductWaivedMonths" value="#{createDepositProductManagedBean.savingProduct.waivedMonths}" required="true"/>
                                 </c:if>
-                                
-                                <c:if test="#{createDepositProductManagedBean.productType == createDepositProductManagedBean.PRODUCT_TYPE_FIXED}">
-                                    <p:outputLabel for="fixedProductName" value="Name: " />
-                                    <p:inputText id="fixedProductName" value="#{createDepositProductManagedBean.fixedProduct.name}" required="true"/>
-                                    <p:outputLabel for="fixedProductDescription" value="Description: " />
-                                    <p:inputText id="fixedProductDescription" value="#{createDepositProductManagedBean.fixedProduct.description}" required="true"/>
-                                    <p:outputLabel for="fixedProductTerms" value="Terms and Conditions: " />
-                                    <p:inputText id="fixedProductTerms" value="#{createDepositProductManagedBean.fixedProduct.terms}" required="true"/>
-                                    <p:outputLabel for="fixedProductInterval" value="Interest Interval in Months: " />
-                                    <p:inputText id="fixedProductInterval" value="#{createDepositProductManagedBean.fixedProduct.interestInterval}" required="true"/>
-                                </c:if>
-                                
+
+                                <!--Not showing fixed deposit-->
+
                                 <c:if test="#{createDepositProductManagedBean.productType != createDepositProductManagedBean.PRODUCT_TYPE_FIXED}">
                                     <p:outputLabel for="productInterests" value="Product Interests " />
                                     <p:selectCheckboxMenu id="productInterests" value="#{createDepositProductManagedBean.selectedInterests}" label="Interests" filter="true" filterMatchMode="startsWith" required="true">
@@ -115,7 +106,7 @@
                         </p:messages>
                     </p:panel>
                 </h:form>
-                
+
                 <h:form id="DisplayForm">
                     <p:panel header="Custom Deposit Products">
                         <p:dataTable id="customProductList" value="#{createDepositProductManagedBean.customProducts}" var="product">
@@ -124,6 +115,12 @@
                             </p:column>
                             <p:column headerText="Type" sortBy="#{product.type}">
                                 <h:outputText value="#{product.type}"/> 
+                            </p:column>
+                            <p:column headerText="Status" sortBy="#{product.isHistory}">
+                                <h:outputText value="#{product.isHistory ? 'Not in use' : 'In use'}"/> 
+                            </p:column>
+                            <p:column headerText="Action">
+                                <p:commandButton value="Toggle" actionListener="#{createDepositProductManagedBean.toggleProductStatus(product)}" update="DisplayForm"/>
                             </p:column>
                         </p:dataTable>
                     </p:panel>
@@ -135,6 +132,12 @@
                             <p:column headerText="Type" sortBy="#{product.type}">
                                 <h:outputText value="#{product.type}"/> 
                             </p:column>
+                            <p:column headerText="Status" sortBy="#{product.isHistory}">
+                                <h:outputText value="#{product.isHistory ? 'Not in use' : 'In use'}"/> 
+                            </p:column>
+                            <p:column headerText="Action">
+                                <p:commandButton value="Toggle" actionListener="#{createDepositProductManagedBean.toggleProductStatus(product)}" update="DisplayForm"/>
+                            </p:column>
                         </p:dataTable>
                     </p:panel>
                     <p:panel header="Saving Deposit Products">
@@ -145,6 +148,12 @@
                             <p:column headerText="Type" sortBy="#{product.type}">
                                 <h:outputText value="#{product.type}"/> 
                             </p:column>
+                            <p:column headerText="Status" sortBy="#{product.isHistory}">
+                                <h:outputText value="#{product.isHistory ? 'Not in use' : 'In use'}"/> 
+                            </p:column>
+                            <p:column headerText="Action">
+                                <p:commandButton value="Toggle" actionListener="#{createDepositProductManagedBean.toggleProductStatus(product)}" update="DisplayForm"/>
+                            </p:column>
                         </p:dataTable>
                     </p:panel>
                     <p:panel header="Fixed Deposit Products">
@@ -154,6 +163,9 @@
                             </p:column>
                             <p:column headerText="Type" sortBy="#{product.type}">
                                 <h:outputText value="#{product.type}"/> 
+                            </p:column>
+                            <p:column headerText="Status" sortBy="#{product.isHistory}">
+                                <h:outputText value="#{product.isHistory ? 'Not in use' : 'In use'}"/> 
                             </p:column>
                         </p:dataTable>
                     </p:panel>

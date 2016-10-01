@@ -7,7 +7,6 @@ package init;
 
 import ejb.session.card.CardAcctSessionBeanLocal;
 import ejb.session.card.CardTransactionSessionBeanLocal;
-import ejb.session.card.CardProductSessionBeanLocal;
 import ejb.session.cms.CustomerCaseSessionBeanLocal;
 import ejb.session.dams.CurrentAccountChequeSessionBeanLocal;
 import ejb.session.dams.InterestSessionBeanLocal;
@@ -15,12 +14,7 @@ import ejb.session.dams.CustomerDepositSessionBeanLocal;
 import ejb.session.dams.DepositProductSessionBeanLocal;
 import ejb.session.staff.StaffAccountSessionBeanLocal;
 import ejb.session.staff.StaffRoleSessionBeanLocal;
-import ejb.session.utils.UtilsSessionBeanLocal;
 import entity.card.account.CardTransaction;
-import entity.card.product.CashBackCardProduct;
-import entity.card.account.CreditCardAccount;
-import entity.card.product.MileCardProduct;
-import entity.card.product.PromoCode;
 import entity.card.product.PromoProduct;
 import entity.card.product.RewardCardProduct;
 import entity.customer.CustomerCase;
@@ -51,13 +45,11 @@ import javax.ejb.Startup;
 import server.utilities.ConstantUtils;
 import server.utilities.DateUtils;
 import server.utilities.EnumUtils;
-import server.utilities.EnumUtils.CardTransactionStatus;
 import server.utilities.EnumUtils.CaseStatus;
 import server.utilities.EnumUtils.ChequeStatus;
 import server.utilities.EnumUtils.DepositAccountType;
 import server.utilities.EnumUtils.StatusType;
 import server.utilities.GenerateAccountAndCCNumber;
-import server.utilities.PincodeGenerationUtils;
 
 /**
  *
