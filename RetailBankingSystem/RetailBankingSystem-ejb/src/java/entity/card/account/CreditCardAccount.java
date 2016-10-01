@@ -69,20 +69,37 @@ public class CreditCardAccount implements Serializable {
     private Double creditLimit = 1000.0;
     @Temporal(value = TemporalType.TIMESTAMP)
     private Date creationDate = new Date();
-    private Double minPayDue = 0.0;
-    private Double annualInterestRate = 0.24; //24% annual Integererest rate
-    private Double outstandingAmount = 0.0;
+    
+    //for promo
     private Double cashBackAmount = 0.0;
     private Double merlionMiles = 0.0;
     private Double merlionPoints = 0.0;
+    
     //for bad credit record
+    private Double latePaymentFee = 60.0;
+    private Double minPayDue = 0.0;
     private Integer numOfLatePayment = 0; //count of total late payment
     private Integer numOf_30_59_LatePayment = 0; //count of 30-59 days overdue
     private Integer numOf_60_89_LatePayment = 0; //count of 60-89 days overdue
     private Integer numOf_90_LatePayment = 0; //count of >= 90 days overdue
+    private Double annualInterestRate = 0.24; //24% annual Integererest rate
+    private Double outstandingAmount = 0.0; //balance
 
     @Temporal(value = TemporalType.DATE)
     private Date overDueDuration;
+    
+    public Double calculateMinPayDue() {
+        Double minPay = 50.0;
+        if (minPay < getOutstandingAmount()/100.0) {
+            return minPay;
+        } else {
+            return getOutstandingAmount()/100.0;
+        }
+    }
+    
+    public Double calculateCardMonthlyInterest() {
+        return getOutstandingAmount() * (getAnnualInterestRate()/12);
+    }
 
     public String getPartialHiddenAccountNumber() {
         return this.creditCardNum.substring(
@@ -95,8 +112,6 @@ public class CreditCardAccount implements Serializable {
     public String toString() {
         return "CreditCardAccount{" + "id=" + id + ", mainAccount=" + mainAccount + ", creditCardProduct=" + creditCardProduct + ", promoCode=" + promoCode + ", cardTransactions=" + cardTransactions + ", creditCardOrder=" + creditCardOrder + ", CardStatus=" + CardStatus + ", creditCardNum=" + creditCardNum + ", cvv=" + cvv + ", nameOnCard=" + nameOnCard + ", validDate=" + validDate + ", transactionMonthlyLimit=" + transactionMonthlyLimit + ", transactionDailyLimit=" + transactionDailyLimit + ", creditLimit=" + creditLimit + ", creationDate=" + creationDate + ", minPayDue=" + minPayDue + ", annualInterestRate=" + annualInterestRate + ", outstandingAmount=" + outstandingAmount + ", cashBackAmount=" + cashBackAmount + ", merlionMiles=" + merlionMiles + ", merlionPoints=" + merlionPoints + ", numOfLatePayment=" + numOfLatePayment + ", numOf_30_59_LatePayment=" + numOf_30_59_LatePayment + ", numOf_60_89_LatePayment=" + numOf_60_89_LatePayment + ", numOf_90_LatePayment=" + numOf_90_LatePayment + ", overDueDuration=" + overDueDuration + '}';
     }
-
-    
     
     public void deductPoints(Double amount) {
         this.setMerlionPoints((Double) (this.getMerlionPoints() - amount));
@@ -350,6 +365,14 @@ public class CreditCardAccount implements Serializable {
      */
     public void setMerlionPoints(Double merlionPoints) {
         this.merlionPoints = merlionPoints;
+    }
+
+    public Double getLatePaymentFee() {
+        return latePaymentFee;
+    }
+
+    public void setLatePaymentFee(Double latePaymentFee) {
+        this.latePaymentFee = latePaymentFee;
     }
 
 }
