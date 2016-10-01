@@ -36,7 +36,7 @@ public abstract class CreditCardProduct implements Serializable {
     @Column(unique = true, nullable = false)
     private String productName;
 
-    private Double minSpendingAmount = 0;
+    private Double minSpendingAmount = 0.0;
     private Boolean minSpending = false; //default = false
 
     @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "creditCardProduct")

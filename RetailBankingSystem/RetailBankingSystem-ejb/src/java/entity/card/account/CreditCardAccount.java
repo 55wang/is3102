@@ -66,15 +66,15 @@ public class CreditCardAccount implements Serializable {
     private Date validDate;
     private Double transactionMonthlyLimit = 1000.0;
     private Double transactionDailyLimit = 500.0;
-    private Double creditLimit = 1000;
+    private Double creditLimit = 1000.0;
     @Temporal(value = TemporalType.TIMESTAMP)
     private Date creationDate = new Date();
-    private Double minPayDue = 0;
+    private Double minPayDue = 0.0;
     private Double annualInterestRate = 0.24; //24% annual Integererest rate
     private Double outstandingAmount = 0.0;
-    private Double cashBackAmount = 0;
-    private Double merlionMiles = 0;
-    private Double merlionPoIntegers = 0;
+    private Double cashBackAmount = 0.0;
+    private Double merlionMiles = 0.0;
+    private Double merlionPoints = 0.0;
     //for bad credit record
     private Integer numOfLatePayment = 0; //count of total late payment
     private Integer numOf_30_59_LatePayment = 0; //count of 30-59 days overdue
@@ -91,8 +91,15 @@ public class CreditCardAccount implements Serializable {
         );
     }
 
-    public void deductPoIntegers(Double amount) {
-        this.merlionPoIntegers -= amount;
+    @Override
+    public String toString() {
+        return "CreditCardAccount{" + "id=" + id + ", mainAccount=" + mainAccount + ", creditCardProduct=" + creditCardProduct + ", promoCode=" + promoCode + ", cardTransactions=" + cardTransactions + ", creditCardOrder=" + creditCardOrder + ", CardStatus=" + CardStatus + ", creditCardNum=" + creditCardNum + ", cvv=" + cvv + ", nameOnCard=" + nameOnCard + ", validDate=" + validDate + ", transactionMonthlyLimit=" + transactionMonthlyLimit + ", transactionDailyLimit=" + transactionDailyLimit + ", creditLimit=" + creditLimit + ", creationDate=" + creationDate + ", minPayDue=" + minPayDue + ", annualInterestRate=" + annualInterestRate + ", outstandingAmount=" + outstandingAmount + ", cashBackAmount=" + cashBackAmount + ", merlionMiles=" + merlionMiles + ", merlionPoints=" + merlionPoints + ", numOfLatePayment=" + numOfLatePayment + ", numOf_30_59_LatePayment=" + numOf_30_59_LatePayment + ", numOf_60_89_LatePayment=" + numOf_60_89_LatePayment + ", numOf_90_LatePayment=" + numOf_90_LatePayment + ", overDueDuration=" + overDueDuration + '}';
+    }
+
+    
+    
+    public void deductPoints(Double amount) {
+        this.setMerlionPoints((Double) (this.getMerlionPoints() - amount));
     }
 
     public void addPromoCode(PromoCode pc) {
@@ -109,12 +116,6 @@ public class CreditCardAccount implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    @Override
-    public Integer hashCode() {
-        Integer hash = 7;
-        return hash;
     }
 
     @Override
@@ -141,10 +142,6 @@ public class CreditCardAccount implements Serializable {
         return true;
     }
 
-    @Override
-    public String toString() {
-        return "CreditCardAccount{" + "id=" + id + ", mainAccount=" + mainAccount + ", CardStatus=" + CardStatus + ", creditCardNum=" + creditCardNum + ", cvv=" + getCvv() + ", nameOnCard=" + nameOnCard + ", validDate=" + validDate + ", transactionMonthlyLimit=" + transactionMonthlyLimit + ", transactionDailyLimit=" + transactionDailyLimit + ", creationDate=" + creationDate + ", minPayDue=" + minPayDue + ", annualInterestRate=" + annualInterestRate + ", outstandingAmount=" + outstandingAmount + ", cashBackAmount=" + cashBackAmount + ", merlionMiles=" + merlionMiles + ", merlionPoIntegers=" + merlionPoIntegers + ", numOfLatePayment=" + numOfLatePayment + ", numOf_30_59_LatePayment=" + numOf_30_59_LatePayment + ", numOf_60_89_LatePayment=" + numOf_60_89_LatePayment + ", numOf_90_LatePayment=" + numOf_90_LatePayment + ", overDueDuration=" + overDueDuration + '}';
-    }
 
     public String getNameOnCard() {
         return nameOnCard;
@@ -250,14 +247,6 @@ public class CreditCardAccount implements Serializable {
         this.merlionMiles = merlionMiles;
     }
 
-    public Double getMerlionPoIntegers() {
-        return merlionPoIntegers;
-    }
-
-    public void setMerlionPoIntegers(Double merlionPoIntegers) {
-        this.merlionPoIntegers = merlionPoIntegers;
-    }
-
     public CreditCardProduct getCreditCardProduct() {
         return creditCardProduct;
     }
@@ -347,6 +336,20 @@ public class CreditCardAccount implements Serializable {
      */
     public Integer getCvv() {
         return cvv;
+    }
+
+    /**
+     * @return the merlionPoints
+     */
+    public Double getMerlionPoints() {
+        return merlionPoints;
+    }
+
+    /**
+     * @param merlionPoints the merlionPoints to set
+     */
+    public void setMerlionPoints(Double merlionPoints) {
+        this.merlionPoints = merlionPoints;
     }
 
 }

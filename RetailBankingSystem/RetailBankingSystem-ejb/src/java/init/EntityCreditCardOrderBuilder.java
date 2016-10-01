@@ -53,8 +53,8 @@ public class EntityCreditCardOrderBuilder {
         cca.setCreditCardProduct(demoRewardCardProduct);
         cca.setNameOnCard(demoMainAccount.getCustomer().getFullName());
         cca.setCreditCardNum("4545454545454545");
-        cca.setOutstandingAmount(0);
-        cca.setMerlionPoints(100000);
+        cca.setOutstandingAmount(0.0);
+        cca.setMerlionPoints(100000.0);
         cca.setCardStatus(EnumUtils.CardAccountStatus.ACTIVE);
         cca.setMainAccount(demoMainAccount);
         cca = cardAcctSessionBean.createCardAccount(cca);
@@ -69,7 +69,7 @@ public class EntityCreditCardOrderBuilder {
 
         CardTransaction cardTransaction = new CardTransaction();
         cardTransaction.setCardTransactionStatus(EnumUtils.CardTransactionStatus.PENDINGTRANSACTION);
-        cardTransaction.setAmount(500);
+        cardTransaction.setAmount(500.0);
         cardTransaction.setIsCredit(true);
         cardTransaction.setTransactionCode("MST");
         cardTransaction.setTransactionDescription("AMAZON SERVICE USD378.50");
@@ -78,7 +78,7 @@ public class EntityCreditCardOrderBuilder {
 
         cardTransaction = new CardTransaction();
         cardTransaction.setCardTransactionStatus(EnumUtils.CardTransactionStatus.PENDINGTRANSACTION);
-        cardTransaction.setAmount(200);
+        cardTransaction.setAmount(200.0);
         cardTransaction.setIsCredit(true);
         cardTransaction.setTransactionCode("MST");
         cardTransaction.setTransactionDescription("Apple SERVICE USD168.50");
@@ -87,7 +87,7 @@ public class EntityCreditCardOrderBuilder {
 
         cardTransaction = new CardTransaction();
         cardTransaction.setCardTransactionStatus(EnumUtils.CardTransactionStatus.PENDINGTRANSACTION);
-        cardTransaction.setAmount(100);
+        cardTransaction.setAmount(100.0);
         cardTransaction.setIsCredit(true);
         cardTransaction.setTransactionCode("MST");
         cardTransaction.setTransactionDescription("Microsoft SERVICE USD78.50");
@@ -107,8 +107,8 @@ public class EntityCreditCardOrderBuilder {
         cca2.setCreditCardProduct(demoRewardCardProduct);
         cca2.setNameOnCard(demoMainAccount.getCustomer().getFullName());
         cca2.setCreditCardNum("5273076135089505");
-        cca2.setOutstandingAmount(0);
-        cca2.setMerlionPoints(100000);
+        cca2.setOutstandingAmount(0.0);
+        cca2.setMerlionPoints(100000.0);
         cca2.setCardStatus(EnumUtils.CardAccountStatus.NEW);
         cca2.setMainAccount(demoMainAccount);
         cardAcctSessionBean.createCardAccount(cca2);

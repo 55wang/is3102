@@ -24,7 +24,7 @@ public class PromoProduct implements Serializable {
     private String name;
     private String description;
     private PromoType type;
-    private Integer points;
+    private Double points;
     @Column(length = 4000)
     private String terms;
     
@@ -76,14 +76,14 @@ public class PromoProduct implements Serializable {
     /**
      * @return the points
      */
-    public Integer getPoints() {
+    public Double getPoints() {
         return points;
     }
 
     /**
      * @param points the points to set
      */
-    public void setPoints(Integer points) {
+    public void setPoints(Double points) {
         this.points = points;
     }
 

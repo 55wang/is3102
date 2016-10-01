@@ -29,9 +29,9 @@ public class EntityCreditCardProductBuilder {
     public RewardCardProduct initCreditCardProduct(MainAccount demoMainAccount, PromoProduct demoPromoProduct) {
         MileCardProduct mca = new MileCardProduct();
         mca.setLocalMileRate(1.3);
-        mca.setOverseaMileRate(2);
+        mca.setOverseaMileRate(2.0);
         mca.setMinSpending(true);
-        mca.setMinSpendingAmount(2000);
+        mca.setMinSpendingAmount(2000.0);
         mca.setProductName("Merlion MileCard");
         cardProductSessionBean.createMileProduct(mca);
 
@@ -39,15 +39,15 @@ public class EntityCreditCardProductBuilder {
         mca.setLocalMileRate(1.5);
         mca.setOverseaMileRate(2.1);
         mca.setMinSpending(true);
-        mca.setMinSpendingAmount(3000);
+        mca.setMinSpendingAmount(3000.0);
         mca.setProductName("Merlion MileCard2");
         cardProductSessionBean.createMileProduct(mca);
 
         RewardCardProduct rcp = new RewardCardProduct();
         rcp.setLocalMileRate(1.3);
-        rcp.setLocalPointRate(3);
+        rcp.setLocalPointRate(3.0);
         rcp.setMinSpending(true);
-        rcp.setMinSpendingAmount(500);
+        rcp.setMinSpendingAmount(500.0);
         rcp.setProductName("Merlion RewardCard");
         cardProductSessionBean.createRewardProduct(rcp);
 
@@ -55,7 +55,7 @@ public class EntityCreditCardProductBuilder {
         rcp.setLocalMileRate(1.4);
         rcp.setLocalPointRate(3.1);
         rcp.setMinSpending(true);
-        rcp.setMinSpendingAmount(700);
+        rcp.setMinSpendingAmount(700.0);
         rcp.setProductName("Merlion RewardCard2");
         RewardCardProduct demoRewardCardProduct = cardProductSessionBean.createRewardProduct(rcp);
 
@@ -63,7 +63,7 @@ public class EntityCreditCardProductBuilder {
         cbcp.setDiningCashBackRate(0.9);
         cbcp.setGroceryCashBackRate(1.2);
         cbcp.setPetrolCashBackRate(0.7);
-        cbcp.setMinSpendingAmount(2000);
+        cbcp.setMinSpendingAmount(2000.0);
         cbcp.setProductName("Merlion CashBackCard");
         cardProductSessionBean.createCashBackProduct(cbcp);
 
@@ -71,7 +71,7 @@ public class EntityCreditCardProductBuilder {
         cbcp.setDiningCashBackRate(1.1);
         cbcp.setGroceryCashBackRate(1.3);
         cbcp.setPetrolCashBackRate(0.6);
-        cbcp.setMinSpendingAmount(2000);
+        cbcp.setMinSpendingAmount(2000.0);
         cbcp.setProductName("Merlion CashBackCard2");
         cardProductSessionBean.createCashBackProduct(cbcp);
 

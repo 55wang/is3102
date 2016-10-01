@@ -34,7 +34,7 @@ public class EntityPromoProductBuilder {
                 + "• Tickets printed out is not refundable. \n"
                 + "• Maximum 10 vouchers allowed per redemption. \n"
                 + "• Movie date should not be later than expiry date on voucher.");
-        p1.setPoints(3500);
+        p1.setPoints(3500.0);
         p1.setType(EnumUtils.PromoType.VOUCHER);
         demoPromoProduct = (PromoProduct) utilsBean.persist(p1);
 
@@ -46,7 +46,7 @@ public class EntityPromoProductBuilder {
                 + "• Voucher is not exchangeable for cash and any unused value of the Voucher will be forfeited.\n"
                 + "• Any balance payment must be made with your DBS Credit Card.\n"
                 + "• Other terms & conditions apply. ");
-        p2.setPoints(5500);
+        p2.setPoints(5500.0);
         p2.setType(EnumUtils.PromoType.VOUCHER);
         utilsBean.persist(p2);
 
@@ -57,7 +57,7 @@ public class EntityPromoProductBuilder {
                 + "• Voucher is not exchangeable for cash and any unused value of the Voucher will be forfeited.\n"
                 + "• Any balance payment must be made with your DBS Credit Card.\n"
                 + "• Other terms & conditions apply.");
-        p3.setPoints(9500);
+        p3.setPoints(9500.0);
         p3.setType(EnumUtils.PromoType.VOUCHER);
         utilsBean.persist(p3);
 
@@ -70,7 +70,7 @@ public class EntityPromoProductBuilder {
                 + "• Valid at Takashimaya Department Store except supermarket, tenants, services and restaurants.  \n"
                 + "• Any balance payment must be made with your DBS Credit Card.  \n"
                 + "• Other terms & conditions apply.");
-        p4.setPoints(16500);
+        p4.setPoints(16500.0);
         p4.setType(EnumUtils.PromoType.VOUCHER);
         utilsBean.persist(p4);
         

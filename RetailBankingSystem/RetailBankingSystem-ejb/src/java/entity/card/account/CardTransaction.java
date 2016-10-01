@@ -64,19 +64,6 @@ public class CardTransaction implements Serializable {
     }
 
     @Override
-    public Boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof CardTransaction)) {
-            return false;
-        }
-        CardTransaction other = (CardTransaction) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
     public String toString() {
         return "entity.card.account.Transaction[ id=" + id + " ]";
     }
