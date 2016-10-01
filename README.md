@@ -6,6 +6,15 @@ A+, A-, B+, B, B-
 ## How to import data? run this in cmdline ##
 mysql -u root --password=password < RecreateDatabase.sql
 
+# Git master and branch
+
+    git checkout card
+    git pull origin card
+    git rebase master
+    git checkout master
+    git merge card
+    git checkout card
+
 # Entity standard
 
 ```java
