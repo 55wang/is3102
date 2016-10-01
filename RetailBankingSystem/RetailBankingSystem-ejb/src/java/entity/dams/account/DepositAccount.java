@@ -38,21 +38,24 @@ public abstract class DepositAccount implements Serializable {
     
     @Id
     private String accountNumber;
-    private DepositAccountType type;
-    private StatusType status = StatusType.PENDING;
     @Temporal(value = TemporalType.TIMESTAMP)
     private final Date creationDate = new Date();
+    
+    // info
+    private DepositAccountType type;
+    private StatusType status = StatusType.PENDING;
     @Column(precision=30, scale=20)
     private BigDecimal balance = BigDecimal.ZERO;
     @Embedded
     private CumulatedInterest cumulatedInterest = new CumulatedInterest();
-    @ManyToOne(cascade = CascadeType.MERGE)
-    private MainAccount mainAccount; // = new MainAccountl; 
-    // it would initiate with a new mainAccount would create a null mainaccount!!!
+    
+    // mapping
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "fromAccount")
     private List<TransactionRecord> transactions = new ArrayList<>();
     @ManyToOne(cascade = {CascadeType.MERGE})
     private DepositProduct product;
+    @ManyToOne(cascade = CascadeType.MERGE)
+    private MainAccount mainAccount;
     
     public void addBalance(BigDecimal amount) {
         balance = balance.add(amount);

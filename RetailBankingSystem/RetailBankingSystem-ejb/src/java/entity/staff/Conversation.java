@@ -31,19 +31,22 @@ public class Conversation implements Serializable, Comparable<Conversation> {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    
     @Temporal(value = TemporalType.TIMESTAMP)
     private Date createDate = new Date();
     @Temporal(value = TemporalType.TIMESTAMP)
     private Date updateDate = new Date();
+    
+    // info
+    private String lastMessage;
+    private Boolean unread;
+    
+    // mapping
     @OneToMany(cascade = {CascadeType.ALL}, mappedBy = "conversation")
     private List<Message> messages = new ArrayList<Message>();
     @ManyToOne(cascade = {CascadeType.MERGE})
     private StaffAccount sender;
     @ManyToOne(cascade = {CascadeType.MERGE})
     private StaffAccount receiver;
-    private String lastMessage;
-    private Boolean unread;
     
     @Override
     public int compareTo(Conversation c) {

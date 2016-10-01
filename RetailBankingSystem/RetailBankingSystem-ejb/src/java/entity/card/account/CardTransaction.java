@@ -39,11 +39,15 @@ public class CardTransaction implements Serializable {
     private Date createDate = new Date();
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date updateDate = new Date();
+    
+    // info
     private String transactionCode;
     private String transactionDescription;
     private Boolean isCredit;
     private Double amount;
     private CardTransactionStatus cardTransactionStatus;
+    
+    // Mapping
     @ManyToOne(cascade = {CascadeType.MERGE})
     private CreditCardAccount creditCardAccount;
     

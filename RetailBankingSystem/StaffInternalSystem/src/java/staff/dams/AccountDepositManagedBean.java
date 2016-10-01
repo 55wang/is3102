@@ -47,7 +47,7 @@ public class AccountDepositManagedBean implements Serializable {
         AuditLog a = new AuditLog();
         a.setActivityLog("System user enter deposit account.xhtml");
         a.setFunctionName("AccountDepositManagedBean @PostConstruct init()");
-        a.setInput("Getting all AccountDepositManagedBean information");
+        a.setFunctionInput("Getting all AccountDepositManagedBean information");
         a.setStaffAccount(SessionUtils.getStaff());
         utilsBean.persist(a);
 

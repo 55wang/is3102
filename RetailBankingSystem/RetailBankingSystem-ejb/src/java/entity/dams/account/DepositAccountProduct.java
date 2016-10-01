@@ -25,6 +25,7 @@ import javax.persistence.OneToMany;
 //@Inheritance(strategy=InheritanceType.JOINED)
 public class DepositAccountProduct extends DepositProduct {
     
+    // info
     @Column(precision=12, scale=2)
     private BigDecimal initialDeposit;
     @Column(precision=12, scale=2)
@@ -35,6 +36,7 @@ public class DepositAccountProduct extends DepositProduct {
     private BigDecimal annualFees;
     private Integer waivedMonths;
     
+    // mapping
     @OneToMany(cascade = {CascadeType.MERGE})
     private List<Interest> interestRules = new ArrayList<>();
 

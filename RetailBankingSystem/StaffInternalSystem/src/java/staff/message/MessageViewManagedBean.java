@@ -54,7 +54,7 @@ public class MessageViewManagedBean implements Serializable {
         AuditLog a = new AuditLog();
         a.setActivityLog("System user enter MessageViewManagedBean");
         a.setFunctionName("MessageViewManagedBean @PostConstruct init()");
-        a.setInput("Getting all MessageViewManagedBean information");
+        a.setFunctionInput("Getting all MessageViewManagedBean information");
         a.setStaffAccount(SessionUtils.getStaff());
         utilsBean.persist(a);
     }

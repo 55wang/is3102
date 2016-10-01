@@ -33,17 +33,19 @@ public class AuditLog implements Serializable {
     private Date creationDate = new Date();
     private String activityLog; //readable function name
     private String functionName;
-    private String input;
-    private String output;
+    private String functionInput;
+    private String functionOutput;
     private String ipAddress;
+    
+    // mapping
     @ManyToOne(cascade = {CascadeType.MERGE})
     private StaffAccount staffAccount;
     @ManyToOne(cascade = {CascadeType.MERGE})
     private MainAccount mainAccount;
-    
+
     @Override
     public String toString() {
-        return "AuditLog{" + "id=" + id + ", creationDate=" + creationDate + ", activityLog=" + activityLog + ", functionName=" + functionName + ", input=" + input + ", output=" + output + ", ipAddress=" + ipAddress + ", staffAccount=" + staffAccount + ", mainAccount=" + mainAccount + '}';
+        return "AuditLog{" + "id=" + id + ", creationDate=" + creationDate + ", activityLog=" + activityLog + ", functionName=" + functionName + ", functionInput=" + getFunctionInput() + ", functionOutput=" + getFunctionOutput() + ", ipAddress=" + ipAddress + ", staffAccount=" + staffAccount + ", mainAccount=" + mainAccount + '}';
     }
 
     public Long getId() {
@@ -101,29 +103,40 @@ public class AuditLog implements Serializable {
         this.functionName = EncryptMethods.AESEncrypt(functionName);
     }
 
-    public String getInput() {
-        return EncryptMethods.AESDecrypt(input);
-    }
-
-    public void setInput(String input) {
-        this.input = EncryptMethods.AESEncrypt(input);
-    }
-
-    public String getOutput() {
-        
-        return EncryptMethods.AESDecrypt(output);
-    }
-
-    public void setOutput(String output) {
-        this.output = EncryptMethods.AESEncrypt(output);
-    }
-
     public String getIpAddress() {
         return ipAddress;
     }
 
     public void setIpAddress(String ipAddress) {
         this.ipAddress = ipAddress;
+    }
+
+    /**
+     * @return the functionInput
+     */
+    public String getFunctionInput() {
+        return functionInput;
+    }
+
+    /**
+     * @param functionInput the functionInput to set
+     */
+    public void setFunctionInput(String functionInput) {
+        this.functionInput = functionInput;
+    }
+
+    /**
+     * @return the functionOutput
+     */
+    public String getFunctionOutput() {
+        return functionOutput;
+    }
+
+    /**
+     * @param functionOutput the functionOutput to set
+     */
+    public void setFunctionOutput(String functionOutput) {
+        this.functionOutput = functionOutput;
     }
 
 }

@@ -63,6 +63,17 @@ public class StaffViewCustomerCaseManagedBean implements Serializable{
     public StaffViewCustomerCaseManagedBean() {
     }
     
+    @PostConstruct
+    public void setCases() {
+        this.cases = customerCaseSessionBean.getAllCaseUnderCertainStaff(SessionUtils.getStaff());
+        AuditLog a = new AuditLog();
+        a.setActivityLog("System user enter view_customer_information.xhtml");
+        a.setFunctionName("StaffViewCustomerCaseManagedBean @PostConstruct setCases()");
+        a.setFunctionInput("Getting all customer cases");
+        a.setStaffAccount(SessionUtils.getStaff());
+        utilsBean.persist(a);
+    }
+    
     public void search() {
         if (searchText.isEmpty()){
             cases = customerCaseSessionBean.getAllCaseUnderCertainStaff(SessionUtils.getStaff());
@@ -190,17 +201,6 @@ public class StaffViewCustomerCaseManagedBean implements Serializable{
     public void showAllStaff() {
         setStaffs(staffBean.getAllStaffs());
         removeSelf();
-    }
-    
-    @PostConstruct
-    public void setCases() {
-        this.cases = customerCaseSessionBean.getAllCaseUnderCertainStaff(SessionUtils.getStaff());
-        AuditLog a = new AuditLog();
-        a.setActivityLog("System user enter view_customer_information.xhtml");
-        a.setFunctionName("StaffViewCustomerCaseManagedBean @PostConstruct setCases()");
-        a.setInput("Getting all customer cases");
-        a.setStaffAccount(SessionUtils.getStaff());
-        utilsBean.persist(a);
     }
     
     public List<CustomerCase> getCases() {

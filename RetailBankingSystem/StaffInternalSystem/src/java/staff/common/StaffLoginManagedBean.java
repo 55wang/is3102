@@ -57,7 +57,7 @@ public class StaffLoginManagedBean implements Serializable {
         AuditLog a = new AuditLog();
         a.setActivityLog("System StaffLoginManagedBean.xhtml");
         a.setFunctionName("StaffLoginManagedBean @PostConstruct init()");
-        a.setInput("Getting all customer information");
+        a.setFunctionInput("Getting all customer information");
         a.setStaffAccount(SessionUtils.getStaff());
         utilsBean.persist(a);
 //        StaffAccount sa = staffBean.loginAccount("adminadmin", HashPwdUtils.hashPwd("password"));

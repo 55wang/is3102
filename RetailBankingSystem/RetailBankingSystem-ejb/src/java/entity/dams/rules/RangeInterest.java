@@ -16,6 +16,7 @@ import javax.persistence.Entity;
 @Entity
 public class RangeInterest extends Interest {
     
+    // info
     @Column(precision=12, scale=2)
     private BigDecimal minimum;
     @Column(precision=12, scale=2)

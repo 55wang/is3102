@@ -5,7 +5,6 @@
  */
 package entity.card.product;
 
-import entity.card.product.CreditCardProduct;
 import javax.persistence.Entity;
 
 /**
@@ -15,6 +14,7 @@ import javax.persistence.Entity;
 @Entity
 public class RewardCardProduct extends CreditCardProduct {
 
+    // info
     private Double localMileRate; // SGD$1 = 4 Miles
     private Double localPointRate; //SGD$1 = 10 points
 

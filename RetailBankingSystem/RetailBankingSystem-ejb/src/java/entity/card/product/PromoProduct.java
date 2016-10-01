@@ -8,8 +8,6 @@ package entity.card.product;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import server.utilities.EnumUtils.PromoType;
 
@@ -17,9 +15,10 @@ import server.utilities.EnumUtils.PromoType;
  *
  * @author leiyang
  */
-@Entity
+@Entity 
 public class PromoProduct implements Serializable {
     
+    // info
     @Id
     private String name;
     private String description;

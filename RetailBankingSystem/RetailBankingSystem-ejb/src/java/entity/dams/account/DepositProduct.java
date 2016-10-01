@@ -29,6 +29,10 @@ public class DepositProduct implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Temporal(value = TemporalType.TIMESTAMP)
+    private final Date creationDate = new Date();
+    
+    // info
     private Integer version = 0;
     private Boolean isHistory = Boolean.FALSE;
     private String description;
@@ -37,8 +41,7 @@ public class DepositProduct implements Serializable {
     private String terms;
     private Integer interestInterval = 1;
     private DepositAccountType type;
-    @Temporal(value = TemporalType.TIMESTAMP)
-    private final Date creationDate = new Date();
+    
 
     public Long getId() {
         return id;

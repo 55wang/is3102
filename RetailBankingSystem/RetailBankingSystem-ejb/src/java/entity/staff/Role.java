@@ -20,7 +20,7 @@ public class Role implements Serializable {
     
     @Id
     private String roleName;
-    //set not null
+    // info
     @Column(length = 4000)
     private String description;
     

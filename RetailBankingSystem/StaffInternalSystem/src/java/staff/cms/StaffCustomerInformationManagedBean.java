@@ -69,6 +69,21 @@ public class StaffCustomerInformationManagedBean implements Serializable {
     public StaffCustomerInformationManagedBean() {
     }
     
+    /**
+     * @param customers the customers to set
+     */
+    @PostConstruct
+    public void setCustomers() {
+        this.setCustomers(getCustomerProfileSessionBean().retrieveActivatedCustomers());
+        AuditLog a = new AuditLog();
+        a.setActivityLog("System user enter create_customer_information.xhtml");
+        a.setFunctionName("StaffCustomerInformationCaseManagedBean @PostConstruct setCustomers()");
+        a.setFunctionInput("Getting all customer information");
+        a.setStaffAccount(SessionUtils.getStaff());
+        utilsBean.persist(a);
+
+    }
+    
     public void search() {
         if (searchText.isEmpty()) {
             setCustomers(getCustomerProfileSessionBean().retrieveActivatedCustomers());
@@ -137,20 +152,7 @@ public class StaffCustomerInformationManagedBean implements Serializable {
         return customers;
     }
 
-    /**
-     * @param customers the customers to set
-     */
-    @PostConstruct
-    public void setCustomers() {
-        this.setCustomers(getCustomerProfileSessionBean().retrieveActivatedCustomers());
-        AuditLog a = new AuditLog();
-        a.setActivityLog("System user enter create_customer_information.xhtml");
-        a.setFunctionName("StaffCustomerInformationCaseManagedBean @PostConstruct setCustomers()");
-        a.setInput("Getting all customer information");
-        a.setStaffAccount(SessionUtils.getStaff());
-        utilsBean.persist(a);
-
-    }
+    
 
     /**
      * @return the searchText

@@ -30,14 +30,16 @@ public class Interest implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Temporal(value = TemporalType.TIMESTAMP)
+    private Date createDate = new Date();
+    
+    // info
     @Column(unique = true, nullable = false)
     private String name;
     private String description;
     // REMARK:Update will create a new version and leave a copy
     private Integer version = 0;
     private Boolean isHistory = Boolean.FALSE;
-    @Temporal(value = TemporalType.TIMESTAMP)
-    private Date createDate = new Date();
     @Column(precision=18, scale=6)
     private BigDecimal percentage;
     private Boolean isCumulative = Boolean.TRUE;

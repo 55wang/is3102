@@ -6,7 +6,6 @@
 package entity.card.product;
 
 import entity.card.account.CreditCardAccount;
-import entity.card.order.CreditCardOrder;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,12 +32,14 @@ public abstract class CreditCardProduct implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    // info
     @Column(unique = true, nullable = false)
     private String productName;
-
     private Double minSpendingAmount = 0.0;
     private Boolean minSpending = false; //default = false
 
+    
+    // mapping
     @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "creditCardProduct")
     private List<CreditCardAccount> creditCardAcounts = new ArrayList<>();
 

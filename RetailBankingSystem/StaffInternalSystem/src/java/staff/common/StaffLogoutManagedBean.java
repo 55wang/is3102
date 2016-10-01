@@ -37,7 +37,7 @@ public class StaffLogoutManagedBean implements Serializable {
         AuditLog a = new AuditLog();
         a.setActivityLog("System user enter logou.xhtml");
         a.setFunctionName("StaffLogoutManagedBean @PostConstruct init()");
-        a.setInput("Getting all customer information");
+        a.setFunctionInput("Getting all customer information");
         a.setStaffAccount(SessionUtils.getStaff());
         utilsBean.persist(a);
 

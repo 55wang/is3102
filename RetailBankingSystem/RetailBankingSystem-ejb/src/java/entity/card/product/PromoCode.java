@@ -27,8 +27,12 @@ public class PromoCode implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    
+    // info
     @Column(unique = true, nullable = false)
     private String promotionCode;
+    
+    // mapping
     @ManyToOne(cascade = {CascadeType.MERGE})
     private PromoProduct product;
     @ManyToOne(cascade = {CascadeType.PERSIST})

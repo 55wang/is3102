@@ -33,10 +33,14 @@ public class MainAccount implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    
+    // info
     @Column(unique = true)
     private String userID;
     private String password;
     private StatusType status;
+    
+    // mappings
     @OneToOne(cascade = {CascadeType.MERGE}, mappedBy = "mainAccount")
     private Customer customer;
     @OneToMany(cascade = {CascadeType.MERGE}, mappedBy = "mainAccount")
