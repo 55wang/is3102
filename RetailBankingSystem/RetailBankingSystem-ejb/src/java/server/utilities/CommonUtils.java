@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package utils;
+package server.utilities;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +13,7 @@ import java.util.List;
  * @author leiyang
  */
 public class CommonUtils {
+    
     //Call Like This: CommonUtils.getEnumList(EnumUtils.Gender.class)
     public static <E extends Enum<E>> List<String> getEnumList(Class<E> enumData) {
         List<String> results = new ArrayList<>();

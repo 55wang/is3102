@@ -22,7 +22,7 @@ import javax.faces.view.ViewScoped;
 import org.primefaces.event.FlowEvent;
 import server.utilities.ConstantUtils;
 import server.utilities.EnumUtils;
-import utils.CommonUtils;
+import server.utilities.CommonUtils;
 import utils.MessageUtils;
 
 

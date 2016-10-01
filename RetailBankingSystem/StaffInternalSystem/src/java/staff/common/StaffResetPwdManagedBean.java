@@ -15,7 +15,7 @@ import javax.ejb.EJB;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import server.utilities.ConstantUtils;
-import utils.HashPwdUtils;
+import server.utilities.HashPwdUtils;
 import utils.MessageUtils;
 import utils.SessionUtils;
 

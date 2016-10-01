@@ -33,7 +33,7 @@ import server.utilities.EnumUtils.Income;
 import server.utilities.EnumUtils.Nationality;
 import server.utilities.EnumUtils.StatusType;
 import server.utilities.PincodeGenerationUtils;
-import utils.CommonUtils;
+import server.utilities.CommonUtils;
 import utils.JSUtils;
 import utils.MessageUtils;
 import utils.RedirectUtils;

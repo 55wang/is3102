@@ -22,7 +22,7 @@ import server.utilities.EnumUtils.Gender;
 import server.utilities.EnumUtils.Income;
 import server.utilities.EnumUtils.MaritalStatus;
 import server.utilities.EnumUtils.Nationality;
-import utils.CommonUtils;
+import server.utilities.CommonUtils;
 import utils.MessageUtils;
 import utils.RedirectUtils;
 import utils.SessionUtils;

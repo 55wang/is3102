@@ -18,7 +18,7 @@ import javax.inject.Named;
 import javax.faces.event.ActionEvent;
 import javax.faces.view.ViewScoped;
 import server.utilities.EnumUtils.UserRole;
-import utils.HashPwdUtils;
+import server.utilities.HashPwdUtils;
 import utils.MessageUtils;
 import utils.RedirectUtils;
 import utils.SessionUtils;

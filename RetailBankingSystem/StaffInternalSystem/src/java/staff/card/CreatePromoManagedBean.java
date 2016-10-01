@@ -16,7 +16,7 @@ import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import server.utilities.EnumUtils;
-import utils.CommonUtils;
+import server.utilities.CommonUtils;
 import utils.MessageUtils;
 
 /**
