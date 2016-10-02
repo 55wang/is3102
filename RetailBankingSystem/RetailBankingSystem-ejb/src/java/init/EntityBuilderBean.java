@@ -12,6 +12,7 @@ import ejb.session.dams.CurrentAccountChequeSessionBeanLocal;
 import ejb.session.dams.InterestSessionBeanLocal;
 import ejb.session.dams.CustomerDepositSessionBeanLocal;
 import ejb.session.dams.DepositProductSessionBeanLocal;
+import ejb.session.loan.LoanAccountSessionBeanLocal;
 import ejb.session.staff.StaffAccountSessionBeanLocal;
 import ejb.session.staff.StaffRoleSessionBeanLocal;
 import entity.card.account.CardTransaction;
@@ -30,11 +31,15 @@ import entity.dams.rules.ConditionInterest;
 import entity.dams.rules.Interest;
 import entity.dams.rules.RangeInterest;
 import entity.dams.rules.TimeRangeInterest;
+import entity.loan.LoanAccount;
+import entity.loan.LoanInterest;
+import entity.loan.LoanProduct;
 import entity.staff.Announcement;
 import entity.staff.Role;
 import entity.staff.StaffAccount;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -61,6 +66,9 @@ import server.utilities.GenerateAccountAndCCNumber;
 public class EntityBuilderBean {
 
     @EJB
+    private LoanAccountSessionBeanLocal loanAccountSessionBean;
+
+    @EJB
     private EntityCustomerBuilder entityCustomerBuilder;
 
     @EJB
@@ -68,7 +76,7 @@ public class EntityBuilderBean {
 
     @EJB
     private EntityCreditCardProductBuilder entityCreditCardProductBuilder;
-    
+
     @EJB
     private EntityPromoProductBuilder entityPromoProductBuilder;
 
@@ -101,11 +109,14 @@ public class EntityBuilderBean {
     private MainAccount demoMainAccount;
     private RewardCardProduct demoRewardCardProduct;
     private PromoProduct demoPromoProduct;
+    private CustomerDepositAccount demoDepositAccount;
+    private Calendar cal = Calendar.getInstance();
 
     @PostConstruct
     public void init() {
         System.out.println("EntityInitilzationBean @PostConstruct");
         System.out.println(GenerateAccountAndCCNumber.generateAccountNumber());
+
         if (needInit()) {
             buildEntities();
         } else {
@@ -135,6 +146,8 @@ public class EntityBuilderBean {
         demoRewardCardProduct = entityCreditCardProductBuilder.initCreditCardProduct(demoMainAccount, demoPromoProduct);
         initCase();
         initNotification();
+        System.out.print("building Entities......");
+        initLoanAccount();
 
 //        initCreditCardOrder();
         entityCreditCardOrderBuilder.initCreditCardOrder(demoMainAccount, demoRewardCardProduct, demoPromoProduct);
@@ -918,6 +931,7 @@ public class EntityBuilderBean {
         initTransactions(dp);
         initCheques(dp);
         cardAcctSessionBean.createDebitAccount(customAccount);
+        demoDepositAccount = customAccount;
 
         CustomerDepositAccount savingAccount = new CustomerDepositAccount();
         savingAccount.setType(DepositAccountType.SAVING);
@@ -1057,6 +1071,51 @@ public class EntityBuilderBean {
         n1.setTitle("Happy Holidy!!");
     }
 
+    public void initLoanAccount() {
+        System.out.print("Creating account !!!!================");
+        LoanAccount loanAccount = new LoanAccount();
+        List<LoanInterest> loanInterests = new ArrayList<LoanInterest>();
+
+        LoanInterest loanInterest1 = new LoanInterest();
+        loanInterest1.setId(Long.getLong(Integer.toString(1)));
+        loanInterest1.setStartTime(0);
+        loanInterest1.setEndTime(3);
+        loanInterest1.setInterestRate(0.2);
+        loanInterests.add(loanInterest1);
+
+        LoanInterest loanInterest2 = new LoanInterest();
+        loanInterest2.setId(Long.getLong(Integer.toString(2)));
+        loanInterest2.setStartTime(3);
+        loanInterest2.setEndTime(6);
+        loanInterest2.setInterestRate(0.2);
+        loanInterests.add(loanInterest2);
+
+        LoanProduct loanProduct = new LoanProduct();
+        loanProduct.setId(Long.getLong(Integer.toString(1)));
+        loanProduct.setProductName("MBS Personal Loan");
+        loanProduct.setLoanInterests(loanInterests);
+        loanProduct.setTenure(6);
+        loanProduct.setLockInDuration(2);
+        loanProduct.setPenaltyInterestRate(0.5);
+        loanAccountSessionBean.createLoanProduct(loanProduct);
+        System.out.print("EntityBuilder ========== " + loanProduct.getProductName());
+        System.out.print(demoMainAccount.getBankAcounts().size());
+        loanAccount.setDepositAccount(demoDepositAccount);
+
+        loanAccount.setLoanProduct(loanProduct);
+        loanAccount.setCustomer(demoMainAccount.getCustomer());
+        loanAccount.setLoanOfficer(staffAccountSessionBean.getAccountByUsername(ConstantUtils.LOAN_OFFICIER_USERNAME));
+        cal.add(Calendar.YEAR, 6);
+        loanAccount.setMaturityDate(cal.getTime());
+        loanAccount.setPrincipal(5000);
+        loanAccount.setPaymentDate(23);
+        loanAccount.setMonthlyInstallment(300);
+
+        loanAccountSessionBean.createLoanAccount(loanAccount);
+        System.out.print("EntityBuilder ========== " + loanAccount.getAccountNumber());
+
+    }
+
     private void testCreditCard() {
 
         Date startDate = DateUtils.getBeginOfDay();
@@ -1089,4 +1148,5 @@ public class EntityBuilderBean {
 //            }
 //        }
     }
+
 }

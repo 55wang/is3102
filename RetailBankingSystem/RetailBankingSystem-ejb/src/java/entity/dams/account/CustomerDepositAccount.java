@@ -7,6 +7,7 @@ package entity.dams.account;
 
 import entity.card.account.DebitCardAccount;
 import entity.embedded.TransferLimits;
+import entity.loan.LoanAccount;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +38,11 @@ public class CustomerDepositAccount extends DepositAccount {
     
     @Column(precision=30, scale=20)
     private BigDecimal previousBalance = new BigDecimal(0);
+    
+    @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "depositAccount")
+    private List<LoanAccount> loanAccounts = new ArrayList<>();
+
+
     
     /**
      * @return the waivedFeesCounter
@@ -114,5 +120,13 @@ public class CustomerDepositAccount extends DepositAccount {
      */
     public void setCheques(List<Cheque> cheques) {
         this.cheques = cheques;
+    }
+    
+    public List<LoanAccount> getLoanAccount() {
+        return loanAccounts;
+    }
+
+    public void setLoanAccount(List<LoanAccount> loanAccounts) {
+        this.loanAccounts = loanAccounts;
     }
 }

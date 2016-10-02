@@ -146,6 +146,10 @@ public class GenerateAccountAndCCNumber {
         public static String generateAccountNumber() {
             return completed_number("", ConstantUtils.ACCOUNT_NUBMER_LENGTH);
         }
+        
+        public static String generateLoanAccountNumber() {
+            return completed_number("", ConstantUtils.LOAN_ACCOUNT_NUBMER_LENGTH);
+        }
 
 	public static boolean isValidCreditCardNumber(String creditCardNumber) {
 		boolean isValid = false;

@@ -1139,14 +1139,14 @@ public class EnumUtils {
         }
     }
 
-    public enum cardOperatorChargebackStatus {
+    public enum CardOperatorChargebackStatus {
 
         PENDING("PENDING"),
         APPROVE("APPROVE"),
         REJECT("REJECT");
         private String value;
 
-        cardOperatorChargebackStatus(String value) {
+        CardOperatorChargebackStatus(String value) {
             this.value = value;
         }
 
@@ -1159,8 +1159,8 @@ public class EnumUtils {
             return this.getValue();
         }
 
-        public static cardOperatorChargebackStatus getEnum(String value) {
-            for (cardOperatorChargebackStatus v : values()) {
+        public static CardOperatorChargebackStatus getEnum(String value) {
+            for (CardOperatorChargebackStatus v : values()) {
                 if (v.getValue().equalsIgnoreCase(value)) {
                     return v;
                 }
@@ -1168,4 +1168,37 @@ public class EnumUtils {
             throw new IllegalArgumentException();
         }
     }
+
+    public enum LoanAccountStatus {
+        
+        NEW("NEW"),
+        PENDING("PENDING"),
+        APPROVED("APPROVED"),
+        REJECTED("REJECTED"),
+        SUSPENDED("SUSPENDED");
+        private String value;
+
+        LoanAccountStatus(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        @Override
+        public String toString() {
+            return this.getValue();
+        }
+
+        public static LoanAccountStatus getEnum(String value) {
+            for (LoanAccountStatus v : values()) {
+                if (v.getValue().equalsIgnoreCase(value)) {
+                    return v;
+                }
+            }
+            throw new IllegalArgumentException();
+        }
+    }
+
 }
