@@ -105,6 +105,12 @@
                         
                     </c:if>
                     
+                    <c:if test="#{cc.attrs.top == 'bill'}">
+                        <li class="side-menu-item #{cc.attrs.side == 'manageOrg' ? 'active' : ''}">
+                            <h:link outcome="manage_organization" value="Organizations" />
+                        </li>
+                    </c:if>
+                    
                     <c:if test="#{cc.attrs.top == 'promo'}">
                         <li class="side-menu-item #{cc.attrs.side == 'viewPromo' ? 'active' : ''}">
                             <h:link outcome="staff_view_promo" value="Promo Products" />

@@ -7,7 +7,6 @@ package init;
 
 import ejb.session.card.CardAcctSessionBeanLocal;
 import ejb.session.card.CardProductSessionBeanLocal;
-import ejb.session.card.CardTransactionSessionBean;
 import ejb.session.card.CardTransactionSessionBeanLocal;
 import ejb.session.card.CreditCardOrderSessionBeanLocal;
 import ejb.session.cms.CustomerProfileSessionBeanLocal;
@@ -15,14 +14,13 @@ import ejb.session.utils.UtilsSessionBeanLocal;
 import entity.card.account.CardTransaction;
 import entity.card.account.CreditCardAccount;
 import entity.card.order.CreditCardOrder;
-import entity.card.product.CreditCardProduct;
 import entity.card.product.PromoCode;
 import entity.card.product.PromoProduct;
 import entity.card.product.RewardCardProduct;
 import entity.customer.MainAccount;
 import javax.ejb.EJB;
 import javax.ejb.LocalBean;
-import javax.ejb.Singleton;
+import javax.ejb.Stateless;
 import server.utilities.EnumUtils;
 import server.utilities.PincodeGenerationUtils;
 
@@ -31,7 +29,7 @@ import server.utilities.PincodeGenerationUtils;
  * @author wang
  */
 @LocalBean
-@Singleton
+@Stateless
 public class EntityCreditCardOrderBuilder {
 
     @EJB

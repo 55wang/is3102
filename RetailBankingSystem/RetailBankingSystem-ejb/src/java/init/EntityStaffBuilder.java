@@ -1,0 +1,132 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package init;
+
+import ejb.session.staff.StaffAccountSessionBeanLocal;
+import ejb.session.staff.StaffRoleSessionBeanLocal;
+import entity.staff.Role;
+import entity.staff.StaffAccount;
+import javax.ejb.EJB;
+import javax.ejb.Stateless;
+import javax.ejb.LocalBean;
+import server.utilities.ConstantUtils;
+import server.utilities.EnumUtils;
+
+/**
+ *
+ * @author leiyang
+ */
+@Stateless
+@LocalBean
+public class EntityStaffBuilder {
+
+    @EJB
+    private StaffAccountSessionBeanLocal staffAccountSessionBean;
+    @EJB
+    private StaffRoleSessionBeanLocal staffRoleSessionBean;
+    
+    public void initStaffAndRoles() {
+        Role superAdminRole = new Role(EnumUtils.UserRole.SUPER_ADMIN.toString());
+        superAdminRole.setDescription("- Manage staffs in the workspace\n"
+                + "- Possess highest accessibility to the functionalities in the system\n"
+                + "- Guarantee the system to function normally\n"
+                + "- Prevent unexpected operations from unauthorised access\n");
+        superAdminRole = staffRoleSessionBean.addRole(superAdminRole);
+        Role customerServiceRole = new Role(EnumUtils.UserRole.CUSTOMER_SERVICE.toString());
+        customerServiceRole = staffRoleSessionBean.addRole(customerServiceRole);
+        Role financialAnalystRole = new Role(EnumUtils.UserRole.FINANCIAL_ANALYST.toString());
+        financialAnalystRole.setDescription("Generate and make use of BI results to support decision making");
+        financialAnalystRole = staffRoleSessionBean.addRole(financialAnalystRole);
+        Role financialOfficerRole = new Role(EnumUtils.UserRole.FINANCIAL_OFFICER.toString());
+        financialOfficerRole.setDescription("Offer wealth management services to the customers\n"
+                + "(Offering wealth services but do not design wealth products)");
+        financialOfficerRole = staffRoleSessionBean.addRole(financialOfficerRole);
+        Role generalTellerRole = new Role(EnumUtils.UserRole.GENERAL_TELLER.toString());
+        generalTellerRole = staffRoleSessionBean.addRole(generalTellerRole);
+        Role loanOfficerRole = new Role(EnumUtils.UserRole.LOAN_OFFICIER.toString());
+        loanOfficerRole.setDescription("- Provide loan-related services to the customers\n"
+                + "- Process loan applications based on security requirements\n"
+                + "- Assess customers' credit scoring\n"
+                + "- Promote loan products\n");
+        loanOfficerRole = staffRoleSessionBean.addRole(loanOfficerRole);
+        Role productManagerRole = new Role(EnumUtils.UserRole.PRODUCT_MANAGER.toString());
+        productManagerRole.setDescription("- Carry out decision making practices according to analytic result\n"
+                + "- Design new financial products\n"
+                + "- Adjust existing financial products\n"
+                + "- Launch financial products to the market\n");
+        productManagerRole = staffRoleSessionBean.addRole(productManagerRole);
+
+        StaffAccount superAdminAccount = new StaffAccount();
+        superAdminAccount.setUsername(ConstantUtils.SUPER_ADMIN_USERNAME);
+        superAdminAccount.setPassword(ConstantUtils.SUPER_ADMIN_PASSWORD);
+        superAdminAccount.setFirstName("Account");
+        superAdminAccount.setLastName("Super");
+        superAdminAccount.setEmail("superadmin@merlionbank.com");
+        superAdminAccount.setStatus(EnumUtils.StatusType.ACTIVE);
+        superAdminAccount.setRole(superAdminRole);
+        staffAccountSessionBean.createAccount(superAdminAccount);
+
+        StaffAccount customerServiceAccount = new StaffAccount();
+        customerServiceAccount.setUsername(ConstantUtils.CUSTOMER_SERVICE_USERNAME);
+        customerServiceAccount.setPassword(ConstantUtils.STAFF_DEMO_PASSWORD);
+        customerServiceAccount.setFirstName("Service");
+        customerServiceAccount.setLastName("Customer");
+        customerServiceAccount.setEmail("customer_service@merlionbank.com");
+        customerServiceAccount.setStatus(EnumUtils.StatusType.ACTIVE);
+        customerServiceAccount.setRole(customerServiceRole);
+        staffAccountSessionBean.createAccount(customerServiceAccount);
+
+        StaffAccount financialAnalystAccount = new StaffAccount();
+        financialAnalystAccount.setUsername(ConstantUtils.FINANCIAL_ANALYST_USERNAME);
+        financialAnalystAccount.setPassword(ConstantUtils.STAFF_DEMO_PASSWORD);
+        financialAnalystAccount.setFirstName("Analyst");
+        financialAnalystAccount.setLastName("Financial");
+        financialAnalystAccount.setEmail("financial_analyst@merlionbank.com");
+        financialAnalystAccount.setStatus(EnumUtils.StatusType.ACTIVE);
+        financialAnalystAccount.setRole(financialAnalystRole);
+        staffAccountSessionBean.createAccount(financialAnalystAccount);
+
+        StaffAccount financialOfficerAccount = new StaffAccount();
+        financialOfficerAccount.setUsername(ConstantUtils.FINANCIAL_OFFICER_USERNAME);
+        financialOfficerAccount.setPassword(ConstantUtils.STAFF_DEMO_PASSWORD);
+        financialOfficerAccount.setFirstName("Officer");
+        financialOfficerAccount.setLastName("Financial");
+        financialOfficerAccount.setEmail("financial_officer@merlionbank.com");
+        financialOfficerAccount.setStatus(EnumUtils.StatusType.ACTIVE);
+        financialOfficerAccount.setRole(financialOfficerRole);
+        staffAccountSessionBean.createAccount(financialOfficerAccount);
+
+        StaffAccount generalTellerAccount = new StaffAccount();
+        generalTellerAccount.setUsername(ConstantUtils.GENERAL_TELLER_USERNAME);
+        generalTellerAccount.setPassword(ConstantUtils.STAFF_DEMO_PASSWORD);
+        generalTellerAccount.setFirstName("General");
+        generalTellerAccount.setLastName("Teller");
+        generalTellerAccount.setEmail("general_teller@merlionbank.com");
+        generalTellerAccount.setStatus(EnumUtils.StatusType.ACTIVE);
+        generalTellerAccount.setRole(generalTellerRole);
+        staffAccountSessionBean.createAccount(generalTellerAccount);
+
+        StaffAccount loanOfficerAccount = new StaffAccount();
+        loanOfficerAccount.setUsername(ConstantUtils.LOAN_OFFICIER_USERNAME);
+        loanOfficerAccount.setPassword(ConstantUtils.STAFF_DEMO_PASSWORD);
+        loanOfficerAccount.setFirstName("Loan");
+        loanOfficerAccount.setLastName("Officer");
+        loanOfficerAccount.setEmail("loan_officer@merlionbank.com");
+        loanOfficerAccount.setStatus(EnumUtils.StatusType.ACTIVE);
+        loanOfficerAccount.setRole(loanOfficerRole);
+        staffAccountSessionBean.createAccount(loanOfficerAccount);
+
+        StaffAccount productManagerAccount = new StaffAccount();
+        productManagerAccount.setUsername(ConstantUtils.PRODUCT_MANAGER_USERNAME);
+        productManagerAccount.setPassword(ConstantUtils.STAFF_DEMO_PASSWORD);
+        productManagerAccount.setFirstName("Product");
+        productManagerAccount.setLastName("Manager");
+        productManagerAccount.setEmail("product_manager@merlionbank.com");
+        productManagerAccount.setStatus(EnumUtils.StatusType.ACTIVE);
+        productManagerAccount.setRole(productManagerRole);
+        staffAccountSessionBean.createAccount(productManagerAccount);
+    }
+}

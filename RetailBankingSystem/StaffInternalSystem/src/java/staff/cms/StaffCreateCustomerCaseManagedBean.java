@@ -115,7 +115,7 @@ public class StaffCreateCustomerCaseManagedBean implements Serializable{
         }
         if(issueField.equals(selectChargeBack)){
             newCase.setIsChargeBackCase(Boolean.TRUE);
-            if(newCase.getIsChargeBackCase()) newCase.setCardOperatorResponse(EnumUtils.cardOperatorChargebackStatus.PENDING);
+            if(newCase.getIsChargeBackCase()) newCase.setCardOperatorResponse(EnumUtils.CardOperatorChargebackStatus.PENDING);
             System.out.println("chargebackTransactionID: " + chargebackTransactionID);
             CardTransaction ct = cardTransactionSessionBean.getCardTransactionByCcaId(Long.parseLong(chargebackTransactionID));
             if(ct == null || ct.getCardTransactionStatus().equals(CardTransactionStatus.CANCELLED))

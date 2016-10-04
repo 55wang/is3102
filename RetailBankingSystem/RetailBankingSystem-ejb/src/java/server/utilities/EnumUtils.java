@@ -1139,14 +1139,14 @@ public class EnumUtils {
         }
     }
 
-    public enum cardOperatorChargebackStatus {
+    public enum CardOperatorChargebackStatus {
 
         PENDING("PENDING"),
         APPROVE("APPROVE"),
         REJECT("REJECT");
         private String value;
 
-        cardOperatorChargebackStatus(String value) {
+        CardOperatorChargebackStatus(String value) {
             this.value = value;
         }
 
@@ -1159,8 +1159,46 @@ public class EnumUtils {
             return this.getValue();
         }
 
-        public static cardOperatorChargebackStatus getEnum(String value) {
-            for (cardOperatorChargebackStatus v : values()) {
+        public static CardOperatorChargebackStatus getEnum(String value) {
+            for (CardOperatorChargebackStatus v : values()) {
+                if (v.getValue().equalsIgnoreCase(value)) {
+                    return v;
+                }
+            }
+            throw new IllegalArgumentException();
+        }
+    }
+    
+    // bill
+    
+    public enum BillType {
+
+        CLUBS("Country Clubs/ Recreational Clubs"),
+        EDU("Educational Institution"),
+        COUNCILS("Town Councils"),
+        CARD("Credit Cards"),
+        UTIL("Telecommunications and Utilities"),
+        GOV_AGEN("Government Agencies"),
+        NON_GOV_AGEN("Other Agencies"),
+        INSUR("Insurance Companies"),
+        SECUR("Brokerage/Securities Firms");
+        private String value;
+
+        BillType(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        @Override
+        public String toString() {
+            return this.getValue();
+        }
+
+        public static BillType getEnum(String value) {
+            for (BillType v : values()) {
                 if (v.getValue().equalsIgnoreCase(value)) {
                     return v;
                 }

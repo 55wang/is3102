@@ -24,7 +24,7 @@ import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import server.utilities.EnumUtils;
 import server.utilities.EnumUtils.CaseStatus;
-import server.utilities.EnumUtils.cardOperatorChargebackStatus;
+import server.utilities.EnumUtils.CardOperatorChargebackStatus;
 import server.utilities.CommonUtils;
 import server.utilities.ConstantUtils;
 import utils.MessageUtils;
@@ -94,9 +94,9 @@ public class StaffViewCustomerCaseManagedBean implements Serializable{
         cc.setCaseStatus(EnumUtils.CaseStatus.ONGOING);
         if(cc.getIsChargeBackCase()){ 
             if(cardOperatorSimulator())
-                cc.setCardOperatorResponse(cardOperatorChargebackStatus.APPROVE);
+                cc.setCardOperatorResponse(CardOperatorChargebackStatus.APPROVE);
             else
-                cc.setCardOperatorResponse(cardOperatorChargebackStatus.REJECT);
+                cc.setCardOperatorResponse(CardOperatorChargebackStatus.REJECT);
         }
         Boolean result = customerCaseSessionBean.updateCase(cc);
         if (result == false) {

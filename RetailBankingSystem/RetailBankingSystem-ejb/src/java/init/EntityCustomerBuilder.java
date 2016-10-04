@@ -12,7 +12,7 @@ import entity.customer.MainAccount;
 import java.util.Date;
 import javax.ejb.EJB;
 import javax.ejb.LocalBean;
-import javax.ejb.Singleton;
+import javax.ejb.Stateless;
 import server.utilities.ConstantUtils;
 import server.utilities.EnumUtils;
 import server.utilities.HashPwdUtils;
@@ -22,7 +22,7 @@ import server.utilities.HashPwdUtils;
  * @author wang
  */
 @LocalBean
-@Singleton
+@Stateless
 public class EntityCustomerBuilder {
 
     @EJB

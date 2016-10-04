@@ -13,14 +13,14 @@ import entity.card.product.RewardCardProduct;
 import entity.customer.MainAccount;
 import javax.ejb.EJB;
 import javax.ejb.LocalBean;
-import javax.ejb.Singleton;
+import javax.ejb.Stateless;
 
 /**
  *
  * @author wang
  */
 @LocalBean
-@Singleton
+@Stateless
 public class EntityCreditCardProductBuilder {
 
     @EJB
