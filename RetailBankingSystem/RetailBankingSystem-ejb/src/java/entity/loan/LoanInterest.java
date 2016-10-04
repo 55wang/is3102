@@ -27,7 +27,7 @@ public class LoanInterest implements Serializable {
 
     private Integer startTime;
     private Integer endTime;
-    private double interestRate;
+    private Double interestRate;
 
     @ManyToOne(cascade = {CascadeType.MERGE})
     private LoanProduct loanProduct;
@@ -73,11 +73,11 @@ public class LoanInterest implements Serializable {
         this.endTime = endTime;
     }
 
-    public double getInterestRate() {
+    public Double getInterestRate() {
         return interestRate;
     }
 
-    public void setInterestRate(double interestRate) {
+    public void setInterestRate(Double interestRate) {
         this.interestRate = interestRate;
     }
 

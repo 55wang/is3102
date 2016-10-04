@@ -31,7 +31,7 @@ public class LoanProduct implements Serializable {
     //lockInDuration unit is month
     private Integer lockInDuration;
     private Integer tenure;
-    private double penaltyInterestRate;
+    private Double penaltyInterestRate;
 
     @OneToMany(cascade = {CascadeType.MERGE}, mappedBy = "loanProduct")
     private List<LoanInterest> loanInterests = new ArrayList<>();
@@ -85,11 +85,11 @@ public class LoanProduct implements Serializable {
         this.tenure = tenure;
     }
 
-    public double getPenaltyInterestRate() {
+    public Double getPenaltyInterestRate() {
         return penaltyInterestRate;
     }
 
-    public void setPenaltyInterestRate(double penaltyInterestRate) {
+    public void setPenaltyInterestRate(Double penaltyInterestRate) {
         this.penaltyInterestRate = penaltyInterestRate;
     }
 

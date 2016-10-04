@@ -48,7 +48,6 @@ public class LoanAccountSessionBean implements LoanAccountSessionBeanLocal {
                 em.persist(interest);
             }
             em.persist(loanProduct);
-                        System.out.print("LoanAccoutSession============"+ loanProduct.getProductName());
 
             return loanProduct;
         } catch (Exception e) {

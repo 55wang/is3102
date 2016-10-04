@@ -30,11 +30,11 @@ public class LoanRepaymentRecord implements Serializable {
     @Temporal(value = TemporalType.TIMESTAMP)
     private Date transactionDate;
 
-    private double beginningBalance;
-    private double remainingBalance;
-    private double paymentAmount;
-    private double interestAccrued;
-    private double cumulativeInterestAccrued = 0;
+    private Double beginningBalance;
+    private Double remainingBalance;
+    private Double paymentAmount;
+    private Double interestAccrued;
+    private Double cumulativeInterestAccrued = 0.0;
 
     @ManyToOne(cascade = {CascadeType.MERGE})
     private LoanAccount loanAccount;
@@ -80,43 +80,43 @@ public class LoanRepaymentRecord implements Serializable {
         this.transactionDate = transactionDate;
     }
 
-    public double getBeginningBalance() {
+    public Double getBeginningBalance() {
         return beginningBalance;
     }
 
-    public void setBeginningBalance(double beginningBalance) {
+    public void setBeginningBalance(Double beginningBalance) {
         this.beginningBalance = beginningBalance;
     }
 
-    public double getRemainingBalance() {
+    public Double getRemainingBalance() {
         return remainingBalance;
     }
 
-    public void setRemainingBalance(double remainingBalance) {
+    public void setRemainingBalance(Double remainingBalance) {
         this.remainingBalance = remainingBalance;
     }
 
-    public double getPaymentAmount() {
+    public Double getPaymentAmount() {
         return paymentAmount;
     }
 
-    public void setPaymentAmount(double paymentAmount) {
+    public void setPaymentAmount(Double paymentAmount) {
         this.paymentAmount = paymentAmount;
     }
 
-    public double getInterestAccrued() {
+    public Double getInterestAccrued() {
         return interestAccrued;
     }
 
-    public void setInterestAccrued(double interestAccrued) {
+    public void setInterestAccrued(Double interestAccrued) {
         this.interestAccrued = interestAccrued;
     }
 
-    public double getCumulativeInterestAccrued() {
+    public Double getCumulativeInterestAccrued() {
         return cumulativeInterestAccrued;
     }
 
-    public void setCumulativeInterestAccrued(double cumulativeInterestAccrued) {
+    public void setCumulativeInterestAccrued(Double cumulativeInterestAccrued) {
         this.cumulativeInterestAccrued = cumulativeInterestAccrued;
     }
 

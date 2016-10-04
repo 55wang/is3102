@@ -39,10 +39,10 @@ public class LoanAccount implements Serializable {
     @Temporal(value = TemporalType.TIMESTAMP)
     private Date creationDate = new Date();
 
-    private double monthlyInstallment;
-    private double outstandingPrincipal;
-    private double overduePayment;
-    private double principal;
+    private Double monthlyInstallment;
+    private Double outstandingPrincipal;
+    private Double overduePayment;
+    private Double principal;
     private Integer paymentDate;
     private LoanAccountStatus loanAccountStatus;
 
@@ -100,27 +100,27 @@ public class LoanAccount implements Serializable {
         this.loanProduct = loanProduct;
     }
 
-    public double getMonthlyInstallment() {
+    public Double getMonthlyInstallment() {
         return monthlyInstallment;
     }
 
-    public void setMonthlyInstallment(double monthlyInstallment) {
+    public void setMonthlyInstallment(Double monthlyInstallment) {
         this.monthlyInstallment = monthlyInstallment;
     }
 
-    public double getOutstandingPrincipal() {
+    public Double getOutstandingPrincipal() {
         return outstandingPrincipal;
     }
 
-    public void setOutstandingPrincipal(double outstandingPrincipal) {
+    public void setOutstandingPrincipal(Double outstandingPrincipal) {
         this.outstandingPrincipal = outstandingPrincipal;
     }
 
-    public double getOverduePayment() {
+    public Double getOverduePayment() {
         return overduePayment;
     }
 
-    public void setOverduePayment(double overduePayment) {
+    public void setOverduePayment(Double overduePayment) {
         this.overduePayment = overduePayment;
     }
 
@@ -132,11 +132,11 @@ public class LoanAccount implements Serializable {
         this.paymentDate = paymentDate;
     }
 
-    public double getPrincipal() {
+    public Double getPrincipal() {
         return principal;
     }
 
-    public void setPrincipal(double principal) {
+    public void setPrincipal(Double principal) {
         this.principal = principal;
     }
 
