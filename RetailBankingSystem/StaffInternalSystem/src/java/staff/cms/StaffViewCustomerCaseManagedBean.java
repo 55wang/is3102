@@ -26,6 +26,7 @@ import server.utilities.EnumUtils;
 import server.utilities.EnumUtils.CaseStatus;
 import server.utilities.EnumUtils.cardOperatorChargebackStatus;
 import server.utilities.CommonUtils;
+import server.utilities.ConstantUtils;
 import utils.MessageUtils;
 import utils.RedirectUtils;
 import utils.SessionUtils;
@@ -123,7 +124,7 @@ public class StaffViewCustomerCaseManagedBean implements Serializable{
             MessageUtils.displayError("Transfer fail!");
         } else {
             transferedCase = new CustomerCase();
-            RedirectUtils.redirect("staff-view-case.xhtml");
+            RedirectUtils.redirect(ConstantUtils.STAFF_CMS_STAFF_VIEW_CASE);
         }
     }
     
@@ -186,7 +187,7 @@ public class StaffViewCustomerCaseManagedBean implements Serializable{
     
     public void redirectToTransferPage(CustomerCase cc){
         this.transferedCase = cc;
-        RedirectUtils.redirect("staff-transfer-case.xhtml");
+        RedirectUtils.redirect(ConstantUtils.STAFF_CMS_STAFF_TRANSFER_CASE);
     }
     
     public Boolean isChargeBack(String selectedField){

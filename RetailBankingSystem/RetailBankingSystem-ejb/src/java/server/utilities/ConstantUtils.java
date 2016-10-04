@@ -36,6 +36,15 @@ public class ConstantUtils {
     public static final String PRODUCT_MANAGER_USERNAME = "product_manager";
     public static final String STAFF_DEMO_PASSWORD = HashPwdUtils.hashPwd("password");
     
+    // Redirect path
+    // staff card
+    public static final String STAFF_CARD_CARD_CREATE_PRODUCT = "/StaffInternalSystem/card/card_create_product.xhtml";
+    public static final String STAFF_CARD_STAFF_VIEW_CARD = "/StaffInternalSystem/card/staff_view_card.xhtml";
+    // staff cms
+    public static final String STAFF_CMS_STAFF_VIEW_CASE = "/StaffInternalSystem/cms/staff_view_case.xhtml";
+    public static final String STAFF_CMS_STAFF_TRANSFER_CASE = "/StaffInternalSystem/cms/staff_transfer_case.xhtml";
+    public static final String STAFF_CMS_STAFF_EDIT_CUSTOMER = "/StaffInternalSystem/cms/staff_edit_customer.xhtml";
+    
     // Error Message
     // General
     public static final String SOMETHING_WENT_WRONG = "Something went wrong.";

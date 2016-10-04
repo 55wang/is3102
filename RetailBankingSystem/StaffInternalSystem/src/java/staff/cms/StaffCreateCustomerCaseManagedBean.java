@@ -21,6 +21,7 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
+import server.utilities.ConstantUtils;
 import server.utilities.EnumUtils;
 import server.utilities.EnumUtils.CardTransactionStatus;
 import server.utilities.EnumUtils.IssueField;
@@ -124,7 +125,7 @@ public class StaffCreateCustomerCaseManagedBean implements Serializable{
                 newCase.setCreateDate(new Date());
                 newCase.setChargebackTransaction(ct);
                 customerCaseSessionBean.saveCase(newCase);
-                RedirectUtils.redirect("staff-view-case.xhtml");
+                RedirectUtils.redirect(ConstantUtils.STAFF_CMS_STAFF_VIEW_CASE);
             }
         }
     }

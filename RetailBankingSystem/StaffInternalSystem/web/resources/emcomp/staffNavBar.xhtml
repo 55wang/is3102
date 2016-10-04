@@ -27,9 +27,10 @@
                         <li id="header-overview" class="#{cc.attrs.context == 'admin' ? 'active' : ''}" value="admin"><a href="../admin/create_interest.xhtml">Admin</a></li>
                     </c:if>
                     <li id="header-overview" class="#{cc.attrs.context == 'message' ? 'active' : ''}" value="message"><a href="../message/chat.xhtml">Message</a></li>
-                    <li id="header-overview" class="#{cc.attrs.context == 'customer' ? 'active' : ''}" value="customer"><a href="../cms/staff-view-customer.xhtml">Customer</a></li>
-                    <li id="header-overview" class="#{cc.attrs.context == 'card' ? 'active' : ''}" value="card"><a href="../card/staff-view-card.xhtml">Card</a></li>
-                    <li id="header-overview" class="#{cc.attrs.context == 'promo' ? 'active' : ''}" value="card"><a href="../promo/staff-view-promo.xhtml">Promo</a></li>
+                    <li id="header-overview" class="#{cc.attrs.context == 'customer' ? 'active' : ''}" value="customer"><a href="../cms/staff_view_customer.xhtml">Customer</a></li>
+                    <li id="header-overview" class="#{cc.attrs.context == 'card' ? 'active' : ''}" value="card"><a href="../card/staff_view_card.xhtml">Card</a></li>
+                    <li id="header-overview" class="#{cc.attrs.context == 'bill' ? 'active' : ''}" value="bill"><a href="../bill/manage_organization.xhtml">Bill</a></li>
+                    <li id="header-overview" class="#{cc.attrs.context == 'promo' ? 'active' : ''}" value="promo"><a href="../promo/staff_view_promo.xhtml">Promo</a></li>
                 </ul>
                 <emcomp:headerMenu context="staff_home" userName="#{staffUserManagedBean.getUserName()}"></emcomp:headerMenu>
             </div>

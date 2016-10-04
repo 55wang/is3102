@@ -23,6 +23,7 @@ import server.utilities.EnumUtils.Income;
 import server.utilities.EnumUtils.MaritalStatus;
 import server.utilities.EnumUtils.Nationality;
 import server.utilities.CommonUtils;
+import server.utilities.ConstantUtils;
 import utils.MessageUtils;
 import utils.RedirectUtils;
 import utils.SessionUtils;
@@ -114,7 +115,7 @@ public class StaffCustomerInformationManagedBean implements Serializable {
             Customer result = customerProfileSessionBean.saveProfile(selectedCustomer);
             if (result != null) {
                 MessageUtils.displayInfo("Profile successfully updated!");
-                RedirectUtils.redirect("staff-view-customer.xhtml");
+                RedirectUtils.redirect("staff_view_customer.xhtml");
             } else {
                 MessageUtils.displayInfo("Update is unsuccessful, please check your input.");
             }
@@ -141,7 +142,7 @@ public class StaffCustomerInformationManagedBean implements Serializable {
             setSelectedEducation(customer.getEducation().toString());
         }
 
-        RedirectUtils.redirect("staff-edit-customer.xhtml");
+        RedirectUtils.redirect(ConstantUtils.STAFF_CMS_STAFF_EDIT_CUSTOMER);
 
     }
 

@@ -17,6 +17,7 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
+import server.utilities.ConstantUtils;
 import utils.RedirectUtils;
 import utils.SessionUtils;
 
@@ -75,13 +76,13 @@ public class CardProductManagedBean implements Serializable {
 
             cardProductSessionBean.createMileProduct(mcp);
 
-            RedirectUtils.redirect("/StaffInternalSystem/card/staff-view-card.xhtml");
+            RedirectUtils.redirect("/StaffInternalSystem/card/staff_view_card.xhtml");
 
         } catch (Exception ex) {
             System.out.println("CardProductManagedBean.addNewMileCreditCard Error");
             System.out.println(ex);
 
-            RedirectUtils.redirect("/StaffInternalSystem/card/card-create-product.xhtml");
+            RedirectUtils.redirect("/StaffInternalSystem/card/card_create_product.xhtml");
         }
     }
 
@@ -95,11 +96,11 @@ public class CardProductManagedBean implements Serializable {
 
             cardProductSessionBean.createRewardProduct(rcp);
 
-            RedirectUtils.redirect("/StaffInternalSystem/card/staff-view-card.xhtml");
+            RedirectUtils.redirect(ConstantUtils.STAFF_CARD_STAFF_VIEW_CARD);
         } catch (Exception ex) {
             System.out.println("CardProductManagedBean.addNewRewardCreditCard Error");
             System.out.println(ex);
-            RedirectUtils.redirect("/StaffInternalSystem/card/card-create-product.xhtml");
+            RedirectUtils.redirect(ConstantUtils.STAFF_CARD_CARD_CREATE_PRODUCT);
         }
     }
 
@@ -114,11 +115,11 @@ public class CardProductManagedBean implements Serializable {
 
             cardProductSessionBean.createCashBackProduct(cbcp);
 
-            RedirectUtils.redirect("/StaffInternalSystem/card/staff-view-card.xhtml");
+            RedirectUtils.redirect(ConstantUtils.STAFF_CARD_STAFF_VIEW_CARD);
         } catch (Exception ex) {
             System.out.println("CardProductManagedBean.addNewCashBackCreditCard Error");
             System.out.println(ex);
-            RedirectUtils.redirect("/StaffInternalSystem/card/card-create-product.xhtml");
+            RedirectUtils.redirect(ConstantUtils.STAFF_CARD_CARD_CREATE_PRODUCT);
         }
     }
 
