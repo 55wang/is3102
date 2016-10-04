@@ -39,7 +39,7 @@ public class CustomerDepositAccount extends DepositAccount {
     @Column(precision=30, scale=20)
     private BigDecimal previousBalance = new BigDecimal(0);
     
-    @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "depositAccount")
+    @OneToMany(cascade = {CascadeType.MERGE}, mappedBy = "depositAccount")
     private List<LoanAccount> loanAccounts = new ArrayList<>();
 
 

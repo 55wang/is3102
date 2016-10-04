@@ -27,89 +27,17 @@ public class LoanRepaymentRecord implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @ManyToOne(cascade = {CascadeType.MERGE})
-    private LoanAccount loanAccount;
     @Temporal(value = TemporalType.TIMESTAMP)
     private Date transactionDate;
-    private double beginningBalance;
-    private double remainingBalance;
-    private double paymentAmount;
-    private double interestAccrued;
-    private double cumulativeInterestAccrued = 0;
 
-    public LoanAccount getLoanAccount() {
-        return loanAccount;
-    }
+    private Double beginningBalance;
+    private Double remainingBalance;
+    private Double paymentAmount;
+    private Double interestAccrued;
+    private Double cumulativeInterestAccrued = 0.0;
 
-    public void setLoanAccount(LoanAccount loanAccount) {
-        this.loanAccount = loanAccount;
-    }
-
-    public Date getTransactionDate() {
-        return transactionDate;
-    }
-
-    public void setTransactionDate(Date transactionDate) {
-        this.transactionDate = transactionDate;
-    }
-
-    public double getBeginningBalance() {
-        return beginningBalance;
-    }
-
-    public void setBeginningBalance(double beginningBalance) {
-        this.beginningBalance = beginningBalance;
-    }
-
-    public double getRemainingBalance() {
-        return remainingBalance;
-    }
-
-    public void setRemainingBalance(double remainingBalance) {
-        this.remainingBalance = remainingBalance;
-    }
-
-    public double getPaymentAmount() {
-        return paymentAmount;
-    }
-
-    public void setPaymentAmount(double paymentAmount) {
-        this.paymentAmount = paymentAmount;
-    }
-
-    public double getInterestAccrued() {
-        return interestAccrued;
-    }
-
-    public void setInterestAccrued(double interestAccrued) {
-        this.interestAccrued = interestAccrued;
-    }
-
-    public double getCumulativeInterestAccrued() {
-        return cumulativeInterestAccrued;
-    }
-
-    public void setCumulativeInterestAccrued(double cumulativeInterestAccrued) {
-        this.cumulativeInterestAccrued = cumulativeInterestAccrued;
-    }
-
-    public String getRemarks() {
-        return remarks;
-    }
-
-    public void setRemarks(String remarks) {
-        this.remarks = remarks;
-    }
-    private String remarks;
-    
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
+    @ManyToOne(cascade = {CascadeType.MERGE})
+    private LoanAccount loanAccount;
 
     @Override
     public int hashCode() {
@@ -134,6 +62,79 @@ public class LoanRepaymentRecord implements Serializable {
     @Override
     public String toString() {
         return "entity.loan.LoanRepaymentRecord[ id=" + id + " ]";
+    }
+
+    public LoanAccount getLoanAccount() {
+        return loanAccount;
+    }
+
+    public void setLoanAccount(LoanAccount loanAccount) {
+        this.loanAccount = loanAccount;
+    }
+
+    public Date getTransactionDate() {
+        return transactionDate;
+    }
+
+    public void setTransactionDate(Date transactionDate) {
+        this.transactionDate = transactionDate;
+    }
+
+    public Double getBeginningBalance() {
+        return beginningBalance;
+    }
+
+    public void setBeginningBalance(Double beginningBalance) {
+        this.beginningBalance = beginningBalance;
+    }
+
+    public Double getRemainingBalance() {
+        return remainingBalance;
+    }
+
+    public void setRemainingBalance(Double remainingBalance) {
+        this.remainingBalance = remainingBalance;
+    }
+
+    public Double getPaymentAmount() {
+        return paymentAmount;
+    }
+
+    public void setPaymentAmount(Double paymentAmount) {
+        this.paymentAmount = paymentAmount;
+    }
+
+    public Double getInterestAccrued() {
+        return interestAccrued;
+    }
+
+    public void setInterestAccrued(Double interestAccrued) {
+        this.interestAccrued = interestAccrued;
+    }
+
+    public Double getCumulativeInterestAccrued() {
+        return cumulativeInterestAccrued;
+    }
+
+    public void setCumulativeInterestAccrued(Double cumulativeInterestAccrued) {
+        this.cumulativeInterestAccrued = cumulativeInterestAccrued;
+    }
+
+    public String getRemarks() {
+        return remarks;
+    }
+
+    public void setRemarks(String remarks) {
+        this.remarks = remarks;
+    }
+    private String remarks;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
 }
