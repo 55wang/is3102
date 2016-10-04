@@ -14,12 +14,14 @@ import ejb.session.dams.CustomerDepositSessionBeanLocal;
 import ejb.session.dams.DepositProductSessionBeanLocal;
 import ejb.session.staff.StaffAccountSessionBeanLocal;
 import ejb.session.staff.StaffRoleSessionBeanLocal;
+import ejb.session.wealth.WealthManegementSubscriberSessionBeanLocal;
 import entity.card.account.CardTransaction;
 import entity.card.product.PromoProduct;
 import entity.card.product.RewardCardProduct;
 import entity.customer.CustomerCase;
 import entity.customer.Issue;
 import entity.customer.MainAccount;
+import entity.customer.WealthManagementSubscriber;
 import entity.dams.account.Cheque;
 import entity.dams.account.CustomerDepositAccount;
 import entity.dams.account.CustomerFixedDepositAccount;
@@ -59,6 +61,8 @@ import server.utilities.GenerateAccountAndCCNumber;
 @LocalBean
 @Startup
 public class EntityBuilderBean {
+    @EJB
+    private WealthManegementSubscriberSessionBeanLocal wealthManegementSubscriberSessionBean;
 
     @EJB
     private EntityCustomerBuilder entityCustomerBuilder;
@@ -138,6 +142,7 @@ public class EntityBuilderBean {
 
 //        initCreditCardOrder();
         entityCreditCardOrderBuilder.initCreditCardOrder(demoMainAccount, demoRewardCardProduct, demoPromoProduct);
+        initWealth();
     }
 
     private void initStaffAndRoles() {
@@ -170,6 +175,8 @@ public class EntityBuilderBean {
                 + "- Adjust existing financial products\n"
                 + "- Launch financial products to the market\n");
         productManagerRole = staffRoleSessionBean.addRole(productManagerRole);
+        Role relationshipManagerRole = new Role(EnumUtils.UserRole.RELATIONSHIP_MANAGER.toString());
+        relationshipManagerRole = staffRoleSessionBean.addRole(relationshipManagerRole);
 
         StaffAccount superAdminAccount = new StaffAccount();
         superAdminAccount.setUsername(ConstantUtils.SUPER_ADMIN_USERNAME);
@@ -240,6 +247,16 @@ public class EntityBuilderBean {
         productManagerAccount.setStatus(StatusType.ACTIVE);
         productManagerAccount.setRole(productManagerRole);
         staffAccountSessionBean.createAccount(productManagerAccount);
+        
+        StaffAccount relationshipManagerAccount = new StaffAccount();
+        relationshipManagerAccount.setUsername(ConstantUtils.RELATIONSHIP_MANAGER_USERNAME);
+        relationshipManagerAccount.setPassword(ConstantUtils.STAFF_DEMO_PASSWORD);
+        relationshipManagerAccount.setFirstName("Relationship");
+        relationshipManagerAccount.setLastName("Manager");
+        relationshipManagerAccount.setEmail("relationship_manager@merlionbank.com");
+        relationshipManagerAccount.setStatus(StatusType.ACTIVE);
+        relationshipManagerAccount.setRole(relationshipManagerRole);
+        staffAccountSessionBean.createAccount(relationshipManagerAccount);
     }
 
     private void initInterest() {
@@ -1088,5 +1105,14 @@ public class EntityBuilderBean {
 //                System.out.print(interestAccrualSessionBean.isAccountMeetCondition(da, (ConditionInterest) i));
 //            }
 //        }
+    }
+    
+    private void initWealth(){
+        WealthManagementSubscriber wms = new WealthManagementSubscriber();
+        wms.setMainAccount(demoMainAccount);
+        wms.setRelationshipManager(staffAccountSessionBean.getAccountByUsername(ConstantUtils.RELATIONSHIP_MANAGER_USERNAME));
+        wms.setRiskToleranceLevel(5);
+        
+        wealthManegementSubscriberSessionBean.createWealthManagementSubscriber(wms);
     }
 }
