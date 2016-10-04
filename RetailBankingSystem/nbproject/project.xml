@@ -8,10 +8,6 @@
             <web-module-libraries/>
             <web-module-additional-libraries>
                 <library>
-                    <file>${reference.RetailBankingSystem-ejb.dist-ear}</file>
-                    <path-in-war>/</path-in-war>
-                </library>
-                <library>
                     <file>${reference.StaffInternalSystem.dist-ear}</file>
                     <path-in-war>/</path-in-war>
                 </library>
@@ -25,6 +21,10 @@
                 </library>
                 <library>
                     <file>${reference.CreditCardSimulator.dist-ear}</file>
+                    <path-in-war>/</path-in-war>
+                </library>
+                <library>
+                    <file>${reference.RetailBankingSystem-ejb.dist-ear}</file>
                     <path-in-war>/</path-in-war>
                 </library>
             </web-module-additional-libraries>
