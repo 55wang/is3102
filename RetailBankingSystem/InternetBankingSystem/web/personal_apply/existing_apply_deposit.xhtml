@@ -22,21 +22,21 @@
                         <p:panel>
                             <p:messages />
                             <table>
-
-                                <tr><div style="margin-top:30px">
+                                <tr>
+                                    <div style="margin-top:30px">
                                         <h:outputText style="font-weight:bolder" value="Choose Your Deposit Account: " />
                                         <p:selectOneMenu value="#{existingCustomerApplicationManagedBean.initialDepositAccount}" style="width:187px; height: 31px; line-height: 21px; top:8px" rendered="true" required="true">
-                                            <f:selectItem itemLabel="Please Select..." itemValue="" />
-                                            <f:selectItem itemLabel="MBS Current Account" itemValue="MBS Current Account" />
-                                            <f:selectItem itemLabel="MBS Savings" itemValue="MBS Savings" />
+                                            <f:selectItems value="#{existingCustomerApplicationManagedBean.productOptions}" />
                                         </p:selectOneMenu>
-
-
-                                    </div></tr>
-                                <tr><div>
+                                    </div>
+                                </tr>
+                                <tr>
+                                    <div>
                                         <p style="margin-top:40px"> Terms and Conditions</p>
-                                    </div></tr>
-                                <tr><p:scrollPanel mode="native" style="width:500px;height:200px;margin-top:10px;border:1px solid grey">
+                                    </div>
+                                </tr>
+                                <tr>
+                                    <p:scrollPanel mode="native" style="width:500px;height:200px;margin-top:10px;border:1px solid grey">
                                         <p>
                                             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean blandit tortor a ipsum vehicula, in semper sapien auctor. Nulla tempor eget est non consequat. Nulla sit amet lorem justo. Cras non tellus eros. Sed ultricies orci ut quam interdum fringilla. Nam vitae massa ac mi elementum mattis vel vitae sem. Ut eros ipsum, scelerisque a erat a, eleifend luctus nibh. Interdum et malesuada fames ac ante ipsum primis in faucibus.
                                         </p>
@@ -52,12 +52,13 @@
                                         <p>
                                             Praesent volutpat scelerisque vestibulum. In eu massa non neque rutrum commodo. Nunc vel enim nisi. Aenean leo ipsum, molestie vel justo nec, pharetra luctus dui. Nunc rhoncus turpis id lorem luctus consequat. Nulla condimentum adipiscing turpis consequat semper. Etiam ullamcorper velit nec hendrerit malesuada. Praesent venenatis leo sit amet arcu commodo, sit amet porta tellus suscipit. Quisque mi tortor, vestibulum in arcu non, pretium auctor libero. In commodo luctus placerat.
                                         </p>
-                                    </p:scrollPanel></tr>
-
-
-                                <tr><div  style="margin-top: 30px" >
+                                    </p:scrollPanel>
+                                </tr>
+                                <tr>
+                                    <div  style="margin-top: 30px" >
                                         <input type="checkbox" name="term" value="Term" id="TCcheck">I acknowledge and agree to the above. </input>
-                                    </div></tr>
+                                    </div>
+                                </tr>
                             </table>
 
                             <div class="register-form-button" style="margin-top: 52px">
@@ -73,10 +74,9 @@
                                 </script>
                             </div>
                         </p:panel>
-                    </p:tab><!--
-
-
-                    -->                <p:tab id="details" title="2.Personal Details" >
+                    </p:tab>
+                    
+                    <p:tab id="details" title="2.Personal Details" >
                         <p:panel>
                             <p:messages />
                             <h:panelGrid columns="2" columnClasses="label, value">
@@ -118,6 +118,7 @@
                             </div>
                         </p:panel>
                     </p:tab>
+                    
                 </p:wizard>
             </h:form>
         </h:body>

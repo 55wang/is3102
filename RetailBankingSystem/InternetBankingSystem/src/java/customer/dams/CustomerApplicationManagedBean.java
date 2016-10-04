@@ -3,13 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package customer.common;
+package customer.dams;
 
 import ejb.session.common.EmailServiceSessionBeanLocal;
 import ejb.session.common.NewCustomerSessionBeanLocal;
 import ejb.session.dams.CustomerDepositSessionBeanLocal;
 import ejb.session.dams.DepositProductSessionBeanLocal;
-import ejb.session.mainaccount.MainAccountSessionBean;
 import ejb.session.mainaccount.MainAccountSessionBeanLocal;
 import ejb.session.utils.UtilsSessionBeanLocal;
 import entity.customer.Customer;

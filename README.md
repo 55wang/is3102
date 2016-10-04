@@ -15,6 +15,13 @@ mysql -u root --password=password < RecreateDatabase.sql
     git merge card
     git checkout card
 
+# Work flow for module
+
+    1. Create Entity Class
+    2. Sketch out storyboard and edit Entity Class
+    3. Implement EntitiesBuilder, create demo data, link, logic here.
+    4. After all the logic is done, it consider
+
 # Entity standard
 
 ```java

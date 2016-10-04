@@ -9,6 +9,7 @@ import entity.card.account.CreditCardAccount;
 import entity.card.order.CreditCardOrder;
 import entity.common.AuditLog;
 import entity.dams.account.DepositAccount;
+import entity.dams.account.MobileAccount;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -43,16 +44,18 @@ public class MainAccount implements Serializable {
     // mappings
     @OneToOne(cascade = {CascadeType.MERGE}, mappedBy = "mainAccount")
     private Customer customer;
+    @OneToOne(cascade = {CascadeType.MERGE}, mappedBy = "mainAccount")
+    private MobileAccount mobileAccount;
     @OneToMany(cascade = {CascadeType.MERGE}, mappedBy = "mainAccount")
-    private List<DepositAccount> bankAcounts = new ArrayList<DepositAccount>(); 
+    private List<DepositAccount> bankAcounts = new ArrayList<>(); 
     @OneToMany(cascade = {CascadeType.MERGE}, mappedBy = "mainAccount")
-    private List<CreditCardAccount> creditCardAccounts= new ArrayList<CreditCardAccount>(); 
+    private List<CreditCardAccount> creditCardAccounts= new ArrayList<>(); 
     @OneToMany(cascade = {CascadeType.MERGE}, mappedBy = "mainAccount")
-    private List<AuditLog> auditLog = new ArrayList<AuditLog>();
+    private List<AuditLog> auditLog = new ArrayList<>();
     @OneToMany(cascade = {CascadeType.MERGE}, mappedBy = "mainAccount")
-    private List<CustomerCase> cases = new ArrayList<CustomerCase>();
+    private List<CustomerCase> cases = new ArrayList<>();
     @OneToMany(cascade = {CascadeType.MERGE}, mappedBy = "mainAccount")
-    private List<CreditCardOrder> creditCardOrder = new ArrayList<CreditCardOrder>();
+    private List<CreditCardOrder> creditCardOrder = new ArrayList<>();
     
     public void addDepositAccount(DepositAccount da) {
         this.bankAcounts.add(da);
@@ -165,5 +168,19 @@ public class MainAccount implements Serializable {
 
     public void setCreditCardOrder(List<CreditCardOrder> creditCardOrder) {
         this.creditCardOrder = creditCardOrder;
+    }
+
+    /**
+     * @return the mobileAccount
+     */
+    public MobileAccount getMobileAccount() {
+        return mobileAccount;
+    }
+
+    /**
+     * @param mobileAccount the mobileAccount to set
+     */
+    public void setMobileAccount(MobileAccount mobileAccount) {
+        this.mobileAccount = mobileAccount;
     }
 }

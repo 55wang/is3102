@@ -51,38 +51,39 @@
                             <p:growl id="messages"/>
 
                             <p:menubar>
-                                <p:submenu label="Home"  class="navbar-submenu #{cc.attrs.personalPage == 'home' ? 'active' : ''}">
-                                    <p:menuitem value="To My Home" url="../personal_home/customer_home.xhtml" />
+                                <p:submenu label="My Accounts"  class="navbar-submenu #{cc.attrs.personalPage == 'home' ? 'active' : ''}">
+                                    <p:menuitem value="Home" outcome="/personal_home/customer_home" />
+                                    <p:menuitem value="Deposits" outcome="/personal_deposit/deposit_account_summary" />
+                                    <p:menuitem value="eStatement" outcome="/personal_request/request_statement" />
                                 </p:submenu>
 
-                                <p:submenu label="Deposit" class="navbar-submenu #{cc.attrs.personalPage == 'deposit' ? 'active' : ''}">
-                                    <p:menuitem value="To Deposit Home" url="../personal_deposit/deposit_account_summary.xhtml" />
+                                <p:submenu label="Transfer" class="navbar-submenu #{cc.attrs.personalPage == 'transfer' ? 'active' : ''}">
+                                    
+                                </p:submenu>
+                                
+                                <p:submenu label="Pay" class="navbar-submenu #{cc.attrs.personalPage == 'pay' ? 'active' : ''}">
+                                    
                                 </p:submenu>
 
                                 <p:submenu label="Cards" class="navbar-submenu #{cc.attrs.personalPage == 'cards' ? 'active' : ''}">
-                                    <p:menuitem value="Debit Card Summary" url="../personal_cards/debit_card_summary.xhtml" />
-                                    <p:menuitem value="Credit Card Summary" url="../personal_cards/credit_card_summary.xhtml" />
-                                    <p:menuitem value="Activate Debit Card" url="../personal_cards/activate_debit_card.xhtml" />
-                                    <p:menuitem value="Activate Credit Card" url="../personal_cards/activate_credit_card.xhtml" />
+                                    <p:menuitem value="Debit Card Summary" outcome="/personal_cards/debit_card_summary" />
+                                    <p:menuitem value="Credit Card Summary" outcome="/personal_cards/credit_card_summary" />
+                                    <p:menuitem value="Activate Debit Card" outcome="/personal_cards/activate_debit_card" />
+                                    <p:menuitem value="Activate Credit Card" outcome="/personal_cards/activate_credit_card" />
                                 </p:submenu>
 
-                                <p:submenu label="Wealth" class="navbar-submenu #{cc.attrs.personalPage == 'wealth' ? 'active' : ''}">
+                                <p:submenu label="Invest" class="navbar-submenu #{cc.attrs.personalPage == 'wealth' ? 'active' : ''}">
                                 </p:submenu>
 
                                 <p:submenu label="Apply" class="navbar-submenu #{cc.attrs.personalPage == 'apply' ? 'active' : ''}">
-                                    <p:menuitem value="Deposit Accounts" url="../personal_apply/existing_apply_deposit.xhtml" />
-                                    <p:menuitem value="Debit Cards" url="../personal_apply/existing_apply_debit_card.xhtml" />
-                                    <p:menuitem value="Credit Cards" url="../personal_apply/existing_apply_credit_card.xhtml" />
-                                    <p:menuitem value="Credit Card Application Status" url="../personal_apply/view_credit_card_application.xhtml" />
+                                    <p:menuitem value="Deposit Accounts" outcome="/personal_apply/existing_apply_deposit" />
+                                    <p:menuitem value="Debit Cards" outcome="/personal_apply/existing_apply_debit_card" />
+                                    <p:menuitem value="Credit Cards" outcome="/personal_apply/existing_apply_credit_card" />
+                                    <p:menuitem value="Credit Card Application Status" outcome="/personal_apply/view_credit_card_application" />
                                 </p:submenu>
-
+                                
                                 <p:submenu label="Request" class="navbar-submenu #{cc.attrs.personalPage == 'request' ? 'active' : ''}">
-                                    <p:menuitem value="E-statement" url="../personal_request/request_statement.xhtml" />
-                                    <p:menuitem value="Cheque Status" url="../personal_request/current_account_cheque_status.xhtml" />
-                                </p:submenu>
-
-                                <p:submenu label="History" class="navbar-submenu #{cc.attrs.personalPage == 'history' ? 'active' : ''}">
-                                    <p:menuitem value="Activity History" url="../personal_history/activity_history.xhtml" />
+                                    <p:menuitem value="Cheque Status" outcome="/personal_request/current_account_cheque_status" />
                                 </p:submenu>
                             </p:menubar>
                         </h:form>

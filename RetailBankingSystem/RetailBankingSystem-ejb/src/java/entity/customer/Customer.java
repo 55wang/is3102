@@ -52,6 +52,7 @@ public class Customer implements Serializable {
     private String address;
     private String postalCode;
     private Industry industry;
+    private Education education;
     private ResidentialStatus residentialStatus;
     private ResidentialType residentialType;
     private EmploymentStatus employmentStatus;
@@ -61,9 +62,7 @@ public class Customer implements Serializable {
     // credit
     private Double creditScore;
     private String BureaCreditScore;
-
-    private Education education;
-
+    
     // mapping
     @OneToOne(cascade = {CascadeType.MERGE})
     private MainAccount mainAccount;
