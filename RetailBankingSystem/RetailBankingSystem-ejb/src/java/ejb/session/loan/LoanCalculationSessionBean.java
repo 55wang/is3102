@@ -93,6 +93,25 @@ public class LoanCalculationSessionBean implements LoanCalculationSessionBeanLoc
         }
     }
     
+    @Override
+    public double calculateCarLoanAmt(Integer tenure, Double monthlyInterest,Double monthlyIncome,Integer age,Double otherLoan){
+        Double maxTotalMonthlyPayment=TDSR*monthlyIncome;
+        Double monthlyInstallment;
+        Double maxCarLoanAmt;
+        if(monthlyIncome<2000)
+            return 0;
+        else{
+            if(maxTotalMonthlyPayment<=otherLoan)
+                return 0;
+            else{
+                monthlyInstallment=maxTotalMonthlyPayment-otherLoan;
+                maxCarLoanAmt=monthlyInstallment*monthlyInterest/(1-Math.pow((1+monthlyInterest),-tenure));    
+                return maxCarLoanAmt;
+            }
+                
+            }
+    }
+    
     
 }
     

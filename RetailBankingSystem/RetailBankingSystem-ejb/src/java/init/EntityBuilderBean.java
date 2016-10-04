@@ -1107,9 +1107,9 @@ public class EntityBuilderBean {
         loanAccount.setLoanOfficer(staffAccountSessionBean.getAccountByUsername(ConstantUtils.LOAN_OFFICIER_USERNAME));
         cal.add(Calendar.YEAR, 6);
         loanAccount.setMaturityDate(cal.getTime());
-        loanAccount.setPrincipal(5000);
+        loanAccount.setPrincipal((double)5000);
         loanAccount.setPaymentDate(23);
-        loanAccount.setMonthlyInstallment(300);
+        loanAccount.setMonthlyInstallment((double)300);
 
         loanAccountSessionBean.createLoanAccount(loanAccount);
         System.out.print("EntityBuilder ========== " + loanAccount.getAccountNumber());
