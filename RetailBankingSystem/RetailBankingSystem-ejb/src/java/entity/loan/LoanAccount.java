@@ -36,24 +36,53 @@ public class LoanAccount implements Serializable {
     private String accountNumber;
     @Temporal(value = TemporalType.TIMESTAMP)
     private Date maturityDate;
-    @ManyToOne(cascade = {CascadeType.MERGE})
-    private LoanProduct loanProduct;
+    @Temporal(value = TemporalType.TIMESTAMP)
+    private Date creationDate = new Date();
+
     private double monthlyInstallment;
     private double outstandingPrincipal;
     private double overduePayment;
     private double principal;
     private Integer paymentDate;
+    private LoanAccountStatus loanAccountStatus;
+
     @ManyToOne(cascade = {CascadeType.MERGE})
     private StaffAccount loanOfficer;
     @ManyToOne(cascade = {CascadeType.MERGE})
     private Customer customer;
     @ManyToOne(cascade = {CascadeType.MERGE})
     private CustomerDepositAccount depositAccount;
-    private LoanAccountStatus loanAccountStatus;
+    @ManyToOne(cascade = {CascadeType.MERGE})
+    private LoanProduct loanProduct;
     @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "loanAccount")
     private List<LoanRepaymentRecord> loanRepaymentRecords = new ArrayList<>();
-    @Temporal(value = TemporalType.TIMESTAMP)
-    private Date creationDate = new Date();
+
+    @Override
+    public String toString() {
+        return "LoanAccount{" + "accountNumber=" + accountNumber + '}';
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 23 * hash + Objects.hashCode(this.accountNumber);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final LoanAccount other = (LoanAccount) obj;
+        if (!Objects.equals(this.accountNumber, other.accountNumber)) {
+            return false;
+        }
+        return true;
+    }
 
     public String getAccountNumber() {
         return accountNumber;
@@ -165,33 +194,6 @@ public class LoanAccount implements Serializable {
 
     public void setCreationDate(Date creationDate) {
         this.creationDate = creationDate;
-    }
-
-    @Override
-    public String toString() {
-        return "LoanAccount{" + "accountNumber=" + accountNumber + '}';
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 5;
-        hash = 23 * hash + Objects.hashCode(this.accountNumber);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final LoanAccount other = (LoanAccount) obj;
-        if (!Objects.equals(this.accountNumber, other.accountNumber)) {
-            return false;
-        }
-        return true;
     }
 
 }

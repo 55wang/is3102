@@ -27,15 +27,42 @@ public class LoanRepaymentRecord implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @ManyToOne(cascade = {CascadeType.MERGE})
-    private LoanAccount loanAccount;
     @Temporal(value = TemporalType.TIMESTAMP)
     private Date transactionDate;
+
     private double beginningBalance;
     private double remainingBalance;
     private double paymentAmount;
     private double interestAccrued;
     private double cumulativeInterestAccrued = 0;
+
+    @ManyToOne(cascade = {CascadeType.MERGE})
+    private LoanAccount loanAccount;
+
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (id != null ? id.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof LoanRepaymentRecord)) {
+            return false;
+        }
+        LoanRepaymentRecord other = (LoanRepaymentRecord) object;
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "entity.loan.LoanRepaymentRecord[ id=" + id + " ]";
+    }
 
     public LoanAccount getLoanAccount() {
         return loanAccount;
@@ -101,7 +128,6 @@ public class LoanRepaymentRecord implements Serializable {
         this.remarks = remarks;
     }
     private String remarks;
-    
 
     public Long getId() {
         return id;
@@ -109,31 +135,6 @@ public class LoanRepaymentRecord implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof LoanRepaymentRecord)) {
-            return false;
-        }
-        LoanRepaymentRecord other = (LoanRepaymentRecord) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        return "entity.loan.LoanRepaymentRecord[ id=" + id + " ]";
     }
 
 }
