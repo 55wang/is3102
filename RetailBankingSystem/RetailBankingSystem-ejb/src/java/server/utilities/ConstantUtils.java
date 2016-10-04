@@ -36,9 +36,13 @@ public class ConstantUtils {
     public static final String PRODUCT_MANAGER_USERNAME = "product_manager";
     public static final String STAFF_DEMO_PASSWORD = HashPwdUtils.hashPwd("password");
     
+    // Error Message
     // General
     public static final String SOMETHING_WENT_WRONG = "Something went wrong.";
     // Password
     public static final String OLD_PASSWORD_NOTMTACH = "You have entered a wrong password! ";
     public static final String PASSWORD_CHANGE_SUCCESS = "Successful! You have reset your password. ";
+    // Transfer
+    public static final String TRANSFER_SUCCESS = "Transfer Successed!";
+    public static final String TRANSFER_FAILED = "Transfer Failed! Check your account balance!";
 }
