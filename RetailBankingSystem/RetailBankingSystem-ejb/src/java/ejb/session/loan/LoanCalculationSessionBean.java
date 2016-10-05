@@ -5,7 +5,10 @@
  */
 package ejb.session.loan;
 
+import entity.loan.LoanPaymentBreakdown;
+import java.util.*;
 import javax.ejb.Stateless;
+import org.apache.commons.lang.time.DateUtils;
 
 /**
  *
@@ -55,17 +58,17 @@ public class LoanCalculationSessionBean implements LoanCalculationSessionBeanLoc
         }
     
     @Override
-    public double calculateMaxHDBLoanAmt(Double monthlyIncome,Integer age,Double otherHDBLoan, Double otherLoan){
+    public Double calculateMaxHDBLoanAmt(Double monthlyIncome,Integer age,Double otherHDBLoan, Double otherLoan){
         Integer tenure=this.calculateMaxHDBTenure(age, monthlyIncome);
         Double maxHDBMonthlyPayment=MSR*monthlyIncome;
         Double maxTotalMonthlyPayment=TDSR*monthlyIncome;
         Double monthlyInstallment;
         Double maxHDBLoanAmt;
         if(monthlyIncome<1500)
-            return 0;
+            return 0.0;
         else{
             if(maxHDBMonthlyPayment<=otherHDBLoan || maxTotalMonthlyPayment<=(otherHDBLoan+otherLoan))
-                return 0;
+                return 0.0;
             else{
                 monthlyInstallment=maxHDBMonthlyPayment-otherHDBLoan;
                 maxHDBLoanAmt=monthlyInstallment*MEDIUM_INTEREST/(1-Math.pow((1+MEDIUM_INTEREST),-tenure));    
@@ -75,16 +78,16 @@ public class LoanCalculationSessionBean implements LoanCalculationSessionBeanLoc
     }
     
     @Override
-    public double calculateMaxPPLoanAmt(Double monthlyIncome,Integer age,Double otherHomeLoan, Double otherLoan){
+    public Double calculateMaxPPLoanAmt(Double monthlyIncome,Integer age,Double otherHomeLoan, Double otherLoan){
         Integer tenure=this.calculateMaxPPTenure(age, monthlyIncome);
         Double maxTotalMonthlyPayment=TDSR*monthlyIncome;
         Double monthlyInstallment;
         Double maxPPLoanAmt;
         if(monthlyIncome<1500)
-            return 0;
+            return 0.0;
         else{
             if(maxTotalMonthlyPayment<=(otherHomeLoan+otherLoan))
-                return 0;
+                return 0.0;
             else{
                 monthlyInstallment=maxTotalMonthlyPayment-otherHomeLoan-otherLoan;
                 maxPPLoanAmt=monthlyInstallment*MEDIUM_INTEREST/(1-Math.pow((1+MEDIUM_INTEREST),-tenure));    
@@ -94,15 +97,15 @@ public class LoanCalculationSessionBean implements LoanCalculationSessionBeanLoc
     }
     
     @Override
-    public double calculateCarLoanAmt(Integer tenure, Double monthlyInterest,Double monthlyIncome,Integer age,Double otherLoan){
+    public Double calculateCarLoanAmt(Integer tenure, Double monthlyInterest,Double monthlyIncome,Integer age,Double otherLoan){
         Double maxTotalMonthlyPayment=TDSR*monthlyIncome;
         Double monthlyInstallment;
         Double maxCarLoanAmt;
         if(monthlyIncome<2000)
-            return 0;
+            return 0.0;
         else{
             if(maxTotalMonthlyPayment<=otherLoan)
-                return 0;
+                return 0.0;
             else{
                 monthlyInstallment=maxTotalMonthlyPayment-otherLoan;
                 maxCarLoanAmt=monthlyInstallment*monthlyInterest/(1-Math.pow((1+monthlyInterest),-tenure));    
@@ -111,6 +114,43 @@ public class LoanCalculationSessionBean implements LoanCalculationSessionBeanLoc
                 
             }
     }
+    
+    @Override
+    public List calculateRepaymentBreakdown(Double loanAmt, Integer tenure, Double loanInterest,Date loanDate){
+        Double monthlyInstallment=this.calculateMonthlyInstallment(loanInterest, tenure, loanAmt);
+        List<LoanPaymentBreakdown> paymentBreakdown=new ArrayList<>();
+        Date schedulePaymentDate;
+        Double principalPayment;
+        Double interestPayment;
+        
+        
+        for (int i=0;i<tenure;i++){
+            schedulePaymentDate=DateUtils.addMonths(loanDate, i+1);
+            principalPayment=monthlyInstallment-loanAmt*loanInterest;
+            loanAmt=loanAmt-principalPayment;
+            interestPayment=loanAmt*loanInterest;
+            LoanPaymentBreakdown lpb = new LoanPaymentBreakdown(schedulePaymentDate,principalPayment,interestPayment);
+            paymentBreakdown.add(lpb);
+       }
+        
+       return paymentBreakdown;
+        
+    }
+    
+    @Override
+    public List lumSumPayAdjustment(Integer lumSumPayment,Double outstandingLoanAmt,Integer residualTenure, Double loanInterest,Date lumSumPayDate){
+        if (lumSumPayment<10000){
+            System.out.println("Not enough to be considered as lum sum payment");
+            return null;
+        }
+        else{
+            List<LoanPaymentBreakdown> newPaymentBreakdown=new ArrayList<>();
+        
+            newPaymentBreakdown=this.calculateRepaymentBreakdown(outstandingLoanAmt-lumSumPayment, residualTenure, loanInterest, lumSumPayDate);
+            return newPaymentBreakdown;
+        }
+    }
+        
     
     
 }
