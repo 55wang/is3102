@@ -1111,7 +1111,8 @@ public class EntityBuilderBean {
         WealthManagementSubscriber wms = new WealthManagementSubscriber();
         wms.setMainAccount(demoMainAccount);
         wms.setRelationshipManager(staffAccountSessionBean.getAccountByUsername(ConstantUtils.RELATIONSHIP_MANAGER_USERNAME));
-        wms.setRiskToleranceLevel(5);
+        wms.setRiskToleranceLevel(EnumUtils.RiskToleranceLevel.ABOVE_AVERAGE_RISK_TOLERANCE);
+        wms.setRiskToleranceScore(31);
         
         wealthManegementSubscriberSessionBean.createWealthManagementSubscriber(wms);
     }

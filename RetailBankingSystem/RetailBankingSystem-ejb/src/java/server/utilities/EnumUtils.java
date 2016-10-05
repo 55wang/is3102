@@ -1169,4 +1169,37 @@ public class EnumUtils {
             throw new IllegalArgumentException();
         }
     }
+    
+    public enum RiskToleranceLevel {
+
+        LOW_RISK_TOLERANCE("low risk tolerance"),
+        BELOW_AVERAGE_RISK_TOLERANCE("below-average risk tolerance"),
+        AVERAGE_RISK_TOLERANCE("average/moderate risk tolerance"),
+        ABOVE_AVERAGE_RISK_TOLERANCE("above-average risk tolerance"),
+        HIGH_RISK_ROLERANCE("high risk tolerance");
+        
+        private String value;
+
+        RiskToleranceLevel(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        @Override
+        public String toString() {
+            return this.getValue();
+        }
+
+        public static RiskToleranceLevel getEnum(String value) {
+            for (RiskToleranceLevel v : values()) {
+                if (v.getValue().equalsIgnoreCase(value)) {
+                    return v;
+                }
+            }
+            throw new IllegalArgumentException();
+        }
+    }
 }
