@@ -29,7 +29,7 @@ and open the template in the editor.
                             <h:panelGrid columns="2" cellpadding="5">
                                 <h:outputText value="Choose Your Account to transfer from: " />
                                 <p:selectOneMenu value="#{intraBankTransferManagedBean.fromAccountNo}" rendered="true" required="true">
-                                    <f:selectItems value="#{intraBankTransferManagedBean.accounts}" var="a" itemValue="#{a.accountNumber}" itemLabel="#{a.product.name} #{a.accountNumber} #{a.balance}" />
+                                    <f:selectItems value="#{intraBankTransferManagedBean.accounts}" var="a" itemValue="#{a.accountNumber}" itemLabel="#{a.product.name} #{a.accountNumber} #{a.balance.setScale(2)}" />
                                 </p:selectOneMenu>
                                 <h:outputText value="Choose Your Account to transfer to " />
                                 <h:inputText value="#{intraBankTransferManagedBean.toAccountNo}" required="true" />

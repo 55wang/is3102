@@ -187,4 +187,16 @@ public class DateUtils {
         cal.setTime(date);
         return cal;
     }
+    
+    public static Integer getMonthNumber(Date date) {
+        Calendar cal = GregorianCalendar.getInstance();
+        cal.setTime(date);
+        return cal.get(Calendar.MONTH);
+    }
+    
+    public static Integer getYearNumber(Date date) {
+        Calendar cal = GregorianCalendar.getInstance();
+        cal.setTime(date);
+        return cal.get(Calendar.YEAR);
+    }
 }

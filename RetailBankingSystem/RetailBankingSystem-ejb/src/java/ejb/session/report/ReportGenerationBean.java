@@ -34,6 +34,7 @@ import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.design.JasperDesign;
 import net.sf.jasperreports.engine.xml.JRXmlLoader;
 import net.sf.jasperreports.view.JasperViewer;
+import server.utilities.DateUtils;
 
 /**
  *
@@ -90,7 +91,7 @@ public class ReportGenerationBean implements ReportGenerationBeanLocal  {
 //            JasperFillManager.fillReportToFile(sourceFileName, parameters, beanColDataSource);
             JasperReport jr = JasperCompileManager.compileReport(prependingPath+"is3102/RetailBankingSystem/RetailBankingSystem-ejb/src/java/ejb/session/report/report.jrxml");
             JasperPrint jp = JasperFillManager.fillReport(jr, parameters, beanColDataSource);
-            JasperExportManager.exportReportToPdfFile(jp, prependingPath+"is3102/RetailBankingSystem/InternetBankingSystem/web/personal_request/estatement.pdf");
+            JasperExportManager.exportReportToPdfFile(jp, prependingPath+"is3102/RetailBankingSystem/InternetBankingSystem/web/personal_request/estatement_"+accountNumber+ DateUtils.getYearNumber(endDate)+ "_" + DateUtils.getMonthNumber(startDate) + "_" + DateUtils.getMonthNumber(endDate) +".pdf");
         } catch (JRException e) {
             e.printStackTrace();
         }

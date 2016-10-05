@@ -15,7 +15,7 @@ and open the template in the editor.
 
     <f:view>
         <h:head>
-            <title>MerlionBank</title>
+            <title>Merlion Bank</title>
             <em:cssImport></em:cssImport>
         </h:head>
 
@@ -25,11 +25,20 @@ and open the template in the editor.
             <em:customerNavBar context="personal" personalPage="home" ></em:customerNavBar>
             <div class="customer_main_container">
                 <h:form>
-
-                    <p:commandButton value="View your bank statement" action="#{requestManagedBean.requestEStatement}"/> 
+                    <h:panelGrid columns="2" cellpadding="5">
+                        <h:outputText value="Choose Account: " />
+                        <p:selectOneMenu value="#{requestManagedBean.fromAccountNo}" rendered="true" required="true">
+                            <f:selectItems value="#{requestManagedBean.accounts}" var="a" itemValue="#{a.accountNumber}" itemLabel="#{a.product.name} #{a.accountNumber} #{a.balance.setScale(2)}" />
+                        </p:selectOneMenu>
+                        <h:outputText value="Select Month: " />
+                        <p:selectOneMenu value="#{requestManagedBean.selectedMonth}" rendered="true" required="true">
+                            <f:selectItems value="#{requestManagedBean.monthOptions}"/>
+                        </p:selectOneMenu>
+                        <p:commandButton value="View your bank statement" action="#{requestManagedBean.requestEStatement}"/> 
+                    </h:panelGrid>
                 </h:form>
-                
-            
+
+
             </div>
 
 
