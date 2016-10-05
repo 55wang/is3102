@@ -6,6 +6,10 @@
 package webservice.restful.mobile;
 
 import ejb.session.common.LoginSessionBeanLocal;
+import ejb.session.common.OTPSessionBeanLocal;
+import ejb.session.dams.MobileAccountSessionBeanLocal;
+import ejb.session.utils.UtilsSessionBeanLocal;
+import entity.common.OneTimePassword;
 import entity.customer.MainAccount;
 import entity.dams.account.MobileAccount;
 import javax.ejb.EJB;
@@ -22,6 +26,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 import org.primefaces.json.JSONObject;
 import server.utilities.HashPwdUtils;
+import server.utilities.PincodeGenerationUtils;
 
 /**
  *
@@ -35,6 +40,12 @@ public class MobileUserLoginService {
 
     @EJB
     private LoginSessionBeanLocal loginBean;
+    @EJB
+    private UtilsSessionBeanLocal utilBean;
+    @EJB
+    private OTPSessionBeanLocal otpBean;
+    @EJB
+    private MobileAccountSessionBeanLocal mobileBean;
 
     // Works
     @GET
@@ -75,10 +86,12 @@ public class MobileUserLoginService {
                 user.setLastName(ma.getCustomer().getLastname());
                 if (mobileAccount == null) {
                     user.setMobilePassword("");
+                    mobileBean.createMobileAccount(ma);
                 } else {
                     user.setMobilePassword(mobileAccount.getPassword());
                 }
                 jsonString = new JSONObject(user).toString();
+                otpBean.generateOTP(user.getMobileNumber());
                 return Response.ok(jsonString, MediaType.APPLICATION_JSON).build();
             } else {
                 ErrorDTO err = new ErrorDTO();
@@ -95,4 +108,6 @@ public class MobileUserLoginService {
             return Response.ok(jsonString, MediaType.APPLICATION_JSON).build();
         }
     }
+    
+    
 }

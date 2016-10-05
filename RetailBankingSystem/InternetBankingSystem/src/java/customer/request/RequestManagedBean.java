@@ -58,7 +58,12 @@ public class RequestManagedBean implements Serializable {
             Date startDate = DateUtils.getBeginOfMonth();
             Date endDate = DateUtils.getEndOfMonth();
             reportBean.generateMonthlyDepositAccountTransactionReport(accountNumber, startDate, endDate);
-            RedirectUtils.redirect("estatement_" + accountNumber + DateUtils.getYearNumber(endDate) + "_" + DateUtils.getMonthNumber(startDate) + "_" + DateUtils.getMonthNumber(endDate) + ".pdf");
+            RedirectUtils.redirect("estatement_" + 
+                    accountNumber + 
+                    DateUtils.getYearNumber(endDate) + "_" + 
+                    DateUtils.getMonthNumber(startDate) + "_" 
+                    + DateUtils.getMonthNumber(endDate) + ".pdf"
+            );
         } catch (Exception ex) {
             System.out.println("RequestManagedBean.requestEStatement: " + ex.toString());
         }

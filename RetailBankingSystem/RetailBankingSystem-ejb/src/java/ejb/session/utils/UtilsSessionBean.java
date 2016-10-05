@@ -26,6 +26,11 @@ public class UtilsSessionBean implements UtilsSessionBeanLocal {
     public Object find(Class type, Long id) {
         return em.find(type, id);
     }
+    
+    @Override
+    public Object find(Class type, String id) {
+        return em.find(type, id);
+    }
 
     @Override
     public List<Object> findAll(String entityName) {
@@ -44,6 +49,11 @@ public class UtilsSessionBean implements UtilsSessionBeanLocal {
     public Object merge(Object object) {
         em.merge(object);
         return object;
+    }
+    
+    @Override
+    public void remove(Object object){
+        em.remove(object);
     }
 
     @Override

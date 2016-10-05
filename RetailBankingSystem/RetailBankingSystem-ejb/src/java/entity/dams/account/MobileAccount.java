@@ -7,6 +7,7 @@ package entity.dams.account;
 
 import entity.customer.MainAccount;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -34,12 +35,21 @@ public class MobileAccount implements Serializable {
     // info
     @Column(unique = true, nullable = false)
     private String phoneNumber;
-    private Double balance;
+    @Column(precision=30, scale=20)
+    private BigDecimal balance = BigDecimal.ZERO;
     private String password;
     
     // mapping
     @OneToOne(cascade = {CascadeType.MERGE})
     private MainAccount mainAccount;
+    
+    public void addBalance(BigDecimal amount) {
+        balance = balance.add(amount);
+    }
+    
+    public void removeBalance(BigDecimal amount) {
+        balance = balance.subtract(amount);
+    }
 
     public Long getId() {
         return id;
@@ -71,20 +81,6 @@ public class MobileAccount implements Serializable {
     }
 
     /**
-     * @return the balance
-     */
-    public Double getBalance() {
-        return balance;
-    }
-
-    /**
-     * @param balance the balance to set
-     */
-    public void setBalance(Double balance) {
-        this.balance = balance;
-    }
-
-    /**
      * @return the mainAccount
      */
     public MainAccount getMainAccount() {
@@ -110,6 +106,20 @@ public class MobileAccount implements Serializable {
      */
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    /**
+     * @return the balance
+     */
+    public BigDecimal getBalance() {
+        return balance;
+    }
+
+    /**
+     * @param balance the balance to set
+     */
+    public void setBalance(BigDecimal balance) {
+        this.balance = balance;
     }
     
 }
