@@ -1170,7 +1170,6 @@ public class EnumUtils {
     }
     
     // bill
-    
     public enum BillType {
 
         CLUBS("Country Clubs/ Recreational Clubs"),
@@ -1199,6 +1198,37 @@ public class EnumUtils {
 
         public static BillType getEnum(String value) {
             for (BillType v : values()) {
+                if (v.getValue().equalsIgnoreCase(value)) {
+                    return v;
+                }
+            }
+            throw new IllegalArgumentException();
+        }
+    }
+    // transfer
+    public enum PayeeType {
+
+        MERLION("MERLION"),
+        LOCAL("LOCAL"),
+        OVERSEAS("OVERSEAS");
+        
+        private String value;
+
+        PayeeType(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        @Override
+        public String toString() {
+            return this.getValue();
+        }
+
+        public static PayeeType getEnum(String value) {
+            for (PayeeType v : values()) {
                 if (v.getValue().equalsIgnoreCase(value)) {
                     return v;
                 }

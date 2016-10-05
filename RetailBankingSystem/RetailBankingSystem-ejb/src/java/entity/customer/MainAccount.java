@@ -5,6 +5,7 @@
  */
 package entity.customer;
 
+import entity.bill.Payee;
 import entity.card.account.CreditCardAccount;
 import entity.card.order.CreditCardOrder;
 import entity.common.AuditLog;
@@ -48,6 +49,8 @@ public class MainAccount implements Serializable {
     private MobileAccount mobileAccount;
     @OneToMany(cascade = {CascadeType.MERGE}, mappedBy = "mainAccount")
     private List<DepositAccount> bankAcounts = new ArrayList<>(); 
+    @OneToMany(cascade = {CascadeType.MERGE}, mappedBy = "mainAccount")
+    private List<Payee> payees = new ArrayList<>(); 
     @OneToMany(cascade = {CascadeType.MERGE}, mappedBy = "mainAccount")
     private List<CreditCardAccount> creditCardAccounts= new ArrayList<>(); 
     @OneToMany(cascade = {CascadeType.MERGE}, mappedBy = "mainAccount")

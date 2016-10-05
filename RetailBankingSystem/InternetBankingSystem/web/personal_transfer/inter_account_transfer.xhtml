@@ -15,7 +15,7 @@ and open the template in the editor.
 
     <f:view>
         <h:head>
-            <title>MerlionBank</title>
+            <title>Merlion Bank</title>
             <em:cssImport></em:cssImport>
         </h:head>
         <h:body>
@@ -23,23 +23,57 @@ and open the template in the editor.
             <em:customerNavBar context="personal" personalPage="transfer" ></em:customerNavBar>
             <div class="customer_main_container">
                 <h:form>
-                    <p:panel header="Inter Account Transfer">
-                        <p:messages id="message" redisplay="false" >
-                            <h:panelGrid columns="2" cellpadding="5">
-                                <h:outputText value="Choose Your Account to transfer from: " />
-                                <p:selectOneMenu value="#{interAccountTransferManagedBean.fromAccountNo}" rendered="true" required="true">
-                                    <f:selectItems value="#{interAccountTransferManagedBean.accounts}" var="a" itemValue="#{a.accountNumber}" itemLabel="#{a.product.name} #{a.accountNumber} #{a.balance}" />
-                                </p:selectOneMenu>
-                                <h:outputText value="Choose Your Account to transfer to " />
-                                <p:selectOneMenu value="#{interAccountTransferManagedBean.toAccountNo}" rendered="true" required="true">
-                                    <f:selectItems value="#{interAccountTransferManagedBean.accounts}" var="a" itemValue="#{a.accountNumber}" itemLabel="#{a.product.name} #{a.accountNumber} #{a.balance}" />
-                                </p:selectOneMenu>
-                                <p:outputLabel for="amount" value="Amount: " />
-                                <p:inputText id="amount" value="#{interAccountTransferManagedBean.amount}"/>
-                                <p:commandButton value="Transfer" action="#{interAccountTransferManagedBean.transfer}" update="@form"/> 
-                            </h:panelGrid>
-                        </p:messages>
-                    </p:panel>
+                    <p:messages id="message" redisplay="false" >
+                        <p:wizard widgetVar="myWizard" showNavBar="false">
+
+                            <p:tab id="input_detail" title="1.Input Details">
+                                
+                                <p:panel header="Transfer Funds to My Account">
+                                    <h:panelGrid columns="2" cellpadding="5">
+                                        <h:outputText value="Choose Your Account to transfer from: " />
+                                        <p:selectOneMenu value="#{interAccountTransferManagedBean.fromAccountNo}" rendered="true" required="true">
+                                            <f:selectItems value="#{interAccountTransferManagedBean.accounts}" var="a" itemValue="#{a.accountNumber}" itemLabel="#{a.product.name} #{a.accountNumber} #{a.balance}" />
+                                        </p:selectOneMenu>
+                                        <h:outputText value="Choose Your Account to transfer to " />
+                                        <p:selectOneMenu value="#{interAccountTransferManagedBean.toAccountNo}" rendered="true" required="true">
+                                            <f:selectItems value="#{interAccountTransferManagedBean.accounts}" var="a" itemValue="#{a.accountNumber}" itemLabel="#{a.product.name} #{a.accountNumber} #{a.balance}" />
+                                        </p:selectOneMenu>
+                                        <p:outputLabel for="amount" value="Amount: " />
+                                        <p:inputText id="amount" value="#{interAccountTransferManagedBean.amount}"/>
+                                        <p:commandButton  value="Next" type="button" onclick="PF('myWizard').next()" />
+                                    </h:panelGrid>
+                                </p:panel>
+                                
+                            </p:tab>
+                            
+                            <p:tab id="verify_details" title="2.Verify Details">
+                                <p:panel header="Please verify details">
+                                    <h:panelGrid columns="2" cellpadding="5">
+                                        <h:outputText value="From: " />
+                                        <h:outputText value="#{interAccountTransferManagedBean.fromAccountNo}" />
+                                        <h:outputText value="To: " />
+                                        <h:outputText value="#{interAccountTransferManagedBean.toAccountNo}" />
+                                        <p:outputLabel value="Amount: " />
+                                        <p:outputLabel value="#{interAccountTransferManagedBean.amount}"/>
+                                        <p:commandButton value="Transfer" action="#{interAccountTransferManagedBean.transfer}" update="@form"/> 
+                                    </h:panelGrid>
+                                </p:panel>
+                            </p:tab>
+                            
+                            <p:tab id="completion" title="3.Completion">
+                                <p:panel header="Details">
+                                    <h:panelGrid columns="2" cellpadding="5">
+                                        <h:outputText value="From: " />
+                                        <h:outputText value="#{interAccountTransferManagedBean.fromAccountNo}" />
+                                        <h:outputText value="To: " />
+                                        <h:outputText value="#{interAccountTransferManagedBean.toAccountNo}" />
+                                        <p:outputLabel value="Amount: " />
+                                        <p:outputLabel value="#{interAccountTransferManagedBean.amount}"/>
+                                    </h:panelGrid>
+                                </p:panel>
+                            </p:tab>
+                        </p:wizard>
+                    </p:messages>
                 </h:form>
             </div>
         </h:body>

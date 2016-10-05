@@ -6,6 +6,7 @@
 package customer.transfer;
 
 import ejb.session.common.LoginSessionBeanLocal;
+import ejb.session.dams.CustomerDepositSessionBeanLocal;
 import ejb.session.transfer.TransferSessionBeanLocal;
 import entity.customer.MainAccount;
 import entity.dams.account.DepositAccount;
@@ -18,7 +19,6 @@ import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import server.utilities.ConstantUtils;
-import utils.JSUtils;
 import utils.MessageUtils;
 import utils.SessionUtils;
 
@@ -26,37 +26,47 @@ import utils.SessionUtils;
  *
  * @author leiyang
  */
-@Named(value = "interAccountTransferManagedBean")
+@Named(value = "intraBankTransferManagedBean")
 @ViewScoped
-public class InterAccountTransferManagedBean implements Serializable {
-    
+public class intraBankTransferManagedBean implements Serializable {
+
     @EJB
     private LoginSessionBeanLocal loginBean;
     @EJB
     private TransferSessionBeanLocal transferBean;
+    @EJB
+    private CustomerDepositSessionBeanLocal depositBean;
     
     private String fromAccountNo;
     private String toAccountNo;
     private BigDecimal amount;
     private List<DepositAccount> accounts = new ArrayList<>();
     
-    public InterAccountTransferManagedBean() {}
+    public intraBankTransferManagedBean() {}
     
     @PostConstruct
     public void init() {
         MainAccount ma = loginBean.getMainAccountByUserID(SessionUtils.getUserName());
-        accounts = ma.getBankAcounts();
+        setAccounts(ma.getBankAcounts());
     }
     
     public void transfer() {
+        try {
+            DepositAccount da = depositBean.getAccountFromId(toAccountNo);
+            if (da == null) {
+                MessageUtils.displayError(ConstantUtils.TRANSFER_ACCOUNT_NOT_FOUND);
+                return;
+            }
+        } catch (Exception e) {
+            MessageUtils.displayError(ConstantUtils.TRANSFER_ACCOUNT_NOT_FOUND);
+            return;
+        }
         //TODO: need another authentication
-        String result = transferBean.transferFromAccountToAccount(fromAccountNo, toAccountNo, amount);
+        String result = transferBean.transferFromAccountToAccount(getFromAccountNo(), getToAccountNo(), getAmount());
         if (result.equals("SUCCESS")) {
             init();
-            JSUtils.callJSMethod("PF('myWizard').next()");
             MessageUtils.displayInfo(ConstantUtils.TRANSFER_SUCCESS);
         } else {
-            JSUtils.callJSMethod("PF('myWizard').back()");
             MessageUtils.displayError(ConstantUtils.TRANSFER_FAILED);
         }
     }
@@ -90,20 +100,6 @@ public class InterAccountTransferManagedBean implements Serializable {
     }
 
     /**
-     * @return the accounts
-     */
-    public List<DepositAccount> getAccounts() {
-        return accounts;
-    }
-
-    /**
-     * @param accounts the accounts to set
-     */
-    public void setAccounts(List<DepositAccount> accounts) {
-        this.accounts = accounts;
-    }
-
-    /**
      * @return the amount
      */
     public BigDecimal getAmount() {
@@ -116,5 +112,18 @@ public class InterAccountTransferManagedBean implements Serializable {
     public void setAmount(BigDecimal amount) {
         this.amount = amount;
     }
-    
+
+    /**
+     * @return the accounts
+     */
+    public List<DepositAccount> getAccounts() {
+        return accounts;
+    }
+
+    /**
+     * @param accounts the accounts to set
+     */
+    public void setAccounts(List<DepositAccount> accounts) {
+        this.accounts = accounts;
+    }
 }

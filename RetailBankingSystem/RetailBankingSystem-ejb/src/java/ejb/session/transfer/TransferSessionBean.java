@@ -6,12 +6,16 @@
 package ejb.session.transfer;
 
 import ejb.session.dams.CustomerDepositSessionBeanLocal;
+import entity.bill.Payee;
 import entity.dams.account.DepositAccount;
 import java.math.BigDecimal;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import server.utilities.EnumUtils;
 
 /**
  *
@@ -38,5 +42,19 @@ public class TransferSessionBean implements TransferSessionBeanLocal {
             depositBean.depositIntoAccount(toAccount, amount);
             return "SUCCESS";
         }
+    }
+    
+    // payee
+    @Override
+    public Payee createPayee(Payee p) {
+        em.persist(p);
+        return p;
+    }
+    @Override
+    public List<Payee> getPayeeFromUserIdWithType(Long userId, EnumUtils.PayeeType type) {
+        Query q = em.createQuery("SELECT p FROM Payee p WHERE p.mainAccount.id =:userId AND p.type = :inType");
+        q.setParameter("userId", userId);
+        q.setParameter("inType", type);
+        return q.getResultList();
     }
 }

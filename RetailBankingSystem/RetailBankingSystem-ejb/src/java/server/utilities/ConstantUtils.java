@@ -54,4 +54,9 @@ public class ConstantUtils {
     // Transfer
     public static final String TRANSFER_SUCCESS = "Transfer Successed!";
     public static final String TRANSFER_FAILED = "Transfer Failed! Check your account balance!";
+    public static final String TRANSFER_ACCOUNT_NOT_FOUND = "Transfer Failed! Check your whether account number is correct!";
+    // Payee
+    public static final String PAYEE_SUCCESS = "Add new Payee Successed!";
+    public static final String PAYEE_FAILED = "Add new Payee Failed! Check Payee Account Number!";
+    public static final String PAYEE_ACCOUNT_NOT_FOUND = "Add new Payee Failed! Check your payee's account number is correct!";
 }

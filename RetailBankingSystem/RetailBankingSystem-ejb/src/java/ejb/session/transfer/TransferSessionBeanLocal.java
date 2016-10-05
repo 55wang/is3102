@@ -5,8 +5,11 @@
  */
 package ejb.session.transfer;
 
+import entity.bill.Payee;
 import java.math.BigDecimal;
+import java.util.List;
 import javax.ejb.Local;
+import server.utilities.EnumUtils.PayeeType;
 
 /**
  *
@@ -14,5 +17,10 @@ import javax.ejb.Local;
  */
 @Local
 public interface TransferSessionBeanLocal {
+    // transfer
     public String transferFromAccountToAccount(String fromAcc, String toAcc, BigDecimal amount);
+    
+    // payee
+    public Payee createPayee(Payee p);
+    public List<Payee> getPayeeFromUserIdWithType(Long userId, PayeeType type);
 }
