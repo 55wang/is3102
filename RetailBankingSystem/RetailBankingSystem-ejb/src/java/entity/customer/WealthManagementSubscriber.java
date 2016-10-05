@@ -14,6 +14,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+import server.utilities.EnumUtils.RiskToleranceLevel;
 
 /**
  *
@@ -26,7 +27,8 @@ public class WealthManagementSubscriber implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     
-    private Integer riskToleranceLevel;
+    private Integer riskToleranceScore = null;
+    private RiskToleranceLevel riskToleranceLevel = null;
    
     @OneToOne(cascade = CascadeType.MERGE)
     private MainAccount mainAccount;
@@ -67,11 +69,19 @@ public class WealthManagementSubscriber implements Serializable {
         return "entity.customer.WealthManagementSubscriber[ id=" + id + " ]";
     }
 
-    public Integer getRiskToleranceLevel() {
+    public Integer getRiskToleranceScore() {
+        return riskToleranceScore;
+    }
+
+    public void setRiskToleranceScore(Integer riskToleranceScore) {
+        this.riskToleranceScore = riskToleranceScore;
+    }
+
+    public RiskToleranceLevel getRiskToleranceLevel() {
         return riskToleranceLevel;
     }
 
-    public void setRiskToleranceLevel(Integer riskToleranceLevel) {
+    public void setRiskToleranceLevel(RiskToleranceLevel riskToleranceLevel) {
         this.riskToleranceLevel = riskToleranceLevel;
     }
 

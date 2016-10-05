@@ -16,4 +16,5 @@ import javax.ejb.Local;
 public interface WealthManegementSubscriberSessionBeanLocal {
     public WealthManagementSubscriber createWealthManagementSubscriber(WealthManagementSubscriber wms);
     public WealthManagementSubscriber getWealthManagementSubscriberById(Long id);
+    public WealthManagementSubscriber updateWealthManagementSubscriber(WealthManagementSubscriber wms);
 }

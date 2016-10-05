@@ -31,4 +31,10 @@ public class WealthManegementSubscriberSessionBean implements WealthManegementSu
     public WealthManagementSubscriber getWealthManagementSubscriberById(Long id){
         return em.find(WealthManagementSubscriber.class, id);
     }
+    
+    @Override
+    public WealthManagementSubscriber updateWealthManagementSubscriber(WealthManagementSubscriber wms){
+        em.merge(wms);
+        return wms;
+    }
 }
