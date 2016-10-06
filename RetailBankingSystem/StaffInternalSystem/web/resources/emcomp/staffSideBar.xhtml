@@ -22,15 +22,15 @@
                         <li class="side-menu-item #{cc.attrs.side == 'openAccount' ? 'active' : ''}">
                             <h:link outcome="open-account" value="Open Current Account" />
                         </li>
-                        
+
                         <li class="side-menu-item #{cc.attrs.side == 'accountDeposit' ? 'active' : ''}">
                             <h:link outcome="account-deposit" value="Account Deposit" />
                         </li>
-                        
+
                         <li class="side-menu-item #{cc.attrs.side == 'accountWithDraw' ? 'active' : ''}">
                             <h:link outcome="account-withdraw" value="Withdraw Current Account" />
                         </li>
-                        
+
                         <li class="side-menu-item #{cc.attrs.side == 'checkAccountBalance' ? 'active' : ''}">
                             <h:link outcome="check-account-balance" value="Check Balance Current Account" />
                         </li>
@@ -84,26 +84,36 @@
                         <li class="side-menu-item #{cc.attrs.side == 'viewActivities' ? 'active' : ''}">
                             <h:link outcome="staff_view_auditlog" value="Activities" />
                         </li>
-                        
+
                     </c:if>
                     <c:if test="#{cc.attrs.top == 'card'}">
                         <li class="side-menu-item #{cc.attrs.side == 'viewCard' ? 'active' : ''}">
-                            <h:link outcome="staff_view_card" value="Card Products" />
+                            <h:link outcome="card-view-product" value="Card Products" />
                         </li>
-                        
+
                         <li class="side-menu-item #{cc.attrs.side == 'cardCreate' ? 'active' : ''}">
                             <h:link outcome="card_create_product" value="Create CreditCard Product" />
                         </li>
-                        
+
                         <li class="side-menu-item #{cc.attrs.side == 'cardAppView' ? 'active' : ''}">
                             <h:link outcome="card_view_application" value="View Card Application" />
                         </li>
-                        
+
                         <li class="side-menu-item #{cc.attrs.side == 'cardIssue' ? 'active' : ''}">
                             <h:link outcome="card_issue" value="Issue Card" />
                         </li>
+
+                        <li class="side-menu-item #{cc.attrs.side == 'cardAccountView' ? 'active' : ''}">
+                            <h:link outcome="card-view-account" value="View Credit Card Accounts" />
+                        </li>
                         
+                        <li class="side-menu-item #{cc.attrs.side == 'cardTransactionView' ? 'active' : ''}">
+                            <h:link outcome="card-view-transaction" value="Transaction Settlement" />
+                        </li>
+
+
                     </c:if>
+<<<<<<< e8285a5e063517a3bb24f769f583b35e624319f1
                     
                     <c:if test="#{cc.attrs.top == 'bill'}">
                         <li class="side-menu-item #{cc.attrs.side == 'manageOrg' ? 'active' : ''}">
@@ -111,6 +121,9 @@
                         </li>
                     </c:if>
                     
+=======
+
+>>>>>>> card complete d.4.2 d.4.4
                     <c:if test="#{cc.attrs.top == 'promo'}">
                         <li class="side-menu-item #{cc.attrs.side == 'viewPromo' ? 'active' : ''}">
                             <h:link outcome="staff_view_promo" value="Promo Products" />

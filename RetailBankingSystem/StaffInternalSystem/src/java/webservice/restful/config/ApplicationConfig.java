@@ -33,6 +33,7 @@ public class ApplicationConfig extends Application {
         resources.add(filters.CORSFilter.class);
         resources.add(webservice.restful.creditcard.CreditCardAuthorizationService.class);
         resources.add(webservice.restful.creditcard.CreditCardClearingService.class);
+        resources.add(webservice.restful.creditcard.CreditCardSettlementService.class);
         resources.add(webservice.restful.mobile.MobileOTPService.class);
         resources.add(webservice.restful.mobile.MobileUserLoginService.class);
     }

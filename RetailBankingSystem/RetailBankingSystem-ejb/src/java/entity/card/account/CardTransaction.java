@@ -8,6 +8,7 @@ package entity.card.account;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -46,11 +47,12 @@ public class CardTransaction implements Serializable {
     private Boolean isCredit;
     private Double amount;
     private CardTransactionStatus cardTransactionStatus;
+    @Column(unique = true)
+    private String visaId;
     
     // Mapping
     @ManyToOne(cascade = {CascadeType.MERGE})
     private CreditCardAccount creditCardAccount;
-    
 
     public Long getId() {
         return id;
@@ -152,6 +154,14 @@ public class CardTransaction implements Serializable {
      */
     public void setAmount(Double amount) {
         this.amount = amount;
+    }
+
+    public String getVisaId() {
+        return visaId;
+    }
+
+    public void setVisaId(String visaId) {
+        this.visaId = visaId;
     }
 
 }

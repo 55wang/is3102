@@ -13,7 +13,7 @@ import is3102.HOTP;
  */
 public class OTPUtils {
     
-    public static String generateSingleToken(int pinCode) {
-        return HOTP.generateSingleToken("CreditCardAuthorization", pinCode);
+    public static String generateSingleToken(String ccNumber, int pinCode) {
+        return HOTP.generateSingleToken(ccNumber, pinCode);
     }
 }

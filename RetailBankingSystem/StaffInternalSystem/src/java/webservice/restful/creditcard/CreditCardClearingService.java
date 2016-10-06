@@ -35,8 +35,6 @@ public class CreditCardClearingService {
     private UriInfo context;
 
     @EJB
-    private CardAcctSessionBeanLocal ccBean;
-    @EJB
     private TokenSecurityLocal tokenBean;
     @EJB
     private CardTransactionSessionBeanLocal cardTransactionSessionBean;
@@ -47,6 +45,7 @@ public class CreditCardClearingService {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     public Response clearCC (
+            @FormParam("ccVisaId") String ccVisaId,
             @FormParam("token") String token,
             @FormParam("ccNumber") String ccNumber,
             @FormParam("ccAmount") String ccAmount,
@@ -63,7 +62,8 @@ public class CreditCardClearingService {
         c.setDescription(ccDescription);
         c.setCreditCardNumber(ccNumber);
         c.setTransactionCode(ccTcode);
-        c.setAuthorizationCode("-2");
+        c.setAuthorizationCode(aCode);
+        c.setVisaId(ccVisaId);
         if (authorized && creditTransaction(c)) {
             c.setMessage("Transaction success!");
         } else {
@@ -81,7 +81,10 @@ public class CreditCardClearingService {
         ct.setIsCredit(true);
         ct.setTransactionCode(c.getTransactionCode());
         ct.setTransactionDescription(c.getDescription());
+        ct.setVisaId(c.getVisaId());
         CreditCardAccount cca = cardAcctSessionBean.getCreditCardAccountByCardNumber(c.getCreditCardNumber());
+        cca.addAmountToCurrentMonthAmount(Double.parseDouble(c.getAmount()));
+        cardAcctSessionBean.updateCreditCardAccount(cca);
         ct = cardTransactionSessionBean.createCardAccountTransaction(cca, ct);
         return ct != null;
     } 

@@ -32,6 +32,78 @@ public class CardAcctSessionBean implements CardAcctSessionBeanLocal {
     private EntityManager em;
 
     @Override
+    public Date setOverDueDate(CreditCardAccount cca, Date overDueDate) {
+        cca.setOverDueDate(overDueDate);
+        updateCreditCardAccount(cca);
+        return cca.getOverDueDate();
+    }
+    
+    @Override
+    public List<CreditCardAccount> updateListDemoEndOfMonthCcas() {
+        //demo end of month, transfer current month amount to outstanding amount;
+        //demo overdue consequence
+        List<CreditCardAccount> ccas = getListCreditCardAccountsByActiveOrFreezeCardStatus();
+        for (CreditCardAccount cca : ccas) {
+            addCurrentMonthAmountToOutstandingAmount(cca); //set late payment fee
+            cca.setOverDueDate(new Date()); //set overdue date
+            cca.setLatePaymentFee(60.0); //set $60 late payment fee
+            
+        }
+        return ccas;
+    }
+
+    @Override
+    public List<CreditCardAccount> updateListInterestToOutstandingAmountCcas() {
+        List<CreditCardAccount> ccas = getListCreditCardAccountsByActiveOrFreezeCardStatus();
+        for (CreditCardAccount cca : ccas) {
+            addInterestToOutStandingAmount(cca);
+        }
+        return ccas;
+    }
+
+    @Override
+    public Double addInterestToOutStandingAmount(CreditCardAccount cca) {
+        cca.setOutstandingAmount(cca.getOutstandingAmount() + cca.calculateCurrentMonthlyInterest());
+        updateCreditCardAccount(cca);
+        return cca.getOutstandingAmount();
+    }
+
+    @Override
+    public List<CreditCardAccount> updateListLatePaymentToOutstandingAmountCcas() {
+        List<CreditCardAccount> ccas = getListCreditCardAccountsByActiveOrFreezeCardStatus();
+        for (CreditCardAccount cca : ccas) {
+            addLatePaymentToOutstandingAmount(cca);
+        }
+        return ccas;
+    }
+
+    @Override
+    public Double addLatePaymentToOutstandingAmount(CreditCardAccount cca) {
+        cca.setOutstandingAmount(cca.getOutstandingAmount() + cca.getLatePaymentFee());
+        updateCreditCardAccount(cca);
+        return cca.getOutstandingAmount();
+    }
+    
+    @Override
+    public Double addCurrentMonthAmountToOutstandingAmount(CreditCardAccount cca) {
+        cca.setOutstandingAmount(cca.getOutstandingAmount() + cca.getCurrentMonthAmount());
+        cca.setCurrentMonthAmount(0.0);
+        //set minpaydue amount
+        cca.setMinPayDue(cca.calculateMinPayDue());
+        
+        cca = updateCreditCardAccount(cca);
+        return cca.getOutstandingAmount();
+    }
+
+    @Override
+    public List<CreditCardAccount> getListCreditCardAccountsByActiveOrFreezeCardStatus() {
+        Query q = em.createQuery("SELECT cca FROM CreditCardAccount cca WHERE cca.CardStatus =:inStatusOne OR cca.CardStatus =:inStatusTwo");
+        q.setParameter("inStatusOne", CardAccountStatus.ACTIVE);
+        q.setParameter("inStatusTwo", CardAccountStatus.FREEZE);
+        return q.getResultList();
+    }
+
+    @Override
     public CreditCardAccount updateCreditCardAccount(CreditCardAccount cca) {
         em.merge(cca);
         return cca;

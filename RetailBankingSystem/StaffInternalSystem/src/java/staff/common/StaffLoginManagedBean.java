@@ -60,9 +60,9 @@ public class StaffLoginManagedBean implements Serializable {
         a.setFunctionInput("Getting all customer information");
         a.setStaffAccount(SessionUtils.getStaff());
         utilsBean.persist(a);
-//        StaffAccount sa = staffBean.loginAccount("adminadmin", HashPwdUtils.hashPwd("password"));
-//        SessionUtils.setStaffAccount(sa);
-//        RedirectUtils.redirect(SessionUtils.getContextPath() + "/admin/create_interest.xhtml");
+        StaffAccount sa = staffBean.loginAccount("adminadmin", HashPwdUtils.hashPwd("password"));
+        SessionUtils.setStaffAccount(sa);
+        RedirectUtils.redirect(SessionUtils.getContextPath() + "/card/card-view-account.xhtml");
     }
 
     public void loginStaff(ActionEvent event) {

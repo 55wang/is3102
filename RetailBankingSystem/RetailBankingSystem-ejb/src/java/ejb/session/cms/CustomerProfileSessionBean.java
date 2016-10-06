@@ -23,7 +23,7 @@ import server.utilities.EnumUtils.StatusType;
  * @author qiuxiaqing
  */
 @Stateless
-public class CustomerProfileSessionBean implements CustomerProfileSessionBeanLocal, CustomerProfileSessionBeanRemote {
+public class CustomerProfileSessionBean implements CustomerProfileSessionBeanLocal {
 
     @EJB
     private EmailServiceSessionBeanLocal emailServiceSessionBean;
