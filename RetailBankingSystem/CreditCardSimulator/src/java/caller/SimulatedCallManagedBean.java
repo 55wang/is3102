@@ -5,12 +5,15 @@
  */
 package caller;
 
+import SessionBean.CardTransactionSessionBeanLocal;
+import entity.VisaCardTransaction;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
-import javax.inject.Named;
+import javax.ejb.EJB;
 import javax.faces.view.ViewScoped;
+import javax.inject.Named;
 import javax.json.JsonArray;
 import javax.json.JsonObject;
 import javax.json.JsonString;
@@ -23,7 +26,6 @@ import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Form;
 import javax.ws.rs.core.MediaType;
 import utils.NfcDevice;
-import utils.OTPUtils;
 
 /**
  *
@@ -43,10 +45,62 @@ public class SimulatedCallManagedBean implements Serializable {
 
     private final String AUTHORIZATION_PATH = "https://localhost:8181/StaffInternalSystem/rest/credit_card_authorization";
     private final String CLEARING_PATH = "https://localhost:8181/StaffInternalSystem/rest/credit_card_clearing";
+    private final String SETTLEMENT_PATH = "https://localhost:8181/StaffInternalSystem/rest/credit_card_settlement";
+
+    private List<VisaCardTransaction> vcts;
+
+    @EJB
+    CardTransactionSessionBeanLocal cardTransactionSessionBean;
 
     @PostConstruct
     public void init() {
         System.out.println("SimulatedCallManagedBean");
+        vcts = cardTransactionSessionBean.getListVisaCardTransactions();
+    }
+
+    public void sendEODSettlement() {
+        //get transaction id list
+        List<Long> listIds = cardTransactionSessionBean.getListVisaCardTransactionIdsByStatus(Boolean.FALSE);
+        System.out.println(listIds);
+        //get netAmount
+        Double netAmount;
+        try {
+            netAmount = cardTransactionSessionBean.calculateNetSettlement();
+        } catch (Exception ex) {
+            netAmount = 0.0;
+        }
+
+        System.out.println(netAmount);
+
+        Form form = new Form(); //bank info
+        form.param("swiftCode", "DBSSSGSG");
+        form.param("bankCode", "7171"); //iso 13616
+        form.param("branchCode", "001");
+        form.param("netAmount", Double.toString(netAmount));
+        form.param("visaIds", listIds.toString());
+
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(SETTLEMENT_PATH);
+
+        // This is the response
+        JsonObject jsonString = target.request(MediaType.APPLICATION_JSON).post(Entity.entity(form, MediaType.APPLICATION_FORM_URLENCODED), JsonObject.class);
+        System.out.println(jsonString);
+
+        if (jsonString.getString("SETTLEMENT").equals("SUCCESS")) {
+            for (Long Id : listIds) {
+                cardTransactionSessionBean.updateVisaCardTransactionSettledStatusById(Id);
+            }
+            System.out.println("SETTLEMENT COMPLETED");
+        } else if (jsonString.getString("SETTLEMENT").equals("FAIL")) {
+            System.out.println("SETTLEMENT FAIL");
+        }
+
+        /*CreditCardDTO cc = new CreditCardDTO(jsonString);
+
+         if (cc.getAuthorizationCode() == null || cc.getAuthorizationCode().isEmpty()) {
+         System.out.println(cc.getMessage());
+         }
+         */
     }
 
     public void sendFailedDailyAuhorization() {
@@ -61,7 +115,7 @@ public class SimulatedCallManagedBean implements Serializable {
             form.param("ccDescription", "Test failed daily authorization");
 
             System.out.println("Calling bank to check credit card transaction");
-            System.out.println("Credit Card number "+ccNum);
+            System.out.println("Credit Card number " + ccNum);
             System.out.println("Requesting amount 600");
             // Start calling
             Client client = ClientBuilder.newClient();
@@ -90,7 +144,7 @@ public class SimulatedCallManagedBean implements Serializable {
             form.param("ccDescription", "Test failed monthly authorization");
 
             System.out.println("Calling bank to check credit card transaction");
-            System.out.println("Credit Card number "+ccNum);
+            System.out.println("Credit Card number " + ccNum);
             System.out.println("Requesting amount 1400");
 
             // Start calling
@@ -110,41 +164,7 @@ public class SimulatedCallManagedBean implements Serializable {
     }
 
     public void sendSuccessAuthorization() {
-
-        String ccNum = readCardCCNumber();
-
-        if (ccNum != null) {
-
-            Form form = new Form();
-            form.param("ccNumber", ccNum);
-            form.param("ccAmount", transactionAmount); // 500 is daily limit and 1000 for monthly limist, current out standing is 800
-            form.param("ccTcode", "MDS");
-            form.param("ccDescription", "Test Success authorization");
-
-            System.out.println("Calling bank to check credit card transaction");
-            System.out.println("Credit Card number "+ccNum);
-            System.out.println("Requesting amount " + transactionAmount);
-
-            // Start calling
-            Client client = ClientBuilder.newClient();
-            WebTarget target = client.target(AUTHORIZATION_PATH);
-
-            // This is the response
-            JsonObject jsonString = target.request(MediaType.APPLICATION_JSON).post(Entity.entity(form, MediaType.APPLICATION_FORM_URLENCODED), JsonObject.class);
-            CreditCardDTO cc = new CreditCardDTO(jsonString);
-
-            if (!cc.getAuthorizationCode().equals("-1") && !cc.getAuthorizationCode().equals("-2")) {
-                // check code validation
-                System.out.println("Getting Authorizaed response with code: " + cc.getAuthorizationCode());
-                String returnCode = OTPUtils.generateSingleToken(Integer.parseInt(cc.getAuthorizationCode()));
-                // call for clearing
-                sendSuccessClearing(returnCode, cc.getAuthorizationCode());
-            } else {
-                System.out.println(cc.getMessage());
-            }
-        } else {
-            System.out.println("Fail to read Credit Card card values");
-        }
+        cardTransactionSessionBean.sendSuccessAuthorization(transactionAmount);
     }
 
     private void sendSuccessClearing(String returnCode, String aCode) {
@@ -158,10 +178,10 @@ public class SimulatedCallManagedBean implements Serializable {
             form.param("ccNumber", ccNum);
             form.param("ccAmount", transactionAmount); // 500 is daily limit and 1000 for monthly limist, current out standing is 800
             form.param("ccTcode", "MDS");
-            form.param("ccDescription", "Test failed monthly authorization");
+            form.param("ccDescription", "Test Success Clearing");
 
             System.out.println("Calling bank to check credit card transaction");
-            System.out.println("Credit Card number "+ccNum);
+            System.out.println("Credit Card number " + ccNum);
             System.out.println("Requesting amount " + transactionAmount);
             System.out.println("Requesting with token:" + returnCode);
 
@@ -242,5 +262,13 @@ public class SimulatedCallManagedBean implements Serializable {
             System.out.println(ex);
             return null;
         }
+    }
+
+    public List<VisaCardTransaction> getVcts() {
+        return vcts;
+    }
+
+    public void setVcts(List<VisaCardTransaction> vcts) {
+        this.vcts = vcts;
     }
 }

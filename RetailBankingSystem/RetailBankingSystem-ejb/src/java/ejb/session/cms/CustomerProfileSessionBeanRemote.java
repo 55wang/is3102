@@ -13,6 +13,7 @@ import javax.ejb.Remote;
  *
  * @author qiuxiaqing
  */
+/*
 @Remote
 public interface CustomerProfileSessionBeanRemote {
 
@@ -22,4 +23,4 @@ public interface CustomerProfileSessionBeanRemote {
     public Customer searchCustomerByIdentityNumber(String id);     
     public Customer getCustomerByID(Long ID);
 }
-
+*/

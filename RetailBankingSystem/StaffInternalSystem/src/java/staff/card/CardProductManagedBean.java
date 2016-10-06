@@ -70,7 +70,6 @@ public class CardProductManagedBean implements Serializable {
         try {
             mcp.setProductName(mcp.getProductName());
             mcp.setMinSpendingAmount(mcp.getMinSpendingAmount());
-            mcp.setMinSpending(mcp.isMinSpending());
             mcp.setOverseaMileRate(mcp.getOverseaMileRate());
             mcp.setLocalMileRate(mcp.getLocalMileRate());
 
@@ -90,7 +89,6 @@ public class CardProductManagedBean implements Serializable {
         try {
             rcp.setProductName(rcp.getProductName());
             rcp.setMinSpendingAmount(rcp.getMinSpendingAmount());
-            rcp.setMinSpending(rcp.isMinSpending());
             rcp.setLocalMileRate(rcp.getLocalMileRate());
             rcp.setLocalPointRate(rcp.getLocalPointRate());
 
@@ -108,7 +106,6 @@ public class CardProductManagedBean implements Serializable {
         try {
             cbcp.setProductName(cbcp.getProductName());
             cbcp.setMinSpendingAmount(cbcp.getMinSpendingAmount());
-            cbcp.setMinSpending(cbcp.isMinSpending());
             cbcp.setPetrolCashBackRate(cbcp.getPetrolCashBackRate());
             cbcp.setGroceryCashBackRate(cbcp.getGroceryCashBackRate());
             cbcp.setDiningCashBackRate(cbcp.getDiningCashBackRate());

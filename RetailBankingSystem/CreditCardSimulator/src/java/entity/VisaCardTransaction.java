@@ -3,24 +3,44 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package webservice.restful.creditcard;
+package entity;
+
+import java.io.Serializable;
+import javax.json.JsonObject;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 
 /**
  *
- * @author leiyang
+ * @author wang
  */
-public class CreditCardDTO {
-    
+@Entity
+public class VisaCardTransaction implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+    @Id
+    private Long id;
+
     private String creditCardNumber;
     private String amount;
     private String description;
     private String message;
     private String transactionCode;
     private String authorizationCode;
-    private String visaId;
-    
-    public CreditCardDTO() {
-        
+    private Boolean settledStatus = false;
+
+    public VisaCardTransaction() {
+        setId(System.currentTimeMillis());
+    }
+
+    public VisaCardTransaction(JsonObject jsonString, Long Id) {
+        this.id = Id;
+        this.creditCardNumber = jsonString.getString("creditCardNumber");
+        this.amount = jsonString.getString("amount");
+        this.description = jsonString.getString("description");
+        this.message = jsonString.getString("message");
+        this.transactionCode = jsonString.getString("transactionCode");
+        this.authorizationCode = jsonString.getString("authorizationCode");
     }
 
     /**
@@ -65,7 +85,6 @@ public class CreditCardDTO {
         this.description = description;
     }
 
-
     /**
      * @return the message
      */
@@ -108,11 +127,45 @@ public class CreditCardDTO {
         this.authorizationCode = authorizationCode;
     }
 
-    public String getVisaId() {
-        return visaId;
+    public Long getId() {
+        return id;
     }
 
-    public void setVisaId(String visaId) {
-        this.visaId = visaId;
+    public void setId(Long id) {
+        this.id = id;
     }
+
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (id != null ? id.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof VisaCardTransaction)) {
+            return false;
+        }
+        VisaCardTransaction other = (VisaCardTransaction) object;
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "Entity.VisaCardTransaction[ id=" + id + " ]";
+    }
+
+    public Boolean getSettledStatus() {
+        return settledStatus;
+    }
+
+    public void setSettledStatus(Boolean settledStatus) {
+        this.settledStatus = settledStatus;
+    }
+
 }

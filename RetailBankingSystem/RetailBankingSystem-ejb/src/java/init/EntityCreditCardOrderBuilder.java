@@ -50,8 +50,8 @@ public class EntityCreditCardOrderBuilder {
         CreditCardAccount cca = new CreditCardAccount();
         cca.setCreditCardProduct(demoRewardCardProduct);
         cca.setNameOnCard(demoMainAccount.getCustomer().getFullName());
-        cca.setCreditCardNum("4545454545454545");
-        cca.setOutstandingAmount(0.0);
+        cca.setCreditCardNum("5544498059996726");
+        cca.setOutstandingAmount(1000.0);
         cca.setMerlionPoints(100000.0);
         cca.setCardStatus(EnumUtils.CardAccountStatus.ACTIVE);
         cca.setMainAccount(demoMainAccount);
@@ -85,10 +85,10 @@ public class EntityCreditCardOrderBuilder {
 
         cardTransaction = new CardTransaction();
         cardTransaction.setCardTransactionStatus(EnumUtils.CardTransactionStatus.PENDINGTRANSACTION);
-        cardTransaction.setAmount(100.0);
+        cardTransaction.setAmount(11000.0);
         cardTransaction.setIsCredit(true);
         cardTransaction.setTransactionCode("MST");
-        cardTransaction.setTransactionDescription("Microsoft SERVICE USD78.50");
+        cardTransaction.setTransactionDescription("Microsoft SERVICE USD7800.50");
         cardTransaction.setCreditCardAccount(cca);
         cardTransactionSessionBean.createCardAccountTransaction(cca, cardTransaction);
 
@@ -118,5 +118,23 @@ public class EntityCreditCardOrderBuilder {
         creditCardOrderSessionBean.createCardOrder(cco2);
         cca2.setCreditCardOrder(cco2);
         cardAcctSessionBean.updateCreditCardAccount(cca2);
+
+        CreditCardAccount cca3 = new CreditCardAccount();
+        cca3.setCreditCardProduct(demoRewardCardProduct);
+        cca3.setNameOnCard(demoMainAccount.getCustomer().getFullName());
+        cca3.setCreditCardNum("5556336827217675");
+        cca3.setOutstandingAmount(90000.0);
+        cca3.setMerlionPoints(8000.0);
+        cca3.setCardStatus(EnumUtils.CardAccountStatus.ACTIVE);
+        cca3.setMainAccount(demoMainAccount);
+        cca3 = cardAcctSessionBean.createCardAccount(cca3);
+
+        CreditCardOrder cco3 = new CreditCardOrder();
+        cco3.setApplicationStatus(EnumUtils.ApplicationStatus.APPROVED);
+        cco3.setCreditCardAccount(cca3);
+        cco3.setMainAccount(demoMainAccount);
+        creditCardOrderSessionBean.createCardOrder(cco3);
+        cca3.setCreditCardOrder(cco3);
+        cardAcctSessionBean.updateCreditCardAccount(cca3);
     }
 }

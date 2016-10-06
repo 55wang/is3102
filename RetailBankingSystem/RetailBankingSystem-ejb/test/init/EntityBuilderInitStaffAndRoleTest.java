@@ -5,7 +5,7 @@
  */
 package init;
 
-import ejb.session.staff.StaffRoleSessionBeanRemote;
+//import ejb.session.staff.StaffRoleSessionBeanRemote;
 import entity.staff.Role;
 import java.io.Serializable;
 import java.util.logging.Level;
@@ -30,7 +30,7 @@ import server.utilities.EnumUtils;
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 
 public class EntityBuilderInitStaffAndRoleTest implements Serializable {
-    StaffRoleSessionBeanRemote staffRoleSessionBean = lookupStaffRoleSessionBeanRemote();
+//    StaffRoleSessionBeanRemote staffRoleSessionBean = lookupStaffRoleSessionBeanRemote();
 
     
     
@@ -52,6 +52,7 @@ public class EntityBuilderInitStaffAndRoleTest implements Serializable {
     @After
     public void tearDown() {
     }
+    /*
     
     @Test
     public void test01GetRole01() {
@@ -61,13 +62,14 @@ public class EntityBuilderInitStaffAndRoleTest implements Serializable {
         Role result = staffRoleSessionBean.findRoleByName(roleName);
         assertEquals(expResult, result);        
     } 
-
+*/
     // TODO add test methods here.
     // The methods must be annotated with annotation @Test. For example:
     //
     // @Test
     // public void hello() {}
 
+    /*
     private StaffRoleSessionBeanRemote lookupStaffRoleSessionBeanRemote() {
         try {
             Context c = new InitialContext();
@@ -77,4 +79,5 @@ public class EntityBuilderInitStaffAndRoleTest implements Serializable {
             throw new RuntimeException(ne);
         }
     }
+    */
 }

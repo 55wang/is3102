@@ -1,0 +1,81 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:em="http://xmlns.jcp.org/jsf/composite/emcomp"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <!--shift + ctrl + F, format-->
+    <f:view>
+        <h:head>
+            <title>Merlion Internal</title>
+            <em:cssImport></em:cssImport>
+        </h:head>
+        <h:body>
+            <em:staffNavBar context="card"></em:staffNavBar>
+            <em:staffSideBar top="card" side="cardAccountView"></em:staffSideBar>
+
+            <div class="container">
+                <h:form id="mainForm">
+                    <p:panel header="Credit Card Accounts">
+                        <p:messages id="messagesStatus" redisplay="false" >
+                            <h:panelGrid columns="2" cellpadding="5">
+                                <p:dataTable value="#{cardViewCreditCardAccountManagedBean.ccas}" var="cca" >
+
+                                    <p:column headerText="Credit Card Number">
+                                        <h:outputText value="#{cca.creditCardNum}" />
+                                    </p:column>
+
+                                    <p:column headerText="Card Application Id">
+                                        <h:outputText value="#{cca.nameOnCard}" />
+                                    </p:column>
+
+                                    <p:column headerText="Current Month Amount">
+                                        <h:outputText value="#{cca.currentMonthAmount}" />
+                                    </p:column>
+
+                                    <p:column headerText="Outstanding Amount">
+                                        <h:outputText value="#{cca.outstandingAmount}" />
+                                    </p:column>
+
+                                    <p:column headerText="No. of Late Payment">
+                                        <h:outputText value="#{cca.numOfLatePayment}" />
+                                    </p:column>
+
+                                    <p:column headerText="Min Pay Due">
+                                        <h:outputText value="#{cca.minPayDue}" />
+                                    </p:column>
+
+                                    <p:column headerText="Interest Amount">
+                                        <h:outputText value="#{cca.interestAmount}" />
+                                    </p:column>
+
+                                    <p:column headerText="Annual Interest Rate">
+                                        <h:outputText value="#{cca.annualInterestRate}%" />
+                                    </p:column>
+
+                                    <p:column headerText="Card Status">
+                                        <h:outputText value="#{cca.cardStatus}" />
+                                    </p:column>
+
+                                </p:dataTable>
+
+                            </h:panelGrid>
+                            <p:commandButton value="DEMO CUT OFF" action="#{cardViewCreditCardAccountManagedBean.demoCutOffTimer()}" icon="ui-icon-check" update="@form" />
+                            <p:commandButton value="DEMO SEND E-STATEMENT" action="#{cardViewCreditCardAccountManagedBean.demoSendEStatement()}" icon="ui-icon-check" update="@form" />
+                            <p:commandButton value="DEMO DUE DAY" action="#{cardViewCreditCardAccountManagedBean.demoDueDayTimer()}" icon="ui-icon-check" update="@form" />
+                            <p:commandButton value="DEMO PAID MPD ONLY" action="#{cardViewCreditCardAccountManagedBean.demoPaidMPD()}" icon="ui-icon-check" update="@form" />
+                            <p:commandButton value="DEMO PAID FULL AMOUNT" action="#{cardViewCreditCardAccountManagedBean.demoPaidOutstandingAmount()}" icon="ui-icon-check" update="@form" />
+                        </p:messages>
+                    </p:panel>
+
+                </h:form>
+            </div>
+
+        </h:body> 
+    </f:view>
+
+
+</html>
+

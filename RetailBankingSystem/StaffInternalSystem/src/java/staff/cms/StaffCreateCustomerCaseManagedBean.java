@@ -118,7 +118,7 @@ public class StaffCreateCustomerCaseManagedBean implements Serializable{
             if(newCase.getIsChargeBackCase()) newCase.setCardOperatorResponse(EnumUtils.CardOperatorChargebackStatus.PENDING);
             System.out.println("chargebackTransactionID: " + chargebackTransactionID);
             CardTransaction ct = cardTransactionSessionBean.getCardTransactionByCcaId(Long.parseLong(chargebackTransactionID));
-            if(ct == null || ct.getCardTransactionStatus().equals(CardTransactionStatus.CANCELLED))
+            if(ct == null)
                 MessageUtils.displayError("Transaction not found");
             else{
                 newCase.setMainAccount(ct.getCreditCardAccount().getMainAccount());

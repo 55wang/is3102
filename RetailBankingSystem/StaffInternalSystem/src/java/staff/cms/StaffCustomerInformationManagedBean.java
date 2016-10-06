@@ -82,7 +82,6 @@ public class StaffCustomerInformationManagedBean implements Serializable {
         a.setFunctionInput("Getting all customer information");
         a.setStaffAccount(SessionUtils.getStaff());
         utilsBean.persist(a);
-
     }
     
     public void search() {
@@ -94,7 +93,6 @@ public class StaffCustomerInformationManagedBean implements Serializable {
             customers.add(c);
             setCustomers(customers);
         }
-
     }
 
     public void saveUpdatedCustomerInformation() {
@@ -104,7 +102,6 @@ public class StaffCustomerInformationManagedBean implements Serializable {
         selectedCustomer.setMaritalStatus(MaritalStatus.getEnum(selectedMaritalStatus));
         selectedCustomer.setEducation(Education.getEnum(selectedEducation));
        
-
         if (utilsSessionBean.checkUpdatedEmailIsUnique(selectedCustomer) == false) {
             MessageUtils.displayInfo("Email is registered!");
 
@@ -120,8 +117,6 @@ public class StaffCustomerInformationManagedBean implements Serializable {
                 MessageUtils.displayInfo("Update is unsuccessful, please check your input.");
             }
         }
-
-
     }
 
     public void goToEditPage(Customer customer) {
@@ -143,7 +138,6 @@ public class StaffCustomerInformationManagedBean implements Serializable {
         }
 
         RedirectUtils.redirect(ConstantUtils.STAFF_CMS_STAFF_EDIT_CUSTOMER);
-
     }
 
     /**
@@ -152,9 +146,7 @@ public class StaffCustomerInformationManagedBean implements Serializable {
     public List<Customer> getCustomers() {
         return customers;
     }
-
     
-
     /**
      * @return the searchText
      */
