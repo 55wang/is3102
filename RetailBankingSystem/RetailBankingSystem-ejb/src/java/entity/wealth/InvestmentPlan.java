@@ -1,0 +1,157 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package entity.wealth;
+
+import entity.customer.WealthManagementSubscriber;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import server.utilities.EnumUtils;
+import server.utilities.EnumUtils.InvestmentPlanSatisfactionLevel;
+import server.utilities.EnumUtils.InvestmentPlanStatus;
+
+/**
+ *
+ * @author VIN-S
+ */
+@Entity
+public class InvestmentPlan implements Serializable {
+    private static final long serialVersionUID = 1L;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+    
+    @Temporal(value = TemporalType.TIMESTAMP)
+    private final Date creationDate = new Date();
+    private Integer amountOfInvestment;  
+    private Double expectedReturn;
+    private List<EnumUtils.FinancialInstrumentClass> preferedFinancialInstrument = new ArrayList<>();
+    private String remarks;
+    private InvestmentPlanStatus status;
+    private InvestmentPlanSatisfactionLevel satisfactionLevel;
+    
+    @ManyToOne(cascade = CascadeType.MERGE)
+    private WealthManagementSubscriber wealthManagementSubscriber;
+    @OneToMany(cascade = CascadeType.MERGE)
+    private List<FinancialInstrument> financialInstruments = new ArrayList<>();
+    @ManyToOne(cascade = CascadeType.MERGE)
+    private Portfolio portfolio;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (id != null ? id.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof InvestmentPlan)) {
+            return false;
+        }
+        InvestmentPlan other = (InvestmentPlan) object;
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "entity.wealth.InvestmentPlan[ id=" + id + " ]";
+    }
+
+    public Integer getAmountOfInvestment() {
+        return amountOfInvestment;
+    }
+
+    public void setAmountOfInvestment(Integer amountOfInvestment) {
+        this.amountOfInvestment = amountOfInvestment;
+    }
+
+    public Double getExpectedReturn() {
+        return expectedReturn;
+    }
+
+    public void setExpectedReturn(Double expectedReturn) {
+        this.expectedReturn = expectedReturn;
+    }
+
+    public List<EnumUtils.FinancialInstrumentClass> getPreferedFinancialInstrument() {
+        return preferedFinancialInstrument;
+    }
+
+    public void setPreferedFinancialInstrument(List<EnumUtils.FinancialInstrumentClass> preferedFinancialInstrument) {
+        this.preferedFinancialInstrument = preferedFinancialInstrument;
+    }
+
+    public String getRemarks() {
+        return remarks;
+    }
+
+    public void setRemarks(String remarks) {
+        this.remarks = remarks;
+    }
+
+    public WealthManagementSubscriber getWealthManagementSubscriber() {
+        return wealthManagementSubscriber;
+    }
+
+    public void setWealthManagementSubscriber(WealthManagementSubscriber wealthManagementSubscriber) {
+        this.wealthManagementSubscriber = wealthManagementSubscriber;
+    }
+
+    public List<FinancialInstrument> getFinancialInstruments() {
+        return financialInstruments;
+    }
+
+    public void setFinancialInstruments(List<FinancialInstrument> financialInstruments) {
+        this.financialInstruments = financialInstruments;
+    }
+
+    public Portfolio getPortfolio() {
+        return portfolio;
+    }
+
+    public void setPortfolio(Portfolio portfolio) {
+        this.portfolio = portfolio;
+    }
+
+    public InvestmentPlanStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(InvestmentPlanStatus status) {
+        this.status = status;
+    }
+
+    public InvestmentPlanSatisfactionLevel getSatisfactionLevel() {
+        return satisfactionLevel;
+    }
+
+    public void setSatisfactionLevel(InvestmentPlanSatisfactionLevel satisfactionLevel) {
+        this.satisfactionLevel = satisfactionLevel;
+    }
+}

@@ -6,13 +6,17 @@
 package entity.customer;
 
 import entity.staff.StaffAccount;
+import entity.wealth.InvestmentPlan;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import server.utilities.EnumUtils.RiskToleranceLevel;
 
@@ -34,6 +38,8 @@ public class WealthManagementSubscriber implements Serializable {
     private MainAccount mainAccount;
     @ManyToOne(cascade = CascadeType.MERGE)
     private StaffAccount relationshipManager;
+    @OneToMany(cascade = CascadeType.MERGE, mappedBy = "wealthManagementSubscriber")
+    private List<InvestmentPlan> investmentPlans = new ArrayList<>();
     
     
     public Long getId() {
@@ -100,5 +106,12 @@ public class WealthManagementSubscriber implements Serializable {
     public void setRelationshipManager(StaffAccount relationshipManager) {
         this.relationshipManager = relationshipManager;
     }
-    
+
+    public List<InvestmentPlan> getInvestmentPlans() {
+        return investmentPlans;
+    }
+
+    public void setInvestmentPlans(List<InvestmentPlan> investmentPlans) {
+        this.investmentPlans = investmentPlans;
+    }
 }
