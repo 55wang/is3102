@@ -5,12 +5,8 @@
  */
 package webservice.restful.mobile;
 
-import ejb.session.common.LoginSessionBeanLocal;
 import ejb.session.common.OTPSessionBeanLocal;
-import ejb.session.utils.UtilsSessionBeanLocal;
 import entity.common.OneTimePassword;
-import entity.customer.MainAccount;
-import entity.dams.account.MobileAccount;
 import javax.ejb.EJB;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
@@ -22,7 +18,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 import org.primefaces.json.JSONObject;
-import server.utilities.HashPwdUtils;
 
 /**
  *
@@ -54,6 +49,7 @@ public class MobileOTPService {
             OneTimePassword otp = otpBean.getOTPByPhoneNumber(mobileNumber);
             System.out.println("otp received: " + otp != null);
             if (otp != null) {
+                // TODO: Resend logic
                 ErrorDTO err = new ErrorDTO();
                 err.setCode(0);
                 err.setError("Verified");
