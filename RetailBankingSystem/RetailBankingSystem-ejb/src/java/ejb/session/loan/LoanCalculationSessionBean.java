@@ -6,6 +6,7 @@
 package ejb.session.loan;
 
 import entity.loan.LoanPaymentBreakdown;
+import entity.loan.LoanRealPayment;
 import java.util.*;
 import javax.ejb.Stateless;
 import org.apache.commons.lang.time.DateUtils;
@@ -120,16 +121,17 @@ public class LoanCalculationSessionBean implements LoanCalculationSessionBeanLoc
         Double monthlyInstallment=this.calculateMonthlyInstallment(loanInterest, tenure, loanAmt);
         List<LoanPaymentBreakdown> paymentBreakdown=new ArrayList<>();
         Date schedulePaymentDate;
+        Integer period;
         Double principalPayment;
         Double interestPayment;
-        
-        
+       
         for (int i=0;i<tenure;i++){
             schedulePaymentDate=DateUtils.addMonths(loanDate, i+1);
             principalPayment=monthlyInstallment-loanAmt*loanInterest;
             loanAmt=loanAmt-principalPayment;
             interestPayment=loanAmt*loanInterest;
-            LoanPaymentBreakdown lpb = new LoanPaymentBreakdown(schedulePaymentDate,principalPayment,interestPayment);
+            period=i+1;
+            LoanPaymentBreakdown lpb = new LoanPaymentBreakdown(schedulePaymentDate,period,principalPayment,interestPayment,loanAmt);
             paymentBreakdown.add(lpb);
        }
         
@@ -152,6 +154,27 @@ public class LoanCalculationSessionBean implements LoanCalculationSessionBeanLoc
     }
         
     
+    public Integer transactionPeriod(Date paymentDate,Integer tenure,List<LoanPaymentBreakdown> paymentBreakdown){
+        for (int i=0;i<tenure;i++){
+            if (paymentBreakdown.get(i).getSchedulePaymentDate().compareTo(paymentDate)>0){
+                return i+1;
+            }
+            else if (paymentBreakdown.get(i).getSchedulePaymentDate().compareTo(paymentDate)>0)
+                return i+1;
+        }
+        return -1;
+    }
+    
+    public void realPayment(Integer period, Double payment,Date transactionDate,List<LoanRealPayment> realPayment){
+        Double cummulatedPayment=realPayment.get(period-1).getPayment()+payment;
+        realPayment.get(period-1).setPayment(cummulatedPayment);
+        realPayment.get(period-1).setTransactionDate(transactionDate);   
+    }
+    
+    public Double penaltyCharge(Integer lateDays,Double lateAmount, Double penaltyInterest){
+        Double penalty=lateAmount*penaltyInterest/365*lateDays;
+        return penalty;
+    }
     
 }
     

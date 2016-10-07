@@ -1086,7 +1086,7 @@ public class EntityBuilderBean {
         LoanInterest loanInterest2 = new LoanInterest();
         loanInterest2.setId(Long.getLong(Integer.toString(2)));
         loanInterest2.setStartTime(3);
-        loanInterest2.setEndTime(6);
+        loanInterest2.setEndTime(40);
         loanInterest2.setInterestRate(0.2);
         loanInterests.add(loanInterest2);
 
@@ -1094,8 +1094,8 @@ public class EntityBuilderBean {
         loanProduct.setId(Long.getLong(Integer.toString(1)));
         loanProduct.setProductName("MBS Personal Loan");
         loanProduct.setLoanInterests(loanInterests);
-        loanProduct.setTenure(6);
-        loanProduct.setLockInDuration(2);
+        loanProduct.setTenure(7);
+        loanProduct.setLockInDuration(0);
         loanProduct.setPenaltyInterestRate(0.5);
         loanAccountSessionBean.createLoanProduct(loanProduct);
         System.out.print("EntityBuilder ========== " + loanProduct.getProductName());

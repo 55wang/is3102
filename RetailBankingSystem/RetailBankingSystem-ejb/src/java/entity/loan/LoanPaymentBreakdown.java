@@ -7,22 +7,28 @@ package entity.loan;
 
 import java.util.*;
 
+
 /**
  *
  * @author litong
  */
-public class LoanPaymentBreakdown {
+public class LoanPaymentBreakdown{
     private Date schedulePaymentDate;
+    private Integer period;
     private Double principalPayment;
     private Double interestPayment;
+    private Double outstandingPrincipalPayment;
     
    public LoanPaymentBreakdown() {
    }
    
-   public LoanPaymentBreakdown(Date date, Double prinPayment, Double intPayment) {
+   public LoanPaymentBreakdown(Date date, Integer period, Double prinPayment, Double intPayment, Double outPrinPayment) {
        this.schedulePaymentDate = date;
+       this.period=period;
        this.principalPayment = prinPayment;
        this.interestPayment = intPayment;
+       this.outstandingPrincipalPayment=outPrinPayment;
+
    }
    
    public Date getSchedulePaymentDate(){
@@ -48,4 +54,21 @@ public class LoanPaymentBreakdown {
    public void setInterestPayment(Double intPayment){
        this.interestPayment=intPayment;
    }
+   
+   public Double getOutstandingPrincipalPayment(){
+       return outstandingPrincipalPayment;
+   }
+   
+   public void setOutstandingPrincipalPayment(Double outPrinPayment){
+       this.outstandingPrincipalPayment=outPrinPayment;
+   }
+   
+   public Integer getPeriod(){
+       return period;
+   }
+   
+   public void setPeriod(Integer period){
+       this.period=period;
+   }
+
 }
