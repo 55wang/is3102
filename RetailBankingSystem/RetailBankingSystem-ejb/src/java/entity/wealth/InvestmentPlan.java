@@ -154,4 +154,8 @@ public class InvestmentPlan implements Serializable {
     public void setSatisfactionLevel(InvestmentPlanSatisfactionLevel satisfactionLevel) {
         this.satisfactionLevel = satisfactionLevel;
     }
+
+    public Date getCreationDate() {
+        return creationDate;
+    }
 }
