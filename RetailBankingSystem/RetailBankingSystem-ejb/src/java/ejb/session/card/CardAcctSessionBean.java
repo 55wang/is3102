@@ -32,25 +32,103 @@ public class CardAcctSessionBean implements CardAcctSessionBeanLocal {
     private EntityManager em;
 
     @Override
-    public Date setOverDueDate(CreditCardAccount cca, Date overDueDate) {
-        cca.setOverDueDate(overDueDate);
+    public Date setOverDueDateAndMPD(CreditCardAccount cca) {
+        cca.setMinPayDue(cca.calculateMinPayDue());
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.DATE, 15);
+        cca.setOverDueDate(cal.getTime());
         updateCreditCardAccount(cca);
         return cca.getOverDueDate();
     }
-    
+
     @Override
-    public List<CreditCardAccount> updateListDemoEndOfMonthCcas() {
-        //demo end of month, transfer current month amount to outstanding amount;
-        //demo overdue consequence
+    public List<CreditCardAccount> updateListDemoPaidMPD() {
+        //set MPD = 0 and deduct outstanding
+        //assume paid amount is $60
+        Double paidAmount = 60.0;
+
+        //need to change, retrieve cca by accountId and deduct instead of all accounts
         List<CreditCardAccount> ccas = getListCreditCardAccountsByActiveOrFreezeCardStatus();
         for (CreditCardAccount cca : ccas) {
-            addCurrentMonthAmountToOutstandingAmount(cca); //set late payment fee
-            cca.setOverDueDate(new Date()); //set overdue date
-            cca.setLatePaymentFee(60.0); //set $60 late payment fee
-            
+
+            if (paidAmount >= cca.getMinPayDue()) {
+                cca.setMinPayDue(0.0);
+                cca.setOutstandingAmount(cca.getOutstandingAmount() - paidAmount);
+            } else if (paidAmount < cca.getMinPayDue()) {
+                cca.setMinPayDue(cca.getMinPayDue() - paidAmount);
+                cca.setOutstandingAmount(cca.getOutstandingAmount() - paidAmount);
+            }
+            updateCreditCardAccount(cca);
         }
         return ccas;
     }
+    
+    @Override
+    public List<CreditCardAccount> calculateDueCreditCardAccount() {
+        
+        List<CreditCardAccount> ccas = getListCreditCardAccountsByActiveOrFreezeCardStatus();
+
+        for (CreditCardAccount cca : ccas) {
+            //if fail to pay MPD
+            if (cca.getMinPayDue() > 0) {
+                if (cca.getOutstandingAmount() > 0) {
+                    //it is overdue
+                    cca.setLatePaymentFee(60.0);
+                    System.out.println(cca.getCreditCardNum() + ": Total Outstanding Amount: " + cca.getOutstandingAmount() + " + " + cca.getInterestAmount() + " + " + cca.getLatePaymentFee());
+                    addInterestToOutStandingAmount(cca);
+                    addLatePaymentToOutstandingAmount(cca);
+                    cca.setLatePaymentFee(0.0);
+
+                    //add bad credit record
+                    cca.setNumOfLatePayment(cca.getNumOfLatePayment() + 1);
+
+                    if (cca.getOverDueDays() >= 30 && cca.getOverDueDays() <= 59) {
+                        cca.setNumOf_30_59_LatePayment(cca.getNumOf_30_59_LatePayment() + 1);
+                    } else if (cca.getOverDueDays() >= 60 && cca.getOverDueDays() <= 89) {
+                        cca.setNumOf_60_89_LatePayment(cca.getNumOf_60_89_LatePayment() + 1);
+                    } else if (cca.getOverDueDays() >= 90) {
+                        cca.setNumOf_90_LatePayment(cca.getNumOf_90_LatePayment() + 1);
+                    }
+                    cca.setMinPayDue(0.0);
+                    updateCreditCardAccount(cca);
+
+                }
+            } else if (cca.getMinPayDue() == 0) {
+                //paid MPD only, still got outstandingamount;
+                if (cca.getOutstandingAmount() > 0) {
+                    System.out.println(cca.getCreditCardNum() + ": Total Outstanding Amount: " + cca.getOutstandingAmount() + " + " + cca.getInterestAmount());
+                    addInterestToOutStandingAmount(cca);
+                    //clear overdue dates
+                    cca.setOverDueDate(null);
+                    cca.setMinPayDue(0.0);
+                    updateCreditCardAccount(cca);
+                }
+            } else if (cca.getMinPayDue() == 0 && cca.getOutstandingAmount() == 0) {
+                //No outstanding amount
+                //clear overdue dates
+                cca.setOverDueDate(null);
+                cca.setMinPayDue(0.0);
+                updateCreditCardAccount(cca);
+
+                System.out.println(cca.getCreditCardNum() + ": Total Outstanding Amount: " + cca.getOutstandingAmount() + " + " + cca.getInterestAmount());
+            }
+        }
+        return ccas;
+    }
+    
+    @Override
+    public List<CreditCardAccount> updateListDemoPaidOutstandingAmountCcas() {
+        //set both MPD and outstanding = 0
+        List<CreditCardAccount> ccas = getListCreditCardAccountsByActiveOrFreezeCardStatus();
+        for (CreditCardAccount cca : ccas) {
+            cca.setMinPayDue(0.0);
+            cca.setOutstandingAmount(0.0);
+            updateCreditCardAccount(cca);
+        }
+        return ccas;
+    }
+    
+    
 
     @Override
     public List<CreditCardAccount> updateListInterestToOutstandingAmountCcas() {
@@ -83,14 +161,14 @@ public class CardAcctSessionBean implements CardAcctSessionBeanLocal {
         updateCreditCardAccount(cca);
         return cca.getOutstandingAmount();
     }
-    
+
     @Override
     public Double addCurrentMonthAmountToOutstandingAmount(CreditCardAccount cca) {
         cca.setOutstandingAmount(cca.getOutstandingAmount() + cca.getCurrentMonthAmount());
         cca.setCurrentMonthAmount(0.0);
         //set minpaydue amount
         cca.setMinPayDue(cca.calculateMinPayDue());
-        
+
         cca = updateCreditCardAccount(cca);
         return cca.getOutstandingAmount();
     }
