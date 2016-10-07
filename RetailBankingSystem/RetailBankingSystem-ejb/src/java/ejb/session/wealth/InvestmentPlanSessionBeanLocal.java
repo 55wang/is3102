@@ -5,7 +5,9 @@
  */
 package ejb.session.wealth;
 
+import entity.staff.StaffAccount;
 import entity.wealth.InvestmentPlan;
+import java.util.List;
 import javax.ejb.Local;
 
 /**
@@ -17,4 +19,5 @@ public interface InvestmentPlanSessionBeanLocal {
     public InvestmentPlan createInvestmentPlan(InvestmentPlan ip);
     public InvestmentPlan getInvestmentPlanById(Long id);
     public InvestmentPlan updateInvestmentPlan(InvestmentPlan ip);
+    public List<InvestmentPlan> getInvestmentPlanByRM(StaffAccount sa);
 }
