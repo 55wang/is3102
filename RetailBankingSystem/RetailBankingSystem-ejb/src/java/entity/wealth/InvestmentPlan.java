@@ -39,6 +39,7 @@ public class InvestmentPlan implements Serializable {
     private Integer amountOfInvestment;  
     private Double expectedReturn;
     private List<EnumUtils.FinancialInstrumentClass> preferedFinancialInstrument = new ArrayList<>();
+    private List<Double> financialInstrumentPecentage = new ArrayList<>();
     private String remarks;
     private InvestmentPlanStatus status;
     private InvestmentPlanSatisfactionLevel satisfactionLevel;
@@ -121,6 +122,14 @@ public class InvestmentPlan implements Serializable {
 
     public void setWealthManagementSubscriber(WealthManagementSubscriber wealthManagementSubscriber) {
         this.wealthManagementSubscriber = wealthManagementSubscriber;
+    }
+
+    public List<Double> getFinancialInstrumentPecentage() {
+        return financialInstrumentPecentage;
+    }
+
+    public void setFinancialInstrumentPecentage(List<Double> financialInstrumentPecentage) {
+        this.financialInstrumentPecentage = financialInstrumentPecentage;
     }
 
     public List<FinancialInstrument> getFinancialInstruments() {

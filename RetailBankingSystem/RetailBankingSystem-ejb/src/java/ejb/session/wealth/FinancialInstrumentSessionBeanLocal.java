@@ -6,6 +6,7 @@
 package ejb.session.wealth;
 
 import entity.wealth.FinancialInstrument;
+import java.util.List;
 import javax.ejb.Local;
 import server.utilities.EnumUtils.FinancialInstrumentClass;
 
@@ -18,4 +19,5 @@ public interface FinancialInstrumentSessionBeanLocal {
     public FinancialInstrument createFinancialInstrument(FinancialInstrument fi);
     public FinancialInstrument getFinancialInstrumentByName(FinancialInstrumentClass name);
     public FinancialInstrument updateFinancialInstrument(FinancialInstrument fi);
+    public List<FinancialInstrument> getAllFinancialInstruments();
 }

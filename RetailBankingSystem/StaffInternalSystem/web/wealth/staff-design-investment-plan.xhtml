@@ -16,32 +16,47 @@
             <em:staffNavBar context="wealth"></em:staffNavBar>
             <em:staffSideBar top="wealth" side="viewInvestmentRequest"></em:staffSideBar>
             <div class="container">
-                <h:form id="mainForm">
-                    <p:panel header="Search Requests">   
-                        <p:outputPanel>
-                                <p:inputText id="idFilter" style="width:180px" value="#{viewInvestmentRequestManagedBean.searchText}" placeholder="Enter Request ID"  />
-                                <p:commandButton value="Search" actionListener="#{viewInvestmentRequestManagedBean.search}" update="@form"/>
-                        </p:outputPanel>
+            <p:panel header="Design Invetment Plan">
+                <h:panelGrid columns="2" columnClasses="left,right" style="width:100%">
+                    <p:panel style="width:500px;">
+                        <p:chart type="bar" model="#{deisgnInvestmentPlanManagedBean.animatedModel}" />
                     </p:panel>
+                    <p:panelGrid columns="2" style="width:400px">
+                        <f:facet name="header">
+                            Suggested Plan
+                        </f:facet>
+                        <h:outputLabel for="riskScore" value="Customer risk tolerance score: " />
+                        <p:spinner id="ajaxSpinner" value="#{deisgnInvestmentPlanManagedBean.wms.riskToleranceScore}">
+                            <p:ajax process="@this" />
+                        </p:spinner>
+                       
+                        <h:outputLabel for="riskLevel" value="Customer risk tolerance level: " />
+                        <h:outputText id="riskLevel" value="#{deisgnInvestmentPlanManagedBean.wms.riskToleranceLevel.value}"/>
 
-
-                <p:panel header="List of My Requests">
-                    <p:dataTable id="requestList" value="#{viewInvestmentRequestManagedBean.requestInvestmentPlans}" var="investmentRequest" sortMode="multiple" >
-                            <p:column headerText="ID" sortBy="#{investmentRequest.id}" style="width:15px">
+                        <p:repeat value="#{deisgnInvestmentPlanManagedBean.suggestedCombination}" var="instrument" offset="" size="#{deisgnInvestmentPlanManagedBean.suggestedCombination.size()}" step="1" varStatus="">
+                            <h:outputText id="name" value="#{instrument.name.value}" />
+                        </p:repeat>
+                        <p:repeat value="#{deisgnInvestmentPlanManagedBean.suggestedPercentages}" var="percentage" offset="" size="#{deisgnInvestmentPlanManagedBean.suggestedPercentages.size()}" step="1" varStatus="">
+                            <h:outputText id="name" value="#{percentage}"/>
+                        </p:repeat>
+                    </p:panelGrid>
+                </h:panelGrid>
+                <p:dataTable id="request" value="#{deisgnInvestmentPlanManagedBean.requestPlan}" var="investmentRequest">
+                            <p:column headerText="ID"  style="width:15px">
                                 <h:outputText value="#{investmentRequest.id}" />
                             </p:column>
                             
-                            <p:column headerText="Create Date" sortBy="#{investmentRequest.creationDate}">
+                            <p:column headerText="Create Date">
                                 <h:outputText value="#{investmentRequest.creationDate}">
                                     <f:convertDateTime pattern="MM/dd/yy" />
                                 </h:outputText>
                             </p:column>
 
-                            <p:column headerText="Expected Return" sortBy="#{investmentRequest.expectedReturn}">
+                            <p:column headerText="Expected Return">
                                 <h:outputText value="#{investmentRequest.expectedReturn}" />
                             </p:column>
 
-                            <p:column headerText="Amount" sortBy="#{investmentRequest.amountOfInvestment}">
+                            <p:column headerText="Amount">
                                 <h:outputText value="#{investmentRequest.amountOfInvestment}" />
                             </p:column>
                         
@@ -55,29 +70,21 @@
                                 </p:scrollPanel>
                             </p:column>
                         
-                            <p:column headerText="Status" sortBy="#{investmentRequest.status}">
+                            <p:column headerText="Status">
                                 <h:outputText value="#{investmentRequest.status}" />
                             </p:column>
 
-                            <p:column headerText="Remarks" sortBy="#{investmentRequest.remarks}">
+                            <p:column headerText="Remarks">
                                 <h:outputText value="#{investmentRequest.remarks}" />
                             </p:column>
                         
-                            <p:column headerText="Customer" sortBy="#{investmentRequest.wealthManagementSubscriber}">
+                            <p:column headerText="Customer">
                                 <h:outputText value="#{investmentRequest.wealthManagementSubscriber.mainAccount.customer.firstname}" />
                             </p:column>
-                            
-                            <p:column headerText="Action" style="width:140px">
-                                <p:splitButton value="Design" action="#{viewInvestmentRequestManagedBean.start(investmentRequest)}" update="@form" icon="ui-icon-disk">
-                                    <p:menuitem value="Cancel" action="#{viewInvestmentRequestManagedBean.cancel(investmentRequest)}" update="@form" icon="ui-icon-arrowrefresh-1-w" /> 
-                                </p:splitButton>
-                            </p:column>
                         </p:dataTable>
-                    </p:panel>
-                    <p:messages id="messagesStatus" redisplay="false"></p:messages>
-                </h:form>
+                </p:panel>
             </div>
-
+            
         </h:body> 
     </f:view>
 
