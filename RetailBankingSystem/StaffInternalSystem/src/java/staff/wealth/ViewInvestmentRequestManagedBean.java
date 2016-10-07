@@ -17,6 +17,8 @@ import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import utils.MessageUtils;
+import utils.RedirectUtils;
+import utils.SessionUtils;
 
 /**
  *
@@ -43,7 +45,7 @@ public class ViewInvestmentRequestManagedBean implements Serializable{
     // Followed by @PostConstruct
     @PostConstruct
     public void init() {
-        setStaffAccount(staffAccountSessionBean.getAccountByUsername("relationship_manager"));
+        setStaffAccount(staffAccountSessionBean.getAccountByUsername(SessionUtils.getStaffUsername()));
         setRequestInvestmentPlans(investmentPlanSessionBean.getInvestmentPlanByRM(staffAccount));
     }
     
@@ -60,6 +62,18 @@ public class ViewInvestmentRequestManagedBean implements Serializable{
                 requestInvestmentPlans.add(tempRequest);
             }
         }
+    }
+    
+    public void start(InvestmentPlan ip){
+        RedirectUtils.redirect("staff-design-investment-plan.xhtml?plan="+ip.getId());
+    }
+    
+    public void cancel(InvestmentPlan ip){
+    
+    }
+    
+    public void execute(InvestmentPlan ip){
+    
     }
 
     public String getSearchText() {
