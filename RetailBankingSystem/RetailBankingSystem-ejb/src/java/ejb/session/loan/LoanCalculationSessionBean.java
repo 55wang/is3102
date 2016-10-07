@@ -153,7 +153,7 @@ public class LoanCalculationSessionBean implements LoanCalculationSessionBeanLoc
         }
     }
         
-    
+    @Override
     public Integer transactionPeriod(Date paymentDate,Integer tenure,List<LoanPaymentBreakdown> paymentBreakdown){
         for (int i=0;i<tenure;i++){
             if (paymentBreakdown.get(i).getSchedulePaymentDate().compareTo(paymentDate)>0){
@@ -165,12 +165,14 @@ public class LoanCalculationSessionBean implements LoanCalculationSessionBeanLoc
         return -1;
     }
     
+    @Override
     public void realPayment(Integer period, Double payment,Date transactionDate,List<LoanRealPayment> realPayment){
         Double cummulatedPayment=realPayment.get(period-1).getPayment()+payment;
         realPayment.get(period-1).setPayment(cummulatedPayment);
         realPayment.get(period-1).setTransactionDate(transactionDate);   
     }
     
+    @Override
     public Double penaltyCharge(Integer lateDays,Double lateAmount, Double penaltyInterest){
         Double penalty=lateAmount*penaltyInterest/365*lateDays;
         return penalty;
