@@ -5,7 +5,7 @@
  */
 package caller;
 
-import SessionBean.CardTransactionSessionBeanLocal;
+import sessionbean.CardTransactionSessionBeanLocal;
 import entity.VisaCardTransaction;
 import java.io.Serializable;
 import java.util.ArrayList;

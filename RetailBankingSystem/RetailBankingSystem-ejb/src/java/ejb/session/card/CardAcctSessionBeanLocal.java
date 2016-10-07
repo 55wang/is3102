@@ -27,10 +27,12 @@ public interface CardAcctSessionBeanLocal {
     get
     get list
     */
-    public Date setOverDueDate(CreditCardAccount cca, Date overDueDate);
+    public Date setOverDueDateAndMPD(CreditCardAccount cca);
     public CreditCardAccount createCardAccount(CreditCardAccount cca);
     public CreditCardAccount updateCreditCardAccount(CreditCardAccount cca);
-    public List<CreditCardAccount> updateListDemoEndOfMonthCcas();
+    public List<CreditCardAccount> updateListDemoPaidOutstandingAmountCcas();
+    public List<CreditCardAccount> updateListDemoPaidMPD();
+    public List<CreditCardAccount> calculateDueCreditCardAccount();
     public CreditCardAccount updateCardAccountStatus(CreditCardAccount cca, EnumUtils.CardAccountStatus status);
     public CreditCardAccount updateCardAcctTransactionDailyLimit(CreditCardAccount cca, double newDailyLimit);
     public CreditCardAccount activateCreditCard(String identityNumber, Date birthday, String cardNumber, String cvv);
