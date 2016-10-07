@@ -54,14 +54,12 @@ public class EntityBuilderBean {
     private EntityStaffBuilder entityStaffBuilder;
     @EJB
     private EntityDAMSBuilder entityDAMSBuilder;
+    @EJB
+    private EntityCaseBuilder entityCaseBuilder;
     
     // session beans
     @EJB
-    private CustomerCaseSessionBeanLocal customerCaseSessionBean;
-    @EJB
     private StaffAccountSessionBeanLocal staffAccountSessionBean;
-    @EJB
-    private CardTransactionSessionBeanLocal cardTransactionBean;
 
     
     private MainAccount demoMainAccount;
@@ -75,7 +73,7 @@ public class EntityBuilderBean {
         if (needInit()) {
             buildEntities();
         } else {
-            testInterestRules();
+            // test some rules
         }
     }
 
@@ -91,99 +89,8 @@ public class EntityBuilderBean {
         entityDAMSBuilder.initDAMS(demoMainAccount);
         demoPromoProduct = entityPromoProductBuilder.initPromoProduct(demoPromoProduct);
         demoRewardCardProduct = entityCreditCardProductBuilder.initCreditCardProduct(demoMainAccount, demoPromoProduct);
-        initCase();
-        initNotification();
+        entityCaseBuilder.initCase(demoMainAccount);
         entityCreditCardOrderBuilder.initCreditCardOrder(demoMainAccount, demoRewardCardProduct, demoPromoProduct);
         entityBillOrgBuilder.initBillOrganization();
-    }
-
-    public void initCase() {
-        CustomerCase cc = new CustomerCase();
-        Issue issue = new Issue();
-        List<Issue> issues = new ArrayList<>();
-
-        issue.setTitle("Deposit Account Problem");
-        issue.setField(EnumUtils.IssueField.DEPOSIT);
-        issue.setDetails("My deposit account has some suspicious credit histories. Could you please help me to check?");
-        issue.setCustomerCase(cc);
-
-        issues.add(issue);
-
-        cc.setIssues(issues);
-        cc.setTitle("My Deposit Account has Some problems");
-        cc.setCreateDate(new Date());
-        cc.setMainAccount(demoMainAccount);
-        cc.setStaffAccount(staffAccountSessionBean.getAccountByUsername(ConstantUtils.SUPER_ADMIN_USERNAME));
-        cc.setCaseStatus(CaseStatus.ONHOLD);
-
-        customerCaseSessionBean.saveCase(cc);
-
-        cc = new CustomerCase();
-        issue = new Issue();
-        issues = new ArrayList<Issue>();
-
-        issue.setTitle("Loan Problem");
-        issue.setField(EnumUtils.IssueField.DEPOSIT);
-        issue.setDetails("My loan account has some problems. Could you please help me to check?");
-        issue.setCustomerCase(cc);
-
-        issues.add(issue);
-
-        issue = new Issue();
-
-        issue.setTitle("Loan Problem");
-        issue.setField(EnumUtils.IssueField.INVESTMENT);
-        issue.setDetails("My loan account has some problems. Could you please help me to check?");
-        issue.setCustomerCase(cc);
-
-        issues.add(issue);
-
-        cc.setIssues(issues);
-        cc.setTitle("Loan Problem");
-        cc.setCreateDate(new Date());
-        cc.setMainAccount(demoMainAccount);
-        cc.setStaffAccount(staffAccountSessionBean.getAccountByUsername(ConstantUtils.SUPER_ADMIN_USERNAME));
-        cc.setCaseStatus(CaseStatus.ONHOLD);
-
-        customerCaseSessionBean.saveCase(cc);
-    }
-
-    public void initNotification() {
-        Announcement n1 = new Announcement();
-        n1.setTitle("Happy Holidy!!");
-        n1.setTitle("Happy Holidy!!");
-    }
-
-    private void testCreditCard() {
-
-        Date startDate = DateUtils.getBeginOfDay();
-        Date endDate = DateUtils.getEndOfDay();
-
-        System.out.println(startDate);
-        System.out.println(startDate);
-        List<CardTransaction> result = cardTransactionBean.getTransactionByStartDateAndEndDate(startDate, endDate);
-        System.out.println(result);
-//        System.out.println("testCreditCard");
-//        try {
-//            CreditCardAccount c = cardAcctSessionBean.getCardByCardNumber("4545454545454545");
-//            System.out.println(c);
-//        } catch(Exception e) {
-////            e.printStackTrace();
-//        }
-//        List<CreditCardAccount> cards = cardAcctSessionBean.showAllCreditCardAccount(EnumUtils.CardAccountStatus.CLOSED, 8L);
-//        System.out.println(cards);
-    }
-
-    private void testInterestRules() {
-
-        // Get Product
-//        DepositAccount da = customerDepositSessionBean.getAccountFromId(1L);
-//        // Get Interest
-//        List<Interest> interests = ((DepositAccountProduct) da.getProduct()).getInterestRules();
-//        for (Interest i : interests) {
-//            if (i instanceof ConditionInterest) {
-//                System.out.print(interestAccrualSessionBean.isAccountMeetCondition(da, (ConditionInterest) i));
-//            }
-//        }
     }
 }

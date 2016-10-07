@@ -52,7 +52,6 @@ public class MobileUserLoginService {
     @Produces(MediaType.APPLICATION_JSON)
     public Response login(@QueryParam("username") String username, @QueryParam("password") String password) {
         System.out.println("Received username:" + username);
-        System.out.println("Received password:" + password);
         System.out.println("Received GET http");
         // TODO: Some authentication
         UserLoginDTO user = new UserLoginDTO();
@@ -70,7 +69,6 @@ public class MobileUserLoginService {
             @FormParam("password") String password
     ) {
         System.out.println("Received username:" + username);
-        System.out.println("Received password:" + password);
         System.out.println("Received POST http");
         String jsonString = null;
         try {
