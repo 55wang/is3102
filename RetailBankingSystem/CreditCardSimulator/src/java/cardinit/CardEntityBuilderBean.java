@@ -35,14 +35,14 @@ public class CardEntityBuilderBean {
     private Boolean needInit() {
         Query q = em.createNativeQuery("SELECT count(*) FROM VisaCardTransaction");
 
-        Double result;
+        Long result;
         try {
-            result = (Double) q.getSingleResult();
+            result = (Long) q.getSingleResult();
         } catch (Exception ex) {
-            result = 0.0;
+            result = 0L;
         }
 
-        return result == 0;
+        return result == 0L;
     }
 
     private void buildEntities() {
