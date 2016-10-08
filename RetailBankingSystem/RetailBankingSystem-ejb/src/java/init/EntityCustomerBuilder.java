@@ -30,7 +30,7 @@ public class EntityCustomerBuilder {
     @EJB
     private MainAccountSessionBeanLocal mainAccountSessionBean;
 
-    public MainAccount initCustomer() {
+    public void initCustomer() {
         String p = HashPwdUtils.hashPwd("password");
 
         Customer c = new Customer();
@@ -52,8 +52,8 @@ public class EntityCustomerBuilder {
         ma.setUserID(ConstantUtils.DEMO_MAIN_ACCOUNT_USER_ID);
         ma.setPassword(p);
         ma.setStatus(EnumUtils.StatusType.ACTIVE);
-        mainAccountSessionBean.createMainAccount(ma);
-        newCustomerSessionBean.createCustomer(c);
+        ma = mainAccountSessionBean.createMainAccount(ma);
+        c = newCustomerSessionBean.createCustomer(c);
 
         ma.setCustomer(c);
         c.setMainAccount(ma);
@@ -81,14 +81,14 @@ public class EntityCustomerBuilder {
         ma2.setUserID(u2);
         ma2.setPassword(p2);
         ma2.setStatus(EnumUtils.StatusType.ACTIVE);
-        mainAccountSessionBean.createMainAccount(ma2);
-        newCustomerSessionBean.createCustomer(c2);
+        ma2 = mainAccountSessionBean.createMainAccount(ma2);
+        c2 = newCustomerSessionBean.createCustomer(c2);
 
         ma2.setCustomer(c2);
         c2.setMainAccount(ma2);
         newCustomerSessionBean.updateCustomer(c2);
 
-        String u3 = "c0000003";
+        String u3 = ConstantUtils.DEMO_MAIN_ACCOUNT_USER_ID_2;
         String p3 = HashPwdUtils.hashPwd("password");
 
         Customer c3 = new Customer();
@@ -98,20 +98,20 @@ public class EntityCustomerBuilder {
         c3.setFirstname("Yang");
         c3.setGender(EnumUtils.Gender.FEMALE); // pls modify gender to enum type
         c3.setIdentityType(EnumUtils.IdentityType.NRIC);
-        c3.setIdentityNumber("S1234902Z");
+        c3.setIdentityNumber("S7654321Z");
         c3.setIncome(EnumUtils.Income.FROM_6000_TO_8000);
         c3.setEducation(EnumUtils.Education.SECONDARY);
         c3.setLastname("Lei");
         c3.setNationality(EnumUtils.Nationality.GERMANY); //enum type if possible
-        c3.setPhone("89212758"); //must use real phone number as we need sms code
+        c3.setPhone("94761895"); //must use real phone number as we need sms code
         c3.setPostalCode("654111");
 
         MainAccount ma3 = new MainAccount();
         ma3.setUserID(u3);
         ma3.setPassword(p3);
         ma3.setStatus(EnumUtils.StatusType.ACTIVE);
-        mainAccountSessionBean.createMainAccount(ma3);
-        newCustomerSessionBean.createCustomer(c3);
+        ma3 = mainAccountSessionBean.createMainAccount(ma3);
+        c3 = newCustomerSessionBean.createCustomer(c3);
 
         ma3.setCustomer(c3);
         c3.setMainAccount(ma3);
@@ -290,7 +290,6 @@ public class EntityCustomerBuilder {
         c9.setMainAccount(ma9);
         newCustomerSessionBean.updateCustomer(c9);
         
-        return ma;
     }
 
 }

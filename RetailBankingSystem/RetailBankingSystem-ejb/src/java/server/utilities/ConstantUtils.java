@@ -13,6 +13,7 @@ public class ConstantUtils {
     public static final String DELIMITER = "``";
     
     public static final Integer ACCOUNT_NUBMER_LENGTH = 11;
+    public static final Integer REFERENCE_NUBMER_LENGTH = 13;
     
     // Entity Table Name
     public static final String TRANSACTION_ENTITY = "TransactionRecord";
@@ -26,6 +27,7 @@ public class ConstantUtils {
     public static final String DEMO_FIXED_DEPOSIT_PRODUCT_NAME = "Time Deposit";
     
     public static final String DEMO_MAIN_ACCOUNT_USER_ID = "c1234567";
+    public static final String DEMO_MAIN_ACCOUNT_USER_ID_2 = "c7654321" ;
     public static final String SUPER_ADMIN_USERNAME = "adminadmin";
     public static final String SUPER_ADMIN_PASSWORD = HashPwdUtils.hashPwd("password");
     public static final String CUSTOMER_SERVICE_USERNAME = "customer_service";

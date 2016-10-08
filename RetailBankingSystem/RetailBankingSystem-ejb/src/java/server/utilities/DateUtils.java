@@ -5,6 +5,7 @@
  */
 package server.utilities;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -198,5 +199,10 @@ public class DateUtils {
         Calendar cal = GregorianCalendar.getInstance();
         cal.setTime(date);
         return cal.get(Calendar.YEAR);
+    }
+    
+    public static String readableDate(Date date) {
+        SimpleDateFormat dt1 = new SimpleDateFormat("dd MMM, h:mm a");
+        return dt1.format(date);
     }
 }

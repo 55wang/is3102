@@ -6,6 +6,7 @@
 package init;
 
 import ejb.session.card.CardAcctSessionBeanLocal;
+import ejb.session.common.LoginSessionBeanLocal;
 import ejb.session.dams.CurrentAccountChequeSessionBeanLocal;
 import ejb.session.dams.CustomerDepositSessionBeanLocal;
 import ejb.session.dams.DepositProductSessionBeanLocal;
@@ -48,6 +49,8 @@ public class EntityDAMSBuilder {
     private CardAcctSessionBeanLocal cardAcctSessionBean;
     @EJB
     private DepositProductSessionBeanLocal depositProductSessionBean;
+    @EJB
+    private LoginSessionBeanLocal loginBean;
     
     private Interest demoNormalInterestData;
     private List<Interest> demoRangeInterestData = new ArrayList<>();
@@ -57,8 +60,8 @@ public class EntityDAMSBuilder {
 
     private MainAccount demoMainAccount;
     
-    public void initDAMS(MainAccount ma) {
-        demoMainAccount = ma;
+    public void initDAMS() {
+        demoMainAccount = loginBean.getMainAccountByUserID(ConstantUtils.DEMO_MAIN_ACCOUNT_USER_ID);
         initInterest();
         initDepositProducts();
         initDepositAccounts();

@@ -25,13 +25,13 @@ import org.primefaces.json.JSONObject;
  */
 @Path("mobile_otp")
 public class MobileOTPService {
-    
+
     @Context
     private UriInfo context;
-    
+
     @EJB
     private OTPSessionBeanLocal otpBean;
-    
+
     // Works
     @POST
     @Produces(MediaType.APPLICATION_JSON)
@@ -49,13 +49,22 @@ public class MobileOTPService {
             OneTimePassword otp = otpBean.getOTPByPhoneNumber(mobileNumber);
             System.out.println("otp received: " + otp != null);
             if (otp != null) {
-                // TODO: Resend logic
-                ErrorDTO err = new ErrorDTO();
-                err.setCode(0);
-                err.setError("Verified");
-                otpBean.remove(otp);
-                jsonString = new JSONObject(err).toString();
-                return Response.ok(jsonString, MediaType.APPLICATION_JSON).build();
+                if (otp.getPassword().equals(otpCode)) {
+                    // TODO: Resend logic
+                    ErrorDTO err = new ErrorDTO();
+                    err.setCode(0);
+                    err.setError("Verified");
+                    otpBean.remove(otp);
+                    jsonString = new JSONObject(err).toString();
+                    return Response.ok(jsonString, MediaType.APPLICATION_JSON).build();
+                } else {
+                    ErrorDTO err = new ErrorDTO();
+                    err.setCode(-2);
+                    err.setError("Wrong code entered!");
+                    jsonString = new JSONObject(err).toString();
+                    return Response.ok(jsonString, MediaType.APPLICATION_JSON).build();
+                }
+
             } else {
                 ErrorDTO err = new ErrorDTO();
                 err.setCode(-1);
