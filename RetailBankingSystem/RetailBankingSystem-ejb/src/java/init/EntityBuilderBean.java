@@ -13,6 +13,7 @@ import ejb.session.dams.InterestSessionBeanLocal;
 import ejb.session.dams.CustomerDepositSessionBeanLocal;
 import ejb.session.dams.DepositProductSessionBeanLocal;
 import ejb.session.loan.LoanAccountSessionBeanLocal;
+import ejb.session.loan.LoanPaymentSessionBeanLocal;
 import ejb.session.staff.StaffAccountSessionBeanLocal;
 import ejb.session.staff.StaffRoleSessionBeanLocal;
 import entity.card.account.CardTransaction;
@@ -33,6 +34,7 @@ import entity.dams.rules.RangeInterest;
 import entity.dams.rules.TimeRangeInterest;
 import entity.loan.LoanAccount;
 import entity.loan.LoanInterest;
+import entity.loan.LoanPaymentBreakdown;
 import entity.loan.LoanProduct;
 import entity.staff.Announcement;
 import entity.staff.Role;
@@ -67,6 +69,9 @@ public class EntityBuilderBean {
 
     @EJB
     private LoanAccountSessionBeanLocal loanAccountSessionBean;
+    
+    @EJB 
+    private LoanPaymentSessionBeanLocal loanPaymentSessionBean;
 
     @EJB
     private EntityCustomerBuilder entityCustomerBuilder;
@@ -1101,8 +1106,23 @@ public class EntityBuilderBean {
         System.out.print("EntityBuilder ========== " + loanProduct.getProductName());
         System.out.print(demoMainAccount.getBankAcounts().size());
         loanAccount.setDepositAccount(demoDepositAccount);
+        
+        LoanPaymentBreakdown loanPaymentBreakdown=new LoanPaymentBreakdown();
+        loanPaymentBreakdown.setId(Long.getLong(Integer.toString(1)));
+        loanPaymentBreakdown.setInterestPayment(200.0);
+        loanPaymentBreakdown.setOutstandingPrincipalPayment(1000.0);
+        loanPaymentBreakdown.setPeriod(1);
+        loanPaymentBreakdown.setPrincipalPayment(300.0);
+        loanPaymentBreakdown.setSchedulePaymentDate(DateUtils.getBeginOfDay());
+        List<LoanPaymentBreakdown> lpb=new ArrayList<>();
+        lpb.add(loanPaymentBreakdown);
+        
+        
+        loanPaymentSessionBean.createLoanPaymentBreakdown(loanPaymentBreakdown);
+        System.out.println("EntityBuilder =========="+loanPaymentBreakdown.getLoanAccount());
 
         loanAccount.setLoanProduct(loanProduct);
+        loanAccount.setLoanPaymentBreakdown(lpb);
         loanAccount.setCustomer(demoMainAccount.getCustomer());
         loanAccount.setLoanOfficer(staffAccountSessionBean.getAccountByUsername(ConstantUtils.LOAN_OFFICIER_USERNAME));
         cal.add(Calendar.YEAR, 6);

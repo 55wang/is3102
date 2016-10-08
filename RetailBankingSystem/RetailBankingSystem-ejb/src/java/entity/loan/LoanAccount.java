@@ -56,6 +56,8 @@ public class LoanAccount implements Serializable {
     private LoanProduct loanProduct;
     @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "loanAccount")
     private List<LoanRepaymentRecord> loanRepaymentRecords = new ArrayList<>();
+    @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "loanAccount")
+    private List<LoanPaymentBreakdown> loanPaymentBreakdown = new ArrayList<>();
 
     @Override
     public String toString() {
@@ -186,6 +188,14 @@ public class LoanAccount implements Serializable {
 
     public void setLoanRepaymentRecords(List<LoanRepaymentRecord> loanRepaymentRecords) {
         this.loanRepaymentRecords = loanRepaymentRecords;
+    }
+    
+    public List<LoanPaymentBreakdown> getLoanPaymentBreakdown(){
+        return loanPaymentBreakdown;
+    }
+    
+    public void setLoanPaymentBreakdown(List<LoanPaymentBreakdown> loanPaymentBreakdown){
+        this.loanPaymentBreakdown=loanPaymentBreakdown;
     }
 
     public Date getCreationDate() {

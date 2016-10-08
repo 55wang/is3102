@@ -61,16 +61,16 @@ public class LoanCalculationManagedBean implements Serializable{
         return monthlyInstallment;
     }
     
-    public List repaymentBreakdown(Double loanAmt, Integer tenure, Double loanInterest,Date loanDate){
-        List<LoanPaymentBreakdown> paymentBreakdown=localCalculationBean.calculateRepaymentBreakdown(loanAmt, tenure, loanInterest, loanDate);
-        return paymentBreakdown;
-    }
-    
-    public List lumSumAdjustment(Integer lumSumPayment,Double outstandingLoanAmt,Integer residualTenure, Double loanInterest,Date lumSumPayDate){
-        List<LoanPaymentBreakdown> paymentBreakdown=localCalculationBean.lumSumPayAdjustment(lumSumPayment, outstandingLoanAmt, residualTenure, loanInterest, lumSumPayDate);
-        return paymentBreakdown;
-    }
-        
+//    public List repaymentBreakdown(Double loanAmt, Integer tenure, Double loanInterest,Date loanDate){
+//        List<LoanPaymentBreakdown> paymentBreakdown=localCalculationBean.calculateRepaymentBreakdown(loanAmt, tenure, loanInterest, loanDate);
+//        return paymentBreakdown;
+//    }
+//    
+//    public List lumSumAdjustment(Integer lumSumPayment,Double outstandingLoanAmt,Integer residualTenure, Double loanInterest,Date lumSumPayDate){
+//        List<LoanPaymentBreakdown> paymentBreakdown=localCalculationBean.lumSumPayAdjustment(lumSumPayment, outstandingLoanAmt, residualTenure, loanInterest, lumSumPayDate);
+//        return paymentBreakdown;
+//    }
+//        
         
     }
 

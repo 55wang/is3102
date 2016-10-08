@@ -30,6 +30,7 @@ public class LoanRepaymentRecord implements Serializable {
     @Temporal(value = TemporalType.TIMESTAMP)
     private Date transactionDate;
 
+    private Integer period;
     private Double beginningBalance;
     private Double remainingBalance;
     private Double paymentAmount;
@@ -63,6 +64,7 @@ public class LoanRepaymentRecord implements Serializable {
     public String toString() {
         return "entity.loan.LoanRepaymentRecord[ id=" + id + " ]";
     }
+    
 
     public LoanAccount getLoanAccount() {
         return loanAccount;
@@ -72,6 +74,14 @@ public class LoanRepaymentRecord implements Serializable {
         this.loanAccount = loanAccount;
     }
 
+    public Integer getPeriod(){
+        return period;
+    }
+    
+    public void setPeriod(Integer period){
+        this.period=period;
+    }
+    
     public Date getTransactionDate() {
         return transactionDate;
     }
