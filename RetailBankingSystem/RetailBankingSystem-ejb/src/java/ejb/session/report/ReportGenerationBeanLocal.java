@@ -5,11 +5,8 @@
  */
 package ejb.session.report;
 
-import java.io.IOException;
-import java.sql.SQLException;
 import java.util.Date;
 import javax.ejb.Local;
-import net.sf.jasperreports.engine.JRException;
 
 /**
  *
@@ -17,5 +14,5 @@ import net.sf.jasperreports.engine.JRException;
  */
 @Local
 public interface ReportGenerationBeanLocal {
-    public boolean generateMonthlyDepositAccountTransactionReport(String accountNumber, Date startDate, Date endDate) throws JRException, IOException, SQLException, ClassNotFoundException ;
+    public boolean generateMonthlyDepositAccountTransactionReport(String accountNumber, Date startDate, Date endDate);
 }
