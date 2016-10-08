@@ -6,6 +6,7 @@
 package ejb.session.loan;
 
 import entity.loan.LoanPaymentBreakdown;
+import entity.loan.LoanRepaymentRecord;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -27,10 +28,25 @@ public class LoanPaymentSessionBean implements LoanPaymentSessionBeanLocal {
     @Override
     public LoanPaymentBreakdown createLoanPaymentBreakdown(LoanPaymentBreakdown loanPaymentBreakdown){
         try{
-            loanPaymentBreakdown.setLoanAccount(loanPaymentBreakdown.getLoanAccount());
             em.persist(loanPaymentBreakdown);
+            
             return loanPaymentBreakdown;
         }catch (Exception e) {
+            System.out.println("ACACACA _ERROR");
+           e.printStackTrace();
+            return null;
+        }
+    }
+    
+    @Override
+    public LoanRepaymentRecord createLoanRepaymentRecord(LoanRepaymentRecord loanRepaymentRecord){
+        try{
+            em.persist(loanRepaymentRecord);
+            
+            return loanRepaymentRecord;
+        }catch (Exception e) {
+            System.out.println("ACACACA _ERROR");
+           e.printStackTrace();
             return null;
         }
     }

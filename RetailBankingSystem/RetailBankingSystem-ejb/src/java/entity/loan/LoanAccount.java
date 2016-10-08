@@ -6,6 +6,7 @@
 package entity.loan;
 
 import entity.customer.Customer;
+import entity.customer.MainAccount;
 import entity.dams.account.CustomerDepositAccount;
 import entity.staff.StaffAccount;
 import java.io.Serializable;
@@ -49,7 +50,7 @@ public class LoanAccount implements Serializable {
     @ManyToOne(cascade = {CascadeType.MERGE})
     private StaffAccount loanOfficer;
     @ManyToOne(cascade = {CascadeType.MERGE})
-    private Customer customer;
+    private MainAccount mainAccount;
     @ManyToOne(cascade = {CascadeType.MERGE})
     private CustomerDepositAccount depositAccount;
     @ManyToOne(cascade = {CascadeType.MERGE})
@@ -150,12 +151,12 @@ public class LoanAccount implements Serializable {
         this.loanOfficer = loanOfficer;
     }
 
-    public Customer getCustomer() {
-        return customer;
+    public MainAccount getMainAccount() {
+        return mainAccount;
     }
 
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
+    public void setMainAccount(MainAccount mainAccount) {
+        this.mainAccount = mainAccount;
     }
 
     public Date getMaturityDate() {
