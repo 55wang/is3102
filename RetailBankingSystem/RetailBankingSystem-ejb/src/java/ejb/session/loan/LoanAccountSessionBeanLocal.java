@@ -16,6 +16,5 @@ import javax.ejb.Local;
 @Local
 public interface LoanAccountSessionBeanLocal {
     public LoanAccount createLoanAccount(LoanAccount loanAccount);
-    public LoanProduct createLoanProduct(LoanProduct loanProduct);
 
 }

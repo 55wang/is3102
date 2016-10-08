@@ -13,6 +13,7 @@ import ejb.session.dams.InterestSessionBeanLocal;
 import ejb.session.dams.CustomerDepositSessionBeanLocal;
 import ejb.session.dams.DepositProductSessionBeanLocal;
 import ejb.session.loan.LoanAccountSessionBeanLocal;
+import ejb.session.loan.LoanProductSessionBeanLocal;
 import ejb.session.staff.StaffAccountSessionBeanLocal;
 import ejb.session.staff.StaffRoleSessionBeanLocal;
 import entity.card.account.CardTransaction;
@@ -32,6 +33,7 @@ import entity.dams.rules.Interest;
 import entity.dams.rules.RangeInterest;
 import entity.dams.rules.TimeRangeInterest;
 import entity.loan.LoanAccount;
+import entity.loan.LoanCommonInterest;
 import entity.loan.LoanInterest;
 import entity.loan.LoanProduct;
 import entity.staff.Announcement;
@@ -53,6 +55,7 @@ import server.utilities.EnumUtils;
 import server.utilities.EnumUtils.CaseStatus;
 import server.utilities.EnumUtils.ChequeStatus;
 import server.utilities.EnumUtils.DepositAccountType;
+import server.utilities.EnumUtils.LoanProductType;
 import server.utilities.EnumUtils.StatusType;
 import server.utilities.GenerateAccountAndCCNumber;
 
@@ -64,6 +67,9 @@ import server.utilities.GenerateAccountAndCCNumber;
 @LocalBean
 @Startup
 public class EntityBuilderBean {
+
+    @EJB
+    private LoanProductSessionBeanLocal loanProductSessionBean;
 
     @EJB
     private LoanAccountSessionBeanLocal loanAccountSessionBean;
@@ -110,17 +116,18 @@ public class EntityBuilderBean {
     private RewardCardProduct demoRewardCardProduct;
     private PromoProduct demoPromoProduct;
     private CustomerDepositAccount demoDepositAccount;
+    private LoanProduct demoLoanProduct;
     private Calendar cal = Calendar.getInstance();
 
     @PostConstruct
     public void init() {
         System.out.println("EntityInitilzationBean @PostConstruct");
         System.out.println(GenerateAccountAndCCNumber.generateAccountNumber());
-
+        
         if (needInit()) {
             buildEntities();
         } else {
-            testInterestRules();
+//            testInterestRules();
 //            testCreditCard();
         }
     }
@@ -146,11 +153,14 @@ public class EntityBuilderBean {
         demoRewardCardProduct = entityCreditCardProductBuilder.initCreditCardProduct(demoMainAccount, demoPromoProduct);
         initCase();
         initNotification();
-        System.out.print("building Entities......");
-        initLoanAccount();
+        
+        
 
 //        initCreditCardOrder();
         entityCreditCardOrderBuilder.initCreditCardOrder(demoMainAccount, demoRewardCardProduct, demoPromoProduct);
+        initLoanProduct();
+        testUpdateLoanProduct();
+        initLoanAccount();
     }
 
     private void initStaffAndRoles() {
@@ -1071,52 +1081,120 @@ public class EntityBuilderBean {
         n1.setTitle("Happy Holidy!!");
     }
 
-    public void initLoanAccount() {
-        System.out.print("Creating account !!!!================");
+    public void initLoanProduct() {
+        LoanCommonInterest sibor = new LoanCommonInterest();
+        sibor.setName("SIBOR");
+        sibor.setRate(0.87242/100);
+        loanProductSessionBean.createCommonInterest(sibor);
+        
+        LoanCommonInterest fbr18 = new LoanCommonInterest();
+        fbr18.setName("FHR18");
+        fbr18.setRate(0.6/100);
+        loanProductSessionBean.createCommonInterest(fbr18);
+
+        
+        //create 3 packages for loan product for private houses
+        //package 1: Fixed
+        List<LoanInterest> loanInterestsForPrivateHouses1 = new ArrayList<LoanInterest>();
+        //Para: List<LoanInterest>, Long id, Integer startTime, Integer endTime(-1 means till maturity date), Double interestRate
+        loanInterestsForPrivateHouses1 = setLoanInterest(loanInterestsForPrivateHouses1, 0, 1, 1.8/100);
+        loanInterestsForPrivateHouses1 = setLoanInterest(loanInterestsForPrivateHouses1, 1, 2, 1.8/100);
+        loanInterestsForPrivateHouses1 = setLoanInterest(loanInterestsForPrivateHouses1, 2, 3, 1.8/100);
+        loanInterestsForPrivateHouses1 = setLoanInterest(loanInterestsForPrivateHouses1, 3, -1, 1.2 / 100 + loanProductSessionBean.getCommonInterestByName("FHR18").getRate());
+        //Para: Long id, String productName, String productType, List<LoanInterest> loanInterests,
+        //            Integer tenure, Integer lockInDuration, Double penaltyInterestRate
+        LoanProduct loanProductForPrivateHouses1 = setLoanLoanProduct(
+                LoanProductType.LOAN_PRODUCT_TYPE_PRIVATE_HOUSE + ": Fixed",
+                LoanProductType.LOAN_PRODUCT_TYPE_PRIVATE_HOUSE.getValue(),
+                loanInterestsForPrivateHouses1,
+                6, 3, 0.5);
+
+        demoLoanProduct = loanProductForPrivateHouses1;
+//        System.out.println("!!!id-"+loanProductForPrivateHouses1.getId()+ ": "+loanProductForPrivateHouses1.getProductName());
+
+        //package 2: Floating (3-month SIBOR)
+        List<LoanInterest> loanInterestsForPrivateHouses2 = new ArrayList<LoanInterest>();
+        loanInterestsForPrivateHouses2 = setLoanInterest(loanInterestsForPrivateHouses2, 0, 1, loanProductSessionBean.getCommonInterestByName("SIBOR").getRate() + 0.008);
+        loanInterestsForPrivateHouses2 = setLoanInterest(loanInterestsForPrivateHouses2, 1, 2, loanProductSessionBean.getCommonInterestByName("SIBOR").getRate() + 0.008);
+        loanInterestsForPrivateHouses2 = setLoanInterest(loanInterestsForPrivateHouses2, 2, 3, loanProductSessionBean.getCommonInterestByName("SIBOR").getRate() + 0.008);
+        loanInterestsForPrivateHouses2 = setLoanInterest(loanInterestsForPrivateHouses2, 3, -1, loanProductSessionBean.getCommonInterestByName("SIBOR").getRate() + 0.0125);
+
+        LoanProduct loanProductForPrivateHouses2 = setLoanLoanProduct(
+                LoanProductType.LOAN_PRODUCT_TYPE_PRIVATE_HOUSE+ ": Floating (SIBOR)",
+                LoanProductType.LOAN_PRODUCT_TYPE_PRIVATE_HOUSE.getValue(),
+                loanInterestsForPrivateHouses2,
+                6, 0, 0.5);
+//System.out.println("!!!id-"+loanProductForPrivateHouses2.getId()+ ": "+loanProductForPrivateHouses2.getProductName());
+        //package 3: Floating (FBR18)
+        List<LoanInterest> loanInterestsForPrivateHouses3 = new ArrayList<LoanInterest>();
+        loanInterestsForPrivateHouses3 = setLoanInterest(loanInterestsForPrivateHouses3, 0, 1, loanProductSessionBean.getCommonInterestByName("FHR18").getRate() + 0.013);
+        loanInterestsForPrivateHouses3 = setLoanInterest(loanInterestsForPrivateHouses3, 1, 2, loanProductSessionBean.getCommonInterestByName("FHR18").getRate() + 0.013);
+        loanInterestsForPrivateHouses3 = setLoanInterest(loanInterestsForPrivateHouses3, 2, 3, loanProductSessionBean.getCommonInterestByName("FHR18").getRate() + 0.013);
+        loanInterestsForPrivateHouses3 = setLoanInterest(loanInterestsForPrivateHouses3, 3, -1, loanProductSessionBean.getCommonInterestByName("FHR18").getRate() + 0.013);
+
+        LoanProduct loanProductForPrivateHouses3 = setLoanLoanProduct(
+                LoanProductType.LOAN_PRODUCT_TYPE_PRIVATE_HOUSE + ": Floating (FBR18)",
+                LoanProductType.LOAN_PRODUCT_TYPE_PRIVATE_HOUSE.getValue(),
+                loanInterestsForPrivateHouses3,
+                6, 0, 0.5);
+//System.out.println("!!!id-"+loanProductForPrivateHouses3.getId()+ ": "+loanProductForPrivateHouses3.getProductName());
+    }
+
+    private void initLoanAccount() {
         LoanAccount loanAccount = new LoanAccount();
-        List<LoanInterest> loanInterests = new ArrayList<LoanInterest>();
 
-        LoanInterest loanInterest1 = new LoanInterest();
-        loanInterest1.setId(Long.getLong(Integer.toString(1)));
-        loanInterest1.setStartTime(0);
-        loanInterest1.setEndTime(3);
-        loanInterest1.setInterestRate(0.2);
-        loanInterests.add(loanInterest1);
-
-        LoanInterest loanInterest2 = new LoanInterest();
-        loanInterest2.setId(Long.getLong(Integer.toString(2)));
-        loanInterest2.setStartTime(3);
-        loanInterest2.setEndTime(6);
-        loanInterest2.setInterestRate(0.2);
-        loanInterests.add(loanInterest2);
-
-        LoanProduct loanProduct = new LoanProduct();
-        loanProduct.setId(Long.getLong(Integer.toString(1)));
-        loanProduct.setProductName("MBS Personal Loan");
-        loanProduct.setLoanInterests(loanInterests);
-        loanProduct.setTenure(6);
-        loanProduct.setLockInDuration(2);
-        loanProduct.setPenaltyInterestRate(0.5);
-        loanAccountSessionBean.createLoanProduct(loanProduct);
-        System.out.print("EntityBuilder ========== " + loanProduct.getProductName());
-        System.out.print(demoMainAccount.getBankAcounts().size());
         loanAccount.setDepositAccount(demoDepositAccount);
-
-        loanAccount.setLoanProduct(loanProduct);
+        loanAccount.setLoanProduct(demoLoanProduct);
         loanAccount.setCustomer(demoMainAccount.getCustomer());
         loanAccount.setLoanOfficer(staffAccountSessionBean.getAccountByUsername(ConstantUtils.LOAN_OFFICIER_USERNAME));
         cal.add(Calendar.YEAR, 6);
         loanAccount.setMaturityDate(cal.getTime());
-        loanAccount.setPrincipal(5000);
+        loanAccount.setPrincipal(5000.0);
         loanAccount.setPaymentDate(23);
-        loanAccount.setMonthlyInstallment(300);
+        loanAccount.setMonthlyInstallment(300.0);
 
         loanAccountSessionBean.createLoanAccount(loanAccount);
-        System.out.print("EntityBuilder ========== " + loanAccount.getAccountNumber());
 
     }
 
-    private void testCreditCard() {
+    private List<LoanInterest> setLoanInterest(List<LoanInterest> loanInterests,
+            Integer startTime, Integer endTime, Double interestRate) {
+
+        LoanInterest loanInterest = new LoanInterest();
+        loanInterest.setStartTime(startTime);
+        loanInterest.setEndTime(endTime);
+        loanInterest.setInterestRate(interestRate);
+        loanInterests.add(loanInterest);
+        return loanInterests;
+    }
+
+    private LoanProduct setLoanLoanProduct( String productName, String productType, List<LoanInterest> loanInterests,
+            Integer tenure, Integer lockInDuration, Double penaltyInterestRate) {
+
+        LoanProduct loanProduct = new LoanProduct();
+        loanProduct.setProductName(productName);
+        loanProduct.setProductType(productType);
+        loanProduct.setLoanInterests(loanInterests);
+        loanProduct.setTenure(tenure);
+        loanProduct.setLockInDuration(lockInDuration);
+        loanProduct.setPenaltyInterestRate(penaltyInterestRate);
+        loanProductSessionBean.createLoanProduct(loanProduct);
+
+        return loanProduct;
+    }
+
+    private void testUpdateLoanProduct() {
+        LoanProduct lp1 = new LoanProduct();
+        lp1 = loanProductSessionBean.getLoanProductByProductName(LoanProductType.LOAN_PRODUCT_TYPE_PRIVATE_HOUSE.getValue() + ": Fixed");
+        System.out.print(lp1 == null);
+        System.out.print(lp1.getProductName());
+        lp1.setProductName(LoanProductType.LOAN_PRODUCT_TYPE_PRIVATE_HOUSE.getValue() + ": Floating (FBR00)");
+        LoanProduct lpTest = loanProductSessionBean.updateLoanProduct(lp1);
+        System.out.print(lpTest == null);
+
+    }
+
+    public void testCreditCard() {
 
         Date startDate = DateUtils.getBeginOfDay();
         Date endDate = DateUtils.getEndOfDay();

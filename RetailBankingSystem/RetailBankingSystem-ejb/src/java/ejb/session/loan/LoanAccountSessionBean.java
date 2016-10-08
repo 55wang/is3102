@@ -39,22 +39,7 @@ public class LoanAccountSessionBean implements LoanAccountSessionBeanLocal {
         }
     }
     
-    @Override
-    public LoanProduct createLoanProduct(LoanProduct loanProduct) {
-        try {
-            
-            for (LoanInterest interest : loanProduct.getLoanInterests()) {
-                interest.setLoanProduct(loanProduct);
-                em.persist(interest);
-            }
-            em.persist(loanProduct);
-
-            return loanProduct;
-        } catch (Exception e) {
-            return null;
-        }
-    }
-    
+         
     private String generateLoanAccountNumber() {
         for (;;) {
             String accountNumber = GenerateAccountAndCCNumber.generateLoanAccountNumber();

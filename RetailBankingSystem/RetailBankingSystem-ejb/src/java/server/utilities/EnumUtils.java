@@ -1170,7 +1170,7 @@ public class EnumUtils {
     }
 
     public enum LoanAccountStatus {
-        
+
         NEW("NEW"),
         PENDING("PENDING"),
         APPROVED("APPROVED"),
@@ -1193,6 +1193,38 @@ public class EnumUtils {
 
         public static LoanAccountStatus getEnum(String value) {
             for (LoanAccountStatus v : values()) {
+                if (v.getValue().equalsIgnoreCase(value)) {
+                    return v;
+                }
+            }
+            throw new IllegalArgumentException();
+        }
+    }
+
+    public enum LoanProductType {
+
+        LOAN_PRODUCT_TYPE_PRIVATE_HOUSE("MBS Private House Loan"),
+        LOAN_PRODUCT_TYPE_HDB("MBS HDB Loan"),
+        LOAN_PRODUCT_TYPE_CAR("MBS Car Loan"),
+        LOAN_PRODUCT_TYPE_PERSONAL("MBS Personal Loan"),
+        SUSPENDED("SUSPENDED");
+        private String value;
+
+        LoanProductType(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        @Override
+        public String toString() {
+            return this.getValue();
+        }
+
+        public static LoanProductType getEnum(String value) {
+            for (LoanProductType v : values()) {
                 if (v.getValue().equalsIgnoreCase(value)) {
                     return v;
                 }

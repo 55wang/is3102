@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -24,9 +25,11 @@ public class LoanProduct implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String productType;
+//    @Column(unique = true, nullable = false)
     private String productName;
     //lockInDuration unit is month
     private Integer lockInDuration;
@@ -59,6 +62,14 @@ public class LoanProduct implements Serializable {
     @Override
     public String toString() {
         return "entity.loan.LoanProduct[ id=" + id + " ]";
+    }
+
+    public String getProductType() {
+        return productType;
+    }
+
+    public void setProductType(String productType) {
+        this.productType = productType;
     }
 
     public String getProductName() {
