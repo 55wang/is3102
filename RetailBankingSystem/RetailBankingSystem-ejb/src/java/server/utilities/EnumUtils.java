@@ -752,19 +752,20 @@ public class EnumUtils {
     // Transaction
     public enum TransactionType {
 
-        INITIAL("INITIAL DEPOSIT"),
-        DEPOSIT("DEPOSIT"),
-        WITHDRAW("WITHDRAW"),
-        CHEQUE("CHEQUE"),
-        INTEREST("INTEREST"),
-        TRANSFER("TRANSFER"),
-        LOCALTRANSFER("LOCAL TRANSFER"),
-        INTERBANKTRANSFER("INTER BANK TRANSFER"),
-        OVERSEASTRANSFER("OVERSEAS TRANSFER"),
-        BILL("BILL"),
-        CCSPENDING("CCSPENDING"),
-        INVEST("INVEST"),
-        SALARY("SALARY");
+        INITIAL("Initial Deposit"),
+        DEPOSIT("Deposit"),
+        WITHDRAW("Withdraw"),
+        CHEQUE("Cheque"),
+        INTEREST("Interest"),
+        TRANSFER("Transfer"),
+        TOPUP("Top up"),
+        LOCALTRANSFER("Local Transfer"),
+        INTERBANKTRANSFER("Inter Bank Transfer"),
+        OVERSEASTRANSFER("Overseas transfer"),
+        BILL("Bill"),
+        CCSPENDING("Credit Card Spending"),
+        INVEST("Invest"),
+        SALARY("Salary");
 
         private String value;
 

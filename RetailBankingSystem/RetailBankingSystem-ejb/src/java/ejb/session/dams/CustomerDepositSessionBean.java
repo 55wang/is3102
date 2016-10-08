@@ -47,6 +47,7 @@ public class CustomerDepositSessionBean implements CustomerDepositSessionBeanLoc
             t.setAmount(account.getBalance());
             t.setCredit(Boolean.TRUE);
             t.setActionType(EnumUtils.TransactionType.INITIAL);
+            t.setReferenceNumber(generateReferenceNumber());
             account.addTransaction(t);
             if (account instanceof CustomerDepositAccount) {
                 ((CustomerDepositAccount)account).setPreviousBalance(account.getBalance());
@@ -69,6 +70,17 @@ public class CustomerDepositSessionBean implements CustomerDepositSessionBeanLoc
              DepositAccount a = em.find(DepositAccount.class, accountNumber);
              if (a == null) {
                  return accountNumber;
+             }
+        }
+    }
+    
+    private String generateReferenceNumber() {
+        String referenceNumber = "";
+        for(;;) {
+             referenceNumber = GenerateAccountAndCCNumber.generateReferenceNumber();
+             TransactionRecord a = em.find(TransactionRecord.class, referenceNumber);
+             if (a == null) {
+                 return referenceNumber;
              }
         }
     }
@@ -121,6 +133,7 @@ public class CustomerDepositSessionBean implements CustomerDepositSessionBeanLoc
             t.setAmount(depositAmount);
             t.setCredit(Boolean.TRUE);
             t.setFromAccount(ba);
+            t.setReferenceNumber(generateReferenceNumber());
             ba.addTransaction(t);
             ba.addBalance(depositAmount);
             em.merge(ba);
@@ -149,6 +162,7 @@ public class CustomerDepositSessionBean implements CustomerDepositSessionBeanLoc
                 t.setAmount(withdrawAmount);
                 t.setCredit(Boolean.FALSE);
                 t.setFromAccount(ba);
+                t.setReferenceNumber(generateReferenceNumber());
                 ba.addTransaction(t);
                 ba.removeBalance(withdrawAmount);
                 em.merge(ba);
@@ -167,6 +181,7 @@ public class CustomerDepositSessionBean implements CustomerDepositSessionBeanLoc
             t.setAmount(depositAmount);
             t.setCredit(Boolean.TRUE);
             t.setFromAccount(account);
+            t.setReferenceNumber(generateReferenceNumber());
             account.addTransaction(t);
             account.addBalance(depositAmount);
             em.merge(account);
@@ -188,6 +203,7 @@ public class CustomerDepositSessionBean implements CustomerDepositSessionBeanLoc
                 t.setAmount(withdrawAmount);
                 t.setCredit(Boolean.FALSE);
                 t.setFromAccount(account);
+                t.setReferenceNumber(generateReferenceNumber());
                 account.addTransaction(t);
                 account.removeBalance(withdrawAmount);
                 em.merge(account);
@@ -206,6 +222,7 @@ public class CustomerDepositSessionBean implements CustomerDepositSessionBeanLoc
             t.setAmount(depositAmount);
             t.setCredit(Boolean.TRUE);
             t.setFromAccount(account);
+            t.setReferenceNumber(generateReferenceNumber());
             account.addTransaction(t);
             account.addBalance(depositAmount);
             em.merge(account);
@@ -227,6 +244,7 @@ public class CustomerDepositSessionBean implements CustomerDepositSessionBeanLoc
                 t.setAmount(payAmount);
                 t.setCredit(Boolean.FALSE);
                 t.setFromAccount(account);
+                t.setReferenceNumber(generateReferenceNumber());
                 account.addTransaction(t);
                 account.removeBalance(payAmount);
                 em.merge(account);
@@ -249,6 +267,7 @@ public class CustomerDepositSessionBean implements CustomerDepositSessionBeanLoc
                 t.setAmount(spendAmount);
                 t.setCredit(Boolean.FALSE);
                 t.setFromAccount(account);
+                t.setReferenceNumber(generateReferenceNumber());
                 account.addTransaction(t);
                 account.removeBalance(spendAmount);
                 em.merge(account);
@@ -271,6 +290,7 @@ public class CustomerDepositSessionBean implements CustomerDepositSessionBeanLoc
                 t.setAmount(investAmount);
                 t.setCredit(Boolean.FALSE);
                 t.setFromAccount(account);
+                t.setReferenceNumber(generateReferenceNumber());
                 account.addTransaction(t);
                 account.removeBalance(investAmount);
                 em.merge(account);
@@ -291,6 +311,7 @@ public class CustomerDepositSessionBean implements CustomerDepositSessionBeanLoc
             t.setAmount(interestAmount);
             t.setCredit(Boolean.TRUE);
             t.setFromAccount(account);
+            t.setReferenceNumber(generateReferenceNumber());
             account.addTransaction(t);
             account.addBalance(interestAmount);
             account.getCumulatedInterest().reset();

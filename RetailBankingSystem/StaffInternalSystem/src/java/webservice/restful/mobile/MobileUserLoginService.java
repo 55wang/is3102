@@ -74,7 +74,7 @@ public class MobileUserLoginService {
         try {
             MainAccount ma = loginBean.loginAccount(username, HashPwdUtils.hashPwd(password));
             if (ma != null) {
-                MobileAccount mobileAccount = ma.getMobileAccount();
+                MobileAccount mobileAccount = mobileBean.getMobileAccountByUserId(ma.getUserID());
                 // request to set up mobile password
                 UserLoginDTO user = new UserLoginDTO();
                 user.setId(ma.getId().toString());

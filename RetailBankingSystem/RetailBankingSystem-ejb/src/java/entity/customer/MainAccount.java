@@ -45,8 +45,6 @@ public class MainAccount implements Serializable {
     // mappings
     @OneToOne(cascade = {CascadeType.MERGE}, mappedBy = "mainAccount")
     private Customer customer;
-    @OneToOne(cascade = {CascadeType.MERGE}, mappedBy = "mainAccount")
-    private MobileAccount mobileAccount;
     @OneToMany(cascade = {CascadeType.MERGE}, mappedBy = "mainAccount")
     private List<DepositAccount> bankAcounts = new ArrayList<>(); 
     @OneToMany(cascade = {CascadeType.MERGE}, mappedBy = "mainAccount")
@@ -171,19 +169,5 @@ public class MainAccount implements Serializable {
 
     public void setCreditCardOrder(List<CreditCardOrder> creditCardOrder) {
         this.creditCardOrder = creditCardOrder;
-    }
-
-    /**
-     * @return the mobileAccount
-     */
-    public MobileAccount getMobileAccount() {
-        return mobileAccount;
-    }
-
-    /**
-     * @param mobileAccount the mobileAccount to set
-     */
-    public void setMobileAccount(MobileAccount mobileAccount) {
-        this.mobileAccount = mobileAccount;
     }
 }

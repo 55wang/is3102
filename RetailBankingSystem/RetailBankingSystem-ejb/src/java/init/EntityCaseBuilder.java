@@ -6,6 +6,7 @@
 package init;
 
 import ejb.session.cms.CustomerCaseSessionBeanLocal;
+import ejb.session.common.LoginSessionBeanLocal;
 import ejb.session.staff.StaffAccountSessionBeanLocal;
 import entity.customer.CustomerCase;
 import entity.customer.Issue;
@@ -31,8 +32,11 @@ public class EntityCaseBuilder {
     private CustomerCaseSessionBeanLocal customerCaseSessionBean;
     @EJB
     private StaffAccountSessionBeanLocal staffAccountSessionBean;
+    @EJB
+    private LoginSessionBeanLocal loginBean;
 
-    public void initCase(MainAccount demoMainAccount) {
+    public void initCase() {
+        MainAccount demoMainAccount = loginBean.getMainAccountByUserID(ConstantUtils.DEMO_MAIN_ACCOUNT_USER_ID);
         CustomerCase cc = new CustomerCase();
         Issue issue = new Issue();
         List<Issue> issues = new ArrayList<>();

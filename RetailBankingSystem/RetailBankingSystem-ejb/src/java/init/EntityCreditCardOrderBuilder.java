@@ -10,6 +10,7 @@ import ejb.session.card.CardProductSessionBeanLocal;
 import ejb.session.card.CardTransactionSessionBeanLocal;
 import ejb.session.card.CreditCardOrderSessionBeanLocal;
 import ejb.session.cms.CustomerProfileSessionBeanLocal;
+import ejb.session.common.LoginSessionBeanLocal;
 import ejb.session.utils.UtilsSessionBeanLocal;
 import entity.card.account.CardTransaction;
 import entity.card.account.CreditCardAccount;
@@ -21,6 +22,7 @@ import entity.customer.MainAccount;
 import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
+import server.utilities.ConstantUtils;
 import server.utilities.EnumUtils;
 import server.utilities.PincodeGenerationUtils;
 
@@ -33,19 +35,22 @@ import server.utilities.PincodeGenerationUtils;
 public class EntityCreditCardOrderBuilder {
 
     @EJB
-    CardProductSessionBeanLocal cardProductSessionBean;
+    private CardProductSessionBeanLocal cardProductSessionBean;
     @EJB
-    CustomerProfileSessionBeanLocal customerProfileSessionBean;
+    private CustomerProfileSessionBeanLocal customerProfileSessionBean;
     @EJB
-    CreditCardOrderSessionBeanLocal creditCardOrderSessionBean;
+    private CreditCardOrderSessionBeanLocal creditCardOrderSessionBean;
     @EJB
-    CardAcctSessionBeanLocal cardAcctSessionBean;
+    private CardAcctSessionBeanLocal cardAcctSessionBean;
     @EJB
     private UtilsSessionBeanLocal utilsBean;
     @EJB
     private CardTransactionSessionBeanLocal cardTransactionSessionBean;
+    @EJB
+    private LoginSessionBeanLocal loginBean;
 
-    public void initCreditCardOrder(MainAccount demoMainAccount, RewardCardProduct demoRewardCardProduct, PromoProduct demoPromoProduct) {
+    public void initCreditCardOrder(RewardCardProduct demoRewardCardProduct, PromoProduct demoPromoProduct) {
+        MainAccount demoMainAccount = loginBean.getMainAccountByUserID(ConstantUtils.DEMO_MAIN_ACCOUNT_USER_ID);
         //create an active cca and its cco
         CreditCardAccount cca = new CreditCardAccount();
         cca.setCreditCardProduct(demoRewardCardProduct);

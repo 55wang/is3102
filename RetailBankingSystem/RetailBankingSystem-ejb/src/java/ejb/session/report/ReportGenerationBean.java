@@ -7,16 +7,9 @@ package ejb.session.report;
 
 import ejb.session.bill.TransactionSessionBeanLocal;
 import entity.common.TransactionRecord;
-import java.awt.Toolkit;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
-import java.io.Serializable;
-import java.io.File;
-import java.io.IOException;
 import java.math.RoundingMode;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -24,16 +17,12 @@ import java.util.List;
 import java.util.Map;
 import javax.ejb.EJB;
 
-import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
-import net.sf.jasperreports.engine.design.JasperDesign;
-import net.sf.jasperreports.engine.xml.JRXmlLoader;
-import net.sf.jasperreports.view.JasperViewer;
 import server.utilities.DateUtils;
 
 /**
@@ -54,7 +43,7 @@ public class ReportGenerationBean implements ReportGenerationBeanLocal  {
     }
 
     @Override
-    public boolean generateMonthlyDepositAccountTransactionReport(String accountNumber, Date startDate, Date endDate) throws JRException, IOException, SQLException, ClassNotFoundException {
+    public boolean generateMonthlyDepositAccountTransactionReport(String accountNumber, Date startDate, Date endDate) {
 //        String filePath = "/Users/litong/Documents/IS3102/is3102/RetailBankingSystem/InternetBankingSystem/src/java/report/testReport.jrxml";
 
         //Load Driver
@@ -77,10 +66,6 @@ public class ReportGenerationBean implements ReportGenerationBeanLocal  {
             Class.forName("com.mysql.jdbc.Driver");
         } catch (Exception ex) {
         }
-
-//        Connection a = DriverManager.getConnection("jdbc:mysql://localhost:3306/RetailBankingSystem?zeroDateTimeBehavior=convertToNull", "root", "password");
-
-//        String sourceFileName = prependingPath + "is3102/RetailBankingSystem/InternetBankingSystem/web/request/estatement.pdf";
         List<TransactionRecord> rawList = transactionBean.getTransactionRecordByAccountNumberStartDateEndDate(accountNumber, startDate, endDate);
         ArrayList<TransactionDTO> dataList = getTransactionDTOList(rawList);
         System.out.println(dataList);
@@ -88,17 +73,12 @@ public class ReportGenerationBean implements ReportGenerationBeanLocal  {
 
         Map parameters = new HashMap();
         try {
-//            JasperFillManager.fillReportToFile(sourceFileName, parameters, beanColDataSource);
             JasperReport jr = JasperCompileManager.compileReport(prependingPath+"is3102/RetailBankingSystem/RetailBankingSystem-ejb/src/java/ejb/session/report/report.jrxml");
             JasperPrint jp = JasperFillManager.fillReport(jr, parameters, beanColDataSource);
             JasperExportManager.exportReportToPdfFile(jp, prependingPath+"is3102/RetailBankingSystem/InternetBankingSystem/web/personal_request/estatement_"+accountNumber+ DateUtils.getYearNumber(endDate)+ "_" + DateUtils.getMonthNumber(startDate) + "_" + DateUtils.getMonthNumber(endDate) +".pdf");
-        } catch (JRException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
-
-//        JasperReport jr = JasperCompileManager.compileReport(prependingPath+"is3102/RetailBankingSystem/InternetBankingSystem/src/java/report/report.jrxml");
-//        JasperPrint jp = JasperFillManager.fillReport(jr, new HashMap(), a);
-//        JasperExportManager.exportReportToPdfFile(jp, prependingPath+"is3102/RetailBankingSystem/InternetBankingSystem/web/request/estatement.pdf");
         return true;
     }
 

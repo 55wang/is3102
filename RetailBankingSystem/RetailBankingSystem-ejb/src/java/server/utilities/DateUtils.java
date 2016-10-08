@@ -5,6 +5,7 @@
  */
 package server.utilities;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -62,7 +63,7 @@ public class DateUtils {
         setTimeToEndofDay(calendar);
         return calendar.getTime();
     }
-    
+
     public static Date getBeginOfDay() {
         Calendar calendar = getCalendarForNow();
         setTimeToBeginningOfDay(calendar);
@@ -108,25 +109,25 @@ public class DateUtils {
         calendar.set(Calendar.SECOND, 59);
         calendar.set(Calendar.MILLISECOND, 999);
     }
-    
+
     public static int yearDifference(Date date1, Date date2) {
         Calendar startCalendar = dateToCalender(date1);
         Calendar endCalendar = dateToCalender(date2);
-        
+
         return endCalendar.get(Calendar.YEAR) - startCalendar.get(Calendar.YEAR);
     }
-    
+
     public static int yearDifference(Calendar startCalendar, Calendar endCalendar) {
         return endCalendar.get(Calendar.YEAR) - startCalendar.get(Calendar.YEAR);
     }
-    
+
     public static int monthDifference(Date date1, Date date2) {
         Calendar startCalendar = dateToCalender(date1);
         Calendar endCalendar = dateToCalender(date2);
         Integer diffYear = yearDifference(startCalendar, endCalendar);
         return diffYear * 12 + endCalendar.get(Calendar.MONTH) - startCalendar.get(Calendar.MONTH);
     }
-    
+
     public static int monthDifference(Calendar startCalendar, Calendar endCalendar) {
         Integer diffYear = yearDifference(startCalendar, endCalendar);
         return diffYear * 12 + endCalendar.get(Calendar.MONTH) - startCalendar.get(Calendar.MONTH);
@@ -157,7 +158,7 @@ public class DateUtils {
             return extraDays - dayTwo.get(Calendar.DAY_OF_YEAR) + dayOneOriginalYearDays;
         }
     }
-    
+
     public static int dayDifference(Calendar dayOne, Calendar dayTwo) {
 
         if (dayOne.get(Calendar.YEAR) == dayTwo.get(Calendar.YEAR)) {
@@ -187,21 +188,26 @@ public class DateUtils {
         cal.setTime(date);
         return cal;
     }
-    
+
     public static Integer getMonthNumber(Date date) {
         Calendar cal = GregorianCalendar.getInstance();
         cal.setTime(date);
         return cal.get(Calendar.MONTH);
     }
-    
+
     public static Integer getYearNumber(Date date) {
         Calendar cal = GregorianCalendar.getInstance();
         cal.setTime(date);
         return cal.get(Calendar.YEAR);
     }
-    
+
     public static Calendar addDaysToDate(Calendar cal, Integer days) {
         cal.add(Calendar.DATE, days);
         return cal;
+    }
+
+    public static String readableDate(Date date) {
+        SimpleDateFormat dt1 = new SimpleDateFormat("dd MMM, h:mm a");
+        return dt1.format(date);
     }
 }

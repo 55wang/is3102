@@ -5,29 +5,17 @@
  */
 package init;
 
-import ejb.session.card.CardTransactionSessionBeanLocal;
-import ejb.session.cms.CustomerCaseSessionBeanLocal;
 import ejb.session.staff.StaffAccountSessionBeanLocal;
-import entity.card.account.CardTransaction;
 import entity.card.product.PromoProduct;
 import entity.card.product.RewardCardProduct;
-import entity.customer.CustomerCase;
-import entity.customer.Issue;
 import entity.customer.MainAccount;
-import entity.staff.Announcement;
 import entity.staff.StaffAccount;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.ejb.Singleton;
 import javax.ejb.LocalBean;
 import javax.ejb.Startup;
 import server.utilities.ConstantUtils;
-import server.utilities.DateUtils;
-import server.utilities.EnumUtils;
-import server.utilities.EnumUtils.CaseStatus;
 import server.utilities.GenerateAccountAndCCNumber;
 
 /**
@@ -56,13 +44,14 @@ public class EntityBuilderBean {
     private EntityDAMSBuilder entityDAMSBuilder;
     @EJB
     private EntityCaseBuilder entityCaseBuilder;
+    @EJB
+    private EntityPayLahBuilder entityPayLahBuilder;
     
     // session beans
     @EJB
     private StaffAccountSessionBeanLocal staffAccountSessionBean;
 
     
-    private MainAccount demoMainAccount;
     private RewardCardProduct demoRewardCardProduct;
     private PromoProduct demoPromoProduct;
 
@@ -85,12 +74,13 @@ public class EntityBuilderBean {
 
     private void buildEntities() {
         entityStaffBuilder.initStaffAndRoles();
-        demoMainAccount = entityCustomerBuilder.initCustomer();
-        entityDAMSBuilder.initDAMS(demoMainAccount);
+        entityCustomerBuilder.initCustomer();
+        entityDAMSBuilder.initDAMS();
         demoPromoProduct = entityPromoProductBuilder.initPromoProduct(demoPromoProduct);
-        demoRewardCardProduct = entityCreditCardProductBuilder.initCreditCardProduct(demoMainAccount, demoPromoProduct);
-        entityCaseBuilder.initCase(demoMainAccount);
-        entityCreditCardOrderBuilder.initCreditCardOrder(demoMainAccount, demoRewardCardProduct, demoPromoProduct);
+        demoRewardCardProduct = entityCreditCardProductBuilder.initCreditCardProduct(demoPromoProduct);
+        entityCaseBuilder.initCase();
+        entityCreditCardOrderBuilder.initCreditCardOrder(demoRewardCardProduct, demoPromoProduct);
         entityBillOrgBuilder.initBillOrganization();
+        entityPayLahBuilder.initPayLahDemoData();
     }
 }
