@@ -5,6 +5,8 @@
  */
 package init;
 
+import ejb.session.mainaccount.MainAccountSessionBean;
+import ejb.session.mainaccount.MainAccountSessionBeanLocal;
 import ejb.session.staff.StaffAccountSessionBeanLocal;
 import ejb.session.wealth.FinancialInstrumentSessionBeanLocal;
 import ejb.session.wealth.InvestmentPlanSessionBeanLocal;
@@ -39,6 +41,9 @@ public class EntityWealthBuilder {
     
     @EJB
     private StaffAccountSessionBeanLocal staffAccountSessionBean;
+    
+    @EJB
+    private MainAccountSessionBeanLocal mainAccountSessionBean;
 
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")
@@ -50,6 +55,8 @@ public class EntityWealthBuilder {
         wms.setRiskToleranceScore(31);
         
         wealthManegementSubscriberSessionBean.createWealthManagementSubscriber(wms);
+        demoMainAccount.setWealthManagementSubscriber(wms);
+        mainAccountSessionBean.updateMainAccount(demoMainAccount);
         
         FinancialInstrument financialInstrument1 = new FinancialInstrument();   
         financialInstrument1.setName(EnumUtils.FinancialInstrumentClass.CORPORATE_BONDS);
