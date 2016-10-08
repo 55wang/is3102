@@ -1143,6 +1143,32 @@ public class EntityBuilderBean {
     private void initLoanAccount() {
         LoanAccount loanAccount = new LoanAccount();
 
+        List<LoanInterest> loanInterests = new ArrayList<LoanInterest>();
+
+        LoanInterest loanInterest1 = new LoanInterest();
+        loanInterest1.setId(Long.getLong(Integer.toString(1)));
+        loanInterest1.setStartTime(0);
+        loanInterest1.setEndTime(3);
+        loanInterest1.setInterestRate(0.2);
+        loanInterests.add(loanInterest1);
+
+        LoanInterest loanInterest2 = new LoanInterest();
+        loanInterest2.setId(Long.getLong(Integer.toString(2)));
+        loanInterest2.setStartTime(3);
+        loanInterest2.setEndTime(40);
+        loanInterest2.setInterestRate(0.2);
+        loanInterests.add(loanInterest2);
+
+        LoanProduct loanProduct = new LoanProduct();
+        loanProduct.setId(Long.getLong(Integer.toString(1)));
+        loanProduct.setProductName("MBS Personal Loan");
+        loanProduct.setLoanInterests(loanInterests);
+        loanProduct.setTenure(7);
+        loanProduct.setLockInDuration(0);
+        loanProduct.setPenaltyInterestRate(0.5);
+        loanProductSessionBean.createLoanProduct(loanProduct);
+        System.out.print(demoMainAccount.getBankAcounts().size());
+
         loanAccount.setDepositAccount(demoDepositAccount);
         loanAccount.setLoanProduct(demoLoanProduct);
         loanAccount.setCustomer(demoMainAccount.getCustomer());
@@ -1152,6 +1178,7 @@ public class EntityBuilderBean {
         loanAccount.setPrincipal(5000.0);
         loanAccount.setPaymentDate(23);
         loanAccount.setMonthlyInstallment(300.0);
+
 
         loanAccountSessionBean.createLoanAccount(loanAccount);
 
