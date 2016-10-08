@@ -9,6 +9,7 @@ import entity.card.account.CreditCardAccount;
 import entity.card.order.CreditCardOrder;
 import entity.common.AuditLog;
 import entity.dams.account.DepositAccount;
+import entity.loan.LoanAccount;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,21 +41,23 @@ public class MainAccount implements Serializable {
     @OneToOne(cascade = {CascadeType.MERGE}, mappedBy = "mainAccount")
     private Customer customer;
     @OneToMany(cascade = {CascadeType.MERGE}, mappedBy = "mainAccount")
-    private List<DepositAccount> bankAcounts = new ArrayList<DepositAccount>(); 
+    private List<DepositAccount> bankAcounts = new ArrayList<DepositAccount>();
     @OneToMany(cascade = {CascadeType.MERGE}, mappedBy = "mainAccount")
-    private List<CreditCardAccount> creditCardAccounts= new ArrayList<CreditCardAccount>(); 
+    private List<CreditCardAccount> creditCardAccounts = new ArrayList<CreditCardAccount>();
     @OneToMany(cascade = {CascadeType.MERGE}, mappedBy = "mainAccount")
     private List<AuditLog> auditLog = new ArrayList<AuditLog>();
     @OneToMany(cascade = {CascadeType.MERGE}, mappedBy = "mainAccount")
     private List<CustomerCase> cases = new ArrayList<CustomerCase>();
     @OneToMany(cascade = {CascadeType.MERGE}, mappedBy = "mainAccount")
     private List<CreditCardOrder> creditCardOrder = new ArrayList<CreditCardOrder>();
-    
+    @OneToMany(cascade = {CascadeType.MERGE}, mappedBy = "mainAccount")
+    private List<LoanAccount> loanAccounts = new ArrayList<LoanAccount>();
+
     public void addDepositAccount(DepositAccount da) {
         this.bankAcounts.add(da);
     }
-    
-    public void addCase(CustomerCase cc){
+
+    public void addCase(CustomerCase cc) {
         this.cases.add(cc);
     }
 
@@ -161,5 +164,13 @@ public class MainAccount implements Serializable {
 
     public void setCreditCardOrder(List<CreditCardOrder> creditCardOrder) {
         this.creditCardOrder = creditCardOrder;
+    }
+
+    public List<LoanAccount> getLoanAccounts() {
+        return loanAccounts;
+    }
+
+    public void setLoanAccounts(List<LoanAccount> loanAccounts) {
+        this.loanAccounts = loanAccounts;
     }
 }

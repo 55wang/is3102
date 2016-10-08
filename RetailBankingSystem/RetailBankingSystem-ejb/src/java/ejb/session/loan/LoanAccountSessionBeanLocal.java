@@ -7,6 +7,7 @@ package ejb.session.loan;
 
 import entity.loan.LoanAccount;
 import entity.loan.LoanProduct;
+import java.util.List;
 import javax.ejb.Local;
 
 /**
@@ -16,5 +17,9 @@ import javax.ejb.Local;
 @Local
 public interface LoanAccountSessionBeanLocal {
     public LoanAccount createLoanAccount(LoanAccount loanAccount);
+
+    public LoanAccount getLoanAccountByAccountNumber(String accountNumber);
+
+    public List<LoanAccount> getLoanAccountListByCustomerIndentityNumber(String identityNumber);
 
 }

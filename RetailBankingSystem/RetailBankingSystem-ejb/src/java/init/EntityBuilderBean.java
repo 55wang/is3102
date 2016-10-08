@@ -123,7 +123,8 @@ public class EntityBuilderBean {
     public void init() {
         System.out.println("EntityInitilzationBean @PostConstruct");
         System.out.println(GenerateAccountAndCCNumber.generateAccountNumber());
-        
+        testLoanAccount();
+
         if (needInit()) {
             buildEntities();
         } else {
@@ -143,24 +144,22 @@ public class EntityBuilderBean {
         // TODO: init with an organized flow structure
         // these are just temporary data for emergency use.
         // Yifan pls help edit for me on top of these.
-        initStaffAndRoles();
-        demoMainAccount = entityCustomerBuilder.initCustomer();
-
-        initInterest();
-        initDepositProducts();
-        initDepositAccounts();
-        demoPromoProduct = entityPromoProductBuilder.initPromoProduct(demoPromoProduct);
-        demoRewardCardProduct = entityCreditCardProductBuilder.initCreditCardProduct(demoMainAccount, demoPromoProduct);
-        initCase();
-        initNotification();
-        
-        
-
-//        initCreditCardOrder();
-        entityCreditCardOrderBuilder.initCreditCardOrder(demoMainAccount, demoRewardCardProduct, demoPromoProduct);
-        initLoanProduct();
-        testUpdateLoanProduct();
-        initLoanAccount();
+//        initStaffAndRoles();
+//        demoMainAccount = entityCustomerBuilder.initCustomer();
+//
+//        initInterest();
+//        initDepositProducts();
+//        initDepositAccounts();
+//        demoPromoProduct = entityPromoProductBuilder.initPromoProduct(demoPromoProduct);
+//        demoRewardCardProduct = entityCreditCardProductBuilder.initCreditCardProduct(demoMainAccount, demoPromoProduct);
+//        initCase();
+//        initNotification();
+//       
+//
+////        initCreditCardOrder();
+//        entityCreditCardOrderBuilder.initCreditCardOrder(demoMainAccount, demoRewardCardProduct, demoPromoProduct);
+//        initLoanProduct();
+//        initLoanAccount();
     }
 
     private void initStaffAndRoles() {
@@ -1084,22 +1083,21 @@ public class EntityBuilderBean {
     public void initLoanProduct() {
         LoanCommonInterest sibor = new LoanCommonInterest();
         sibor.setName("SIBOR");
-        sibor.setRate(0.87242/100);
+        sibor.setRate(0.87242 / 100);
         loanProductSessionBean.createCommonInterest(sibor);
-        
+
         LoanCommonInterest fbr18 = new LoanCommonInterest();
         fbr18.setName("FHR18");
-        fbr18.setRate(0.6/100);
+        fbr18.setRate(0.6 / 100);
         loanProductSessionBean.createCommonInterest(fbr18);
 
-        
         //create 3 packages for loan product for private houses
         //package 1: Fixed
         List<LoanInterest> loanInterestsForPrivateHouses1 = new ArrayList<LoanInterest>();
         //Para: List<LoanInterest>, Long id, Integer startTime, Integer endTime(-1 means till maturity date), Double interestRate
-        loanInterestsForPrivateHouses1 = setLoanInterest(loanInterestsForPrivateHouses1, 0, 1, 1.8/100);
-        loanInterestsForPrivateHouses1 = setLoanInterest(loanInterestsForPrivateHouses1, 1, 2, 1.8/100);
-        loanInterestsForPrivateHouses1 = setLoanInterest(loanInterestsForPrivateHouses1, 2, 3, 1.8/100);
+        loanInterestsForPrivateHouses1 = setLoanInterest(loanInterestsForPrivateHouses1, 0, 1, 1.8 / 100);
+        loanInterestsForPrivateHouses1 = setLoanInterest(loanInterestsForPrivateHouses1, 1, 2, 1.8 / 100);
+        loanInterestsForPrivateHouses1 = setLoanInterest(loanInterestsForPrivateHouses1, 2, 3, 1.8 / 100);
         loanInterestsForPrivateHouses1 = setLoanInterest(loanInterestsForPrivateHouses1, 3, -1, 1.2 / 100 + loanProductSessionBean.getCommonInterestByName("FHR18").getRate());
         //Para: Long id, String productName, String productType, List<LoanInterest> loanInterests,
         //            Integer tenure, Integer lockInDuration, Double penaltyInterestRate
@@ -1110,7 +1108,6 @@ public class EntityBuilderBean {
                 6, 3, 0.5);
 
         demoLoanProduct = loanProductForPrivateHouses1;
-//        System.out.println("!!!id-"+loanProductForPrivateHouses1.getId()+ ": "+loanProductForPrivateHouses1.getProductName());
 
         //package 2: Floating (3-month SIBOR)
         List<LoanInterest> loanInterestsForPrivateHouses2 = new ArrayList<LoanInterest>();
@@ -1120,11 +1117,10 @@ public class EntityBuilderBean {
         loanInterestsForPrivateHouses2 = setLoanInterest(loanInterestsForPrivateHouses2, 3, -1, loanProductSessionBean.getCommonInterestByName("SIBOR").getRate() + 0.0125);
 
         LoanProduct loanProductForPrivateHouses2 = setLoanLoanProduct(
-                LoanProductType.LOAN_PRODUCT_TYPE_PRIVATE_HOUSE+ ": Floating (SIBOR)",
+                LoanProductType.LOAN_PRODUCT_TYPE_PRIVATE_HOUSE + ": Floating (SIBOR)",
                 LoanProductType.LOAN_PRODUCT_TYPE_PRIVATE_HOUSE.getValue(),
                 loanInterestsForPrivateHouses2,
                 6, 0, 0.5);
-//System.out.println("!!!id-"+loanProductForPrivateHouses2.getId()+ ": "+loanProductForPrivateHouses2.getProductName());
         //package 3: Floating (FBR18)
         List<LoanInterest> loanInterestsForPrivateHouses3 = new ArrayList<LoanInterest>();
         loanInterestsForPrivateHouses3 = setLoanInterest(loanInterestsForPrivateHouses3, 0, 1, loanProductSessionBean.getCommonInterestByName("FHR18").getRate() + 0.013);
@@ -1137,7 +1133,6 @@ public class EntityBuilderBean {
                 LoanProductType.LOAN_PRODUCT_TYPE_PRIVATE_HOUSE.getValue(),
                 loanInterestsForPrivateHouses3,
                 6, 0, 0.5);
-//System.out.println("!!!id-"+loanProductForPrivateHouses3.getId()+ ": "+loanProductForPrivateHouses3.getProductName());
     }
 
     private void initLoanAccount() {
@@ -1167,18 +1162,16 @@ public class EntityBuilderBean {
         loanProduct.setLockInDuration(0);
         loanProduct.setPenaltyInterestRate(0.5);
         loanProductSessionBean.createLoanProduct(loanProduct);
-        System.out.print(demoMainAccount.getBankAcounts().size());
 
         loanAccount.setDepositAccount(demoDepositAccount);
         loanAccount.setLoanProduct(demoLoanProduct);
-        loanAccount.setCustomer(demoMainAccount.getCustomer());
+        loanAccount.setMainAccount(demoMainAccount);
         loanAccount.setLoanOfficer(staffAccountSessionBean.getAccountByUsername(ConstantUtils.LOAN_OFFICIER_USERNAME));
         cal.add(Calendar.YEAR, 6);
         loanAccount.setMaturityDate(cal.getTime());
         loanAccount.setPrincipal(5000.0);
         loanAccount.setPaymentDate(23);
         loanAccount.setMonthlyInstallment(300.0);
-
 
         loanAccountSessionBean.createLoanAccount(loanAccount);
 
@@ -1195,7 +1188,7 @@ public class EntityBuilderBean {
         return loanInterests;
     }
 
-    private LoanProduct setLoanLoanProduct( String productName, String productType, List<LoanInterest> loanInterests,
+    private LoanProduct setLoanLoanProduct(String productName, String productType, List<LoanInterest> loanInterests,
             Integer tenure, Integer lockInDuration, Double penaltyInterestRate) {
 
         LoanProduct loanProduct = new LoanProduct();
@@ -1210,14 +1203,24 @@ public class EntityBuilderBean {
         return loanProduct;
     }
 
+    private void testLoanAccount() {
+//        LoanAccount la = loanAccountSessionBean.getLoanAccountByAccountNumber("774026692293");
+//        System.out.print(la==null);
+//        System.out.print("LoanAccount" + la.getAccountNumber());
+//        List<LoanAccount> las = loanAccountSessionBean.getLoanAccountListByCustomerIndentityNumber("S1234567Z");
+//        System.out.print(las.size());
+        
+
+    }
+
     private void testUpdateLoanProduct() {
-        LoanProduct lp1 = new LoanProduct();
-        lp1 = loanProductSessionBean.getLoanProductByProductName(LoanProductType.LOAN_PRODUCT_TYPE_PRIVATE_HOUSE.getValue() + ": Fixed");
-        System.out.print(lp1 == null);
-        System.out.print(lp1.getProductName());
-        lp1.setProductName(LoanProductType.LOAN_PRODUCT_TYPE_PRIVATE_HOUSE.getValue() + ": Floating (FBR00)");
-        LoanProduct lpTest = loanProductSessionBean.updateLoanProduct(lp1);
-        System.out.print(lpTest == null);
+//        LoanProduct lp1 = new LoanProduct();
+//        lp1 = loanProductSessionBean.getLoanProductByProductName(LoanProductType.LOAN_PRODUCT_TYPE_PRIVATE_HOUSE.getValue() + ": Fixed");
+//        System.out.print(lp1 == null);
+//        System.out.print(lp1.getProductName());
+//        lp1.setProductName(LoanProductType.LOAN_PRODUCT_TYPE_PRIVATE_HOUSE.getValue() + ": Floating (FBR00)");
+//        LoanProduct lpTest = loanProductSessionBean.updateLoanProduct(lp1);
+//        System.out.print(lpTest == null);
 
     }
 
