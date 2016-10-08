@@ -123,7 +123,6 @@ public class EntityBuilderBean {
     public void init() {
         System.out.println("EntityInitilzationBean @PostConstruct");
         System.out.println(GenerateAccountAndCCNumber.generateAccountNumber());
-        testLoanAccount();
 
         if (needInit()) {
             buildEntities();
@@ -144,22 +143,22 @@ public class EntityBuilderBean {
         // TODO: init with an organized flow structure
         // these are just temporary data for emergency use.
         // Yifan pls help edit for me on top of these.
-//        initStaffAndRoles();
-//        demoMainAccount = entityCustomerBuilder.initCustomer();
-//
-//        initInterest();
-//        initDepositProducts();
-//        initDepositAccounts();
-//        demoPromoProduct = entityPromoProductBuilder.initPromoProduct(demoPromoProduct);
-//        demoRewardCardProduct = entityCreditCardProductBuilder.initCreditCardProduct(demoMainAccount, demoPromoProduct);
-//        initCase();
-//        initNotification();
-//       
-//
-////        initCreditCardOrder();
+        initStaffAndRoles();
+        demoMainAccount = entityCustomerBuilder.initCustomer();
+
+        initInterest();
+        initDepositProducts();
+        initDepositAccounts();
+        demoPromoProduct = entityPromoProductBuilder.initPromoProduct(demoPromoProduct);
+        demoRewardCardProduct = entityCreditCardProductBuilder.initCreditCardProduct(demoMainAccount, demoPromoProduct);
+        initCase();
+        initNotification();
+       
+
+//        initCreditCardOrder();
 //        entityCreditCardOrderBuilder.initCreditCardOrder(demoMainAccount, demoRewardCardProduct, demoPromoProduct);
-//        initLoanProduct();
-//        initLoanAccount();
+        initLoanProduct();
+        initLoanAccount();
     }
 
     private void initStaffAndRoles() {
