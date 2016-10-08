@@ -199,4 +199,9 @@ public class DateUtils {
         cal.setTime(date);
         return cal.get(Calendar.YEAR);
     }
+    
+    public static Calendar addDaysToDate(Calendar cal, Integer days) {
+        cal.add(Calendar.DATE, days);
+        return cal;
+    }
 }

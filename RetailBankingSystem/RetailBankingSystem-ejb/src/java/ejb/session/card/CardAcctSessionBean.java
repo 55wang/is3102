@@ -16,6 +16,7 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import server.utilities.DateUtils;
 import server.utilities.EnumUtils;
 import server.utilities.EnumUtils.CardAccountStatus;
 import server.utilities.GenerateAccountAndCCNumber;
@@ -35,7 +36,7 @@ public class CardAcctSessionBean implements CardAcctSessionBeanLocal {
     public Date setOverDueDateAndMPD(CreditCardAccount cca) {
         cca.setMinPayDue(cca.calculateMinPayDue());
         Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.DATE, 15);
+        cal = DateUtils.addDaysToDate(cal, 15);
         cca.setOverDueDate(cal.getTime());
         updateCreditCardAccount(cca);
         return cca.getOverDueDate();
