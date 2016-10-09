@@ -38,7 +38,7 @@ public class LoanProductSessionBean implements LoanProductSessionBeanLocal {
                     interest.setLoanProduct(loanProduct);
                     em.persist(interest);
                 }
-                em.persist(loanProduct);
+                    em.persist(loanProduct);
                 System.out.println("createLoanProduct after persisit: " + loanProduct.getProductName());
                 return loanProduct;
             } catch (Exception e) {
