@@ -5,6 +5,7 @@
  */
 package ejb.session.loan;
 
+import entity.loan.LoanAccount;
 import entity.loan.LoanPaymentBreakdown;
 import entity.loan.LoanRepaymentRecord;
 import java.util.Date;
@@ -20,7 +21,8 @@ public interface LoanPaymentSessionBeanLocal {
     
     public LoanPaymentBreakdown createLoanPaymentBreakdown(LoanPaymentBreakdown loanPaymentBreakdown);
     public LoanRepaymentRecord createLoanRepaymentRecord(LoanRepaymentRecord loanRepaymentRecord);
-//    public List calculateRepaymentBreakdown(Double loanAmt, Integer tenure, Double loanInterest,Date loanDate);
+    public List calculatePaymentBreakdown(Double loanAmt,Double monthlyInstallment,Integer tenure, Double loanInterest,Date loanDate);
+    public List futurePaymentBreakdown(LoanAccount loanAccount,Integer currentPeriod);
 //    public List lumSumPayAdjustment(Integer lumSumPayment,Double outstandingLoanAmt,Integer residualTenure, Double loanInterest,Date lumSumPayDate);
 //    public Integer transactionPeriod(Date paymentDate,Integer tenure,List<LoanPaymentBreakdown> paymentBreakdown);
 //    public void realPayment(Integer period, Double payment,Date transactionDate,List<LoanRealPayment> realPayment);

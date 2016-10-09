@@ -44,7 +44,7 @@ public class LoanAccount implements Serializable {
     private Double outstandingPrincipal;
     private Double overduePayment;
     private Double principal;
-    private Integer paymentDate;
+    private Date paymentDate;
     private LoanAccountStatus loanAccountStatus;
 
     @ManyToOne(cascade = {CascadeType.MERGE})
@@ -127,11 +127,11 @@ public class LoanAccount implements Serializable {
         this.overduePayment = overduePayment;
     }
 
-    public Integer getPaymentDate() {
+    public Date getPaymentDate() {
         return paymentDate;
     }
 
-    public void setPaymentDate(Integer paymentDate) {
+    public void setPaymentDate(Date paymentDate) {
         this.paymentDate = paymentDate;
     }
 
