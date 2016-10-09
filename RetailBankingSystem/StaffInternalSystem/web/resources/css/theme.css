@@ -278,6 +278,11 @@ and open the template in the editor.
     width:fit-content;
 }
 /* end of wizard overwrite */
+/*Investment Plan*/
+#designinvestment #ajaxSpinner .ui-inputfield{
+    width:20px;
+}
+/*End of Investment Plan*/
 /* general */
 .container {
     padding-top: 100px;

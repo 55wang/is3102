@@ -22,6 +22,7 @@ import javax.persistence.TemporalType;
 import server.utilities.EnumUtils;
 import server.utilities.EnumUtils.InvestmentPlanSatisfactionLevel;
 import server.utilities.EnumUtils.InvestmentPlanStatus;
+import entity.wealth.FinancialInstrumentAndWeight;
 
 /**
  *
@@ -39,7 +40,6 @@ public class InvestmentPlan implements Serializable {
     private Integer amountOfInvestment;  
     private Double expectedReturn;
     private List<EnumUtils.FinancialInstrumentClass> preferedFinancialInstrument = new ArrayList<>();
-    private List<Double> financialInstrumentPecentage = new ArrayList<>();
     private String remarks;
     private InvestmentPlanStatus status;
     private InvestmentPlanSatisfactionLevel satisfactionLevel;
@@ -47,7 +47,7 @@ public class InvestmentPlan implements Serializable {
     @ManyToOne(cascade = CascadeType.MERGE)
     private WealthManagementSubscriber wealthManagementSubscriber;
     @OneToMany(cascade = CascadeType.MERGE)
-    private List<FinancialInstrument> financialInstruments = new ArrayList<>();
+    private List<FinancialInstrumentAndWeight> suggestedFinancialInstruments;
     @ManyToOne(cascade = CascadeType.MERGE)
     private Portfolio portfolio;
 
@@ -124,20 +124,12 @@ public class InvestmentPlan implements Serializable {
         this.wealthManagementSubscriber = wealthManagementSubscriber;
     }
 
-    public List<Double> getFinancialInstrumentPecentage() {
-        return financialInstrumentPecentage;
+    public List<FinancialInstrumentAndWeight> getSuggestedFinancialInstruments() {
+        return suggestedFinancialInstruments;
     }
 
-    public void setFinancialInstrumentPecentage(List<Double> financialInstrumentPecentage) {
-        this.financialInstrumentPecentage = financialInstrumentPecentage;
-    }
-
-    public List<FinancialInstrument> getFinancialInstruments() {
-        return financialInstruments;
-    }
-
-    public void setFinancialInstruments(List<FinancialInstrument> financialInstruments) {
-        this.financialInstruments = financialInstruments;
+    public void setSuggestedFinancialInstruments(List<FinancialInstrumentAndWeight> suggestedFinancialInstruments) {
+        this.suggestedFinancialInstruments = suggestedFinancialInstruments;
     }
 
     public Portfolio getPortfolio() {

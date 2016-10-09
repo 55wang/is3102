@@ -17,6 +17,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import server.utilities.EnumUtils;
 import server.utilities.EnumUtils.FinancialInstrumentClass;
+import entity.wealth.FinancialInstrumentAndWeight;
 
 /**
  *
@@ -67,25 +68,39 @@ public class InvestmentPlanSessionBean implements InvestmentPlanSessionBeanLocal
             //output is arraylist suggestedFinancialInstruments and according percentage
         
         //End of Mathmatical Caculation
+        List<FinancialInstrumentAndWeight> suggestedFinancialInstruments = new ArrayList<FinancialInstrumentAndWeight>();
         
-        List<FinancialInstrument> suggestedFinancialInstruments = new ArrayList<FinancialInstrument>();
-        suggestedFinancialInstruments.add(allFinancialInstruments.get(0));
-        suggestedFinancialInstruments.add(allFinancialInstruments.get(2));
-        suggestedFinancialInstruments.add(allFinancialInstruments.get(3));
-        suggestedFinancialInstruments.add(allFinancialInstruments.get(6));
-        suggestedFinancialInstruments.add(allFinancialInstruments.get(8));
-        suggestedFinancialInstruments.add(allFinancialInstruments.get(10));
+        FinancialInstrumentAndWeight fiaw1 = new FinancialInstrumentAndWeight();
+        fiaw1.setFi(allFinancialInstruments.get(0));
+        fiaw1.setWeight(0.12);
+        suggestedFinancialInstruments.add(fiaw1);
         
-        List<Double> accordingPercentages = new ArrayList<Double>();
-        accordingPercentages.add(0.12);
-        accordingPercentages.add(0.32);
-        accordingPercentages.add(0.06);
-        accordingPercentages.add(0.14);
-        accordingPercentages.add(0.22);
-        accordingPercentages.add(0.14);
+        FinancialInstrumentAndWeight fiaw2 = new FinancialInstrumentAndWeight();
+        fiaw2.setFi(allFinancialInstruments.get(2));
+        fiaw2.setWeight(0.32);
+        suggestedFinancialInstruments.add(fiaw2);
         
-        ip.setFinancialInstruments(suggestedFinancialInstruments);
-        ip.setFinancialInstrumentPecentage(accordingPercentages);
+        FinancialInstrumentAndWeight fiaw3 = new FinancialInstrumentAndWeight();
+        fiaw3.setFi(allFinancialInstruments.get(3));
+        fiaw3.setWeight(0.06);
+        suggestedFinancialInstruments.add(fiaw3);
+        
+        FinancialInstrumentAndWeight fiaw4 = new FinancialInstrumentAndWeight();
+        fiaw4.setFi(allFinancialInstruments.get(6));
+        fiaw4.setWeight(0.14);
+        suggestedFinancialInstruments.add(fiaw4);
+        
+        FinancialInstrumentAndWeight fiaw5 = new FinancialInstrumentAndWeight();
+        fiaw5.setFi(allFinancialInstruments.get(8));
+        fiaw5.setWeight(0.22);
+        suggestedFinancialInstruments.add(fiaw5);
+        
+        FinancialInstrumentAndWeight fiaw6 = new FinancialInstrumentAndWeight();
+        fiaw6.setFi(allFinancialInstruments.get(10));
+        fiaw6.setWeight(0.14);
+        suggestedFinancialInstruments.add(fiaw6);
+
+        ip.setSuggestedFinancialInstruments(suggestedFinancialInstruments);
         
         em.merge(ip);
         return ip;

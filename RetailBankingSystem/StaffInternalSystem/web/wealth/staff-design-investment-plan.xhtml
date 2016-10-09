@@ -16,30 +16,41 @@
             <em:staffNavBar context="wealth"></em:staffNavBar>
             <em:staffSideBar top="wealth" side="viewInvestmentRequest"></em:staffSideBar>
             <div class="container">
-            <p:panel header="Design Invetment Plan">
+                <p:panel header="Design Invetment Plan" id="designinvestment">
                 <h:panelGrid columns="2" columnClasses="left,right" style="width:100%">
                     <p:panel style="width:500px;">
                         <p:chart type="bar" model="#{deisgnInvestmentPlanManagedBean.animatedModel}" />
                     </p:panel>
-                    <p:panelGrid columns="2" style="width:400px">
-                        <f:facet name="header">
-                            Suggested Plan
-                        </f:facet>
-                        <h:outputLabel for="riskScore" value="Customer risk tolerance score: " />
-                        <p:spinner id="ajaxSpinner" value="#{deisgnInvestmentPlanManagedBean.wms.riskToleranceScore}">
-                            <p:ajax process="@this" />
-                        </p:spinner>
-                       
-                        <h:outputLabel for="riskLevel" value="Customer risk tolerance level: " />
-                        <h:outputText id="riskLevel" value="#{deisgnInvestmentPlanManagedBean.wms.riskToleranceLevel.value}"/>
-
-                        <p:repeat value="#{deisgnInvestmentPlanManagedBean.suggestedCombination}" var="instrument" offset="" size="#{deisgnInvestmentPlanManagedBean.suggestedCombination.size()}" step="1" varStatus="">
-                            <h:outputText id="name" value="#{instrument.name.value}" />
-                        </p:repeat>
-                        <p:repeat value="#{deisgnInvestmentPlanManagedBean.suggestedPercentages}" var="percentage" offset="" size="#{deisgnInvestmentPlanManagedBean.suggestedPercentages.size()}" step="1" varStatus="">
-                            <h:outputText id="name" value="#{percentage}"/>
-                        </p:repeat>
-                    </p:panelGrid>
+                    <p:panel>
+                        <p:panelGrid columns="3">
+                            <f:facet name="header">
+                                Customer Info
+                            </f:facet>
+                            <h:outputLabel for="riskScore" value="Risk tolerance: " />
+                            <p:spinner id="ajaxSpinner" value="#{deisgnInvestmentPlanManagedBean.wms.riskToleranceScore}">
+                                <p:ajax process="@this" />
+                            </p:spinner>
+                            <h:outputText id="riskLevel" value="#{deisgnInvestmentPlanManagedBean.wms.riskToleranceLevel.value}"/>
+                        </p:panelGrid>
+                        
+                        <p:dataTable id="suggestedFinancialInstruments" value="#{deisgnInvestmentPlanManagedBean.suggestedFinancialInstruments}" var="instrumentAndWeight">
+                            <f:facet name="header">
+                                Suggested Product and Weight
+                            </f:facet>
+                            <p:column headerText="Product Name" style="width:80%">    
+                                <h:outputLabel id="fiName" value="#{instrumentAndWeight.fi.name.value}" />
+                            </p:column>
+                            
+                            <p:column headerText="weight" >
+                                <h:inputText id="weight" value="#{instrumentAndWeight.weight}" style="font-size: 10px; width:90%"/>
+                            </p:column>
+                        </p:dataTable>
+                        
+                     
+                        <p:commandButton value="update"/>
+                        <p:commandButton value="confirm"/>
+              
+                    </p:panel>
                 </h:panelGrid>
                 <p:dataTable id="request" value="#{deisgnInvestmentPlanManagedBean.requestPlan}" var="investmentRequest">
                             <p:column headerText="ID"  style="width:15px">

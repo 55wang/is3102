@@ -9,6 +9,7 @@ import ejb.session.wealth.InvestmentPlanSessionBeanLocal;
 import entity.customer.WealthManagementSubscriber;
 import entity.wealth.FinancialInstrument;
 import entity.wealth.InvestmentPlan;
+import entity.wealth.FinancialInstrumentAndWeight;
 import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -37,7 +38,7 @@ public class DeisgnInvestmentPlanManagedBean implements Serializable{
     private InvestmentPlan requestPlan;
     private BarChartModel animatedModel;
     private WealthManagementSubscriber wms;
-    private List<FinancialInstrument> suggestedCombination;
+    private List<FinancialInstrumentAndWeight> suggestedFinancialInstruments;
     private List<Double> suggestedPercentages;
 
     /**
@@ -50,8 +51,7 @@ public class DeisgnInvestmentPlanManagedBean implements Serializable{
         requestPlanID = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("plan");
         requestPlan = investmentPlanSessionBean.getInvestmentPlanById(Long.parseLong(requestPlanID));
         requestPlan = investmentPlanSessionBean.generateSuggestedInvestmentPlan(requestPlan);
-        suggestedCombination = requestPlan.getFinancialInstruments();
-        suggestedPercentages = requestPlan.getFinancialInstrumentPecentage();
+        suggestedFinancialInstruments = requestPlan.getSuggestedFinancialInstruments();
         wms = requestPlan.getWealthManagementSubscriber();     
         createAnimatedModel();
     }
@@ -72,10 +72,10 @@ public class DeisgnInvestmentPlanManagedBean implements Serializable{
     private BarChartModel initBarModel() {
         BarChartModel model = new BarChartModel();
     
-        for(int i=0;i<requestPlan.getFinancialInstruments().size();i++){
+        for(int i=0;i<suggestedFinancialInstruments.size();i++){
             ChartSeries suggestedinstrument = new ChartSeries();
-            suggestedinstrument.setLabel(requestPlan.getFinancialInstruments().get(i).getName().toString());
-            suggestedinstrument.set("Suggested Investment Plan", requestPlan.getFinancialInstrumentPecentage().get(i)*100);
+            suggestedinstrument.setLabel(suggestedFinancialInstruments.get(i).getFi().getName().toString());
+            suggestedinstrument.set("Suggested Investment Plan", suggestedFinancialInstruments.get(i).getWeight()*100);
             model.addSeries(suggestedinstrument);
         } 
  
@@ -114,12 +114,12 @@ public class DeisgnInvestmentPlanManagedBean implements Serializable{
         this.wms = wms;
     }
 
-    public List<FinancialInstrument> getSuggestedCombination() {
-        return suggestedCombination;
+    public List<FinancialInstrumentAndWeight> getSuggestedFinancialInstruments() {
+        return suggestedFinancialInstruments;
     }
 
-    public void setSuggestedCombination(List<FinancialInstrument> suggestedCombination) {
-        this.suggestedCombination = suggestedCombination;
+    public void setSuggestedFinancialInstruments(List<FinancialInstrumentAndWeight> suggestedFinancialInstruments) {
+        this.suggestedFinancialInstruments = suggestedFinancialInstruments;
     }
 
     public List<Double> getSuggestedPercentages() {
