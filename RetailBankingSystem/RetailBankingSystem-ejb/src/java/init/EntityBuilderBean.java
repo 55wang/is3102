@@ -13,6 +13,7 @@ import ejb.session.dams.InterestSessionBeanLocal;
 import ejb.session.dams.CustomerDepositSessionBeanLocal;
 import ejb.session.dams.DepositProductSessionBeanLocal;
 import ejb.session.loan.LoanAccountSessionBeanLocal;
+import ejb.session.loan.LoanCalculationSessionBeanLocal;
 import ejb.session.loan.LoanProductSessionBeanLocal;
 import ejb.session.staff.StaffAccountSessionBeanLocal;
 import ejb.session.staff.StaffRoleSessionBeanLocal;
@@ -67,6 +68,8 @@ import server.utilities.GenerateAccountAndCCNumber;
 @LocalBean
 @Startup
 public class EntityBuilderBean {
+    @EJB
+    private LoanCalculationSessionBeanLocal loanCalculationSessionBean;
 
     @EJB
     private LoanProductSessionBeanLocal loanProductSessionBean;
@@ -123,7 +126,7 @@ public class EntityBuilderBean {
     public void init() {
         System.out.println("EntityInitilzationBean @PostConstruct");
         System.out.println(GenerateAccountAndCCNumber.generateAccountNumber());
-
+testLoanAccount();
         if (needInit()) {
             buildEntities();
         } else {
@@ -143,22 +146,23 @@ public class EntityBuilderBean {
         // TODO: init with an organized flow structure
         // these are just temporary data for emergency use.
         // Yifan pls help edit for me on top of these.
-        initStaffAndRoles();
-        demoMainAccount = entityCustomerBuilder.initCustomer();
-
-        initInterest();
-        initDepositProducts();
-        initDepositAccounts();
-        demoPromoProduct = entityPromoProductBuilder.initPromoProduct(demoPromoProduct);
-        demoRewardCardProduct = entityCreditCardProductBuilder.initCreditCardProduct(demoMainAccount, demoPromoProduct);
-        initCase();
-        initNotification();
-       
-
-//        initCreditCardOrder();
-//        entityCreditCardOrderBuilder.initCreditCardOrder(demoMainAccount, demoRewardCardProduct, demoPromoProduct);
-        initLoanProduct();
-        initLoanAccount();
+//        initStaffAndRoles();
+//        demoMainAccount = entityCustomerBuilder.initCustomer();
+//
+//        initInterest();
+//        initDepositProducts();
+//        initDepositAccounts();
+//        demoPromoProduct = entityPromoProductBuilder.initPromoProduct(demoPromoProduct);
+//        demoRewardCardProduct = entityCreditCardProductBuilder.initCreditCardProduct(demoMainAccount, demoPromoProduct);
+//        initCase();
+//        initNotification();
+//       
+//
+////        initCreditCardOrder();
+////        entityCreditCardOrderBuilder.initCreditCardOrder(demoMainAccount, demoRewardCardProduct, demoPromoProduct);
+//        initLoanProduct();
+//        initLoanAccount();
+        
     }
 
     private void initStaffAndRoles() {
@@ -1209,6 +1213,9 @@ public class EntityBuilderBean {
 //        List<LoanAccount> las = loanAccountSessionBean.getLoanAccountListByCustomerIndentityNumber("S1234567Z");
 //        System.out.print(las.size());
         
+        //loan calculation
+        Double monthlyInterestRate = loanCalculationSessionBean.calculateMonthlyInstallment(0.015, 12, 3000.0);
+        System.out.print(monthlyInterestRate);
 
     }
 
@@ -1222,7 +1229,7 @@ public class EntityBuilderBean {
 //        System.out.print(lpTest == null);
 
     }
-
+    
     public void testCreditCard() {
 
         Date startDate = DateUtils.getBeginOfDay();
