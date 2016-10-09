@@ -5,11 +5,14 @@
  */
 package ejb.session.loan;
 
+import entity.loan.LoanAccount;
+import entity.loan.LoanInterest;
 import entity.loan.LoanPaymentBreakdown;
 import entity.loan.LoanRepaymentRecord;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -21,6 +24,9 @@ import org.apache.commons.lang.time.DateUtils;
  */
 @Stateless
 public class LoanPaymentSessionBean implements LoanPaymentSessionBeanLocal {
+    
+    @EJB
+    private LoanCalculationSessionBean loanCalculationBean;
     
     @PersistenceContext(unitName = "RetailBankingSystem-ejbPU")
     private EntityManager em;
@@ -50,35 +56,67 @@ public class LoanPaymentSessionBean implements LoanPaymentSessionBeanLocal {
             return null;
         }
     }
+    
+    @Override
+    public List futurePaymentBreakdown(LoanAccount loanAccount,Integer currentPeriod){
+        Double outstandingLoanAmt=loanAccount.getOutstandingPrincipal();
+        Double monthlyInstallment;
+        Integer tenure;
+        Date beginingDate;
+        List<LoanPaymentBreakdown> futureBreakdown=new ArrayList<>();
+        List <LoanInterest> loanInterests=loanAccount.getLoanProduct().getLoanInterests();
+        for (LoanInterest i:loanInterests){
+            if(i.getStartTime()<currentPeriod && i.getEndTime()>currentPeriod){
+                tenure=i.getEndTime()-currentPeriod;
+                beginingDate=DateUtils.addMonths(loanAccount.getPaymentDate(),currentPeriod);
+                monthlyInstallment=loanCalculationBean.calculateMonthlyInstallment(i.getInterestRate(), tenure, outstandingLoanAmt);
+                outstandingLoanAmt=outstandingLoanAmt-monthlyInstallment*tenure;
+                List<LoanPaymentBreakdown> lpb=calculatePaymentBreakdown(outstandingLoanAmt,monthlyInstallment,tenure,i.getInterestRate(),beginingDate);
+                futureBreakdown.addAll(lpb);
+            }
+            
+            else if(currentPeriod<i.getStartTime()){
+                tenure=i.getEndTime()-i.getStartTime();
+                beginingDate=DateUtils.addMonths(loanAccount.getPaymentDate(),i.getStartTime());
+                monthlyInstallment=loanCalculationBean.calculateMonthlyInstallment(i.getInterestRate(), tenure, outstandingLoanAmt);
+                outstandingLoanAmt=outstandingLoanAmt-monthlyInstallment*tenure;
+                List<LoanPaymentBreakdown> lpb=calculatePaymentBreakdown(outstandingLoanAmt,monthlyInstallment,tenure,i.getInterestRate(),beginingDate);
+                futureBreakdown.addAll(lpb);
+            }
+        }
+        
+        return futureBreakdown;
+        
+    }
 
-//    @Override
-//    public List calculatePaymentBreakdown(Double loanAmt, Integer tenure, Double loanInterest,Date loanDate){
-//        Double monthlyInstallment=this.calculateMonthlyInstallment(loanInterest, tenure, loanAmt);
-//        List<LoanPaymentBreakdown> paymentBreakdown=new ArrayList<>();
-//        Date schedulePaymentDate;
-//        Integer period;
-//        Double principalPayment;
-//        Double interestPayment;
-//       
-//        for (int i=0;i<tenure;i++){
-//            schedulePaymentDate=DateUtils.addMonths(loanDate, i+1);
-//            principalPayment=monthlyInstallment-loanAmt*loanInterest;
-//            loanAmt=loanAmt-principalPayment;
-//            interestPayment=loanAmt*loanInterest;
-//            period=i+1;
-//            LoanPaymentBreakdown lpb = new LoanPaymentBreakdown();
-//            lpb.setInterestPayment(interestPayment);
-//            lpb.setOutstandingPrincipalPayment(interestPayment);
-//            lpb.setPeriod(period);
-//            lpb.setSchedulePaymentDate(schedulePaymentDate);
-//            lpb.setPrincipalPayment(principalPayment);
-//            paymentBreakdown.add(lpb);
-//            em.persist(paymentBreakdown);
-//       }
-//        
-//       return paymentBreakdown;
-//        
-//    }
+    @Override
+    public List calculatePaymentBreakdown(Double loanAmt,Double monthlyInstallment,Integer tenure, Double loanInterest,Date loanDate){
+        
+        List<LoanPaymentBreakdown> paymentBreakdown=new ArrayList<>();
+        Date schedulePaymentDate;
+        Integer period;
+        Double principalPayment;
+        Double interestPayment;
+       
+        for (int i=0;i<tenure;i++){
+            schedulePaymentDate=DateUtils.addMonths(loanDate, i+1);
+            principalPayment=monthlyInstallment-loanAmt*loanInterest;
+            loanAmt=loanAmt-principalPayment;
+            interestPayment=loanAmt*loanInterest;
+            period=i+1;
+            LoanPaymentBreakdown lpb = new LoanPaymentBreakdown();
+            lpb.setInterestPayment(interestPayment);
+            lpb.setOutstandingPrincipalPayment(interestPayment);
+            lpb.setPeriod(period);
+            lpb.setSchedulePaymentDate(schedulePaymentDate);
+            lpb.setPrincipalPayment(principalPayment);
+            paymentBreakdown.add(lpb);
+            em.persist(paymentBreakdown);
+       }
+        
+       return paymentBreakdown;
+        
+    }
 //    
 //    @Override
 //    public List lumSumPayAdjustment(Integer lumSumPayment,Double outstandingLoanAmt,Integer residualTenure, Double loanInterest,Date lumSumPayDate){
