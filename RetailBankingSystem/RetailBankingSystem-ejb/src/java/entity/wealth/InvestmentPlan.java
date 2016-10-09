@@ -38,7 +38,9 @@ public class InvestmentPlan implements Serializable {
     @Temporal(value = TemporalType.TIMESTAMP)
     private final Date creationDate = new Date();
     private Integer amountOfInvestment;  
-    private Double expectedReturn;
+    private Double customerExpectedReturn;
+    private Double systemPredictReturn;
+    private Double systemPredictRisk;
     private List<EnumUtils.FinancialInstrumentClass> preferedFinancialInstrument = new ArrayList<>();
     private String remarks;
     private InvestmentPlanStatus status;
@@ -92,12 +94,28 @@ public class InvestmentPlan implements Serializable {
         this.amountOfInvestment = amountOfInvestment;
     }
 
-    public Double getExpectedReturn() {
-        return expectedReturn;
+    public Double getCustomerExpectedReturn() {
+        return customerExpectedReturn;
     }
 
-    public void setExpectedReturn(Double expectedReturn) {
-        this.expectedReturn = expectedReturn;
+    public void setCustomerExpectedReturn(Double customerExpectedReturn) {
+        this.customerExpectedReturn = customerExpectedReturn;
+    }
+
+    public Double getSystemPredictReturn() {
+        return systemPredictReturn;
+    }
+
+    public void setSystemPredictReturn(Double systemPredictReturn) {
+        this.systemPredictReturn = systemPredictReturn;
+    }
+
+    public Double getSystemPredictRisk() {
+        return systemPredictRisk;
+    }
+
+    public void setSystemPredictRisk(Double systemPredictRisk) {
+        this.systemPredictRisk = systemPredictRisk;
     }
 
     public List<EnumUtils.FinancialInstrumentClass> getPreferedFinancialInstrument() {

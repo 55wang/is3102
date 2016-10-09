@@ -99,6 +99,35 @@ public class InvestmentPlanSessionBean implements InvestmentPlanSessionBeanLocal
         fiaw6.setFi(allFinancialInstruments.get(10));
         fiaw6.setWeight(0.14);
         suggestedFinancialInstruments.add(fiaw6);
+        
+        FinancialInstrumentAndWeight fiaw7 = new FinancialInstrumentAndWeight();
+        fiaw7.setFi(allFinancialInstruments.get(1));
+        fiaw7.setWeight(0.0);
+        suggestedFinancialInstruments.add(fiaw7);
+        
+        FinancialInstrumentAndWeight fiaw8 = new FinancialInstrumentAndWeight();
+        fiaw8.setFi(allFinancialInstruments.get(4));
+        fiaw8.setWeight(0.0);
+        suggestedFinancialInstruments.add(fiaw8);
+        
+        FinancialInstrumentAndWeight fiaw9 = new FinancialInstrumentAndWeight();
+        fiaw9.setFi(allFinancialInstruments.get(5));
+        fiaw9.setWeight(0.0);
+        suggestedFinancialInstruments.add(fiaw9);
+        
+        FinancialInstrumentAndWeight fiaw10 = new FinancialInstrumentAndWeight();
+        fiaw10.setFi(allFinancialInstruments.get(7));
+        fiaw10.setWeight(0.0);
+        suggestedFinancialInstruments.add(fiaw10);
+        
+        FinancialInstrumentAndWeight fiaw11 = new FinancialInstrumentAndWeight();
+        fiaw11.setFi(allFinancialInstruments.get(9));
+        fiaw11.setWeight(0.0);
+        suggestedFinancialInstruments.add(fiaw11);
+        
+        Double predictReturn = 0.11;
+        ip.setSystemPredictReturn(predictReturn);
+        ip.setSystemPredictRisk(30.0);
 
         ip.setSuggestedFinancialInstruments(suggestedFinancialInstruments);
         
