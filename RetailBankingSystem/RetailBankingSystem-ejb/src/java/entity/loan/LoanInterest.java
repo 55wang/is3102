@@ -27,6 +27,7 @@ public class LoanInterest implements Serializable {
 
     private Integer startTime;
     private Integer endTime;
+    // annual rate
     private Double interestRate;
 
     @ManyToOne(cascade = {CascadeType.MERGE})

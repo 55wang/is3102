@@ -33,9 +33,11 @@ public class LoanProduct implements Serializable {
     private String productName;
     //lockInDuration unit is month
     private Integer lockInDuration;
+    //tenure unit is month
     private Integer tenure;
+    //penalty rate is annual rate
     private Double penaltyInterestRate;
-
+    //loan interest is annual rate 
     @OneToMany(cascade = {CascadeType.MERGE}, mappedBy = "loanProduct")
     private List<LoanInterest> loanInterests = new ArrayList<>();
 

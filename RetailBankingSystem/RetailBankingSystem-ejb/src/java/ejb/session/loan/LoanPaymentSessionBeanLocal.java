@@ -21,7 +21,8 @@ public interface LoanPaymentSessionBeanLocal {
     
     public LoanPaymentBreakdown createLoanPaymentBreakdown(LoanPaymentBreakdown loanPaymentBreakdown);
     public LoanRepaymentRecord createLoanRepaymentRecord(LoanRepaymentRecord loanRepaymentRecord);
-    public List calculatePaymentBreakdown(Double loanAmt,Double monthlyInstallment,Integer tenure, Double loanInterest,Date loanDate);
+    public List<LoanPaymentBreakdown> calculatePaymentBreakdown(List<LoanPaymentBreakdown> paymentBreakdown, Double loanAmt,
+            Integer tenure, Double loanInterest, Date loanDate);
     public List futurePaymentBreakdown(LoanAccount loanAccount,Integer currentPeriod);
 //    public List lumSumPayAdjustment(Integer lumSumPayment,Double outstandingLoanAmt,Integer residualTenure, Double loanInterest,Date lumSumPayDate);
 //    public Integer transactionPeriod(Date paymentDate,Integer tenure,List<LoanPaymentBreakdown> paymentBreakdown);

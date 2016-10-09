@@ -38,36 +38,36 @@ public class LoanCalculationSessionBean implements LoanCalculationSessionBeanLoc
 
     @Override
     public Integer calculateMaxHDBTenure(Integer age, Double monthlyIncome) {
-        if(monthlyIncome<1500){
+        if (monthlyIncome < 1500) {
             return 0;
-        }
-        else{
-
-        if (age < MIN_LOAN_AGE) {
-            return 0;
-        } else if (age > MAX_LOAN_AGE) {
-            return 0;
-        } else if (age >= MIN_LOAN_AGE && age <= MIDDLE_HDB_LOAN_AGE) {
-            return MAX_HDB_LOAN_TENURE;
         } else {
-            return MAX_HDB_LOAN_TENURE - (age - MIDDLE_HDB_LOAN_AGE);
-        }
+
+            if (age < MIN_LOAN_AGE) {
+                return 0;
+            } else if (age > MAX_LOAN_AGE) {
+                return 0;
+            } else if (age >= MIN_LOAN_AGE && age <= MIDDLE_HDB_LOAN_AGE) {
+                return MAX_HDB_LOAN_TENURE;
+            } else {
+                return MAX_HDB_LOAN_TENURE - (age - MIDDLE_HDB_LOAN_AGE);
+            }
         }
     }
 
     @Override
     public Integer calculateMaxPPTenure(Integer age, Double monthlyIncome) {
-        if(monthlyIncome<1500) return 0;
-        else{
-        if (age < MIN_LOAN_AGE) {
+        if (monthlyIncome < 1500) {
             return 0;
-        } else if (age > MAX_LOAN_AGE) {
-            return 0;
-        } else if (age >= MIN_LOAN_AGE && age <= MIDDLE_PP_LOAN_AGE) {
-            return MAX_PP_LOAN_TENURE;
         } else {
-            return MAX_PP_LOAN_TENURE - (age - MIDDLE_PP_LOAN_AGE);
-        }
+            if (age < MIN_LOAN_AGE) {
+                return 0;
+            } else if (age > MAX_LOAN_AGE) {
+                return 0;
+            } else if (age >= MIN_LOAN_AGE && age <= MIDDLE_PP_LOAN_AGE) {
+                return MAX_PP_LOAN_TENURE;
+            } else {
+                return MAX_PP_LOAN_TENURE - (age - MIDDLE_PP_LOAN_AGE);
+            }
         }
     }
 
@@ -104,7 +104,7 @@ public class LoanCalculationSessionBean implements LoanCalculationSessionBeanLoc
                 return 0.0;
             } else {
                 monthlyInstallment = maxTotalMonthlyPayment - otherHomeLoan - otherLoan;
-                maxPPLoanAmt = monthlyInstallment * (1 - Math.pow((1 + MEDIUM_INTEREST), -tenure))/ MEDIUM_INTEREST ;
+                maxPPLoanAmt = monthlyInstallment * (1 - Math.pow((1 + MEDIUM_INTEREST), -tenure)) / MEDIUM_INTEREST;
                 return maxPPLoanAmt;
             }
         }
@@ -122,7 +122,7 @@ public class LoanCalculationSessionBean implements LoanCalculationSessionBeanLoc
                 return 0.0;
             } else {
                 monthlyInstallment = maxTotalMonthlyPayment - otherLoan;
-                maxCarLoanAmt = monthlyInstallment * (1 - Math.pow((1 + monthlyInterest), -tenure))/monthlyInterest ;
+                maxCarLoanAmt = monthlyInstallment * (1 - Math.pow((1 + monthlyInterest), -tenure)) / monthlyInterest;
                 return maxCarLoanAmt;
             }
 

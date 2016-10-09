@@ -39,12 +39,13 @@ public class LoanAccount implements Serializable {
     private Date maturityDate;
     @Temporal(value = TemporalType.TIMESTAMP)
     private Date creationDate = new Date();
-
+    @Temporal(value = TemporalType.TIMESTAMP)
+    private Date paymentStartDate;
+    
     private Double monthlyInstallment;
     private Double outstandingPrincipal;
     private Double overduePayment;
     private Double principal;
-    private Date paymentDate;
     private LoanAccountStatus loanAccountStatus;
 
     @ManyToOne(cascade = {CascadeType.MERGE})
@@ -127,12 +128,12 @@ public class LoanAccount implements Serializable {
         this.overduePayment = overduePayment;
     }
 
-    public Date getPaymentDate() {
-        return paymentDate;
+    public Date getPaymentStartDate() {
+        return paymentStartDate;
     }
 
-    public void setPaymentDate(Date paymentDate) {
-        this.paymentDate = paymentDate;
+    public void setPaymentStartDate(Date paymentStartDate) {
+        this.paymentStartDate = paymentStartDate;
     }
 
     public Double getPrincipal() {
@@ -190,13 +191,13 @@ public class LoanAccount implements Serializable {
     public void setLoanRepaymentRecords(List<LoanRepaymentRecord> loanRepaymentRecords) {
         this.loanRepaymentRecords = loanRepaymentRecords;
     }
-    
-    public List<LoanPaymentBreakdown> getLoanPaymentBreakdown(){
+
+    public List<LoanPaymentBreakdown> getLoanPaymentBreakdown() {
         return loanPaymentBreakdown;
     }
-    
-    public void setLoanPaymentBreakdown(List<LoanPaymentBreakdown> loanPaymentBreakdown){
-        this.loanPaymentBreakdown=loanPaymentBreakdown;
+
+    public void setLoanPaymentBreakdown(List<LoanPaymentBreakdown> loanPaymentBreakdown) {
+        this.loanPaymentBreakdown = loanPaymentBreakdown;
     }
 
     public Date getCreationDate() {
