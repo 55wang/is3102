@@ -282,6 +282,15 @@ and open the template in the editor.
 #designinvestment #ajaxSpinner .ui-inputfield{
     width:20px;
 }
+
+#designinvestment #ajaxSpinner .ui-spinner-button{
+    z-index: 0;
+}
+
+#designinvestment .designinvestment-input{
+    width:90%;
+    font-size:13px;
+}
 /*End of Investment Plan*/
 /* general */
 .container {

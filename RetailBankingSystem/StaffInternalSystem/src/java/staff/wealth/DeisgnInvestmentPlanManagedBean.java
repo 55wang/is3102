@@ -66,6 +66,7 @@ public class DeisgnInvestmentPlanManagedBean implements Serializable{
         Axis yAxis = animatedModel.getAxis(AxisType.Y);
         yAxis.setMin(0);
         yAxis.setMax(100);
+        yAxis.setTickInterval("20");
         yAxis.setLabel("Percentage(%)");
     }
      
@@ -73,10 +74,12 @@ public class DeisgnInvestmentPlanManagedBean implements Serializable{
         BarChartModel model = new BarChartModel();
     
         for(int i=0;i<suggestedFinancialInstruments.size();i++){
-            ChartSeries suggestedinstrument = new ChartSeries();
-            suggestedinstrument.setLabel(suggestedFinancialInstruments.get(i).getFi().getName().toString());
-            suggestedinstrument.set("Suggested Investment Plan", suggestedFinancialInstruments.get(i).getWeight()*100);
-            model.addSeries(suggestedinstrument);
+            if(!suggestedFinancialInstruments.get(i).getWeight().equals(0.0)){
+                ChartSeries suggestedinstrument = new ChartSeries();
+                suggestedinstrument.setLabel(suggestedFinancialInstruments.get(i).getFi().getName().toString());
+                suggestedinstrument.set("Suggested Investment Plan", suggestedFinancialInstruments.get(i).getWeight()*100);
+                model.addSeries(suggestedinstrument);
+            }
         } 
  
         return model;

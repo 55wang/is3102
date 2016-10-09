@@ -19,30 +19,32 @@
                 <p:panel header="Design Invetment Plan" id="designinvestment">
                 <h:panelGrid columns="2" columnClasses="left,right" style="width:100%">
                     <p:panel style="width:500px;">
-                        <p:chart type="bar" model="#{deisgnInvestmentPlanManagedBean.animatedModel}" />
+                        <p:chart type="bar" model="#{deisgnInvestmentPlanManagedBean.animatedModel}" style="height:440px"/>
                     </p:panel>
                     <p:panel>
-                        <p:panelGrid columns="3">
-                            <f:facet name="header">
-                                Customer Info
-                            </f:facet>
-                            <h:outputLabel for="riskScore" value="Risk tolerance: " />
+                        <p:panelGrid columns="4" style="font-size: 13px;">
+                            <h:outputLabel for="riskScore" value="Risk Tolerance " />
                             <p:spinner id="ajaxSpinner" value="#{deisgnInvestmentPlanManagedBean.wms.riskToleranceScore}">
                                 <p:ajax process="@this" />
                             </p:spinner>
+                            
+                            <h:outputLabel for="riskScore" value="Tolerance Level " />
                             <h:outputText id="riskLevel" value="#{deisgnInvestmentPlanManagedBean.wms.riskToleranceLevel.value}"/>
+                        
+                            <h:outputLabel for="return" value="Return " />
+                            <h:inputText id="return" value="#{deisgnInvestmentPlanManagedBean.requestPlan.systemPredictReturn}" class="designinvestment-input" />
+                            
+                            <h:outputLabel for="risk" value="risk " />
+                            <h:inputText id="Risk" value="#{deisgnInvestmentPlanManagedBean.requestPlan.systemPredictRisk}" class="designinvestment-input" />
                         </p:panelGrid>
                         
                         <p:dataTable id="suggestedFinancialInstruments" value="#{deisgnInvestmentPlanManagedBean.suggestedFinancialInstruments}" var="instrumentAndWeight">
-                            <f:facet name="header">
-                                Suggested Product and Weight
-                            </f:facet>
-                            <p:column headerText="Product Name" style="width:80%">    
+                            <p:column headerText="Product Name" style="width:80%;font-size: 13px;">    
                                 <h:outputLabel id="fiName" value="#{instrumentAndWeight.fi.name.value}" />
                             </p:column>
                             
-                            <p:column headerText="weight" >
-                                <h:inputText id="weight" value="#{instrumentAndWeight.weight}" style="font-size: 10px; width:90%"/>
+                            <p:column headerText="weight" style="font-size: 13px;">
+                                <h:inputText id="weight" value="#{instrumentAndWeight.weight}" class="designinvestment-input" />
                             </p:column>
                         </p:dataTable>
                         
@@ -63,8 +65,8 @@
                                 </h:outputText>
                             </p:column>
 
-                            <p:column headerText="Expected Return">
-                                <h:outputText value="#{investmentRequest.expectedReturn}" />
+                            <p:column headerText="Customer Expected Return">
+                                <h:outputText value="#{investmentRequest.customerExpectedReturn}" />
                             </p:column>
 
                             <p:column headerText="Amount">
