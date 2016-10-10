@@ -9,6 +9,8 @@ import entity.wealth.FinancialInstrument;
 import entity.wealth.FinancialInstrumentAndWeight;
 import entity.wealth.InvestmentPlan;
 import entity.wealth.PortfolioModel;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
@@ -61,18 +63,6 @@ public class DesignInvestmentPlanSessionBean implements DesignInvestmentPlanSess
 
         List<FinancialInstrumentAndWeight> suggestedFinancialInstruments = new ArrayList<FinancialInstrumentAndWeight>();
 
-//        ArrayList<Double> modelWeights = new ArrayList<>();
-//        modelWeights.add(pm.getCORPORATE_BONDS());
-//        modelWeights.add(pm.getDIVIDEND_STOCKS());
-//        modelWeights.add(pm.getEMERGING_MARKET_BONDS());
-//        modelWeights.add(pm.getEMERGING_MARKETS());
-//        modelWeights.add(pm.get);
-//        modelWeights.add(pm.getUS_STOCKS());
-//        modelWeights.add(pm.getUS_STOCKS());
-//        modelWeights.add(pm.getUS_STOCKS());
-//        modelWeights.add(pm.getUS_STOCKS());
-//        modelWeights.add(pm.getUS_STOCKS());
-//        modelWeights.add(pm.getUS_STOCKS());
         for (int i = 0; i < allFinancialInstruments.size(); i++) {
             if (allFinancialInstruments.get(i).getName().equals(FinancialInstrumentClass.CORPORATE_BONDS)) {
                 FinancialInstrumentAndWeight fiaw = new FinancialInstrumentAndWeight();
@@ -131,64 +121,10 @@ public class DesignInvestmentPlanSessionBean implements DesignInvestmentPlanSess
                 suggestedFinancialInstruments.add(fiaw);
             }
         }
-//        FinancialInstrumentAndWeight fiaw1 = new FinancialInstrumentAndWeight();
-//        fiaw1.setFi(allFinancialInstruments.get(0));
-//        fiaw1.setWeight(0.12);
-//        suggestedFinancialInstruments.add(fiaw1);
-//
-//        FinancialInstrumentAndWeight fiaw2 = new FinancialInstrumentAndWeight();
-//        fiaw2.setFi(allFinancialInstruments.get(2));
-//        fiaw2.setWeight(0.32);
-//        suggestedFinancialInstruments.add(fiaw2);
-//
-//        FinancialInstrumentAndWeight fiaw3 = new FinancialInstrumentAndWeight();
-//        fiaw3.setFi(allFinancialInstruments.get(3));
-//        fiaw3.setWeight(0.06);
-//        suggestedFinancialInstruments.add(fiaw3);
-//
-//        FinancialInstrumentAndWeight fiaw4 = new FinancialInstrumentAndWeight();
-//        fiaw4.setFi(allFinancialInstruments.get(6));
-//        fiaw4.setWeight(0.14);
-//        suggestedFinancialInstruments.add(fiaw4);
-//
-//        FinancialInstrumentAndWeight fiaw5 = new FinancialInstrumentAndWeight();
-//        fiaw5.setFi(allFinancialInstruments.get(8));
-//        fiaw5.setWeight(0.22);
-//        suggestedFinancialInstruments.add(fiaw5);
-//
-//        FinancialInstrumentAndWeight fiaw6 = new FinancialInstrumentAndWeight();
-//        fiaw6.setFi(allFinancialInstruments.get(10));
-//        fiaw6.setWeight(0.14);
-//        suggestedFinancialInstruments.add(fiaw6);
-//
-//        FinancialInstrumentAndWeight fiaw7 = new FinancialInstrumentAndWeight();
-//        fiaw7.setFi(allFinancialInstruments.get(1));
-//        fiaw7.setWeight(0.0);
-//        suggestedFinancialInstruments.add(fiaw7);
-//
-//        FinancialInstrumentAndWeight fiaw8 = new FinancialInstrumentAndWeight();
-//        fiaw8.setFi(allFinancialInstruments.get(4));
-//        fiaw8.setWeight(0.0);
-//        suggestedFinancialInstruments.add(fiaw8);
-//
-//        FinancialInstrumentAndWeight fiaw9 = new FinancialInstrumentAndWeight();
-//        fiaw9.setFi(allFinancialInstruments.get(5));
-//        fiaw9.setWeight(0.0);
-//        suggestedFinancialInstruments.add(fiaw9);
-//
-//        FinancialInstrumentAndWeight fiaw10 = new FinancialInstrumentAndWeight();
-//        fiaw10.setFi(allFinancialInstruments.get(7));
-//        fiaw10.setWeight(0.0);
-//        suggestedFinancialInstruments.add(fiaw10);
-//
-//        FinancialInstrumentAndWeight fiaw11 = new FinancialInstrumentAndWeight();
-//        fiaw11.setFi(allFinancialInstruments.get(9));
-//        fiaw11.setWeight(0.0);
-//        suggestedFinancialInstruments.add(fiaw11);
 
         ip.setSystemPredictReturn(pm.getTgt_returns());
-        Double predictRisk = pm.getTgt_sdresult() * (47 - 13) + 13;
-        ip.setSystemPredictRisk(predictRisk);
+        Long predictRisk = Math.round((pm.getTgt_sdresult() - 0.12788392) * (47 - 13)/0.0403 + 13);
+        ip.setSystemPredictRisk(predictRisk.intValue());
         if (predictRisk < 18) {
             ip.setRiskLevel(InvestmentRiskLevel.LOW_RISK);
         } else if (predictRisk < 22) {
@@ -202,8 +138,8 @@ public class DesignInvestmentPlanSessionBean implements DesignInvestmentPlanSess
         }
 
         ip.setSuggestedFinancialInstruments(suggestedFinancialInstruments);
+        ip.setSuggestedFinancialInstruments(roundWeightToOne(ip.getSuggestedFinancialInstruments()));
 
-        em.merge(ip);
         return ip;
     }
 
@@ -311,9 +247,27 @@ public class DesignInvestmentPlanSessionBean implements DesignInvestmentPlanSess
         } finally {
             connection.close();
         }
+        
+        ip.setSuggestedFinancialInstruments(roundWeightToOne(ip.getSuggestedFinancialInstruments()));
 
         ip.setSystemPredictReturn(returnResult);
-        ip.setSystemPredictRisk(sdResult);
+        
+        Long predictRisk = Math.round((sdResult - 0.12788392) * (47 - 13)/0.0403 + 13);
+        ip.setSystemPredictRisk(predictRisk.intValue());
+        System.out.println("After convert: "+predictRisk);
+        
+        if (predictRisk < 18) {
+            ip.setRiskLevel(InvestmentRiskLevel.LOW_RISK);
+        } else if (predictRisk < 22) {
+            ip.setRiskLevel(InvestmentRiskLevel.BELOW_AVERAGE_RISK);
+        } else if (predictRisk < 28) {
+            ip.setRiskLevel(InvestmentRiskLevel.AVERAGE_RISK);
+        } else if (predictRisk < 32) {
+            ip.setRiskLevel(InvestmentRiskLevel.ABOVE_AVERAGE_RISK);
+        } else {
+            ip.setRiskLevel(InvestmentRiskLevel.HIGH_RISK);
+        }
+        
         return ip;
     }
 
@@ -322,5 +276,24 @@ public class DesignInvestmentPlanSessionBean implements DesignInvestmentPlanSess
         em.merge(ip);
 
         return ip;
+    }
+    
+    private List<FinancialInstrumentAndWeight> roundWeightToOne(List<FinancialInstrumentAndWeight> suggestedFinancialInstruments){
+        Double sumup = 0.0;
+        Double max = 0.0;
+        int maxIndex = 0;
+        for(int i = 0; i< suggestedFinancialInstruments.size();i++){
+            sumup += suggestedFinancialInstruments.get(i).getWeight();
+            if(max < suggestedFinancialInstruments.get(i).getWeight()){
+                max = suggestedFinancialInstruments.get(i).getWeight();
+                maxIndex = i;
+            }
+        }
+        if(sumup > 1.0)
+            suggestedFinancialInstruments.get(maxIndex).setWeight(max-(sumup-1.0));
+        else if(sumup < 1.0)
+            suggestedFinancialInstruments.get(maxIndex).setWeight(max+(sumup-1.0));
+        
+        return suggestedFinancialInstruments;
     }
 }
