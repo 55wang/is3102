@@ -23,6 +23,7 @@ import server.utilities.EnumUtils;
 import server.utilities.EnumUtils.InvestmentPlanSatisfactionLevel;
 import server.utilities.EnumUtils.InvestmentPlanStatus;
 import entity.wealth.FinancialInstrumentAndWeight;
+import server.utilities.EnumUtils.InvestmentRiskLevel;
 
 /**
  *
@@ -41,6 +42,7 @@ public class InvestmentPlan implements Serializable {
     private Double customerExpectedReturn;
     private Double systemPredictReturn;
     private Double systemPredictRisk;
+    private InvestmentRiskLevel riskLevel;
     private List<EnumUtils.FinancialInstrumentClass> preferedFinancialInstrument = new ArrayList<>();
     private String remarks;
     private InvestmentPlanStatus status;
@@ -116,6 +118,14 @@ public class InvestmentPlan implements Serializable {
 
     public void setSystemPredictRisk(Double systemPredictRisk) {
         this.systemPredictRisk = systemPredictRisk;
+    }
+
+    public InvestmentRiskLevel getRiskLevel() {
+        return riskLevel;
+    }
+
+    public void setRiskLevel(InvestmentRiskLevel riskLevel) {
+        this.riskLevel = riskLevel;
     }
 
     public List<EnumUtils.FinancialInstrumentClass> getPreferedFinancialInstrument() {

@@ -15,9 +15,10 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import server.utilities.EnumUtils;
 import server.utilities.EnumUtils.FinancialInstrumentClass;
 import entity.wealth.FinancialInstrumentAndWeight;
+import server.utilities.EnumUtils;
+import server.utilities.EnumUtils.InvestmentRiskLevel;
 
 /**
  *
@@ -128,6 +129,7 @@ public class InvestmentPlanSessionBean implements InvestmentPlanSessionBeanLocal
         Double predictReturn = 0.11;
         ip.setSystemPredictReturn(predictReturn);
         ip.setSystemPredictRisk(30.0);
+        ip.setRiskLevel(InvestmentRiskLevel.HIGH_RISK);
 
         ip.setSuggestedFinancialInstruments(suggestedFinancialInstruments);
         
