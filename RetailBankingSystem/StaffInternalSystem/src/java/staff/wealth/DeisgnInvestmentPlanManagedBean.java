@@ -8,7 +8,6 @@ package staff.wealth;
 import ejb.session.wealth.DesignInvestmentPlanSessionBeanLocal;
 import ejb.session.wealth.InvestmentPlanSessionBeanLocal;
 import entity.customer.WealthManagementSubscriber;
-import entity.wealth.FinancialInstrument;
 import entity.wealth.InvestmentPlan;
 import entity.wealth.FinancialInstrumentAndWeight;
 import java.io.Serializable;
@@ -23,9 +22,8 @@ import org.primefaces.model.chart.Axis;
 import org.primefaces.model.chart.AxisType;
 import org.primefaces.model.chart.BarChartModel;
 import org.primefaces.model.chart.ChartSeries;
-import server.utilities.EnumUtils;
 import server.utilities.EnumUtils.InvestmentPlanStatus;
-import server.utilities.EnumUtils.RiskToleranceLevel;
+import server.utilities.EnumUtils.InvestmentRiskLevel;
 import utils.MessageUtils;
 
 /**
@@ -49,7 +47,7 @@ public class DeisgnInvestmentPlanManagedBean implements Serializable{
     private List<FinancialInstrumentAndWeight> suggestedFinancialInstruments;
     private List<Double> suggestedPercentages;
     private Integer toleranceScore;
-    private RiskToleranceLevel toleranceLevel;
+    private InvestmentRiskLevel riskLevel;
 
     /**
      * Creates a new instance of DeisgnInvestmentPlanManagedBean
@@ -64,7 +62,7 @@ public class DeisgnInvestmentPlanManagedBean implements Serializable{
         suggestedFinancialInstruments = requestPlan.getSuggestedFinancialInstruments();
         wms = requestPlan.getWealthManagementSubscriber();   
         toleranceScore = wms.getRiskToleranceScore();
-        toleranceLevel = wms.getRiskToleranceLevel();
+        updateRiskLevel();
         createAnimatedModel();
     }
     
@@ -97,17 +95,25 @@ public class DeisgnInvestmentPlanManagedBean implements Serializable{
         return model;
     }
     
-    public void updateToleranceLevel(){
+    public void updateRiskLevel(){
         if(toleranceScore<18)
-            setToleranceLevel(RiskToleranceLevel.LOW_RISK_TOLERANCE);
+            setRiskLevel(InvestmentRiskLevel.LOW_RISK);
         else if(toleranceScore<22)
-            setToleranceLevel(RiskToleranceLevel.BELOW_AVERAGE_RISK_TOLERANCE);
+            setRiskLevel(InvestmentRiskLevel.BELOW_AVERAGE_RISK);
         else if(toleranceScore<28)
-            setToleranceLevel(RiskToleranceLevel.AVERAGE_RISK_TOLERANCE);
+            setRiskLevel(InvestmentRiskLevel.AVERAGE_RISK);
         else if(toleranceScore<32)
-            setToleranceLevel(RiskToleranceLevel.ABOVE_AVERAGE_RISK_TOLERANCE);
+            setRiskLevel(InvestmentRiskLevel.ABOVE_AVERAGE_RISK);
         else
-            setToleranceLevel(RiskToleranceLevel.HIGH_RISK_ROLERANCE);
+            setRiskLevel(InvestmentRiskLevel.HIGH_RISK);
+    }
+    
+    public void requestNewPlan(){
+        requestPlan.getWealthManagementSubscriber().setRiskToleranceScore(toleranceScore);
+        requestPlan = designInvestmentPlanSessionBean.generateSuggestedInvestmentPlan(requestPlan);
+        suggestedFinancialInstruments = requestPlan.getSuggestedFinancialInstruments();
+        wms = requestPlan.getWealthManagementSubscriber();   
+        createAnimatedModel();
     }
     
     public void reset(){
@@ -116,12 +122,18 @@ public class DeisgnInvestmentPlanManagedBean implements Serializable{
         suggestedFinancialInstruments = requestPlan.getSuggestedFinancialInstruments();
         wms = requestPlan.getWealthManagementSubscriber();   
         toleranceScore = wms.getRiskToleranceScore();
-        toleranceLevel = wms.getRiskToleranceLevel();
+        updateRiskLevel();
+        createAnimatedModel();
     }
     
     public void update(){
-        if(true){
+        if(validator()){
             requestPlan = designInvestmentPlanSessionBean.updateSuggestedInvestmentPlan(requestPlan);
+            suggestedFinancialInstruments = requestPlan.getSuggestedFinancialInstruments();
+            wms = requestPlan.getWealthManagementSubscriber();   
+            toleranceScore = requestPlan.getSystemPredictRisk();
+            updateRiskLevel();
+            createAnimatedModel();
         }
         else
             reset();
@@ -133,14 +145,6 @@ public class DeisgnInvestmentPlanManagedBean implements Serializable{
     }
     
     private Boolean validator(){
-        if(requestPlan.getSystemPredictReturn()>1){
-            MessageUtils.displayError("Return > 1");
-            return false;
-        }else if(requestPlan.getSystemPredictReturn()<0){
-            MessageUtils.displayError("Return < 0");
-            return false;
-        }
-        
         Double weightSumUp = 0.0;
         
         for(int i=0; i < suggestedFinancialInstruments.size(); i++){
@@ -221,11 +225,11 @@ public class DeisgnInvestmentPlanManagedBean implements Serializable{
         this.toleranceScore = toleranceScore;
     }
 
-    public RiskToleranceLevel getToleranceLevel() {
-        return toleranceLevel;
+    public InvestmentRiskLevel getRiskLevel() {
+        return riskLevel;
     }
 
-    public void setToleranceLevel(RiskToleranceLevel toleranceLevel) {
-        this.toleranceLevel = toleranceLevel;
+    public void setRiskLevel(InvestmentRiskLevel riskLevel) {
+        this.riskLevel = riskLevel;
     }
 }

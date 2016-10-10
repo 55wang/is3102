@@ -23,6 +23,9 @@ import server.utilities.EnumUtils;
 import server.utilities.EnumUtils.InvestmentPlanSatisfactionLevel;
 import server.utilities.EnumUtils.InvestmentPlanStatus;
 import entity.wealth.FinancialInstrumentAndWeight;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import static server.utilities.CommonUtils.round;
 import server.utilities.EnumUtils.InvestmentRiskLevel;
 
 /**
@@ -41,7 +44,7 @@ public class InvestmentPlan implements Serializable {
     private Integer amountOfInvestment;  
     private Double customerExpectedReturn;
     private Double systemPredictReturn;
-    private Double systemPredictRisk;
+    private Integer systemPredictRisk;
     private InvestmentRiskLevel riskLevel;
     private List<EnumUtils.FinancialInstrumentClass> preferedFinancialInstrument = new ArrayList<>();
     private String remarks;
@@ -105,18 +108,18 @@ public class InvestmentPlan implements Serializable {
     }
 
     public Double getSystemPredictReturn() {
-        return systemPredictReturn;
+        return round(systemPredictReturn, 3);
     }
 
     public void setSystemPredictReturn(Double systemPredictReturn) {
         this.systemPredictReturn = systemPredictReturn;
     }
 
-    public Double getSystemPredictRisk() {
+    public Integer getSystemPredictRisk() {
         return systemPredictRisk;
     }
 
-    public void setSystemPredictRisk(Double systemPredictRisk) {
+    public void setSystemPredictRisk(Integer systemPredictRisk) {
         this.systemPredictRisk = systemPredictRisk;
     }
 
@@ -187,4 +190,5 @@ public class InvestmentPlan implements Serializable {
     public Date getCreationDate() {
         return creationDate;
     }
+
 }

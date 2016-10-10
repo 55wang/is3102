@@ -24,21 +24,20 @@
                             <p:chart type="bar" model="#{deisgnInvestmentPlanManagedBean.animatedModel}" style="height:440px"/>
                         </p:panel>
                         <p:panel>
-                            <p:panelGrid columns="4" style="width:100%">
-                                <h:outputLabel for="ajaxSpinner" value="Score" />
-                                <p:spinner id="ajaxSpinner" value="#{deisgnInvestmentPlanManagedBean.toleranceScore}" max="47" min="13" valueChangeListener="#{deisgnInvestmentPlanManagedBean.updateToleranceLevel()}">
+                            <p:panelGrid columns="6" style="width:100%">
+                                <h:outputLabel for="ajaxSpinner" value="Risk" />
+                                <p:spinner id="ajaxSpinner" value="#{deisgnInvestmentPlanManagedBean.toleranceScore}" max="47" min="13" valueChangeListener="#{deisgnInvestmentPlanManagedBean.updateRiskLevel()}">
                                     <p:ajax update="toleranceLevel" process="@this" />
                                 </p:spinner>
 
                                 <h:outputLabel for="toleranceLevel" value="Level" />
-                                <h:outputText id="toleranceLevel" value="#{deisgnInvestmentPlanManagedBean.toleranceLevel.value}"/>
+                                <h:outputText id="toleranceLevel" value="#{deisgnInvestmentPlanManagedBean.riskLevel.value}"/>
 
                                 <h:outputLabel for="return" value="Return " />
-                                <h:inputText id="return" value="#{deisgnInvestmentPlanManagedBean.requestPlan.systemPredictReturn}" class="designinvestment-input"/>
-
-                                <h:outputLabel for="risk" value="Risk " />
-                                <h:outputText id="risk" value="#{deisgnInvestmentPlanManagedBean.requestPlan.systemPredictRisk}  #{deisgnInvestmentPlanManagedBean.requestPlan.riskLevel.value}" class="designinvestment-input" />
+                                <h:outputText id="return" value="#{deisgnInvestmentPlanManagedBean.requestPlan.systemPredictReturn}" class="designinvestment-input"/>
                             </p:panelGrid>
+                            
+                            <p:commandButton value="Request New Plan" update="@form" actionListener="#{deisgnInvestmentPlanManagedBean.requestNewPlan}"/>
                             
                             <p:separator></p:separator>
                             

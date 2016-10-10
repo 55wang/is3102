@@ -6,10 +6,13 @@
 package entity.wealth;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import static server.utilities.CommonUtils.round;
 
 /**
  *
@@ -66,7 +69,7 @@ public class FinancialInstrumentAndWeight implements Serializable {
     }
 
     public Double getWeight() {
-        return weight;
+        return round(weight, 2);
     }
 
     public void setWeight(Double weight) {
