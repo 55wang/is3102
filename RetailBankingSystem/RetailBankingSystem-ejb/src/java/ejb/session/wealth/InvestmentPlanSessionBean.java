@@ -6,7 +6,7 @@
 package ejb.session.wealth;
 
 import entity.staff.StaffAccount;
-import entity.wealth.ConstructPortfolio;
+import entity.wealth.PortfolioModel;
 import entity.wealth.InvestmentPlan;
 import java.util.List;
 import javax.ejb.EJB;
@@ -30,8 +30,8 @@ public class InvestmentPlanSessionBean implements InvestmentPlanSessionBeanLocal
     // "Insert Code > Add Business Method")
     
     @Override
-    public List<ConstructPortfolio> getTestR() {
-        ConstructPortfolio cp = new ConstructPortfolio();
+    public List<PortfolioModel> getTestR() {
+        PortfolioModel cp = new PortfolioModel();
         Query q = em.createQuery("SELECT a FROM ConstructPortfolio a");
         return q.getResultList();
     }

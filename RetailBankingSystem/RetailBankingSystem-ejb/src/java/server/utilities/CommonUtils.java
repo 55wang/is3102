@@ -13,13 +13,33 @@ import java.util.List;
  * @author leiyang
  */
 public class CommonUtils {
-    
+
     //Call Like This: CommonUtils.getEnumList(EnumUtils.Gender.class)
     public static <E extends Enum<E>> List<String> getEnumList(Class<E> enumData) {
         List<String> results = new ArrayList<>();
-        for (Enum<E> enumVal: enumData.getEnumConstants()) {  
+        for (Enum<E> enumVal : enumData.getEnumConstants()) {
             results.add(enumVal.toString());
         }
         return results;
     }
+
+    public static String getPrependFolderName() {
+        String systemUser = System.getProperty("user.name");
+        String prependingPath = "";
+        if (systemUser.equals("wang")) {
+            prependingPath = "/Users/wang/NEW_IS3102/is3102/RCode/";
+        } else if (systemUser.equals("litong")) {
+            prependingPath = "/Users/litong/Documents/IS3102/RCode";
+        } else if (systemUser.equals("leiyang")) {
+
+        } else if (systemUser.equals("syx")) {
+
+        } else if (systemUser.equals("xiaqing")) {
+
+        } else if (systemUser.equals("yifan")) {
+
+        }
+        return prependingPath;
+    }
+
 }

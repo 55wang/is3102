@@ -14,7 +14,7 @@ import javax.persistence.Id;
  * @author wang
  */
 @Entity
-public class ConstructPortfolio implements Serializable {
+public class PortfolioModel implements Serializable {
 
     //dont change the variable type as it is according to R
     @Id

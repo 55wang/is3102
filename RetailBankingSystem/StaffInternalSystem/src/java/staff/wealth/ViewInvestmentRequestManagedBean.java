@@ -8,7 +8,7 @@ package staff.wealth;
 import ejb.session.staff.StaffAccountSessionBeanLocal;
 import ejb.session.wealth.InvestmentPlanSessionBeanLocal;
 import entity.staff.StaffAccount;
-import entity.wealth.ConstructPortfolio;
+import entity.wealth.PortfolioModel;
 import entity.wealth.InvestmentPlan;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -105,7 +105,7 @@ public class ViewInvestmentRequestManagedBean implements Serializable{
     }
     
     public void setTestR() {
-        List<ConstructPortfolio> cps = investmentPlanSessionBean.getTestR();
+        List<PortfolioModel> cps = investmentPlanSessionBean.getTestR();
 //        System.out.println(cps.get(0).getDIVIDEND_STOCKS());
     }
     

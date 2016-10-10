@@ -120,7 +120,7 @@ public class DeisgnInvestmentPlanManagedBean implements Serializable{
     }
     
     public void update(){
-        if(validator()){
+        if(true){
             requestPlan = designInvestmentPlanSessionBean.updateSuggestedInvestmentPlan(requestPlan);
         }
         else
@@ -134,10 +134,10 @@ public class DeisgnInvestmentPlanManagedBean implements Serializable{
     
     private Boolean validator(){
         if(requestPlan.getSystemPredictReturn()>1){
-            MessageUtils.displayError("Retuen > 1");
+            MessageUtils.displayError("Return > 1");
             return false;
         }else if(requestPlan.getSystemPredictReturn()<0){
-            MessageUtils.displayError("Retuen < 0");
+            MessageUtils.displayError("Return < 0");
             return false;
         }
         
