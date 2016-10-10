@@ -1,5 +1,5 @@
-# startServer
-# stopServer
+# startServer()
+# stopServer()
 
 myAdd=function(x,y){
   sum=x+y
@@ -186,7 +186,7 @@ getSdRegression <- function(US_STOCKS, FOREIGN_STOCKS, EMERGING_MARKETS, DIVIDEN
 {
   print("runRegression is called")
 
-  setwd("/Users/wang")
+  setwd("/Users/VIN-S")
   load(file = "tgt_port.rda")
 #   tgt_sdresult = 0.127966825248657
 #   US_STOCKS = 0.231095810691598
@@ -219,7 +219,7 @@ getReturnRegression <- function(US_STOCKS, FOREIGN_STOCKS, EMERGING_MARKETS, DIV
 {
   print("runRegression is called")
   
-  setwd("/Users/wang")
+  setwd("/Users/VIN-S")
   load(file = "tgt_port.rda")
   #   tgt_sdresult = 0.127966825248657
   #   US_STOCKS = 0.231095810691598

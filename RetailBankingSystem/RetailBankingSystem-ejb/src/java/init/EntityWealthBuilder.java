@@ -5,6 +5,7 @@
  */
 package init;
 
+import ejb.session.common.LoginSessionBeanLocal;
 import ejb.session.mainaccount.MainAccountSessionBeanLocal;
 import ejb.session.staff.StaffAccountSessionBeanLocal;
 import ejb.session.wealth.FinancialInstrumentSessionBeanLocal;
@@ -33,6 +34,8 @@ import server.utilities.EnumUtils;
 @Singleton
 @LocalBean
 public class EntityWealthBuilder {
+    @EJB
+    private LoginSessionBeanLocal loginBean;
 
     @EJB
     private InvestmentPlanSessionBeanLocal investmentPlanSessionBean;
@@ -51,7 +54,8 @@ public class EntityWealthBuilder {
 
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")
-    public WealthManagementSubscriber initWealth(MainAccount demoMainAccount) {
+    public WealthManagementSubscriber initWealth() {
+        MainAccount demoMainAccount = loginBean.getMainAccountByUserID(ConstantUtils.DEMO_MAIN_ACCOUNT_USER_ID);
         WealthManagementSubscriber wms = new WealthManagementSubscriber();
         wms.setMainAccount(demoMainAccount);
         wms.setRelationshipManager(staffAccountSessionBean.getAccountByUsername(ConstantUtils.RELATIONSHIP_MANAGER_USERNAME));

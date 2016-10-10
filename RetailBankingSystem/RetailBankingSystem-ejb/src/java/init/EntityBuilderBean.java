@@ -40,8 +40,6 @@ import server.utilities.ConstantUtils;
 @LocalBean
 @Startup
 public class EntityBuilderBean {
-    @EJB
-    private EntityWealthBuilder entityWealthBuilder;
 
     // builders
     @EJB
@@ -62,6 +60,8 @@ public class EntityBuilderBean {
     private EntityCaseBuilder entityCaseBuilder;
     @EJB
     private EntityPayLahBuilder entityPayLahBuilder;
+    @EJB
+    private EntityWealthBuilder entityWealthBuilder;
     
     // session beans
     @EJB
@@ -98,5 +98,6 @@ public class EntityBuilderBean {
         entityCreditCardOrderBuilder.initCreditCardOrder(demoRewardCardProduct, demoPromoProduct);
         entityBillOrgBuilder.initBillOrganization();
         entityPayLahBuilder.initPayLahDemoData();
+        entityWealthBuilder.initWealth();
     }
 }
