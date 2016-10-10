@@ -279,7 +279,11 @@ and open the template in the editor.
 }
 /* end of wizard overwrite */
 /*Investment Plan*/
-#designinvestment #ajaxSpinner .ui-inputfield{
+#designinvestment .staffDesignPanel{
+    font-size: 13px;
+}
+
+#designinvestment .ui-spinner-input{
     width:20px;
 }
 
@@ -288,7 +292,7 @@ and open the template in the editor.
 }
 
 #designinvestment .designinvestment-input{
-    width:90%;
+    width:30px;
     font-size:13px;
 }
 /*End of Investment Plan*/
@@ -369,4 +373,9 @@ and open the template in the editor.
 }
 .hidden {
     display: none;
+}
+
+.ui-separator{
+    height:0px;
+    margin:5px 0 5px 0;
 }
