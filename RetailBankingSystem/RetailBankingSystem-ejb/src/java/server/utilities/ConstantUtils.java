@@ -36,6 +36,7 @@ public class ConstantUtils {
     public static final String GENERAL_TELLER_USERNAME = "general_teller";
     public static final String LOAN_OFFICIER_USERNAME = "loan_officer";
     public static final String PRODUCT_MANAGER_USERNAME = "product_manager";
+    public static final String RELATIONSHIP_MANAGER_USERNAME = "relationship_manager";
     public static final String STAFF_DEMO_PASSWORD = HashPwdUtils.hashPwd("password");
     
     // Redirect path

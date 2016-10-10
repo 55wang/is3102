@@ -125,6 +125,12 @@
                             <h:link outcome="staff_view_promo" value="Promo Products" />
                         </li>
                     </c:if>
+                    
+                    <c:if test="#{cc.attrs.top == 'wealth'}">
+                        <li class="side-menu-item #{cc.attrs.side == 'viewInvestmentRequest' ? 'active' : ''}">
+                            <h:link outcome="staff-view-investment-request" value="Investment Request" />
+                        </li>
+                    </c:if>
                 </ul>
             </div>
             <!--TODO: Fillin all the sub menus here -->

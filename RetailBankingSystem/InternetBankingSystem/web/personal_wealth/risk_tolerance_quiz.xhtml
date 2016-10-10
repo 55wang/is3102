@@ -1,0 +1,187 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:em="http://xmlns.jcp.org/jsf/composite/emcomp"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    
+    <!--shift + ctrl + F, format-->
+    <f:view>
+        <h:head>
+            <title>Merlion Bank</title>
+            <em:cssImport></em:cssImport>
+        </h:head>
+        <h:body>
+            <em:customerHeader context="personal" userName="#{customerHomeManagedBean.customer.firstname }"></em:customerHeader>
+            <em:customerNavBar context="personal" personalPage="wealth"></em:customerNavBar>
+            <div class="customer_main_container">
+                
+                <h:form id="riskQuizForm" >
+                        <p:panel header="Risk Tolerance Quiz" rendered="#{riskToleranceQuizManagedBean.wms.riskToleranceScore == null or riskToleranceQuizManagedBean.retakeOrNot}">
+                            <p:messages id="messagesStatus" redisplay="false">
+                                <h:panelGrid columns="1" cellpadding="5" rendered="#{riskToleranceQuizManagedBean.questionNumber == 1}">
+                                   <p:outputLabel for="q1" value="1. In general, how would your best friend describe you as a risk taker? " />
+                                   <p:selectOneRadio id="q1" value="#{riskToleranceQuizManagedBean.selectValue}" layout="grid" columns="1" required="#{not empty param[next.clientId]}">
+                                        <f:selectItem itemLabel="a. A real gambler" itemValue="4" />
+                                        <f:selectItem itemLabel="b. Willing to take risks after completing adequate research" itemValue="3" />
+                                        <f:selectItem itemLabel="c. Cautious" itemValue="2" />
+                                        <f:selectItem itemLabel="d. A real risk avoider" itemValue="1" />
+                                    </p:selectOneRadio>
+                                </h:panelGrid>  
+                                
+                                <h:panelGrid columns="1" cellpadding="5" rendered="#{riskToleranceQuizManagedBean.questionNumber == 2}">
+                                   <p:outputLabel for="q2" value="2. You are on a TV game show and can choose one of the following. Which would you take?  " />
+                                   <p:selectOneRadio id="q2" value="#{riskToleranceQuizManagedBean.selectValue}" layout="grid" columns="1" required="#{not empty param[next.clientId]}">
+                                        <f:selectItem itemLabel="a. $1,000 in cash" itemValue="1" />
+                                        <f:selectItem itemLabel="b. A 50% chance at winning $5,000" itemValue="2" />
+                                        <f:selectItem itemLabel="c. A 25% chance at winning $10,000" itemValue="3" />
+                                        <f:selectItem itemLabel="d. A 5% chance at winning $100,000" itemValue="4" />
+                                    </p:selectOneRadio>    
+                                </h:panelGrid>
+                                
+                                <h:panelGrid columns="1" cellpadding="5" rendered="#{riskToleranceQuizManagedBean.questionNumber == 3}">
+                                   <p:outputLabel for="q3" value="3. You have just finished saving for a “once-in-a-lifetime” vacation. Three weeks before you plan to
+                                                                  leave, you lose your job. You would:  " />
+                                   <p:selectOneRadio id="q3" value="#{riskToleranceQuizManagedBean.selectValue}" layout="grid" columns="1" required="#{not empty param[next.clientId]}">
+                                        <f:selectItem itemLabel="a. Cancel the vacation" itemValue="1" />
+                                        <f:selectItem itemLabel="b. Take a much more modest vacation" itemValue="2" />
+                                        <f:selectItem itemLabel="c. Go as scheduled, reasoning that you need the time to prepare for a job search" itemValue="3" />
+                                        <f:selectItem itemLabel="d. Extend your vacation, because this might be your last chance to go first-class" itemValue="4" />
+                                    </p:selectOneRadio>    
+                                </h:panelGrid>
+                                
+                                <h:panelGrid columns="1" cellpadding="5" rendered="#{riskToleranceQuizManagedBean.questionNumber == 4}">
+                                   <p:outputLabel for="q4" value="4. If you unexpectedly received $20,000 to invest, what would you do?  " />
+                                   <p:selectOneRadio id="q4" value="#{riskToleranceQuizManagedBean.selectValue}" layout="grid" columns="1" required="#{not empty param[next.clientId]}">
+                                        <f:selectItem itemLabel="a. Deposit it in a bank account, money market account, or an insured CD " itemValue="1" />
+                                        <f:selectItem itemLabel="b. Invest it in safe high quality bonds or bond mutual funds" itemValue="2" />
+                                        <f:selectItem itemLabel="c. Invest it in stocks or stock mutual funds" itemValue="3" />
+                                    </p:selectOneRadio>    
+                                </h:panelGrid>
+                                
+                                <h:panelGrid columns="1" cellpadding="5" rendered="#{riskToleranceQuizManagedBean.questionNumber == 5}">
+                                   <p:outputLabel for="q5" value="5. In terms of experience, how comfortable are you investing in stocks or stock mutual funds? " />
+                                   <p:selectOneRadio id="q5" value="#{riskToleranceQuizManagedBean.selectValue}" layout="grid" columns="1" required="#{not empty param[next.clientId]}">
+                                        <f:selectItem itemLabel="a. Not at all comfortable" itemValue="1" />
+                                        <f:selectItem itemLabel="b. Somewhat comfortable" itemValue="2" />
+                                        <f:selectItem itemLabel="c. Very comfortable" itemValue="3" />
+                                    </p:selectOneRadio>    
+                                </h:panelGrid>
+                                
+                                <h:panelGrid columns="1" cellpadding="5" rendered="#{riskToleranceQuizManagedBean.questionNumber == 6}">
+                                   <p:outputLabel for="q6" value="6. When you think of the word “risk” which of the following words comes to mind first?  " />
+                                   <p:selectOneRadio id="q6" value="#{riskToleranceQuizManagedBean.selectValue}" layout="grid" columns="1" required="#{not empty param[next.clientId]}">
+                                        <f:selectItem itemLabel="a. Loss" itemValue="1" />
+                                        <f:selectItem itemLabel="b. Uncertainty" itemValue="2" />
+                                        <f:selectItem itemLabel="c. Opportunity" itemValue="3" />
+                                        <f:selectItem itemLabel="d. Thrill" itemValue="4" />
+                                    </p:selectOneRadio>    
+                                </h:panelGrid>
+                                
+                                <h:panelGrid columns="1" cellpadding="5" rendered="#{riskToleranceQuizManagedBean.questionNumber == 7}">
+                                   <p:outputLabel for="q7" value="7. Some experts are predicting prices of assets such as gold, jewels, collectibles, and real estate (hard
+                                                                  assets) to increase in value; bond prices may fall, however, experts tend to agree that government
+                                                                  bonds are relatively safe. Most of your investment assets are now in high interest government bonds.
+                                                                  What would you do?  " />
+                                   <p:selectOneRadio id="q7" value="#{riskToleranceQuizManagedBean.selectValue}" layout="grid" columns="1" required="#{not empty param[next.clientId]}">
+                                        <f:selectItem itemLabel="a. Hold the bonds" itemValue="1" />
+                                        <f:selectItem itemLabel="b. Sell the bonds, put half the proceeds into money market accounts, and the other half into hard
+                                                                 assets" itemValue="2" />
+                                        <f:selectItem itemLabel="c. Sell the bonds and put the total proceeds into hard assets" itemValue="3" />
+                                        <f:selectItem itemLabel="d. Sell the bonds, put all the money into hard assets, and borrow additional money to buy more" itemValue="4" />
+                                    </p:selectOneRadio>    
+                                </h:panelGrid>
+                                
+                                <h:panelGrid columns="1" cellpadding="5" rendered="#{riskToleranceQuizManagedBean.questionNumber == 8}">
+                                   <p:outputLabel for="q8" value="8. Given the best and worst case returns of the four investment choices below, which would you prefer? " />
+                                   <p:selectOneRadio id="q8" value="#{riskToleranceQuizManagedBean.selectValue}" layout="grid" columns="1" required="#{not empty param[next.clientId]}">
+                                        <f:selectItem itemLabel="a. $200 gain best case; $0 gain/loss worst case" itemValue="1" />
+                                        <f:selectItem itemLabel="b. $800 gain best case; $200 loss worst case" itemValue="2" />
+                                        <f:selectItem itemLabel="c. $2,600 gain best case; $800 loss worst case" itemValue="3" />
+                                        <f:selectItem itemLabel="d. $4,800 gain best case; $2,400 loss worst case" itemValue="4" />
+                                    </p:selectOneRadio>    
+                                </h:panelGrid>
+                                
+                                <h:panelGrid columns="1" cellpadding="5" rendered="#{riskToleranceQuizManagedBean.questionNumber == 9}">
+                                   <p:outputLabel for="q9" value="9. In addition to whatever you own, you have been given $1,000. You are now asked to choose
+                                                                  between:  " />
+                                   <p:selectOneRadio id="q9" value="#{riskToleranceQuizManagedBean.selectValue}" layout="grid" columns="1" required="#{not empty param[next.clientId]}">
+                                        <f:selectItem itemLabel="a. A sure gain of $500" itemValue="1" />
+                                        <f:selectItem itemLabel="b. A 50% chance to gain $1,000 and a 50% chance to gain nothing" itemValue="3" />
+                                    </p:selectOneRadio>    
+                                </h:panelGrid>
+                                
+                                <h:panelGrid columns="1" cellpadding="5" rendered="#{riskToleranceQuizManagedBean.questionNumber == 10}">
+                                   <p:outputLabel for="q10" value="10. In addition to whatever you own, you have been given $2,000. You are now asked to choose between: " />
+                                   <p:selectOneRadio id="q10" value="#{riskToleranceQuizManagedBean.selectValue}" layout="grid" columns="1" required="#{not empty param[next.clientId]}">
+                                        <f:selectItem itemLabel="a. A sure loss of $500" itemValue="1" />
+                                        <f:selectItem itemLabel="b. A 50% chance to lose $1,000 and a 50% chance to lose nothing" itemValue="3" />
+                                    </p:selectOneRadio>    
+                                </h:panelGrid>
+                                
+                                <h:panelGrid columns="1" cellpadding="5" rendered="#{riskToleranceQuizManagedBean.questionNumber == 11}">
+                                   <p:outputLabel for="q11" value="11. Suppose a relative left you an inheritance of $100,000, stipulating in the will that you invest ALL the
+                                                                   money in ONE of the following choices. Which one would you select? " />
+                                   <p:selectOneRadio id="q11" value="#{riskToleranceQuizManagedBean.selectValue}" layout="grid" columns="1" required="#{not empty param[next.clientId]}">
+                                        <f:selectItem itemLabel="a. A savings account or money market mutual fund" itemValue="1" />
+                                        <f:selectItem itemLabel="b. A mutual fund that owns stocks and bonds" itemValue="2" />
+                                        <f:selectItem itemLabel="c. A portfolio of 15 common stocks" itemValue="3" />
+                                        <f:selectItem itemLabel="d. Commodities like gold, silver, and oil" itemValue="4" />
+                                    </p:selectOneRadio>    
+                                </h:panelGrid>
+                                
+                                <h:panelGrid columns="1" cellpadding="5" rendered="#{riskToleranceQuizManagedBean.questionNumber == 12}">
+                                   <p:outputLabel for="q12" value="12. If you had to invest $20,000, which of the following investment choices would you find most appealing?  " />
+                                   <p:selectOneRadio id="q12" value="#{riskToleranceQuizManagedBean.selectValue}" layout="grid" columns="1" required="#{not empty param[next.clientId]}">
+                                        <f:selectItem itemLabel="a. 60% in low-risk investments 30% in medium-risk investments 10% in high-risk investments" itemValue="1" />
+                                        <f:selectItem itemLabel="b. 30% in low-risk investments 40% in medium-risk investments 30% in high-risk investments" itemValue="2" />
+                                        <f:selectItem itemLabel="c. 10% in low-risk investments 40% in medium-risk investments 50% in high-risk investments" itemValue="3" />
+                                    </p:selectOneRadio>    
+                                </h:panelGrid>
+                                
+                                <h:panelGrid columns="1" cellpadding="5" rendered="#{riskToleranceQuizManagedBean.questionNumber == 13}">
+                                   <p:outputLabel for="q13" value="13. Your trusted friend and neighbor, an experienced geologist, is putting together a group of investors to
+                                                                   fund an exploratory gold mining venture. The venture could pay back 50 to 100 times the investment
+                                                                   if successful. If the mine is a bust, the entire investment is worthless. Your friend estimates the
+                                                                   chance of success is only 20%. If you had the money, how much would you invest? " />
+                                   <p:selectOneRadio id="q13" value="#{riskToleranceQuizManagedBean.selectValue}" layout="grid" columns="1" required="#{not empty param[submit.clientId]}">
+                                        <f:selectItem itemLabel="a. Nothing" itemValue="1" />
+                                        <f:selectItem itemLabel="b. One month’s salary" itemValue="2" />
+                                        <f:selectItem itemLabel="c. Three month’s salary" itemValue="3" />
+                                        <f:selectItem itemLabel="d. Six month’s salary" itemValue="4" />
+                                    </p:selectOneRadio>    
+                                </h:panelGrid>
+                                
+                                <h:panelGrid columns="2" cellpadding="5">
+                                    <p:commandButton value="Back" action="#{riskToleranceQuizManagedBean.back()}" update="@form" rendered="#{riskToleranceQuizManagedBean.questionNumber!=1}"/>
+                                    <p:commandButton value="Next" action="#{riskToleranceQuizManagedBean.next()}" binding="#{next}" update="@form" rendered="#{riskToleranceQuizManagedBean.questionNumber!=13}"/>
+                                    <p:commandButton value="Submit" action="#{riskToleranceQuizManagedBean.submit()}" binding="#{submit}" update="@form" rendered="#{riskToleranceQuizManagedBean.questionNumber==13}"/>
+                                </h:panelGrid>
+                            </p:messages>
+                        </p:panel>
+                                        
+                        <p:panel header="Risk Tolerance Quiz" rendered="#{!riskToleranceQuizManagedBean.retakeOrNot}">
+
+                                <h:panelGrid columns="2" cellpadding="5">
+                                    <h:outputLabel for="riskScore" value="Your risk tolerance score is: " />
+                                    <h:outputText id="riskScore" value="#{riskToleranceQuizManagedBean.wms.riskToleranceScore}"/>
+                                   
+                                    <h:outputLabel for="riskLevel" value="Your risk tolerance level is: " />
+                                    <h:outputText id="riskLevel" value="#{riskToleranceQuizManagedBean.wms.riskToleranceLevel.value}"/>
+                                    
+                                    
+                                    <p:commandButton value="Retake the Quiz" action="#{riskToleranceQuizManagedBean.retakeQuiz()}" update="@form" />
+                                    
+                                </h:panelGrid>
+
+                        </p:panel>
+                </h:form>               
+            </div>
+        </h:body>
+    </f:view>
+
+
+</html>
+

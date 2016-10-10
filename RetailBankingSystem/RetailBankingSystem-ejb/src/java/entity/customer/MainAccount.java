@@ -57,6 +57,8 @@ public class MainAccount implements Serializable {
     private List<CustomerCase> cases = new ArrayList<>();
     @OneToMany(cascade = {CascadeType.MERGE}, mappedBy = "mainAccount")
     private List<CreditCardOrder> creditCardOrder = new ArrayList<>();
+    @OneToOne(cascade = {CascadeType.MERGE}, mappedBy = "mainAccount")
+    private WealthManagementSubscriber wealthManagementSubscriber;
     
     public void addDepositAccount(DepositAccount da) {
         this.bankAcounts.add(da);
@@ -169,5 +171,13 @@ public class MainAccount implements Serializable {
 
     public void setCreditCardOrder(List<CreditCardOrder> creditCardOrder) {
         this.creditCardOrder = creditCardOrder;
+    }
+
+    public WealthManagementSubscriber getWealthManagementSubscriber() {
+        return wealthManagementSubscriber;
+    }
+
+    public void setWealthManagementSubscriber(WealthManagementSubscriber wealthManagementSubscriber) {
+        this.wealthManagementSubscriber = wealthManagementSubscriber;
     }
 }

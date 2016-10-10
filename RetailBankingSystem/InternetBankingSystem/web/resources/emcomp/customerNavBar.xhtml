@@ -74,7 +74,11 @@
                                     <p:menuitem value="Activate Credit Card" outcome="/personal_cards/activate_credit_card" />
                                 </p:submenu>
 
-                                <p:submenu label="Invest" class="navbar-submenu #{cc.attrs.personalPage == 'wealth' ? 'active' : ''}">
+                                <p:submenu label="Wealth" class="navbar-submenu #{cc.attrs.personalPage == 'wealth' ? 'active' : ''}">
+                                    <p:menuitem value="Risk Tolerance Quiz" url="../personal_wealth/risk_tolerance_quiz.xhtml" />
+                                    <p:menuitem value="New Investment Requests" url="../personal_cards/debit_card_summary.xhtml" />
+                                    <p:menuitem value="View Invetment Requests" url="../personal_cards/debit_card_summary.xhtml" />
+                                    <p:menuitem value="Portfolio" url="../personal_cards/debit_card_summary.xhtml" />
                                 </p:submenu>
 
                                 <p:submenu label="Apply" class="navbar-submenu #{cc.attrs.personalPage == 'apply' ? 'active' : ''}">
