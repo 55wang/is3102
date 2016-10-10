@@ -137,7 +137,7 @@ public class EntityWealthBuilder {
         
         InvestmentPlan investmentPlan = new InvestmentPlan();
         investmentPlan.setAmountOfInvestment(10000);
-        investmentPlan.setExpectedReturn(0.13);
+        investmentPlan.setCustomerExpectedReturn(0.13);
         List<EnumUtils.FinancialInstrumentClass> preferedInstruments = new ArrayList<EnumUtils.FinancialInstrumentClass>();
         preferedInstruments.add(EnumUtils.FinancialInstrumentClass.CORPORATE_BONDS);
         preferedInstruments.add(EnumUtils.FinancialInstrumentClass.EMERGING_MARKET_STOCKS);

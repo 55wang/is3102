@@ -278,6 +278,24 @@ and open the template in the editor.
     width:fit-content;
 }
 /* end of wizard overwrite */
+/*Investment Plan*/
+#designinvestment .staffDesignPanel{
+    font-size: 13px;
+}
+
+#designinvestment .ui-spinner-input{
+    width:20px;
+}
+
+#designinvestment .ui-spinner{
+    z-index: 0;
+}
+
+#designinvestment .designinvestment-input{
+    width:30px;
+    font-size:13px;
+}
+/*End of Investment Plan*/
 /* general */
 .container {
     padding-top: 100px;
@@ -355,4 +373,9 @@ and open the template in the editor.
 }
 .hidden {
     display: none;
+}
+
+.ui-separator{
+    height:0px;
+    margin:5px 0 5px 0;
 }

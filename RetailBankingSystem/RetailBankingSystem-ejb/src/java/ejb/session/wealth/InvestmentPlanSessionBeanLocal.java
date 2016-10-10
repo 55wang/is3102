@@ -22,5 +22,4 @@ public interface InvestmentPlanSessionBeanLocal {
     public InvestmentPlan getInvestmentPlanById(Long id);
     public InvestmentPlan updateInvestmentPlan(InvestmentPlan ip);
     public List<InvestmentPlan> getInvestmentPlanByRM(StaffAccount sa);
-    public InvestmentPlan generateSuggestedInvestmentPlan(InvestmentPlan ip);
 }

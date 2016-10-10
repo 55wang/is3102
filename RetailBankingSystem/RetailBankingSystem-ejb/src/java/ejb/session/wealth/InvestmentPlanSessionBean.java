@@ -7,15 +7,14 @@ package ejb.session.wealth;
 
 import entity.staff.StaffAccount;
 import entity.wealth.ConstructPortfolio;
-import entity.wealth.FinancialInstrument;
 import entity.wealth.InvestmentPlan;
-import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+
 
 /**
  *
@@ -60,39 +59,5 @@ public class InvestmentPlanSessionBean implements InvestmentPlanSessionBeanLocal
         q.setParameter("sa", sa);
         
         return q.getResultList();
-    }
-    
-    @Override
-    public InvestmentPlan generateSuggestedInvestmentPlan(InvestmentPlan ip){
-        List<FinancialInstrument> allFinancialInstruments = financialInstrumentSessionBean.getAllFinancialInstruments();
-        
-        //Mathmatical Caculation
-        
-            //Input is wealthmanagementsubscriber's risk tolerance score, allFinancialInstruments' deviation, return and correlation
-            //output is arraylist suggestedFinancialInstruments and according percentage
-        
-        //End of Mathmatical Caculation
-        
-        List<FinancialInstrument> suggestedFinancialInstruments = new ArrayList<FinancialInstrument>();
-        suggestedFinancialInstruments.add(allFinancialInstruments.get(0));
-        suggestedFinancialInstruments.add(allFinancialInstruments.get(2));
-        suggestedFinancialInstruments.add(allFinancialInstruments.get(3));
-        suggestedFinancialInstruments.add(allFinancialInstruments.get(6));
-        suggestedFinancialInstruments.add(allFinancialInstruments.get(8));
-        suggestedFinancialInstruments.add(allFinancialInstruments.get(10));
-        
-        List<Double> accordingPercentages = new ArrayList<Double>();
-        accordingPercentages.add(0.12);
-        accordingPercentages.add(0.32);
-        accordingPercentages.add(0.06);
-        accordingPercentages.add(0.14);
-        accordingPercentages.add(0.22);
-        accordingPercentages.add(0.14);
-        
-        ip.setFinancialInstruments(suggestedFinancialInstruments);
-        ip.setFinancialInstrumentPecentage(accordingPercentages);
-        
-        em.merge(ip);
-        return ip;
     }
 }

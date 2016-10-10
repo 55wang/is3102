@@ -1172,11 +1172,11 @@ public class EnumUtils {
     
     public enum RiskToleranceLevel {
 
-        LOW_RISK_TOLERANCE("low risk tolerance"),
-        BELOW_AVERAGE_RISK_TOLERANCE("below-average risk tolerance"),
-        AVERAGE_RISK_TOLERANCE("average/moderate risk tolerance"),
-        ABOVE_AVERAGE_RISK_TOLERANCE("above-average risk tolerance"),
-        HIGH_RISK_ROLERANCE("high risk tolerance");
+        LOW_RISK_TOLERANCE("Low risk tolerance"),
+        BELOW_AVERAGE_RISK_TOLERANCE("Below-average risk tolerance"),
+        AVERAGE_RISK_TOLERANCE("Average/moderate risk tolerance"),
+        ABOVE_AVERAGE_RISK_TOLERANCE("Above-average risk tolerance"),
+        HIGH_RISK_ROLERANCE("High risk tolerance");
         
         private String value;
 
@@ -1203,11 +1203,45 @@ public class EnumUtils {
         }
     }
     
+    public enum InvestmentRiskLevel {
+
+        LOW_RISK("Low risk"),
+        BELOW_AVERAGE_RISK("Below-average risk"),
+        AVERAGE_RISK("Average/moderate risk"),
+        ABOVE_AVERAGE_RISK("Above-average risk"),
+        HIGH_RISK("High risk");
+        
+        private String value;
+
+        InvestmentRiskLevel(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        @Override
+        public String toString() {
+            return this.getValue();
+        }
+
+        public static InvestmentRiskLevel getEnum(String value) {
+            for (InvestmentRiskLevel v : values()) {
+                if (v.getValue().equalsIgnoreCase(value)) {
+                    return v;
+                }
+            }
+            throw new IllegalArgumentException();
+        }
+    }
+    
     public enum InvestmentPlanStatus {
 
         PENDING("PENDING"),
         CANCELLED("CANCELLED"),
         ONGOING("ONGOING"),
+        WAITING("WAITING APPROVAL"),
         EXECUTED("EXECUTED");
         
         private String value;

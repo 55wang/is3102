@@ -5,10 +5,12 @@
  */
 package staff.wealth;
 
+import ejb.session.wealth.DesignInvestmentPlanSessionBeanLocal;
 import ejb.session.wealth.InvestmentPlanSessionBeanLocal;
 import entity.customer.WealthManagementSubscriber;
 import entity.wealth.FinancialInstrument;
 import entity.wealth.InvestmentPlan;
+import entity.wealth.FinancialInstrumentAndWeight;
 import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -21,6 +23,10 @@ import org.primefaces.model.chart.Axis;
 import org.primefaces.model.chart.AxisType;
 import org.primefaces.model.chart.BarChartModel;
 import org.primefaces.model.chart.ChartSeries;
+import server.utilities.EnumUtils;
+import server.utilities.EnumUtils.InvestmentPlanStatus;
+import server.utilities.EnumUtils.RiskToleranceLevel;
+import utils.MessageUtils;
 
 /**
  *
@@ -30,15 +36,20 @@ import org.primefaces.model.chart.ChartSeries;
 @ViewScoped
 public class DeisgnInvestmentPlanManagedBean implements Serializable{
     @EJB
+    private DesignInvestmentPlanSessionBeanLocal designInvestmentPlanSessionBean;
+    @EJB
     private InvestmentPlanSessionBeanLocal investmentPlanSessionBean;
+    
     
     @ManagedProperty(value="#{param.plan}")
     private String requestPlanID;
     private InvestmentPlan requestPlan;
     private BarChartModel animatedModel;
     private WealthManagementSubscriber wms;
-    private List<FinancialInstrument> suggestedCombination;
+    private List<FinancialInstrumentAndWeight> suggestedFinancialInstruments;
     private List<Double> suggestedPercentages;
+    private Integer toleranceScore;
+    private RiskToleranceLevel toleranceLevel;
 
     /**
      * Creates a new instance of DeisgnInvestmentPlanManagedBean
@@ -49,10 +60,11 @@ public class DeisgnInvestmentPlanManagedBean implements Serializable{
     public void init() {
         requestPlanID = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("plan");
         requestPlan = investmentPlanSessionBean.getInvestmentPlanById(Long.parseLong(requestPlanID));
-        requestPlan = investmentPlanSessionBean.generateSuggestedInvestmentPlan(requestPlan);
-        suggestedCombination = requestPlan.getFinancialInstruments();
-        suggestedPercentages = requestPlan.getFinancialInstrumentPecentage();
-        wms = requestPlan.getWealthManagementSubscriber();     
+        requestPlan = designInvestmentPlanSessionBean.generateSuggestedInvestmentPlan(requestPlan);
+        suggestedFinancialInstruments = requestPlan.getSuggestedFinancialInstruments();
+        wms = requestPlan.getWealthManagementSubscriber();   
+        toleranceScore = wms.getRiskToleranceScore();
+        toleranceLevel = wms.getRiskToleranceLevel();
         createAnimatedModel();
     }
     
@@ -66,20 +78,91 @@ public class DeisgnInvestmentPlanManagedBean implements Serializable{
         Axis yAxis = animatedModel.getAxis(AxisType.Y);
         yAxis.setMin(0);
         yAxis.setMax(100);
+        yAxis.setTickInterval("20");
         yAxis.setLabel("Percentage(%)");
     }
      
     private BarChartModel initBarModel() {
         BarChartModel model = new BarChartModel();
     
-        for(int i=0;i<requestPlan.getFinancialInstruments().size();i++){
-            ChartSeries suggestedinstrument = new ChartSeries();
-            suggestedinstrument.setLabel(requestPlan.getFinancialInstruments().get(i).getName().toString());
-            suggestedinstrument.set("Suggested Investment Plan", requestPlan.getFinancialInstrumentPecentage().get(i)*100);
-            model.addSeries(suggestedinstrument);
+        for(int i=0;i<suggestedFinancialInstruments.size();i++){
+            if(!suggestedFinancialInstruments.get(i).getWeight().equals(0.0)){
+                ChartSeries suggestedinstrument = new ChartSeries();
+                suggestedinstrument.setLabel(suggestedFinancialInstruments.get(i).getFi().getName().toString());
+                suggestedinstrument.set("Suggested Investment Plan", suggestedFinancialInstruments.get(i).getWeight()*100);
+                model.addSeries(suggestedinstrument);
+            }
         } 
  
         return model;
+    }
+    
+    public void updateToleranceLevel(){
+        if(toleranceScore<18)
+            setToleranceLevel(RiskToleranceLevel.LOW_RISK_TOLERANCE);
+        else if(toleranceScore<22)
+            setToleranceLevel(RiskToleranceLevel.BELOW_AVERAGE_RISK_TOLERANCE);
+        else if(toleranceScore<28)
+            setToleranceLevel(RiskToleranceLevel.AVERAGE_RISK_TOLERANCE);
+        else if(toleranceScore<32)
+            setToleranceLevel(RiskToleranceLevel.ABOVE_AVERAGE_RISK_TOLERANCE);
+        else
+            setToleranceLevel(RiskToleranceLevel.HIGH_RISK_ROLERANCE);
+    }
+    
+    public void reset(){
+        requestPlan = investmentPlanSessionBean.getInvestmentPlanById(Long.parseLong(requestPlanID));
+        requestPlan = designInvestmentPlanSessionBean.generateSuggestedInvestmentPlan(requestPlan);
+        suggestedFinancialInstruments = requestPlan.getSuggestedFinancialInstruments();
+        wms = requestPlan.getWealthManagementSubscriber();   
+        toleranceScore = wms.getRiskToleranceScore();
+        toleranceLevel = wms.getRiskToleranceLevel();
+    }
+    
+    public void update(){
+        if(validator()){
+            requestPlan = designInvestmentPlanSessionBean.updateSuggestedInvestmentPlan(requestPlan);
+        }
+        else
+            reset();
+   
+    }
+    
+    public void submit(){
+        requestPlan.setStatus(InvestmentPlanStatus.WAITING);
+    }
+    
+    private Boolean validator(){
+        if(requestPlan.getSystemPredictReturn()>1){
+            MessageUtils.displayError("Retuen > 1");
+            return false;
+        }else if(requestPlan.getSystemPredictReturn()<0){
+            MessageUtils.displayError("Retuen < 0");
+            return false;
+        }
+        
+        Double weightSumUp = 0.0;
+        
+        for(int i=0; i < suggestedFinancialInstruments.size(); i++){
+            if(suggestedFinancialInstruments.get(i).getWeight() > 1.0){
+                MessageUtils.displayError("Individual weight > 1");
+                return false;
+            }else if(suggestedFinancialInstruments.get(i).getWeight() < 0.0){
+                MessageUtils.displayError("Individual weight < 0");
+                return false;
+            }
+            weightSumUp += suggestedFinancialInstruments.get(i).getWeight();
+        }
+        
+        if(weightSumUp > 1.0){
+            MessageUtils.displayError("Total weight > 1");
+            return false;
+        }else if(weightSumUp < 1.0){
+            MessageUtils.displayError("Total weight < 1");
+            return false;
+        }
+        
+        return true;
     }
 
     public String getRequestPlanID() {
@@ -114,12 +197,12 @@ public class DeisgnInvestmentPlanManagedBean implements Serializable{
         this.wms = wms;
     }
 
-    public List<FinancialInstrument> getSuggestedCombination() {
-        return suggestedCombination;
+    public List<FinancialInstrumentAndWeight> getSuggestedFinancialInstruments() {
+        return suggestedFinancialInstruments;
     }
 
-    public void setSuggestedCombination(List<FinancialInstrument> suggestedCombination) {
-        this.suggestedCombination = suggestedCombination;
+    public void setSuggestedFinancialInstruments(List<FinancialInstrumentAndWeight> suggestedFinancialInstruments) {
+        this.suggestedFinancialInstruments = suggestedFinancialInstruments;
     }
 
     public List<Double> getSuggestedPercentages() {
@@ -128,5 +211,21 @@ public class DeisgnInvestmentPlanManagedBean implements Serializable{
 
     public void setSuggestedPercentages(List<Double> suggestedPercentages) {
         this.suggestedPercentages = suggestedPercentages;
+    }
+
+    public Integer getToleranceScore() {
+        return toleranceScore;
+    }
+
+    public void setToleranceScore(Integer toleranceScore) {
+        this.toleranceScore = toleranceScore;
+    }
+
+    public RiskToleranceLevel getToleranceLevel() {
+        return toleranceLevel;
+    }
+
+    public void setToleranceLevel(RiskToleranceLevel toleranceLevel) {
+        this.toleranceLevel = toleranceLevel;
     }
 }

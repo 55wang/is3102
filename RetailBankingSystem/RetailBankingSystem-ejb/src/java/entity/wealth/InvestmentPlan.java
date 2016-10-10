@@ -22,6 +22,8 @@ import javax.persistence.TemporalType;
 import server.utilities.EnumUtils;
 import server.utilities.EnumUtils.InvestmentPlanSatisfactionLevel;
 import server.utilities.EnumUtils.InvestmentPlanStatus;
+import entity.wealth.FinancialInstrumentAndWeight;
+import server.utilities.EnumUtils.InvestmentRiskLevel;
 
 /**
  *
@@ -37,9 +39,11 @@ public class InvestmentPlan implements Serializable {
     @Temporal(value = TemporalType.TIMESTAMP)
     private final Date creationDate = new Date();
     private Integer amountOfInvestment;  
-    private Double expectedReturn;
+    private Double customerExpectedReturn;
+    private Double systemPredictReturn;
+    private Double systemPredictRisk;
+    private InvestmentRiskLevel riskLevel;
     private List<EnumUtils.FinancialInstrumentClass> preferedFinancialInstrument = new ArrayList<>();
-    private List<Double> financialInstrumentPecentage = new ArrayList<>();
     private String remarks;
     private InvestmentPlanStatus status;
     private InvestmentPlanSatisfactionLevel satisfactionLevel;
@@ -47,7 +51,7 @@ public class InvestmentPlan implements Serializable {
     @ManyToOne(cascade = CascadeType.MERGE)
     private WealthManagementSubscriber wealthManagementSubscriber;
     @OneToMany(cascade = CascadeType.MERGE)
-    private List<FinancialInstrument> financialInstruments = new ArrayList<>();
+    private List<FinancialInstrumentAndWeight> suggestedFinancialInstruments;
     @ManyToOne(cascade = CascadeType.MERGE)
     private Portfolio portfolio;
 
@@ -92,12 +96,36 @@ public class InvestmentPlan implements Serializable {
         this.amountOfInvestment = amountOfInvestment;
     }
 
-    public Double getExpectedReturn() {
-        return expectedReturn;
+    public Double getCustomerExpectedReturn() {
+        return customerExpectedReturn;
     }
 
-    public void setExpectedReturn(Double expectedReturn) {
-        this.expectedReturn = expectedReturn;
+    public void setCustomerExpectedReturn(Double customerExpectedReturn) {
+        this.customerExpectedReturn = customerExpectedReturn;
+    }
+
+    public Double getSystemPredictReturn() {
+        return systemPredictReturn;
+    }
+
+    public void setSystemPredictReturn(Double systemPredictReturn) {
+        this.systemPredictReturn = systemPredictReturn;
+    }
+
+    public Double getSystemPredictRisk() {
+        return systemPredictRisk;
+    }
+
+    public void setSystemPredictRisk(Double systemPredictRisk) {
+        this.systemPredictRisk = systemPredictRisk;
+    }
+
+    public InvestmentRiskLevel getRiskLevel() {
+        return riskLevel;
+    }
+
+    public void setRiskLevel(InvestmentRiskLevel riskLevel) {
+        this.riskLevel = riskLevel;
     }
 
     public List<EnumUtils.FinancialInstrumentClass> getPreferedFinancialInstrument() {
@@ -124,20 +152,12 @@ public class InvestmentPlan implements Serializable {
         this.wealthManagementSubscriber = wealthManagementSubscriber;
     }
 
-    public List<Double> getFinancialInstrumentPecentage() {
-        return financialInstrumentPecentage;
+    public List<FinancialInstrumentAndWeight> getSuggestedFinancialInstruments() {
+        return suggestedFinancialInstruments;
     }
 
-    public void setFinancialInstrumentPecentage(List<Double> financialInstrumentPecentage) {
-        this.financialInstrumentPecentage = financialInstrumentPecentage;
-    }
-
-    public List<FinancialInstrument> getFinancialInstruments() {
-        return financialInstruments;
-    }
-
-    public void setFinancialInstruments(List<FinancialInstrument> financialInstruments) {
-        this.financialInstruments = financialInstruments;
+    public void setSuggestedFinancialInstruments(List<FinancialInstrumentAndWeight> suggestedFinancialInstruments) {
+        this.suggestedFinancialInstruments = suggestedFinancialInstruments;
     }
 
     public Portfolio getPortfolio() {
