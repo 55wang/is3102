@@ -6,6 +6,7 @@
 package ejb.session.wealth;
 
 import entity.staff.StaffAccount;
+import entity.wealth.ConstructPortfolio;
 import entity.wealth.FinancialInstrument;
 import entity.wealth.InvestmentPlan;
 import java.util.ArrayList;
@@ -15,8 +16,6 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import server.utilities.EnumUtils;
-import server.utilities.EnumUtils.FinancialInstrumentClass;
 
 /**
  *
@@ -31,6 +30,12 @@ public class InvestmentPlanSessionBean implements InvestmentPlanSessionBeanLocal
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")
     
+    @Override
+    public List<ConstructPortfolio> getTestR() {
+        ConstructPortfolio cp = new ConstructPortfolio();
+        Query q = em.createQuery("SELECT a FROM ConstructPortfolio a");
+        return q.getResultList();
+    }
     
     @Override
     public InvestmentPlan createInvestmentPlan(InvestmentPlan ip){

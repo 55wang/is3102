@@ -16,75 +16,76 @@
             <em:staffNavBar context="wealth"></em:staffNavBar>
             <em:staffSideBar top="wealth" side="viewInvestmentRequest"></em:staffSideBar>
             <div class="container">
-            <p:panel header="Design Invetment Plan">
-                <h:panelGrid columns="2" columnClasses="left,right" style="width:100%">
-                    <p:panel style="width:500px;">
-                        <p:chart type="bar" model="#{deisgnInvestmentPlanManagedBean.animatedModel}" />
-                    </p:panel>
-                    <p:panelGrid columns="2" style="width:400px">
-                        <f:facet name="header">
-                            Suggested Plan
-                        </f:facet>
-                        <h:outputLabel for="riskScore" value="Customer risk tolerance score: " />
-                        <p:spinner id="ajaxSpinner" value="#{deisgnInvestmentPlanManagedBean.wms.riskToleranceScore}">
-                            <p:ajax process="@this" />
-                        </p:spinner>
-                       
-                        <h:outputLabel for="riskLevel" value="Customer risk tolerance level: " />
-                        <h:outputText id="riskLevel" value="#{deisgnInvestmentPlanManagedBean.wms.riskToleranceLevel.value}"/>
+                <p:panel header="Design Invetment Plan">
+                    <h:panelGrid columns="2" columnClasses="left,right" style="width:100%">
+                        <p:panel style="width:500px;">
+                            <p:chart type="bar" model="#{deisgnInvestmentPlanManagedBean.animatedModel}" />
+                        </p:panel>
+                        <p:panelGrid columns="2" style="width:400px">
+                            <f:facet name="header">
+                                Suggested Plan
+                            </f:facet>
+                            <h:outputLabel for="riskScore" value="Customer risk tolerance score: " />
+                            <p:spinner id="ajaxSpinner" value="#{deisgnInvestmentPlanManagedBean.wms.riskToleranceScore}">
+                                <p:ajax process="@this" />
+                            </p:spinner>
 
-                        <p:repeat value="#{deisgnInvestmentPlanManagedBean.suggestedCombination}" var="instrument" offset="" size="#{deisgnInvestmentPlanManagedBean.suggestedCombination.size()}" step="1" varStatus="">
-                            <h:outputText id="name" value="#{instrument.name.value}" />
-                        </p:repeat>
-                        <p:repeat value="#{deisgnInvestmentPlanManagedBean.suggestedPercentages}" var="percentage" offset="" size="#{deisgnInvestmentPlanManagedBean.suggestedPercentages.size()}" step="1" varStatus="">
-                            <h:outputText id="name" value="#{percentage}"/>
-                        </p:repeat>
-                    </p:panelGrid>
-                </h:panelGrid>
-                <p:dataTable id="request" value="#{deisgnInvestmentPlanManagedBean.requestPlan}" var="investmentRequest">
-                            <p:column headerText="ID"  style="width:15px">
-                                <h:outputText value="#{investmentRequest.id}" />
-                            </p:column>
-                            
-                            <p:column headerText="Create Date">
-                                <h:outputText value="#{investmentRequest.creationDate}">
-                                    <f:convertDateTime pattern="MM/dd/yy" />
-                                </h:outputText>
-                            </p:column>
+                            <h:outputLabel for="riskLevel" value="Customer risk tolerance level: " />
+                            <h:outputText id="riskLevel" value="#{deisgnInvestmentPlanManagedBean.wms.riskToleranceLevel.value}"/>
 
-                            <p:column headerText="Expected Return">
-                                <h:outputText value="#{investmentRequest.expectedReturn}" />
-                            </p:column>
+                            <p:repeat value="#{deisgnInvestmentPlanManagedBean.suggestedCombination}" var="instrument" offset="" size="#{deisgnInvestmentPlanManagedBean.suggestedCombination.size()}" step="1" varStatus="">
+                                <h:outputText id="name" value="#{instrument.name.value}" />
+                            </p:repeat>
+                            <p:repeat value="#{deisgnInvestmentPlanManagedBean.suggestedPercentages}" var="percentage" offset="" size="#{deisgnInvestmentPlanManagedBean.suggestedPercentages.size()}" step="1" varStatus="">
+                                <h:outputText id="name" value="#{percentage}"/>
+                            </p:repeat>
+                        </p:panelGrid>
+                    </h:panelGrid>
+                    <p:dataTable id="request" value="#{deisgnInvestmentPlanManagedBean.requestPlan}" var="investmentRequest">
+                        <p:column headerText="ID"  style="width:15px">
+                            <h:outputText value="#{investmentRequest.id}" />
+                        </p:column>
 
-                            <p:column headerText="Amount">
-                                <h:outputText value="#{investmentRequest.amountOfInvestment}" />
-                            </p:column>
-                        
-                            <p:column headerText="Prefered Instruments" style="width:180px">
-                                <p:scrollPanel style="width:180px;height:80px">
-                                    <p:repeat value="#{investmentRequest.preferedFinancialInstrument}" var="instrument" offset="" size="#{investmentRequest.preferedFinancialInstrument.size()}" step="1" varStatus="">
-                                        <div style="margin-bottom: 10px">
-                                            <h:outputText value="*#{instrument}" />
-                                        </div>
-                                    </p:repeat>    
-                                </p:scrollPanel>
-                            </p:column>
-                        
-                            <p:column headerText="Status">
-                                <h:outputText value="#{investmentRequest.status}" />
-                            </p:column>
+                        <p:column headerText="Create Date">
+                            <h:outputText value="#{investmentRequest.creationDate}">
+                                <f:convertDateTime pattern="MM/dd/yy" />
+                            </h:outputText>
+                        </p:column>
 
-                            <p:column headerText="Remarks">
-                                <h:outputText value="#{investmentRequest.remarks}" />
-                            </p:column>
-                        
-                            <p:column headerText="Customer">
-                                <h:outputText value="#{investmentRequest.wealthManagementSubscriber.mainAccount.customer.firstname}" />
-                            </p:column>
-                        </p:dataTable>
+                        <p:column headerText="Expected Return">
+                            <h:outputText value="#{investmentRequest.expectedReturn}" />
+                        </p:column>
+
+                        <p:column headerText="Amount">
+                            <h:outputText value="#{investmentRequest.amountOfInvestment}" />
+                        </p:column>
+
+                        <p:column headerText="Prefered Instruments" style="width:180px">
+                            <p:scrollPanel style="width:180px;height:80px">
+                                <p:repeat value="#{investmentRequest.preferedFinancialInstrument}" var="instrument" offset="" size="#{investmentRequest.preferedFinancialInstrument.size()}" step="1" varStatus="">
+                                    <div style="margin-bottom: 10px">
+                                        <h:outputText value="*#{instrument}" />
+                                    </div>
+                                </p:repeat>    
+                            </p:scrollPanel>
+                        </p:column>
+
+                        <p:column headerText="Status">
+                            <h:outputText value="#{investmentRequest.status}" />
+                        </p:column>
+
+                        <p:column headerText="Remarks">
+                            <h:outputText value="#{investmentRequest.remarks}" />
+                        </p:column>
+
+                        <p:column headerText="Customer">
+                            <h:outputText value="#{investmentRequest.wealthManagementSubscriber.mainAccount.customer.firstname}" />
+                        </p:column>
+                    </p:dataTable>
+                    <p:commandButton value="Ajax Submit" id="ajax" actionListener="#{viewInvestmentRequestManagedBean.setTestR()}" styleClass="ui-priority-primary" />                
                 </p:panel>
             </div>
-            
+
         </h:body> 
     </f:view>
 
