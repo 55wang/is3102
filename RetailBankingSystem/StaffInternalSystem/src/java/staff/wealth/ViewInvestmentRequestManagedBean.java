@@ -16,6 +16,7 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
+import server.utilities.EnumUtils;
 import utils.MessageUtils;
 import utils.RedirectUtils;
 import utils.SessionUtils;
@@ -65,6 +66,8 @@ public class ViewInvestmentRequestManagedBean implements Serializable{
     }
     
     public void start(InvestmentPlan ip){
+        ip.setStatus(EnumUtils.InvestmentPlanStatus.ONGOING);
+        investmentPlanSessionBean.updateInvestmentPlan(ip);
         RedirectUtils.redirect("staff-design-investment-plan.xhtml?plan="+ip.getId());
     }
     

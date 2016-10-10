@@ -287,7 +287,7 @@ and open the template in the editor.
     width:20px;
 }
 
-#designinvestment #ajaxSpinner .ui-spinner-button{
+#designinvestment .ui-spinner{
     z-index: 0;
 }
 
