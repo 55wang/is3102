@@ -6,6 +6,7 @@
 package ejb.session.wealth;
 
 import entity.staff.StaffAccount;
+import entity.wealth.ConstructPortfolio;
 import entity.wealth.InvestmentPlan;
 import java.util.List;
 import javax.ejb.Local;
@@ -16,6 +17,7 @@ import javax.ejb.Local;
  */
 @Local
 public interface InvestmentPlanSessionBeanLocal {
+    public List<ConstructPortfolio> getTestR();
     public InvestmentPlan createInvestmentPlan(InvestmentPlan ip);
     public InvestmentPlan getInvestmentPlanById(Long id);
     public InvestmentPlan updateInvestmentPlan(InvestmentPlan ip);
