@@ -29,11 +29,13 @@ public class CommonUtils {
         if (systemUser.equals("wang")) {
             prependingPath = "/Users/wang/NEW_IS3102/is3102/RCode/";
         } else if (systemUser.equals("litong")) {
-            prependingPath = "/Users/litong/Documents/IS3102/RCode";
+           //#prependingPath = "/Users/litong/Documents/is3102/RCode/";
         } else if (systemUser.equals("leiyang")) {
-
-        } else if (systemUser.equals("syx")) {
-
+            
+        } else if (systemUser.equals("VIN-S")) {
+            System.out.println("VIN-S");
+            prependingPath = "/Users/VIN-S/Documents/is3102/RCode/";
+            
         } else if (systemUser.equals("xiaqing")) {
 
         } else if (systemUser.equals("yifan")) {
