@@ -7,9 +7,7 @@ package webservice.restful.mobile;
 
 import ejb.session.dams.MobileAccountSessionBeanLocal;
 import entity.common.TransactionRecord;
-import entity.customer.MainAccount;
 import entity.dams.account.MobileAccount;
-import java.util.Date;
 import javax.ejb.EJB;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
@@ -20,7 +18,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import org.primefaces.json.JSONObject;
 import server.utilities.DateUtils;
-import server.utilities.HashPwdUtils;
 
 /**
  *

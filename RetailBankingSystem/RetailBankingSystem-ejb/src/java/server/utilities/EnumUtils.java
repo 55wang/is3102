@@ -1265,4 +1265,87 @@ public class EnumUtils {
             throw new IllegalArgumentException();
         }
     }
+    
+    public enum TransferPurpose {
+        // Personal Expenses
+        CC_PAY("Credit Card Payment"),
+        CARPARK_CHRAGES("Carpark Charges"),
+        CABLE_TV_BILL("Cable TV Bill"),
+        DC_PAY("Debit Card Payment"),
+        DENTAL("Dental Services"),
+        HOSPITAL("Hospital Care"),
+        MEDICAL("Medical Services"),
+        FEES_N_CHARGERS("Payment Of Fees & Charges"),
+        RENT("Rent"),
+        TELCO("Telco Bill"),
+        TELEPHONE("Telephone Bill"),
+        TOWN_COUNCIL("Town Council Service Charges"),
+        TRANSPORT("Transport"),
+        UTILITIES("Utilities"),
+        // Business Expenses
+        BUSINESS_EXPENSE("Business Expenses"),
+        COLLECTION_PAYMENT("Collection Payment"),
+        CASH_DISBURSEMENT("Cash Disbursement"),
+        INSTAL_HIRE_PUR_AGREE("Instalment Hire Purchase Agreement"),
+        INTRA_COM_PAY("Intra Company Payment"),
+        INVOICE_PAY("Invoice Payment"),
+        PURCHASE_SOG("Purchase Sale of Goods"),
+        SUPPLIER_PAYMENT("Supplier Payment"),
+        TRADE_SERVICES("Trade Services"),
+        TREASURY_PAYMENT("Treasury Payment"),
+        // Donation to Charity
+        CHARITY_PAYMENT("Charity Payment"),
+        // Education Expenses
+        EDUCATION("Education"),
+        STUDY("Study"),
+        // Foreign Worker Levy
+        FOREIGN_WORKER_LEVY("Foreign Worker Levy"),
+        // Investments and Insurance
+        GOV_INSUR("Government Insurance"),
+        INSUR_PREMIUM("Insurance Premium"),
+        INVEST_N_SECUR("Investment & Securities"),
+        // Loan Repayment
+        LOAN("Loan"),
+        // Salary / Commission
+        BONUS_PAYMENT("Bonus Payment"),
+        COMMISSION("Commission"),
+        SALARY_PAYMENT("Salary Payment"),
+        // Tax Payments
+        GOODS_N_SERVICES_TAX("Goods & Services Tax"),
+        NET_INCOME_TAX("Net Income Tax"),
+        PROPERTY_TAX("Property Tax"),
+        ROAD_TAX("Road Tax"),
+        TAX_PAYMENT("Tax Payment"),
+        // Others
+        DIVIDEND("Dividend"),
+        INTEREST("Interest"),
+        REBATE("Rebate"),
+        REFUND("Refund"),
+        WITHHOLDING("Withholding"),
+        OTHERS("Others");
+        
+        private String value;
+
+        TransferPurpose(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        @Override
+        public String toString() {
+            return this.getValue();
+        }
+
+        public static TransferPurpose getEnum(String value) {
+            for (TransferPurpose v : values()) {
+                if (v.getValue().equalsIgnoreCase(value)) {
+                    return v;
+                }
+            }
+            throw new IllegalArgumentException();
+        }
+    }
 }

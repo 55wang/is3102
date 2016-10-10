@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package sessionbean;
+package ejb.session.card;
 
-import caller.CreditCardDTO;
+import mb.caller.CreditCardDTO;
 import entity.VisaCardTransaction;
 import java.util.List;
 import javax.ejb.Stateless;

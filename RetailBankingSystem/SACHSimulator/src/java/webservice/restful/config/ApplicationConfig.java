@@ -12,7 +12,7 @@ import javax.ws.rs.core.Application;
  *
  * @author leiyang
  */
-@javax.ws.rs.ApplicationPath("rest")
+@javax.ws.rs.ApplicationPath("sach")
 public class ApplicationConfig extends Application {
 
     @Override
@@ -30,15 +30,10 @@ public class ApplicationConfig extends Application {
      * If required, comment out calling this method in getClasses().
      */
     private void addRestResourceClasses(Set<Class<?>> resources) {
-        resources.add(filters.CORSFilter.class);
-        resources.add(webservice.restful.creditcard.CreditCardAuthorizationService.class);
-        resources.add(webservice.restful.creditcard.CreditCardClearingService.class);
-        resources.add(webservice.restful.creditcard.CreditCardSettlementService.class);
-        resources.add(webservice.restful.mobile.MobileInitPayLahService.class);
-        resources.add(webservice.restful.mobile.MobileOTPService.class);
-        resources.add(webservice.restful.mobile.MobileTransferService.class);
-        resources.add(webservice.restful.mobile.MobileUserLoginService.class);
-        resources.add(webservice.restful.transfer.NetSettlementService.class);
+        resources.add(filter.CORSFilter.class);
+        resources.add(webservice.restful.clearing.InformSettlementService.class);
+        resources.add(webservice.restful.clearing.TransferClearingService.class);
     }
     
 }
+

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package caller;
+package mb.caller;
 
 import javax.json.JsonObject;
 

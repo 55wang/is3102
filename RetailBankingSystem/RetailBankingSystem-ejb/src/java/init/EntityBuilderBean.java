@@ -8,7 +8,6 @@ package init;
 import ejb.session.staff.StaffAccountSessionBeanLocal;
 import entity.card.product.PromoProduct;
 import entity.card.product.RewardCardProduct;
-import entity.customer.MainAccount;
 import entity.staff.StaffAccount;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -16,7 +15,6 @@ import javax.ejb.Singleton;
 import javax.ejb.LocalBean;
 import javax.ejb.Startup;
 import server.utilities.ConstantUtils;
-import server.utilities.GenerateAccountAndCCNumber;
 
 /**
  *
@@ -58,7 +56,6 @@ public class EntityBuilderBean {
     @PostConstruct
     public void init() {
         System.out.println("EntityInitilzationBean @PostConstruct");
-        System.out.println(GenerateAccountAndCCNumber.generateAccountNumber());
         if (needInit()) {
             buildEntities();
         } else {

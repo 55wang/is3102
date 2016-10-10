@@ -30,12 +30,14 @@ public class Payee implements Serializable {
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date createDate = new Date();
     
+    // international messaging code
+    private String swiftCode;
+    // local
+    private String bankCode;
+    private String branchCode;
     // info
     private String name;
     private EnumUtils.PayeeType type;
-    private String swiftCode;
-    private String bankCode;
-    private String branchCode;
     private String accountNumber;
     private String fromName;
     private String myInitial;

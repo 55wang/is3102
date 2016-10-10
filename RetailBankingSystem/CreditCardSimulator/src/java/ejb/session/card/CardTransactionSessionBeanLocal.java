@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package sessionbean;
+package ejb.session.card;
 
 import entity.VisaCardTransaction;
 import java.util.List;

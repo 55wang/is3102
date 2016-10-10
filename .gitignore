@@ -56,3 +56,10 @@ hs_err_pid*
 /RetailBankingSystem/nbproject/project.xml
 
 
+/RetailBankingSystem/BillPaymentSimulator/nbproject/private/
+/RetailBankingSystem/SACHSimulator/nbproject/private/
+/RetailBankingSystem/MEPSSimulator/nbproject/private/
+/RetailBankingSystem/SACHSimulator/dist/
+/RetailBankingSystem/SACHSimulator/build/
+/RetailBankingSystem/MEPSSimulator/dist/
+/RetailBankingSystem/MEPSSimulator/build/
