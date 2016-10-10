@@ -17,6 +17,7 @@
             <em:staffSideBar top="wealth" side="viewInvestmentRequest"></em:staffSideBar>
             <div class="container">
                 <h:form id="designinvestment">
+                    <p:growl id="growl" showDetail="true" sticky="true" /> 
                     <p:panel header="Design Invetment Plan" >
                     <h:panelGrid columns="2" columnClasses="left,right" style="width:100%" class="staffDesignPanel">
                         <p:panel style="width:500px;">
@@ -24,8 +25,8 @@
                         </p:panel>
                         <p:panel>
                             <p:panelGrid columns="4" style="width:100%">
-                                <h:outputLabel for="riskScore" value="Score" />
-                                <p:spinner id="ajaxSpinner" value="#{deisgnInvestmentPlanManagedBean.toleranceScore}" valueChangeListener="#{deisgnInvestmentPlanManagedBean.updateToleranceLevel()}">
+                                <h:outputLabel for="ajaxSpinner" value="Score" />
+                                <p:spinner id="ajaxSpinner" value="#{deisgnInvestmentPlanManagedBean.toleranceScore}" max="47" min="13" valueChangeListener="#{deisgnInvestmentPlanManagedBean.updateToleranceLevel()}">
                                     <p:ajax update="toleranceLevel" process="@this" />
                                 </p:spinner>
 
@@ -33,10 +34,10 @@
                                 <h:outputText id="toleranceLevel" value="#{deisgnInvestmentPlanManagedBean.toleranceLevel.value}"/>
 
                                 <h:outputLabel for="return" value="Return " />
-                                <h:inputText id="return" value="#{deisgnInvestmentPlanManagedBean.requestPlan.systemPredictReturn}" class="designinvestment-input" />
+                                <h:inputText id="return" value="#{deisgnInvestmentPlanManagedBean.requestPlan.systemPredictReturn}" class="designinvestment-input"/>
 
                                 <h:outputLabel for="risk" value="Risk " />
-                                <h:outputText id="Risk" value="#{deisgnInvestmentPlanManagedBean.requestPlan.systemPredictRisk}  #{deisgnInvestmentPlanManagedBean.requestPlan.riskLevel.value}" class="designinvestment-input" />
+                                <h:outputText id="risk" value="#{deisgnInvestmentPlanManagedBean.requestPlan.systemPredictRisk}  #{deisgnInvestmentPlanManagedBean.requestPlan.riskLevel.value}" class="designinvestment-input" />
                             </p:panelGrid>
                             
                             <p:separator></p:separator>
@@ -56,10 +57,13 @@
                          
                             <p:commandButton value="Reset" update="@form" actionListener="#{deisgnInvestmentPlanManagedBean.reset}"/>
                             <p:commandButton value="Update" update="@form" actionListener="#{deisgnInvestmentPlanManagedBean.update}"/>
-                            <p:commandButton value="Submit" update="@form" actionListener="#{deisgnInvestmentPlanManagedBean.confirm}"/>
+                            <p:commandButton value="Submit" update="@form" actionListener="#{deisgnInvestmentPlanManagedBean.submit}"/>
                          
                         </p:panel>
                     </h:panelGrid>
+                        </p:panel>
+                    
+                </h:form>
                     <p:dataTable id="request" value="#{deisgnInvestmentPlanManagedBean.requestPlan}" var="investmentRequest">
                                 <p:column headerText="ID"  style="width:15px">
                                     <h:outputText value="#{investmentRequest.id}" />
@@ -101,8 +105,7 @@
                                     <h:outputText value="#{investmentRequest.wealthManagementSubscriber.mainAccount.customer.firstname}" />
                                 </p:column>
                             </p:dataTable>
-                    </p:panel>
-                </h:form>
+                    
             </div>
             
         </h:body> 

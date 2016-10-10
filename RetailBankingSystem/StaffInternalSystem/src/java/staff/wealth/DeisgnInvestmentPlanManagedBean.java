@@ -5,6 +5,7 @@
  */
 package staff.wealth;
 
+import ejb.session.wealth.DesignInvestmentPlanSessionBeanLocal;
 import ejb.session.wealth.InvestmentPlanSessionBeanLocal;
 import entity.customer.WealthManagementSubscriber;
 import entity.wealth.FinancialInstrument;
@@ -22,7 +23,10 @@ import org.primefaces.model.chart.Axis;
 import org.primefaces.model.chart.AxisType;
 import org.primefaces.model.chart.BarChartModel;
 import org.primefaces.model.chart.ChartSeries;
+import server.utilities.EnumUtils;
+import server.utilities.EnumUtils.InvestmentPlanStatus;
 import server.utilities.EnumUtils.RiskToleranceLevel;
+import utils.MessageUtils;
 
 /**
  *
@@ -32,7 +36,10 @@ import server.utilities.EnumUtils.RiskToleranceLevel;
 @ViewScoped
 public class DeisgnInvestmentPlanManagedBean implements Serializable{
     @EJB
+    private DesignInvestmentPlanSessionBeanLocal designInvestmentPlanSessionBean;
+    @EJB
     private InvestmentPlanSessionBeanLocal investmentPlanSessionBean;
+    
     
     @ManagedProperty(value="#{param.plan}")
     private String requestPlanID;
@@ -53,7 +60,7 @@ public class DeisgnInvestmentPlanManagedBean implements Serializable{
     public void init() {
         requestPlanID = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("plan");
         requestPlan = investmentPlanSessionBean.getInvestmentPlanById(Long.parseLong(requestPlanID));
-        requestPlan = investmentPlanSessionBean.generateSuggestedInvestmentPlan(requestPlan);
+        requestPlan = designInvestmentPlanSessionBean.generateSuggestedInvestmentPlan(requestPlan);
         suggestedFinancialInstruments = requestPlan.getSuggestedFinancialInstruments();
         wms = requestPlan.getWealthManagementSubscriber();   
         toleranceScore = wms.getRiskToleranceScore();
@@ -105,7 +112,7 @@ public class DeisgnInvestmentPlanManagedBean implements Serializable{
     
     public void reset(){
         requestPlan = investmentPlanSessionBean.getInvestmentPlanById(Long.parseLong(requestPlanID));
-        requestPlan = investmentPlanSessionBean.generateSuggestedInvestmentPlan(requestPlan);
+        requestPlan = designInvestmentPlanSessionBean.generateSuggestedInvestmentPlan(requestPlan);
         suggestedFinancialInstruments = requestPlan.getSuggestedFinancialInstruments();
         wms = requestPlan.getWealthManagementSubscriber();   
         toleranceScore = wms.getRiskToleranceScore();
@@ -113,11 +120,49 @@ public class DeisgnInvestmentPlanManagedBean implements Serializable{
     }
     
     public void update(){
-        
+        if(validator()){
+            requestPlan = designInvestmentPlanSessionBean.updateSuggestedInvestmentPlan(requestPlan);
+        }
+        else
+            reset();
+   
     }
     
     public void submit(){
+        requestPlan.setStatus(InvestmentPlanStatus.WAITING);
+    }
     
+    private Boolean validator(){
+        if(requestPlan.getSystemPredictReturn()>1){
+            MessageUtils.displayError("Retuen > 1");
+            return false;
+        }else if(requestPlan.getSystemPredictReturn()<0){
+            MessageUtils.displayError("Retuen < 0");
+            return false;
+        }
+        
+        Double weightSumUp = 0.0;
+        
+        for(int i=0; i < suggestedFinancialInstruments.size(); i++){
+            if(suggestedFinancialInstruments.get(i).getWeight() > 1.0){
+                MessageUtils.displayError("Individual weight > 1");
+                return false;
+            }else if(suggestedFinancialInstruments.get(i).getWeight() < 0.0){
+                MessageUtils.displayError("Individual weight < 0");
+                return false;
+            }
+            weightSumUp += suggestedFinancialInstruments.get(i).getWeight();
+        }
+        
+        if(weightSumUp > 1.0){
+            MessageUtils.displayError("Total weight > 1");
+            return false;
+        }else if(weightSumUp < 1.0){
+            MessageUtils.displayError("Total weight < 1");
+            return false;
+        }
+        
+        return true;
     }
 
     public String getRequestPlanID() {
