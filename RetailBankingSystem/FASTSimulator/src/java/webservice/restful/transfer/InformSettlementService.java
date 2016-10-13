@@ -5,7 +5,7 @@
  */
 package webservice.restful.transfer;
 
-import ejb.session.webservice.WebserviceSessionBeanLocal;
+import ejb.session.bean.FASTSessionBean;
 import javax.ejb.EJB;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
@@ -15,43 +15,35 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import org.primefaces.json.JSONObject;
-import webservice.restful.mobile.ErrorDTO;
 
 /**
  *
  * @author leiyang
  */
-@Path("net_settlement")
-public class NetSettlementService {
-    
+@Path("fast_inform_settlement")
+public class InformSettlementService {
     @EJB
-    private WebserviceSessionBeanLocal webserviceBean;
-
+    private FASTSessionBean fastBean;
+    
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-    public Response netSettlement(
+    public Response receiveSettlement(
             @FormParam("netSettlementAmount") String netSettlementAmount,
-            @FormParam("isFAST") String isFAST
+            @FormParam("fromBankCode") String fromBankCode,
+            @FormParam("toBankCode") String toBankCode
     ) {
         System.out.println("Received netSettlementAmount:" + netSettlementAmount);
-        System.out.println("Received POST http net_settlement");
-
-        // requesting to MEPS
-        // only one case, when it is true
-        // TODO: Failed cases
-        if (isFAST.equals("true")) {
-            webserviceBean.payFASTSettlement(netSettlementAmount);
-        } else {
-            webserviceBean.paySACHSettlement(netSettlementAmount);
-        }
+        System.out.println("Received POST http fast_inform_settlement");
         
-        System.out.println("Sending back net_settlement response");
-        ErrorDTO err = new ErrorDTO();
+        // makes payment to other bank
+        System.out.println("Paying Settlement to other bank" + toBankCode);
+        fastBean.sendMEPS(netSettlementAmount);
+        
+        System.out.println("Sending back fast_inform_settlement response");
+        MessageDTO err = new MessageDTO();
         err.setCode(0);
-        err.setError("SUCCESS");
+        err.setMessage("SUCCESS");
         return Response.ok(new JSONObject(err).toString(), MediaType.APPLICATION_JSON).build();
     }
-    
-    
 }

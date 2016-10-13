@@ -19,7 +19,8 @@ and open the template in the editor.
         <h:body>
             <h:form>
                 <h1>Transfer Demo</h1>
-                <p:commandButton value="Generate One Transfer" update="@form" actionListener="#{transferDemoManagedBean.generateTransfer}" />
+                <p:commandButton value="Generate One Transfer" actionListener="#{transferDemoManagedBean.generateTransfer}" />
+                <p:commandButton value="FAST Transfer" actionListener="#{transferDemoManagedBean.fastTransfer}" />
             </h:form>
         </h:body>
     </f:view>

@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package webservice.restful.clearing;
+package webservice.restful.transfer;
 
-import ejb.session.bean.SACHSessionBean;
+import ejb.session.bean.FASTSessionBean;
 import entity.PaymentTransfer;
 import java.math.BigDecimal;
 import javax.ejb.EJB;
@@ -22,11 +22,11 @@ import org.primefaces.json.JSONObject;
  *
  * @author leiyang
  */
-@Path("sach_transfer_clearing")
-public class TransferClearingService {
+@Path("fast_transfer_clearing")
+public class TransferFastService {
 
     @EJB
-    private SACHSessionBean sachBean;
+    private FASTSessionBean fastBean;
 
     @POST
     @Produces(MediaType.APPLICATION_JSON)
@@ -49,8 +49,8 @@ public class TransferClearingService {
         System.out.println("Received toName:" + toName);
         System.out.println("Received fromName:" + fromName);
         System.out.println("Received myInitial:" + myInitial);
-        System.out.println("Received POST http SACH_transfer_clearing");
-        System.out.println("SACH Verifies credit limits, adjusts accounts internally");
+        System.out.println("Received POST http fast_transfer_clearing");
+        System.out.println("FAST Verifies credit limits, adjusts accounts internally");
         // at this point, Clear and save all to db before give a end of day settlement amount
         PaymentTransfer pt = new PaymentTransfer();
         pt.setReferenceNumber(referenceNumber);
@@ -62,16 +62,11 @@ public class TransferClearingService {
         pt.setFromName(fromName);
         pt.setMyInitial(myInitial);
         pt.setSettled(false);
-        sachBean.persist(pt);
-
-        System.out.println("At 4:30, SACH tells MBS how much to pay via MEPS");
-        System.out.println("By 5:30, MBS must pay");
-        System.out.println("MEPS Moves $$ into SACH Account");
-        System.out.println("By 5.45, SACH Makes payment to other bank");
-        System.out.println("MEPS debits SACH account, credit other bank account");
-        System.out.println("SACH advises other bank account of credit amount");
-
-        System.out.println("Sending back SACH_transfer_clearing response");
+        fastBean.persist(pt);
+        // save
+        // ask for settlement
+        fastBean.sendMBSNetSettlement(amount);
+        System.out.println("Sending back fast_transfer_clearing response");
         MessageDTO message = new MessageDTO();
         message.setCode(0);
         message.setMessage("SUCCESS");

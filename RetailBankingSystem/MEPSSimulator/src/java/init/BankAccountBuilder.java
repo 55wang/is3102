@@ -47,6 +47,12 @@ public class BankAccountBuilder {
         sach.setName("Singapore Automated Clearing House");
         mepsBean.persist(sach);
         
+        SettlementAccount fast = new SettlementAccount();
+        fast.setBankCode("111");
+        fast.setAmount(BigDecimal.ZERO);
+        fast.setName("FAST Agent");
+        mepsBean.persist(fast);
+        
         SettlementAccount mbs = new SettlementAccount();
         mbs.setBankCode("001");
         mbs.setAmount(new BigDecimal(50000000));//initial 50m
