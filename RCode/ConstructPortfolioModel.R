@@ -1,31 +1,7 @@
-# startServer()
-# stopServer()
-
-myAdd=function(x,y){
-  sum=x+y
-  return(sum)
-}
-
-startServer <- function() {
-  library(Rserve)
-  library(RSclient)
-  Rserve(args = "--vanilla", port = 6311) 
-}
-
-stopServer <- function() {
-  #shutdown rs server
-  rsc <- RSconnect(port = 6311)
-  RSshutdown(rsc)
-}
-
-installPackages <- function() {
-  install.packages("Rserve")
-  install.packages("Rclient")
-  install.packages("xts")
-  install.packages("quantmod")
-  install.packages("quadprog")
-  install.packages("RMySQL")
-}
+# myAdd=function(x,y){
+#   sum=x+y
+#   return(sum)
+# }
 
 constructPortfolioModel <- function() {
   print("constructPortfolioModel is called")
@@ -186,7 +162,12 @@ getSdRegression <- function(US_STOCKS, FOREIGN_STOCKS, EMERGING_MARKETS, DIVIDEN
 {
   print("runRegression is called")
 
-  setwd("/Users/VIN-S")
+  if (Sys.info()['user'] == "wang") {
+    setwd("/Users/wang")
+  } else if (Sys.info()['user'] == "VIN-S") {
+    setwd("/Users/VIN-S")
+  }
+  
   load(file = "tgt_port.rda")
 #   tgt_sdresult = 0.127966825248657
 #   US_STOCKS = 0.231095810691598
@@ -218,8 +199,12 @@ getReturnRegression <- function(US_STOCKS, FOREIGN_STOCKS, EMERGING_MARKETS, DIV
                             EMERGING_MARKET_BONDS, US_GOVERNMENT_BONDS)
 {
   print("runRegression is called")
-  
-  setwd("/Users/VIN-S")
+  if (Sys.info()['user'] == "wang") {
+    setwd("/Users/wang")
+  } else if (Sys.info()['user'] == "VIN-S") {
+    setwd("/Users/VIN-S")
+  }
+
   load(file = "tgt_port.rda")
   #   tgt_sdresult = 0.127966825248657
   #   US_STOCKS = 0.231095810691598
