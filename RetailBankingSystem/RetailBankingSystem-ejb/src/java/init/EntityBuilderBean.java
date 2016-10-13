@@ -8,6 +8,22 @@ package init;
 import ejb.session.staff.StaffAccountSessionBeanLocal;
 import entity.card.product.PromoProduct;
 import entity.card.product.RewardCardProduct;
+import entity.customer.CustomerCase;
+import entity.customer.Issue;
+import entity.customer.MainAccount;
+import entity.customer.WealthManagementSubscriber;
+import entity.dams.account.Cheque;
+import entity.dams.account.CustomerDepositAccount;
+import entity.dams.account.CustomerFixedDepositAccount;
+import entity.dams.account.DepositAccount;
+import entity.dams.account.DepositAccountProduct;
+import entity.dams.account.FixedDepositAccountProduct;
+import entity.dams.rules.ConditionInterest;
+import entity.dams.rules.Interest;
+import entity.dams.rules.RangeInterest;
+import entity.dams.rules.TimeRangeInterest;
+import entity.staff.Announcement;
+import entity.staff.Role;
 import entity.staff.StaffAccount;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -44,6 +60,8 @@ public class EntityBuilderBean {
     private EntityCaseBuilder entityCaseBuilder;
     @EJB
     private EntityPayLahBuilder entityPayLahBuilder;
+    @EJB
+    private EntityWealthBuilder entityWealthBuilder;
     
     // session beans
     @EJB
@@ -52,6 +70,7 @@ public class EntityBuilderBean {
     
     private RewardCardProduct demoRewardCardProduct;
     private PromoProduct demoPromoProduct;
+    private WealthManagementSubscriber demoWealthSubscriber;
 
     @PostConstruct
     public void init() {
@@ -79,5 +98,6 @@ public class EntityBuilderBean {
         entityCreditCardOrderBuilder.initCreditCardOrder(demoRewardCardProduct, demoPromoProduct);
         entityBillOrgBuilder.initBillOrganization();
         entityPayLahBuilder.initPayLahDemoData();
+        entityWealthBuilder.initWealth();
     }
 }

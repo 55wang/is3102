@@ -838,7 +838,8 @@ public class EnumUtils {
         FINANCIAL_OFFICER("Financial Officer"),
         FINANCIAL_ANALYST("Financial Analyst"),
         PRODUCT_MANAGER("Product Manager"),
-        SUPER_ADMIN("Super Admin");
+        SUPER_ADMIN("Super Admin"),
+        RELATIONSHIP_MANAGER("Relationship Manager");
 
         private String value;
 
@@ -1341,6 +1342,177 @@ public class EnumUtils {
 
         public static TransferPurpose getEnum(String value) {
             for (TransferPurpose v : values()) {
+                if (v.getValue().equalsIgnoreCase(value)) {
+                    return v;
+                }
+            }
+            throw new IllegalArgumentException();
+        }
+    }
+    
+    public enum RiskToleranceLevel {
+
+        LOW_RISK_TOLERANCE("Low risk tolerance"),
+        BELOW_AVERAGE_RISK_TOLERANCE("Below-average risk tolerance"),
+        AVERAGE_RISK_TOLERANCE("Average/moderate risk tolerance"),
+        ABOVE_AVERAGE_RISK_TOLERANCE("Above-average risk tolerance"),
+        HIGH_RISK_ROLERANCE("High risk tolerance");
+        
+        private String value;
+
+        RiskToleranceLevel(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        @Override
+        public String toString() {
+            return this.getValue();
+        }
+
+        public static RiskToleranceLevel getEnum(String value) {
+            for (RiskToleranceLevel v : values()) {
+                if (v.getValue().equalsIgnoreCase(value)) {
+                    return v;
+                }
+            }
+            throw new IllegalArgumentException();
+        }
+    }
+    
+    public enum InvestmentRiskLevel {
+
+        LOW_RISK("Low risk"),
+        BELOW_AVERAGE_RISK("Below-average risk"),
+        AVERAGE_RISK("Average/moderate risk"),
+        ABOVE_AVERAGE_RISK("Above-average risk"),
+        HIGH_RISK("High risk");
+        
+        private String value;
+
+        InvestmentRiskLevel(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        @Override
+        public String toString() {
+            return this.getValue();
+        }
+
+        public static InvestmentRiskLevel getEnum(String value) {
+            for (InvestmentRiskLevel v : values()) {
+                if (v.getValue().equalsIgnoreCase(value)) {
+                    return v;
+                }
+            }
+            throw new IllegalArgumentException();
+        }
+    }
+    
+    public enum InvestmentPlanStatus {
+
+        PENDING("PENDING"),
+        CANCELLED("CANCELLED"),
+        ONGOING("ONGOING"),
+        WAITING("WAITING APPROVAL"),
+        EXECUTED("EXECUTED");
+        
+        private String value;
+
+        InvestmentPlanStatus(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        @Override
+        public String toString() {
+            return this.getValue();
+        }
+
+        public static InvestmentPlanStatus getEnum(String value) {
+            for (InvestmentPlanStatus v : values()) {
+                if (v.getValue().equalsIgnoreCase(value)) {
+                    return v;
+                }
+            }
+            throw new IllegalArgumentException();
+        }
+    }
+    
+    public enum InvestmentPlanSatisfactionLevel {
+
+        VERY_SATISFIED("Very Satisfied"),
+        SATISFIED("Satisfied"),
+        OK("OK"),
+        DISATISFIED("Dissatisfied"),
+        VERY_DISATISFIED("Very Disatisfied");
+        
+        private String value;
+
+        InvestmentPlanSatisfactionLevel(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        @Override
+        public String toString() {
+            return this.getValue();
+        }
+
+        public static InvestmentPlanSatisfactionLevel getEnum(String value) {
+            for (InvestmentPlanSatisfactionLevel v : values()) {
+                if (v.getValue().equalsIgnoreCase(value)) {
+                    return v;
+                }
+            }
+            throw new IllegalArgumentException();
+        }
+    }
+    
+    public enum FinancialInstrumentClass {
+
+        US_STOCKS("US STOCKS"),
+        FOREIGN_DEVELOPED_STOCKS("FOREIGN DEVELOPED STOCKS"),
+        EMERGING_MARKET_STOCKS("EMERGING MARKET STOCKS"),
+        DIVIDEND_GROWTH_STOCKS("DIVIDEND GROWTH STOCKS"),
+        US_GOVERNMENT_BONDS("US GOVERNMENT BONDS"),
+        CORPORATE_BONDS("CORPORATE BONDS"),
+        EMERGING_MARKET_BONDS("EMERGING MARKET BONDS"),
+        MUNICIPAL_BONDS("MUNICIPAL BONDS"),
+        TREASURY_INFLATION_PROTECTED_SECURITIES ("TREASURY INFLATION-PROTECTED SECURITIES"),
+        REAL_ESTATE("REAL ESTATE"),
+        NATURAL_RESOURCES("NATURAL RESOURCES");
+        
+        private String value;
+
+        FinancialInstrumentClass(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        @Override
+        public String toString() {
+            return this.getValue();
+        }
+
+        public static FinancialInstrumentClass getEnum(String value) {
+            for (FinancialInstrumentClass v : values()) {
                 if (v.getValue().equalsIgnoreCase(value)) {
                     return v;
                 }

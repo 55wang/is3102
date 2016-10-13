@@ -58,6 +58,8 @@ public class EntityStaffBuilder {
                 + "- Adjust existing financial products\n"
                 + "- Launch financial products to the market\n");
         productManagerRole = staffRoleSessionBean.addRole(productManagerRole);
+        Role relationshipManagerRole = new Role(EnumUtils.UserRole.RELATIONSHIP_MANAGER.toString());
+        relationshipManagerRole = staffRoleSessionBean.addRole(relationshipManagerRole);
 
         StaffAccount superAdminAccount = new StaffAccount();
         superAdminAccount.setUsername(ConstantUtils.SUPER_ADMIN_USERNAME);
@@ -128,5 +130,15 @@ public class EntityStaffBuilder {
         productManagerAccount.setStatus(EnumUtils.StatusType.ACTIVE);
         productManagerAccount.setRole(productManagerRole);
         staffAccountSessionBean.createAccount(productManagerAccount);
+        
+        StaffAccount relationshipManagerAccount = new StaffAccount();
+        relationshipManagerAccount.setUsername(ConstantUtils.RELATIONSHIP_MANAGER_USERNAME);
+        relationshipManagerAccount.setPassword(ConstantUtils.STAFF_DEMO_PASSWORD);
+        relationshipManagerAccount.setFirstName("Relationship");
+        relationshipManagerAccount.setLastName("Manager");
+        relationshipManagerAccount.setEmail("relationship_manager@merlionbank.com");
+        relationshipManagerAccount.setStatus(EnumUtils.StatusType.ACTIVE);
+        relationshipManagerAccount.setRole(relationshipManagerRole);
+        staffAccountSessionBean.createAccount(relationshipManagerAccount);
     }
 }
