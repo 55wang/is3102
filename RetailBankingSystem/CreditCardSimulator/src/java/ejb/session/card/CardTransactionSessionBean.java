@@ -75,9 +75,16 @@ public class CardTransactionSessionBean implements CardTransactionSessionBeanLoc
     }
 
     @Override
-    public void sendSuccessAuthorization(String transactionAmount) {
+    public void sendSuccessAuthorization(String transactionAmount, String creditCardNumber) {
 
-        String ccNum = readCardCCNumber();
+        String ccNum;
+        if (creditCardNumber.equals("")) {
+            System.out.println("Read from hardware");
+            ccNum = readCardCCNumber();
+        } else {
+            System.out.println("Read from input box");
+            ccNum = creditCardNumber;
+        }
 
         if (ccNum != null) {
 
@@ -104,7 +111,7 @@ public class CardTransactionSessionBean implements CardTransactionSessionBeanLoc
                 System.out.println("Getting Authorizaed response with code: " + cc.getAuthorizationCode());
                 String returnCode = OTPUtils.generateSingleToken(cc.getCreditCardNumber(), Integer.parseInt(cc.getAuthorizationCode()));
                 // call for clearing
-                sendSuccessClearing(returnCode, cc.getAuthorizationCode(), transactionAmount);
+                sendSuccessClearing(returnCode, cc.getAuthorizationCode(), transactionAmount, creditCardNumber);
             } else {
                 System.out.println(cc.getMessage());
             }
@@ -125,8 +132,17 @@ public class CardTransactionSessionBean implements CardTransactionSessionBeanLoc
         }
     }
 
-    private void sendSuccessClearing(String returnCode, String aCode, String transactionAmount) {
-        String ccNum = readCardCCNumber();
+    private void sendSuccessClearing(String returnCode, String aCode, String transactionAmount, String creditCardNumber) {
+
+        String ccNum;
+        if (creditCardNumber.equals("")) {
+            System.out.println("Read from hardware");
+            ccNum = readCardCCNumber();
+        } else {
+            System.out.println("Read from input box");
+            ccNum = creditCardNumber;
+        }
+
         Long visaCardTransactionId = System.currentTimeMillis();
 
         if (ccNum != null) {
