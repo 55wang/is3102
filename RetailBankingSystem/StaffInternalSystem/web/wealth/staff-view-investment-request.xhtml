@@ -49,13 +49,13 @@
                                 <p:scrollPanel style="width:180px;height:80px">
                                     <p:repeat value="#{investmentRequest.preferedFinancialInstrument}" var="instrument" offset="" size="#{investmentRequest.preferedFinancialInstrument.size()}" step="1" varStatus="">
                                         <div style="margin-bottom: 10px">
-                                            <h:outputText value="*#{instrument}" />
+                                            <h:outputText value="*#{instrument.name}" />
                                         </div>
                                     </p:repeat>    
                                 </p:scrollPanel>
                             </p:column>
                         
-                            <p:column headerText="Status" sortBy="#{investmentRequest.status}">
+                            <p:column headerText="Status" sortBy="#{investmentRequest.status}" style="width:100px">
                                 <h:outputText value="#{investmentRequest.status}" />
                             </p:column>
 
@@ -67,8 +67,14 @@
                                 <h:outputText value="#{investmentRequest.wealthManagementSubscriber.mainAccount.customer.firstname}" />
                             </p:column>
                             
-                            <p:column headerText="Action" style="width:140px">
+                            <p:column headerText="Action" style="width:150px" rendered="#{investmentRequest.status != 'WAITING'}">
                                 <p:splitButton value="Design" action="#{viewInvestmentRequestManagedBean.start(investmentRequest)}" update="@form" icon="ui-icon-disk">
+                                    <p:menuitem value="Cancel" action="#{viewInvestmentRequestManagedBean.cancel(investmentRequest)}" update="@form" icon="ui-icon-arrowrefresh-1-w" /> 
+                                </p:splitButton>
+                            </p:column>
+                            <p:column headerText="Action" style="width:150px" rendered="#{investmentRequest.status == 'WAITING'}">
+                                <p:splitButton value="Execute" action="#{viewInvestmentRequestManagedBean.start(investmentRequest)}" update="@form" icon="ui-icon-disk">
+                                    <p:menuitem value="Edit" action="#{viewInvestmentRequestManagedBean.start(investmentRequest)}" update="@form" icon="ui-icon-arrowrefresh-1-w" /> 
                                     <p:menuitem value="Cancel" action="#{viewInvestmentRequestManagedBean.cancel(investmentRequest)}" update="@form" icon="ui-icon-arrowrefresh-1-w" /> 
                                 </p:splitButton>
                             </p:column>

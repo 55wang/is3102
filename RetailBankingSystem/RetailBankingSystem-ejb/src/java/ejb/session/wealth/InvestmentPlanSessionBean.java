@@ -38,7 +38,7 @@ public class InvestmentPlanSessionBean implements InvestmentPlanSessionBeanLocal
     
     @Override
     public InvestmentPlan createInvestmentPlan(InvestmentPlan ip){
-        em.persist(ip);
+        em.merge(ip);
         return ip;
     }
     

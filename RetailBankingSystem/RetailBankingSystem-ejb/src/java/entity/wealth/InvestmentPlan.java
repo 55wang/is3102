@@ -19,12 +19,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import server.utilities.EnumUtils;
 import server.utilities.EnumUtils.InvestmentPlanSatisfactionLevel;
 import server.utilities.EnumUtils.InvestmentPlanStatus;
-import entity.wealth.FinancialInstrumentAndWeight;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import static server.utilities.CommonUtils.round;
 import server.utilities.EnumUtils.InvestmentRiskLevel;
 
@@ -46,8 +42,8 @@ public class InvestmentPlan implements Serializable {
     private Double systemPredictReturn;
     private Integer systemPredictRisk;
     private InvestmentRiskLevel riskLevel;
-    private List<EnumUtils.FinancialInstrumentClass> preferedFinancialInstrument = new ArrayList<>();
-    private String remarks;
+    private List<FinancialInstrument> preferedFinancialInstrument = new ArrayList<>();
+    private String remarks = "";
     private InvestmentPlanStatus status;
     private InvestmentPlanSatisfactionLevel satisfactionLevel;
     
@@ -131,11 +127,11 @@ public class InvestmentPlan implements Serializable {
         this.riskLevel = riskLevel;
     }
 
-    public List<EnumUtils.FinancialInstrumentClass> getPreferedFinancialInstrument() {
+    public List<FinancialInstrument> getPreferedFinancialInstrument() {
         return preferedFinancialInstrument;
     }
 
-    public void setPreferedFinancialInstrument(List<EnumUtils.FinancialInstrumentClass> preferedFinancialInstrument) {
+    public void setPreferedFinancialInstrument(List<FinancialInstrument> preferedFinancialInstrument) {
         this.preferedFinancialInstrument = preferedFinancialInstrument;
     }
 

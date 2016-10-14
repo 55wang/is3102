@@ -146,11 +146,12 @@ public class EntityWealthBuilder {
         InvestmentPlan investmentPlan = new InvestmentPlan();
         investmentPlan.setAmountOfInvestment(10000);
         investmentPlan.setCustomerExpectedReturn(0.13);
-        List<EnumUtils.FinancialInstrumentClass> preferedInstruments = new ArrayList<EnumUtils.FinancialInstrumentClass>();
-        preferedInstruments.add(EnumUtils.FinancialInstrumentClass.CORPORATE_BONDS);
-        preferedInstruments.add(EnumUtils.FinancialInstrumentClass.EMERGING_MARKET_STOCKS);
-        preferedInstruments.add(EnumUtils.FinancialInstrumentClass.NATURAL_RESOURCES);
-        preferedInstruments.add(EnumUtils.FinancialInstrumentClass.US_GOVERNMENT_BONDS);
+        List<FinancialInstrument> preferedInstruments = new ArrayList<FinancialInstrument>();
+        List<FinancialInstrument> allFinancialInstruments = financialInstrumentSessionBean.getAllFinancialInstruments();
+        preferedInstruments.add(allFinancialInstruments.get(0));
+        preferedInstruments.add(allFinancialInstruments.get(2));
+        preferedInstruments.add(allFinancialInstruments.get(5));
+        preferedInstruments.add(allFinancialInstruments.get(7));
         investmentPlan.setPreferedFinancialInstrument(preferedInstruments);
         investmentPlan.setRemarks("test plan");
         investmentPlan.setStatus(EnumUtils.InvestmentPlanStatus.PENDING);
