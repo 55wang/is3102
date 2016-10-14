@@ -1,16 +1,92 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
-    <head>
-        <title>TODO supply a title</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    </head>
-    <body>
-        <div>TODO write content</div>
-    </body>
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:em="http://xmlns.jcp.org/jsf/composite/emcomp"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <!--shift + ctrl + F, format-->
+    <f:view>
+        <h:head>
+            <title>Merlion Internal</title>
+            <em:cssImport></em:cssImport>
+        </h:head>
+        <h:body>
+            <em:customerHeader context="personal" userName="#{customerHomeManagedBean.customer.firstname }"></em:customerHeader>
+            <em:customerNavBar context="personal" personalPage="wealth"></em:customerNavBar>
+            <div class="customer_main_container">
+                <h:form id="mainForm">
+                    <p:panel header="Search Requests">   
+                        <p:outputPanel>
+                                <p:inputText id="idFilter" style="width:180px" value="#{viewInvestmentPlanManagedBean.searchText}" placeholder="Enter Request ID"  />
+                                <p:commandButton value="Search" actionListener="#{viewInvestmentPlanManagedBean.search}" update="@form"/>
+                        </p:outputPanel>
+                    </p:panel>
+
+
+                <p:panel header="List of My Requests">
+                    <p:dataTable id="requestList" value="#{viewInvestmentPlanManagedBean.investmentPlans}" var="investmentRequest" sortMode="multiple" >
+                            <p:column headerText="ID" sortBy="#{investmentRequest.id}" style="width:15px">
+                                <h:outputText value="#{investmentRequest.id}" />
+                            </p:column>
+                            
+                            <p:column headerText="Create Date" sortBy="#{investmentRequest.creationDate}">
+                                <h:outputText value="#{investmentRequest.creationDate}">
+                                    <f:convertDateTime pattern="MM/dd/yy" />
+                                </h:outputText>
+                            </p:column>
+
+                            <p:column headerText="Expected Return" sortBy="#{investmentRequest.customerExpectedReturn}">
+                                <h:outputText value="#{investmentRequest.customerExpectedReturn}" />
+                            </p:column>
+
+                            <p:column headerText="Amount" sortBy="#{investmentRequest.amountOfInvestment}">
+                                <h:outputText value="#{investmentRequest.amountOfInvestment}" />
+                            </p:column>
+                        
+                            <p:column headerText="Prefered Instruments" style="width:180px">
+                                <p:scrollPanel style="width:180px;height:80px">
+                                    <p:repeat value="#{investmentRequest.preferedFinancialInstrument}" var="instrument" offset="" size="#{investmentRequest.preferedFinancialInstrument.size()}" step="1" varStatus="">
+                                        <div style="margin-bottom: 10px">
+                                            <h:outputText value="*#{instrument.name}" />
+                                        </div>
+                                    </p:repeat>    
+                                </p:scrollPanel>
+                            </p:column>
+                        
+                            <p:column headerText="Status" sortBy="#{investmentRequest.status}" style="width:100px">
+                                <h:outputText value="#{investmentRequest.status}" />
+                            </p:column>
+
+                            <p:column headerText="Remarks" sortBy="#{investmentRequest.remarks}">
+                                <h:outputText value="#{investmentRequest.remarks}" />
+                            </p:column>
+                        
+                            <p:column headerText="Customer" sortBy="#{investmentRequest.wealthManagementSubscriber}">
+                                <h:outputText value="#{investmentRequest.wealthManagementSubscriber.mainAccount.customer.firstname}" />
+                            </p:column>
+                            
+                            <p:column headerText="Action" style="width:120px" rendered="#{investmentRequest.status != 'WAITING' and investmentRequest.status != 'EXECUTED'}">
+                                <p:commandButton value="Cancel" action="#{viewInvestmentPlanManagedBean.cancel(investmentRequest)}" update="@form" icon="ui-icon-disk" />  
+                            </p:column>
+                            <p:column headerText="Action" style="width:150px" rendered="#{investmentRequest.status == 'WAITING' and investmentRequest.status != 'EXECUTED'}">
+                                <p:splitButton value="Details" action="#{viewInvestmentPlanManagedBean.viewDetail(investmentRequest)}" update="@form" icon="ui-icon-disk">
+                                    <p:menuitem value="Cancel" action="#{viewInvestmentPlanManagedBean.cancel(investmentRequest)}" update="@form" icon="ui-icon-arrowrefresh-1-w" /> 
+                                </p:splitButton>
+                            </p:column>
+                            <p:column headerText="Action" style="width:120px" rendered="#{investmentRequest.status == 'EXECUTED' and investmentRequest.status != 'WAITING'}">
+                                <p:commandButton value="Details" action="#{viewInvestmentPlanManagedBean.viewDetail(investmentRequest)}" update="@form" icon="ui-icon-disk" />  
+                            </p:column>
+                        </p:dataTable>
+                    </p:panel>
+                    <p:messages id="messagesStatus" redisplay="false"></p:messages>
+                </h:form>
+            </div>
+
+        </h:body> 
+    </f:view>
+
+
 </html>
+
