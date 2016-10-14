@@ -26,6 +26,8 @@ import server.utilities.GenerateAccountAndCCNumber;
 public class TransferDemoManagedBean implements Serializable {
 
     private final String SACH_TRANSFER_CLEARING = "https://localhost:8181/SACHSimulator/sach/sach_transfer_clearing";
+    private final String FAST_TRANSFER_CLEARING = "https://localhost:8181/FASTSimulator/fast/fast_transfer_clearing";
+    
     /**
      * Creates a new instance of TransferDemoManagedBean
      */
@@ -47,6 +49,35 @@ public class TransferDemoManagedBean implements Serializable {
 
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(SACH_TRANSFER_CLEARING);
+
+        // This is the response
+        JsonObject jsonString = target.request(MediaType.APPLICATION_JSON).post(Entity.entity(form, MediaType.APPLICATION_FORM_URLENCODED), JsonObject.class);
+        System.out.println(jsonString);
+        
+        if (jsonString.getString("message").equals("SUCCESS")) {
+            System.out.println("Request received");
+        } else {
+            System.out.println("FAIL");
+        }
+    }
+    
+    public void fastTransfer() {
+        
+        System.out.println("Generating transfer");
+        Form form = new Form(); //bank info
+        form.param("referenceNumber", GenerateAccountAndCCNumber.generateReferenceNumber());
+        form.param("amount", "2000");
+        form.param("bankCode", "002"); // other bank
+        form.param("branchCode", "010");
+        form.param("accountNumber", "123456789");
+        form.param("toName", "Wang Zhe");
+        form.param("fromName", "Lei Yang");
+        form.param("myInitial", "Ly");
+        form.param("FAST", "false");
+        
+
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(FAST_TRANSFER_CLEARING);
 
         // This is the response
         JsonObject jsonString = target.request(MediaType.APPLICATION_JSON).post(Entity.entity(form, MediaType.APPLICATION_FORM_URLENCODED), JsonObject.class);

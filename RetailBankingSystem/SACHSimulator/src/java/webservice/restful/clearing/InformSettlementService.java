@@ -30,13 +30,15 @@ public class InformSettlementService {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     public Response receiveSettlement(
-            @FormParam("netSettlementAmount") String netSettlementAmount
+            @FormParam("netSettlementAmount") String netSettlementAmount,
+            @FormParam("fromBankCode") String fromBankCode,
+            @FormParam("toBankCode") String toBankCode
     ) {
         System.out.println("Received netSettlementAmount:" + netSettlementAmount);
         System.out.println("Received POST http sach_inform_settlement");
         
         // makes payment to other bank
-        System.out.println("Paying Settlement");
+        System.out.println("Paying Settlement to other bank" + toBankCode);
         sachBean.sendMEPS(netSettlementAmount);
         
         System.out.println("Sending back sach_inform_settlement response");
@@ -45,6 +47,4 @@ public class InformSettlementService {
         err.setMessage("SUCCESS");
         return Response.ok(new JSONObject(err).toString(), MediaType.APPLICATION_JSON).build();
     }
-    
-    
 }

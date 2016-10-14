@@ -13,13 +13,6 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
-import javax.json.JsonObject;
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.client.Entity;
-import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.Form;
-import javax.ws.rs.core.MediaType;
 
 /**
  *
@@ -29,7 +22,7 @@ import javax.ws.rs.core.MediaType;
 @ViewScoped
 public class SACHManagedBean implements Serializable {
     
-    private final String MBS_NET_SETTLEMENT_PATH = "https://localhost:8181/StaffInternalSystem/rest/net_settlement";
+    
     
     @EJB
     private SACHSessionBean sachBean;
@@ -43,22 +36,6 @@ public class SACHManagedBean implements Serializable {
         for (PaymentTransfer pt : results) {
             netSettlementAmount = netSettlementAmount.add(pt.getAmount());
         }
-        
-        // send to mbs
-        Form form = new Form(); //bank info
-        form.param("netSettlementAmount", netSettlementAmount.toString());
-
-        Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(MBS_NET_SETTLEMENT_PATH);
-
-        // This is the response
-        JsonObject jsonString = target.request(MediaType.APPLICATION_JSON).post(Entity.entity(form, MediaType.APPLICATION_FORM_URLENCODED), JsonObject.class);
-        System.out.println(jsonString);
-        
-        if (jsonString != null && jsonString.getString("error").equals("SUCCESS")) {
-            System.out.println("Request received");
-        } else {
-            System.out.println("FAIL");
-        }
+        sachBean.sendMBSNetSettlement(netSettlementAmount.toString());
     }
 }

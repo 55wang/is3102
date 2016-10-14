@@ -53,7 +53,10 @@ public class MEPSSettlementService {
         // inform
         if (toBankCode.equals("000")) {
             System.out.println("Net Settlement Amount");
-            mepsBean.informSACHSettlement(netSettlementAmount);
+            mepsBean.informSACHSettlement(fromBankCode, toBankCode, netSettlementAmount);
+        } else if (toBankCode.equals("111")) {
+            System.out.println("Net Settlement Amount");
+            mepsBean.informFASTSettlement(fromBankCode, toBankCode, netSettlementAmount);
         }
         
         System.out.println("Sending back meps_settlement response");

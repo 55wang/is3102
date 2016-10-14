@@ -5,7 +5,7 @@
  */
 package ejb.session.bean;
 
-import entity.SettlementAccount;
+import entity.PaymentTransfer;
 import javax.ejb.Asynchronous;
 import javax.ejb.Stateless;
 import javax.json.JsonObject;
@@ -23,68 +23,56 @@ import javax.ws.rs.core.MediaType;
  * @author leiyang
  */
 @Stateless
-public class MEPSSessionBean {
+public class FASTSessionBean {
     
-    private final String SACH_INFORM_NET_SETTLEMENT = "https://localhost:8181/SACHSimulator/sach/sach_inform_settlement";
-    private final String FAST_INFORM_NET_SETTLEMENT = "https://localhost:8181/FASTSimulator/fast/fast_inform_settlement";
+    private final String MBS_NET_SETTLEMENT_PATH = "https://localhost:8181/StaffInternalSystem/rest/net_settlement";
+    private final String MEPS_SETTLEMENT = "https://localhost:8181/MEPSSimulator/meps/meps_settlement";
     
-    @PersistenceContext(unitName = "MEPSSimulatorPU")
+    @PersistenceContext(unitName = "FASTSimulatorPU")
     private EntityManager em;
-    
-    public SettlementAccount find(String bankCode) {
-        return em.find(SettlementAccount.class, bankCode);
-    }
 
-    public SettlementAccount persist(SettlementAccount object) {
+    public void persist(PaymentTransfer object) {
         em.persist(object);
-        return object;
-    }
-    
-    public SettlementAccount merge(SettlementAccount object) {
-        em.merge(object);
-        return object;
     }
     
     @Asynchronous
-    public void informSACHSettlement(String fromBankCode, String toBankCode, String netSettlementAmount) {
-        
-        // send to mbs
+    public void sendMEPS(String netSettlementAmount) {
+        // send to MEPS+
         Form form = new Form(); //bank info
+        form.param("fromBankCode", "111");// FAST is 111
+        form.param("toBankCode", "002"); // Other is 002
         form.param("netSettlementAmount", netSettlementAmount);
-        form.param("fromBankCode", fromBankCode);
-        form.param("toBankCode", toBankCode);
 
         Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(SACH_INFORM_NET_SETTLEMENT);
-        System.out.println("Inform sach about payment received from mbs");
+        WebTarget target = client.target(MEPS_SETTLEMENT);
+
         // This is the response
         JsonObject jsonString = target.request(MediaType.APPLICATION_JSON).post(Entity.entity(form, MediaType.APPLICATION_FORM_URLENCODED), JsonObject.class);
         System.out.println(jsonString);
         
         if (jsonString.getString("message").equals("SUCCESS")) {
-            System.out.println("Request received");
+            System.out.println("FAST Transfer to other bank B with details");
         } else {
             System.out.println("FAIL");
         }
     }
     
     @Asynchronous
-    public void informFASTSettlement(String fromBankCode, String toBankCode, String netSettlementAmount) {
+    public void sendMBSNetSettlement(String netSettlementAmount) {
         
         // send to mbs
         Form form = new Form(); //bank info
         form.param("netSettlementAmount", netSettlementAmount);
-        form.param("fromBankCode", fromBankCode);
-        form.param("toBankCode", toBankCode);
+        form.param("isFAST", "true");
 
         Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(FAST_INFORM_NET_SETTLEMENT);
-        System.out.println("Inform FAST about payment received from mbs");
+        WebTarget target = client.target(MBS_NET_SETTLEMENT_PATH);
+
         // This is the response
         JsonObject jsonString = target.request(MediaType.APPLICATION_JSON).post(Entity.entity(form, MediaType.APPLICATION_FORM_URLENCODED), JsonObject.class);
         System.out.println(jsonString);
         
-        if (jsonString.getString("message").equals("SUCCESS")) {
+        if (jsonString != null && jsonString.getString("error").equals("SUCCESS")) {
             System.out.println("Request received");
         } else {
             System.out.println("FAIL");

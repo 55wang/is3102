@@ -63,3 +63,6 @@ hs_err_pid*
 /RetailBankingSystem/SACHSimulator/build/
 /RetailBankingSystem/MEPSSimulator/dist/
 /RetailBankingSystem/MEPSSimulator/build/
+/RetailBankingSystem/FASTSimulator/nbproject/private/
+/RetailBankingSystem/FASTSimulator/build/
+/RetailBankingSystem/FASTSimulator/dist/

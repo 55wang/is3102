@@ -18,4 +18,6 @@ import javax.ejb.Local;
 public interface TransactionSessionBeanLocal {
     
     public List<TransactionRecord> getTransactionRecordByAccountNumberStartDateEndDate(String accountNumber, Date startDate, Date endDate);
+    
+    
 }
