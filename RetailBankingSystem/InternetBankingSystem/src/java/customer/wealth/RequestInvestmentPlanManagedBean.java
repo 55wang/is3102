@@ -21,7 +21,7 @@ import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import org.primefaces.model.DualListModel;
 import server.utilities.EnumUtils;
-import server.utilities.EnumUtils.FinancialInstrumentClass;
+import utils.RedirectUtils;
 import utils.SessionUtils;
 
 /**
@@ -74,6 +74,8 @@ public class RequestInvestmentPlanManagedBean implements Serializable {
         newInvestmenPlan.setStatus(EnumUtils.InvestmentPlanStatus.PENDING);
         
         investmentPlanSessionBean.createInvestmentPlan(newInvestmenPlan);
+        
+        RedirectUtils.redirect("view_investment_plan.xhtml");
     }
 
     public WealthManagementSubscriber getWms() {

@@ -18,6 +18,7 @@ import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import server.utilities.EnumUtils.InvestmentPlanStatus;
 import utils.MessageUtils;
+import utils.RedirectUtils;
 import utils.SessionUtils;
 
 /**
@@ -71,7 +72,7 @@ public class ViewInvestmentPlanManagedBean implements Serializable{
     }
     
     public void viewDetail(InvestmentPlan ip){
-        
+        RedirectUtils.redirect("investment_plan_detail.xhtml?plan="+ip.getId());
     }
 
     public String getSearchText() {
