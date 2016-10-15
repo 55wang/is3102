@@ -13,20 +13,20 @@
             <em:cssImport></em:cssImport>
         </h:head>
         <h:body>
-            <em:staffNavBar context="wealth"></em:staffNavBar>
-            <em:staffSideBar top="wealth" side="viewInvestmentRequest"></em:staffSideBar>
-            <div class="container">
+            <em:customerHeader context="personal" userName="#{customerHomeManagedBean.customer.firstname }"></em:customerHeader>
+            <em:customerNavBar context="personal" personalPage="wealth"></em:customerNavBar>
+            <div class="customer_main_container">
                 <h:form id="mainForm">
                     <p:panel header="Search Requests">   
                         <p:outputPanel>
-                                <p:inputText id="idFilter" style="width:180px" value="#{viewInvestmentRequestManagedBean.searchText}" placeholder="Enter Request ID"  />
-                                <p:commandButton value="Search" actionListener="#{viewInvestmentRequestManagedBean.search}" update="@form"/>
+                                <p:inputText id="idFilter" style="width:180px" value="#{viewInvestmentPlanManagedBean.searchText}" placeholder="Enter Request ID"  />
+                                <p:commandButton value="Search" actionListener="#{viewInvestmentPlanManagedBean.search}" update="@form"/>
                         </p:outputPanel>
                     </p:panel>
 
 
                 <p:panel header="List of My Requests">
-                    <p:dataTable id="requestList" value="#{viewInvestmentRequestManagedBean.requestInvestmentPlans}" var="investmentRequest" sortMode="multiple" >
+                    <p:dataTable id="requestList" value="#{viewInvestmentPlanManagedBean.investmentPlans}" var="investmentRequest" sortMode="multiple" >
                             <p:column headerText="ID" sortBy="#{investmentRequest.id}" style="width:15px">
                                 <h:outputText value="#{investmentRequest.id}" />
                             </p:column>
@@ -67,19 +67,16 @@
                                 <h:outputText value="#{investmentRequest.wealthManagementSubscriber.mainAccount.customer.firstname}" />
                             </p:column>
                             
-                            <p:column headerText="Action" style="width:150px" rendered="#{investmentRequest.status != 'WAITING' and investmentRequest.status != 'CANCELLED'}">
-                                <p:splitButton value="Design" action="#{viewInvestmentRequestManagedBean.start(investmentRequest)}" update="@form" icon="ui-icon-disk">
-                                    <p:menuitem value="Cancel" action="#{viewInvestmentRequestManagedBean.cancel(investmentRequest)}" update="@form" icon="ui-icon-arrowrefresh-1-w" /> 
+                            <p:column headerText="Action" style="width:150px" rendered="#{investmentRequest.status != 'WAITING' and investmentRequest.status != 'EXECUTED'}">
+                                <p:commandButton value="Cancel" action="#{viewInvestmentPlanManagedBean.cancel(investmentRequest)}" update="@form" icon="ui-icon-disk" />  
+                            </p:column>
+                            <p:column headerText="Action" style="width:150px" rendered="#{investmentRequest.status == 'WAITING' and investmentRequest.status != 'EXECUTED'}">
+                                <p:splitButton value="Details" action="#{viewInvestmentPlanManagedBean.viewDetail(investmentRequest)}" update="@form" icon="ui-icon-disk">
+                                    <p:menuitem value="Cancel" action="#{viewInvestmentPlanManagedBean.cancel(investmentRequest)}" update="@form" icon="ui-icon-arrowrefresh-1-w" /> 
                                 </p:splitButton>
                             </p:column>
-                            <p:column headerText="Action" style="width:150px" rendered="#{investmentRequest.status == 'WAITING' and investmentRequest.status != 'CANCELLED'}">
-                                <p:splitButton value="Execute" action="#{viewInvestmentRequestManagedBean.start(investmentRequest)}" update="@form" icon="ui-icon-disk">
-                                    <p:menuitem value="Edit" action="#{viewInvestmentRequestManagedBean.start(investmentRequest)}" update="@form" icon="ui-icon-arrowrefresh-1-w" /> 
-                                    <p:menuitem value="Cancel" action="#{viewInvestmentRequestManagedBean.cancel(investmentRequest)}" update="@form" icon="ui-icon-arrowrefresh-1-w" /> 
-                                </p:splitButton>
-                            </p:column>
-                            <p:column headerText="Action" style="width:150px" rendered="#{investmentRequest.status == 'CANCELLED'}">
-                                -
+                            <p:column headerText="Action" style="width:150px" rendered="#{investmentRequest.status == 'EXECUTED' and investmentRequest.status != 'WAITING'}">
+                                <p:commandButton value="Details" action="#{viewInvestmentPlanManagedBean.viewDetail(investmentRequest)}" update="@form" icon="ui-icon-disk" />  
                             </p:column>
                         </p:dataTable>
                     </p:panel>

@@ -162,7 +162,7 @@
                             </p:messages>
                         </p:panel>
                                         
-                        <p:panel header="Risk Tolerance Quiz" rendered="#{!riskToleranceQuizManagedBean.retakeOrNot}">
+                        <p:panel header="Risk Tolerance Quiz" rendered="#{!riskToleranceQuizManagedBean.retakeOrNot and riskToleranceQuizManagedBean.wms.riskToleranceScore != null}">
 
                                 <h:panelGrid columns="2" cellpadding="5">
                                     <h:outputLabel for="riskScore" value="Your risk tolerance score is: " />

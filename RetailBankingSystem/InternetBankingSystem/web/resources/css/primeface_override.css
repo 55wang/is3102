@@ -128,4 +128,9 @@ and open the template in the editor.
 .ui-widget textarea:focus{
     outline: none;
 }
+
+.ui-picklist-list.ui-picklist-source, .ui-picklist-list.ui-picklist-target{
+    width: 400px !important;
+    border: 1px solid #ccc;
+}
 /*end of css overwrite*/

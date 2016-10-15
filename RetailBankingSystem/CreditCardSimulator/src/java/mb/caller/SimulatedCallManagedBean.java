@@ -36,6 +36,7 @@ import utils.NfcDevice;
 public class SimulatedCallManagedBean implements Serializable {
 
     private String transactionAmount;
+    private String creditCardNumber;
 
     /**
      * Creates a new instance of SimulatedCallManagedBean
@@ -164,7 +165,7 @@ public class SimulatedCallManagedBean implements Serializable {
     }
 
     public void sendSuccessAuthorization() {
-        cardTransactionSessionBean.sendSuccessAuthorization(transactionAmount);
+        cardTransactionSessionBean.sendSuccessAuthorization(transactionAmount, creditCardNumber);
     }
 
     private void sendSuccessClearing(String returnCode, String aCode) {
@@ -270,5 +271,13 @@ public class SimulatedCallManagedBean implements Serializable {
 
     public void setVcts(List<VisaCardTransaction> vcts) {
         this.vcts = vcts;
+    }
+
+    public String getCreditCardNumber() {
+        return creditCardNumber;
+    }
+
+    public void setCreditCardNumber(String creditCardNumber) {
+        this.creditCardNumber = creditCardNumber;
     }
 }

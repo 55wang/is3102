@@ -25,6 +25,7 @@ import org.primefaces.model.chart.ChartSeries;
 import server.utilities.EnumUtils.InvestmentPlanStatus;
 import server.utilities.EnumUtils.InvestmentRiskLevel;
 import utils.MessageUtils;
+import utils.RedirectUtils;
 
 /**
  *
@@ -142,6 +143,8 @@ public class DeisgnInvestmentPlanManagedBean implements Serializable{
     
     public void submit(){
         requestPlan.setStatus(InvestmentPlanStatus.WAITING);
+        designInvestmentPlanSessionBean.submitSuggestedInvestmentPlan(requestPlan);
+        RedirectUtils.redirect("staff-view-investment-request.xhtml");
     }
     
     private Boolean validator(){

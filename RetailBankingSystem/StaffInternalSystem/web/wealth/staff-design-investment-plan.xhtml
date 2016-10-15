@@ -86,7 +86,7 @@
                                     <p:scrollPanel style="width:180px;height:80px">
                                         <p:repeat value="#{investmentRequest.preferedFinancialInstrument}" var="instrument" offset="" size="#{investmentRequest.preferedFinancialInstrument.size()}" step="1" varStatus="">
                                             <div style="margin-bottom: 10px">
-                                                <h:outputText value="*#{instrument}" />
+                                                <h:outputText value="*#{instrument.name}" />
                                             </div>
                                         </p:repeat>    
                                     </p:scrollPanel>

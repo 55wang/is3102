@@ -18,10 +18,13 @@ and open the template in the editor.
         <h:body style="background-color: #f9f9f9">
             <h1>Credit Card Simulator - Send Card Transaction</h1>
             <h:form id="formMain">
-                <h:outputText value="Transaction Amount:" />
+                <h:outputText value="Credit Card Number: " />
+                <h:inputText value="#{simulatedCallManagedBean.creditCardNumber}">
+                </h:inputText><br />
+                <h:outputText value="Transaction Amount: " />
                 <h:inputText required="true" value="#{simulatedCallManagedBean.transactionAmount}">
                 </h:inputText>
-                <p:commandButton id="success" value="Success Test" actionListener="#{simulatedCallManagedBean.sendSuccessAuthorization}" />
+                <p:commandButton id="success" value="Send Transaction" actionListener="#{simulatedCallManagedBean.sendSuccessAuthorization}" update="@form"/>
             </h:form>
 
             <div class="container">

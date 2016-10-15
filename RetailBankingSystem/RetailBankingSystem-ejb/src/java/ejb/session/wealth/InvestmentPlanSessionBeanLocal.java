@@ -5,6 +5,7 @@
  */
 package ejb.session.wealth;
 
+import entity.customer.MainAccount;
 import entity.staff.StaffAccount;
 import entity.wealth.PortfolioModel;
 import entity.wealth.InvestmentPlan;
@@ -22,4 +23,5 @@ public interface InvestmentPlanSessionBeanLocal {
     public InvestmentPlan getInvestmentPlanById(Long id);
     public InvestmentPlan updateInvestmentPlan(InvestmentPlan ip);
     public List<InvestmentPlan> getInvestmentPlanByRM(StaffAccount sa);
+    public List<InvestmentPlan> getInvestmentPlanByMainAccount(MainAccount ma);
 }

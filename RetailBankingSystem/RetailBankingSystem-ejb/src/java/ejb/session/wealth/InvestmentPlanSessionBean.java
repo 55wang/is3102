@@ -5,6 +5,7 @@
  */
 package ejb.session.wealth;
 
+import entity.customer.MainAccount;
 import entity.staff.StaffAccount;
 import entity.wealth.PortfolioModel;
 import entity.wealth.InvestmentPlan;
@@ -14,6 +15,7 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import server.utilities.EnumUtils.InvestmentPlanStatus;
 
 
 /**
@@ -38,7 +40,7 @@ public class InvestmentPlanSessionBean implements InvestmentPlanSessionBeanLocal
     
     @Override
     public InvestmentPlan createInvestmentPlan(InvestmentPlan ip){
-        em.persist(ip);
+        em.merge(ip);
         return ip;
     }
     
@@ -57,6 +59,16 @@ public class InvestmentPlanSessionBean implements InvestmentPlanSessionBeanLocal
     public List<InvestmentPlan> getInvestmentPlanByRM(StaffAccount sa){
         Query q = em.createQuery("SELECT r FROM InvestmentPlan r WHERE r.wealthManagementSubscriber.relationshipManager =:sa");
         q.setParameter("sa", sa);
+        
+        return q.getResultList();
+    }
+    
+    @Override
+    public List<InvestmentPlan> getInvestmentPlanByMainAccount(MainAccount ma){
+        InvestmentPlanStatus cancelstatus = InvestmentPlanStatus.CANCELLED;
+        Query q = em.createQuery("SELECT r FROM InvestmentPlan r WHERE r.wealthManagementSubscriber.mainAccount =:ma AND r.status !=:cancel");
+        q.setParameter("ma", ma);
+        q.setParameter("cancel", cancelstatus);
         
         return q.getResultList();
     }
