@@ -5,16 +5,14 @@
  */
 package demo;
 
+import ejb.session.webservice.WebserviceSessionBeanLocal;
+import entity.common.BillTransferRecord;
+import entity.common.TransferRecord;
 import java.io.Serializable;
+import java.math.BigDecimal;
+import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
-import javax.json.JsonObject;
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.client.Entity;
-import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.Form;
-import javax.ws.rs.core.MediaType;
 import server.utilities.GenerateAccountAndCCNumber;
 
 /**
@@ -24,10 +22,9 @@ import server.utilities.GenerateAccountAndCCNumber;
 @Named(value = "transferDemoManagedBean")
 @ViewScoped
 public class TransferDemoManagedBean implements Serializable {
-
-    private final String SACH_TRANSFER_CLEARING = "https://localhost:8181/SACHSimulator/sach/sach_transfer_clearing";
-    private final String FAST_TRANSFER_CLEARING = "https://localhost:8181/FASTSimulator/fast/fast_transfer_clearing";
     
+    @EJB
+    private WebserviceSessionBeanLocal webserviceBean;
     /**
      * Creates a new instance of TransferDemoManagedBean
      */
@@ -35,59 +32,43 @@ public class TransferDemoManagedBean implements Serializable {
     }
     
     public void generateTransfer() {
-        System.out.println("Generating transfer");
-        Form form = new Form(); //bank info
-        form.param("referenceNumber", GenerateAccountAndCCNumber.generateReferenceNumber());
-        form.param("amount", "2000");
-        form.param("bankCode", "002"); // other bank
-        form.param("branchCode", "010");
-        form.param("accountNumber", "123456789");
-        form.param("toName", "Wang Zhe");
-        form.param("fromName", "Lei Yang");
-        form.param("myInitial", "Ly");
-        
-
-        Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(SACH_TRANSFER_CLEARING);
-
-        // This is the response
-        JsonObject jsonString = target.request(MediaType.APPLICATION_JSON).post(Entity.entity(form, MediaType.APPLICATION_FORM_URLENCODED), JsonObject.class);
-        System.out.println(jsonString);
-        
-        if (jsonString.getString("message").equals("SUCCESS")) {
-            System.out.println("Request received");
-        } else {
-            System.out.println("FAIL");
-        }
+        System.out.println("Generating IBG transfer");
+        TransferRecord tr = new TransferRecord();
+        tr.setAccountNumber("123456789");
+        tr.setReferenceNumber(GenerateAccountAndCCNumber.generateReferenceNumber());
+        tr.setAmount(new BigDecimal(2000));
+        tr.setToBankCode("002");
+        tr.setToBranchCode("010");
+        tr.setName("Wang Zhe");
+        tr.setMyInitial("Ly");
+        tr.setFromName("Lei Yang");
+        webserviceBean.transferClearingSACH(tr);
+    }
+    
+    public void generateBillTransfer() {
+        System.out.println("Generating IBG transfer");
+        BillTransferRecord btr = new BillTransferRecord();
+        btr.setBillReferenceNumber("12345678");
+        btr.setOrganizationName("Singtel");
+        btr.setPartnerBankCode("002");
+        btr.setSettled(false);
+        btr.setShortCode("C123");
+        btr.setReferenceNumber(GenerateAccountAndCCNumber.generateReferenceNumber());
+        webserviceBean.billingClearingSACH(btr);
     }
     
     public void fastTransfer() {
-        
-        System.out.println("Generating transfer");
-        Form form = new Form(); //bank info
-        form.param("referenceNumber", GenerateAccountAndCCNumber.generateReferenceNumber());
-        form.param("amount", "2000");
-        form.param("bankCode", "002"); // other bank
-        form.param("branchCode", "010");
-        form.param("accountNumber", "123456789");
-        form.param("toName", "Wang Zhe");
-        form.param("fromName", "Lei Yang");
-        form.param("myInitial", "Ly");
-        form.param("FAST", "false");
-        
-
-        Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(FAST_TRANSFER_CLEARING);
-
-        // This is the response
-        JsonObject jsonString = target.request(MediaType.APPLICATION_JSON).post(Entity.entity(form, MediaType.APPLICATION_FORM_URLENCODED), JsonObject.class);
-        System.out.println(jsonString);
-        
-        if (jsonString.getString("message").equals("SUCCESS")) {
-            System.out.println("Request received");
-        } else {
-            System.out.println("FAIL");
-        }
+        System.out.println("Generating FAST transfer");
+        TransferRecord tr = new TransferRecord();
+        tr.setAccountNumber("123456789");
+        tr.setReferenceNumber(GenerateAccountAndCCNumber.generateReferenceNumber());
+        tr.setAmount(new BigDecimal(2000));
+        tr.setToBankCode("002");
+        tr.setToBranchCode("010");
+        tr.setName("Wang Zhe");
+        tr.setMyInitial("Ly");
+        tr.setFromName("Lei Yang");
+        webserviceBean.transferClearingFAST(tr);
     }
     
 }

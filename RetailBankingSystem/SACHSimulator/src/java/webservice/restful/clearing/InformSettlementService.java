@@ -6,6 +6,9 @@
 package webservice.restful.clearing;
 
 import ejb.session.bean.SACHSessionBean;
+import entity.BillTransfer;
+import entity.PaymentTransfer;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
@@ -42,6 +45,16 @@ public class InformSettlementService {
         sachBean.sendMEPS(netSettlementAmount);
         
         System.out.println("Sending back sach_inform_settlement response");
+        List<PaymentTransfer> paymentTransfers = sachBean.findAllPaymentTransfer();
+        for (PaymentTransfer pt : paymentTransfers) {
+            pt.setSettled(Boolean.TRUE);
+            sachBean.merge(pt);
+        }
+        List<BillTransfer> billTransfers = sachBean.findAllBillTransfer();
+        for (BillTransfer bt : billTransfers) {
+            bt.setSettled(Boolean.TRUE);
+            sachBean.merge(bt);
+        }
         MessageDTO err = new MessageDTO();
         err.setCode(0);
         err.setMessage("SUCCESS");

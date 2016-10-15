@@ -166,6 +166,8 @@ getSdRegression <- function(US_STOCKS, FOREIGN_STOCKS, EMERGING_MARKETS, DIVIDEN
     setwd("/Users/wang")
   } else if (Sys.info()['user'] == "VIN-S") {
     setwd("/Users/VIN-S")
+  }else if (Sys.info()['user'] == "leiyang") {
+    setwd("/Users/leiyang")
   }
   
   load(file = "tgt_port.rda")
@@ -203,6 +205,8 @@ getReturnRegression <- function(US_STOCKS, FOREIGN_STOCKS, EMERGING_MARKETS, DIV
     setwd("/Users/wang")
   } else if (Sys.info()['user'] == "VIN-S") {
     setwd("/Users/VIN-S")
+  } else if (Sys.info()['user'] == "leiyang") {
+    setwd("/Users/leiyang")
   }
 
   load(file = "tgt_port.rda")

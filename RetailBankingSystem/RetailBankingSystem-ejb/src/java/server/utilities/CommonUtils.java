@@ -33,7 +33,7 @@ public class CommonUtils {
         } else if (systemUser.equals("litong")) {
            //#prependingPath = "/Users/litong/Documents/is3102/RCode/";
         } else if (systemUser.equals("leiyang")) {
-            
+            prependingPath = "/Users/leiyang/Desktop/IS3102/workspace/is3102/RCode/";
         } else if (systemUser.equals("VIN-S")) {
             System.out.println("VIN-S");
             prependingPath = "/Users/VIN-S/Documents/is3102/RCode/";

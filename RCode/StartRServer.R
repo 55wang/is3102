@@ -13,7 +13,7 @@ stopServer <- function() {
 
 installPackages <- function() {
   install.packages("Rserve")
-  install.packages("Rclient")
+  install.packages("RSclient")
   install.packages("xts")
   install.packages("quantmod")
   install.packages("quadprog")
