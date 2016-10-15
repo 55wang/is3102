@@ -5,13 +5,13 @@
  */
 package ejb.session.bill;
 
+import entity.bill.BankEntity;
 import entity.bill.Organization;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import server.utilities.EnumUtils;
 import server.utilities.EnumUtils.StatusType;
 
 /**
@@ -37,8 +37,27 @@ public class BillSessionBean implements BillSessionBeanLocal {
     }
     
     @Override
+    public BankEntity createBankEntity(BankEntity o) {
+        em.persist(o);
+        return o;
+    }
+
+    @Override
+    public BankEntity updateBankEntity(BankEntity o) {
+        em.merge(o);
+        return o;
+    }
+    
+    @Override
     public List<Organization> getActiveListOrganization() {
         Query q = em.createQuery("SELECT o FROM Organization o WHERE o.status = :inStatus");
+        q.setParameter("inStatus", StatusType.ACTIVE);
+        return q.getResultList();
+    }
+    
+    @Override
+    public List<BankEntity> getActiveListBankEntities(){
+        Query q = em.createQuery("SELECT b FROM BankEntity b WHERE b.status = :inStatus");
         q.setParameter("inStatus", StatusType.ACTIVE);
         return q.getResultList();
     }

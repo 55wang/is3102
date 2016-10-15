@@ -118,6 +118,10 @@
                         <li class="side-menu-item #{cc.attrs.side == 'manageOrg' ? 'active' : ''}">
                             <h:link outcome="manage_organization" value="Organizations" />
                         </li>
+                        
+                        <li class="side-menu-item #{cc.attrs.side == 'manageBank' ? 'active' : ''}">
+                            <h:link outcome="manage_bank_entity" value="Other Banks" />
+                        </li>
                     </c:if>
                     
                     <c:if test="#{cc.attrs.top == 'promo'}">

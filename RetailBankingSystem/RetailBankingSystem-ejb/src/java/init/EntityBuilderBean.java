@@ -98,6 +98,6 @@ public class EntityBuilderBean {
         entityCreditCardOrderBuilder.initCreditCardOrder(demoRewardCardProduct, demoPromoProduct);
         entityBillOrgBuilder.initBillOrganization();
         entityPayLahBuilder.initPayLahDemoData();
-        entityWealthBuilder.initWealth();
+//        entityWealthBuilder.initWealth();
     }
 }
