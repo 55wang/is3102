@@ -17,6 +17,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import server.utilities.EnumUtils.InvestmentPlanSatisfactionLevel;
@@ -47,6 +48,16 @@ public class InvestmentPlan implements Serializable {
     private InvestmentPlanStatus status;
     private InvestmentPlanSatisfactionLevel satisfactionLevel;
     
+    @OneToOne(cascade = CascadeType.MERGE)
+    private Portfolio onePortfolio;
+
+    public Portfolio getOnePortfolio() {
+        return onePortfolio;
+    }
+
+    public void setOnePortfolio(Portfolio onePortfolio) {
+        this.onePortfolio = onePortfolio;
+    }
     @ManyToOne(cascade = CascadeType.MERGE)
     private WealthManagementSubscriber wealthManagementSubscriber;
     @OneToMany(cascade = CascadeType.MERGE)

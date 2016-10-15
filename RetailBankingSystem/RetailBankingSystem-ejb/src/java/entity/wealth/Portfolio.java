@@ -5,15 +5,21 @@
  */
 package entity.wealth;
 
+import entity.customer.WealthManagementSubscriber;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 /**
  *
@@ -21,13 +27,20 @@ import javax.persistence.OneToMany;
  */
 @Entity
 public class Portfolio implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
+    @Temporal(value = TemporalType.TIMESTAMP)
+    private final Date creationDate = new Date();
+
+    @OneToOne(cascade = {CascadeType.MERGE}, mappedBy = "portfolio")
+    private InvestmentPlan executedInvestmentPlan;
     @OneToMany(cascade = CascadeType.MERGE, mappedBy = "portfolio")
     private List<InvestmentPlan> investmentPlans = new ArrayList<>();
+    @ManyToOne(cascade = CascadeType.MERGE)
+    private WealthManagementSubscriber wealthManagementSubscriber;
 
     public Long getId() {
         return id;
@@ -69,4 +82,25 @@ public class Portfolio implements Serializable {
     public void setInvestmentPlans(List<InvestmentPlan> investmentPlans) {
         this.investmentPlans = investmentPlans;
     }
+
+    public InvestmentPlan getExecutedInvestmentPlan() {
+        return executedInvestmentPlan;
+    }
+
+    public void setExecutedInvestmentPlan(InvestmentPlan executedInvestmentPlan) {
+        this.executedInvestmentPlan = executedInvestmentPlan;
+    }
+
+    public WealthManagementSubscriber getWealthManagementSubscriber() {
+        return wealthManagementSubscriber;
+    }
+
+    public void setWealthManagementSubscriber(WealthManagementSubscriber wealthManagementSubscriber) {
+        this.wealthManagementSubscriber = wealthManagementSubscriber;
+    }
+
+    public Date getCreationDate() {
+        return creationDate;
+    }
+
 }

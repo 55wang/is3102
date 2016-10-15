@@ -10,11 +10,14 @@ import ejb.session.mainaccount.MainAccountSessionBeanLocal;
 import ejb.session.staff.StaffAccountSessionBeanLocal;
 import ejb.session.wealth.FinancialInstrumentSessionBeanLocal;
 import ejb.session.wealth.InvestmentPlanSessionBeanLocal;
+import ejb.session.wealth.PortfolioSessionBean;
+import ejb.session.wealth.PortfolioSessionBeanLocal;
 import ejb.session.wealth.WealthManegementSubscriberSessionBeanLocal;
 import entity.customer.MainAccount;
 import entity.customer.WealthManagementSubscriber;
 import entity.wealth.FinancialInstrument;
 import entity.wealth.InvestmentPlan;
+import entity.wealth.Portfolio;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
@@ -45,6 +48,9 @@ public class EntityWealthBuilder {
 
     @EJB
     private WealthManegementSubscriberSessionBeanLocal wealthManegementSubscriberSessionBean;
+    
+    @EJB
+    private PortfolioSessionBeanLocal portfolioSessionBean;
 
     @EJB
     private StaffAccountSessionBeanLocal staffAccountSessionBean;
@@ -154,9 +160,21 @@ public class EntityWealthBuilder {
         preferedInstruments.add(allFinancialInstruments.get(7));
         investmentPlan.setPreferedFinancialInstrument(preferedInstruments);
         investmentPlan.setRemarks("test plan");
-        investmentPlan.setStatus(EnumUtils.InvestmentPlanStatus.PENDING);
+        investmentPlan.setStatus(EnumUtils.InvestmentPlanStatus.EXECUTED);
         investmentPlan.setWealthManagementSubscriber(wms);
+        investmentPlan.setSatisfactionLevel(EnumUtils.InvestmentPlanSatisfactionLevel.VERY_SATISFIED);
+        investmentPlan.setSystemPredictReturn(0.5);
+        investmentPlan.setSystemPredictRisk(40);
+        Portfolio p = new Portfolio();
+        List<InvestmentPlan> allInvestmentPlans = new ArrayList<InvestmentPlan>();
+        p.setInvestmentPlans(allInvestmentPlans);
+        p.setExecutedInvestmentPlan(investmentPlan);
+        p.setWealthManagementSubscriber(wms);
+        investmentPlan.setPortfolio(p);
+        investmentPlan.setOnePortfolio(p);
+        portfolioSessionBean.createPortfolio(p);
         investmentPlanSessionBean.createInvestmentPlan(investmentPlan);
+        
 
         //generate PortfolioModel table
         constructPortfolioModel();

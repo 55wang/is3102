@@ -1,0 +1,62 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:em="http://xmlns.jcp.org/jsf/composite/emcomp"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <!--shift + ctrl + F, format-->
+    <f:view>
+        <h:head>
+            <title>Merlion Internal</title>
+            <em:cssImport></em:cssImport>
+        </h:head>
+        <h:body>
+            <em:staffNavBar context="wealth"></em:staffNavBar>
+            <em:staffSideBar top="wealth" side="viewPortfolio"></em:staffSideBar>
+
+            <div class="container">
+                <h:form id="mainForm2">
+                    <p:panel header="Customer Financial Profile">
+                        <p:messages id="messagesStatus" redisplay="false" >
+                            <h:panelGrid columns="2" cellpadding="5">
+                                <p:dataTable value="#{viewPortfolioManagedBean.portfolios}" var="p" >
+                                    <p:column headerText="Customer Name">
+                                        <h:outputText value="#{p.wealthManagementSubscriber.mainAccount.customer.fullName}" />
+                                    </p:column>
+                                    <p:column headerText="Total Deposit Amount">
+                                        <h:outputText value="" />
+                                    </p:column>
+                                    <p:column headerText="Total Debt Amount">
+                                        <h:outputText value="#{p.executedInvestmentPlan.amountOfInvestment}" />
+                                    </p:column>
+                                    <p:column headerText="Current Ratio">
+                                        <h:outputText value="#{p.executedInvestmentPlan.systemPredictRisk}" />
+                                    </p:column>
+                                    <p:column headerText="Investment Assets to Total Assets">
+                                        <h:outputText value="#{p.executedInvestmentPlan.systemPredictReturn}" />
+                                    </p:column>
+                                    <p:column headerText="No. of Portfolios">
+                                        <h:outputText value="#{p.executedInvestmentPlan.satisfactionLevel}" />
+                                    </p:column>
+                                    <p:column headerText="Investment % Change">
+                                        <h:outputText value="#{p.executedInvestmentPlan.satisfactionLevel}" />
+                                    </p:column>
+                                    <p:column headerText="Action">
+                                        <p:commandButton value="View Details" action="#{viewPortfolioManagedBean.viewExecutedPortfolioDetail()}" icon="ui-icon-lightbulb" update="@form" />
+                                    </p:column>
+                                </p:dataTable>
+                            </h:panelGrid>
+                        </p:messages>
+                    </p:panel>
+
+                </h:form>
+            </div>
+
+        </h:body> 
+    </f:view>
+
+
+</html>
+

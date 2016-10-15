@@ -7,6 +7,7 @@ package entity.customer;
 
 import entity.staff.StaffAccount;
 import entity.wealth.InvestmentPlan;
+import entity.wealth.Portfolio;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,7 +41,8 @@ public class WealthManagementSubscriber implements Serializable {
     private StaffAccount relationshipManager;
     @OneToMany(cascade = CascadeType.MERGE, mappedBy = "wealthManagementSubscriber")
     private List<InvestmentPlan> investmentPlans = new ArrayList<>();
-    
+    @OneToMany(cascade = CascadeType.MERGE, mappedBy = "wealthManagementSubscriber")
+    private List<Portfolio> portfolios = new ArrayList<>();
     
     public Long getId() {
         return id;
@@ -113,5 +115,13 @@ public class WealthManagementSubscriber implements Serializable {
 
     public void setInvestmentPlans(List<InvestmentPlan> investmentPlans) {
         this.investmentPlans = investmentPlans;
+    }
+
+    public List<Portfolio> getPortfolios() {
+        return portfolios;
+    }
+
+    public void setPortfolios(List<Portfolio> portfolios) {
+        this.portfolios = portfolios;
     }
 }
