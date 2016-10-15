@@ -6,6 +6,7 @@
 package mb.sach;
 
 import ejb.session.bean.SACHSessionBean;
+import entity.BillTransfer;
 import entity.PaymentTransfer;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -32,10 +33,15 @@ public class SACHManagedBean implements Serializable {
     
     public void sendMBSNetSettlement() {
         BigDecimal netSettlementAmount = BigDecimal.ZERO;
-        List<PaymentTransfer> results = sachBean.findAll();
-        for (PaymentTransfer pt : results) {
+        List<PaymentTransfer> paymentTransfers = sachBean.findAllPaymentTransfer();
+        for (PaymentTransfer pt : paymentTransfers) {
             netSettlementAmount = netSettlementAmount.add(pt.getAmount());
         }
+        List<BillTransfer> billTransfers = sachBean.findAllBillTransfer();
+        for (BillTransfer bt : billTransfers) {
+            netSettlementAmount = netSettlementAmount.add(bt.getAmount());
+        }
+        
         sachBean.sendMBSNetSettlement(netSettlementAmount.toString());
     }
 }

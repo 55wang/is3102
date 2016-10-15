@@ -5,6 +5,15 @@
 
 constructPortfolioModel <- function() {
   print("constructPortfolioModel is called")
+
+  if (Sys.info()['user'] == "wang") {
+    setwd("/Users/wang")
+  } else if (Sys.info()['user'] == "VIN-S") {
+    setwd("/Users/VIN-S")
+  } else if (Sys.info()['user'] == "qiuxiaqing") {
+    setwd("/Users/qiuxiaqing")
+  }
+  
   library(xts)
   library(quantmod)
   library(quadprog)
@@ -166,6 +175,10 @@ getSdRegression <- function(US_STOCKS, FOREIGN_STOCKS, EMERGING_MARKETS, DIVIDEN
     setwd("/Users/wang")
   } else if (Sys.info()['user'] == "VIN-S") {
     setwd("/Users/VIN-S")
+  }else if (Sys.info()['user'] == "leiyang") {
+    setwd("/Users/leiyang")
+  } else if (Sys.info()['user'] == "qiuxiaqing") {
+    setwd("/Users/qiuxiaqing")
   }
   
   load(file = "tgt_port.rda")
@@ -199,12 +212,20 @@ getReturnRegression <- function(US_STOCKS, FOREIGN_STOCKS, EMERGING_MARKETS, DIV
                             EMERGING_MARKET_BONDS, US_GOVERNMENT_BONDS)
 {
   print("runRegression is called")
+
   if (Sys.info()['user'] == "wang") {
     setwd("/Users/wang")
   } else if (Sys.info()['user'] == "VIN-S") {
     setwd("/Users/VIN-S")
+<<<<<<< HEAD
+  } else if (Sys.info()['user'] == "leiyang") {
+    setwd("/Users/leiyang")
+=======
+  } else if (Sys.info()['user'] == "qiuxiaqing") {
+    setwd("/Users/qiuxiaqing")
+>>>>>>> 64c0ee36f902084bf5a628221edff6171d16df99
   }
-
+  
   load(file = "tgt_port.rda")
   #   tgt_sdresult = 0.127966825248657
   #   US_STOCKS = 0.231095810691598

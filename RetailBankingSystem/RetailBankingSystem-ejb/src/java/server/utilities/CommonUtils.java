@@ -31,15 +31,16 @@ public class CommonUtils {
         if (systemUser.equals("wang")) {
             prependingPath = "/Users/wang/NEW_IS3102/is3102/RCode/";
         } else if (systemUser.equals("litong")) {
-           //#prependingPath = "/Users/litong/Documents/is3102/RCode/";
+            //#prependingPath = "/Users/litong/Documents/is3102/RCode/";
         } else if (systemUser.equals("leiyang")) {
-            
+            prependingPath = "/Users/leiyang/Desktop/IS3102/workspace/is3102/RCode/";
         } else if (systemUser.equals("VIN-S")) {
             System.out.println("VIN-S");
             prependingPath = "/Users/VIN-S/Documents/is3102/RCode/";
-            
-        } else if (systemUser.equals("xiaqing")) {
 
+        } else if (systemUser.equals("qiuxiaqing")) {
+            System.out.println("qiuxiaqing");
+            prependingPath = "/Users/qiuxiaqing/Documents/is3102/RCode/";
         } else if (systemUser.equals("yifan")) {
 
         }
@@ -47,7 +48,9 @@ public class CommonUtils {
     }
 
     public static double round(double value, int places) {
-        if (places < 0) throw new IllegalArgumentException();
+        if (places < 0) {
+            throw new IllegalArgumentException();
+        }
 
         BigDecimal bd = new BigDecimal(value);
         bd = bd.setScale(places, RoundingMode.HALF_UP);

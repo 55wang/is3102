@@ -31,6 +31,7 @@ public class ApplicationConfig extends Application {
      */
     private void addRestResourceClasses(Set<Class<?>> resources) {
         resources.add(filter.CORSFilter.class);
+        resources.add(webservice.restful.clearing.BillingClearingService.class);
         resources.add(webservice.restful.clearing.InformSettlementService.class);
         resources.add(webservice.restful.clearing.TransferClearingService.class);
     }

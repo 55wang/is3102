@@ -5,6 +5,8 @@
  */
 package ejb.session.webservice;
 
+import entity.common.BillTransferRecord;
+import entity.common.TransferRecord;
 import javax.ejb.Local;
 
 /**
@@ -15,4 +17,7 @@ import javax.ejb.Local;
 public interface WebserviceSessionBeanLocal {
     public void paySACHSettlement(String netSettlementAmount);
     public void payFASTSettlement(String netSettlementAmount);
+    public void transferClearingSACH(TransferRecord tr);
+    public void billingClearingSACH(BillTransferRecord btr);
+    public void transferClearingFAST(TransferRecord tr);
 }

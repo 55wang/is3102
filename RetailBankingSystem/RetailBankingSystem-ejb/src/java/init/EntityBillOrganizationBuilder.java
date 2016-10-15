@@ -6,6 +6,7 @@
 package init;
 
 import ejb.session.bill.BillSessionBeanLocal;
+import entity.bill.BankEntity;
 import entity.bill.Organization;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -38,6 +39,7 @@ public class EntityBillOrganizationBuilder {
             o.setType(EnumUtils.BillType.CLUBS);
             o.setName(clubsName[i]);
             o.setShortCode(clubsCode[i]);
+            o.setPartnerBankCode("002");
             billBean.createOrganization(o);
         }
         
@@ -54,6 +56,7 @@ public class EntityBillOrganizationBuilder {
             o.setType(EnumUtils.BillType.EDU);
             o.setName(eduName[i]);
             o.setShortCode(eduCode[i]);
+            o.setPartnerBankCode("002");
             billBean.createOrganization(o);
         }
         
@@ -66,6 +69,7 @@ public class EntityBillOrganizationBuilder {
             o.setType(EnumUtils.BillType.COUNCILS);
             o.setName(councilsName[i]);
             o.setShortCode(councilsCode[i]);
+            o.setPartnerBankCode("002");
             billBean.createOrganization(o);
         }
         
@@ -79,6 +83,7 @@ public class EntityBillOrganizationBuilder {
             o.setType(EnumUtils.BillType.CARD);
             o.setName(cardName[i]);
             o.setShortCode(cardCode[i]);
+            o.setPartnerBankCode("002");
             billBean.createOrganization(o);
         }
         
@@ -95,6 +100,7 @@ public class EntityBillOrganizationBuilder {
             o.setType(EnumUtils.BillType.UTIL);
             o.setName(utilsName[i]);
             o.setShortCode(utilsCode[i]);
+            o.setPartnerBankCode("002");
             billBean.createOrganization(o);
         }
         
@@ -109,6 +115,7 @@ public class EntityBillOrganizationBuilder {
             o.setType(EnumUtils.BillType.GOV_AGEN);
             o.setName(gaName[i]);
             o.setShortCode(gaCode[i]);
+            o.setPartnerBankCode("002");
             billBean.createOrganization(o);
         }
         
@@ -123,6 +130,7 @@ public class EntityBillOrganizationBuilder {
             o.setType(EnumUtils.BillType.NON_GOV_AGEN);
             o.setName(ngaName[i]);
             o.setShortCode(ngaCode[i]);
+            o.setPartnerBankCode("002");
             billBean.createOrganization(o);
         }
         
@@ -142,6 +150,7 @@ public class EntityBillOrganizationBuilder {
             o.setType(EnumUtils.BillType.INSUR);
             o.setName(insurName[i]);
             o.setShortCode(insurCode[i]);
+            o.setPartnerBankCode("002");
             billBean.createOrganization(o);
         }
         
@@ -154,7 +163,46 @@ public class EntityBillOrganizationBuilder {
             o.setType(EnumUtils.BillType.SECUR);
             o.setName(securName[i]);
             o.setShortCode(securCode[i]);
+            o.setPartnerBankCode("002");
             billBean.createOrganization(o);
+        }
+        
+        initBankEntities();
+    }
+    
+    private void initBankEntities() {
+        String[] bankNames = {
+            "AUSTRALIA & NEW ZEALAND BANKING GROUP",
+            "BANK OF CHINA LIMITED",
+            "BNP PARIBAS",
+            "CIMB BANK BERHAD",
+            "CITIBANK NA",
+            "DEUTSCHE BANK AG",
+            "FAR EASTERN BANK LTD",
+            "HL BANK",
+            "HSBC (Corporate)",
+            "HSBC (Personal)",
+            "MALAYAN BANKING BHD",
+            "MIZUHO BANK LIMITED",
+            "OVERSEA-CHINESE BANKING CORPN LTD",
+            "RHB BANK BERHAD",
+            "STANDARD CHARTERED BANK",
+            "SUMITOMO MITSUI BANKING CORPORATION",
+            "THE BANK OF TOKYO-MITSUBISHI UFJ, LTD",
+            "THE ROTAL BANK OF SCOTLAND N.V.",
+            "UNITED OVERSEAS BANK LTD"
+        };
+        String[] bankCodes = {
+            "020","002","003","004","005","006","007","008","009","010","011","012","013","014","015","016","017","018","019",
+        };
+        
+        for (int i = 0; i < bankNames.length; i++) {
+            BankEntity b = new BankEntity();
+            b.setBankCode(bankCodes[i]);
+            b.setInFast(Boolean.TRUE);
+            b.setName(bankNames[i]);
+            b.setStatus(EnumUtils.StatusType.ACTIVE);
+            billBean.createBankEntity(b);
         }
     }
 }

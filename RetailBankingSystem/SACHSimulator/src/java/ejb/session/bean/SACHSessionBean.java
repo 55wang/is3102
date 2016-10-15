@@ -5,6 +5,7 @@
  */
 package ejb.session.bean;
 
+import entity.BillTransfer;
 import entity.PaymentTransfer;
 import java.math.BigDecimal;
 import java.util.List;
@@ -34,19 +35,22 @@ public class SACHSessionBean {
     @PersistenceContext(unitName = "BillPaymentSimulatorPU")
     private EntityManager em;
 
-    public PaymentTransfer persist(PaymentTransfer object) {
+    public void persist(Object object) {
         em.persist(object);
-        return object;
     }
     
-    public PaymentTransfer merge(PaymentTransfer object) {
+    public void merge(Object object) {
         em.merge(object);
-        return object;
     }
     
     // TODO: Find by date range
-    public List<PaymentTransfer> findAll() {
+    public List<PaymentTransfer> findAllPaymentTransfer() {
         Query q = em.createQuery("SELECT pt FROM PaymentTransfer pt");
+        return q.getResultList();
+    }
+    
+    public List<BillTransfer> findAllBillTransfer() {
+        Query q = em.createQuery("SELECT bt FROM BillTransfer bt");
         return q.getResultList();
     }
     

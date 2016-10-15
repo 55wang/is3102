@@ -21,8 +21,8 @@ import entity.wealth.Portfolio;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
-import javax.ejb.Singleton;
 import javax.ejb.LocalBean;
+import javax.ejb.Stateless;
 import org.rosuda.REngine.REXPMismatchException;
 import org.rosuda.REngine.Rserve.RConnection;
 import org.rosuda.REngine.Rserve.RserveException;
@@ -34,7 +34,7 @@ import server.utilities.EnumUtils;
  *
  * @author VIN-S
  */
-@Singleton
+@Stateless
 @LocalBean
 public class EntityWealthBuilder {
     @EJB
