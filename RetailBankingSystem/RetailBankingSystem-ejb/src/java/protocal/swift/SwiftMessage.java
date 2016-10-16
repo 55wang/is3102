@@ -90,7 +90,8 @@ public class SwiftMessage {
                 "}";
     }
     
-    public String getSWIFTMessage() {
+    @Override
+    public String toString() {
         return getBasicHeaderBlock() + "\n" + getApplicationHeaderBlock() + "\n" + getUserHeaderBlock() + "\n" + getTextBlock() + "\n" + getTrailerBlock();
     }
 

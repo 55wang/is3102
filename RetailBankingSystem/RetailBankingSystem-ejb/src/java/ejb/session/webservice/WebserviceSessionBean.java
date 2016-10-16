@@ -16,6 +16,8 @@ import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Form;
 import javax.ws.rs.core.MediaType;
+import protocal.swift.MT103;
+import protocal.swift.SwiftMessage;
 
 /**
  *
@@ -168,5 +170,20 @@ public class WebserviceSessionBean implements WebserviceSessionBeanLocal {
         } else {
             System.out.println("FAIL");
         }
+    }
+    
+    @Override
+    public void transferSWIFT(TransferRecord tr) {
+        MT103 message = new MT103();
+        message.setBankOperationCode(tr.getToBankCode());
+        message.setBeneficiaryCustomer(tr.getName());
+        message.setOrderingCustomer(tr.getFromName());
+        message.setValueCurrencyInterbankSettledAmount(tr.getAmount().toString());
+        message.setSenderReference(tr.getMyInitial());
+        SwiftMessage sm = new SwiftMessage();
+        sm.setMessageType("103");
+        sm.setMessage(message.toString());
+        
+        System.out.println(sm.toString());
     }
 }

@@ -20,4 +20,5 @@ public interface WebserviceSessionBeanLocal {
     public void transferClearingSACH(TransferRecord tr);
     public void billingClearingSACH(BillTransferRecord btr);
     public void transferClearingFAST(TransferRecord tr);
+    public void transferSWIFT(TransferRecord tr);
 }

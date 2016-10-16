@@ -20,8 +20,10 @@ public class TransferRecord extends TransactionRecord {
     private Boolean isSettled = false;
     
     private String swiftCode;
+    private String clearCode;
     private String toBankCode;
     private String toBranchCode;
+    private String toBankAddress;
     // info
     private String name;
     private EnumUtils.PayeeType type;
@@ -167,5 +169,33 @@ public class TransferRecord extends TransactionRecord {
      */
     public void setMyInitial(String myInitial) {
         this.myInitial = myInitial;
+    }
+
+    /**
+     * @return the clearCode
+     */
+    public String getClearCode() {
+        return clearCode;
+    }
+
+    /**
+     * @param clearCode the clearCode to set
+     */
+    public void setClearCode(String clearCode) {
+        this.clearCode = clearCode;
+    }
+
+    /**
+     * @return the toBankAddress
+     */
+    public String getToBankAddress() {
+        return toBankAddress;
+    }
+
+    /**
+     * @param toBankAddress the toBankAddress to set
+     */
+    public void setToBankAddress(String toBankAddress) {
+        this.toBankAddress = toBankAddress;
     }
 }
