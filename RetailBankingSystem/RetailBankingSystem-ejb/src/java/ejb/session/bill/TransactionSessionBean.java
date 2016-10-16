@@ -32,9 +32,7 @@ public class TransactionSessionBean implements TransactionSessionBeanLocal {
     }
     
     @Override
-    public List<TransactionRecord> getTransactionRecordByAccountNumberStartDateEndDate(String accountNumber, Date sinceDate, Date toDate) {
-        java.sql.Date startDate = new java.sql.Date(sinceDate.getTime());
-        java.sql.Date endDate = new java.sql.Date(toDate.getTime());
+    public List<TransactionRecord> getTransactionRecordByAccountNumberStartDateEndDate(String accountNumber, Date startDate, Date endDate) {
         Query q = em.createQuery(
                 "SELECT t FROM " + ConstantUtils.TRANSACTION_ENTITY + " t WHERE "
                 + "t.fromAccount.accountNumber = :accountNumber AND "

@@ -57,6 +57,7 @@ public class ConstantUtils {
     // Transfer
     public static final String TRANSFER_SUCCESS = "Transfer Successed!";
     public static final String TRANSFER_FAILED = "Transfer Failed! Check your account balance!";
+    public static final String EXCEED_TRANSFER_LIMIT = "Transfer Failed! Check your transfer limit!";
     public static final String TRANSFER_ACCOUNT_NOT_FOUND = "Transfer Failed! Check your whether account number is correct!";
     public static final String UPDATE_TRANSFER_LIMIT_SUCCESS = "Transfer Limits updated!";
     public static final String UPDATE_TRANSFER_LIMIT_FAIL = "Transfer Limits update failed!";

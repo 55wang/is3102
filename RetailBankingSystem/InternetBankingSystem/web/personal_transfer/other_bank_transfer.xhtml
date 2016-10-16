@@ -25,9 +25,9 @@ and open the template in the editor.
                 <h:form>
                     <!--TODO: payee-->
                     <p:panel header="Transfer to other Bank Account">
+                        <h2>Daily transfer limit left: #{interBankTransferManagedBean.transferLimitLeft}</h2>
                         <p:messages id="message" redisplay="false" >
                             <p:wizard widgetVar="myWizard" showNavBar="false">
-
                                 <p:tab id="input_detail" title="1.Input Details">
                                     <p:panel header="To">
                                         <h:panelGrid columns="2" cellpadding="5">

@@ -25,6 +25,7 @@ and open the template in the editor.
                 <h:form>
                     <!--TODO: payee-->
                     <p:panel header="Transfer to Overseas Bank Account">
+                        <h2>Daily transfer limit left: #{interBankTransferManagedBean.transferLimitLeft}</h2>
                         <p:messages id="message" redisplay="false" >
                             <p:wizard widgetVar="myWizard" showNavBar="false">
 

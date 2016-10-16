@@ -6,10 +6,12 @@
 package ejb.session.bill;
 
 import entity.bill.Payee;
+import entity.customer.MainAccount;
 import entity.customer.TransferLimits;
 import java.math.BigDecimal;
 import java.util.List;
 import javax.ejb.Local;
+import server.utilities.EnumUtils;
 import server.utilities.EnumUtils.PayeeType;
 
 /**
@@ -22,6 +24,8 @@ public interface TransferSessionBeanLocal {
     public String transferFromAccountToAccount(String fromAcc, String toAcc, BigDecimal amount);
     public TransferLimits createTransferLimits(TransferLimits t);
     public TransferLimits updateTransferLimits(TransferLimits t);
+    
+    public BigDecimal getTodayBankTransferAmount(MainAccount ma, EnumUtils.PayeeType inType);
     
     // payee
     public Payee createPayee(Payee p);

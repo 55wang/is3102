@@ -57,6 +57,7 @@ public class InterBankTransferManagedBean implements Serializable {
     private String bankId;
     private String fromAccountNo;
     private String purpose;
+    private String transferLimitLeft;
     private BigDecimal amount;
     private Payee payee = new Payee();
     private MainAccount ma;
@@ -76,6 +77,10 @@ public class InterBankTransferManagedBean implements Serializable {
         setPayees(transferBean.getPayeeFromUserIdWithType(ma.getId(), EnumUtils.PayeeType.LOCAL));
         setBankList(billBean.getActiveListBankEntities());
         payeeId = "New Receipiant";
+        
+        BigDecimal todayTransferAmount = transferBean.getTodayBankTransferAmount(ma, EnumUtils.PayeeType.LOCAL);
+        BigDecimal currentTransferLimit = new BigDecimal(ma.getTransferLimits().getDailyInterBankLimit().toString());
+        transferLimitLeft = currentTransferLimit.subtract(todayTransferAmount).setScale(2).toString();
     }
     
     public void changePayee() {
@@ -87,6 +92,17 @@ public class InterBankTransferManagedBean implements Serializable {
     }
     
     public void transfer() {
+        
+        BigDecimal currentTransferLimit = new BigDecimal(transferLimitLeft);
+        System.out.println(currentTransferLimit);
+        System.out.println(amount);
+        System.out.println(currentTransferLimit.compareTo(amount));
+        if (currentTransferLimit.compareTo(amount) < 0) {
+            JSUtils.callJSMethod("PF('myWizard').back()");
+            MessageUtils.displayError(ConstantUtils.EXCEED_TRANSFER_LIMIT);
+            return;
+        }
+        
         if (getPayeeId().equals("New Receipiant")) {
             BankEntity bank = billBean.getBankEntityById(Long.parseLong(bankId));
             payee.setBankCode(bank.getBankCode());
@@ -132,6 +148,7 @@ public class InterBankTransferManagedBean implements Serializable {
         tr.setFromName(payee.getFromName());
         tr.setPurpose(EnumUtils.TransferPurpose.getEnum(purpose));
         tr.setFromAccount(da);
+        tr.setType(EnumUtils.PayeeType.LOCAL);
         webserviceBean.transferClearingFAST(tr);
         da.removeBalance(amount);
         depositBean.updateAccount(da);
@@ -276,5 +293,19 @@ public class InterBankTransferManagedBean implements Serializable {
      */
     public void setBankId(String bankId) {
         this.bankId = bankId;
+    }
+
+    /**
+     * @return the transferLimitLeft
+     */
+    public String getTransferLimitLeft() {
+        return transferLimitLeft;
+    }
+
+    /**
+     * @param transferLimitLeft the transferLimitLeft to set
+     */
+    public void setTransferLimitLeft(String transferLimitLeft) {
+        this.transferLimitLeft = transferLimitLeft;
     }
 }

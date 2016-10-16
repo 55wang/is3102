@@ -25,9 +25,9 @@ and open the template in the editor.
                 <h:form>
                     <!--TODO: payee-->
                     <p:panel header="Transfer to other Merlion Bank Account">
+                        <h2>Daily transfer limit left: #{interBankTransferManagedBean.transferLimitLeft}</h2>
                         <p:messages id="message" redisplay="false" >
                             <p:wizard widgetVar="myWizard" showNavBar="false">
-
                                 <p:tab id="input_detail" title="1.Input Details">
 
                                     <h:panelGrid columns="2" cellpadding="5">
@@ -36,8 +36,8 @@ and open the template in the editor.
                                             <f:selectItems value="#{intraBankTransferManagedBean.accounts}" var="a" itemValue="#{a.accountNumber}" itemLabel="#{a.product.name} #{a.accountNumber} #{a.balance.setScale(2)}" />
                                         </p:selectOneMenu>
                                         <h:outputText value="Enter Account Number to transfer to " />
-                                        <p:selectOneMenu value="#{intraBankTransferManagedBean.toAccountNo}" rendered="true" required="true">
-                                            <f:selectItems value="#{intraBankTransferManagedBean.payees}" var="a" itemValue="#{a.accountNumber}" itemLabel="#{a.name} #{a.accountNumber}" />
+                                        <p:selectOneMenu value="#{intraBankTransferManagedBean.payeeId}" rendered="true" required="true">
+                                            <f:selectItems value="#{intraBankTransferManagedBean.payees}" var="p" itemValue="#{p.id}" itemLabel="#{a.name} #{a.accountNumber}" />
                                         </p:selectOneMenu>
                                         <p:outputLabel for="amount" value="Amount: " />
                                         <p:inputText id="amount" value="#{intraBankTransferManagedBean.amount}"/>

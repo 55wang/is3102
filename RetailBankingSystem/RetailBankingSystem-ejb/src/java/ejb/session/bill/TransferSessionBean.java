@@ -7,16 +7,21 @@ package ejb.session.bill;
 
 import ejb.session.dams.CustomerDepositSessionBeanLocal;
 import entity.bill.Payee;
+import entity.common.TransferRecord;
+import entity.customer.MainAccount;
 import entity.customer.TransferLimits;
 import entity.dams.account.DepositAccount;
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import server.utilities.DateUtils;
 import server.utilities.EnumUtils;
+import server.utilities.GenerateAccountAndCCNumber;
 
 /**
  *
@@ -56,6 +61,39 @@ public class TransferSessionBean implements TransferSessionBeanLocal {
         em.merge(t);
         return t;
     } 
+    
+    @Override
+    public BigDecimal getTodayBankTransferAmount(MainAccount ma, EnumUtils.PayeeType inType) {
+        List<DepositAccount> dps = ma.getBankAcounts();
+        if (dps.isEmpty()) {
+            return BigDecimal.ZERO;
+        } else {
+            String queryString = "SELECT t FROM TransferRecord t WHERE (";
+            for (int i = 0; i < dps.size(); i ++) {
+                if (i == 0) {
+                    queryString += " t.fromAccount.accountNumber = " + dps.get(i).getAccountNumber();
+                } else {
+                    queryString += " OR t.fromAccount.accountNumber = " + dps.get(i).getAccountNumber();
+                }
+                System.out.println("Getting transfer record from: " + dps.get(i).getAccountNumber());
+            }
+            queryString += ")";
+            Query q = em.createQuery(queryString + " AND t.type =:inType  AND t.creationDate BETWEEN :startDate AND :endDate");
+            Date startDate = DateUtils.getBeginOfDay();
+            Date endDate = DateUtils.getEndOfDay();
+            q.setParameter("startDate", startDate);
+            q.setParameter("endDate", endDate);
+            q.setParameter("inType", inType);
+            List<TransferRecord> records = q.getResultList();
+            BigDecimal totalAmount = BigDecimal.ZERO;
+            System.out.println("Totoal records found:" + records.size());
+            for (TransferRecord t : records) {
+                System.out.println("TransferRecord Found:" + t.getAmount());
+                totalAmount = totalAmount.add(t.getAmount());
+            }
+            return totalAmount;
+        }
+    }
     
     // payee
     @Override

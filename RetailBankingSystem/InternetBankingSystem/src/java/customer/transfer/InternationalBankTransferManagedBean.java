@@ -56,6 +56,7 @@ public class InternationalBankTransferManagedBean implements Serializable {
     private String payeeId;
     private String fromAccountNo;
     private String purpose;
+    private String transferLimitLeft;
     private BigDecimal amount;
     private Payee payee = new Payee();
     private MainAccount ma;
@@ -73,6 +74,10 @@ public class InternationalBankTransferManagedBean implements Serializable {
         setAccounts(getMa().getBankAcounts());
         setPayees(transferBean.getPayeeFromUserIdWithType(getMa().getId(), EnumUtils.PayeeType.OVERSEAS));
         setPayeeId("New Receipiant");
+        
+        BigDecimal todayTransferAmount = transferBean.getTodayBankTransferAmount(ma, EnumUtils.PayeeType.MERLION);
+        BigDecimal currentTransferLimit = new BigDecimal(ma.getTransferLimits().getDailyInterBankLimit().toString());
+        transferLimitLeft = currentTransferLimit.subtract(todayTransferAmount).setScale(2).toString();
     }
     
     public void changePayee() {
@@ -84,6 +89,14 @@ public class InternationalBankTransferManagedBean implements Serializable {
     }
     
     public void transfer() {
+        
+        BigDecimal currentTransferLimit = new BigDecimal(transferLimitLeft);
+        if (currentTransferLimit.compareTo(amount) < 0) {
+            JSUtils.callJSMethod("PF('myWizard').back()");
+            MessageUtils.displayError(ConstantUtils.EXCEED_TRANSFER_LIMIT);
+            return;
+        }
+        
         if (getPayeeId().equals("New Receipiant")) {
             getPayee().setMainAccount(getMa());
             getPayee().setType(EnumUtils.PayeeType.OVERSEAS);
@@ -129,6 +142,7 @@ public class InternationalBankTransferManagedBean implements Serializable {
         tr.setFromName(getPayee().getFromName());
         tr.setPurpose(EnumUtils.TransferPurpose.getEnum(getPurpose()));
         tr.setFromAccount(da);
+        tr.setType(EnumUtils.PayeeType.OVERSEAS);
         webserviceBean.transferSWIFT(tr);
         da.removeBalance(getAmount());
         depositBean.updateAccount(da);

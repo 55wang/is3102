@@ -8,6 +8,7 @@ package init;
 import ejb.session.staff.StaffAccountSessionBeanLocal;
 import entity.card.product.PromoProduct;
 import entity.card.product.RewardCardProduct;
+import entity.common.TransferRecord;
 import entity.customer.CustomerCase;
 import entity.customer.Issue;
 import entity.customer.MainAccount;
@@ -25,12 +26,21 @@ import entity.dams.rules.TimeRangeInterest;
 import entity.staff.Announcement;
 import entity.staff.Role;
 import entity.staff.StaffAccount;
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.ejb.Singleton;
 import javax.ejb.LocalBean;
 import javax.ejb.Startup;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import server.utilities.ConstantUtils;
+import server.utilities.DateUtils;
+import server.utilities.EnumUtils;
+import server.utilities.EnumUtils.PayeeType;
 
 /**
  *
@@ -62,15 +72,17 @@ public class EntityBuilderBean {
     private EntityPayLahBuilder entityPayLahBuilder;
     @EJB
     private EntityWealthBuilder entityWealthBuilder;
-    
+
     // session beans
     @EJB
     private StaffAccountSessionBeanLocal staffAccountSessionBean;
 
-    
     private RewardCardProduct demoRewardCardProduct;
     private PromoProduct demoPromoProduct;
     private WealthManagementSubscriber demoWealthSubscriber;
+
+    @PersistenceContext(unitName = "RetailBankingSystem-ejbPU")
+    private EntityManager em;
 
     @PostConstruct
     public void init() {
@@ -78,7 +90,22 @@ public class EntityBuilderBean {
         if (needInit()) {
             buildEntities();
         } else {
-            // test some rules
+//            String queryString = "SELECT t FROM TransferRecord t WHERE (";
+//            queryString += " t.fromAccount.accountNumber = 13059510076";
+//            queryString += ")";
+//            Query q = em.createQuery(queryString + " AND t.type =:inType  AND t.creationDate BETWEEN :startDate AND :endDate");
+//            Date startDate = DateUtils.getBeginOfDay();
+//            Date endDate = DateUtils.getEndOfDay();
+//            q.setParameter("startDate", startDate);
+//            q.setParameter("endDate", endDate);
+//            q.setParameter("inType", PayeeType.LOCAL);
+//            List<TransferRecord> records = q.getResultList();
+//            BigDecimal totalAmount = BigDecimal.ZERO;
+//            System.out.println("Totoal records found:" + records.size());
+//            for (TransferRecord t : records) {
+//                System.out.println("TransferRecord Found:" + t.getAmount());
+//                totalAmount = totalAmount.add(t.getAmount());
+//            }
         }
     }
 
@@ -99,5 +126,9 @@ public class EntityBuilderBean {
         entityBillOrgBuilder.initBillOrganization();
         entityPayLahBuilder.initPayLahDemoData();
 //        entityWealthBuilder.initWealth();
+    }
+
+    public void persist(Object object) {
+        em.persist(object);
     }
 }
