@@ -24,23 +24,25 @@ import javax.ws.rs.core.MediaType;
 @Stateless
 public class WebserviceSessionBean implements WebserviceSessionBeanLocal {
     
-    private final String MEPS_SETTLEMENT = "https://localhost:8181/MEPSSimulator/meps/meps_settlement";
+    private final String MEPS_SETTLEMENT_AGENCY = "https://localhost:8181/MEPSSimulator/meps/meps_settlement_agency";
     private final String SACH_TRANSFER_CLEARING = "https://localhost:8181/SACHSimulator/sach/sach_transfer_clearing";
     private final String SACH_BILLING_CLEARING = "https://localhost:8181/SACHSimulator/sach/sach_billing_clearing";
     private final String FAST_TRANSFER_CLEARING = "https://localhost:8181/FASTSimulator/fast/fast_transfer_clearing";
 
     @Asynchronous
     @Override
-    public void paySACHSettlement(String netSettlementAmount) {
+    public void paySACHSettlement(String netSettlementAmount, String fromBankCode, String toBankCode, String agencyCode) {
         System.out.println("Paying Settlement");
         // send to MEPS+
         Form form = new Form(); //bank info
-        form.param("fromBankCode", "001");// MBS is 001
-        form.param("toBankCode", "000"); // SACH is 000
+        form.param("fromBankCode", fromBankCode);// MBS is 001
+        form.param("toBankCode", toBankCode); 
+        form.param("agencyCode", agencyCode); // SACH is 000
         form.param("netSettlementAmount", netSettlementAmount);
+        form.param("referenceNumber", "");
 
         Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(MEPS_SETTLEMENT);
+        WebTarget target = client.target(MEPS_SETTLEMENT_AGENCY);
 
         // This is the response
         JsonObject jsonString = target.request(MediaType.APPLICATION_JSON).post(Entity.entity(form, MediaType.APPLICATION_FORM_URLENCODED), JsonObject.class);
@@ -55,16 +57,18 @@ public class WebserviceSessionBean implements WebserviceSessionBeanLocal {
     
     @Asynchronous
     @Override
-    public void payFASTSettlement(String netSettlementAmount) {
+    public void payFASTSettlement(String netSettlementAmount, String fromBankCode, String toBankCode, String agencyCode, String referenceNumber) {
         System.out.println("Paying Settlement");
         // send to MEPS+
         Form form = new Form(); //bank info
-        form.param("fromBankCode", "001");// MBS is 001
-        form.param("toBankCode", "111"); // SACH is 000
+        form.param("fromBankCode", fromBankCode);// MBS is 001
+        form.param("toBankCode", toBankCode); 
+        form.param("agencyCode", agencyCode); // FAST is 111
         form.param("netSettlementAmount", netSettlementAmount);
+        form.param("referenceNumber", referenceNumber);
 
         Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(MEPS_SETTLEMENT);
+        WebTarget target = client.target(MEPS_SETTLEMENT_AGENCY);
 
         // This is the response
         JsonObject jsonString = target.request(MediaType.APPLICATION_JSON).post(Entity.entity(form, MediaType.APPLICATION_FORM_URLENCODED), JsonObject.class);
@@ -84,8 +88,9 @@ public class WebserviceSessionBean implements WebserviceSessionBeanLocal {
         Form form = new Form(); //bank info
         form.param("referenceNumber", tr.getReferenceNumber());
         form.param("amount", tr.getAmount().toString());
-        form.param("bankCode", tr.getToBankCode()); // other bank
-        form.param("branchCode", tr.getToBranchCode());
+        form.param("toBankCode", tr.getToBankCode()); // other bank
+        form.param("toBranchCode", tr.getToBranchCode());
+        form.param("fromBankCode", "001");
         form.param("accountNumber", tr.getAccountNumber());
         form.param("toName", tr.getName());
         form.param("fromName", tr.getFromName());
@@ -115,6 +120,7 @@ public class WebserviceSessionBean implements WebserviceSessionBeanLocal {
         form.param("amount", btr.getAmount().toString());
         form.param("partnerBankCode", btr.getPartnerBankCode()); // other bank
         form.param("shortCode", btr.getShortCode());
+        form.param("fromBankCode", "001");
         form.param("organizationName", btr.getOrganizationName());
         form.param("billReferenceNumber", btr.getBillReferenceNumber());
 
@@ -140,8 +146,9 @@ public class WebserviceSessionBean implements WebserviceSessionBeanLocal {
         Form form = new Form(); //bank info
         form.param("referenceNumber", tr.getReferenceNumber());
         form.param("amount", tr.getAmount().toString());
-        form.param("bankCode", tr.getToBankCode()); // other bank
-        form.param("branchCode", tr.getToBranchCode());
+        form.param("toBankCode", tr.getToBankCode()); // other bank
+        form.param("toBranchCode", tr.getToBranchCode());
+        form.param("fromBankCode", "001");
         form.param("accountNumber", tr.getAccountNumber());
         form.param("toName", tr.getName());
         form.param("fromName", tr.getFromName());

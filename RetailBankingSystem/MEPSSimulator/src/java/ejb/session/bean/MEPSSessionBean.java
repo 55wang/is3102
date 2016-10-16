@@ -69,13 +69,14 @@ public class MEPSSessionBean {
     }
     
     @Asynchronous
-    public void informFASTSettlement(String fromBankCode, String toBankCode, String netSettlementAmount) {
+    public void informFASTSettlement(String fromBankCode, String toBankCode, String netSettlementAmount, String referenceNumber) {
         
         // send to mbs
         Form form = new Form(); //bank info
         form.param("netSettlementAmount", netSettlementAmount);
         form.param("fromBankCode", fromBankCode);
         form.param("toBankCode", toBankCode);
+        form.param("referenceNumber", referenceNumber);
 
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(FAST_INFORM_NET_SETTLEMENT);

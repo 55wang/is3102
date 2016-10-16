@@ -6,11 +6,13 @@
 package ejb.session.bean;
 
 import entity.PaymentTransfer;
+import java.util.List;
 import javax.ejb.Asynchronous;
 import javax.ejb.Stateless;
 import javax.json.JsonObject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
@@ -35,12 +37,20 @@ public class FASTSessionBean {
         em.persist(object);
     }
     
+    public void merge(PaymentTransfer object) {
+        em.merge(object);
+    }
+    
+    public PaymentTransfer findPaymentTransferByReferenceNumber(String referenceNumber) {
+        return em.find(PaymentTransfer.class, referenceNumber);
+    }
+    
     @Asynchronous
-    public void sendMEPS(String netSettlementAmount) {
+    public void sendMEPS(String netSettlementAmount, String toBankCode, String referenceNumber) {
         // send to MEPS+
         Form form = new Form(); //bank info
         form.param("fromBankCode", "111");// FAST is 111
-        form.param("toBankCode", "002"); // Other is 002
+        form.param("toBankCode", toBankCode); // Other is 002
         form.param("netSettlementAmount", netSettlementAmount);
 
         Client client = ClientBuilder.newClient();
@@ -52,18 +62,24 @@ public class FASTSessionBean {
         
         if (jsonString.getString("message").equals("SUCCESS")) {
             System.out.println("FAST Transfer to other bank B with details");
+            PaymentTransfer pt = findPaymentTransferByReferenceNumber(referenceNumber);
+            pt.setSettled(Boolean.TRUE);
+            merge(pt);
         } else {
             System.out.println("FAIL");
         }
     }
     
     @Asynchronous
-    public void sendMBSNetSettlement(String netSettlementAmount) {
+    public void sendMBSNetSettlement(String netSettlementAmount, String fromBankCode, String toBankCode, String referenceNumber) {
         
         // send to mbs
         Form form = new Form(); //bank info
         form.param("netSettlementAmount", netSettlementAmount);
-        form.param("isFAST", "true");
+        form.param("fromBankCode", fromBankCode);
+        form.param("toBankCode", toBankCode);
+        form.param("agencyCode", "111");
+        form.param("referenceNumber", referenceNumber);
 
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(MBS_NET_SETTLEMENT_PATH);

@@ -34,8 +34,9 @@ public class TransferFastService {
     public Response transferClearing(
             @FormParam("referenceNumber") String referenceNumber,
             @FormParam("amount") String amount,
-            @FormParam("bankCode") String bankCode,
-            @FormParam("branchCode") String branchCode,
+            @FormParam("toBankCode") String toBankCode,
+            @FormParam("fromBankCode") String fromBankCode,
+            @FormParam("toBranchCode") String toBranchCode,
             @FormParam("accountNumber") String accountNumber,
             @FormParam("toName") String toName,
             @FormParam("fromName") String fromName,
@@ -43,8 +44,9 @@ public class TransferFastService {
     ) {
         System.out.println("Received referenceNumber:" + referenceNumber);
         System.out.println("Received amount:" + amount);
-        System.out.println("Received bankCode:" + bankCode);
-        System.out.println("Received branchCode:" + branchCode);
+        System.out.println("Received toBankCode:" + toBankCode);
+        System.out.println("Received fromBankCode:" + fromBankCode);
+        System.out.println("Received toBranchCode:" + toBranchCode);
         System.out.println("Received accountNumber:" + accountNumber);
         System.out.println("Received toName:" + toName);
         System.out.println("Received fromName:" + fromName);
@@ -55,8 +57,9 @@ public class TransferFastService {
         PaymentTransfer pt = new PaymentTransfer();
         pt.setReferenceNumber(referenceNumber);
         pt.setAmount(new BigDecimal(amount));
-        pt.setBankCode(bankCode);
-        pt.setBranchCode(branchCode);
+        pt.setFromBankCode(fromBankCode);
+        pt.setToBankCode(toBankCode);
+        pt.setToBranchCode(toBranchCode);
         pt.setAccountNumber(accountNumber);
         pt.setToName(toName);
         pt.setFromName(fromName);
@@ -65,7 +68,7 @@ public class TransferFastService {
         fastBean.persist(pt);
         // save
         // ask for settlement
-        fastBean.sendMBSNetSettlement(amount);
+        fastBean.sendMBSNetSettlement(amount, fromBankCode, toBankCode, referenceNumber);
         System.out.println("Sending back fast_transfer_clearing response");
         MessageDTO message = new MessageDTO();
         message.setCode(0);

@@ -6,6 +6,7 @@
 package webservice.restful.transfer;
 
 import ejb.session.bean.FASTSessionBean;
+import entity.PaymentTransfer;
 import javax.ejb.EJB;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
@@ -30,15 +31,19 @@ public class InformSettlementService {
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     public Response receiveSettlement(
             @FormParam("netSettlementAmount") String netSettlementAmount,
+            @FormParam("referenceNumber") String referenceNumber,
             @FormParam("fromBankCode") String fromBankCode,
             @FormParam("toBankCode") String toBankCode
     ) {
         System.out.println("Received netSettlementAmount:" + netSettlementAmount);
+        System.out.println("Received referenceNumber:" + referenceNumber);
+        System.out.println("Received fromBankCode:" + fromBankCode);
+        System.out.println("Received toBankCode:" + toBankCode);
         System.out.println("Received POST http fast_inform_settlement");
         
         // makes payment to other bank
         System.out.println("Paying Settlement to other bank" + toBankCode);
-        fastBean.sendMEPS(netSettlementAmount);
+        fastBean.sendMEPS(netSettlementAmount, toBankCode, referenceNumber);
         
         System.out.println("Sending back fast_inform_settlement response");
         MessageDTO err = new MessageDTO();

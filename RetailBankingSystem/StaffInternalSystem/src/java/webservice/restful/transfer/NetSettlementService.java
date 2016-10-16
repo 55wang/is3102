@@ -32,7 +32,10 @@ public class NetSettlementService {
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     public Response netSettlement(
             @FormParam("netSettlementAmount") String netSettlementAmount,
-            @FormParam("isFAST") String isFAST
+            @FormParam("fromBankCode") String fromBankCode,
+            @FormParam("toBankCode") String toBankCode,
+            @FormParam("agencyCode") String agencyCode,
+            @FormParam("referenceNumber") String referenceNumber
     ) {
         System.out.println("Received netSettlementAmount:" + netSettlementAmount);
         System.out.println("Received POST http net_settlement");
@@ -40,10 +43,10 @@ public class NetSettlementService {
         // requesting to MEPS
         // only one case, when it is true
         // TODO: Failed cases
-        if (isFAST.equals("true")) {
-            webserviceBean.payFASTSettlement(netSettlementAmount);
+        if (!referenceNumber.equals("")) {
+            webserviceBean.payFASTSettlement(netSettlementAmount, fromBankCode, toBankCode, agencyCode, referenceNumber);
         } else {
-            webserviceBean.paySACHSettlement(netSettlementAmount);
+            webserviceBean.paySACHSettlement(netSettlementAmount, fromBankCode, toBankCode, agencyCode);
         }
         
         System.out.println("Sending back net_settlement response");

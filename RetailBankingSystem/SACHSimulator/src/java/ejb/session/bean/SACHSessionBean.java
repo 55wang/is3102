@@ -44,22 +44,71 @@ public class SACHSessionBean {
     }
     
     // TODO: Find by date range
-    public List<PaymentTransfer> findAllPaymentTransfer() {
-        Query q = em.createQuery("SELECT pt FROM PaymentTransfer pt");
+    public List<PaymentTransfer> findAllPaymentTransferForBankCode(String bankCode) {
+        Query q = em.createQuery("SELECT pt FROM PaymentTransfer pt WHERE pt.fromBankCode =:bankCode OR pt.toBankCode =:bankCode AND pt.settled = :settled");
+        q.setParameter("bankCode", bankCode);
+        q.setParameter("settled", false);
         return q.getResultList();
     }
     
-    public List<BillTransfer> findAllBillTransfer() {
-        Query q = em.createQuery("SELECT bt FROM BillTransfer bt");
+    public List<PaymentTransfer> findAllPaymentTransferFromBankCode(String fromBankCode) {
+        Query q = em.createQuery("SELECT pt FROM PaymentTransfer pt WHERE pt.fromBankCode = :fromBankCode AND pt.settled = :settled");
+        q.setParameter("fromBankCode", fromBankCode);
+        q.setParameter("settled", false);
+        return q.getResultList();
+    }
+    
+    public List<PaymentTransfer> findAllPaymentTransferToBankCode(String toBankCode) {
+        Query q = em.createQuery("SELECT pt FROM PaymentTransfer pt WHERE pt.toBankCode = :toBankCode AND pt.settled = :settled");
+        q.setParameter("settled", false);
+        q.setParameter("toBankCode", toBankCode);
+        return q.getResultList();
+    }
+    
+    public List<PaymentTransfer> findAllPaymentTransferFromBankCodeToBankCode(String fromBankCode, String toBankCode) {
+        Query q = em.createQuery("SELECT pt FROM PaymentTransfer pt WHERE pt.fromBankCode = :fromBankCode AND pt.toBankCode = :toBankCode AND pt.settled = :settled");
+        q.setParameter("settled", false);
+        q.setParameter("fromBankCode", fromBankCode);
+        q.setParameter("toBankCode", toBankCode);
+        return q.getResultList();
+    }
+    
+    public List<BillTransfer> findAllBillTransferForBankCode(String bankCode) {
+        Query q = em.createQuery("SELECT bt FROM BillTransfer bt WHERE bt.fromBankCode =:bankCode OR bt.partnerBankCode =:bankCode AND bt.settled = :settled");
+        q.setParameter("settled", false);
+        q.setParameter("bankCode", bankCode);
+        return q.getResultList();
+    }
+    
+    public List<BillTransfer> findAllBillTransferFromBankCode(String fromBankCode) {
+        Query q = em.createQuery("SELECT bt FROM BillTransfer bt WHERE bt.fromBankCode = :fromBankCode AND bt.settled = :settled");
+        q.setParameter("settled", false);
+        q.setParameter("fromBankCode", fromBankCode);
+        
+        return q.getResultList();
+    }
+    
+    public List<BillTransfer> findAllBillTransferToBankCode(String toBankCode) {
+        Query q = em.createQuery("SELECT bt FROM BillTransfer bt WHERE bt.partnerBankCode = :toBankCode AND bt.settled = :settled");
+        q.setParameter("settled", false);
+        q.setParameter("toBankCode", toBankCode);
+        return q.getResultList();
+    }
+    
+    public List<BillTransfer> findAllBillTransferFromBankCodeToBankCode(String fromBankCode, String toBankCode) {
+        Query q = em.createQuery("SELECT bt FROM BillTransfer bt WHERE bt.fromBankCode = :fromBankCode AND bt.partnerBankCode = :toBankCode AND bt.settled = :settled");
+        q.setParameter("settled", false);
+        q.setParameter("fromBankCode", fromBankCode);
+        q.setParameter("toBankCode", toBankCode);
         return q.getResultList();
     }
     
     @Asynchronous
-    public void sendMEPS(String netSettlementAmount) {
+    public void sendMEPS(String netSettlementAmount, String toBankCode) {
         // send to MEPS+
         Form form = new Form(); //bank info
         form.param("fromBankCode", "000");// SACH is 000
-        form.param("toBankCode", "002"); // Other is 002
+        form.param("toBankCode", toBankCode); // Other is 002
         form.param("netSettlementAmount", netSettlementAmount);
 
         Client client = ClientBuilder.newClient();
@@ -82,7 +131,10 @@ public class SACHSessionBean {
         // send to mbs
         Form form = new Form(); //bank info
         form.param("netSettlementAmount", netSettlementAmount);
-        form.param("isFAST", "false");
+        form.param("fromBankCode", "001");
+        form.param("toBankCode", "002");
+        form.param("agencyCode", "000");
+        form.param("referenceNumber", "");
 
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(MBS_NET_SETTLEMENT_PATH);

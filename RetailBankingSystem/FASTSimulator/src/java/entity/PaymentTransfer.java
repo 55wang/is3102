@@ -30,11 +30,12 @@ public class PaymentTransfer implements Serializable {
     // info
     @Column(precision=30, scale=20)
     private BigDecimal amount;
-    private String bankCode;
-    private String branchCode;
+    private String toBankCode;
+    private String toBranchCode;
     private String accountNumber;
     private String toName;
     private String fromName;
+    private String fromBankCode;
     private String myInitial;
     private Boolean settled;
 
@@ -78,34 +79,6 @@ public class PaymentTransfer implements Serializable {
      */
     public void setAmount(BigDecimal amount) {
         this.amount = amount;
-    }
-
-    /**
-     * @return the bankCode
-     */
-    public String getBankCode() {
-        return bankCode;
-    }
-
-    /**
-     * @param bankCode the bankCode to set
-     */
-    public void setBankCode(String bankCode) {
-        this.bankCode = bankCode;
-    }
-
-    /**
-     * @return the branchCode
-     */
-    public String getBranchCode() {
-        return branchCode;
-    }
-
-    /**
-     * @param branchCode the branchCode to set
-     */
-    public void setBranchCode(String branchCode) {
-        this.branchCode = branchCode;
     }
 
     /**
@@ -176,5 +149,47 @@ public class PaymentTransfer implements Serializable {
      */
     public void setSettled(Boolean settled) {
         this.settled = settled;
+    }
+
+    /**
+     * @return the toBankCode
+     */
+    public String getToBankCode() {
+        return toBankCode;
+    }
+
+    /**
+     * @param toBankCode the toBankCode to set
+     */
+    public void setToBankCode(String toBankCode) {
+        this.toBankCode = toBankCode;
+    }
+
+    /**
+     * @return the toBranchCode
+     */
+    public String getToBranchCode() {
+        return toBranchCode;
+    }
+
+    /**
+     * @param toBranchCode the toBranchCode to set
+     */
+    public void setToBranchCode(String toBranchCode) {
+        this.toBranchCode = toBranchCode;
+    }
+
+    /**
+     * @return the fromBankCode
+     */
+    public String getFromBankCode() {
+        return fromBankCode;
+    }
+
+    /**
+     * @param fromBankCode the fromBankCode to set
+     */
+    public void setFromBankCode(String fromBankCode) {
+        this.fromBankCode = fromBankCode;
     }
 }

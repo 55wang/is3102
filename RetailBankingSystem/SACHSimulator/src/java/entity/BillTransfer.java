@@ -28,10 +28,16 @@ public class BillTransfer implements Serializable {
     @Column(precision=30, scale=20)
     private BigDecimal amount;
     private String partnerBankCode;
+    private String fromBankCode;
     private String shortCode;
     private String organizationName;
     private String billReferenceNumber;
     private Boolean settled;
+
+    @Override
+    public String toString() {
+        return "BillTransfer{" + "referenceNumber=" + referenceNumber + ", creationDate=" + creationDate + ", amount=" + amount + ", partnerBankCode=" + partnerBankCode + ", fromBankCode=" + fromBankCode + ", shortCode=" + shortCode + ", organizationName=" + organizationName + ", billReferenceNumber=" + billReferenceNumber + ", settled=" + settled + '}';
+    }
 
     /**
      * @return the creationDate
@@ -143,5 +149,19 @@ public class BillTransfer implements Serializable {
      */
     public void setReferenceNumber(String referenceNumber) {
         this.referenceNumber = referenceNumber;
+    }
+
+    /**
+     * @return the fromBankCode
+     */
+    public String getFromBankCode() {
+        return fromBankCode;
+    }
+
+    /**
+     * @param fromBankCode the fromBankCode to set
+     */
+    public void setFromBankCode(String fromBankCode) {
+        this.fromBankCode = fromBankCode;
     }
 }

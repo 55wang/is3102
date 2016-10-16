@@ -31,6 +31,7 @@ public class ApplicationConfig extends Application {
      */
     private void addRestResourceClasses(Set<Class<?>> resources) {
         resources.add(filter.CORSFilter.class);
+        resources.add(webservice.restful.settlement.MEPSAgencySettlementService.class);
         resources.add(webservice.restful.settlement.MEPSSettlementService.class);
     }
     

@@ -41,18 +41,21 @@ public class InformSettlementService {
         System.out.println("Received POST http sach_inform_settlement");
         
         // makes payment to other bank
+        // TODO: if needed, use a MAP to check net settlement to other banks
         System.out.println("Paying Settlement to other bank" + toBankCode);
-        sachBean.sendMEPS(netSettlementAmount);
+        sachBean.sendMEPS(netSettlementAmount, toBankCode);
         
         System.out.println("Sending back sach_inform_settlement response");
-        List<PaymentTransfer> paymentTransfers = sachBean.findAllPaymentTransfer();
+        List<PaymentTransfer> paymentTransfers = sachBean.findAllPaymentTransferForBankCode("001");
         for (PaymentTransfer pt : paymentTransfers) {
             pt.setSettled(Boolean.TRUE);
+            System.out.println(pt.toString());
             sachBean.merge(pt);
         }
-        List<BillTransfer> billTransfers = sachBean.findAllBillTransfer();
+        List<BillTransfer> billTransfers = sachBean.findAllBillTransferForBankCode("001");
         for (BillTransfer bt : billTransfers) {
             bt.setSettled(Boolean.TRUE);
+            System.out.println(bt.toString());
             sachBean.merge(bt);
         }
         MessageDTO err = new MessageDTO();

@@ -15,8 +15,8 @@ import javax.ejb.Local;
  */
 @Local
 public interface WebserviceSessionBeanLocal {
-    public void paySACHSettlement(String netSettlementAmount);
-    public void payFASTSettlement(String netSettlementAmount);
+    public void paySACHSettlement(String netSettlementAmount, String fromBankCode, String toBankCode, String agencyCode);
+    public void payFASTSettlement(String netSettlementAmount, String fromBankCode, String toBankCode, String agencyCode, String referenceNumber);
     public void transferClearingSACH(TransferRecord tr);
     public void billingClearingSACH(BillTransferRecord btr);
     public void transferClearingFAST(TransferRecord tr);
