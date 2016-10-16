@@ -45,6 +45,8 @@ public class MainAccount implements Serializable {
     // mappings
     @OneToOne(cascade = {CascadeType.MERGE}, mappedBy = "mainAccount")
     private Customer customer;
+    @OneToOne(cascade = {CascadeType.MERGE}, mappedBy = "mainAccount")
+    private TransferLimits transferLimits = new TransferLimits(this);
     @OneToMany(cascade = {CascadeType.MERGE}, mappedBy = "mainAccount")
     private List<DepositAccount> bankAcounts = new ArrayList<>(); 
     @OneToMany(cascade = {CascadeType.MERGE}, mappedBy = "mainAccount")
@@ -193,5 +195,19 @@ public class MainAccount implements Serializable {
      */
     public void setPayees(List<Payee> payees) {
         this.payees = payees;
+    }
+
+    /**
+     * @return the transferLimits
+     */
+    public TransferLimits getTransferLimits() {
+        return transferLimits;
+    }
+
+    /**
+     * @param transferLimits the transferLimits to set
+     */
+    public void setTransferLimits(TransferLimits transferLimits) {
+        this.transferLimits = transferLimits;
     }
 }

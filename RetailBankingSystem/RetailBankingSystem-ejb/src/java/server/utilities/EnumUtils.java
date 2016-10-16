@@ -1520,4 +1520,130 @@ public class EnumUtils {
             throw new IllegalArgumentException();
         }
     }
+    
+    public enum IntraBankTransferLimit {
+
+        _25000("25000.00"),
+        _23500("23500.00"),
+        _22000("22000.00"),
+        _20000("20000.00"),
+        _15000("15000.00"),
+        _14000("14000.00"),
+        _12500("12500.00"),
+        _11000("11000.00"),
+        _10000("10000.00"),
+        _9000("9000.00"),
+        _7500("7500.00"),
+        _5000("5000.00"),
+        _4000("4000.00"),
+        _3000("3000.00"),
+        _2000("2000.00"),
+        _1000("1000.00"),
+        _500("500.00");
+        
+        private String value;
+
+        IntraBankTransferLimit(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        @Override
+        public String toString() {
+            return this.getValue();
+        }
+
+        public static IntraBankTransferLimit getEnum(String value) {
+            for (IntraBankTransferLimit v : values()) {
+                if (v.getValue().equalsIgnoreCase(value)) {
+                    return v;
+                }
+            }
+            throw new IllegalArgumentException();
+        }
+    }
+    
+    public enum InterBankTransferLimit {
+
+        _50000("50000.00"),
+        _40000("40000.00"),
+        _15000("15000.00"),
+        _10000("10000.00"),
+        _7500("7500.00"),
+        _5000("5000.00"),
+        _4000("4000.00"),
+        _3000("3000.00"),
+        _2000("2000.00"),
+        _1000("1000.00"),
+        _500("500.00");
+        
+        private String value;
+
+        InterBankTransferLimit(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        @Override
+        public String toString() {
+            return this.getValue();
+        }
+
+        public static InterBankTransferLimit getEnum(String value) {
+            for (InterBankTransferLimit v : values()) {
+                if (v.getValue().equalsIgnoreCase(value)) {
+                    return v;
+                }
+            }
+            throw new IllegalArgumentException();
+        }
+    }
+    
+    public enum OverseasBankTransferLimit {
+
+        _200000("200000.00"),
+        _150000("150000.00"),
+        _100000("190000.00"),
+        _50000("50000.00"),
+        _40000("40000.00"),
+        _15000("15000.00"),
+        _10000("10000.00"),
+        _7500("7500.00"),
+        _5000("5000.00"),
+        _4000("4000.00"),
+        _3000("3000.00"),
+        _2000("2000.00"),
+        _1000("1000.00"),
+        _500("500.00");
+        
+        private String value;
+
+        OverseasBankTransferLimit(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        @Override
+        public String toString() {
+            return this.getValue();
+        }
+
+        public static OverseasBankTransferLimit getEnum(String value) {
+            for (OverseasBankTransferLimit v : values()) {
+                if (v.getValue().equalsIgnoreCase(value)) {
+                    return v;
+                }
+            }
+            throw new IllegalArgumentException();
+        }
+    }
 }

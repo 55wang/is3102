@@ -157,7 +157,6 @@ public class WebserviceSessionBean implements WebserviceSessionBeanLocal {
         form.param("myInitial", tr.getMyInitial());
         form.param("FAST", "false");
         
-
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(FAST_TRANSFER_CLEARING);
 

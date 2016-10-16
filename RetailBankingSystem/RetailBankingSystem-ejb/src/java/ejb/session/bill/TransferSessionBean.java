@@ -7,6 +7,7 @@ package ejb.session.bill;
 
 import ejb.session.dams.CustomerDepositSessionBeanLocal;
 import entity.bill.Payee;
+import entity.customer.TransferLimits;
 import entity.dams.account.DepositAccount;
 import java.math.BigDecimal;
 import java.util.List;
@@ -43,6 +44,18 @@ public class TransferSessionBean implements TransferSessionBeanLocal {
             return "SUCCESS";
         }
     }
+    
+    @Override
+    public TransferLimits createTransferLimits(TransferLimits t) {
+        em.persist(t);
+        return t;
+    } 
+    
+    @Override
+    public TransferLimits updateTransferLimits(TransferLimits t) {
+        em.merge(t);
+        return t;
+    } 
     
     // payee
     @Override

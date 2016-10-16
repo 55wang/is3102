@@ -58,6 +58,8 @@ public class ConstantUtils {
     public static final String TRANSFER_SUCCESS = "Transfer Successed!";
     public static final String TRANSFER_FAILED = "Transfer Failed! Check your account balance!";
     public static final String TRANSFER_ACCOUNT_NOT_FOUND = "Transfer Failed! Check your whether account number is correct!";
+    public static final String UPDATE_TRANSFER_LIMIT_SUCCESS = "Transfer Limits updated!";
+    public static final String UPDATE_TRANSFER_LIMIT_FAIL = "Transfer Limits update failed!";
     // Payee
     public static final String PAYEE_SUCCESS = "Add new Payee Successed!";
     public static final String PAYEE_DELETE_SUCCESS = "Delete Payee Successed!";

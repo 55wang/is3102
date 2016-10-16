@@ -6,13 +6,11 @@
 package entity.dams.account;
 
 import entity.card.account.DebitCardAccount;
-import entity.embedded.TransferLimits;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 
@@ -27,8 +25,8 @@ public class CustomerDepositAccount extends DepositAccount {
     // Counter to decrease
     private Integer waivedFeesCounter = 0;
     private Integer waivedChargesCounter = 0;
-    @Embedded
-    private TransferLimits transferLimits = new TransferLimits();
+    @Column(precision=12, scale=2)
+    private BigDecimal dailyWithdrawLimit = new BigDecimal(3000);
     @Column(precision=30, scale=20)
     private BigDecimal previousBalance = new BigDecimal(0);
     
@@ -68,20 +66,6 @@ public class CustomerDepositAccount extends DepositAccount {
     }
 
     /**
-     * @return the transferLimits
-     */
-    public TransferLimits getTransferLimits() {
-        return transferLimits;
-    }
-
-    /**
-     * @param transferLimits the transferLimits to set
-     */
-    public void setTransferLimits(TransferLimits transferLimits) {
-        this.transferLimits = transferLimits;
-    }
-
-    /**
      * @return the previousBalance
      */
     public BigDecimal getPreviousBalance() {
@@ -115,5 +99,19 @@ public class CustomerDepositAccount extends DepositAccount {
      */
     public void setCheques(List<Cheque> cheques) {
         this.cheques = cheques;
+    }
+
+    /**
+     * @return the dailyWithdrawLimit
+     */
+    public BigDecimal getDailyWithdrawLimit() {
+        return dailyWithdrawLimit;
+    }
+
+    /**
+     * @param dailyWithdrawLimit the dailyWithdrawLimit to set
+     */
+    public void setDailyWithdrawLimit(BigDecimal dailyWithdrawLimit) {
+        this.dailyWithdrawLimit = dailyWithdrawLimit;
     }
 }
