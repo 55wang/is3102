@@ -437,6 +437,10 @@ and open the template in the editor.
     margin-right: 50px;
 }
 
+.white_background {
+    background-color: #FFFFFF;
+}
+
 .customer_main_container{
     margin-left: auto;
     margin-right: auto;

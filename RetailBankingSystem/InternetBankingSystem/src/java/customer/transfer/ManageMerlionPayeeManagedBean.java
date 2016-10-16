@@ -7,16 +7,19 @@ package customer.transfer;
 
 import ejb.session.common.LoginSessionBeanLocal;
 import ejb.session.dams.CustomerDepositSessionBeanLocal;
-import ejb.session.transfer.TransferSessionBeanLocal;
+import ejb.session.bill.TransferSessionBeanLocal;
 import entity.bill.Payee;
 import entity.customer.MainAccount;
 import entity.dams.account.DepositAccount;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import server.utilities.ConstantUtils;
+import server.utilities.EnumUtils;
 import utils.JSUtils;
 import utils.MessageUtils;
 import utils.SessionUtils;
@@ -37,6 +40,7 @@ public class ManageMerlionPayeeManagedBean implements Serializable {
     private CustomerDepositSessionBeanLocal depositBean;
     
     private Payee payee;
+    private List<Payee> payees = new ArrayList<>();
     
     /**
      * Creates a new instance of ManageMerlionPayeeManagedBean
@@ -47,12 +51,14 @@ public class ManageMerlionPayeeManagedBean implements Serializable {
     @PostConstruct
     public void init() {
         MainAccount ma = loginBean.getMainAccountByUserID(SessionUtils.getUserName());
+        setPayees(ma.getPayees());
         setPayee(new Payee());
         getPayee().setMainAccount(ma);
         getPayee().setFromName(ma.getCustomer().getFullName());
+        getPayee().setType(EnumUtils.PayeeType.MERLION);
     }
     
-    public void transfer() {
+    public void addPayee() {
         try {
             DepositAccount da = depositBean.getAccountFromId(getPayee().getAccountNumber());
             if (da == null) {
@@ -66,12 +72,22 @@ public class ManageMerlionPayeeManagedBean implements Serializable {
         //TODO: need another authentication
         Payee result = transferBean.createPayee(getPayee());
         if (result != null) {
-            init();
+            getPayees().add(result);
             JSUtils.callJSMethod("PF('myWizard').next()");
             MessageUtils.displayInfo(ConstantUtils.PAYEE_SUCCESS);
         } else {
             JSUtils.callJSMethod("PF('myWizard').back()");
             MessageUtils.displayError(ConstantUtils.PAYEE_FAILED);
+        }
+    }
+    
+    public void removePayee(Payee p) {
+        String result = transferBean.deletePayeeById(p.getId());
+        if (result.equals("SUCCESS")) {
+            payees.remove(p);
+            MessageUtils.displayInfo(ConstantUtils.PAYEE_DELETE_SUCCESS);
+        } else {
+            MessageUtils.displayError(ConstantUtils.PAYEE_DELETE_FAILED);
         }
     }
 
@@ -88,5 +104,19 @@ public class ManageMerlionPayeeManagedBean implements Serializable {
      */
     public void setPayee(Payee payee) {
         this.payee = payee;
+    }
+
+    /**
+     * @return the payees
+     */
+    public List<Payee> getPayees() {
+        return payees;
+    }
+
+    /**
+     * @param payees the payees to set
+     */
+    public void setPayees(List<Payee> payees) {
+        this.payees = payees;
     }
 }

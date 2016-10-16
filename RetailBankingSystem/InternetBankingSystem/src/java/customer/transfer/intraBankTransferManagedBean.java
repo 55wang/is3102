@@ -7,7 +7,8 @@ package customer.transfer;
 
 import ejb.session.common.LoginSessionBeanLocal;
 import ejb.session.dams.CustomerDepositSessionBeanLocal;
-import ejb.session.transfer.TransferSessionBeanLocal;
+import ejb.session.bill.TransferSessionBeanLocal;
+import entity.bill.Payee;
 import entity.customer.MainAccount;
 import entity.dams.account.DepositAccount;
 import java.io.Serializable;
@@ -19,6 +20,8 @@ import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import server.utilities.ConstantUtils;
+import server.utilities.EnumUtils;
+import utils.JSUtils;
 import utils.MessageUtils;
 import utils.SessionUtils;
 
@@ -41,12 +44,14 @@ public class intraBankTransferManagedBean implements Serializable {
     private String toAccountNo;
     private BigDecimal amount;
     private List<DepositAccount> accounts = new ArrayList<>();
+    private List<Payee> payees = new ArrayList<>();
     
     public intraBankTransferManagedBean() {}
     
     @PostConstruct
     public void init() {
         MainAccount ma = loginBean.getMainAccountByUserID(SessionUtils.getUserName());
+        payees = transferBean.getPayeeFromUserIdWithType(ma.getId(), EnumUtils.PayeeType.MERLION);
         setAccounts(ma.getBankAcounts());
     }
     
@@ -65,8 +70,10 @@ public class intraBankTransferManagedBean implements Serializable {
         String result = transferBean.transferFromAccountToAccount(getFromAccountNo(), getToAccountNo(), getAmount());
         if (result.equals("SUCCESS")) {
             init();
+            JSUtils.callJSMethod("PF('myWizard').next()");
             MessageUtils.displayInfo(ConstantUtils.TRANSFER_SUCCESS);
         } else {
+            JSUtils.callJSMethod("PF('myWizard').back()");
             MessageUtils.displayError(ConstantUtils.TRANSFER_FAILED);
         }
     }
@@ -125,5 +132,19 @@ public class intraBankTransferManagedBean implements Serializable {
      */
     public void setAccounts(List<DepositAccount> accounts) {
         this.accounts = accounts;
+    }
+
+    /**
+     * @return the payees
+     */
+    public List<Payee> getPayees() {
+        return payees;
+    }
+
+    /**
+     * @param payees the payees to set
+     */
+    public void setPayees(List<Payee> payees) {
+        this.payees = payees;
     }
 }

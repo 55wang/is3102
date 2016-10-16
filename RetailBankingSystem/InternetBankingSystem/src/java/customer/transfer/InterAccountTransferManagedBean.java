@@ -6,7 +6,7 @@
 package customer.transfer;
 
 import ejb.session.common.LoginSessionBeanLocal;
-import ejb.session.transfer.TransferSessionBeanLocal;
+import ejb.session.bill.TransferSessionBeanLocal;
 import entity.customer.MainAccount;
 import entity.dams.account.DepositAccount;
 import java.io.Serializable;

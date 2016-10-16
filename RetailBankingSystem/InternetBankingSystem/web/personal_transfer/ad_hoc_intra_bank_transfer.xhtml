@@ -24,26 +24,21 @@ and open the template in the editor.
             <div class="customer_main_container">
                 <h:form>
                     <!--TODO: payee-->
-                    <p:panel header="Transfer to other Merlion Bank Account">
+                    <p:panel header="Ad hoc Transfer to other Merlion Bank Account">
                         <p:messages id="message" redisplay="false" >
                             <p:wizard widgetVar="myWizard" showNavBar="false">
-
                                 <p:tab id="input_detail" title="1.Input Details">
-
                                     <h:panelGrid columns="2" cellpadding="5">
                                         <h:outputText value="Choose Your Account to transfer from: " />
                                         <p:selectOneMenu value="#{intraBankTransferManagedBean.fromAccountNo}" rendered="true" required="true">
                                             <f:selectItems value="#{intraBankTransferManagedBean.accounts}" var="a" itemValue="#{a.accountNumber}" itemLabel="#{a.product.name} #{a.accountNumber} #{a.balance.setScale(2)}" />
                                         </p:selectOneMenu>
                                         <h:outputText value="Enter Account Number to transfer to " />
-                                        <p:selectOneMenu value="#{intraBankTransferManagedBean.toAccountNo}" rendered="true" required="true">
-                                            <f:selectItems value="#{intraBankTransferManagedBean.payees}" var="a" itemValue="#{a.accountNumber}" itemLabel="#{a.name} #{a.accountNumber}" />
-                                        </p:selectOneMenu>
+                                        <h:inputText value="#{intraBankTransferManagedBean.toAccountNo}" required="true" />
                                         <p:outputLabel for="amount" value="Amount: " />
                                         <p:inputText id="amount" value="#{intraBankTransferManagedBean.amount}"/>
                                         <p:commandButton  value="Next" type="button" onclick="PF('myWizard').next()" />
                                     </h:panelGrid>
-
                                 </p:tab>
 
                                 <p:tab id="verify_details" title="2.Verify Details">

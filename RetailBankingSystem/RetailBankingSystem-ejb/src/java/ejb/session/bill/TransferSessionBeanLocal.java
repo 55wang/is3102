@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ejb.session.transfer;
+package ejb.session.bill;
 
 import entity.bill.Payee;
 import java.math.BigDecimal;
@@ -22,5 +22,8 @@ public interface TransferSessionBeanLocal {
     
     // payee
     public Payee createPayee(Payee p);
+    public String deletePayee(Payee p);
+    public String deletePayeeById(Long id);
     public List<Payee> getPayeeFromUserIdWithType(Long userId, PayeeType type);
+    public Payee getPayeeById(Long id);
 }

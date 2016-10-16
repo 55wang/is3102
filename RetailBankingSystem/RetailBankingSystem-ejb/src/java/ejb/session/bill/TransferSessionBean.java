@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ejb.session.transfer;
+package ejb.session.bill;
 
 import ejb.session.dams.CustomerDepositSessionBeanLocal;
 import entity.bill.Payee;
@@ -50,11 +50,33 @@ public class TransferSessionBean implements TransferSessionBeanLocal {
         em.persist(p);
         return p;
     }
+    
+    @Override
+    public String deletePayee(Payee p) {
+        em.remove(p);
+        return "SUCCESS";
+    }
+    
+    @Override
+    public String deletePayeeById(Long id) {
+        Payee p = em.find(Payee.class, id);
+        if (p == null) {
+            return "FAIL";
+        } else {
+            return deletePayee(p);
+        }
+    }
+    
     @Override
     public List<Payee> getPayeeFromUserIdWithType(Long userId, EnumUtils.PayeeType type) {
         Query q = em.createQuery("SELECT p FROM Payee p WHERE p.mainAccount.id =:userId AND p.type = :inType");
         q.setParameter("userId", userId);
         q.setParameter("inType", type);
         return q.getResultList();
+    }
+    
+    @Override
+    public Payee getPayeeById(Long id) {
+        return em.find(Payee.class, id);
     }
 }

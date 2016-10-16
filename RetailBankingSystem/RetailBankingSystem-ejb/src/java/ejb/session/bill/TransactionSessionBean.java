@@ -6,6 +6,7 @@
 package ejb.session.bill;
 
 import entity.common.TransactionRecord;
+import entity.common.TransferRecord;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -23,6 +24,12 @@ public class TransactionSessionBean implements TransactionSessionBeanLocal {
     
     @PersistenceContext(unitName = "RetailBankingSystem-ejbPU")
     private EntityManager em;
+    
+    @Override
+    public TransferRecord createTransferRecord(TransferRecord tr) {
+        em.persist(tr);
+        return tr;
+    }
     
     @Override
     public List<TransactionRecord> getTransactionRecordByAccountNumberStartDateEndDate(String accountNumber, Date sinceDate, Date toDate) {

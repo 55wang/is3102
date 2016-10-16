@@ -49,6 +49,19 @@ public class BillSessionBean implements BillSessionBeanLocal {
     }
     
     @Override
+    public BankEntity getBankEntityByCode(String code){
+        Query q = em.createQuery("SELECT b FROM BankEntity b WHERE b.status = :inStatus AND b.bankCode =:code");
+        q.setParameter("inStatus", StatusType.ACTIVE);
+        q.setParameter("code", code);
+        return (BankEntity)q.getSingleResult();
+    }
+    
+    @Override
+    public BankEntity getBankEntityById(Long id){
+        return em.find(BankEntity.class, id);
+    }
+    
+    @Override
     public List<Organization> getActiveListOrganization() {
         Query q = em.createQuery("SELECT o FROM Organization o WHERE o.status = :inStatus");
         q.setParameter("inStatus", StatusType.ACTIVE);

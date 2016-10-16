@@ -180,4 +180,18 @@ public class MainAccount implements Serializable {
     public void setWealthManagementSubscriber(WealthManagementSubscriber wealthManagementSubscriber) {
         this.wealthManagementSubscriber = wealthManagementSubscriber;
     }
+
+    /**
+     * @return the payees
+     */
+    public List<Payee> getPayees() {
+        return payees;
+    }
+
+    /**
+     * @param payees the payees to set
+     */
+    public void setPayees(List<Payee> payees) {
+        this.payees = payees;
+    }
 }

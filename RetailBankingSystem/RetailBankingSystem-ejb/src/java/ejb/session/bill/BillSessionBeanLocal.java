@@ -20,6 +20,8 @@ public interface BillSessionBeanLocal {
     public Organization updateOrganization(Organization o);
     public BankEntity createBankEntity(BankEntity b);
     public BankEntity updateBankEntity(BankEntity b);
+    public BankEntity getBankEntityByCode(String code);
+    public BankEntity getBankEntityById(Long id);
     public List<Organization> getActiveListOrganization();
     public List<BankEntity> getActiveListBankEntities();
 }

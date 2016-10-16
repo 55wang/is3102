@@ -60,6 +60,8 @@ public class ConstantUtils {
     public static final String TRANSFER_ACCOUNT_NOT_FOUND = "Transfer Failed! Check your whether account number is correct!";
     // Payee
     public static final String PAYEE_SUCCESS = "Add new Payee Successed!";
+    public static final String PAYEE_DELETE_SUCCESS = "Delete Payee Successed!";
     public static final String PAYEE_FAILED = "Add new Payee Failed! Check Payee Account Number!";
+    public static final String PAYEE_DELETE_FAILED = "Delete Payee Failed!";
     public static final String PAYEE_ACCOUNT_NOT_FOUND = "Add new Payee Failed! Check your payee's account number is correct!";
 }
