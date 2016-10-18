@@ -439,6 +439,8 @@ and open the template in the editor.
     background-repeat:   no-repeat;
     background-position: center center;
 }
+/*end of customer log in*/
+/*footer*/
 .footer {
     font-size: 12px;
     height:40px;
@@ -492,7 +494,7 @@ and open the template in the editor.
     padding-right: 10px;
     padding-left: 10px;
 }
-/*end of customer log in*/
+/*end of footer*/
 /* general */
 .container {
     padding-top: 100px;
