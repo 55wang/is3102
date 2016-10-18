@@ -14,6 +14,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
@@ -23,6 +25,7 @@ import javax.persistence.Temporal;
  * @author leiyang
  */
 @Entity
+@Inheritance(strategy=InheritanceType.JOINED)
 public class BillingOrg implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -33,13 +36,11 @@ public class BillingOrg implements Serializable {
     
     // info
     private String billReference;
-    private Double billLimit;
+    
     
     // mapping
     @OneToOne
     private Organization organization;
-    @OneToOne
-    private CustomerDepositAccount depositAccount;
     @ManyToOne(cascade = CascadeType.MERGE)
     private MainAccount mainAccount;
 
@@ -82,20 +83,6 @@ public class BillingOrg implements Serializable {
     }
 
     /**
-     * @return the billLimit
-     */
-    public Double getBillLimit() {
-        return billLimit;
-    }
-
-    /**
-     * @param billLimit the billLimit to set
-     */
-    public void setBillLimit(Double billLimit) {
-        this.billLimit = billLimit;
-    }
-
-    /**
      * @return the createDate
      */
     public Date getCreateDate() {
@@ -110,17 +97,17 @@ public class BillingOrg implements Serializable {
     }
 
     /**
-     * @return the depositAccount
+     * @return the mainAccount
      */
-    public CustomerDepositAccount getDepositAccount() {
-        return depositAccount;
+    public MainAccount getMainAccount() {
+        return mainAccount;
     }
 
     /**
-     * @param depositAccount the depositAccount to set
+     * @param mainAccount the mainAccount to set
      */
-    public void setDepositAccount(CustomerDepositAccount depositAccount) {
-        this.depositAccount = depositAccount;
+    public void setMainAccount(MainAccount mainAccount) {
+        this.mainAccount = mainAccount;
     }
 
 }

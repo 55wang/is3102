@@ -5,6 +5,7 @@
  */
 package entity.customer;
 
+import entity.bill.BillingOrg;
 import entity.bill.Payee;
 import entity.card.account.CreditCardAccount;
 import entity.card.order.CreditCardOrder;
@@ -51,6 +52,8 @@ public class MainAccount implements Serializable {
     private List<DepositAccount> bankAcounts = new ArrayList<>(); 
     @OneToMany(cascade = {CascadeType.MERGE}, mappedBy = "mainAccount")
     private List<Payee> payees = new ArrayList<>(); 
+    @OneToMany(cascade = {CascadeType.MERGE}, mappedBy = "mainAccount")
+    private List<BillingOrg> billingOrgs = new ArrayList<>(); 
     @OneToMany(cascade = {CascadeType.MERGE}, mappedBy = "mainAccount")
     private List<CreditCardAccount> creditCardAccounts= new ArrayList<>(); 
     @OneToMany(cascade = {CascadeType.MERGE}, mappedBy = "mainAccount")
@@ -209,5 +212,19 @@ public class MainAccount implements Serializable {
      */
     public void setTransferLimits(TransferLimits transferLimits) {
         this.transferLimits = transferLimits;
+    }
+
+    /**
+     * @return the billingOrgs
+     */
+    public List<BillingOrg> getBillingOrgs() {
+        return billingOrgs;
+    }
+
+    /**
+     * @param billingOrgs the billingOrgs to set
+     */
+    public void setBillingOrgs(List<BillingOrg> billingOrgs) {
+        this.billingOrgs = billingOrgs;
     }
 }
