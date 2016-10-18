@@ -48,15 +48,19 @@ public class intraBankTransferManagedBean implements Serializable {
     private String fromAccountNo;
     private String payeeId;
     private String transferLimitLeft;
+    private String toAccountNo;
+    private String toName;
+    private String myInitial;
     private BigDecimal amount;
     private List<DepositAccount> accounts = new ArrayList<>();
     private List<Payee> payees = new ArrayList<>();
+    private MainAccount ma;
     
     public intraBankTransferManagedBean() {}
     
     @PostConstruct
     public void init() {
-        MainAccount ma = loginBean.getMainAccountByUserID(SessionUtils.getUserName());
+        ma = loginBean.getMainAccountByUserID(SessionUtils.getUserName());
         payees = transferBean.getPayeeFromUserIdWithType(ma.getId(), EnumUtils.PayeeType.MERLION);
         setAccounts(ma.getBankAcounts());
         
@@ -65,7 +69,68 @@ public class intraBankTransferManagedBean implements Serializable {
         transferLimitLeft = currentTransferLimit.subtract(todayTransferAmount).setScale(2).toString();
     }
     
-    public void transfer() {
+    public void adhocTransfer() {
+        
+        DepositAccount fromAccount = depositBean.getAccountFromId(fromAccountNo);
+        if (fromAccount != null && fromAccount.getBalance().compareTo(amount) < 0) {
+            JSUtils.callJSMethod("PF('myWizard').back()");
+            MessageUtils.displayError(ConstantUtils.NOT_ENOUGH_BALANCE);
+            return;
+        }
+        
+        BigDecimal currentTransferLimit = new BigDecimal(transferLimitLeft);
+        if (currentTransferLimit.compareTo(amount) < 0) {
+            JSUtils.callJSMethod("PF('myWizard').back()");
+            MessageUtils.displayError(ConstantUtils.EXCEED_TRANSFER_LIMIT);
+            return;
+        }
+        
+        Payee payee = transferBean.getPayeeById(Long.parseLong(getPayeeId()));
+        
+        try {
+            DepositAccount da = depositBean.getAccountFromId(getToAccountNo());
+            if (da == null) {
+                MessageUtils.displayError(ConstantUtils.TRANSFER_ACCOUNT_NOT_FOUND);
+                return;
+            }
+        } catch (Exception e) {
+            MessageUtils.displayError(ConstantUtils.TRANSFER_ACCOUNT_NOT_FOUND);
+            return;
+        }
+        //TODO: need another authentication
+        TransferRecord tr = new TransferRecord();
+        
+        tr.setAccountNumber(getToAccountNo());
+        tr.setReferenceNumber(GenerateAccountAndCCNumber.generateReferenceNumber());
+        tr.setAmount(amount);
+        tr.setName(getToName());
+        tr.setMyInitial(getMyInitial());
+        tr.setFromName(ma.getCustomer().getFullName());
+        tr.setFromAccount(fromAccount);
+        DepositAccount toAccount = depositBean.getAccountFromId(getToAccountNo());
+        tr.setToAccount(toAccount);
+        tr.setType(EnumUtils.PayeeType.MERLION);
+        transactionBean.createTransferRecord(tr);
+        
+        String result = transferBean.transferFromAccountToAccount(getFromAccountNo(), getToAccountNo(), getAmount());
+        if (result.equals("SUCCESS")) {
+            JSUtils.callJSMethod("PF('myWizard').next()");
+            MessageUtils.displayInfo(ConstantUtils.TRANSFER_SUCCESS);
+        } else {
+            JSUtils.callJSMethod("PF('myWizard').back()");
+            MessageUtils.displayError(ConstantUtils.TRANSFER_FAILED);
+        }
+    }
+    
+    public void transferToPayee() {
+        
+        DepositAccount fromAccount = depositBean.getAccountFromId(fromAccountNo);
+        if (fromAccount != null && fromAccount.getBalance().compareTo(amount) < 0) {
+            JSUtils.callJSMethod("PF('myWizard').back()");
+            MessageUtils.displayError(ConstantUtils.NOT_ENOUGH_BALANCE);
+            return;
+        }
+        
         BigDecimal currentTransferLimit = new BigDecimal(transferLimitLeft);
         if (currentTransferLimit.compareTo(amount) < 0) {
             JSUtils.callJSMethod("PF('myWizard').back()");
@@ -94,7 +159,6 @@ public class intraBankTransferManagedBean implements Serializable {
         tr.setName(payee.getName());
         tr.setMyInitial(payee.getMyInitial());
         tr.setFromName(payee.getFromName());
-        DepositAccount fromAccount = depositBean.getAccountFromId(fromAccountNo);
         tr.setFromAccount(fromAccount);
         DepositAccount toAccount = depositBean.getAccountFromId(payee.getAccountNumber());
         tr.setToAccount(toAccount);
@@ -103,7 +167,6 @@ public class intraBankTransferManagedBean implements Serializable {
         
         String result = transferBean.transferFromAccountToAccount(getFromAccountNo(), payee.getAccountNumber(), getAmount());
         if (result.equals("SUCCESS")) {
-            init();
             JSUtils.callJSMethod("PF('myWizard').next()");
             MessageUtils.displayInfo(ConstantUtils.TRANSFER_SUCCESS);
         } else {
@@ -194,5 +257,47 @@ public class intraBankTransferManagedBean implements Serializable {
      */
     public void setTransferLimitLeft(String transferLimitLeft) {
         this.transferLimitLeft = transferLimitLeft;
+    }
+
+    /**
+     * @return the toAccountNo
+     */
+    public String getToAccountNo() {
+        return toAccountNo;
+    }
+
+    /**
+     * @param toAccountNo the toAccountNo to set
+     */
+    public void setToAccountNo(String toAccountNo) {
+        this.toAccountNo = toAccountNo;
+    }
+
+    /**
+     * @return the toName
+     */
+    public String getToName() {
+        return toName;
+    }
+
+    /**
+     * @param toName the toName to set
+     */
+    public void setToName(String toName) {
+        this.toName = toName;
+    }
+
+    /**
+     * @return the myInitial
+     */
+    public String getMyInitial() {
+        return myInitial;
+    }
+
+    /**
+     * @param myInitial the myInitial to set
+     */
+    public void setMyInitial(String myInitial) {
+        this.myInitial = myInitial;
     }
 }

@@ -5,10 +5,12 @@
  */
 package ejb.session.card;
 
+import entity.card.account.CardTransaction;
 import entity.card.account.CreditCardAccount;
 import entity.card.account.DebitCardAccount;
 import entity.dams.account.CustomerDepositAccount;
 import entity.dams.account.DepositAccount;
+import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -225,6 +227,23 @@ public class CardAcctSessionBean implements CardAcctSessionBeanLocal {
         Query q = em.createQuery("SELECT cca FROM CreditCardAccount cca WHERE cca.creditCardNum = :cardNumber");
         q.setParameter("cardNumber", cardNumber);
         return (CreditCardAccount) q.getSingleResult();
+    }
+    
+    @Override
+    public CreditCardAccount payCreditCardAccountBillByCardNumber(String cardNumber, BigDecimal amount) {
+        CreditCardAccount ccAccount = getCreditCardAccountByCardNumber(cardNumber);
+        ccAccount.payOutstandingAmount(amount);
+        em.merge(ccAccount);
+        
+        CardTransaction t = new CardTransaction();
+        t.setAmount(amount.doubleValue());
+        t.setCardTransactionStatus(EnumUtils.CardTransactionStatus.SETTLEDTRANSACTION);
+        t.setCreditCardAccount(ccAccount);
+        t.setIsCredit(Boolean.TRUE);
+        
+        em.persist(t);
+        
+        return ccAccount;
     }
 
     @Override

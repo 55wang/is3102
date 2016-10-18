@@ -5,6 +5,7 @@
  */
 package ejb.session.bill;
 
+import entity.common.BillTransferRecord;
 import entity.common.TransactionRecord;
 import entity.common.TransferRecord;
 import java.util.Date;
@@ -29,6 +30,12 @@ public class TransactionSessionBean implements TransactionSessionBeanLocal {
     public TransferRecord createTransferRecord(TransferRecord tr) {
         em.persist(tr);
         return tr;
+    }
+    
+    @Override
+    public BillTransferRecord createBillTransferRecord(BillTransferRecord btr) {
+        em.persist(btr);
+        return btr;
     }
     
     @Override

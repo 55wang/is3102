@@ -10,6 +10,7 @@ import entity.card.product.PromoCode;
 import entity.card.product.CreditCardProduct;
 import entity.customer.MainAccount;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -133,6 +134,10 @@ public class CreditCardAccount implements Serializable {
         } else {
             return 0;
         }
+    }
+    
+    public void payOutstandingAmount(BigDecimal amount) {
+        outstandingAmount = outstandingAmount - amount.doubleValue();
     }
 
     @Override

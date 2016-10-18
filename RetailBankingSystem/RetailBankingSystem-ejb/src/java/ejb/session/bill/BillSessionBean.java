@@ -14,6 +14,7 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import server.utilities.EnumUtils;
 import server.utilities.EnumUtils.StatusType;
 
 /**
@@ -45,8 +46,17 @@ public class BillSessionBean implements BillSessionBeanLocal {
     
     @Override
     public List<Organization> getActiveListOrganization() {
-        Query q = em.createQuery("SELECT o FROM Organization o WHERE o.status = :inStatus");
+        Query q = em.createQuery("SELECT o FROM Organization o WHERE o.status = :inStatus AND o.type !=:inType");
         q.setParameter("inStatus", StatusType.ACTIVE);
+        q.setParameter("inType", EnumUtils.BillType.CARD);
+        return q.getResultList();
+    }
+    
+    @Override
+    public List<Organization> getCreditCardOrganization() {
+        Query q = em.createQuery("SELECT o FROM Organization o WHERE o.status = :inStatus AND o.type =:inType");
+        q.setParameter("inStatus", StatusType.ACTIVE);
+        q.setParameter("inType", EnumUtils.BillType.CARD);
         return q.getResultList();
     }
     
@@ -102,6 +112,22 @@ public class BillSessionBean implements BillSessionBeanLocal {
         BillingOrg bo = getBillingOrganizationById(id);
         em.remove(bo);
         return "SUCCESS";
+    }
+    
+    @Override
+    public List<BillingOrg> getBillingOrgMainAccountId(Long id) {
+        Query q = em.createQuery("SELECT bo FROM BillingOrg bo WHERE bo.mainAccount.id =:mainAccountId AND bo.organization.type !=:inType");
+        q.setParameter("mainAccountId", id);
+        q.setParameter("inType", EnumUtils.BillType.CARD);
+        return q.getResultList();
+    }
+    
+    @Override
+    public List<BillingOrg> getCreditCardBillingMainAccountId(Long id) {
+        Query q = em.createQuery("SELECT bo FROM BillingOrg bo WHERE bo.mainAccount.id =:mainAccountId AND bo.organization.type =:inType");
+        q.setParameter("mainAccountId", id);
+        q.setParameter("inType", EnumUtils.BillType.CARD);
+        return q.getResultList();
     }
     
     // giro

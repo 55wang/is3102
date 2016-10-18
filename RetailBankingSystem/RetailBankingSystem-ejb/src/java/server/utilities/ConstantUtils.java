@@ -51,6 +51,7 @@ public class ConstantUtils {
     // Error Message
     // General
     public static final String SOMETHING_WENT_WRONG = "Something went wrong.";
+    public static final String NOT_ENOUGH_BALANCE = "Not enough balance.";
     // Password
     public static final String OLD_PASSWORD_NOTMTACH = "You have entered a wrong password! ";
     public static final String PASSWORD_CHANGE_SUCCESS = "Successful! You have reset your password. ";
@@ -79,4 +80,6 @@ public class ConstantUtils {
     public static final String GIRO_FAILED = "Add new GIRO arrangement Failed! Check reference number!";
     public static final String GIRO_LIMIT_SUCCESS = "GIRO limit changed Successed!";
     public static final String GIRO_LIMIT_FAIL = "GIRO limit changed Failed!";
+    // cc 
+    public static final String CC_NUMBER_INVALID = "Credit Card Number is not valid!";
 }

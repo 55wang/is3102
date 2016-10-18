@@ -17,6 +17,7 @@ import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import server.utilities.ConstantUtils;
+import server.utilities.GenerateAccountAndCCNumber;
 import utils.JSUtils;
 import utils.MessageUtils;
 import utils.SessionUtils;
@@ -25,9 +26,9 @@ import utils.SessionUtils;
  *
  * @author leiyang
  */
-@Named(value = "manageBillOrgsManagedBean")
+@Named(value = "manageCreditCardBillManagedBean")
 @ViewScoped
-public class ManageBillOrgsManagedBean implements Serializable {
+public class ManageCreditCardBillManagedBean implements Serializable {
 
     @EJB
     private BillSessionBeanLocal billBean;
@@ -41,25 +42,30 @@ public class ManageBillOrgsManagedBean implements Serializable {
     private List<Organization> billOrgsOptions;
     private List<BillingOrg> addedBillOrgs;
     
-    public ManageBillOrgsManagedBean() {}
+    public ManageCreditCardBillManagedBean() {}
     
     @PostConstruct
     public void init() {
-        setBillOrgsOptions(billBean.getActiveListOrganization());
-        ma = loginBean.getMainAccountByUserID(SessionUtils.getUserName());
-        addedBillOrgs = billBean.getBillingOrgMainAccountId(ma.getId());
+        setBillOrgsOptions(billBean.getCreditCardOrganization());
+        setMa(loginBean.getMainAccountByUserID(SessionUtils.getUserName()));
+        setAddedBillOrgs(billBean.getCreditCardBillingMainAccountId(getMa().getId()));
     }
     
     public void addBillOrg() {
-        Organization o = billBean.getOrganizationById(Long.parseLong(selectedBillId));
-        System.out.println(o);
-        billingOrg.setOrganization(o);
-        billingOrg.setBillReference(referenceNumber);
-        billingOrg.setMainAccount(ma);
-        BillingOrg result = billBean.createBillingOrganization(billingOrg);
+        // TODO: Check valid cc number
+        if (!GenerateAccountAndCCNumber.isValidCreditCardNumber(referenceNumber)) {
+            JSUtils.callJSMethod("PF('myWizard').back()");
+            MessageUtils.displayError(ConstantUtils.CC_NUMBER_INVALID);
+            return;
+        }
+        Organization o = billBean.getOrganizationById(Long.parseLong(getSelectedBillId()));
+        getBillingOrg().setOrganization(o);
+        getBillingOrg().setBillReference(getReferenceNumber());
+        getBillingOrg().setMainAccount(getMa());
+        BillingOrg result = billBean.createBillingOrganization(getBillingOrg());
         if (result != null) {
             JSUtils.callJSMethod("PF('myWizard').next()");
-            addedBillOrgs.add(result);
+            getAddedBillOrgs().add(result);
             MessageUtils.displayInfo(ConstantUtils.BILL_ORG_SUCCESS);
         } else {
             JSUtils.callJSMethod("PF('myWizard').back()");
@@ -125,6 +131,20 @@ public class ManageBillOrgsManagedBean implements Serializable {
     }
 
     /**
+     * @return the ma
+     */
+    public MainAccount getMa() {
+        return ma;
+    }
+
+    /**
+     * @param ma the ma to set
+     */
+    public void setMa(MainAccount ma) {
+        this.ma = ma;
+    }
+
+    /**
      * @return the billOrgsOptions
      */
     public List<Organization> getBillOrgsOptions() {
@@ -151,4 +171,5 @@ public class ManageBillOrgsManagedBean implements Serializable {
     public void setAddedBillOrgs(List<BillingOrg> addedBillOrgs) {
         this.addedBillOrgs = addedBillOrgs;
     }
+    
 }

@@ -94,10 +94,7 @@ public class CardTransactionSessionBean implements CardTransactionSessionBeanLoc
     }
 
     @Override
-    public List<CardTransaction> getTransactionByStartDateAndEndDate(Date sDate, Date eDate) {
-
-        java.sql.Date startDate = new java.sql.Date(sDate.getTime());
-        java.sql.Date endDate = new java.sql.Date(eDate.getTime());
+    public List<CardTransaction> getTransactionByStartDateAndEndDate(Date startDate, Date endDate) {
 
         System.out.println("SELECT ct FROM CardTransaction ct WHERE ct.updateDate BETWEEN " + startDate + " AND " + endDate + "");
         Query q = em.createQuery("SELECT ct FROM CardTransaction ct WHERE "
@@ -111,8 +108,8 @@ public class CardTransactionSessionBean implements CardTransactionSessionBeanLoc
 
     @Override
     public List<CardTransaction> getListDailyTransactionsByCreditCardAccount(CreditCardAccount cca) {
-        java.sql.Date startDate = new java.sql.Date(DateUtils.getBeginOfDay().getTime());
-        java.sql.Date endDate = new java.sql.Date(DateUtils.getEndOfDay().getTime());
+        Date startDate = DateUtils.getBeginOfDay();
+        Date endDate = DateUtils.getEndOfDay();
         System.out.println("Getting Daily Transaction");
         Query q = em.createQuery("SELECT ct FROM CardTransaction ct WHERE "
                 + "ct.creditCardAccount.id =:ccId AND "
@@ -136,8 +133,8 @@ public class CardTransactionSessionBean implements CardTransactionSessionBeanLoc
     @Override
     public List<CardTransaction> getListMonthlyTransactionsByCreditCardAccount(CreditCardAccount cca) {
 
-        java.sql.Date startDate = new java.sql.Date(DateUtils.getBeginOfDay().getTime());
-        java.sql.Date endDate = new java.sql.Date(DateUtils.getEndOfDay().getTime());
+        Date startDate = DateUtils.getBeginOfDay();
+        Date endDate = DateUtils.getEndOfDay();
         System.out.println("Getting Monthly Transaction");
         Query q = em.createQuery("SELECT ct FROM CardTransaction ct WHERE "
                 + "ct.creditCardAccount.id =:ccId AND "
