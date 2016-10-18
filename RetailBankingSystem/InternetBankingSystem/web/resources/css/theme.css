@@ -329,9 +329,13 @@ and open the template in the editor.
 }
 /* customer navbar */
 /* customer slideshow */
+.ui-carousel .ui-carousel-header{
+    display:none;
+}
+
 #customer-slideshow{
-    height:500px;
-    width: 90%;
+    height:85%;
+    width: 85%;
     min-height: 100px;
     padding: 5px 0;
     background: #fff;
@@ -343,8 +347,34 @@ and open the template in the editor.
 }
 
 #customer-slideshow img{
-    width:600px;
-    height: 300px;
+    width:100%;
+}
+
+.slideshow-img-holder{
+    position: relative;
+}
+
+.slideshow-img-holder .ui-state-default {
+    -webkit-box-shadow: none !important; 
+    box-shadow: none !important;
+}
+
+.slideshow-img-holder .slideshow-img-holder-button-1{
+    position: absolute;
+    bottom:120px;
+    right:435px;
+}
+
+.slideshow-img-holder .slideshow-img-holder-button-2{
+    position: absolute;
+    top:180px;
+    left:25px;
+}
+
+.slideshow-img-holder .slideshow-img-holder-button-3{
+    position: absolute;
+    bottom:120px;
+    right:400px;
 }
 /* end of customer slideshow */
 /* wizard overwrite */
@@ -438,6 +468,17 @@ and open the template in the editor.
     background-size:     cover;                      
     background-repeat:   no-repeat;
     background-position: center center;
+}
+.customer-login-layout .customer-login-panel-layoutUnit{
+    background: rgba(255,255,255,0.6) !important;
+}
+
+.customer-login-layout .ui-widget-content{
+    background: rgba(255,255,255,0.7) !important;
+}
+
+.customer-login-input{
+    background: white !important;
 }
 /*end of customer log in*/
 /*footer*/
