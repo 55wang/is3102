@@ -2,7 +2,7 @@
 #   sum=x+y
 #   return(sum)
 # }
-
+#startServer()
 constructPortfolioModel <- function() {
   print("constructPortfolioModel is called")
 
@@ -217,13 +217,10 @@ getReturnRegression <- function(US_STOCKS, FOREIGN_STOCKS, EMERGING_MARKETS, DIV
     setwd("/Users/wang")
   } else if (Sys.info()['user'] == "VIN-S") {
     setwd("/Users/VIN-S")
-<<<<<<< HEAD
   } else if (Sys.info()['user'] == "leiyang") {
     setwd("/Users/leiyang")
-=======
   } else if (Sys.info()['user'] == "qiuxiaqing") {
     setwd("/Users/qiuxiaqing")
->>>>>>> 64c0ee36f902084bf5a628221edff6171d16df99
   }
   
   load(file = "tgt_port.rda")
