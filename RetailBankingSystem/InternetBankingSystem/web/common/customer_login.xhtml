@@ -17,9 +17,9 @@ and open the template in the editor.
             <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
             <em:cssImport></em:cssImport>
         </h:head>
-        <h:body style="background-color: #f9f9f9">
-            <h:graphicImage library="img" name="merlionLogoBlack.png" class="h-center" style="top:18%; width:200px"/>
-            <p:layout class="h-center" style="width:400px;height:300px;top:55%">
+        <h:body style="background-color: #f9f9f9" class="customer-login-body">
+            <h:graphicImage library="img" name="merlionLogo.png" class="h-center" style="top:18%; width:200px"/>
+            <p:layout class="h-center customer-login-layout" style="">
                 <p:layoutUnit position="center">
                     <h:form id="customer-login-form">
                         <p:messages id="messagesStatus" redisplay="false">
@@ -52,6 +52,7 @@ and open the template in the editor.
                     </h:form>
                 </p:layoutUnit>
             </p:layout>
+            <em:customerFooter></em:customerFooter>
         </h:body>
     </f:view>
 </html>

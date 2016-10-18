@@ -424,6 +424,75 @@ and open the template in the editor.
     
 }
 /* end of toggleable */
+/*customer log in*/
+.customer-login-layout{
+    width:400px;
+    height:300px;
+    top:350px !important;
+    border-top: 7px solid #c00;
+    box-shadow: 0 10px 10px 0 rgba(0,0,0,0.30),0 6px 3px 0 rgba(0,0,0,0.23);
+}
+.customer-login-body{
+    height:100vh;
+    background-image: url("../resources/img/customer_login_bg.jpg");
+    background-size:     cover;                      
+    background-repeat:   no-repeat;
+    background-position: center center;
+}
+.footer {
+    font-size: 12px;
+    height:40px;
+    line-height: 20px;
+    color:white;
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+    background: url(../resources/img/footer_bg.png) repeat;
+    z-index: 999;
+}
+
+.footer .footer-links {
+    float: left;
+    width: 70%;
+}
+
+.footer .footer-links ul {
+    margin-left: 20px;
+    text-decoration: none;
+}
+.footer .footer-links ul li{
+    float: left;
+    list-style-type: none;
+    padding-right: 10px;
+    padding-left: 10px;
+    border-right: 1px solid #fff;
+}
+
+.footer .footer-links li:last-child {
+    border-right: none;
+    padding-right: 0;
+}
+
+.clearfix {
+    display: block;
+}
+
+.footer .contact-links {
+    width:30%;
+    float: right;
+}
+
+.footer .contact-links ul {
+    margin-left: 20px;
+    text-decoration: none;
+}
+.footer .contact-links ul li{
+    float:left;
+    list-style-type: none;
+    padding-right: 10px;
+    padding-left: 10px;
+}
+/*end of customer log in*/
 /* general */
 .container {
     padding-top: 100px;
