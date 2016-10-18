@@ -150,4 +150,20 @@ and open the template in the editor.
     border: none !important;
     border-bottom: 2px solid #7f0000 !important;
 }
+
+.ui-selectonebutton .ui-button{
+    background-color: white !important;
+    color: black !important;
+    border: none !important;
+}
+
+.ui-selectonebutton .ui-state-hover{
+    text-shadow: none !important;
+    box-shadow: none !important;
+    border: 1px solid #c00 !important;
+}
+
+.ui-selectonebutton .ui-state-active{
+    border: 1px solid #c00 !important;
+}
 /*end of css overwrite*/
