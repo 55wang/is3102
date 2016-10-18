@@ -67,4 +67,16 @@ public class ConstantUtils {
     public static final String PAYEE_FAILED = "Add new Payee Failed! Check Payee Account Number!";
     public static final String PAYEE_DELETE_FAILED = "Delete Payee Failed!";
     public static final String PAYEE_ACCOUNT_NOT_FOUND = "Add new Payee Failed! Check your payee's account number is correct!";
+    // bill org
+    public static final String BILL_ORG_SUCCESS = "Add new billing organization Successed!";
+    public static final String BILL_ORG_DELETE_SUCCESS = "Delete billing organization Successed!";
+    public static final String BILL_ORG_DELETE_FAILED = "Delete billing organization Failed!";
+    public static final String BILL_ORG_FAILED = "Add new billing organization Failed! Check reference number!";
+    // giro
+    public static final String GIRO_SUCCESS = "Add new GIRO Successed!";
+    public static final String GIRO_DELETE_SUCCESS = "Delete GIRO arrangement Successed!";
+    public static final String GIRO_DELETE_FAILED = "Delete GIRO arrangement Failed!";
+    public static final String GIRO_FAILED = "Add new GIRO arrangement Failed! Check reference number!";
+    public static final String GIRO_LIMIT_SUCCESS = "GIRO limit changed Successed!";
+    public static final String GIRO_LIMIT_FAIL = "GIRO limit changed Failed!";
 }

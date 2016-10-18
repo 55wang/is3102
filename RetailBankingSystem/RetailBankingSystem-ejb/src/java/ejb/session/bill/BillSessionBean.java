@@ -6,6 +6,8 @@
 package ejb.session.bill;
 
 import entity.bill.BankEntity;
+import entity.bill.BillingOrg;
+import entity.bill.GiroArrangement;
 import entity.bill.Organization;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -37,6 +39,20 @@ public class BillSessionBean implements BillSessionBeanLocal {
     }
     
     @Override
+    public Organization getOrganizationById(Long id){
+        return em.find(Organization.class, id);
+    }
+    
+    @Override
+    public List<Organization> getActiveListOrganization() {
+        Query q = em.createQuery("SELECT o FROM Organization o WHERE o.status = :inStatus");
+        q.setParameter("inStatus", StatusType.ACTIVE);
+        return q.getResultList();
+    }
+    
+    // bank entity
+    
+    @Override
     public BankEntity createBankEntity(BankEntity o) {
         em.persist(o);
         return o;
@@ -62,16 +78,62 @@ public class BillSessionBean implements BillSessionBeanLocal {
     }
     
     @Override
-    public List<Organization> getActiveListOrganization() {
-        Query q = em.createQuery("SELECT o FROM Organization o WHERE o.status = :inStatus");
-        q.setParameter("inStatus", StatusType.ACTIVE);
-        return q.getResultList();
-    }
-    
-    @Override
     public List<BankEntity> getActiveListBankEntities(){
         Query q = em.createQuery("SELECT b FROM BankEntity b WHERE b.status = :inStatus");
         q.setParameter("inStatus", StatusType.ACTIVE);
         return q.getResultList();
     }
+    
+    // bill org
+    
+    @Override
+    public BillingOrg createBillingOrganization(BillingOrg o) {
+        em.persist(o);
+        return o;
+    }
+    
+    @Override
+    public BillingOrg getBillingOrganizationById(Long id) {
+        return em.find(BillingOrg.class, id);
+    }
+    
+    @Override
+    public String deleteBillingOrganizationById(Long id) {
+        BillingOrg bo = getBillingOrganizationById(id);
+        em.remove(bo);
+        return "SUCCESS";
+    }
+    
+    // giro
+    @Override
+    public GiroArrangement createGiroArr(GiroArrangement o) {
+        em.persist(o);
+        return o;
+    }
+    
+    @Override
+    public GiroArrangement updateGiroArr(GiroArrangement o) {
+        em.merge(o);
+        return o;
+    }
+    
+    @Override
+    public GiroArrangement getGiroArrById(Long id) {
+        return em.find(GiroArrangement.class, id);
+    }
+    
+    @Override
+    public String deleteGiroArrById(Long id) {
+        GiroArrangement ga = getGiroArrById(id);
+        em.remove(ga);
+        return "SUCCESS";
+    }
+    
+    @Override
+    public List<GiroArrangement> getGiroArrsByMainAccountId(Long id) {
+        Query q = em.createQuery("SELECT ga FROM GiroArrangement ga WHERE ga.mainAccount.id =:mainAccountId");
+        q.setParameter("mainAccountId", id);
+        return q.getResultList();
+    }
+            
 }

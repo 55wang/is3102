@@ -68,7 +68,8 @@
                                 </p:submenu>
                                 
                                 <p:submenu label="Pay" class="navbar-submenu #{cc.attrs.personalPage == 'pay' ? 'active' : ''}">
-                                    
+                                    <p:menuitem value="Manage Billing Orgs" outcome="/personal_bill/manage_bill_orgs" />
+                                    <p:menuitem value="Manage GIRO Arrangement" outcome="/personal_bill/manage_giro_arrangement" />
                                 </p:submenu>
 
                                 <p:submenu label="Cards" class="navbar-submenu #{cc.attrs.personalPage == 'cards' ? 'active' : ''}">
