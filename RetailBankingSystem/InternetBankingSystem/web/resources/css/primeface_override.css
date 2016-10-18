@@ -108,10 +108,6 @@ and open the template in the editor.
     z-index: 999;
 }
 
-.ui-datepicker, .ui-carousel{
-    border: 1px solid #aaa;
-}
-
 .ui-state-highlight, .ui-widget-content .ui-state-highlight, .ui-widget-header .ui-state-highlight {
     background: #c00 -webkit-gradient(linear,left top,left bottom,from(rgba(244,0,0,0.25)),to(rgba(0,0,0,0)));
     color: #fff;
@@ -141,7 +137,6 @@ and open the template in the editor.
 }
 
 .ui-button {
-    position: relative;
     cursor: pointer;
     text-align: center;
     border-radius: 0;
