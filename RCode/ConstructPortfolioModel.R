@@ -2,7 +2,7 @@
 #   sum=x+y
 #   return(sum)
 # }
-
+#startServer()
 constructPortfolioModel <- function() {
   print("constructPortfolioModel is called")
 
