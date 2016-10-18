@@ -22,6 +22,8 @@ import server.utilities.EnumUtils.PayeeType;
 public interface TransferSessionBeanLocal {
     // transfer
     public String transferFromAccountToAccount(String fromAcc, String toAcc, BigDecimal amount);
+    public String transferFromAccountToCreditCard(String fromAcc, String ccNo, BigDecimal amount);
+    
     public TransferLimits createTransferLimits(TransferLimits t);
     public TransferLimits updateTransferLimits(TransferLimits t);
     

@@ -23,39 +23,40 @@ and open the template in the editor.
             <em:customerNavBar context="personal" personalPage="pay" ></em:customerNavBar>
             <div class="customer_main_container">
                 <h:form>
-                    <h2>Manage Billing Organizations</h2>
+                    <h2>Manage Credit Card Bill Organizations</h2>
                     <p:messages id="message" redisplay="false" >
                         <p:wizard widgetVar="myWizard" showNavBar="false">
-
                             <p:tab id="input_detail" title="1.Input Details">
-                                <h:panelGrid columns="2" cellpadding="5">
-                                    <h:outputText value="Select Billing Org: " />
-                                    <p:selectOneMenu id="type" value="#{manageBillOrgsManagedBean.selectedBillId}">
-                                        <f:selectItems value="#{manageBillOrgsManagedBean.billOrgsOptions}" var="b" itemValue="#{b.id.toString()}" itemLabel="#{b.name}"/>
-                                    </p:selectOneMenu>
-                                    <h:outputText value="Bill Reference Number: " />
-                                    <h:inputText value="#{manageBillOrgsManagedBean.referenceNumber}" required="true" />
-                                </h:panelGrid>
+                                <p:panel header="To">
+                                    <h:panelGrid columns="2" cellpadding="5">
+                                        <h:outputText value="Select Credit Card Billing Org: " />
+                                        <p:selectOneMenu id="type" value="#{manageCreditCardBillManagedBean.selectedBillId}">
+                                            <f:selectItems value="#{manageCreditCardBillManagedBean.billOrgsOptions}" var="b" itemValue="#{b.id.toString()}" itemLabel="#{b.name}"/>
+                                        </p:selectOneMenu>
+                                        <h:outputText value="Credit Card Number: " />
+                                        <h:inputText value="#{manageCreditCardBillManagedBean.referenceNumber}" required="true" />
+                                    </h:panelGrid>
+                                </p:panel>
                                 <p:commandButton  value="Next" type="button" onclick="PF('myWizard').next()" />
                             </p:tab>
 
                             <p:tab id="verify_details" title="2.Verify Details">
                                 <h:panelGrid columns="2" cellpadding="5">
-                                    <h:outputText value="Bill Organization: " />
-                                    <h:outputText value="#{manageBillOrgsManagedBean.getOrgName(manageBillOrgsManagedBean.selectedBillId)}" />
-                                    <h:outputText value="Bill Reference Number: " />
-                                    <h:outputText value="#{manageBillOrgsManagedBean.referenceNumber}" />
+                                    <h:outputText value="Select Credit Card Billing Org:  " />
+                                    <h:outputText value="#{manageCreditCardBillManagedBean.getOrgName(manageCreditCardBillManagedBean.selectedBillId)}" />
+                                    <h:outputText value="Credit Card Number: " />
+                                    <h:outputText value="#{manageCreditCardBillManagedBean.referenceNumber}" />
                                     <p:commandButton  value="Back" type="button" onclick="PF('myWizard').back()" />
-                                    <p:commandButton value="Add Bill Org" action="#{manageBillOrgsManagedBean.addBillOrg}" update="form"/> 
+                                    <p:commandButton value="Add Bill Org" action="#{manageCreditCardBillManagedBean.addBillOrg}" update="form"/> 
                                 </h:panelGrid>
                             </p:tab>
 
                             <p:tab id="completion" title="3.Completion">
                                 <h:panelGrid columns="2" cellpadding="5">
-                                    <h:outputText value="Bill Organization: " />
-                                    <h:outputText value="#{manageBillOrgsManagedBean.getOrgName(manageBillOrgsManagedBean.selectedBillId)}" />
-                                    <h:outputText value="Bill Reference Number: " />
-                                    <h:outputText value="#{manageBillOrgsManagedBean.referenceNumber}" />
+                                    <h:outputText value="Select Credit Card Billing Org: " />
+                                    <h:outputText value="#{manageCreditCardBillManagedBean.getOrgName(manageCreditCardBillManagedBean.selectedBillId)}" />
+                                    <h:outputText value="Credit Card Number: " />
+                                    <h:outputText value="#{manageCreditCardBillManagedBean.referenceNumber}" />
                                 </h:panelGrid>
                             </p:tab>
                         </p:wizard>
@@ -63,16 +64,16 @@ and open the template in the editor.
                 </h:form>
                 <h:form id="form">
                     <p:messages>
-                        <p:panel header="Added Bill Orgs">
-                            <p:dataTable value="#{manageBillOrgsManagedBean.addedBillOrgs}" var="billOrg">
+                        <p:panel header="Added Credit Card Bill Orgs">
+                            <p:dataTable value="#{manageCreditCardBillManagedBean.addedBillOrgs}" var="billOrg">
                                 <p:column headerText="Name" sortBy="#{billOrg.organization.name}">
                                     <h:outputText value="#{billOrg.organization.name}"/>
                                 </p:column>
-                                <p:column headerText="Bill Reference" sortBy="#{billOrg.billReference}">
+                                <p:column headerText="Credit Card Number" sortBy="#{billOrg.billReference}">
                                     <h:outputText value="#{billOrg.billReference}"/>
                                 </p:column>
                                 <p:column headerText="Delete">
-                                    <p:commandButton value="Delete Receipiant" action="#{manageBillOrgsManagedBean.removeBillOrg(billOrg)}" update="form"/> 
+                                    <p:commandButton value="Delete Receipiant" action="#{manageCreditCardBillManagedBean.removeBillOrg(billOrg)}" update="form"/> 
                                 </p:column>
                             </p:dataTable>
                         </p:panel>

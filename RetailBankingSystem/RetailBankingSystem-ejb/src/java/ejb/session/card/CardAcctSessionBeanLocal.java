@@ -8,6 +8,7 @@ package ejb.session.card;
 import entity.card.account.CreditCardAccount;
 import entity.card.account.DebitCardAccount;
 import entity.dams.account.CustomerDepositAccount;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.Local;
@@ -41,6 +42,7 @@ public interface CardAcctSessionBeanLocal {
     public Double addCurrentMonthAmountToOutstandingAmount(CreditCardAccount cca);
     public CreditCardAccount getCardAccountById(Long cardID);
     public CreditCardAccount getCreditCardAccountByCardNumber(String cardNumber);
+    public CreditCardAccount payCreditCardAccountBillByCardNumber(String cardNumber, BigDecimal amount);
     public List<CreditCardAccount> getListCreditCardAccountsByCardStatusAndAppStatus(EnumUtils.CardAccountStatus cardAccountStatus, EnumUtils.ApplicationStatus cardApplicationStatus);
     public List<CreditCardAccount> getListCreditCardAccountsByIdAndNotStatus(Long id, EnumUtils.CardAccountStatus status);
     public List<CreditCardAccount> updateListInterestToOutstandingAmountCcas();

@@ -35,8 +35,12 @@ and open the template in the editor.
                                         </p:selectOneMenu>
                                         <h:outputText value="Enter Account Number to transfer to " />
                                         <h:inputText value="#{intraBankTransferManagedBean.toAccountNo}" required="true" />
-                                        <p:outputLabel for="amount" value="Amount: " />
-                                        <p:inputText id="amount" value="#{intraBankTransferManagedBean.amount}"/>
+                                        <p:outputLabel value="Amount: " />
+                                        <p:inputText value="#{intraBankTransferManagedBean.amount}" required="true" />
+                                        <p:outputLabel value="Receiptient Name: " />
+                                        <p:inputText value="#{intraBankTransferManagedBean.toName}" required="true" />
+                                        <p:outputLabel value="My initial " />
+                                        <p:inputText value="#{intraBankTransferManagedBean.myInitial}" required="true" />
                                         <p:commandButton  value="Next" type="button" onclick="PF('myWizard').next()" />
                                     </h:panelGrid>
                                 </p:tab>
@@ -49,8 +53,12 @@ and open the template in the editor.
                                         <h:outputText value="#{intraBankTransferManagedBean.toAccountNo}" />
                                         <p:outputLabel value="Amount: " />
                                         <p:outputLabel value="#{intraBankTransferManagedBean.amount}"/>
+                                        <p:outputLabel value="Receiptient Name: " />
+                                        <p:outputLabel value="#{intraBankTransferManagedBean.toName}"/>
+                                        <p:outputLabel value="My initial " />
+                                        <p:outputLabel value="#{intraBankTransferManagedBean.myInitial}"/>
                                         <p:commandButton  value="Back" type="button" onclick="PF('myWizard').back()" />
-                                        <p:commandButton value="Transfer" action="#{intraBankTransferManagedBean.transfer}" update="@form"/> 
+                                        <p:commandButton value="Transfer" action="#{intraBankTransferManagedBean.adhocTransfer}" update="@form"/> 
                                     </h:panelGrid>
                                 </p:tab>
 
@@ -62,6 +70,10 @@ and open the template in the editor.
                                         <h:outputText value="#{intraBankTransferManagedBean.toAccountNo}" />
                                         <p:outputLabel value="Amount: " />
                                         <p:outputLabel value="#{intraBankTransferManagedBean.amount}"/>
+                                        <p:outputLabel value="Receiptient Name: " />
+                                        <p:outputLabel value="#{intraBankTransferManagedBean.toName}"/>
+                                        <p:outputLabel value="My initial " />
+                                        <p:outputLabel value="#{intraBankTransferManagedBean.myInitial}"/>
                                     </h:panelGrid>
                                 </p:tab>
                             </p:wizard>

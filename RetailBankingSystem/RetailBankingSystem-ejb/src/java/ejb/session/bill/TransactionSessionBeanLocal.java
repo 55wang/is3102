@@ -5,6 +5,7 @@
  */
 package ejb.session.bill;
 
+import entity.common.BillTransferRecord;
 import entity.common.TransactionRecord;
 import entity.common.TransferRecord;
 import java.util.Date;
@@ -19,6 +20,7 @@ import javax.ejb.Local;
 public interface TransactionSessionBeanLocal {
     
     public TransferRecord createTransferRecord(TransferRecord tr);
+    public BillTransferRecord createBillTransferRecord(BillTransferRecord btr);
     public List<TransactionRecord> getTransactionRecordByAccountNumberStartDateEndDate(String accountNumber, Date startDate, Date endDate);
     
 }

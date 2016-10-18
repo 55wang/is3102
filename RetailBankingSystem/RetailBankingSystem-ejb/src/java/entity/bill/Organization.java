@@ -37,7 +37,7 @@ public class Organization implements Serializable {
     private String shortCode;
     private String partnerBankCode;
     private StatusType status = StatusType.ACTIVE;
-    private BillType type;
+    private BillType type;// if bill type is credit card, then this is credit card bill
     // mapping
     
     // function

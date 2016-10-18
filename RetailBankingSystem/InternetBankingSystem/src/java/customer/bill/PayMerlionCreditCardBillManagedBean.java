@@ -3,11 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package customer.transfer;
+package customer.bill;
 
-import ejb.session.common.LoginSessionBeanLocal;
 import ejb.session.bill.TransferSessionBeanLocal;
+import ejb.session.common.LoginSessionBeanLocal;
 import ejb.session.dams.CustomerDepositSessionBeanLocal;
+import entity.card.account.CreditCardAccount;
 import entity.customer.MainAccount;
 import entity.dams.account.DepositAccount;
 import java.io.Serializable;
@@ -27,10 +28,10 @@ import utils.SessionUtils;
  *
  * @author leiyang
  */
-@Named(value = "interAccountTransferManagedBean")
+@Named(value = "payMerlionCreditCardBillManagedBean")
 @ViewScoped
-public class InterAccountTransferManagedBean implements Serializable {
-    
+public class PayMerlionCreditCardBillManagedBean implements Serializable {
+
     @EJB
     private LoginSessionBeanLocal loginBean;
     @EJB
@@ -39,29 +40,29 @@ public class InterAccountTransferManagedBean implements Serializable {
     private CustomerDepositSessionBeanLocal depositBean;
     
     private String fromAccountNo;
-    private String toAccountNo;
+    private String toCreditCardNo;
     private BigDecimal amount;
-    private List<DepositAccount> accounts = new ArrayList<>();
+    private List<DepositAccount> depositAccounts = new ArrayList<>();
+    private List<CreditCardAccount> creditCardAccounts = new ArrayList<>();
     
-    public InterAccountTransferManagedBean() {}
+    public PayMerlionCreditCardBillManagedBean() {}
     
     @PostConstruct
     public void init() {
         MainAccount ma = loginBean.getMainAccountByUserID(SessionUtils.getUserName());
-        accounts = ma.getBankAcounts();
+        setDepositAccounts(ma.getBankAcounts());
+        setCreditCardAccounts(ma.getCreditCardAccounts());
     }
     
     public void transfer() {
-        DepositAccount fromAccount = depositBean.getAccountFromId(fromAccountNo);
-        if (fromAccount != null && fromAccount.getBalance().compareTo(amount) < 0) {
+        DepositAccount fromAccount = depositBean.getAccountFromId(getFromAccountNo());
+        if (fromAccount != null && fromAccount.getBalance().compareTo(getAmount()) < 0) {
             JSUtils.callJSMethod("PF('myWizard').back()");
             MessageUtils.displayError(ConstantUtils.NOT_ENOUGH_BALANCE);
-            return;
         }
         //TODO: need another authentication
-        String result = transferBean.transferFromAccountToAccount(fromAccountNo, toAccountNo, amount);
+        String result = transferBean.transferFromAccountToCreditCard(getFromAccountNo(), getToCreditCardNo(), getAmount());
         if (result.equals("SUCCESS")) {
-            init();
             JSUtils.callJSMethod("PF('myWizard').next()");
             MessageUtils.displayInfo(ConstantUtils.TRANSFER_SUCCESS);
         } else {
@@ -85,31 +86,17 @@ public class InterAccountTransferManagedBean implements Serializable {
     }
 
     /**
-     * @return the toAccountNo
+     * @return the toCreditCardNo
      */
-    public String getToAccountNo() {
-        return toAccountNo;
+    public String getToCreditCardNo() {
+        return toCreditCardNo;
     }
 
     /**
-     * @param toAccountNo the toAccountNo to set
+     * @param toCreditCardNo the toCreditCardNo to set
      */
-    public void setToAccountNo(String toAccountNo) {
-        this.toAccountNo = toAccountNo;
-    }
-
-    /**
-     * @return the accounts
-     */
-    public List<DepositAccount> getAccounts() {
-        return accounts;
-    }
-
-    /**
-     * @param accounts the accounts to set
-     */
-    public void setAccounts(List<DepositAccount> accounts) {
-        this.accounts = accounts;
+    public void setToCreditCardNo(String toCreditCardNo) {
+        this.toCreditCardNo = toCreditCardNo;
     }
 
     /**
@@ -124,6 +111,34 @@ public class InterAccountTransferManagedBean implements Serializable {
      */
     public void setAmount(BigDecimal amount) {
         this.amount = amount;
+    }
+
+    /**
+     * @return the depositAccounts
+     */
+    public List<DepositAccount> getDepositAccounts() {
+        return depositAccounts;
+    }
+
+    /**
+     * @param depositAccounts the depositAccounts to set
+     */
+    public void setDepositAccounts(List<DepositAccount> depositAccounts) {
+        this.depositAccounts = depositAccounts;
+    }
+
+    /**
+     * @return the creditCardAccounts
+     */
+    public List<CreditCardAccount> getCreditCardAccounts() {
+        return creditCardAccounts;
+    }
+
+    /**
+     * @param creditCardAccounts the creditCardAccounts to set
+     */
+    public void setCreditCardAccounts(List<CreditCardAccount> creditCardAccounts) {
+        this.creditCardAccounts = creditCardAccounts;
     }
     
 }

@@ -37,7 +37,6 @@ public class BillingOrg implements Serializable {
     // info
     private String billReference;
     
-    
     // mapping
     @OneToOne
     private Organization organization;

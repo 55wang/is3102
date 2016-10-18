@@ -90,6 +90,13 @@ public class InternationalBankTransferManagedBean implements Serializable {
     
     public void transfer() {
         
+        DepositAccount fromAccount = depositBean.getAccountFromId(fromAccountNo);
+        if (fromAccount != null && fromAccount.getBalance().compareTo(amount) < 0) {
+            JSUtils.callJSMethod("PF('myWizard').back()");
+            MessageUtils.displayError(ConstantUtils.NOT_ENOUGH_BALANCE);
+            return;
+        }
+        
         BigDecimal currentTransferLimit = new BigDecimal(transferLimitLeft);
         if (currentTransferLimit.compareTo(amount) < 0) {
             JSUtils.callJSMethod("PF('myWizard').back()");

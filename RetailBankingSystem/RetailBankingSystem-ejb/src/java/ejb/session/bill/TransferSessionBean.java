@@ -5,8 +5,10 @@
  */
 package ejb.session.bill;
 
+import ejb.session.card.CardAcctSessionBeanLocal;
 import ejb.session.dams.CustomerDepositSessionBeanLocal;
 import entity.bill.Payee;
+import entity.card.account.CreditCardAccount;
 import entity.common.TransferRecord;
 import entity.customer.MainAccount;
 import entity.customer.TransferLimits;
@@ -35,6 +37,8 @@ public class TransferSessionBean implements TransferSessionBeanLocal {
 
     @EJB
     private CustomerDepositSessionBeanLocal depositBean;
+    @EJB
+    private CardAcctSessionBeanLocal cardBean;
     
     @Override
     public String transferFromAccountToAccount(String fromAcc, String toAcc, BigDecimal amount) {
@@ -46,6 +50,20 @@ public class TransferSessionBean implements TransferSessionBeanLocal {
         } else {
             depositBean.withdrawFromAccount(fromAccount, amount);
             depositBean.depositIntoAccount(toAccount, amount);
+            return "SUCCESS";
+        }
+    }
+    
+    @Override
+    public String transferFromAccountToCreditCard(String fromAcc, String ccNo, BigDecimal amount) {
+        DepositAccount fromAccount = depositBean.getAccountFromId(fromAcc);
+        CreditCardAccount toCCAccount = cardBean.getCreditCardAccountByCardNumber(ccNo);
+        if (fromAccount.getBalance().compareTo(amount) < 0) {
+            // not enough money
+            return "FAIL";
+        } else {
+            depositBean.ccSpendingFromAccount(fromAccount, amount);
+            cardBean.payCreditCardAccountBillByCardNumber(ccNo, amount);
             return "SUCCESS";
         }
     }

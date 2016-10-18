@@ -23,6 +23,7 @@ and open the template in the editor.
             <em:customerNavBar context="personal" personalPage="pay" ></em:customerNavBar>
             <div class="customer_main_container">
                 <h:form>
+                    <h2>Manage GIRO Arrangements</h2>
                     <p:messages id="message" redisplay="false" >
                         <p:wizard widgetVar="myWizard" showNavBar="false">
 
@@ -68,6 +69,10 @@ and open the template in the editor.
                                     <h:outputText value="#{manageGIROArrangementManagedBean.getOrgName(manageGIROArrangementManagedBean.selectedBillId)}" />
                                     <h:outputText value="Bill Reference Number: " />
                                     <h:outputText value="#{manageGIROArrangementManagedBean.referenceNumber}" />
+                                    <h:outputText value="Billing Limit: " />
+                                    <h:outputText value="#{manageGIROArrangementManagedBean.billLimit}" />
+                                    <h:outputText value="From Account Number: " />
+                                    <h:outputText value="#{manageGIROArrangementManagedBean.fromAccountNo}" />
                                 </h:panelGrid>
                             </p:tab>
                         </p:wizard>
