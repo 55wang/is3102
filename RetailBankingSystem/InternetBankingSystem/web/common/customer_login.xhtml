@@ -20,17 +20,12 @@ and open the template in the editor.
         <h:body class="customer-login-body">
             <h:graphicImage library="img" name="merlionLogo.png" class="h-center" style="top:18%; width:200px"/>
             <p:layout class="h-center customer-login-layout" style="">
-                <p:layoutUnit position="center">
+                <p:layoutUnit position="center" class="customer-login-panel-layoutUnit">
                     <h:form id="customer-login-form">
                         <p:messages id="messagesStatus" redisplay="false">
-                            <h:panelGrid columns="2" id="customer-login-panel" cellpadding="5" class="h-center" style="top:25%">                   
-                                <h:outputText value="User ID: " />
-                                <p:inputText value="#{customerLoginManagedBean.loginAccount.userID}" styleClass="outputLabel"/>
-
-
-                                <h:outputText value="Password: " />
-                                <p:password value="#{customerLoginManagedBean.loginAccount.password}" styleClass="outputLabel"/>
-
+                            <h:panelGrid columns="1" cellpadding="5" class="h-center" style="top:25%">     
+                                <p:inputText value="#{customerLoginManagedBean.loginAccount.userID}" styleClass="customer-login-input" placeholder="User ID"/>
+                                <p:password value="#{customerLoginManagedBean.loginAccount.password}" styleClass="customer-login-input" placeholder="Password"/>
                             </h:panelGrid>
 
                             <p:commandButton value="Log in" action="#{customerLoginManagedBean.loginCustomer(customerLoginManagedBean.loginAccount.userID,customerLoginManagedBean.loginAccount.password)}" class="h-center" style="margin-top:35%" update="@form"/>

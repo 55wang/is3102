@@ -162,6 +162,18 @@ and open the template in the editor.
     background-repeat:   no-repeat;
     background-position: center center;
 }
+
+.staff-login-layout .staff-login-panel-layoutUnit{
+    background: rgba(255,255,255,0.6) !important;
+}
+
+.staff-login-layout .ui-widget-content{
+    background: rgba(255,255,255,0.7) !important;
+}
+
+.staff-login-input{
+    background: white !important;
+}
 /*end of staff log in*/
 /*footer*/
 .footer {

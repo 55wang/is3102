@@ -469,6 +469,17 @@ and open the template in the editor.
     background-repeat:   no-repeat;
     background-position: center center;
 }
+.customer-login-layout .customer-login-panel-layoutUnit{
+    background: rgba(255,255,255,0.6) !important;
+}
+
+.customer-login-layout .ui-widget-content{
+    background: rgba(255,255,255,0.7) !important;
+}
+
+.customer-login-input{
+    background: white !important;
+}
 /*end of customer log in*/
 /*footer*/
 .footer {
