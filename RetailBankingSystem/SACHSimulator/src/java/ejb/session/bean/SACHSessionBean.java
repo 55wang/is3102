@@ -30,8 +30,9 @@ public class SACHSessionBean {
     
     private final String MEPS_SETTLEMENT = "https://localhost:8181/MEPSSimulator/meps/meps_settlement";
     private final String MBS_NET_SETTLEMENT_PATH = "https://localhost:8181/StaffInternalSystem/rest/net_settlement";
-    private final String SACH_TRANSFER_PAYMENT = "https://localhost:8181/StaffInternalSystem/rest/mbs_receive_transfer_payment";
-    private final String SACH_CC_PAYMENT = "https://localhost:8181/StaffInternalSystem/rest/mbs_receive_cc_payment";
+    private final String MBS_TRANSFER_PAYMENT = "https://localhost:8181/StaffInternalSystem/rest/mbs_receive_transfer_payment";
+    private final String MBS_CC_PAYMENT = "https://localhost:8181/StaffInternalSystem/rest/mbs_receive_cc_payment";
+    private final String MBS_GIRO_REQUEST = "https://localhost:8181/StaffInternalSystem/rest/mbs_receive_giro_request";
     
     @PersistenceContext(unitName = "BillPaymentSimulatorPU")
     private EntityManager em;
@@ -42,6 +43,10 @@ public class SACHSessionBean {
     
     public void merge(Object object) {
         em.merge(object);
+    }
+    
+    public BillTransfer findBillTransferByReferenceNumber(String referenceNumber) {
+        return em.find(BillTransfer.class, referenceNumber);
     }
     
     // TODO: Find by date range
@@ -164,7 +169,7 @@ public class SACHSessionBean {
         form.param("myInitial", pt.getMyInitial());
 
         Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(SACH_TRANSFER_PAYMENT);
+        WebTarget target = client.target(MBS_TRANSFER_PAYMENT);
 
         // This is the response
         JsonObject jsonString = target.request(MediaType.APPLICATION_JSON).post(Entity.entity(form, MediaType.APPLICATION_FORM_URLENCODED), JsonObject.class);
@@ -185,10 +190,34 @@ public class SACHSessionBean {
         Form form = new Form(); //bank info
         form.param("ccNumber", bt.getReferenceNumber());
         form.param("ccAmount", bt.getAmount().toString());
-        form.param("referenceNumber", bt.getBillReferenceNumber());
 
         Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(SACH_CC_PAYMENT);
+        WebTarget target = client.target(MBS_CC_PAYMENT);
+
+        // This is the response
+        JsonObject jsonString = target.request(MediaType.APPLICATION_JSON).post(Entity.entity(form, MediaType.APPLICATION_FORM_URLENCODED), JsonObject.class);
+        System.out.println(jsonString);
+        
+        if (jsonString != null && jsonString.getString("error").equals("SUCCESS")) {
+            System.out.println("Request received");
+            em.persist(bt);
+        } else {
+            System.out.println("FAIL");
+        }
+    }
+    
+    @Asynchronous
+    public void sendMBSGiroRequest(BillTransfer bt) {
+        
+        // send to mbs
+        Form form = new Form(); //bank info
+        form.param("referenceNumber", bt.getReferenceNumber());
+        form.param("amount", bt.getAmount().toString());
+        form.param("shortCode", bt.getShortCode());
+        form.param("billReferenceNumber", bt.getBillReferenceNumber());
+
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(MBS_GIRO_REQUEST);
 
         // This is the response
         JsonObject jsonString = target.request(MediaType.APPLICATION_JSON).post(Entity.entity(form, MediaType.APPLICATION_FORM_URLENCODED), JsonObject.class);

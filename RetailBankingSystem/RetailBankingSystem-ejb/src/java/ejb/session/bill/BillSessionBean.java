@@ -149,6 +149,14 @@ public class BillSessionBean implements BillSessionBeanLocal {
     }
     
     @Override
+    public GiroArrangement getGiroArrByReferenceNumberAndOrgCode(String referenceNumber, String shortCode) {
+        Query q = em.createQuery("SELECT ga FROM GiroArrangement ga WHERE ga.billReference =:referenceNumber AND ga.organization.shortCode =:shortCode");
+        q.setParameter("referenceNumber", referenceNumber);
+        q.setParameter("shortCode", shortCode);
+        return (GiroArrangement)q.getSingleResult();
+    }
+    
+    @Override
     public String deleteGiroArrById(Long id) {
         GiroArrangement ga = getGiroArrById(id);
         em.remove(ga);

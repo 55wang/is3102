@@ -10,6 +10,8 @@ import entity.common.TransferRecord;
 import javax.ejb.Asynchronous;
 import javax.ejb.Stateless;
 import javax.json.JsonObject;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
@@ -25,6 +27,9 @@ import protocal.swift.SwiftMessage;
  */
 @Stateless
 public class WebserviceSessionBean implements WebserviceSessionBeanLocal {
+    
+    @PersistenceContext(unitName = "RetailBankingSystem-ejbPU")
+    private EntityManager em;
     
     private final String MEPS_SETTLEMENT_AGENCY = "https://localhost:8181/MEPSSimulator/meps/meps_settlement_agency";
     private final String SACH_TRANSFER_CLEARING = "https://localhost:8181/SACHSimulator/sach/sach_transfer_clearing";
@@ -98,7 +103,6 @@ public class WebserviceSessionBean implements WebserviceSessionBeanLocal {
         form.param("fromName", tr.getFromName());
         form.param("myInitial", tr.getMyInitial());
         
-
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(SACH_TRANSFER_CLEARING);
 
@@ -108,6 +112,7 @@ public class WebserviceSessionBean implements WebserviceSessionBeanLocal {
         
         if (jsonString.getString("message").equals("SUCCESS")) {
             System.out.println("Request received");
+            em.persist(tr);
         } else {
             System.out.println("FAIL");
         }
@@ -135,6 +140,7 @@ public class WebserviceSessionBean implements WebserviceSessionBeanLocal {
         
         if (jsonString.getString("message").equals("SUCCESS")) {
             System.out.println("Request received");
+            em.persist(btr);
         } else {
             System.out.println("FAIL");
         }
@@ -166,6 +172,7 @@ public class WebserviceSessionBean implements WebserviceSessionBeanLocal {
         
         if (jsonString.getString("message").equals("SUCCESS")) {
             System.out.println("Request received");
+            em.persist(tr);
         } else {
             System.out.println("FAIL");
         }
@@ -182,7 +189,11 @@ public class WebserviceSessionBean implements WebserviceSessionBeanLocal {
         SwiftMessage sm = new SwiftMessage();
         sm.setMessageType("103");
         sm.setMessage(message.toString());
-        
         System.out.println(sm.toString());
+        em.persist(tr);
+    }
+
+    public void persist(Object object) {
+        em.persist(object);
     }
 }

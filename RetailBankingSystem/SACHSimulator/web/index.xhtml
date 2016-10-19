@@ -57,6 +57,18 @@ and open the template in the editor.
                     <p:inputText value="#{sachManagedBean.billReferenceNumber}" />
                     <p:commandButton value="Send MBS Credit Card Payment" actionListener="#{sachManagedBean.sendMBSCCPayment}" />
                 </h:panelGrid>
+                <h2>MBS giro request</h2>
+                <h:panelGrid columns="2" cellpadding="5">
+                    <p:outputLabel value="Reference Number:" />
+                    <p:inputText value="#{sachManagedBean.referenceNumber1}" />
+                    <p:outputLabel value="Amount:" />
+                    <p:inputText value="#{sachManagedBean.billAmount}" />
+                    <p:outputLabel value="Bill Reference Number:" />
+                    <p:inputText value="#{sachManagedBean.billReferenceNumber}" />
+                    <p:outputLabel value="Organization Short Code:" />
+                    <p:inputText value="#{sachManagedBean.shortCode}" />
+                    <p:commandButton value="Send MBS GIRO Payment Request" actionListener="#{sachManagedBean.sendMBSGiroRequest}" />
+                </h:panelGrid>
                 </h:form>
         </h:body>
     </f:view>

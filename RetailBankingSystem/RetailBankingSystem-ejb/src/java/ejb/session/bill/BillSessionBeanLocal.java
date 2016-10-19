@@ -40,6 +40,7 @@ public interface BillSessionBeanLocal {
     public GiroArrangement createGiroArr(GiroArrangement o);
     public GiroArrangement updateGiroArr(GiroArrangement o);
     public GiroArrangement getGiroArrById(Long id);
+    public GiroArrangement getGiroArrByReferenceNumberAndOrgCode(String referenceNumber, String shortCode);
     public String deleteGiroArrById(Long id);
     public List<GiroArrangement> getGiroArrsByMainAccountId(Long id);
 }

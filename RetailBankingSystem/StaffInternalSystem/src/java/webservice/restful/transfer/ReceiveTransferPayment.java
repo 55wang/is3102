@@ -52,7 +52,7 @@ public class ReceiveTransferPayment {
         DepositAccount da = depositBean.getAccountFromId(accountNumber);
         if (da == null) {
             ErrorDTO err = new ErrorDTO();
-            err.setCode(0);
+            err.setCode(-1);
             err.setError("Account Not Found");
             return Response.ok(new JSONObject(err).toString(), MediaType.APPLICATION_JSON).build();
         } else {
@@ -63,7 +63,5 @@ public class ReceiveTransferPayment {
             err.setError("SUCCESS");
             return Response.ok(new JSONObject(err).toString(), MediaType.APPLICATION_JSON).build();
         }
-
     }
-
 }

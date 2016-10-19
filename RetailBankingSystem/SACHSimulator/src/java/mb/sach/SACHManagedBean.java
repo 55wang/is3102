@@ -36,7 +36,11 @@ public class SACHManagedBean implements Serializable {
     private BigDecimal ccAmount;
     private String partnerBankCode = "001";
     private String organizationName = "Merlion Bank";
+    
+    private String referenceNumber1;
     private String billReferenceNumber;
+    private String shortCode;
+    private BigDecimal billAmount;
     
     @EJB
     private SACHSessionBean sachBean;
@@ -95,10 +99,21 @@ public class SACHManagedBean implements Serializable {
         bt.setAmount(ccAmount);
         bt.setPartnerBankCode(getPartnerBankCode());
         bt.setOrganizationName(getOrganizationName());
-        bt.setBillReferenceNumber(getBillReferenceNumber());
         bt.setSettled(true);
         
         sachBean.sendMBSCCPaymentSettlement(bt);
+    }
+    
+    public void sendMBSGiroRequest() {
+        
+        BillTransfer bt = new BillTransfer();
+        bt.setReferenceNumber(referenceNumber1);
+        bt.setAmount(billAmount);
+        bt.setBillReferenceNumber(billReferenceNumber);
+        bt.setShortCode(shortCode);
+        bt.setSettled(false);
+        
+        sachBean.sendMBSGiroRequest(bt);
     }
 
     /**
@@ -281,5 +296,47 @@ public class SACHManagedBean implements Serializable {
      */
     public void setBillReferenceNumber(String billReferenceNumber) {
         this.billReferenceNumber = billReferenceNumber;
+    }
+
+    /**
+     * @return the referenceNumber1
+     */
+    public String getReferenceNumber1() {
+        return referenceNumber1;
+    }
+
+    /**
+     * @param referenceNumber1 the referenceNumber1 to set
+     */
+    public void setReferenceNumber1(String referenceNumber1) {
+        this.referenceNumber1 = referenceNumber1;
+    }
+
+    /**
+     * @return the shortCode
+     */
+    public String getShortCode() {
+        return shortCode;
+    }
+
+    /**
+     * @param shortCode the shortCode to set
+     */
+    public void setShortCode(String shortCode) {
+        this.shortCode = shortCode;
+    }
+
+    /**
+     * @return the billAmount
+     */
+    public BigDecimal getBillAmount() {
+        return billAmount;
+    }
+
+    /**
+     * @param billAmount the billAmount to set
+     */
+    public void setBillAmount(BigDecimal billAmount) {
+        this.billAmount = billAmount;
     }
 }

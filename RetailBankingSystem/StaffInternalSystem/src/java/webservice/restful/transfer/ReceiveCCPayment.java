@@ -36,19 +36,17 @@ public class ReceiveCCPayment {
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     public Response netSettlement(
             @FormParam("ccNumber") String ccNumber,
-            @FormParam("ccAmount") String ccAmount,
-            @FormParam("referenceNumber") String referenceNumber
+            @FormParam("ccAmount") String ccAmount
     ) {
 
         System.out.println("Received ccNumber:" + ccNumber);
         System.out.println("Received ccAmount:" + ccAmount);
-        System.out.println("Received referenceNumber:" + referenceNumber);
         System.out.println("Received POST http mbs_receive_cc_payment");
 
         CreditCardAccount cca = cardBean.getCreditCardAccountByCardNumber(ccNumber);
         if (cca == null) {
             ErrorDTO err = new ErrorDTO();
-            err.setCode(0);
+            err.setCode(-1);
             err.setError("Credit Card Account Not Found");
             return Response.ok(new JSONObject(err).toString(), MediaType.APPLICATION_JSON).build();
         } else {
