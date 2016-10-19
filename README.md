@@ -118,17 +118,17 @@ public /*abstract*/ class SomeClass implements Serializable {
         <h:body>
             <em:customerHeader context="personal" userName="#{customerHomeManagedBean.customer.firstname }"></em:customerHeader>
             <em:customerNavBar context="personal" personalPage="cards"></em:customerNavBar>
-                <div class="customer_main_container">
-		    <p:panel header="<<Put header here>>">
-                        <h:form id="mainForm">                        
-                            <p:messages id="messagesStatus" redisplay="false">
+	    	<div class="customer_main_container">
+			<p:panel header="<<Put header here>>">
+				<h:form id="mainForm">                        
+					<p:messages id="messagesStatus" redisplay="false">
 			    
 				 <!-- Your Own Code Here -->
 				 
-			    </p:messages>
-			</h:form>
-                     </p:panel>                
-	         </div>
+				 	</p:messages>
+				</h:form>
+			</p:panel>              
+		</div>
             <em:customerFooter></em:customerFooter>
         </h:body>
     </f:view>
