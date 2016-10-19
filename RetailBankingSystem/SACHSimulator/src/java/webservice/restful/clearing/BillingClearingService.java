@@ -7,7 +7,6 @@ package webservice.restful.clearing;
 
 import ejb.session.bean.SACHSessionBean;
 import entity.BillTransfer;
-import entity.PaymentTransfer;
 import java.math.BigDecimal;
 import javax.ejb.EJB;
 import javax.ws.rs.Consumes;
@@ -50,6 +49,18 @@ public class BillingClearingService {
         System.out.println("SACH Verifies credit limits, adjusts accounts internally");
         // at this point, Clear and save all to db before give a end of day settlement amount
         BillTransfer bt = new BillTransfer();
+        Boolean hasPrevious = false;
+        try {
+            bt = sachBean.findBillTransferByReferenceNumber(referenceNumber);
+            hasPrevious = true;
+        } catch (Exception e) {
+            System.out.println("No Previous BillTransfer found");
+        }
+        
+        if (bt == null) {
+            bt = new BillTransfer();
+        }
+        
         bt.setReferenceNumber(referenceNumber);
         bt.setAmount(new BigDecimal(amount));
         bt.setPartnerBankCode(partnerBankCode);
@@ -57,7 +68,12 @@ public class BillingClearingService {
         bt.setOrganizationName(organizationName);
         bt.setBillReferenceNumber(billReferenceNumber);
         bt.setSettled(false);
-        sachBean.persist(bt);
+        if (hasPrevious) {
+            sachBean.merge(bt);
+        } else {
+            sachBean.persist(bt);
+        }
+        
 
         System.out.println("At 4:30, SACH tells MBS how much to pay via MEPS");
         System.out.println("By 5:30, MBS must pay");

@@ -6,7 +6,7 @@
 package customer.bill;
 
 import ejb.session.bill.BillSessionBeanLocal;
-import ejb.session.bill.TransactionSessionBeanLocal;
+import ejb.session.bill.TransferSessionBeanLocal;
 import ejb.session.common.LoginSessionBeanLocal;
 import ejb.session.dams.CustomerDepositSessionBeanLocal;
 import ejb.session.webservice.WebserviceSessionBeanLocal;
@@ -39,7 +39,7 @@ public class PayCCBillManagedBean implements Serializable {
     @EJB
     private LoginSessionBeanLocal loginBean;
     @EJB
-    private TransactionSessionBeanLocal transactionBean;
+    private TransferSessionBeanLocal transferBean;
     @EJB
     private BillSessionBeanLocal billBean;
     @EJB
@@ -93,7 +93,7 @@ public class PayCCBillManagedBean implements Serializable {
         webserviceBean.billingClearingSACH(btr);
         da.removeBalance(amount);
         depositBean.updateAccount(da);
-        transactionBean.createBillTransferRecord(btr);
+        transferBean.createBillTransferRecord(btr);
         
     }
     

@@ -5,7 +5,7 @@
  */
 package ejb.session.report;
 
-import ejb.session.bill.TransactionSessionBeanLocal;
+import ejb.session.bill.TransferSessionBeanLocal;
 import entity.common.TransactionRecord;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
@@ -34,7 +34,7 @@ import server.utilities.DateUtils;
 public class ReportGenerationBean implements ReportGenerationBeanLocal  {
 
     @EJB
-    private TransactionSessionBeanLocal transactionBean;
+    private TransferSessionBeanLocal transferBean;
 
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")
@@ -66,7 +66,7 @@ public class ReportGenerationBean implements ReportGenerationBeanLocal  {
             Class.forName("com.mysql.jdbc.Driver");
         } catch (Exception ex) {
         }
-        List<TransactionRecord> rawList = transactionBean.getTransactionRecordByAccountNumberStartDateEndDate(accountNumber, startDate, endDate);
+        List<TransactionRecord> rawList = transferBean.getTransactionRecordByAccountNumberStartDateEndDate(accountNumber, startDate, endDate);
         ArrayList<TransactionDTO> dataList = getTransactionDTOList(rawList);
         System.out.println(dataList);
         JRBeanCollectionDataSource beanColDataSource = new JRBeanCollectionDataSource(dataList);
