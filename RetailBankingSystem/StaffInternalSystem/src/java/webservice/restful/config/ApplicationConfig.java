@@ -39,6 +39,8 @@ public class ApplicationConfig extends Application {
         resources.add(webservice.restful.mobile.MobileTransferService.class);
         resources.add(webservice.restful.mobile.MobileUserLoginService.class);
         resources.add(webservice.restful.transfer.NetSettlementService.class);
+        resources.add(webservice.restful.transfer.ReceiveCCPayment.class);
+        resources.add(webservice.restful.transfer.ReceiveTransferPayment.class);
     }
     
 }

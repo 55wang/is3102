@@ -18,8 +18,46 @@ and open the template in the editor.
         <h:body style="background-color: #f9f9f9">
             <h1>SACH Simulator - Clearing</h1>
             <h:form>
-                <p:commandButton value="Send MBS Net Settlement" update="@form" actionListener="#{sachManagedBean.sendMBSNetSettlement}" />
-            </h:form>
+                
+                <h2>Send MBS net settlement</h2>
+                
+                <p:commandButton value="Send MBS Net Settlement" actionListener="#{sachManagedBean.sendMBSNetSettlement}" />
+            
+                <h2>Transfer to MBS after settlement</h2>
+                <h:panelGrid columns="2" cellpadding="5">
+                    <p:outputLabel value="Reference Number:" />
+                    <p:inputText value="#{sachManagedBean.referenceNumber}" />
+                    <p:outputLabel value="Amount:" />
+                    <p:inputText value="#{sachManagedBean.amount}" />
+                    <p:outputLabel value="to Bank Code:" />
+                    <p:inputText value="#{sachManagedBean.toBankCode}" />
+                    <p:outputLabel value="From Bank Code:" />
+                    <p:inputText value="#{sachManagedBean.fromBankCode}" />
+                    <p:outputLabel value="To Account Number:" />
+                    <p:inputText value="#{sachManagedBean.accountNumber}" />
+                    <p:outputLabel value="to Name:" />
+                    <p:inputText value="#{sachManagedBean.toName}" />
+                    <p:outputLabel value="from Name:" />
+                    <p:inputText value="#{sachManagedBean.fromName}" />
+                    <p:outputLabel value="my Initial:" />
+                    <p:inputText value="#{sachManagedBean.myInitial}" />
+                    <p:commandButton value="Send MBS Transfer" actionListener="#{sachManagedBean.sendMBSTransfer}" />
+                </h:panelGrid>
+                <h2>Pay MBS credit card bill</h2>
+                <h:panelGrid columns="2" cellpadding="5">
+                    <p:outputLabel value="Credit Card Number:" />
+                    <p:inputText value="#{sachManagedBean.ccNumber}" />
+                    <p:outputLabel value="Amount:" />
+                    <p:inputText value="#{sachManagedBean.ccAmount}" />
+                    <p:outputLabel value="Partner Bank Code:" />
+                    <p:inputText value="#{sachManagedBean.partnerBankCode}" />
+                    <p:outputLabel value="Organization Name:" />
+                    <p:inputText value="#{sachManagedBean.organizationName}" />
+                    <p:outputLabel value="Bill Reference Number:" />
+                    <p:inputText value="#{sachManagedBean.billReferenceNumber}" />
+                    <p:commandButton value="Send MBS Credit Card Payment" actionListener="#{sachManagedBean.sendMBSCCPayment}" />
+                </h:panelGrid>
+                </h:form>
         </h:body>
     </f:view>
 </html>

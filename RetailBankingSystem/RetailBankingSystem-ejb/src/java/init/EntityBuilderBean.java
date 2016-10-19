@@ -90,22 +90,7 @@ public class EntityBuilderBean {
         if (needInit()) {
             buildEntities();
         } else {
-//            String queryString = "SELECT t FROM TransferRecord t WHERE (";
-//            queryString += " t.fromAccount.accountNumber = 13059510076";
-//            queryString += ")";
-//            Query q = em.createQuery(queryString + " AND t.type =:inType  AND t.creationDate BETWEEN :startDate AND :endDate");
-//            Date startDate = DateUtils.getBeginOfDay();
-//            Date endDate = DateUtils.getEndOfDay();
-//            q.setParameter("startDate", startDate);
-//            q.setParameter("endDate", endDate);
-//            q.setParameter("inType", PayeeType.LOCAL);
-//            List<TransferRecord> records = q.getResultList();
-//            BigDecimal totalAmount = BigDecimal.ZERO;
-//            System.out.println("Totoal records found:" + records.size());
-//            for (TransferRecord t : records) {
-//                System.out.println("TransferRecord Found:" + t.getAmount());
-//                totalAmount = totalAmount.add(t.getAmount());
-//            }
+            
         }
     }
 
@@ -125,7 +110,7 @@ public class EntityBuilderBean {
         entityCreditCardOrderBuilder.initCreditCardOrder(demoRewardCardProduct, demoPromoProduct);
         entityBillOrgBuilder.initBillOrganization();
         entityPayLahBuilder.initPayLahDemoData();
-        entityWealthBuilder.initWealth();
+//        entityWealthBuilder.initWealth();
     }
 
     public void persist(Object object) {

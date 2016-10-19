@@ -206,6 +206,7 @@ public class EntityBillOrganizationBuilder {
             
             Organization o = new Organization();
             o.setType(EnumUtils.BillType.CARD);
+            o.setShortCode("O" + bankCodes[i]);
             o.setName(bankNames[i]);
             o.setPartnerBankCode(bankCodes[i]);
             billBean.createOrganization(o);

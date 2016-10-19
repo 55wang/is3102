@@ -23,7 +23,20 @@ import javax.faces.view.ViewScoped;
 @ViewScoped
 public class SACHManagedBean implements Serializable {
     
+    private String referenceNumber;
+    private BigDecimal amount;
+    private String toBankCode = "001";
+    private String fromBankCode = "002";
+    private String accountNumber;
+    private String toName;
+    private String fromName;
+    private String myInitial;
     
+    private String ccNumber;
+    private BigDecimal ccAmount;
+    private String partnerBankCode = "001";
+    private String organizationName = "Merlion Bank";
+    private String billReferenceNumber;
     
     @EJB
     private SACHSessionBean sachBean;
@@ -57,5 +70,216 @@ public class SACHManagedBean implements Serializable {
         } else {
             System.out.println("No need to ask MBS for settlement, ask other banks to pay MBS");
         }
+    }
+    
+    public void sendMBSTransfer() {
+        
+        PaymentTransfer pt = new PaymentTransfer();
+        pt.setReferenceNumber(getReferenceNumber());
+        pt.setAmount(getAmount());
+        pt.setToBankCode(getToBankCode());
+        pt.setFromBankCode(getFromBankCode());
+        pt.setAccountNumber(getAccountNumber());
+        pt.setToName(getToName());
+        pt.setFromName(getFromName());
+        pt.setMyInitial(getMyInitial());
+        pt.setSettled(true);
+        
+        sachBean.sendMBSPaymentTransferSettlement(pt);
+    }
+    
+    public void sendMBSCCPayment() {
+        
+        BillTransfer bt = new BillTransfer();
+        bt.setReferenceNumber(ccNumber);
+        bt.setAmount(ccAmount);
+        bt.setPartnerBankCode(getPartnerBankCode());
+        bt.setOrganizationName(getOrganizationName());
+        bt.setBillReferenceNumber(getBillReferenceNumber());
+        bt.setSettled(true);
+        
+        sachBean.sendMBSCCPaymentSettlement(bt);
+    }
+
+    /**
+     * @return the referenceNumber
+     */
+    public String getReferenceNumber() {
+        return referenceNumber;
+    }
+
+    /**
+     * @param referenceNumber the referenceNumber to set
+     */
+    public void setReferenceNumber(String referenceNumber) {
+        this.referenceNumber = referenceNumber;
+    }
+
+    /**
+     * @return the amount
+     */
+    public BigDecimal getAmount() {
+        return amount;
+    }
+
+    /**
+     * @param amount the amount to set
+     */
+    public void setAmount(BigDecimal amount) {
+        this.amount = amount;
+    }
+
+    /**
+     * @return the toBankCode
+     */
+    public String getToBankCode() {
+        return toBankCode;
+    }
+
+    /**
+     * @param toBankCode the toBankCode to set
+     */
+    public void setToBankCode(String toBankCode) {
+        this.toBankCode = toBankCode;
+    }
+
+    /**
+     * @return the fromBankCode
+     */
+    public String getFromBankCode() {
+        return fromBankCode;
+    }
+
+    /**
+     * @param fromBankCode the fromBankCode to set
+     */
+    public void setFromBankCode(String fromBankCode) {
+        this.fromBankCode = fromBankCode;
+    }
+
+    /**
+     * @return the accountNumber
+     */
+    public String getAccountNumber() {
+        return accountNumber;
+    }
+
+    /**
+     * @param accountNumber the accountNumber to set
+     */
+    public void setAccountNumber(String accountNumber) {
+        this.accountNumber = accountNumber;
+    }
+
+    /**
+     * @return the toName
+     */
+    public String getToName() {
+        return toName;
+    }
+
+    /**
+     * @param toName the toName to set
+     */
+    public void setToName(String toName) {
+        this.toName = toName;
+    }
+
+    /**
+     * @return the fromName
+     */
+    public String getFromName() {
+        return fromName;
+    }
+
+    /**
+     * @param fromName the fromName to set
+     */
+    public void setFromName(String fromName) {
+        this.fromName = fromName;
+    }
+
+    /**
+     * @return the myInitial
+     */
+    public String getMyInitial() {
+        return myInitial;
+    }
+
+    /**
+     * @param myInitial the myInitial to set
+     */
+    public void setMyInitial(String myInitial) {
+        this.myInitial = myInitial;
+    }
+
+    /**
+     * @return the ccNumber
+     */
+    public String getCcNumber() {
+        return ccNumber;
+    }
+
+    /**
+     * @param ccNumber the ccNumber to set
+     */
+    public void setCcNumber(String ccNumber) {
+        this.ccNumber = ccNumber;
+    }
+
+    /**
+     * @return the ccAmount
+     */
+    public BigDecimal getCcAmount() {
+        return ccAmount;
+    }
+
+    /**
+     * @param ccAmount the ccAmount to set
+     */
+    public void setCcAmount(BigDecimal ccAmount) {
+        this.ccAmount = ccAmount;
+    }
+
+    /**
+     * @return the partnerBankCode
+     */
+    public String getPartnerBankCode() {
+        return partnerBankCode;
+    }
+
+    /**
+     * @param partnerBankCode the partnerBankCode to set
+     */
+    public void setPartnerBankCode(String partnerBankCode) {
+        this.partnerBankCode = partnerBankCode;
+    }
+
+    /**
+     * @return the organizationName
+     */
+    public String getOrganizationName() {
+        return organizationName;
+    }
+
+    /**
+     * @param organizationName the organizationName to set
+     */
+    public void setOrganizationName(String organizationName) {
+        this.organizationName = organizationName;
+    }
+
+    /**
+     * @return the billReferenceNumber
+     */
+    public String getBillReferenceNumber() {
+        return billReferenceNumber;
+    }
+
+    /**
+     * @param billReferenceNumber the billReferenceNumber to set
+     */
+    public void setBillReferenceNumber(String billReferenceNumber) {
+        this.billReferenceNumber = billReferenceNumber;
     }
 }
