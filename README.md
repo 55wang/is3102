@@ -99,7 +99,41 @@ public /*abstract*/ class SomeClass implements Serializable {
     public getters and setters () {}
 
 ```
+# Customer side xhtml standard
+```xhtml
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:em="http://xmlns.jcp.org/jsf/composite/emcomp"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
 
+    <f:view>
+        <h:head>
+            <title>Merlion Bank</title>
+            <em:cssImport></em:cssImport>
+        </h:head>
+        <h:body>
+            <em:customerHeader context="personal" userName="#{customerHomeManagedBean.customer.firstname }"></em:customerHeader>
+            <em:customerNavBar context="personal" personalPage="cards"></em:customerNavBar>
+                <div class="customer_main_container">
+		    <p:panel header="<<Put header here>>">
+                        <h:form id="mainForm">                        
+                            <p:messages id="messagesStatus" redisplay="false">
+			    
+				 <!-- Your Own Code Here -->
+				 
+			    </p:messages>
+			</h:form>
+                     </p:panel>                
+	         </div>
+            <em:customerFooter></em:customerFooter>
+        </h:body>
+    </f:view>
+</html>
+```
 ### Change the project name accordingly ###
 
 ### Do no commit .xml and .properties file ###
