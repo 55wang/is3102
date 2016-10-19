@@ -13,12 +13,16 @@ and open the template in the editor.
     width: 100%;
     min-height: 40px;
     padding: 5px 0;
-    background: #222;
+    background: black;
     color: #999;
     float: left;
     z-index: 10;
     position: fixed;
     border-bottom: 10px solid #c00;
+    background-image: url("../resources/img/bg_header.png");
+    background-size: 800px;
+    background-repeat: no-repeat;
+    background-position: 380px 23px;
 }
 
 #header #logo{
@@ -107,7 +111,7 @@ and open the template in the editor.
 }
 #header * {
     vertical-align: middle;
-    display: inline-block
+    display: inline-block;
 }
 /* end of header */
 /* side menu */
@@ -146,23 +150,25 @@ and open the template in the editor.
 /* end of side menu */
 /* customer navbar */
 #customer-index-navbar{
-    width: 100%;
+    width: 90%;
     height: 60px;
     background: #fff;
     color: #999;
     float: left;
     z-index: 10;
     position: fixed;
-    top:87px;
+    top: 87px;
+    left: 5%;
 }
 
 #customer-index-navbar ul{
-    width:90%;
-    margin: auto 0;
+    width: 100%;
+    margin: 0 auto;
     list-style-type: none;
     position: relative;
     float: left;
-    padding: 0 5%;
+    padding-left: 0;
+    box-shadow: 0 5px 5px 0 rgba(0,0,0,0.30),0 3px 1px 0 rgba(0,0,0,0.23);
 }
 
 #customer-index-navbar ul a {
@@ -203,18 +209,23 @@ and open the template in the editor.
 }
 
 #customer-personal-navbar{
-    width: 100%;
+    width: 90%;
     height: 60px;
     background: #fff;
     color: #999;
     float: left;
     z-index: 999;
     position: fixed;
-    top:87px;
+    top: 87px;
+    left: 5%;
+}
+
+#customer-personal-navbar ul{
+    box-shadow: 0 5px 5px 0 rgba(0,0,0,0.30),0 3px 1px 0 rgba(0,0,0,0.23);
 }
 
 #customer-personal-navbar form{
-    width: 90%;
+    width: 100%;
     margin:auto;
 }
 
@@ -334,16 +345,19 @@ and open the template in the editor.
 }
 
 #customer-slideshow{
-    height:85%;
+    height:fit-content;
     width: 85%;
     min-height: 100px;
-    padding: 5px 0;
     background: #fff;
     color: #999;
     float: left;
     z-index: 10;
     position: fixed;
-    top:440px;
+    top:380px;
+}
+
+#customer-slideshow .ui-widget-content{
+    background: #f2f2f2;
 }
 
 #customer-slideshow img{
@@ -550,8 +564,8 @@ and open the template in the editor.
 .customer_main_container{
     margin-left: auto;
     margin-right: auto;
-    width:90%;
-    padding-top:200px;
+    width:80%;
+    padding-top:180px;
 }
 
 .h-center {

@@ -52,17 +52,13 @@ and open the template in the editor.
 
 .ui-panel .ui-panel-title {
     margin: .1em 16px .2em 0;
-    background: #c00;
     padding: 5px 8px 5px 8px;
-    color: white;
-    border-radius: 1px;
-    border: 1px black solid;
+    color: black;
 }
 .ui-panel .ui-panel-titlebar {
-    padding: 6px 0px !important;
-    border-bottom: 1px black solid;
+    padding: 6px 0px 20px !important;
     border-radius: 0;
-    font-size: 20px;
+    font-size: 36px;
 }
 .ui-widget-header {
     border: none;
@@ -160,5 +156,15 @@ and open the template in the editor.
 
 .ui-selectonebutton .ui-state-active{
     border: 1px solid #c00 !important;
+}
+
+.ui-corner-all {
+    -webkit-border-radius: 0px !important; 
+    border-radius: 0px !important;
+}
+
+.ui-panel{
+    padding: 2em !important;
+    box-shadow: 0 5px 5px 0 rgba(0,0,0,0.30),0 3px 1px 0 rgba(0,0,0,0.23);
 }
 /*end of css overwrite*/
