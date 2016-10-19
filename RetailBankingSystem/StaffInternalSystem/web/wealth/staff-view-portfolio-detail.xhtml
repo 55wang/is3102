@@ -1,0 +1,67 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:em="http://xmlns.jcp.org/jsf/composite/emcomp"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <!--shift + ctrl + F, format-->
+    <f:view>
+        <h:head>
+            <title>Merlion Internal</title>
+            <em:cssImport></em:cssImport>
+        </h:head>
+        <h:body>
+            <em:staffNavBar context="wealth"></em:staffNavBar>
+            <em:staffSideBar top="wealth" side="viewPortfolio"></em:staffSideBar>
+            <f:metadata>
+                <f:viewParam name="port" value="#{updatePortfolioManagedBean.portfolioID}" />
+            </f:metadata>
+            <div class="container">
+                <h:form id="mainForm">
+                    <p:panel header="#{updatePortfolioManagedBean.p.wealthManagementSubscriber.mainAccount.customer.fullName}'s Portfolio Detail">
+
+                        <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+
+                        <p:growl id="msgs" showDetail="true" />
+
+                        <h:panelGrid columns="2" cellpadding="5">
+                            <h:outputText value="Total Deposit Amount: " />
+                            <h:outputText value="#{viewPortfolioDetailManagedBean.getTotalDepositAmount(viewPortfolioDetailManagedBean.p.wealthManagementSubscriber.mainAccount)}" />
+                            
+                            <h:outputText value="Total Loan Amount: " />
+                            <h:outputText value="#{viewPortfolioDetailManagedBean.getTotalDebtAmount(viewPortfolioDetailManagedBean.p.wealthManagementSubscriber.mainAccount)}" />
+                            
+                            <h:outputText value="Portfolio Value: " />
+                            <h:outputText value="#{viewPortfolioDetailManagedBean.p.totalCurrentValue}" />
+                            
+                            <h:outputText value="Portfolio Percentage Change: " />
+                            <h:outputText value="#{viewPortfolioDetailManagedBean.p.percentageChange}" />
+                            
+                            <h:outputText value="Overall Total Portfolio Value: " />
+                            <h:outputText value="#{viewPortfolioDetailManagedBean.getTotalPortfolioCurrentValue(viewPortfolioDetailManagedBean.p.wealthManagementSubscriber.mainAccount)}" />
+                            
+                            <h:outputText value="Portfolio Total Percentage Change: " />
+                            <h:outputText value="#{viewPortfolioDetailManagedBean.getPortfolioPercentageChange(viewPortfolioDetailManagedBean.p.wealthManagementSubscriber.mainAccount)}" />
+                            
+                            <p>the pie chart, would retrieve value from p and display, might need DAO</p>
+                            
+                            
+                            <p:column headerText="Action">
+                                <br />
+                                <p:commandButton value="Update Portfolio" action="" icon="ui-icon-lightbulb" update="@form" />
+                            </p:column>
+                        </h:panelGrid>
+
+
+                    </p:panel>
+                </h:form>
+            </div>
+
+        </h:body> 
+    </f:view>
+
+
+</html>
+

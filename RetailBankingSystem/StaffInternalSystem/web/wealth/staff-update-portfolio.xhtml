@@ -1,0 +1,214 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:em="http://xmlns.jcp.org/jsf/composite/emcomp"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <!--shift + ctrl + F, format-->
+    <f:view>
+        <h:head>
+            <title>Merlion Internal</title>
+            <em:cssImport></em:cssImport>
+        </h:head>
+        <h:body>
+            <em:staffNavBar context="wealth"></em:staffNavBar>
+            <em:staffSideBar top="wealth" side="updatePortfolio"></em:staffSideBar>
+            <f:metadata>
+                <f:viewParam name="port" value="#{updatePortfolioManagedBean.portfolioID}" />
+            </f:metadata>
+            <div class="container">
+                <h:form id="mainForm">
+                    <p:panel header="Update Portfolio">
+
+                        <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+
+                        <p:growl id="msgs" showDetail="true" />
+                        <h:outputText value="Portfolio ID: "/>
+                        <h:inputText value="#{updatePortfolioManagedBean.portfolioID}"/>
+
+                        <p:commandButton value="RETRIEVE" action="#{updatePortfolioManagedBean.retrievePortfolio()}" update="@form"/>
+                        <p:commandButton value="VIEW DETAIL" action="#{updatePortfolioManagedBean.viewPortfolioDetail()}"/>
+                        <c:if test="#{updatePortfolioManagedBean.portfolioID != null and updatePortfolioManagedBean.portfolioID.length()>0}">
+
+
+                            <p:tabView>
+                                <p:tab title="Update Buying Value &amp; Amount">
+                                    <p:panelGrid style="width:800px; margin:0 auto " >
+                                        <!-- begin of 1 set -->
+                                        <p:row>
+                                            <p:column  colspan="2" rowspan="2">
+                                                #{updatePortfolioManagedBean.p.name_US_STOCKS}
+                                            </p:column>
+
+                                            <p:column  colspan="4" style="text-align: right">
+                                                Buying Value
+                                            </p:column>
+                                            <p:column  colspan="2">
+                                                <h:inputText value="#{updatePortfolioManagedBean.p.buyingValuePerShare_US_STOCKS}"/>
+                                            </p:column>
+
+                                        </p:row>
+
+                                        <p:row>
+                                            <p:column  colspan="4" style="text-align: right">
+                                                Buying Amount
+                                            </p:column>
+                                            <p:column  colspan="2">
+                                                <h:inputText value="#{updatePortfolioManagedBean.p.buyingNumberOfShare_US_STOCKS}"/>
+                                            </p:column>
+                                        </p:row>
+                                        <!-- end of 1 set -->
+
+                                        <!-- begin of 1 set -->
+                                        <p:row>
+                                            <p:column  colspan="2" rowspan="2">
+                                                #{updatePortfolioManagedBean.p.name_FOREIGN_DEVELOPED_STOCKS}
+                                            </p:column>
+
+                                            <p:column  colspan="4" style="text-align: right">
+                                                Buying Value
+                                            </p:column>
+                                            <p:column  colspan="2">
+                                                <h:inputText value="#{updatePortfolioManagedBean.p.buyingValuePerShare_FOREIGN_DEVELOPED_STOCKS}"/>
+                                            </p:column>
+
+                                        </p:row>
+
+                                        <p:row>
+                                            <p:column  colspan="4" style="text-align: right">
+                                                Buying Amount
+                                            </p:column>
+                                            <p:column  colspan="2">
+                                                <h:inputText value="#{updatePortfolioManagedBean.p.buyingNumberOfShare_FOREIGN_DEVELOPED_STOCKS}"/>
+                                            </p:column>
+                                        </p:row>
+                                        <!-- end of 1 set -->
+
+                                        <!-- begin of 1 set -->
+                                        <p:row>
+                                            <p:column  colspan="2" rowspan="2">
+                                                #{updatePortfolioManagedBean.p.name_EMERGING_MARKET_STOCKS}
+                                            </p:column>
+
+                                            <p:column  colspan="4" style="text-align: right">
+                                                Buying Value
+                                            </p:column>
+                                            <p:column  colspan="2">
+                                                <h:inputText value="#{updatePortfolioManagedBean.p.buyingValuePerShare_EMERGING_MARKET_STOCKS}"/>
+                                            </p:column>
+
+                                        </p:row>
+
+                                        <p:row>
+                                            <p:column  colspan="4" style="text-align: right">
+                                                Buying Amount
+                                            </p:column>
+                                            <p:column  colspan="2">
+                                                <h:inputText value="#{updatePortfolioManagedBean.p.buyingNumberOfShare_EMERGING_MARKET_STOCKS}"/>
+                                            </p:column>
+                                        </p:row>
+                                        <!-- end of 1 set -->
+
+                                    </p:panelGrid>
+                                    <br />
+
+                                    <p:commandButton value="UPDATE" action="#{updatePortfolioManagedBean.updateBuyingPortfolio()}" oncomplete="setTimeout(function() { $('.ui-messages-info.ui-corner-all').slideUp(); },  3000);"/>
+                                </p:tab>
+                                <p:tab title="Update Current Value &amp; Amount">
+
+                                    <p:panelGrid style="width:800px; margin:0 auto " >
+                                        <!-- begin of 1 set -->
+                                        <p:row>
+                                            <p:column  colspan="2" rowspan="2">
+                                                #{updatePortfolioManagedBean.p.name_US_STOCKS}
+                                            </p:column>
+
+                                            <p:column  colspan="4" style="text-align: right">
+                                                Current Value
+                                            </p:column>
+                                            <p:column  colspan="2">
+                                                <h:inputText value="#{updatePortfolioManagedBean.p.currentValuePerShare_US_STOCKS}"/>
+                                            </p:column>
+
+                                        </p:row>
+
+                                        <p:row>
+                                            <p:column  colspan="4" style="text-align: right">
+                                                Current Amount
+                                            </p:column>
+                                            <p:column  colspan="2">
+                                                <h:inputText value="#{updatePortfolioManagedBean.p.currentNumberOfShare_US_STOCKS}"/>
+                                            </p:column>
+                                        </p:row>
+                                        <!-- end of 1 set -->
+
+                                        <!-- begin of 1 set -->
+                                        <p:row>
+                                            <p:column  colspan="2" rowspan="2">
+                                                #{updatePortfolioManagedBean.p.name_FOREIGN_DEVELOPED_STOCKS}
+                                            </p:column>
+
+                                            <p:column  colspan="4" style="text-align: right">
+                                                Current Value
+                                            </p:column>
+                                            <p:column  colspan="2">
+                                                <h:inputText value="#{updatePortfolioManagedBean.p.currentValuePerShare_FOREIGN_DEVELOPED_STOCKS}"/>
+                                            </p:column>
+
+                                        </p:row>
+
+                                        <p:row>
+                                            <p:column  colspan="4" style="text-align: right">
+                                                Current Amount
+                                            </p:column>
+                                            <p:column  colspan="2">
+                                                <h:inputText value="#{updatePortfolioManagedBean.p.currentNumberOfShare_FOREIGN_DEVELOPED_STOCKS}"/>
+                                            </p:column>
+                                        </p:row>
+                                        <!-- end of 1 set -->
+
+                                        <!-- begin of 1 set -->
+                                        <p:row>
+                                            <p:column  colspan="2" rowspan="2">
+                                                #{updatePortfolioManagedBean.p.name_EMERGING_MARKET_STOCKS}
+                                            </p:column>
+
+                                            <p:column  colspan="4" style="text-align: right">
+                                                Current Value
+                                            </p:column>
+                                            <p:column  colspan="2">
+                                                <h:inputText value="#{updatePortfolioManagedBean.p.currentValuePerShare_EMERGING_MARKET_STOCKS}"/>
+                                            </p:column>
+
+                                        </p:row>
+
+                                        <p:row>
+                                            <p:column  colspan="4" style="text-align: right">
+                                                Current Amount
+                                            </p:column>
+                                            <p:column  colspan="2">
+                                                <h:inputText value="#{updatePortfolioManagedBean.p.currentNumberOfShare_EMERGING_MARKET_STOCKS}"/>
+                                            </p:column>
+                                        </p:row>
+                                        <!-- end of 1 set -->
+
+                                    </p:panelGrid>
+                                    <br />
+
+                                    <p:commandButton value="UPDATE" action="#{updatePortfolioManagedBean.updateCurrentPortfolio()}" oncomplete="setTimeout(function() { $('.ui-messages-info.ui-corner-all').slideUp(); },  3000);" />
+
+                                </p:tab>
+                            </p:tabView>
+                        </c:if>
+                    </p:panel>
+                </h:form>
+            </div>
+
+        </h:body> 
+    </f:view>
+
+
+</html>
+

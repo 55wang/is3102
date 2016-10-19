@@ -10,11 +10,14 @@ import ejb.session.mainaccount.MainAccountSessionBeanLocal;
 import ejb.session.staff.StaffAccountSessionBeanLocal;
 import ejb.session.wealth.FinancialInstrumentSessionBeanLocal;
 import ejb.session.wealth.InvestmentPlanSessionBeanLocal;
+import ejb.session.wealth.PortfolioSessionBean;
+import ejb.session.wealth.PortfolioSessionBeanLocal;
 import ejb.session.wealth.WealthManegementSubscriberSessionBeanLocal;
 import entity.customer.MainAccount;
 import entity.customer.WealthManagementSubscriber;
 import entity.wealth.FinancialInstrument;
 import entity.wealth.InvestmentPlan;
+import entity.wealth.Portfolio;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
@@ -34,6 +37,7 @@ import server.utilities.EnumUtils;
 @Stateless
 @LocalBean
 public class EntityWealthBuilder {
+
     @EJB
     private LoginSessionBeanLocal loginBean;
 
@@ -45,6 +49,9 @@ public class EntityWealthBuilder {
 
     @EJB
     private WealthManegementSubscriberSessionBeanLocal wealthManegementSubscriberSessionBean;
+
+    @EJB
+    private PortfolioSessionBeanLocal portfolioSessionBean;
 
     @EJB
     private StaffAccountSessionBeanLocal staffAccountSessionBean;
@@ -156,7 +163,15 @@ public class EntityWealthBuilder {
         investmentPlan.setRemarks("test plan");
         investmentPlan.setStatus(EnumUtils.InvestmentPlanStatus.PENDING);
         investmentPlan.setWealthManagementSubscriber(wms);
+        investmentPlan.setSatisfactionLevel(EnumUtils.InvestmentPlanSatisfactionLevel.VERY_SATISFIED);
+        investmentPlan.setSystemPredictReturn(0.5);
+        investmentPlan.setSystemPredictRisk(40);
         investmentPlanSessionBean.createInvestmentPlan(investmentPlan);
+        Portfolio p = new Portfolio();
+        portfolioSessionBean.createPortfolio(p);
+        p.setExecutedInvestmentPlan(investmentPlan);
+        p.setWealthManagementSubscriber(wms);
+        portfolioSessionBean.updatePortfolio(p);
 
         //generate PortfolioModel table
         constructPortfolioModel();
@@ -173,8 +188,8 @@ public class EntityWealthBuilder {
             connection = new RConnection("127.0.0.1", 6311);
 
             String prependingPath = CommonUtils.getPrependFolderName();
-            
-            connection.eval("source('"+prependingPath+"ConstructPortfolioModel.R')");
+
+            connection.eval("source('" + prependingPath + "ConstructPortfolioModel.R')");
 
             Integer result = connection.eval("constructPortfolioModel()").asInteger();
             if (result == 0) {

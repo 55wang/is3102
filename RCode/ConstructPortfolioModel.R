@@ -6,13 +6,7 @@
 constructPortfolioModel <- function() {
   print("constructPortfolioModel is called")
 
-  if (Sys.info()['user'] == "wang") {
-    setwd("/Users/wang")
-  } else if (Sys.info()['user'] == "VIN-S") {
-    setwd("/Users/VIN-S")
-  } else if (Sys.info()['user'] == "qiuxiaqing") {
-    setwd("/Users/qiuxiaqing")
-  }
+  defineWorkingDirectory()
   
   library(xts)
   library(quantmod)
@@ -171,15 +165,7 @@ getSdRegression <- function(US_STOCKS, FOREIGN_STOCKS, EMERGING_MARKETS, DIVIDEN
 {
   print("runRegression is called")
 
-  if (Sys.info()['user'] == "wang") {
-    setwd("/Users/wang")
-  } else if (Sys.info()['user'] == "VIN-S") {
-    setwd("/Users/VIN-S")
-  }else if (Sys.info()['user'] == "leiyang") {
-    setwd("/Users/leiyang")
-  } else if (Sys.info()['user'] == "qiuxiaqing") {
-    setwd("/Users/qiuxiaqing")
-  }
+  defineWorkingDirectory()
   
   load(file = "tgt_port.rda")
 #   tgt_sdresult = 0.127966825248657
@@ -213,16 +199,7 @@ getReturnRegression <- function(US_STOCKS, FOREIGN_STOCKS, EMERGING_MARKETS, DIV
 {
   print("runRegression is called")
 
-  if (Sys.info()['user'] == "wang") {
-    setwd("/Users/wang")
-  } else if (Sys.info()['user'] == "VIN-S") {
-    setwd("/Users/VIN-S")
-  } else if (Sys.info()['user'] == "leiyang") {
-    setwd("/Users/leiyang")
-  } else if (Sys.info()['user'] == "qiuxiaqing") {
-    setwd("/Users/qiuxiaqing")
-  }
-  
+  defineWorkingDirectory()
   load(file = "tgt_port.rda")
   #   tgt_sdresult = 0.127966825248657
   #   US_STOCKS = 0.231095810691598
@@ -252,3 +229,17 @@ getReturnRegression <- function(US_STOCKS, FOREIGN_STOCKS, EMERGING_MARKETS, DIV
 
 # getSdRegression(0.336042761849641, 0.154074988330303, 0.108887881812506, 0.120734303307862, 0.0867255702674858, 0.130036209698718, 0, 0.00819259424706097, 0, 0, 0.0553056904864223)
 # getReturnRegression(0.336042761849641, 0.154074988330303, 0.108887881812506, 0.120734303307862, 0.0867255702674858, 0.130036209698718, 0, 0.00819259424706097, 0, 0, 0.0553056904864223)
+
+defineWorkingDirectory <- function() {
+  print("setting working directory")
+  if (Sys.info()['user'] == "wang") {
+    setwd("/Users/wang")
+  } else if (Sys.info()['user'] == "VIN-S") {
+    setwd("/Users/VIN-S")
+  }else if (Sys.info()['user'] == "leiyang") {
+    setwd("/Users/leiyang")
+  } else if (Sys.info()['user'] == "qiuxiaqing") {
+    setwd("/Users/qiuxiaqing")
+  }
+}
+

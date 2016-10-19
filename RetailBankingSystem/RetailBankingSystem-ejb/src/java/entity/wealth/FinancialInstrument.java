@@ -19,6 +19,7 @@ import server.utilities.EnumUtils.FinancialInstrumentClass;
  */
 @Entity
 public class FinancialInstrument implements Serializable {
+
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -80,4 +81,5 @@ public class FinancialInstrument implements Serializable {
     public void setExpectedReturn(Double expectedReturn) {
         this.expectedReturn = expectedReturn;
     }
+
 }

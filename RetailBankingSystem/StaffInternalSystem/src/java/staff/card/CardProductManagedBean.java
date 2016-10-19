@@ -75,13 +75,13 @@ public class CardProductManagedBean implements Serializable {
 
             cardProductSessionBean.createMileProduct(mcp);
 
-            RedirectUtils.redirect("/StaffInternalSystem/card/staff_view_card.xhtml");
+            RedirectUtils.redirect(ConstantUtils.STAFF_CARD_STAFF_VIEW_CARD);
 
         } catch (Exception ex) {
             System.out.println("CardProductManagedBean.addNewMileCreditCard Error");
             System.out.println(ex);
 
-            RedirectUtils.redirect("/StaffInternalSystem/card/card_create_product.xhtml");
+            RedirectUtils.redirect(ConstantUtils.STAFF_CARD_CARD_CREATE_PRODUCT);
         }
     }
 

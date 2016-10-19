@@ -6,14 +6,14 @@
 package ejb.session.cms;
 
 import ejb.session.common.EmailServiceSessionBeanLocal;
+import entity.card.account.CreditCardAccount;
 import entity.customer.Customer;
-import entity.customer.MainAccount;
-import java.util.ArrayList;
+import entity.dams.account.DepositAccount;
+import entity.wealth.Portfolio;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import server.utilities.EnumUtils.StatusType;
@@ -35,7 +35,7 @@ public class CustomerProfileSessionBean implements CustomerProfileSessionBeanLoc
     public Customer getCustomerByUserID(String userID) {
         Query q = em.createQuery("SELECT c FROM Customer c WHERE c.mainAccount.userID = :inUserID");
         q.setParameter("inUserID", userID);
-        return (Customer)q.getSingleResult();
+        return (Customer) q.getSingleResult();
     }
 
     @Override
@@ -79,7 +79,8 @@ public class CustomerProfileSessionBean implements CustomerProfileSessionBeanLoc
         return (Customer) q.getSingleResult();
     }
 
-    public Customer getCustomerByID(Long ID){
+    @Override
+    public Customer getCustomerByID(Long ID) {
         return (Customer) em.find(Customer.class, ID);
     }
 }
