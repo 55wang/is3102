@@ -6,7 +6,6 @@
 package customer.transfer;
 
 import ejb.session.bill.BillSessionBeanLocal;
-import ejb.session.bill.TransactionSessionBeanLocal;
 import ejb.session.bill.TransferSessionBeanLocal;
 import ejb.session.common.LoginSessionBeanLocal;
 import ejb.session.dams.CustomerDepositSessionBeanLocal;
@@ -45,8 +44,6 @@ public class InternationalBankTransferManagedBean implements Serializable {
     @EJB
     private TransferSessionBeanLocal transferBean;
     @EJB
-    private TransactionSessionBeanLocal transactionBean;
-    @EJB
     private BillSessionBeanLocal billBean;
     @EJB
     private CustomerDepositSessionBeanLocal depositBean;
@@ -74,10 +71,7 @@ public class InternationalBankTransferManagedBean implements Serializable {
         setAccounts(getMa().getBankAcounts());
         setPayees(transferBean.getPayeeFromUserIdWithType(getMa().getId(), EnumUtils.PayeeType.OVERSEAS));
         setPayeeId("New Receipiant");
-        
-        BigDecimal todayTransferAmount = transferBean.getTodayBankTransferAmount(ma, EnumUtils.PayeeType.MERLION);
-        BigDecimal currentTransferLimit = new BigDecimal(ma.getTransferLimits().getDailyInterBankLimit().toString());
-        transferLimitLeft = currentTransferLimit.subtract(todayTransferAmount).setScale(2).toString();
+        calculateTransferLimits();
     }
     
     public void changePayee() {
@@ -153,7 +147,14 @@ public class InternationalBankTransferManagedBean implements Serializable {
         webserviceBean.transferSWIFT(tr);
         da.removeBalance(getAmount());
         depositBean.updateAccount(da);
-        transactionBean.createTransferRecord(tr);
+        transferBean.createTransferRecord(tr);
+        calculateTransferLimits();
+    }
+    
+    private void calculateTransferLimits() {
+        BigDecimal todayTransferAmount = transferBean.getTodayBankTransferAmount(ma, EnumUtils.PayeeType.OVERSEAS);
+        BigDecimal currentTransferLimit = new BigDecimal(ma.getTransferLimits().getDailyInterBankLimit().toString());
+        transferLimitLeft = currentTransferLimit.subtract(todayTransferAmount).setScale(2).toString();
     }
 
     /**

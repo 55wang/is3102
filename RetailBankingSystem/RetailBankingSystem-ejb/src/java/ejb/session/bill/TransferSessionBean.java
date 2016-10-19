@@ -9,6 +9,8 @@ import ejb.session.card.CardAcctSessionBeanLocal;
 import ejb.session.dams.CustomerDepositSessionBeanLocal;
 import entity.bill.Payee;
 import entity.card.account.CreditCardAccount;
+import entity.common.BillTransferRecord;
+import entity.common.TransactionRecord;
 import entity.common.TransferRecord;
 import entity.customer.MainAccount;
 import entity.customer.TransferLimits;
@@ -21,6 +23,7 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import server.utilities.ConstantUtils;
 import server.utilities.DateUtils;
 import server.utilities.EnumUtils;
 import server.utilities.GenerateAccountAndCCNumber;
@@ -39,6 +42,44 @@ public class TransferSessionBean implements TransferSessionBeanLocal {
     private CustomerDepositSessionBeanLocal depositBean;
     @EJB
     private CardAcctSessionBeanLocal cardBean;
+    
+    @Override
+    public TransferRecord createTransferRecord(TransferRecord tr) {
+        em.persist(tr);
+        return tr;
+    }
+    
+    @Override
+    public BillTransferRecord createBillTransferRecord(BillTransferRecord btr) {
+        em.persist(btr);
+        return btr;
+    }
+    
+    @Override
+    public List<TransactionRecord> getTransactionRecordByAccountNumberStartDateEndDate(String accountNumber, Date startDate, Date endDate) {
+        Query q = em.createQuery(
+                "SELECT t FROM " + ConstantUtils.TRANSACTION_ENTITY + " t WHERE "
+                + "t.fromAccount.accountNumber = :accountNumber AND "
+                + "t.creationDate BETWEEN :startDate AND :endDate"
+        );
+        q.setParameter("accountNumber", accountNumber);
+        q.setParameter("startDate", startDate);
+        q.setParameter("endDate", endDate);
+        return q.getResultList();
+    }
+    
+    @Override
+    public List<TransferRecord> getAllTransactionRecordStartDateEndDateByType(Date startDate, Date endDate, EnumUtils.PayeeType inType) {
+        Query q = em.createQuery(
+                "SELECT t FROM TransferRecord t WHERE "
+                + "t.type =:inType AND "
+                + "t.creationDate BETWEEN :startDate AND :endDate"
+        );
+        q.setParameter("inType", inType);
+        q.setParameter("startDate", startDate);
+        q.setParameter("endDate", endDate);
+        return q.getResultList();
+    }
     
     @Override
     public String transferFromAccountToAccount(String fromAcc, String toAcc, BigDecimal amount) {

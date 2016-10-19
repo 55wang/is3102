@@ -5,7 +5,6 @@
  */
 package customer.transfer;
 
-import ejb.session.bill.TransactionSessionBeanLocal;
 import ejb.session.common.LoginSessionBeanLocal;
 import ejb.session.dams.CustomerDepositSessionBeanLocal;
 import ejb.session.bill.TransferSessionBeanLocal;
@@ -41,8 +40,6 @@ public class intraBankTransferManagedBean implements Serializable {
     @EJB
     private TransferSessionBeanLocal transferBean;
     @EJB
-    private TransactionSessionBeanLocal transactionBean;
-    @EJB
     private CustomerDepositSessionBeanLocal depositBean;
     
     private String fromAccountNo;
@@ -63,10 +60,7 @@ public class intraBankTransferManagedBean implements Serializable {
         ma = loginBean.getMainAccountByUserID(SessionUtils.getUserName());
         payees = transferBean.getPayeeFromUserIdWithType(ma.getId(), EnumUtils.PayeeType.MERLION);
         setAccounts(ma.getBankAcounts());
-        
-        BigDecimal todayTransferAmount = transferBean.getTodayBankTransferAmount(ma, EnumUtils.PayeeType.MERLION);
-        BigDecimal currentTransferLimit = new BigDecimal(ma.getTransferLimits().getDailyInterBankLimit().toString());
-        transferLimitLeft = currentTransferLimit.subtract(todayTransferAmount).setScale(2).toString();
+        calculateTransferLimits();
     }
     
     public void adhocTransfer() {
@@ -110,7 +104,7 @@ public class intraBankTransferManagedBean implements Serializable {
         DepositAccount toAccount = depositBean.getAccountFromId(getToAccountNo());
         tr.setToAccount(toAccount);
         tr.setType(EnumUtils.PayeeType.MERLION);
-        transactionBean.createTransferRecord(tr);
+        transferBean.createTransferRecord(tr);
         
         String result = transferBean.transferFromAccountToAccount(getFromAccountNo(), getToAccountNo(), getAmount());
         if (result.equals("SUCCESS")) {
@@ -163,16 +157,23 @@ public class intraBankTransferManagedBean implements Serializable {
         DepositAccount toAccount = depositBean.getAccountFromId(payee.getAccountNumber());
         tr.setToAccount(toAccount);
         tr.setType(EnumUtils.PayeeType.MERLION);
-        transactionBean.createTransferRecord(tr);
+        transferBean.createTransferRecord(tr);
         
         String result = transferBean.transferFromAccountToAccount(getFromAccountNo(), payee.getAccountNumber(), getAmount());
         if (result.equals("SUCCESS")) {
             JSUtils.callJSMethod("PF('myWizard').next()");
             MessageUtils.displayInfo(ConstantUtils.TRANSFER_SUCCESS);
+            calculateTransferLimits();
         } else {
             JSUtils.callJSMethod("PF('myWizard').back()");
             MessageUtils.displayError(ConstantUtils.TRANSFER_FAILED);
         }
+    }
+    
+    private void calculateTransferLimits() {
+        BigDecimal todayTransferAmount = transferBean.getTodayBankTransferAmount(ma, EnumUtils.PayeeType.MERLION);
+        BigDecimal currentTransferLimit = new BigDecimal(ma.getTransferLimits().getDailyInterBankLimit().toString());
+        transferLimitLeft = currentTransferLimit.subtract(todayTransferAmount).setScale(2).toString();
     }
 
     /**

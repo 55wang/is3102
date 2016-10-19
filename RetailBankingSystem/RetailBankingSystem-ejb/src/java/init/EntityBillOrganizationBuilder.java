@@ -203,6 +203,12 @@ public class EntityBillOrganizationBuilder {
             b.setName(bankNames[i]);
             b.setStatus(EnumUtils.StatusType.ACTIVE);
             billBean.createBankEntity(b);
+            
+            Organization o = new Organization();
+            o.setType(EnumUtils.BillType.CARD);
+            o.setName(bankNames[i]);
+            o.setPartnerBankCode(bankCodes[i]);
+            billBean.createOrganization(o);
         }
     }
 }

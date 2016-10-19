@@ -122,6 +122,10 @@
                         <li class="side-menu-item #{cc.attrs.side == 'manageBank' ? 'active' : ''}">
                             <h:link outcome="manage_bank_entity" value="Other Banks" />
                         </li>
+                        
+                        <li class="side-menu-item #{cc.attrs.side == 'manageInternationalTransfer' ? 'active' : ''}">
+                            <h:link outcome="manage_international_transfer" value="International Transfers" />
+                        </li>
                     </c:if>
                     
                     <c:if test="#{cc.attrs.top == 'promo'}">

@@ -108,7 +108,7 @@ public class CreateInterestManagedBean implements Serializable {
     private void initTimeRangeDisplay() {
         Set<Integer> set = new HashSet<>();
         for (TimeRangeInterest i : timeRangeInterests) {
-            System.out.println("ID: " + i.getId() + " StartMonth: " + i.getStartMonth());
+//            System.out.println("ID: " + i.getId() + " StartMonth: " + i.getStartMonth());
             set.add(i.getStartMonth());
         }
 //        System.out.println("Before sort");
@@ -352,7 +352,7 @@ public class CreateInterestManagedBean implements Serializable {
     }
     
     public String getDisplayCell(Integer row, Integer col) {
-        System.out.println("Row is: " + row + " Col is: " + col);
+//        System.out.println("Row is: " + row + " Col is: " + col);
         if (row == 0 && col == 0) {
             return "";
         } else if (row == 0) {
