@@ -6,14 +6,19 @@
 package staff.wealth;
 
 import ejb.session.wealth.PortfolioSessionBeanLocal;
-import entity.wealth.InvestmentPlan;
+import entity.customer.MainAccount;
+import entity.dams.account.DepositAccount;
 import entity.wealth.Portfolio;
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
+import utils.RedirectUtils;
 
 /**
  *
@@ -21,23 +26,23 @@ import javax.faces.view.ViewScoped;
  */
 @Named(value = "viewPortfolioManagedBean")
 @ViewScoped
-public class ViewPortfolioManagedBean implements Serializable {
+public class ViewPortfolioManagedBean extends ViewPortfolioAbstractBean implements Serializable {
 
     @EJB
     PortfolioSessionBeanLocal portfolioSessionBean;
-    
+
     private List<Portfolio> portfolios;
-    
+
     public ViewPortfolioManagedBean() {
     }
-    
+
     @PostConstruct
     public void init() {
-       portfolios = portfolioSessionBean.getListPortfolios();
+        portfolios = portfolioSessionBean.getListPortfolios();
     }
-    
-    public void viewExecutedPortfolioDetail() {
-        
+
+    public void viewPortfolioDetail(Portfolio p) {
+        RedirectUtils.redirect("staff-view-portfolio-detail.xhtml?port=" + p.getId());
     }
 
     public List<Portfolio> getPortfolios() {
@@ -48,5 +53,4 @@ public class ViewPortfolioManagedBean implements Serializable {
         this.portfolios = portfolios;
     }
 
-    
 }

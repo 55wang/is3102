@@ -37,6 +37,7 @@ import server.utilities.EnumUtils;
 @Stateless
 @LocalBean
 public class EntityWealthBuilder {
+
     @EJB
     private LoginSessionBeanLocal loginBean;
 
@@ -48,7 +49,7 @@ public class EntityWealthBuilder {
 
     @EJB
     private WealthManegementSubscriberSessionBeanLocal wealthManegementSubscriberSessionBean;
-    
+
     @EJB
     private PortfolioSessionBeanLocal portfolioSessionBean;
 
@@ -160,21 +161,17 @@ public class EntityWealthBuilder {
         preferedInstruments.add(allFinancialInstruments.get(7));
         investmentPlan.setPreferedFinancialInstrument(preferedInstruments);
         investmentPlan.setRemarks("test plan");
-        investmentPlan.setStatus(EnumUtils.InvestmentPlanStatus.EXECUTED);
+        investmentPlan.setStatus(EnumUtils.InvestmentPlanStatus.PENDING);
         investmentPlan.setWealthManagementSubscriber(wms);
         investmentPlan.setSatisfactionLevel(EnumUtils.InvestmentPlanSatisfactionLevel.VERY_SATISFIED);
         investmentPlan.setSystemPredictReturn(0.5);
         investmentPlan.setSystemPredictRisk(40);
+        investmentPlanSessionBean.createInvestmentPlan(investmentPlan);
         Portfolio p = new Portfolio();
-        List<InvestmentPlan> allInvestmentPlans = new ArrayList<InvestmentPlan>();
-        p.setInvestmentPlans(allInvestmentPlans);
+        portfolioSessionBean.createPortfolio(p);
         p.setExecutedInvestmentPlan(investmentPlan);
         p.setWealthManagementSubscriber(wms);
-        investmentPlan.setPortfolio(p);
-        investmentPlan.setOnePortfolio(p);
-        portfolioSessionBean.createPortfolio(p);
-        investmentPlanSessionBean.createInvestmentPlan(investmentPlan);
-        
+        portfolioSessionBean.updatePortfolio(p);
 
         //generate PortfolioModel table
         constructPortfolioModel();
@@ -191,8 +188,8 @@ public class EntityWealthBuilder {
             connection = new RConnection("127.0.0.1", 6311);
 
             String prependingPath = CommonUtils.getPrependFolderName();
-            
-            connection.eval("source('"+prependingPath+"ConstructPortfolioModel.R')");
+
+            connection.eval("source('" + prependingPath + "ConstructPortfolioModel.R')");
 
             Integer result = connection.eval("constructPortfolioModel()").asInteger();
             if (result == 0) {

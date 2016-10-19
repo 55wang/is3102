@@ -15,8 +15,8 @@ import server.utilities.EnumUtils;
 
 @Local
 public interface PortfolioSessionBeanLocal {
-    public List<InvestmentPlan> getListInvestmentPlansByStatus(EnumUtils.InvestmentPlanStatus status);
     public List<Portfolio> getListPortfolios();
+    public Portfolio getPortfolioById(Long Id);
     public Portfolio createPortfolio(Portfolio p);
-    
+    public Portfolio updatePortfolio(Portfolio p);
 }

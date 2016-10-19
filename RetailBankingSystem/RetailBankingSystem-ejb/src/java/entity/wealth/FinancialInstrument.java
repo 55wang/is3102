@@ -19,6 +19,7 @@ import server.utilities.EnumUtils.FinancialInstrumentClass;
  */
 @Entity
 public class FinancialInstrument implements Serializable {
+
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -26,7 +27,6 @@ public class FinancialInstrument implements Serializable {
     private String description;
     private Double standardDeviation;
     private Double expectedReturn;
-    private Double actualReturn;
 
     @Override
     public int hashCode() {
@@ -82,11 +82,4 @@ public class FinancialInstrument implements Serializable {
         this.expectedReturn = expectedReturn;
     }
 
-    public Double getActualReturn() {
-        return actualReturn;
-    }
-
-    public void setActualReturn(Double actualReturn) {
-        this.actualReturn = actualReturn;
-    }
 }

@@ -33,10 +33,11 @@ public class CardEntityBuilderBean {
 
     // Use Super Admin Account as a flag
     private Boolean needInit() {
-        Query q = em.createNativeQuery("SELECT count(*) FROM VisaCardTransaction");
+        
 
         Long result;
         try {
+            Query q = em.createNativeQuery("SELECT count(*) FROM VisaCardTransaction");
             result = (Long) q.getSingleResult();
         } catch (Exception ex) {
             result = 0L;

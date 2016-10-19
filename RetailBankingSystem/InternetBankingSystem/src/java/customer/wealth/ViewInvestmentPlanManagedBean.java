@@ -47,12 +47,12 @@ public class ViewInvestmentPlanManagedBean implements Serializable{
     @PostConstruct
     public void init() {
         setMainAccount(mainAccountSessionBean.getMainAccountByUserId(SessionUtils.getUserName()));
-        setInvestmentPlans(investmentPlanSessionBean.getInvestmentPlanByMainAccount(mainAccount));
+        setInvestmentPlans(investmentPlanSessionBean.getListInvestmentPlansByMainAccount(mainAccount));
     }
     
     public void search() {
         if (searchText.isEmpty()){
-            investmentPlans = investmentPlanSessionBean.getInvestmentPlanByMainAccount(mainAccount);
+            investmentPlans = investmentPlanSessionBean.getListInvestmentPlansByMainAccount(mainAccount);
         }else{
             InvestmentPlan tempRequest = investmentPlanSessionBean.getInvestmentPlanById(Long.parseLong(searchText));
             if(tempRequest == null){

@@ -23,24 +23,28 @@ public class PortfolioSessionBean implements PortfolioSessionBeanLocal {
 
     @PersistenceContext(unitName = "RetailBankingSystem-ejbPU")
     private EntityManager em;
-    
-    @Override
-    public List<InvestmentPlan> getListInvestmentPlansByStatus(InvestmentPlanStatus status) {
-        Query q = em.createQuery("Select i from InvestmentPlan i where i.status =:inStatus");
-        q.setParameter("inStatus", status);
-        return q.getResultList();
-    }
-    
+
     @Override
     public List<Portfolio> getListPortfolios() {
         Query q = em.createQuery("SELECT p FROM Portfolio p");
         return q.getResultList();
     }
-    
+
+    @Override
+    public Portfolio getPortfolioById(Long Id) {
+        return em.find(Portfolio.class, Id);
+    }
+
     @Override
     public Portfolio createPortfolio(Portfolio p) {
         em.persist(p);
         return p;
     }
+
+    @Override
+    public Portfolio updatePortfolio(Portfolio p) {
+        em.merge(p);
+        return p;
+    } 
 
 }

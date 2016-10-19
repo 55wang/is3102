@@ -39,7 +39,7 @@ public class InvestmentPlan implements Serializable {
     @Temporal(value = TemporalType.TIMESTAMP)
     private final Date creationDate = new Date();
     private Integer amountOfInvestment;  
-    private Double customerExpectedReturn;
+    private Double customerExpectedReturn; //for the entire plan
     private Double systemPredictReturn;
     private Integer systemPredictRisk;
     private InvestmentRiskLevel riskLevel;
@@ -47,23 +47,13 @@ public class InvestmentPlan implements Serializable {
     private String remarks = "";
     private InvestmentPlanStatus status;
     private InvestmentPlanSatisfactionLevel satisfactionLevel;
-    
-    @OneToOne(cascade = CascadeType.MERGE)
-    private Portfolio onePortfolio;
 
-    public Portfolio getOnePortfolio() {
-        return onePortfolio;
-    }
-
-    public void setOnePortfolio(Portfolio onePortfolio) {
-        this.onePortfolio = onePortfolio;
-    }
+    @OneToOne(cascade = CascadeType.MERGE, mappedBy = "executedInvestmentPlan")
+    private Portfolio portfolio;
     @ManyToOne(cascade = CascadeType.MERGE)
     private WealthManagementSubscriber wealthManagementSubscriber;
     @OneToMany(cascade = CascadeType.MERGE)
     private List<FinancialInstrumentAndWeight> suggestedFinancialInstruments;
-    @ManyToOne(cascade = CascadeType.MERGE)
-    private Portfolio portfolio;
 
     public Long getId() {
         return id;
@@ -170,14 +160,6 @@ public class InvestmentPlan implements Serializable {
         this.suggestedFinancialInstruments = suggestedFinancialInstruments;
     }
 
-    public Portfolio getPortfolio() {
-        return portfolio;
-    }
-
-    public void setPortfolio(Portfolio portfolio) {
-        this.portfolio = portfolio;
-    }
-
     public InvestmentPlanStatus getStatus() {
         return status;
     }
@@ -196,6 +178,14 @@ public class InvestmentPlan implements Serializable {
 
     public Date getCreationDate() {
         return creationDate;
+    }
+
+    public Portfolio getPortfolio() {
+        return portfolio;
+    }
+
+    public void setPortfolio(Portfolio portfolio) {
+        this.portfolio = portfolio;
     }
 
 }

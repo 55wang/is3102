@@ -11,6 +11,7 @@ import entity.wealth.PortfolioModel;
 import entity.wealth.InvestmentPlan;
 import java.util.List;
 import javax.ejb.Local;
+import server.utilities.EnumUtils;
 
 /**
  *
@@ -18,10 +19,10 @@ import javax.ejb.Local;
  */
 @Local
 public interface InvestmentPlanSessionBeanLocal {
-    public List<PortfolioModel> getTestR();
     public InvestmentPlan createInvestmentPlan(InvestmentPlan ip);
     public InvestmentPlan getInvestmentPlanById(Long id);
     public InvestmentPlan updateInvestmentPlan(InvestmentPlan ip);
-    public List<InvestmentPlan> getInvestmentPlanByRM(StaffAccount sa);
-    public List<InvestmentPlan> getInvestmentPlanByMainAccount(MainAccount ma);
+    public List<InvestmentPlan> getListInvestmentPlansByRM(StaffAccount sa);
+    public List<InvestmentPlan> getListInvestmentPlansByMainAccount(MainAccount ma);
+    public List<InvestmentPlan> getListInvestmentPlansByStatus(EnumUtils.InvestmentPlanStatus status);
 }

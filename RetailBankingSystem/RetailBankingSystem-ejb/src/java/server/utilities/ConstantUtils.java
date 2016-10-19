@@ -42,7 +42,7 @@ public class ConstantUtils {
     // Redirect path
     // staff card
     public static final String STAFF_CARD_CARD_CREATE_PRODUCT = "/StaffInternalSystem/card/card_create_product.xhtml";
-    public static final String STAFF_CARD_STAFF_VIEW_CARD = "/StaffInternalSystem/card/staff_view_card.xhtml";
+    public static final String STAFF_CARD_STAFF_VIEW_CARD = "/StaffInternalSystem/card/card-view-product.xhtml";
     // staff cms
     public static final String STAFF_CMS_STAFF_VIEW_CASE = "/StaffInternalSystem/cms/staff_view_case.xhtml";
     public static final String STAFF_CMS_STAFF_TRANSFER_CASE = "/StaffInternalSystem/cms/staff_transfer_case.xhtml";
