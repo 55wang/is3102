@@ -15,7 +15,7 @@
         <h:body>
             <em:customerHeader context="personal" userName="#{customerHomeManagedBean.customer.firstname }"></em:customerHeader>
             <em:customerNavBar context="personal" personalPage="cards" ></em:customerNavBar>
-
+            <div class="customer_main_container">
             <h:form id="mainForm">
 
                 <p:panel header="Activate your debit card" style="padding-top: 200px;margin-left: 70px; width:90%">
@@ -48,7 +48,7 @@
 
                 </p:panel>
             </h:form>
-
+            </div>
             <!--            <p:panel><div align="center">
                              <button type="button" onclick="window.location.href='.../customer_card/apply_card_account.xhtml'">Apply</button>
                         </div>

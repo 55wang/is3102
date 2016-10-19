@@ -17,15 +17,13 @@
             <em:customerNavBar context="personal" personalPage="wealth"></em:customerNavBar>
             <div class="customer_main_container">
                 <h:form id="mainForm">
-                    <p:panel header="Search Requests">   
+                    <p:panel header="View Investment Requests">   
                         <p:outputPanel>
                                 <p:inputText id="idFilter" style="width:180px" value="#{viewInvestmentPlanManagedBean.searchText}" placeholder="Enter Request ID"  />
                                 <p:commandButton value="Search" actionListener="#{viewInvestmentPlanManagedBean.search}" update="@form"/>
                         </p:outputPanel>
-                    </p:panel>
-
-
-                <p:panel header="List of My Requests">
+                        <p:separator />
+                        
                     <p:dataTable id="requestList" value="#{viewInvestmentPlanManagedBean.investmentPlans}" var="investmentRequest" sortMode="multiple" >
                             <p:column headerText="ID" sortBy="#{investmentRequest.id}" style="width:15px">
                                 <h:outputText value="#{investmentRequest.id}" />

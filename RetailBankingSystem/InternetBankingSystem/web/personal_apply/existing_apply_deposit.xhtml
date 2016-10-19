@@ -12,14 +12,15 @@
         </h:head>
         <h:body>
             <em:customerHeader context="personal" userName="#{customerHomeManagedBean.customer.firstname }"></em:customerHeader>
-            <em:customerNavBar context="personal" personalPage="apply" ></em:customerNavBar>          
-            <h:form style="margin-top: 200px;margin-left: 300px;position: absolute">
-                <h1>Apply a new deposit account</h1>
+            <em:customerNavBar context="personal" personalPage="apply" ></em:customerNavBar> 
+            <div class="customer_main_container">
+            <p:panel header="Apply a new deposit account">
+            <h:form>
                 <p:growl id="growl" sticky="true" showDetail="true"/>
                 <p:wizard widgetVar="myWizard" showNavBar="false">
 
                   <p:tab id="account" title="1.Deposit Account">
-                        <p:panel>
+                      
                             <p:messages />
                             <table>
                                 <tr>
@@ -73,11 +74,9 @@
                                     }
                                 </script>
                             </div>
-                        </p:panel>
                     </p:tab>
                     
                     <p:tab id="details" title="2.Personal Details" >
-                        <p:panel>
                             <p:messages />
                             <h:panelGrid columns="2" columnClasses="label, value">
 
@@ -116,11 +115,12 @@
                                 <p:commandButton value="Back" type="button" onclick="PF('myWizard').back();" />
                                 <p:commandButton value="Confirm" action="#{existingCustomerApplicationManagedBean.save(customerProfileManagedBean.customer)}" update="growl"/>
                             </div>
-                        </p:panel>
                     </p:tab>
                     
                 </p:wizard>
             </h:form>
+            </p:panel>
+            </div>
             <em:customerFooter></em:customerFooter>
         </h:body>
     </f:view>

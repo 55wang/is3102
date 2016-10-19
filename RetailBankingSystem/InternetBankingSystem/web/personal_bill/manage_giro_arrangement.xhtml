@@ -22,14 +22,14 @@ and open the template in the editor.
             <em:customerHeader context="personal" userName="#{customerHomeManagedBean.customer.firstname}"></em:customerHeader>
             <em:customerNavBar context="personal" personalPage="pay" ></em:customerNavBar>
             <div class="customer_main_container">
+                <p:panel header="Manage GIRO Arrangements">
                 <h:form>
-                    <h2>Manage GIRO Arrangements</h2>
                     <p:messages id="message" redisplay="false" >
                         <p:wizard widgetVar="myWizard" showNavBar="false">
 
                             <p:tab id="input_detail" title="1.Input Details">
 
-                                <p:panel header="To">
+                                <h1>To</h1>
                                     <h:panelGrid columns="2" cellpadding="5">
                                         <h:outputText value="Select Billing Org: " />
                                         <p:selectOneMenu id="type" value="#{manageGIROArrangementManagedBean.selectedBillId}">
@@ -44,7 +44,6 @@ and open the template in the editor.
                                             <f:selectItems value="#{manageGIROArrangementManagedBean.accounts}" var="a" itemValue="#{a.accountNumber}" itemLabel="#{a.product.name} #{a.accountNumber} #{a.balance.setScale(2)}" />
                                         </p:selectOneMenu>
                                     </h:panelGrid>
-                                </p:panel>
                                 <p:commandButton  value="Next" type="button" onclick="PF('myWizard').next()" />
                             </p:tab>
 
@@ -80,7 +79,7 @@ and open the template in the editor.
                 </h:form>
                 <h:form id="form">
                     <p:messages>
-                        <p:panel header="Added GIRO Arrangement">
+                        <h1>Added GIRO Arrangement</h1>
                             <p:dataTable value="#{manageGIROArrangementManagedBean.addedGiroArrs}" var="giro" editable="true" editMode="cell">
                                 <f:facet name="header">
                                     Edit Limits By Clicking the cell
@@ -106,9 +105,9 @@ and open the template in the editor.
                                     <p:commandButton value="Delete Receipiant" action="#{manageGIROArrangementManagedBean.removeGIROArrangement(giro)}" update="form"/> 
                                 </p:column>
                             </p:dataTable>
-                        </p:panel>
                     </p:messages>
                 </h:form>
+                </p:panel>
             </div>
             <em:customerFooter></em:customerFooter>
         </h:body>

@@ -22,8 +22,8 @@ and open the template in the editor.
             <em:customerHeader context="personal" userName="#{customerHomeManagedBean.customer.firstname}"></em:customerHeader>
             <em:customerNavBar context="personal" personalPage="pay" ></em:customerNavBar>
             <div class="customer_main_container">
+                <p:panel header="Manage Billing Organizations">
                 <h:form>
-                    <h2>Manage Billing Organizations</h2>
                     <p:messages id="message" redisplay="false" >
                         <p:wizard widgetVar="myWizard" showNavBar="false">
 
@@ -61,9 +61,9 @@ and open the template in the editor.
                         </p:wizard>
                     </p:messages>
                 </h:form>
+                <p:separator />
                 <h:form id="form">
                     <p:messages>
-                        <p:panel header="Added Bill Orgs">
                             <p:dataTable value="#{manageBillOrgsManagedBean.addedBillOrgs}" var="billOrg">
                                 <p:column headerText="Name" sortBy="#{billOrg.organization.name}">
                                     <h:outputText value="#{billOrg.organization.name}"/>
@@ -75,9 +75,9 @@ and open the template in the editor.
                                     <p:commandButton value="Delete Receipiant" action="#{manageBillOrgsManagedBean.removeBillOrg(billOrg)}" update="form"/> 
                                 </p:column>
                             </p:dataTable>
-                        </p:panel>
                     </p:messages>
                 </h:form>
+                </p:panel>
             </div>
             <em:customerFooter></em:customerFooter>
         </h:body>

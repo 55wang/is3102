@@ -22,22 +22,20 @@ and open the template in the editor.
             <em:customerHeader context="personal" userName="#{customerHomeManagedBean.customer.firstname}"></em:customerHeader>
             <em:customerNavBar context="personal" personalPage="transfer" ></em:customerNavBar>
             <div class="customer_main_container">
+                <p:panel header="Manage Merlion Bank Receipaint">
                 <h:form>
                     <p:messages id="message" redisplay="false" >
                         <p:wizard widgetVar="myWizard" showNavBar="false">
 
                             <p:tab id="input_detail" title="1.Input Details">
-
-                                <p:panel header="To">
+                                <h1>To</h1>
                                     <h:panelGrid columns="2" cellpadding="5">
                                         <h:outputText value="Recipient's Name: " />
                                         <h:inputText value="#{manageMerlionPayeeManagedBean.payee.name}" required="true" />
                                         <h:outputText value="Recipient's Account Number: " />
                                         <h:inputText value="#{manageMerlionPayeeManagedBean.payee.accountNumber}" required="true" />
                                     </h:panelGrid>
-                                </p:panel>
-
-                                <p:panel header="From">
+                                <h1>From</h1>
                                     <h:panelGrid columns="2" cellpadding="5">
                                         <h:outputText value="My Account: " />
                                         <h:outputText value="#{manageMerlionPayeeManagedBean.payee.fromName}"/>
@@ -45,8 +43,6 @@ and open the template in the editor.
                                         <h:inputText value="#{manageMerlionPayeeManagedBean.payee.myInitial}" required="true" />
                                         <p:commandButton  value="Next" type="button" onclick="PF('myWizard').next()" />
                                     </h:panelGrid>
-                                </p:panel>
-
                             </p:tab>
 
                             <p:tab id="verify_details" title="2.Verify Details">
@@ -81,7 +77,7 @@ and open the template in the editor.
                     </h:form>
                 <h:form id="form">
                     <p:messages>
-                    <p:panel header="Added Receipiants">
+                        <h1>Added Receipiants</h1>
                         <p:dataTable id="transactions" value="#{manageMerlionPayeeManagedBean.payees}" var="payee">
                             <p:column headerText="Name" sortBy="#{payee.name}">
                                 <h:outputText value="#{payee.name}"/>
@@ -93,9 +89,9 @@ and open the template in the editor.
                                 <p:commandButton value="Delete Receipiant" action="#{manageMerlionPayeeManagedBean.removePayee(payee)}" update="form"/> 
                             </p:column>
                         </p:dataTable>
-                    </p:panel>
                     </p:messages>
                 </h:form>
+                </p:panel>
             </div>
             <em:customerFooter></em:customerFooter>
         </h:body>

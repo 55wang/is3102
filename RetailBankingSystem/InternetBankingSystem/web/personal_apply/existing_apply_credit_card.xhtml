@@ -16,14 +16,15 @@
         <h:body>
             <em:customerHeader context="personal" userName="#{customerHomeManagedBean.customer.firstname }"></em:customerHeader>
             <em:customerNavBar context="personal" personalPage="apply" ></em:customerNavBar>    
-
-            <h:form style="margin-top: 200px;margin-left: 300px;position: absolute">
-                <h1>Apply a new credit card</h1>
+            <div class="customer_main_container">
+            <h:form>
+                <p:panel header="Apply a new credit card">
+               
                 <p:growl id="growl" sticky="true" showDetail="true"/>
                 <p:wizard widgetVar="myWizard" showNavBar="false">
 
                     <p:tab id="account" title="1.Deposit Account">
-                        <p:panel>
+                        
                             <p:messages />
                             <table>
 
@@ -75,10 +76,10 @@
                                     }
                                 </script>
                             </div>
-                        </p:panel>
+                        
                     </p:tab>
                     <p:tab id="details" title="2.Personal Details" >
-                        <p:panel>
+                     
                             <p:messages />
                             <h:panelGrid columns="2" columnClasses="label, value">
 
@@ -99,10 +100,12 @@
                                 <p:commandButton value="Back" type="button" onclick="PF('myWizard').back();" />
                                 <p:commandButton value="Confirm" actionListener="#{newCardManagedBean.saveUpdatedCreditCardOrderForExistingCustomer()}" update="growl" process="@this"/>
                             </div>
-                        </p:panel>
+                       
                     </p:tab>
                 </p:wizard>
+                </p:panel>
             </h:form>
+            </div>
             <em:customerFooter></em:customerFooter>
         </h:body>
     </f:view>

@@ -30,7 +30,7 @@ and open the template in the editor.
                             <p:wizard widgetVar="myWizard" showNavBar="false">
 
                                 <p:tab id="input_detail" title="1.Input Details">
-                                    <p:panel header="To">
+                                    <h1>To</h1>
                                         <h:panelGrid columns="2" cellpadding="5">
                                             <h:outputText value="Paying To: " />
                                             <p:selectOneMenu value="#{internationalBankTransferManagedBean.payeeId}" rendered="true" required="true">
@@ -70,9 +70,7 @@ and open the template in the editor.
                                                 <h:outputText value="#{internationalBankTransferManagedBean.payee.clearCode}" />
                                             </c:if>
                                         </h:panelGrid>
-                                    </p:panel>
-
-                                    <p:panel header="From">
+                                    <h1>From</h1>
                                         <h:panelGrid columns="2" cellpadding="5">
                                             <h:outputText value="Choose Your Account to transfer from: " />
                                             <p:selectOneMenu value="#{internationalBankTransferManagedBean.fromAccountNo}" rendered="true" required="true">
@@ -85,7 +83,6 @@ and open the template in the editor.
                                                 <f:selectItems value="#{internationalBankTransferManagedBean.purposeOptions}"/>
                                             </p:selectOneMenu>
                                         </h:panelGrid>
-                                    </p:panel>
                                     <p:commandButton  value="Next" type="button" onclick="PF('myWizard').next()" />
 
                                 </p:tab>

@@ -22,12 +22,12 @@ and open the template in the editor.
             <em:customerHeader context="personal" userName="#{customerHomeManagedBean.customer.firstname}"></em:customerHeader>
             <em:customerNavBar context="personal" personalPage="pay" ></em:customerNavBar>
             <div class="customer_main_container">
+                <p:panel header="Manage Credit Card Bill Organizations">
                 <h:form>
-                    <h2>Manage Credit Card Bill Organizations</h2>
                     <p:messages id="message" redisplay="false" >
                         <p:wizard widgetVar="myWizard" showNavBar="false">
                             <p:tab id="input_detail" title="1.Input Details">
-                                <p:panel header="To">
+                                    <h1>To</h1>
                                     <h:panelGrid columns="2" cellpadding="5">
                                         <h:outputText value="Select Credit Card Billing Org: " />
                                         <p:selectOneMenu id="type" value="#{manageCreditCardBillManagedBean.selectedBillId}">
@@ -36,7 +36,6 @@ and open the template in the editor.
                                         <h:outputText value="Credit Card Number: " />
                                         <h:inputText value="#{manageCreditCardBillManagedBean.referenceNumber}" required="true" />
                                     </h:panelGrid>
-                                </p:panel>
                                 <p:commandButton  value="Next" type="button" onclick="PF('myWizard').next()" />
                             </p:tab>
 
@@ -64,7 +63,7 @@ and open the template in the editor.
                 </h:form>
                 <h:form id="form">
                     <p:messages>
-                        <p:panel header="Added Credit Card Bill Orgs">
+                            <h1>Added Credit Card Bill Orgs</h1>
                             <p:dataTable value="#{manageCreditCardBillManagedBean.addedBillOrgs}" var="billOrg">
                                 <p:column headerText="Name" sortBy="#{billOrg.organization.name}">
                                     <h:outputText value="#{billOrg.organization.name}"/>
@@ -76,9 +75,9 @@ and open the template in the editor.
                                     <p:commandButton value="Delete Receipiant" action="#{manageCreditCardBillManagedBean.removeBillOrg(billOrg)}" update="form"/> 
                                 </p:column>
                             </p:dataTable>
-                        </p:panel>
                     </p:messages>
                 </h:form>
+                </p:panel>
             </div>
             <em:customerFooter></em:customerFooter>
         </h:body>

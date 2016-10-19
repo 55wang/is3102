@@ -506,6 +506,7 @@ and open the template in the editor.
     bottom: 0;
     background: url(../resources/img/footer_bg.png) repeat;
     z-index: 999;
+    display: block;
 }
 
 .footer .footer-links {

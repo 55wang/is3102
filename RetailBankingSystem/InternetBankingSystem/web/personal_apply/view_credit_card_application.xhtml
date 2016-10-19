@@ -18,15 +18,14 @@
                 <div class="customer_main_container">
                     <p:panel header="View Application">
                         <p:messages id="messagesStatus" redisplay="false">
-                            <p:panel header="Search Staff">   
                                 <h:form>
                                     <p:inputText value="#{creditCardApplicationStatusManagedBean.searchText}" placeholder="Enter application ID..."/>
                                     <p:commandButton value="Search" update="application-form" actionListener="#{creditCardApplicationStatusManagedBean.searchApplication}"/>
                                     <p:commandButton value="Show All" update="application-form" actionListener="#{creditCardApplicationStatusManagedBean.showAllApplication}"/>
                                 </h:form>
-                            </p:panel>
                             
-                            <p:panel header="Application">
+                                <p:separator />
+                            
                                 <h:form id="application-form">
                                     <p:dataTable id="application-list" value="#{creditCardApplicationStatusManagedBean.applications}" var="app" sortMode="multiple">
                                         <p:column headerText="ID" sortBy="#{app.id}">
@@ -46,8 +45,7 @@
                                         </p:column>
                                     </p:dataTable>
                                     <p:messages id="messagesStatus" redisplay="false"></p:messages>
-                                </h:form>      
-                            </p:panel>
+                                </h:form> 
                         </p:messages>
                     </p:panel>
             </div>

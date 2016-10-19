@@ -22,8 +22,8 @@ and open the template in the editor.
             <em:customerHeader context="personal" userName="#{customerHomeManagedBean.customer.firstname }"></em:customerHeader>
             <em:customerNavBar context="personal" personalPage="transfer" ></em:customerNavBar>
             <div class="customer_main_container">
+                <p:panel header="Pay Other Bank Credit Card Bill">
                 <h:form>
-                    <h2>Pay Other Bank Credit Card Bill</h2>
                     <p:messages id="message" redisplay="false" >
                         <p:wizard widgetVar="myWizard" showNavBar="false">
                             <p:tab id="input_detail" title="1.Input Details">
@@ -69,6 +69,7 @@ and open the template in the editor.
                         </p:wizard>
                     </p:messages>
                 </h:form>
+                </p:panel>
             </div>
             <em:customerFooter></em:customerFooter>
         </h:body>

@@ -24,6 +24,7 @@ and open the template in the editor.
             <em:customerHeader context="personal" userName="#{customerHomeManagedBean.customer.firstname }"></em:customerHeader>
             <em:customerNavBar context="personal" personalPage="home" ></em:customerNavBar>
             <div class="customer_main_container">
+                <p:panel header="E-Statement">
                 <h:form>
                     <h:panelGrid columns="2" cellpadding="5">
                         <h:outputText value="Choose Account: " />
@@ -37,7 +38,7 @@ and open the template in the editor.
                         <p:commandButton value="View your bank statement" action="#{requestManagedBean.requestEStatement}"/> 
                     </h:panelGrid>
                 </h:form>
-
+                </p:panel>
 
             </div>
 

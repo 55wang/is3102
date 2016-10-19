@@ -166,5 +166,10 @@ and open the template in the editor.
 .ui-panel{
     padding: 2em !important;
     box-shadow: 0 5px 5px 0 rgba(0,0,0,0.30),0 3px 1px 0 rgba(0,0,0,0.23);
+    margin-bottom: 50px;
+}
+
+.ui-selectonemenu .ui-selectonemenu-trigger {
+    background-color: #c00 !important;
 }
 /*end of css overwrite*/
