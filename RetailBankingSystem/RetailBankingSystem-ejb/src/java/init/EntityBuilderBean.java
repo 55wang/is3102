@@ -67,6 +67,8 @@ public class EntityBuilderBean {
     @EJB
     private EntityDAMSBuilder entityDAMSBuilder;
     @EJB
+    private EntityLoanBuilder entityLoanBuilder;
+    @EJB
     private EntityCaseBuilder entityCaseBuilder;
     @EJB
     private EntityPayLahBuilder entityPayLahBuilder;
@@ -79,7 +81,6 @@ public class EntityBuilderBean {
 
     private RewardCardProduct demoRewardCardProduct;
     private PromoProduct demoPromoProduct;
-    private WealthManagementSubscriber demoWealthSubscriber;
 
     @PersistenceContext(unitName = "RetailBankingSystem-ejbPU")
     private EntityManager em;
@@ -103,17 +104,14 @@ public class EntityBuilderBean {
     private void buildEntities() {
         entityStaffBuilder.initStaffAndRoles();
         entityCustomerBuilder.initCustomer();
-        entityDAMSBuilder.initDAMS();
+        CustomerDepositAccount demoDepositAccount = entityDAMSBuilder.initDAMS();
+        entityLoanBuilder.initLoanAccount(demoDepositAccount);
         demoPromoProduct = entityPromoProductBuilder.initPromoProduct(demoPromoProduct);
         demoRewardCardProduct = entityCreditCardProductBuilder.initCreditCardProduct(demoPromoProduct);
         entityCaseBuilder.initCase();
         entityCreditCardOrderBuilder.initCreditCardOrder(demoRewardCardProduct, demoPromoProduct);
         entityBillOrgBuilder.initBillOrganization();
         entityPayLahBuilder.initPayLahDemoData();
-        entityWealthBuilder.initWealth();
-    }
-
-    public void persist(Object object) {
-        em.persist(object);
+//        entityWealthBuilder.initWealth();
     }
 }

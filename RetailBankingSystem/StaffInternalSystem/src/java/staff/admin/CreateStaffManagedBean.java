@@ -50,7 +50,7 @@ public class CreateStaffManagedBean implements Serializable {
     private StaffAccount newStaff = new StaffAccount();
     private List<StaffAccount> staffs = new ArrayList<>();
     private List<Role> roles = new ArrayList<>();
-    private Map<String, String> selectRoles = new HashMap<>();
+    private String[] selectedRoles;
     private List<String> selectStatuses = CommonUtils.getEnumList(StatusType.class);
     private String selectedRoleName;
     private String cellSelectedRoleName;
@@ -62,9 +62,6 @@ public class CreateStaffManagedBean implements Serializable {
     public void init() {
         setStaffs(staffAccountSessionBean.getAllStaffs());
         setRoles(staffRoleSessionBean.getAllRoles());
-        for (Role r : roles) {
-            getSelectRoles().put(r.getRoleName(), r.getRoleName());
-        }
         
         AuditLog a = new AuditLog();
         a.setActivityLog("System user enter create_role.xhtml");
@@ -85,7 +82,7 @@ public class CreateStaffManagedBean implements Serializable {
         } finally {
             if (emailSuccessFlag) {
                 Role r = staffRoleSessionBean.findRoleByName(getSelectedRoleName());
-                newStaff.setRole(r);
+                newStaff.addRole(r);
                 newStaff.setPassword(randomPwd);
                 createAccount();
             } else {
@@ -108,7 +105,7 @@ public class CreateStaffManagedBean implements Serializable {
     
     public void onCellEdit(StaffAccount sa) {
         if (cellSelectedRoleName != null) {
-            sa.setRole(staffRoleSessionBean.findRoleByName(getCellSelectedRoleName()));
+            sa.addRole(staffRoleSessionBean.findRoleByName(getCellSelectedRoleName()));
         } else if (cellSelectedStatus != null) {
             sa.setStatus(StatusType.getEnum(cellSelectedStatus));
         } else {
@@ -180,20 +177,6 @@ public class CreateStaffManagedBean implements Serializable {
     }
 
     /**
-     * @return the selectRoles
-     */
-    public Map<String, String> getSelectRoles() {
-        return selectRoles;
-    }
-
-    /**
-     * @param selectRoles the selectRoles to set
-     */
-    public void setSelectRoles(Map<String, String> selectRoles) {
-        this.selectRoles = selectRoles;
-    }
-
-    /**
      * @return the selectedRoleName
      */
     public String getSelectedRoleName() {
@@ -247,5 +230,19 @@ public class CreateStaffManagedBean implements Serializable {
      */
     public void setCellSelectedStatus(String cellSelectedStatus) {
         this.cellSelectedStatus = cellSelectedStatus;
+    }
+
+    /**
+     * @return the selectedRoles
+     */
+    public String[] getSelectedRoles() {
+        return selectedRoles;
+    }
+
+    /**
+     * @param selectedRoles the selectedRoles to set
+     */
+    public void setSelectedRoles(String[] selectedRoles) {
+        this.selectedRoles = selectedRoles;
     }
 }

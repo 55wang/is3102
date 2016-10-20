@@ -35,10 +35,6 @@ import server.utilities.PincodeGenerationUtils;
 public class EntityCreditCardOrderBuilder {
 
     @EJB
-    private CardProductSessionBeanLocal cardProductSessionBean;
-    @EJB
-    private CustomerProfileSessionBeanLocal customerProfileSessionBean;
-    @EJB
     private CreditCardOrderSessionBeanLocal creditCardOrderSessionBean;
     @EJB
     private CardAcctSessionBeanLocal cardAcctSessionBean;

@@ -68,7 +68,7 @@ public class EntityStaffBuilder {
         superAdminAccount.setLastName("Super");
         superAdminAccount.setEmail("superadmin@merlionbank.com");
         superAdminAccount.setStatus(EnumUtils.StatusType.ACTIVE);
-        superAdminAccount.setRole(superAdminRole);
+        superAdminAccount.addRole(superAdminRole);
         staffAccountSessionBean.createAccount(superAdminAccount);
 
         StaffAccount customerServiceAccount = new StaffAccount();
@@ -78,7 +78,7 @@ public class EntityStaffBuilder {
         customerServiceAccount.setLastName("Customer");
         customerServiceAccount.setEmail("customer_service@merlionbank.com");
         customerServiceAccount.setStatus(EnumUtils.StatusType.ACTIVE);
-        customerServiceAccount.setRole(customerServiceRole);
+        customerServiceAccount.addRole(customerServiceRole);
         staffAccountSessionBean.createAccount(customerServiceAccount);
 
         StaffAccount financialAnalystAccount = new StaffAccount();
@@ -88,7 +88,7 @@ public class EntityStaffBuilder {
         financialAnalystAccount.setLastName("Financial");
         financialAnalystAccount.setEmail("financial_analyst@merlionbank.com");
         financialAnalystAccount.setStatus(EnumUtils.StatusType.ACTIVE);
-        financialAnalystAccount.setRole(financialAnalystRole);
+        financialAnalystAccount.addRole(financialAnalystRole);
         staffAccountSessionBean.createAccount(financialAnalystAccount);
 
         StaffAccount financialOfficerAccount = new StaffAccount();
@@ -98,7 +98,7 @@ public class EntityStaffBuilder {
         financialOfficerAccount.setLastName("Financial");
         financialOfficerAccount.setEmail("financial_officer@merlionbank.com");
         financialOfficerAccount.setStatus(EnumUtils.StatusType.ACTIVE);
-        financialOfficerAccount.setRole(financialOfficerRole);
+        financialOfficerAccount.addRole(financialOfficerRole);
         staffAccountSessionBean.createAccount(financialOfficerAccount);
 
         StaffAccount generalTellerAccount = new StaffAccount();
@@ -108,7 +108,7 @@ public class EntityStaffBuilder {
         generalTellerAccount.setLastName("Teller");
         generalTellerAccount.setEmail("general_teller@merlionbank.com");
         generalTellerAccount.setStatus(EnumUtils.StatusType.ACTIVE);
-        generalTellerAccount.setRole(generalTellerRole);
+        generalTellerAccount.addRole(generalTellerRole);
         staffAccountSessionBean.createAccount(generalTellerAccount);
 
         StaffAccount loanOfficerAccount = new StaffAccount();
@@ -118,7 +118,7 @@ public class EntityStaffBuilder {
         loanOfficerAccount.setLastName("Officer");
         loanOfficerAccount.setEmail("loan_officer@merlionbank.com");
         loanOfficerAccount.setStatus(EnumUtils.StatusType.ACTIVE);
-        loanOfficerAccount.setRole(loanOfficerRole);
+        loanOfficerAccount.addRole(loanOfficerRole);
         staffAccountSessionBean.createAccount(loanOfficerAccount);
 
         StaffAccount productManagerAccount = new StaffAccount();
@@ -128,7 +128,7 @@ public class EntityStaffBuilder {
         productManagerAccount.setLastName("Manager");
         productManagerAccount.setEmail("product_manager@merlionbank.com");
         productManagerAccount.setStatus(EnumUtils.StatusType.ACTIVE);
-        productManagerAccount.setRole(productManagerRole);
+        productManagerAccount.addRole(productManagerRole);
         staffAccountSessionBean.createAccount(productManagerAccount);
         
         StaffAccount relationshipManagerAccount = new StaffAccount();
@@ -138,7 +138,7 @@ public class EntityStaffBuilder {
         relationshipManagerAccount.setLastName("Manager");
         relationshipManagerAccount.setEmail("relationship_manager@merlionbank.com");
         relationshipManagerAccount.setStatus(EnumUtils.StatusType.ACTIVE);
-        relationshipManagerAccount.setRole(relationshipManagerRole);
+        relationshipManagerAccount.addRole(relationshipManagerRole);
         staffAccountSessionBean.createAccount(relationshipManagerAccount);
     }
 }

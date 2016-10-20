@@ -44,10 +44,6 @@ public class Payee implements Serializable {
     private String fromName;
     private String myInitial;
     
-    // mapping
-    @ManyToOne(cascade = CascadeType.MERGE)
-    private MainAccount mainAccount;
-    
     // Getters and setters
     public Long getId() {
         return id;
@@ -153,20 +149,6 @@ public class Payee implements Serializable {
      */
     public void setAccountNumber(String accountNumber) {
         this.accountNumber = accountNumber;
-    }
-
-    /**
-     * @return the mainAccount
-     */
-    public MainAccount getMainAccount() {
-        return mainAccount;
-    }
-
-    /**
-     * @param mainAccount the mainAccount to set
-     */
-    public void setMainAccount(MainAccount mainAccount) {
-        this.mainAccount = mainAccount;
     }
 
     /**

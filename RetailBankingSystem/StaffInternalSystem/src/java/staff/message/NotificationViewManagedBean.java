@@ -65,7 +65,7 @@ public class NotificationViewManagedBean implements Serializable {
 
     @PostConstruct
     public void init() {
-        announcements = announcementBean.getAllAnnouncements(SessionUtils.getStaff().getRole(), true);
+        announcements = announcementBean.getAllAnnouncements(SessionUtils.getStaff().getRoles(), true);
         setRoles(staffRoleSessionBean.getAllRoles());
         for (Role r : roles) {
             rolesOption.put(r.getRoleName(), r.getRoleName());

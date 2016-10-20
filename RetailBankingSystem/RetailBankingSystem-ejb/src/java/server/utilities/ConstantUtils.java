@@ -14,6 +14,7 @@ public class ConstantUtils {
     
     public static final Integer ACCOUNT_NUBMER_LENGTH = 11;
     public static final Integer REFERENCE_NUBMER_LENGTH = 13;
+    public static final Integer LOAN_ACCOUNT_NUBMER_LENGTH = 12;
     
     // Entity Table Name
     public static final String TRANSACTION_ENTITY = "TransactionRecord";

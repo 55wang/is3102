@@ -60,11 +60,11 @@ public class EntityDAMSBuilder {
 
     private MainAccount demoMainAccount;
     
-    public void initDAMS() {
+    public CustomerDepositAccount initDAMS() {
         demoMainAccount = loginBean.getMainAccountByUserID(ConstantUtils.DEMO_MAIN_ACCOUNT_USER_ID);
         initInterest();
         initDepositProducts();
-        initDepositAccounts();
+        return initDepositAccounts();
     }
     
     private void initInterest() {
@@ -726,12 +726,13 @@ public class EntityDAMSBuilder {
         depositProductSessionBean.createDepositProduct(fixedProduct);
     }
 
-    private void initDepositAccounts() {
-        initDepositAccount();
+    private CustomerDepositAccount initDepositAccounts() {
+        return initDepositAccount();
+        // TODO: Fixed
     }
 
     // custom account for demo
-    private void initDepositAccount() {
+    private CustomerDepositAccount initDepositAccount() {
         CustomerDepositAccount customAccount = new CustomerDepositAccount();
         customAccount.setType(EnumUtils.DepositAccountType.CUSTOM);
         customAccount.setStatus(EnumUtils.StatusType.ACTIVE);
@@ -779,6 +780,8 @@ public class EntityDAMSBuilder {
         fixedAccount.setMainAccount(demoMainAccount);
         fixedAccount.setInterestRules(interestSessionBean.getFixedDepositAccountDefaultInterests());
         customerDepositSessionBean.createAccount(fixedAccount);
+        
+        return customAccount;
     }
 
     private void initTransactions(DepositAccount account) {

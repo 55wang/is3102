@@ -16,16 +16,16 @@
             <em:staffNavBar context="setting"></em:staffNavBar>
             <em:staffSideBar top="setting" side="viewAccess"></em:staffSideBar>
             <div class="container">
-                <h:form id="mainForm">
-                    <p:panel header="Access">
+                <p:panel header="Access">
+                    <c:forEach items="#{staffViewAccessManagedBean.roles}" var="role">
                         <h:panelGrid columns="2" cellpadding="5">
                             <h:outputText value="Your Role: " />
                             <h:outputText value="#{staffViewAccessManagedBean.role.roleName}" />
                             <h:outputText value="Role Description: " />
                             <h:outputText value="#{staffViewAccessManagedBean.role.description}" />
                         </h:panelGrid>
-                    </p:panel>
-                </h:form>
+                    </c:forEach>
+                </p:panel>
             </div>
         </h:body>
     </f:view>

@@ -107,7 +107,6 @@ public class InterBankTransferManagedBean implements Serializable {
         if (getPayeeId().equals("New Receipiant")) {
             BankEntity bank = billBean.getBankEntityById(Long.parseLong(bankId));
             payee.setBankCode(bank.getBankCode());
-            payee.setMainAccount(ma);
             payee.setType(EnumUtils.PayeeType.LOCAL);
             payee.setFromName(ma.getCustomer().getFullName());
             Payee result = transferBean.createPayee(payee);

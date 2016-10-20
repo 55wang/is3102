@@ -7,6 +7,7 @@ package utils;
 
 import entity.staff.Role;
 import entity.staff.StaffAccount;
+import java.util.List;
 import javax.servlet.http.HttpSession;
 import static utils.SessionUtils.getSession;
 
@@ -15,16 +16,20 @@ import static utils.SessionUtils.getSession;
  * @author leiyang
  */
 public class UserUtils {
-    
-    // TODO: Method permissions can be used as annotation.
-    // https://www.mkyong.com/java/java-custom-annotations-example/
-    // http://www.journaldev.com/1789/java-reflection-example-tutorial
+
+    // Return true if this user has any of the following roles
+
     public static Boolean isUserInRole(String role) {
         HttpSession session = getSession();
         if (session != null) {
             StaffAccount sa = SessionUtils.getStaff();
-            Role r = sa.getRole();
-            return r.getRoleName().equals(role);
+            List<Role> roles = sa.getRoles();
+            for (Role r : roles) {
+                if (r.getRoleName().equals(role)) {
+                    return true;
+                }
+            }
+            return false;
         } else {
             return false;
         }
@@ -36,13 +41,17 @@ public class UserUtils {
         if (session != null) {
             Boolean permitted = false;
             StaffAccount sa = SessionUtils.getStaff();
-            Role role = sa.getRole();
+            List<Role> staffRoles = sa.getRoles();
 
-            for (String r : roles) {
-                if (r.equals(role.getRoleName())) {
-                    return true;
+            for (Role role : staffRoles) {
+                for (String r : roles) {
+                    if (r.equals(role.getRoleName())) {
+                        permitted = true;
+                        break;
+                    }
                 }
             }
+
             return permitted;
         } else {
             return false;
