@@ -17,13 +17,18 @@ import javax.persistence.Id;
  * @author wang
  */
 @Entity
-public class DepositFactTable implements Serializable {
+public class BankFactTable implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
-    private BigDecimal totalDepositAmount; //for bank to use, all deposit saving in the bank
+    private BigDecimal totalDepositAmount;
+    private Double totalCreditCardAmount; 
+    private Double totalLoanAmount;
+    private Double allPortfolioAmount;
+    private Double totalCardTransactionAmount;
+    
 
     public Long getId() {
         return id;
@@ -43,10 +48,10 @@ public class DepositFactTable implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof DepositFactTable)) {
+        if (!(object instanceof BankFactTable)) {
             return false;
         }
-        DepositFactTable other = (DepositFactTable) object;
+        BankFactTable other = (BankFactTable) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -55,7 +60,27 @@ public class DepositFactTable implements Serializable {
 
     @Override
     public String toString() {
-        return "entity.fact.DepositFactTable[ id=" + id + " ]";
+        return "entity.fact.DebtFacttable[ id=" + id + " ]";
+    }
+
+    public Double getTotalDebtAmount() {
+        return totalCreditCardAmount + totalLoanAmount;
+    }
+
+    public Double getTotalLoanAmount() {
+        return totalLoanAmount;
+    }
+
+    public void setTotalLoanAmount(Double totalLoanAmount) {
+        this.totalLoanAmount = totalLoanAmount;
+    }
+
+    public Double getTotalCreditCardAmount() {
+        return totalCreditCardAmount;
+    }
+
+    public void setTotalCreditCardAmount(Double totalCreditCardAmount) {
+        this.totalCreditCardAmount = totalCreditCardAmount;
     }
 
     public BigDecimal getTotalDepositAmount() {
@@ -64,6 +89,22 @@ public class DepositFactTable implements Serializable {
 
     public void setTotalDepositAmount(BigDecimal totalDepositAmount) {
         this.totalDepositAmount = totalDepositAmount;
+    }
+
+    public Double getAllPortfolioAmount() {
+        return allPortfolioAmount;
+    }
+
+    public void setAllPortfolioAmount(Double allPortfolioAmount) {
+        this.allPortfolioAmount = allPortfolioAmount;
+    }
+
+    public Double getTotalCardTransactionAmount() {
+        return totalCardTransactionAmount;
+    }
+
+    public void setTotalCardTransactionAmount(Double totalCardTransactionAmount) {
+        this.totalCardTransactionAmount = totalCardTransactionAmount;
     }
     
 }
