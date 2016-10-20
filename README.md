@@ -6,13 +6,134 @@ A+, A-, B+, B, B-
 ## How to import data? run this in cmdline ##
 mysql -u root --password=password < RecreateDatabase.sql
 
-EJB standard
-public Entity createEntity(Entity en) return entity
-public Entity getEntityById(Long id) return Entity
-public Entity updateEntity(Entity en) return Entity
-public List<Entity> getListEntityByEntity(Entity en) return List<Entity>
+# Git master and branch
 
+    git checkout card
+    git pull origin card
+    git rebase master
+    git checkout master
+    git merge card
+    git checkout card
 
+# Work flow for module
+
+    1. Create Entity Class
+    2. Sketch out storyboard and edit Entity Class
+    3. Implement EntitiesBuilder, create demo data, link, logic here.
+    4. After all the logic is done, it consider
+
+# Entity standard
+
+```java
+@Entity
+//Optional if you want to make it as a parent
+//@Inheritance(strategy=InheritanceType.JOINED) 
+public /*abstract*/ class SomeClass implements Serializable {
+
+    // basic id and timestamp
+    @Id
+    private Long id;
+    @Temporal(value = TemporalType.TIMESTAMP)
+    private final Date creationDate = new Date();
+
+    // info
+    private String someOtherInfos;
+    //...more
+
+    // mapping
+    @ManyToOne(cascade = CascadeType.MERGE)
+    private MainAccount mainAccount;
+    //... more
+
+    // functions
+    public String getFullName() {
+        // some 
+    }
+
+    // Buildin functions
+    // toString
+    // equal
+
+    // getters and setters
+}
+```
+
+# EJB standard
+
+```java
+    public Entity createEntity(Entity en) return entity
+    public Entity getEntityById(Long id) return Entity
+    public Entity updateEntity(Entity en) return Entity
+    public List<Entity> getListEntityByEntity(Entity en) return List<Entity>
+```
+
+# Managed Bean Standard
+
+```java
+    @EJB // place all ejb at the most top
+    private SomeSessionBeanLocal someBean;
+
+    // Followed by other variables/attributes
+    private String someField;
+
+    // Followed by default constructor
+    public SomeManagedBean(){}
+
+    // Followed by @PostConstruct
+    @PostConstruct
+    public void init() {
+        // some init
+    }
+
+    // Followed by some public functions
+    public void someAction() {
+
+    }
+
+    // Followed by some private functions
+    private void somePrivateFunction() {
+
+    }
+
+    // Last, place setters and getters at the back
+    public getters and setters () {}
+
+```
+# Customer side xhtml standard
+```xhtml
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:em="http://xmlns.jcp.org/jsf/composite/emcomp"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <f:view>
+        <h:head>
+            <title>Merlion Bank</title>
+            <em:cssImport></em:cssImport>
+        </h:head>
+        <h:body>
+            <em:customerHeader context="personal" userName="#{customerHomeManagedBean.customer.firstname }"></em:customerHeader>
+            <em:customerNavBar context="personal" personalPage="cards"></em:customerNavBar>
+	    	<div class="customer_main_container">
+				<p:panel header="<<Put header here>>">
+					<h:form id="mainForm">                        
+						<p:messages id="messagesStatus" redisplay="false">
+			    
+				 		<!-- Your Own Code Here -->
+				 
+				 		</p:messages>
+					</h:form>
+				</p:panel>              
+			</div>
+            <em:customerFooter></em:customerFooter>
+        </h:body>
+    </f:view>
+</html>
+```
 ### Change the project name accordingly ###
 
 ### Do no commit .xml and .properties file ###
@@ -43,6 +164,8 @@ Standardize Error Handingly Message from server.utilities.ConstantUtils.java
 
 
 # ENUM Follow the Following Practices: #
+
+```java
 	public enum UserRole {
 
         GENERAL_TELLER("General Teller"),
@@ -77,6 +200,7 @@ Standardize Error Handingly Message from server.utilities.ConstantUtils.java
             throw new IllegalArgumentException();
         }
     }
+```
 
 ## To convert a string back to enum: ##
 	EnumType.getEnum("The String");

@@ -17,6 +17,7 @@ public class CreditCardDTO {
     private String message;
     private String transactionCode;
     private String authorizationCode;
+    private String visaId;
     
     public CreditCardDTO() {
         
@@ -105,5 +106,13 @@ public class CreditCardDTO {
      */
     public void setAuthorizationCode(String authorizationCode) {
         this.authorizationCode = authorizationCode;
+    }
+
+    public String getVisaId() {
+        return visaId;
+    }
+
+    public void setVisaId(String visaId) {
+        this.visaId = visaId;
     }
 }

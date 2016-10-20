@@ -29,13 +29,14 @@ time, mark, audio, video {
 }
 
 *{
-    font-family: "Garamond", serif;
+    font-family: "latoregular", "Trebuchet MS", Arial, Helvetica, sans-serif;
     font-style: normal;
 }
 
 body {
     line-height:1;
     margin: 0;
+    background: #f2f2f2;
 }
 
 article,aside,details,figcaption,figure,

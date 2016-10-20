@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:em="http://xmlns.jcp.org/jsf/composite/emcomp">
+
+    <f:view>
+        <h:head>
+            <title>Merlion Bank</title>
+            <em:cssImport></em:cssImport>
+        </h:head>
+        <h:body>
+            <em:customerHeader context="personal" userName="#{customerHomeManagedBean.customer.firstname }"></em:customerHeader>
+            <em:customerNavBar context="personal" personalPage="transfer" ></em:customerNavBar>
+            <div class="customer_main_container">
+                <h:form>
+                    <!--TODO: payee-->
+                    <p:panel header="Transfer to Overseas Bank Account">
+                        <h2>Daily transfer limit left: #{interBankTransferManagedBean.transferLimitLeft}</h2>
+                        <p:messages id="message" redisplay="false" >
+                            <p:wizard widgetVar="myWizard" showNavBar="false">
+
+                                <p:tab id="input_detail" title="1.Input Details">
+                                    <h1>To</h1>
+                                        <h:panelGrid columns="2" cellpadding="5">
+                                            <h:outputText value="Paying To: " />
+                                            <p:selectOneMenu value="#{internationalBankTransferManagedBean.payeeId}" rendered="true" required="true">
+                                                <f:selectItem itemValue="New Receipiant" itemLabel="New Receipiant" />
+                                                <c:if test="#{internationalBankTransferManagedBean.payees.size() > 0 }">
+                                                    <f:selectItems value="#{internationalBankTransferManagedBean.payees}" var="p" itemValue="#{p.id.toString()}" itemLabel="#{p.name} - #{internationalBankTransferManagedBean.getBankName(p.bankCode)} #{p.accountNumber}" />
+                                                </c:if>
+                                                <f:ajax render="@form" listener="#{internationalBankTransferManagedBean.changePayee}" />
+                                            </p:selectOneMenu>
+
+                                            <c:if test="#{internationalBankTransferManagedBean.payeeId == 'New Receipiant'}">
+                                                <h:outputText value="Recipient's Name: " />
+                                                <p:inputText value="#{internationalBankTransferManagedBean.payee.name}" required="true" />
+                                                <h:outputText value="SWIFT CODE: " />
+                                                <p:inputText value="#{internationalBankTransferManagedBean.payee.swiftCode}" required="true" />
+                                                <h:outputText value="Recipient's Account: " />
+                                                <p:inputText value="#{internationalBankTransferManagedBean.payee.accountNumber}" required="true" />
+                                                <h:outputText value="Bank Address: " />
+                                                <p:inputText value="#{internationalBankTransferManagedBean.payee.bankAddress}" required="true" />
+                                                <h:outputText value="My Initials: " />
+                                                <p:inputText value="#{internationalBankTransferManagedBean.payee.myInitial}" required="true" />
+                                                <h:outputText value="Clearing CODE: " />
+                                                <p:inputText value="#{internationalBankTransferManagedBean.payee.clearCode}" required="true" />
+                                            </c:if>
+                                            <c:if test="#{internationalBankTransferManagedBean.payeeId != 'New Receipiant'}">
+                                                <h:outputText value="Recipient's Name: " />
+                                                <h:outputText value="#{internationalBankTransferManagedBean.payee.name}"/>
+                                                <h:outputText value="SWIFT CODE: " />
+                                                <h:outputText value="#{internationalBankTransferManagedBean.payee.swiftCode}"/>
+                                                <h:outputText value="Recipient's Account: " />
+                                                <h:outputText value="#{internationalBankTransferManagedBean.payee.accountNumber}"/>
+                                                <h:outputText value="Bank Address: " />
+                                                <h:outputText value="#{internationalBankTransferManagedBean.payee.bankAddress}" />
+                                                <h:outputText value="My Initials: " />
+                                                <h:outputText value="#{internationalBankTransferManagedBean.payee.myInitial}" />
+                                                <h:outputText value="Clearing CODE: " />
+                                                <h:outputText value="#{internationalBankTransferManagedBean.payee.clearCode}" />
+                                            </c:if>
+                                        </h:panelGrid>
+                                    <h1>From</h1>
+                                        <h:panelGrid columns="2" cellpadding="5">
+                                            <h:outputText value="Choose Your Account to transfer from: " />
+                                            <p:selectOneMenu value="#{internationalBankTransferManagedBean.fromAccountNo}" rendered="true" required="true">
+                                                <f:selectItems value="#{internationalBankTransferManagedBean.accounts}" var="a" itemValue="#{a.accountNumber}" itemLabel="#{a.product.name} #{a.accountNumber} #{a.balance.setScale(2)}" />
+                                            </p:selectOneMenu>
+                                            <p:outputLabel value="Transfer Amount: " />
+                                            <p:inputText value="#{internationalBankTransferManagedBean.amount}"/>
+                                            <h:outputText value="Purpose of Transfer: " />
+                                            <p:selectOneMenu value="#{internationalBankTransferManagedBean.purpose}" rendered="true" required="true">
+                                                <f:selectItems value="#{internationalBankTransferManagedBean.purposeOptions}"/>
+                                            </p:selectOneMenu>
+                                        </h:panelGrid>
+                                    <p:commandButton  value="Next" type="button" onclick="PF('myWizard').next()" />
+
+                                </p:tab>
+
+                                <p:tab id="verify_details" title="2.Verify Details">
+                                    <h:panelGrid columns="2" cellpadding="5">
+
+                                        <h:outputText value="Recipient's Name: " />
+                                        <h:outputText value="#{internationalBankTransferManagedBean.payee.name}"/>
+                                        <h:outputText value="SWIFT CODE: " />
+                                        <h:outputText value="#{internationalBankTransferManagedBean.payee.swiftCode}"/>
+                                        <h:outputText value="Recipient's Account: " />
+                                        <h:outputText value="#{internationalBankTransferManagedBean.payee.accountNumber}"/>
+                                        <h:outputText value="Bank Address: " />
+                                        <h:outputText value="#{internationalBankTransferManagedBean.payee.bankAddress}" />
+                                        <h:outputText value="My Initials: " />
+                                        <h:outputText value="#{internationalBankTransferManagedBean.payee.myInitial}" />
+                                        <h:outputText value="Clearing CODE: " />
+                                        <h:outputText value="#{internationalBankTransferManagedBean.payee.clearCode}" />
+
+                                        <h:outputText value="Your Account to transfer from: " />
+                                        <h:outputText value="#{internationalBankTransferManagedBean.fromAccountNo}" />
+                                        <h:outputText value="Transfer Amount: " />
+                                        <h:outputText value="S$ #{internationalBankTransferManagedBean.amount}"/>
+                                        <h:outputText value="Purpose of Transfer: " />
+                                        <h:outputText value="#{internationalBankTransferManagedBean.purpose}" />
+
+                                        <p:commandButton  value="Back" type="button" onclick="PF('myWizard').back()" />
+                                        <p:commandButton value="Transfer" action="#{internationalBankTransferManagedBean.transfer}" update="@form"/> 
+                                    </h:panelGrid>
+                                </p:tab>
+
+                                <p:tab id="completion" title="3.Completion">
+                                    <h:panelGrid columns="2" cellpadding="5">
+
+                                        <h:outputText value="Recipient's Name: " />
+                                        <h:outputText value="#{internationalBankTransferManagedBean.payee.name}"/>
+                                        <h:outputText value="SWIFT CODE: " />
+                                        <h:outputText value="#{internationalBankTransferManagedBean.payee.swiftCode}"/>
+                                        <h:outputText value="Recipient's Account: " />
+                                        <h:outputText value="#{internationalBankTransferManagedBean.payee.accountNumber}"/>
+                                        <h:outputText value="Bank Address: " />
+                                        <h:outputText value="#{internationalBankTransferManagedBean.payee.bankAddress}" />
+                                        <h:outputText value="My Initials: " />
+                                        <h:outputText value="#{internationalBankTransferManagedBean.payee.myInitial}" />
+                                        <h:outputText value="Clearing CODE: " />
+                                        <h:outputText value="#{internationalBankTransferManagedBean.payee.clearCode}" />
+
+                                        <h:outputText value="Your Account to transfer from: " />
+                                        <h:outputText value="#{internationalBankTransferManagedBean.fromAccountNo}" />
+                                        <h:outputText value="Transfer Amount: " />
+                                        <h:outputText value="S$ #{internationalBankTransferManagedBean.amount}"/>
+                                        <h:outputText value="Purpose of Transfer: " />
+                                        <h:outputText value="#{internationalBankTransferManagedBean.purpose}" />
+
+                                    </h:panelGrid>
+                                </p:tab>
+                            </p:wizard>
+                        </p:messages>
+                    </p:panel>
+                </h:form>
+            </div>
+            <em:customerFooter></em:customerFooter>
+        </h:body>
+    </f:view>
+</html>

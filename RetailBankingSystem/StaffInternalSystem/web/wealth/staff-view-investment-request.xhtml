@@ -1,0 +1,95 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:em="http://xmlns.jcp.org/jsf/composite/emcomp"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <!--shift + ctrl + F, format-->
+    <f:view>
+        <h:head>
+            <title>Merlion Internal</title>
+            <em:cssImport></em:cssImport>
+        </h:head>
+        <h:body>
+            <em:staffNavBar context="wealth"></em:staffNavBar>
+            <em:staffSideBar top="wealth" side="viewInvestmentRequest"></em:staffSideBar>
+            <div class="container">
+                <h:form id="mainForm">
+                    <p:panel header="Search Requests">   
+                        <p:outputPanel>
+                                <p:inputText id="idFilter" style="width:180px" value="#{viewInvestmentRequestManagedBean.searchText}" placeholder="Enter Request ID"  />
+                                <p:commandButton value="Search" actionListener="#{viewInvestmentRequestManagedBean.search}" update="@form"/>
+                        </p:outputPanel>
+                    </p:panel>
+
+
+                <p:panel header="List of My Requests">
+                    <p:dataTable id="requestList" value="#{viewInvestmentRequestManagedBean.requestInvestmentPlans}" var="investmentRequest" sortMode="multiple" >
+                            <p:column headerText="ID" sortBy="#{investmentRequest.id}" style="width:15px">
+                                <h:outputText value="#{investmentRequest.id}" />
+                            </p:column>
+                            
+                            <p:column headerText="Create Date" sortBy="#{investmentRequest.creationDate}">
+                                <h:outputText value="#{investmentRequest.creationDate}">
+                                    <f:convertDateTime pattern="MM/dd/yy" />
+                                </h:outputText>
+                            </p:column>
+
+                            <p:column headerText="Expected Return" sortBy="#{investmentRequest.customerExpectedReturn}">
+                                <h:outputText value="#{investmentRequest.customerExpectedReturn}" />
+                            </p:column>
+
+                            <p:column headerText="Amount" sortBy="#{investmentRequest.amountOfInvestment}">
+                                <h:outputText value="#{investmentRequest.amountOfInvestment}" />
+                            </p:column>
+                        
+                            <p:column headerText="Prefered Instruments" style="width:180px">
+                                <p:scrollPanel style="width:180px;height:80px">
+                                    <p:repeat value="#{investmentRequest.preferedFinancialInstrument}" var="instrument" offset="" size="#{investmentRequest.preferedFinancialInstrument.size()}" step="1" varStatus="">
+                                        <div style="margin-bottom: 10px">
+                                            <h:outputText value="*#{instrument.name}" />
+                                        </div>
+                                    </p:repeat>    
+                                </p:scrollPanel>
+                            </p:column>
+                        
+                            <p:column headerText="Status" sortBy="#{investmentRequest.status}" style="width:100px">
+                                <h:outputText value="#{investmentRequest.status}" />
+                            </p:column>
+
+                            <p:column headerText="Remarks" sortBy="#{investmentRequest.remarks}">
+                                <h:outputText value="#{investmentRequest.remarks}" />
+                            </p:column>
+                        
+                            <p:column headerText="Customer" sortBy="#{investmentRequest.wealthManagementSubscriber}">
+                                <h:outputText value="#{investmentRequest.wealthManagementSubscriber.mainAccount.customer.firstname}" />
+                            </p:column>
+                            
+                            <p:column headerText="Action" style="width:150px" rendered="#{investmentRequest.status != 'WAITING' and investmentRequest.status != 'CANCELLED' and investmentRequest.status != 'EXECUTED'}">
+                                <p:splitButton value="Design" action="#{viewInvestmentRequestManagedBean.start(investmentRequest)}" update="@form" icon="ui-icon-disk">
+                                    <p:menuitem value="Cancel" action="#{viewInvestmentRequestManagedBean.cancel(investmentRequest)}" update="@form" icon="ui-icon-arrowrefresh-1-w" /> 
+                                </p:splitButton>
+                            </p:column>
+                            <p:column headerText="Action" style="width:150px" rendered="#{investmentRequest.status == 'WAITING' and investmentRequest.status != 'CANCELLED'}">
+                                <p:splitButton value="Execute" action="#{viewInvestmentRequestManagedBean.execute(investmentRequest)}" update="@form" icon="ui-icon-disk">
+                                    <p:menuitem value="Cancel" action="#{viewInvestmentRequestManagedBean.cancel(investmentRequest)}" update="@form" icon="ui-icon-arrowrefresh-1-w" /> 
+                                </p:splitButton>
+                            </p:column>
+                            <p:column headerText="Action" style="width:150px" rendered="#{investmentRequest.status == 'CANCELLED' or investmentRequest.status == 'EXECUTED'}">
+                                <p:commandButton value="View" action="#{viewInvestmentRequestManagedBean.view(investmentRequest)}" update="@form" icon="ui-icon-disk">
+                                </p:commandButton>
+                            </p:column>
+                        </p:dataTable>
+                    </p:panel>
+                    <p:messages id="messagesStatus" redisplay="false"></p:messages>
+                </h:form>
+            </div>
+
+        </h:body> 
+    </f:view>
+
+
+</html>
+

@@ -6,14 +6,12 @@
 package entity.dams.account;
 
 import entity.card.account.DebitCardAccount;
-import entity.embedded.TransferLimits;
 import entity.loan.LoanAccount;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 
@@ -24,26 +22,24 @@ import javax.persistence.OneToMany;
 @Entity // TODO: Only Current Account has cheque
 public class CustomerDepositAccount extends DepositAccount {
     
+    // info
     // Counter to decrease
     private Integer waivedFeesCounter = 0;
     private Integer waivedChargesCounter = 0;
-    @Embedded
-    private TransferLimits transferLimits = new TransferLimits();
-    @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "")
-    private List<DebitCardAccount> debitCardAccount = new ArrayList<>();
-    
-    // REMARK: Type != SAVING
-    @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "account")
-    private List<Cheque> cheques = new ArrayList<>();
-    
+    @Column(precision=12, scale=2)
+    private BigDecimal dailyWithdrawLimit = new BigDecimal(3000);
     @Column(precision=30, scale=20)
     private BigDecimal previousBalance = new BigDecimal(0);
     
+    // mapping
+    @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "")
+    private List<DebitCardAccount> debitCardAccount = new ArrayList<>();
+    // REMARK: Type != SAVING
+    @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "account")
+    private List<Cheque> cheques = new ArrayList<>();
     @OneToMany(cascade = {CascadeType.MERGE}, mappedBy = "depositAccount")
     private List<LoanAccount> loanAccounts = new ArrayList<>();
 
-
-    
     /**
      * @return the waivedFeesCounter
      */
@@ -70,20 +66,6 @@ public class CustomerDepositAccount extends DepositAccount {
      */
     public void setWaivedChargesCounter(Integer waivedChargesCounter) {
         this.waivedChargesCounter = waivedChargesCounter;
-    }
-
-    /**
-     * @return the transferLimits
-     */
-    public TransferLimits getTransferLimits() {
-        return transferLimits;
-    }
-
-    /**
-     * @param transferLimits the transferLimits to set
-     */
-    public void setTransferLimits(TransferLimits transferLimits) {
-        this.transferLimits = transferLimits;
     }
 
     /**
@@ -128,5 +110,18 @@ public class CustomerDepositAccount extends DepositAccount {
 
     public void setLoanAccount(List<LoanAccount> loanAccounts) {
         this.loanAccounts = loanAccounts;
+    }
+    /**
+     * @return the dailyWithdrawLimit
+     */
+    public BigDecimal getDailyWithdrawLimit() {
+        return dailyWithdrawLimit;
+    }
+
+    /**
+     * @param dailyWithdrawLimit the dailyWithdrawLimit to set
+     */
+    public void setDailyWithdrawLimit(BigDecimal dailyWithdrawLimit) {
+        this.dailyWithdrawLimit = dailyWithdrawLimit;
     }
 }

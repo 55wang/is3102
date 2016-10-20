@@ -13,13 +13,14 @@
         <h:body>
             <em:customerHeader context="personal" userName="#{customerHomeManagedBean.customer.firstname }"></em:customerHeader>
             <em:customerNavBar context="personal" personalPage="apply" ></em:customerNavBar>          
-            <h:form style="margin-top: 200px;margin-left: 300px;position: absolute">
-                
+            <div class="customer_main_container">
+            <h:form>
+                <p:panel header="Apply a debit card">
                 <p:growl id="growl" sticky="true" showDetail="true"/>
                 <p:wizard widgetVar="myWizard" showNavBar="false">
 
                 <p:tab id="apply" title="Apply a debit card">
-                        <p:panel>
+                        
                             <p:messages />
                             <h:panelGrid columns="2" columnClasses="label, value">
                                  <p:outputLabel for="staffrole" value="Select Deposit Account:" />
@@ -58,10 +59,13 @@
                                 
                                  <p:commandButton value="Apply" icon="ui-icon-plus" update="@form" actionListener="#{applyDebitCardAccountManagedBean.applyDebitCard}" />
                             </div>
-                        </p:panel>
+                        
                     </p:tab>
                 </p:wizard>
+                </p:panel>
             </h:form>
+            </div>
+            <em:customerFooter></em:customerFooter>
         </h:body>
     </f:view>
 </html>

@@ -17,6 +17,7 @@ import server.utilities.EnumUtils.InterestConditionType;
 @Entity
 public class ConditionInterest extends Interest {
     
+    // info
     private InterestConditionType conditionType;
     private BigDecimal ceiling = new BigDecimal(60000);
     @Column(precision=12, scale=2)

@@ -14,7 +14,7 @@
         </h:head>
         <h:body>
             <em:customerHeader context="personal" userName="#{customerHomeManagedBean.customer.firstname }"></em:customerHeader>
-            <em:customerNavBar context="personal" personalPage="history" ></em:customerNavBar>
+            <em:customerNavBar context="personal" personalPage="" ></em:customerNavBar>
             <div class="customer_main_container">
                 <h:form id="mainForm">
                     <p:panel header="Activity History">
@@ -53,7 +53,7 @@
                     </p:panel>
                 </h:form>
             </div>
-
+            <em:customerFooter></em:customerFooter>
         </h:body>
     </f:view>
 

@@ -1,0 +1,64 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:em="http://xmlns.jcp.org/jsf/composite/emcomp"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <!--shift + ctrl + F, format-->
+    <f:view>
+        <h:head>
+            <title>Merlion Internal</title>
+            <em:cssImport></em:cssImport>
+        </h:head>
+        <h:body>
+            <em:staffNavBar context="bill"></em:staffNavBar>
+            <em:staffSideBar top="bill" side="manageInternationalTransfer"></em:staffSideBar>
+
+            <div class="container">
+                <h:form id="mainForm">
+                    <p:panel header="Organization">
+                        <p:messages id="message" redisplay="false" >
+                            <h:panelGrid columns="2" cellpadding="5">
+                                <p:outputLabel value="From Date:" />
+                                <p:calendar value="#{manageInternationalTransferManagedBean.fromDate}" mode="inline"  />
+                                <p:outputLabel value="To Date:" />
+                                <p:calendar value="#{manageInternationalTransferManagedBean.toDate}" mode="inline" />
+                                <p:commandButton value="Search" update="mainForm" actionListener="#{manageInternationalTransferManagedBean.search}" />
+                            </h:panelGrid>
+                        </p:messages>
+                    </p:panel>
+                    <p:panel header="International Transfers">
+                        <p:dataTable id="addedOrg" value="#{manageInternationalTransferManagedBean.transferRecords}" var="record">
+                            <p:column headerText="From Account" sortBy="#{record.fromAccount.accountNumber}">
+                                <h:outputText value="#{record.fromAccount.accountNumber}"/>
+                            </p:column>
+                            <p:column headerText="From Name" sortBy="#{record.fromName}">
+                                <h:outputText value="#{record.fromName}"/>
+                            </p:column>
+                            <p:column headerText="To Account" sortBy="#{record.accountNumber}">
+                                <h:outputText value="#{record.accountNumber}"/>
+                            </p:column>
+                            <p:column headerText="To Name" sortBy="#{record.name}">
+                                <h:outputText value="#{record.name}"/>
+                            </p:column>
+                            <p:column headerText="Amount" sortBy="#{record.amount}">
+                                <h:outputText value="#{record.amount}">
+                                    <f:convertNumber pattern="###00.00"/>
+                                </h:outputText>
+                            </p:column>
+                            <p:column headerText="Action">
+                                <p:commandButton value="Freeze Account" action="#{manageInternationalTransferManagedBean.freezeAccount(record)}" update="mainForm"/> 
+                            </p:column>
+                        </p:dataTable>
+                    </p:panel>
+                </h:form>
+            </div>
+
+        </h:body> 
+    </f:view>
+
+
+</html>
+

@@ -97,7 +97,7 @@ public class CreateDepositProductManagedBean implements Serializable {
         AuditLog a = new AuditLog();
         a.setActivityLog("System user enter create_deposit_product.xhtml");
         a.setFunctionName("CreateDepositProductManagedBean @PostConstruct init()");
-        a.setInput("Getting all deposit products");
+        a.setFunctionInput("Getting all deposit products");
         a.setStaffAccount(SessionUtils.getStaff());
         utilsBean.persist(a);
     }
@@ -124,51 +124,51 @@ public class CreateDepositProductManagedBean implements Serializable {
         if (productType.equals(PRODUCT_TYPE_CUSTOM)) {
             customProduct.setInterestRules(getSelectedInterestsList());
             DepositAccountProduct temp = (DepositAccountProduct)depositProductSessionBean.createDepositProduct(customProduct);
-            a.setInput(temp.getName());
+            a.setFunctionInput(temp.getName());
             if (temp != null) {
                 customProducts.add(temp);
                 customProduct = new DepositAccountProduct();
-                a.setOutput("SUCCESS");
+                a.setFunctionOutput("SUCCESS");
                 MessageUtils.displayInfo("Custom Deposit Product Created");
             } else {
-                a.setOutput("FAIL");
+                a.setFunctionOutput("FAIL");
                 MessageUtils.displayError("This Deposit Product Exists");
             }
         } else if (productType.equals(PRODUCT_TYPE_CURRENT)) {
             currentProduct.setInterestRules(getSelectedInterestsList());
             DepositAccountProduct temp = (DepositAccountProduct) depositProductSessionBean.createDepositProduct(currentProduct);
-            a.setInput(temp.getName());
+            a.setFunctionInput(temp.getName());
             if (temp != null) {
                 currentProducts.add(temp);
                 currentProduct = new DepositAccountProduct();
-                a.setOutput("SUCCESS");
+                a.setFunctionOutput("SUCCESS");
                 MessageUtils.displayInfo("Current Deposit Product Created");
             } else {
-                a.setOutput("FAIL");
+                a.setFunctionOutput("FAIL");
                 MessageUtils.displayError("This Deposit Product Exists");
             }
         } else if (productType.equals(PRODUCT_TYPE_SAVING)) {
             savingProduct.setInterestRules(getSelectedInterestsList());
             DepositAccountProduct temp = (DepositAccountProduct) depositProductSessionBean.createDepositProduct(savingProduct);
-            a.setInput(temp.getName());
+            a.setFunctionInput(temp.getName());
             if (temp != null) {
                 savingProducts.add(temp);
                 savingProduct = new DepositAccountProduct();
-                a.setOutput("SUCCESS");
+                a.setFunctionOutput("SUCCESS");
                 MessageUtils.displayInfo("Saving Deposit Product Created");
             } else {
-                a.setOutput("FAIL");
+                a.setFunctionOutput("FAIL");
                 MessageUtils.displayError("This Deposit Product Exists");
             }
         } else if (productType.equals(PRODUCT_TYPE_FIXED)) {
-            a.setInput(fixedProduct.getName());
+            a.setFunctionInput(fixedProduct.getName());
             if (depositProductSessionBean.createDepositProduct(fixedProduct) != null) {
                 fixedProducts.add(fixedProduct);
                 fixedProduct = new FixedDepositAccountProduct();
-                a.setOutput("SUCCESS");
+                a.setFunctionOutput("SUCCESS");
                 MessageUtils.displayInfo("Fixed Deposit Product Created");
             } else {
-                a.setOutput("FAIL");
+                a.setFunctionOutput("FAIL");
                 MessageUtils.displayError("This Deposit Product Exists");
             }
         } else {

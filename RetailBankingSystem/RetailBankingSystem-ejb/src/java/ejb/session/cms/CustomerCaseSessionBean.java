@@ -21,7 +21,7 @@ import server.utilities.EnumUtils.CaseStatus;
  * @author VIN-S
  */
 @Stateless
-public class CustomerCaseSessionBean implements CustomerCaseSessionBeanLocal, CustomerCaseSessionBeanRemote {
+public class CustomerCaseSessionBean implements CustomerCaseSessionBeanLocal {
     @PersistenceContext(unitName = "RetailBankingSystem-ejbPU")
     private EntityManager em;
 

@@ -15,7 +15,7 @@
         <h:body>
            
             <em:customerHeader context="personal" userName="#{customerHomeManagedBean.customer.firstname }"></em:customerHeader>
-            <em:customerNavBar context="personal" personalPage="deposit" ></em:customerNavBar>
+            <em:customerNavBar context="personal" personalPage="home" ></em:customerNavBar>
             <div class="customer_main_container">
                 <h:form id="mainForm">
                     <p:panel header="Deposit Accounts">
@@ -54,7 +54,7 @@
                     </p:panel>
                 </h:form>
             </div>
-          
+            <em:customerFooter></em:customerFooter>
         </h:body>
     </f:view>
 

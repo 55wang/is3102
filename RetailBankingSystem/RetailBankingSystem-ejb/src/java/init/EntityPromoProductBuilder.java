@@ -9,7 +9,7 @@ import ejb.session.utils.UtilsSessionBeanLocal;
 import entity.card.product.PromoProduct;
 import javax.ejb.EJB;
 import javax.ejb.LocalBean;
-import javax.ejb.Singleton;
+import javax.ejb.Stateless;
 import server.utilities.EnumUtils;
 
 /**
@@ -17,7 +17,7 @@ import server.utilities.EnumUtils;
  * @author wang
  */
 @LocalBean
-@Singleton
+@Stateless
 public class EntityPromoProductBuilder {
 
     @EJB

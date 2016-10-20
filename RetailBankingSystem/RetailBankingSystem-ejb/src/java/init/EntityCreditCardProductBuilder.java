@@ -6,6 +6,7 @@
 package init;
 
 import ejb.session.card.CardProductSessionBeanLocal;
+import ejb.session.common.LoginSessionBeanLocal;
 import entity.card.product.CashBackCardProduct;
 import entity.card.product.MileCardProduct;
 import entity.card.product.PromoProduct;
@@ -13,24 +14,27 @@ import entity.card.product.RewardCardProduct;
 import entity.customer.MainAccount;
 import javax.ejb.EJB;
 import javax.ejb.LocalBean;
-import javax.ejb.Singleton;
+import javax.ejb.Stateless;
+import server.utilities.ConstantUtils;
 
 /**
  *
  * @author wang
  */
 @LocalBean
-@Singleton
+@Stateless
 public class EntityCreditCardProductBuilder {
 
     @EJB
     private CardProductSessionBeanLocal cardProductSessionBean;
+    @EJB
+    private LoginSessionBeanLocal loginBean;
 
-    public RewardCardProduct initCreditCardProduct(MainAccount demoMainAccount, PromoProduct demoPromoProduct) {
+    public RewardCardProduct initCreditCardProduct(PromoProduct demoPromoProduct) {
+        MainAccount demoMainAccount = loginBean.getMainAccountByUserID(ConstantUtils.DEMO_MAIN_ACCOUNT_USER_ID);
         MileCardProduct mca = new MileCardProduct();
         mca.setLocalMileRate(1.3);
         mca.setOverseaMileRate(2.0);
-        mca.setMinSpending(true);
         mca.setMinSpendingAmount(2000.0);
         mca.setProductName("Merlion MileCard");
         cardProductSessionBean.createMileProduct(mca);
@@ -38,7 +42,6 @@ public class EntityCreditCardProductBuilder {
         mca = new MileCardProduct();
         mca.setLocalMileRate(1.5);
         mca.setOverseaMileRate(2.1);
-        mca.setMinSpending(true);
         mca.setMinSpendingAmount(3000.0);
         mca.setProductName("Merlion MileCard2");
         cardProductSessionBean.createMileProduct(mca);
@@ -46,7 +49,6 @@ public class EntityCreditCardProductBuilder {
         RewardCardProduct rcp = new RewardCardProduct();
         rcp.setLocalMileRate(1.3);
         rcp.setLocalPointRate(3.0);
-        rcp.setMinSpending(true);
         rcp.setMinSpendingAmount(500.0);
         rcp.setProductName("Merlion RewardCard");
         cardProductSessionBean.createRewardProduct(rcp);
@@ -54,7 +56,6 @@ public class EntityCreditCardProductBuilder {
         rcp = new RewardCardProduct();
         rcp.setLocalMileRate(1.4);
         rcp.setLocalPointRate(3.1);
-        rcp.setMinSpending(true);
         rcp.setMinSpendingAmount(700.0);
         rcp.setProductName("Merlion RewardCard2");
         RewardCardProduct demoRewardCardProduct = cardProductSessionBean.createRewardProduct(rcp);

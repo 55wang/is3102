@@ -47,7 +47,7 @@ public class CreateRoleManagedBean implements Serializable {
         AuditLog a = new AuditLog();
         a.setActivityLog("System user enter create_role.xhtml");
         a.setFunctionName("CreateRoleManagedBean @PostConstruct init()");
-        a.setInput("Getting all roles");
+        a.setFunctionInput("Getting all roles");
         a.setStaffAccount(SessionUtils.getStaff());
         utilsBean.persist(a);
     }
@@ -62,10 +62,10 @@ public class CreateRoleManagedBean implements Serializable {
         if (temp != null) {
             roles.add(temp);
             newRole = new Role();
-            a.setOutput("SUCCESS");
+            a.setFunctionOutput("SUCCESS");
             MessageUtils.displayInfo("New Role Added");
         } else {
-            a.setOutput("FAIL");
+            a.setFunctionOutput("FAIL");
             MessageUtils.displayInfo("Role already Added");
         }
         

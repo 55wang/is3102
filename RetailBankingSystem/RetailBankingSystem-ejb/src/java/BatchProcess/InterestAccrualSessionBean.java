@@ -268,10 +268,7 @@ public class InterestAccrualSessionBean implements InterestAccrualSessionBeanLoc
         }
     }
 
-    private List<TransactionRecord> retrieveTransactions(DepositAccount a, Date sinceDate, Date toDate, TransactionType type) {
-        
-        java.sql.Date startDate = new java.sql.Date(sinceDate.getTime());
-        java.sql.Date endDate = new java.sql.Date(toDate.getTime());
+    private List<TransactionRecord> retrieveTransactions(DepositAccount a, Date startDate, Date endDate, TransactionType type) {
         
         Query q = em.createQuery(
                 "SELECT t FROM " + ConstantUtils.TRANSACTION_ENTITY + " t WHERE "

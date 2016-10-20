@@ -21,6 +21,7 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
+import server.utilities.ConstantUtils;
 import server.utilities.EnumUtils;
 import server.utilities.EnumUtils.CardTransactionStatus;
 import server.utilities.EnumUtils.IssueField;
@@ -63,7 +64,7 @@ public class StaffCreateCustomerCaseManagedBean implements Serializable{
         AuditLog a = new AuditLog();
         a.setActivityLog("System user enter create_customer_case.xhtml");
         a.setFunctionName("StaffCreateCustomerCaseManagedBean @PostConstruct init()");
-        a.setInput("Getting all customer cases");
+        a.setFunctionInput("Getting all customer cases");
         a.setStaffAccount(SessionUtils.getStaff());
         utilsBean.persist(a);
     }
@@ -117,14 +118,14 @@ public class StaffCreateCustomerCaseManagedBean implements Serializable{
             if(newCase.getIsChargeBackCase()) newCase.setCardOperatorResponse(EnumUtils.CardOperatorChargebackStatus.PENDING);
             System.out.println("chargebackTransactionID: " + chargebackTransactionID);
             CardTransaction ct = cardTransactionSessionBean.getCardTransactionByCcaId(Long.parseLong(chargebackTransactionID));
-            if(ct == null || ct.getCardTransactionStatus().equals(CardTransactionStatus.CANCELLED))
+            if(ct == null)
                 MessageUtils.displayError("Transaction not found");
             else{
                 newCase.setMainAccount(ct.getCreditCardAccount().getMainAccount());
                 newCase.setCreateDate(new Date());
                 newCase.setChargebackTransaction(ct);
                 customerCaseSessionBean.saveCase(newCase);
-                RedirectUtils.redirect("staff-view-case.xhtml");
+                RedirectUtils.redirect(ConstantUtils.STAFF_CMS_STAFF_VIEW_CASE);
             }
         }
     }

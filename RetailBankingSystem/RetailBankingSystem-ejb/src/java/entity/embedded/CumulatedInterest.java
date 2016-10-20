@@ -20,6 +20,7 @@ import javax.persistence.TemporalType;
 @Embeddable
 public class CumulatedInterest implements Serializable {
     
+    // info
     @Column(precision=30, scale=20)
     private BigDecimal cummulativeAmount = BigDecimal.ZERO;// use to differetiate simple and cummulative interest
     private Integer times = 0;

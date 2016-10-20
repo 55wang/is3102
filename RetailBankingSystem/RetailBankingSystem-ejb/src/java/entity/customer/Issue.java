@@ -27,6 +27,8 @@ public class Issue implements Serializable {
     private IssueField field;
     private String details;
     private String attachmentFileName = null;
+    
+    // mapping
     @ManyToOne
     private CustomerCase customerCase;
 

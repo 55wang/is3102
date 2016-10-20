@@ -1,0 +1,54 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:em="http://xmlns.jcp.org/jsf/composite/emcomp"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <!--shift + ctrl + F, format-->
+    <f:view>
+        <h:head>
+            <title>Merlion Internal</title>
+            <em:cssImport></em:cssImport>
+        </h:head>
+        <h:body>
+            <em:staffNavBar context="card"></em:staffNavBar>
+            <em:staffSideBar top="card" side="cardTransactionView"></em:staffSideBar>
+
+            <div class="container">
+                <h:form id="mainForm">
+                    <p:panel header="Credit Card Pending Transactions">
+                        <p:messages id="messagesStatus" redisplay="false" >
+                            <h:panelGrid columns="2" cellpadding="5">
+                                <p:dataTable value="#{cardViewPendingTransactionManagedBean.cts}" var="ct" >
+
+                                    <p:column headerText="Date">
+                                        <h:outputText value="#{ct.createDate}" />
+                                    </p:column>
+
+                                    <p:column headerText="Transaction Id">
+                                        <h:outputText value="#{ct.id}" />
+                                    </p:column>
+
+                                    <p:column headerText="Transaction Status">
+                                        <h:outputText value="#{ct.cardTransactionStatus}" />
+                                    </p:column>
+
+                                    <p:column headerText="Transaction Code">
+                                        <h:outputText value="#{ct.transactionCode}" />
+                                    </p:column>
+
+                                    <p:column headerText="Transaction Description">
+                                        <h:outputText value="#{ct.transactionDescription}" />
+                                    </p:column>
+                                </p:dataTable>
+                            </h:panelGrid>
+                        </p:messages>
+                    </p:panel>
+                </h:form>
+            </div>
+        </h:body> 
+    </f:view>
+</html>
+

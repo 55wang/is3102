@@ -13,9 +13,7 @@ import ejb.session.utils.UtilsSessionBeanLocal;
 import entity.card.account.CreditCardAccount;
 import entity.card.order.CreditCardOrder;
 import entity.common.AuditLog;
-import entity.customer.MainAccount;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -25,7 +23,6 @@ import javax.faces.view.ViewScoped;
 import org.primefaces.push.EventBus;
 import org.primefaces.push.EventBusFactory;
 import server.utilities.EnumUtils.*;
-import server.utilities.CommonHelper;
 import server.utilities.GenerateAccountAndCCNumber;
 import server.utilities.PincodeGenerationUtils;
 import utils.SessionUtils;
@@ -64,7 +61,7 @@ public class CardApplicationManagedBean implements Serializable {
         AuditLog a = new AuditLog();
         a.setActivityLog("System user enter apply_card.xhtml");
         a.setFunctionName("CardApplicationManagedBean @PostConstruct init()");
-        a.setInput("Getting all card applications");
+        a.setFunctionInput("Getting all card applications");
         a.setStaffAccount(SessionUtils.getStaff());
         utilsBean.persist(a);
     }

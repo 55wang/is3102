@@ -22,15 +22,15 @@
                         <li class="side-menu-item #{cc.attrs.side == 'openAccount' ? 'active' : ''}">
                             <h:link outcome="open-account" value="Open Current Account" />
                         </li>
-                        
+
                         <li class="side-menu-item #{cc.attrs.side == 'accountDeposit' ? 'active' : ''}">
                             <h:link outcome="account-deposit" value="Account Deposit" />
                         </li>
-                        
+
                         <li class="side-menu-item #{cc.attrs.side == 'accountWithDraw' ? 'active' : ''}">
                             <h:link outcome="account-withdraw" value="Withdraw Current Account" />
                         </li>
-                        
+
                         <li class="side-menu-item #{cc.attrs.side == 'checkAccountBalance' ? 'active' : ''}">
                             <h:link outcome="check-account-balance" value="Check Balance Current Account" />
                         </li>
@@ -62,13 +62,13 @@
                     </c:if>
                     <c:if test="#{cc.attrs.top == 'customer'}">
                         <li class="side-menu-item #{cc.attrs.side == 'viewCustomer' ? 'active' : ''}">
-                            <h:link outcome="staff-view-customer" value="View Customer" />
+                            <h:link outcome="staff_view_customer" value="View Customer" />
                         </li>
                         <li class="side-menu-item #{cc.attrs.side == 'viewCase' ? 'active' : ''}">
-                            <h:link outcome="staff-view-case" value="View Case" />
+                            <h:link outcome="staff_view_case" value="View Case" />
                         </li>
                         <li class="side-menu-item #{cc.attrs.side == 'createCase' ? 'active' : ''}">
-                            <h:link outcome="staff-create-case" value="Create Case" />
+                            <h:link outcome="staff_create_case" value="Create Case" />
                         </li>
                     </c:if>
                     <c:if test="#{cc.attrs.top == 'setting'}">
@@ -84,30 +84,65 @@
                         <li class="side-menu-item #{cc.attrs.side == 'viewActivities' ? 'active' : ''}">
                             <h:link outcome="staff_view_auditlog" value="Activities" />
                         </li>
-                        
+
                     </c:if>
                     <c:if test="#{cc.attrs.top == 'card'}">
                         <li class="side-menu-item #{cc.attrs.side == 'viewCard' ? 'active' : ''}">
-                            <h:link outcome="staff-view-card" value="Card Products" />
+                            <h:link outcome="card-view-product" value="Card Products" />
                         </li>
-                        
+
                         <li class="side-menu-item #{cc.attrs.side == 'cardCreate' ? 'active' : ''}">
-                            <h:link outcome="card-create-product" value="Create CreditCard Product" />
+                            <h:link outcome="card_create_product" value="Create CreditCard Product" />
                         </li>
-                        
+
                         <li class="side-menu-item #{cc.attrs.side == 'cardAppView' ? 'active' : ''}">
-                            <h:link outcome="card-view-application" value="View Card Application" />
+                            <h:link outcome="card_view_application" value="View Card Application" />
                         </li>
-                        
+
                         <li class="side-menu-item #{cc.attrs.side == 'cardIssue' ? 'active' : ''}">
-                            <h:link outcome="card-issue" value="Issue Card" />
+                            <h:link outcome="card_issue" value="Issue Card" />
+                        </li>
+
+                        <li class="side-menu-item #{cc.attrs.side == 'cardAccountView' ? 'active' : ''}">
+                            <h:link outcome="card-view-account" value="View Credit Card Accounts" />
                         </li>
                         
+                        <li class="side-menu-item #{cc.attrs.side == 'cardTransactionView' ? 'active' : ''}">
+                            <h:link outcome="card-view-transaction" value="Transaction Settlement" />
+                        </li>
+
+
+                    </c:if>
+                    
+                    <c:if test="#{cc.attrs.top == 'bill'}">
+                        <li class="side-menu-item #{cc.attrs.side == 'manageOrg' ? 'active' : ''}">
+                            <h:link outcome="manage_organization" value="Organizations" />
+                        </li>
+                        
+                        <li class="side-menu-item #{cc.attrs.side == 'manageBank' ? 'active' : ''}">
+                            <h:link outcome="manage_bank_entity" value="Other Banks" />
+                        </li>
+                        
+                        <li class="side-menu-item #{cc.attrs.side == 'manageInternationalTransfer' ? 'active' : ''}">
+                            <h:link outcome="manage_international_transfer" value="International Transfers" />
+                        </li>
                     </c:if>
                     
                     <c:if test="#{cc.attrs.top == 'promo'}">
                         <li class="side-menu-item #{cc.attrs.side == 'viewPromo' ? 'active' : ''}">
-                            <h:link outcome="staff-view-promo" value="Promo Products" />
+                            <h:link outcome="staff_view_promo" value="Promo Products" />
+                        </li>
+                    </c:if>
+                    
+                    <c:if test="#{cc.attrs.top == 'wealth'}">
+                        <li class="side-menu-item #{cc.attrs.side == 'viewInvestmentRequest' ? 'active' : ''}">
+                            <h:link outcome="staff-view-investment-request" value="Investment Request" />
+                        </li>
+                        <li class="side-menu-item #{cc.attrs.side == 'updatePortfolio' ? 'active' : ''}">
+                            <h:link outcome="staff-update-portfolio" value="Update Portfolio" />
+                        </li>
+                        <li class="side-menu-item #{cc.attrs.side == 'viewPortfolio' ? 'active' : ''}">
+                            <h:link outcome="staff-view-portfolio" value="View Portfolios" />
                         </li>
                     </c:if>
                 </ul>

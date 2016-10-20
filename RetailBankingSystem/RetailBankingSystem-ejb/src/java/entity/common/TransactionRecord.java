@@ -12,9 +12,9 @@ import java.util.Date;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -25,31 +25,25 @@ import server.utilities.EnumUtils.TransactionType;
  * @author leiyang
  */
 @Entity
+@Inheritance(strategy=InheritanceType.JOINED)
 public class TransactionRecord implements Serializable {
     
-    private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-    @ManyToOne(cascade={CascadeType.MERGE})
-    private DepositAccount fromAccount;
-    @ManyToOne(cascade={CascadeType.MERGE})
-    private DepositAccount toAccount;// can be null
     private String referenceNumber;
+    @Temporal(value = TemporalType.TIMESTAMP)
+    private Date creationDate = new Date();
+    
+    // info
     private TransactionType actionType;
     private Boolean credit;
     @Column(precision=30, scale=20)
     private BigDecimal amount;
-    @Temporal(value = TemporalType.TIMESTAMP)
-    private Date creationDate = new Date();
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
+    
+    // mapping
+    @ManyToOne(cascade={CascadeType.MERGE})
+    private DepositAccount fromAccount;
+    @ManyToOne(cascade={CascadeType.MERGE})
+    private DepositAccount toAccount;// can be null
     
     /**
      * @return the fromAccount

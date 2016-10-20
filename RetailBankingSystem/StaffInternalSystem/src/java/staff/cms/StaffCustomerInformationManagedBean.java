@@ -23,6 +23,7 @@ import server.utilities.EnumUtils.Income;
 import server.utilities.EnumUtils.MaritalStatus;
 import server.utilities.EnumUtils.Nationality;
 import server.utilities.CommonUtils;
+import server.utilities.ConstantUtils;
 import utils.MessageUtils;
 import utils.RedirectUtils;
 import utils.SessionUtils;
@@ -69,6 +70,20 @@ public class StaffCustomerInformationManagedBean implements Serializable {
     public StaffCustomerInformationManagedBean() {
     }
     
+    /**
+     * @param customers the customers to set
+     */
+    @PostConstruct
+    public void setCustomers() {
+        this.setCustomers(getCustomerProfileSessionBean().retrieveActivatedCustomers());
+        AuditLog a = new AuditLog();
+        a.setActivityLog("System user enter create_customer_information.xhtml");
+        a.setFunctionName("StaffCustomerInformationCaseManagedBean @PostConstruct setCustomers()");
+        a.setFunctionInput("Getting all customer information");
+        a.setStaffAccount(SessionUtils.getStaff());
+        utilsBean.persist(a);
+    }
+    
     public void search() {
         if (searchText.isEmpty()) {
             setCustomers(getCustomerProfileSessionBean().retrieveActivatedCustomers());
@@ -78,7 +93,6 @@ public class StaffCustomerInformationManagedBean implements Serializable {
             customers.add(c);
             setCustomers(customers);
         }
-
     }
 
     public void saveUpdatedCustomerInformation() {
@@ -88,7 +102,6 @@ public class StaffCustomerInformationManagedBean implements Serializable {
         selectedCustomer.setMaritalStatus(MaritalStatus.getEnum(selectedMaritalStatus));
         selectedCustomer.setEducation(Education.getEnum(selectedEducation));
        
-
         if (utilsSessionBean.checkUpdatedEmailIsUnique(selectedCustomer) == false) {
             MessageUtils.displayInfo("Email is registered!");
 
@@ -99,13 +112,11 @@ public class StaffCustomerInformationManagedBean implements Serializable {
             Customer result = customerProfileSessionBean.saveProfile(selectedCustomer);
             if (result != null) {
                 MessageUtils.displayInfo("Profile successfully updated!");
-                RedirectUtils.redirect("staff-view-customer.xhtml");
+                RedirectUtils.redirect("staff_view_customer.xhtml");
             } else {
                 MessageUtils.displayInfo("Update is unsuccessful, please check your input.");
             }
         }
-
-
     }
 
     public void goToEditPage(Customer customer) {
@@ -126,8 +137,7 @@ public class StaffCustomerInformationManagedBean implements Serializable {
             setSelectedEducation(customer.getEducation().toString());
         }
 
-        RedirectUtils.redirect("staff-edit-customer.xhtml");
-
+        RedirectUtils.redirect(ConstantUtils.STAFF_CMS_STAFF_EDIT_CUSTOMER);
     }
 
     /**
@@ -136,22 +146,7 @@ public class StaffCustomerInformationManagedBean implements Serializable {
     public List<Customer> getCustomers() {
         return customers;
     }
-
-    /**
-     * @param customers the customers to set
-     */
-    @PostConstruct
-    public void setCustomers() {
-        this.setCustomers(getCustomerProfileSessionBean().retrieveActivatedCustomers());
-        AuditLog a = new AuditLog();
-        a.setActivityLog("System user enter create_customer_information.xhtml");
-        a.setFunctionName("StaffCustomerInformationCaseManagedBean @PostConstruct setCustomers()");
-        a.setInput("Getting all customer information");
-        a.setStaffAccount(SessionUtils.getStaff());
-        utilsBean.persist(a);
-
-    }
-
+    
     /**
      * @return the searchText
      */

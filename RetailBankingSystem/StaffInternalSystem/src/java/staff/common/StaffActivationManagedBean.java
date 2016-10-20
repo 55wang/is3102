@@ -61,7 +61,7 @@ public class StaffActivationManagedBean implements Serializable {
         AuditLog a = new AuditLog();
         a.setActivityLog("System user enter create_customer_information.xhtml");
         a.setFunctionName("StaffActivitionCaseManagedBean @PostConstruct init()");
-        a.setInput("Getting all activition");
+        a.setFunctionInput("Getting all activition");
         a.setStaffAccount(SessionUtils.getStaff());
         utilsBean.persist(a);
     }

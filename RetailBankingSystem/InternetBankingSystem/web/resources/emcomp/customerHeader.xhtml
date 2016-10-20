@@ -24,6 +24,12 @@
                     <c:if test="#{cc.attrs.context == 'main'}">
                         <ul>
                             <li>
+                                <a href="#">About us</a>
+                            </li>
+                            <li>
+                                <a href="#">Contact</a>
+                            </li>
+                            <li>
                                 <a href="https://localhost:8181/InternetBankingSystem/common/customer_login.xhtml">Log in</a>
                             </li>
                         </ul> 
@@ -53,6 +59,7 @@
                                 <p:menu overlay="true" trigger="header-nav-profile" my="left top" at="left bottom" style="display:none">
                                     <p:submenu label="Navigations" style="display:none">
                                         <p:menuitem value="Profile" outcome="/header_user/view_profile"/>
+                                        <p:menuitem value="Activity History" outcome="/personal_history/activity_history" />
                                         <p:menuitem value="Reset Password" outcome="/header_user/customer_reset_pwd" />
                                         <p:menuitem value="Logout" onclick="PF('logout').show()" />
                                     </p:submenu>

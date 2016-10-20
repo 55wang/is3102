@@ -26,6 +26,8 @@ public interface CustomerDepositSessionBeanLocal {
     public List<CustomerDepositAccount> getAllNonFixedCustomerAccounts(Long mainAccountId);
     public String depositIntoAccount(String accountNumber, BigDecimal depositAmount);
     public String withdrawFromAccount(String accountNumber, BigDecimal depositAmount);
+    public DepositAccount transferFromAccount(DepositAccount account, BigDecimal amount);
+    public DepositAccount transferToAccount(DepositAccount account, BigDecimal amount);
     public DepositAccount depositIntoAccount(DepositAccount account, BigDecimal depositAmount);
     public DepositAccount withdrawFromAccount(DepositAccount account, BigDecimal withdrawAmount);
     public DepositAccount creditSalaryIntoAccount(DepositAccount account, BigDecimal depositAmount);

@@ -8,7 +8,6 @@ package ejb.session.dams;
 import entity.dams.account.CustomerDepositAccount;
 import entity.common.TransactionRecord;
 import entity.dams.account.DepositAccount;
-import entity.embedded.CumulatedInterest;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.List;
@@ -30,29 +29,30 @@ public class CustomerDepositSessionBean implements CustomerDepositSessionBeanLoc
     @PersistenceContext(unitName = "RetailBankingSystem-ejbPU")
     private EntityManager em;
 
-    @Override 
+    @Override
     public long showNumberOfAccounts() {
         Query q = em.createQuery("SELECT COUNT(*) FROM DepositAccount");
-        return ((Long)q.getSingleResult()).longValue();
+        return ((Long) q.getSingleResult()).longValue();
     }
-    
-    @Override 
+
+    @Override
     public DepositAccount getAccountFromId(String accountNumber) {
         return em.find(DepositAccount.class, accountNumber);
     }
 
     @Override
     public DepositAccount createAccount(DepositAccount account) {
-         try {
+        try {
             TransactionRecord t = new TransactionRecord();
             t.setAmount(account.getBalance());
             t.setCredit(Boolean.TRUE);
             t.setActionType(EnumUtils.TransactionType.INITIAL);
+            t.setReferenceNumber(generateReferenceNumber());
             account.addTransaction(t);
             if (account instanceof CustomerDepositAccount) {
-                ((CustomerDepositAccount)account).setPreviousBalance(account.getBalance());
+                ((CustomerDepositAccount) account).setPreviousBalance(account.getBalance());
             }
-            
+
             account.setAccountNumber(generateAccountNumber());
             em.persist(account);
             t.setFromAccount(account);
@@ -62,21 +62,32 @@ public class CustomerDepositSessionBean implements CustomerDepositSessionBeanLoc
             return null;
         }
     }
-    
+
     private String generateAccountNumber() {
         String accountNumber = "";
-        for(;;) {
-             accountNumber = GenerateAccountAndCCNumber.generateAccountNumber();
-             DepositAccount a = em.find(DepositAccount.class, accountNumber);
-             if (a == null) {
-                 return accountNumber;
-             }
+        for (;;) {
+            accountNumber = GenerateAccountAndCCNumber.generateAccountNumber();
+            DepositAccount a = em.find(DepositAccount.class, accountNumber);
+            if (a == null) {
+                return accountNumber;
+            }
         }
     }
-    
+
+    private String generateReferenceNumber() {
+        String referenceNumber = "";
+        for (;;) {
+            referenceNumber = GenerateAccountAndCCNumber.generateReferenceNumber();
+            TransactionRecord a = em.find(TransactionRecord.class, referenceNumber);
+            if (a == null) {
+                return referenceNumber;
+            }
+        }
+    }
+
     @Override
     public DepositAccount updateAccount(DepositAccount account) {
-         try {
+        try {
             em.merge(account);
             return account;
         } catch (EntityExistsException e) {
@@ -89,7 +100,7 @@ public class CustomerDepositSessionBean implements CustomerDepositSessionBeanLoc
         Query q = em.createQuery("SELECT ba FROM DepositAccount ba");
         return q.getResultList();
     }
-    
+
     @Override
     public List<DepositAccount> getAllCustomerAccounts(Long mainAccountId) {
         Query q = em.createQuery("SELECT ba FROM DepositAccount ba WHERE ba.mainAccount.id =:mainAccountId AND ba.status <> :status");
@@ -97,7 +108,7 @@ public class CustomerDepositSessionBean implements CustomerDepositSessionBeanLoc
         q.setParameter("status", EnumUtils.StatusType.CLOSED);
         return q.getResultList();
     }
-    
+
     @Override
     public List<CustomerDepositAccount> getAllNonFixedCustomerAccounts(Long mainAccountId) {
         Query q = em.createQuery("SELECT ba FROM CustomerDepositAccount ba WHERE ba.mainAccount.id =:mainAccountId");
@@ -122,11 +133,26 @@ public class CustomerDepositSessionBean implements CustomerDepositSessionBeanLoc
             t.setAmount(depositAmount);
             t.setCredit(Boolean.TRUE);
             t.setFromAccount(ba);
+            t.setReferenceNumber(generateReferenceNumber());
             ba.addTransaction(t);
             ba.addBalance(depositAmount);
             em.merge(ba);
             return "Deposit Success!";
         }
+    }
+
+    @Override
+    public DepositAccount transferToAccount(DepositAccount account, BigDecimal amount) {
+        TransactionRecord t = new TransactionRecord();
+        t.setActionType(EnumUtils.TransactionType.TRANSFER);
+        t.setAmount(amount);
+        t.setCredit(Boolean.TRUE);
+        t.setFromAccount(account);
+        t.setReferenceNumber(generateReferenceNumber());
+        account.addTransaction(t);
+        account.addBalance(amount);
+        em.merge(account);
+        return account;
     }
 
     @Override
@@ -150,6 +176,7 @@ public class CustomerDepositSessionBean implements CustomerDepositSessionBeanLoc
                 t.setAmount(withdrawAmount);
                 t.setCredit(Boolean.FALSE);
                 t.setFromAccount(ba);
+                t.setReferenceNumber(generateReferenceNumber());
                 ba.addTransaction(t);
                 ba.removeBalance(withdrawAmount);
                 em.merge(ba);
@@ -157,9 +184,28 @@ public class CustomerDepositSessionBean implements CustomerDepositSessionBeanLoc
             }
         }
     }
-    
+
     @Override
-    public DepositAccount depositIntoAccount(DepositAccount account, BigDecimal depositAmount){
+    public DepositAccount transferFromAccount(DepositAccount account, BigDecimal amount) {
+        int res = account.getBalance().compareTo(amount);
+        if (res == -1) {
+            return null;
+        } else {
+            TransactionRecord t = new TransactionRecord();
+            t.setActionType(EnumUtils.TransactionType.TRANSFER);
+            t.setAmount(amount);
+            t.setCredit(Boolean.FALSE);
+            t.setFromAccount(account);
+            t.setReferenceNumber(generateReferenceNumber());
+            account.addTransaction(t);
+            account.removeBalance(amount);
+            em.merge(account);
+            return account;
+        }
+    }
+
+    @Override
+    public DepositAccount depositIntoAccount(DepositAccount account, BigDecimal depositAmount) {
         if (account == null || depositAmount == null) {
             return null;
         } else {
@@ -168,13 +214,14 @@ public class CustomerDepositSessionBean implements CustomerDepositSessionBeanLoc
             t.setAmount(depositAmount);
             t.setCredit(Boolean.TRUE);
             t.setFromAccount(account);
+            t.setReferenceNumber(generateReferenceNumber());
             account.addTransaction(t);
             account.addBalance(depositAmount);
             em.merge(account);
             return account;
         }
     }
-    
+
     @Override
     public DepositAccount withdrawFromAccount(DepositAccount account, BigDecimal withdrawAmount) {
         if (account == null || withdrawAmount == null) {
@@ -189,6 +236,7 @@ public class CustomerDepositSessionBean implements CustomerDepositSessionBeanLoc
                 t.setAmount(withdrawAmount);
                 t.setCredit(Boolean.FALSE);
                 t.setFromAccount(account);
+                t.setReferenceNumber(generateReferenceNumber());
                 account.addTransaction(t);
                 account.removeBalance(withdrawAmount);
                 em.merge(account);
@@ -196,7 +244,7 @@ public class CustomerDepositSessionBean implements CustomerDepositSessionBeanLoc
             }
         }
     }
-    
+
     @Override
     public DepositAccount creditSalaryIntoAccount(DepositAccount account, BigDecimal depositAmount) {
         if (account == null || depositAmount == null) {
@@ -207,13 +255,14 @@ public class CustomerDepositSessionBean implements CustomerDepositSessionBeanLoc
             t.setAmount(depositAmount);
             t.setCredit(Boolean.TRUE);
             t.setFromAccount(account);
+            t.setReferenceNumber(generateReferenceNumber());
             account.addTransaction(t);
             account.addBalance(depositAmount);
             em.merge(account);
             return account;
         }
     }
-    
+
     @Override
     public DepositAccount payBillFromAccount(DepositAccount account, BigDecimal payAmount) {
         if (account == null || payAmount == null) {
@@ -228,6 +277,7 @@ public class CustomerDepositSessionBean implements CustomerDepositSessionBeanLoc
                 t.setAmount(payAmount);
                 t.setCredit(Boolean.FALSE);
                 t.setFromAccount(account);
+                t.setReferenceNumber(generateReferenceNumber());
                 account.addTransaction(t);
                 account.removeBalance(payAmount);
                 em.merge(account);
@@ -235,7 +285,7 @@ public class CustomerDepositSessionBean implements CustomerDepositSessionBeanLoc
             }
         }
     }
-    
+
     @Override
     public DepositAccount ccSpendingFromAccount(DepositAccount account, BigDecimal spendAmount) {
         if (account == null || spendAmount == null) {
@@ -250,6 +300,7 @@ public class CustomerDepositSessionBean implements CustomerDepositSessionBeanLoc
                 t.setAmount(spendAmount);
                 t.setCredit(Boolean.FALSE);
                 t.setFromAccount(account);
+                t.setReferenceNumber(generateReferenceNumber());
                 account.addTransaction(t);
                 account.removeBalance(spendAmount);
                 em.merge(account);
@@ -257,7 +308,7 @@ public class CustomerDepositSessionBean implements CustomerDepositSessionBeanLoc
             }
         }
     }
-    
+
     @Override
     public DepositAccount investFromAccount(DepositAccount account, BigDecimal investAmount) {
         if (account == null || investAmount == null) {
@@ -272,6 +323,7 @@ public class CustomerDepositSessionBean implements CustomerDepositSessionBeanLoc
                 t.setAmount(investAmount);
                 t.setCredit(Boolean.FALSE);
                 t.setFromAccount(account);
+                t.setReferenceNumber(generateReferenceNumber());
                 account.addTransaction(t);
                 account.removeBalance(investAmount);
                 em.merge(account);
@@ -279,12 +331,12 @@ public class CustomerDepositSessionBean implements CustomerDepositSessionBeanLoc
             }
         }
     }
-    
+
     @Override
     public DepositAccount creditInterestAccount(DepositAccount account) {
         BigDecimal interestAmount = account.getCumulatedInterest().getCummulativeAmount().setScale(20, RoundingMode.HALF_UP);
         System.out.println("Interest Amount: " + interestAmount + " and greater than 0.001: " + interestAmount.compareTo(new BigDecimal(0.001)));
-        if (account == null || interestAmount == null || interestAmount.compareTo(new BigDecimal(0.001)) < 0) {
+        if (interestAmount.compareTo(new BigDecimal(0.001)) < 0) {
             return null;
         } else {
             TransactionRecord t = new TransactionRecord();
@@ -292,6 +344,7 @@ public class CustomerDepositSessionBean implements CustomerDepositSessionBeanLoc
             t.setAmount(interestAmount);
             t.setCredit(Boolean.TRUE);
             t.setFromAccount(account);
+            t.setReferenceNumber(generateReferenceNumber());
             account.addTransaction(t);
             account.addBalance(interestAmount);
             account.getCumulatedInterest().reset();

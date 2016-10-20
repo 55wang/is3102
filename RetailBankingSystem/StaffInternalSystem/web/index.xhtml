@@ -17,17 +17,15 @@ and open the template in the editor.
             <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
             <em:cssImport></em:cssImport>
         </h:head>
-        <h:body style="background-color: #f9f9f9">
-            <h:graphicImage library="img" name="merlionLogoBlack.png" class="h-center" style="top:18%; width:200px"/>
-            <p:layout class="h-center" style="width:400px;height:300px;top:55%">
-                <p:layoutUnit position="center">
+        <h:body class="staff-login-body">
+            <h:graphicImage library="img" name="merlionLogo.png" class="h-center" style="top:18%; width:200px"/>
+            <p:layout class="h-center staff-login-layout">
+                <p:layoutUnit position="center" class="staff-login-panel-layoutUnit">
                     <h:form id="staff-login-form" >
                         <p:messages id="messagesStatus" redisplay="false">
-                            <h:panelGrid columns="2" id="staff-login-panel" cellpadding="5" class="h-center" style="top:25%">                   
-                                <h:outputLabel value="Username: " />
-                                <h:inputText value="#{staffLoginManagedBean.username}" styleClass="outputLabel"/>
-                                <h:outputLabel value="Password: " />
-                                <h:inputSecret value="#{staffLoginManagedBean.password}" styleClass="outputLabel"/>
+                            <h:panelGrid columns="1" id="staff-login-panel" cellpadding="5" class="h-center" style="top:25%">                   
+                                <p:inputText value="#{staffLoginManagedBean.username}" styleClass="staff-login-input" placeholder="User ID"/>
+                                <p:password value="#{staffLoginManagedBean.password}" styleClass="staff-login-input" placeholder="Password"/>
                             </h:panelGrid>
                             <p:commandButton id="submit" value="Login" actionListener="#{staffLoginManagedBean.loginStaff}" class="h-center" style="margin-top:35%" update="@form"/>
                         </p:messages>
@@ -47,6 +45,7 @@ and open the template in the editor.
                     </h:form>
                 </p:layoutUnit>
             </p:layout>
+            <em:staffFooter></em:staffFooter>
         </h:body>
     </f:view>
 </html>

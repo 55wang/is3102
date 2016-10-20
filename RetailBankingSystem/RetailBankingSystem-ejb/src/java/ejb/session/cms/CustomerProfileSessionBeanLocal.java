@@ -5,7 +5,10 @@
  */
 package ejb.session.cms;
 
+import entity.card.account.CreditCardAccount;
 import entity.customer.Customer;
+import entity.dams.account.DepositAccount;
+import entity.wealth.Portfolio;
 import java.util.List;
 import javax.ejb.Local;
 

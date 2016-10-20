@@ -26,6 +26,7 @@ import server.utilities.EnumUtils;
 import server.utilities.EnumUtils.CaseStatus;
 import server.utilities.EnumUtils.CardOperatorChargebackStatus;
 import server.utilities.CommonUtils;
+import server.utilities.ConstantUtils;
 import utils.MessageUtils;
 import utils.RedirectUtils;
 import utils.SessionUtils;
@@ -61,6 +62,17 @@ public class StaffViewCustomerCaseManagedBean implements Serializable{
      * Creates a new instance of StaffCutomerCaseManagedBean
      */
     public StaffViewCustomerCaseManagedBean() {
+    }
+    
+    @PostConstruct
+    public void setCases() {
+        this.cases = customerCaseSessionBean.getAllCaseUnderCertainStaff(SessionUtils.getStaff());
+        AuditLog a = new AuditLog();
+        a.setActivityLog("System user enter view_customer_information.xhtml");
+        a.setFunctionName("StaffViewCustomerCaseManagedBean @PostConstruct setCases()");
+        a.setFunctionInput("Getting all customer cases");
+        a.setStaffAccount(SessionUtils.getStaff());
+        utilsBean.persist(a);
     }
     
     public void search() {
@@ -112,7 +124,7 @@ public class StaffViewCustomerCaseManagedBean implements Serializable{
             MessageUtils.displayError("Transfer fail!");
         } else {
             transferedCase = new CustomerCase();
-            RedirectUtils.redirect("staff-view-case.xhtml");
+            RedirectUtils.redirect(ConstantUtils.STAFF_CMS_STAFF_VIEW_CASE);
         }
     }
     
@@ -175,7 +187,7 @@ public class StaffViewCustomerCaseManagedBean implements Serializable{
     
     public void redirectToTransferPage(CustomerCase cc){
         this.transferedCase = cc;
-        RedirectUtils.redirect("staff-transfer-case.xhtml");
+        RedirectUtils.redirect(ConstantUtils.STAFF_CMS_STAFF_TRANSFER_CASE);
     }
     
     public Boolean isChargeBack(String selectedField){
@@ -190,17 +202,6 @@ public class StaffViewCustomerCaseManagedBean implements Serializable{
     public void showAllStaff() {
         setStaffs(staffBean.getAllStaffs());
         removeSelf();
-    }
-    
-    @PostConstruct
-    public void setCases() {
-        this.cases = customerCaseSessionBean.getAllCaseUnderCertainStaff(SessionUtils.getStaff());
-        AuditLog a = new AuditLog();
-        a.setActivityLog("System user enter view_customer_information.xhtml");
-        a.setFunctionName("StaffViewCustomerCaseManagedBean @PostConstruct setCases()");
-        a.setInput("Getting all customer cases");
-        a.setStaffAccount(SessionUtils.getStaff());
-        utilsBean.persist(a);
     }
     
     public List<CustomerCase> getCases() {

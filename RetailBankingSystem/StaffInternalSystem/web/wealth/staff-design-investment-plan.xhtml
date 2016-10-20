@@ -1,0 +1,113 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:em="http://xmlns.jcp.org/jsf/composite/emcomp"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <!--shift + ctrl + F, format-->
+    <f:view>
+        <h:head>
+            <title>Merlion Internal</title>
+            <em:cssImport></em:cssImport>
+        </h:head>
+        <h:body>
+            <em:staffNavBar context="wealth"></em:staffNavBar>
+            <em:staffSideBar top="wealth" side="viewInvestmentRequest"></em:staffSideBar>
+            <div class="container">
+                <h:form id="designinvestment">
+                    <p:growl id="growl" showDetail="true" sticky="true" /> 
+                    <p:panel header="Design Invetment Plan" >
+                    <h:panelGrid columns="2" columnClasses="left,right" style="width:100%" class="staffDesignPanel">
+                        <p:panel style="width:500px;">
+                            <p:chart type="bar" model="#{deisgnInvestmentPlanManagedBean.animatedModel}" style="height:440px"/>
+                        </p:panel>
+                        <p:panel>
+                            <p:panelGrid columns="6" style="width:100%">
+                                <h:outputLabel for="ajaxSpinner" value="Risk" />
+                                <p:spinner id="ajaxSpinner" value="#{deisgnInvestmentPlanManagedBean.toleranceScore}" max="47" min="13" valueChangeListener="#{deisgnInvestmentPlanManagedBean.updateRiskLevel()}">
+                                    <p:ajax update="toleranceLevel" process="@this" />
+                                </p:spinner>
+
+                                <h:outputLabel for="toleranceLevel" value="Level" />
+                                <h:outputText id="toleranceLevel" value="#{deisgnInvestmentPlanManagedBean.riskLevel.value}"/>
+
+                                <h:outputLabel for="return" value="Return " />
+                                <h:outputText id="return" value="#{deisgnInvestmentPlanManagedBean.requestPlan.systemPredictReturn}" class="designinvestment-input"/>
+                            </p:panelGrid>
+                            
+                            <p:commandButton value="Request New Plan" update="@form" actionListener="#{deisgnInvestmentPlanManagedBean.requestNewPlan}"/>
+                            
+                            <p:separator></p:separator>
+                            
+                            <p:dataTable id="suggestedFinancialInstruments" value="#{deisgnInvestmentPlanManagedBean.suggestedFinancialInstruments}" var="instrumentAndWeight">
+                                <p:column headerText="Product Name" style="width:86%;">    
+                                    <h:outputLabel id="fiName" value="#{instrumentAndWeight.fi.name.value}" />
+                                </p:column>
+
+                                <p:column headerText="weight">
+                                    <h:inputText id="weight" value="#{instrumentAndWeight.weight}" class="designinvestment-input" />
+                                </p:column>
+                            </p:dataTable>
+                            
+                            <p:separator></p:separator>
+                            
+                         
+                            <p:commandButton value="Reset" update="@form" actionListener="#{deisgnInvestmentPlanManagedBean.reset}"/>
+                            <p:commandButton value="Update" update="@form" actionListener="#{deisgnInvestmentPlanManagedBean.update}"/>
+                            <p:commandButton value="Submit" update="@form" actionListener="#{deisgnInvestmentPlanManagedBean.submit}"/>
+                         
+                        </p:panel>
+                    </h:panelGrid>
+                        </p:panel>
+                    
+                </h:form>
+                    <p:dataTable id="request" value="#{deisgnInvestmentPlanManagedBean.requestPlan}" var="investmentRequest">
+                                <p:column headerText="ID"  style="width:15px">
+                                    <h:outputText value="#{investmentRequest.id}" />
+                                </p:column>
+
+                                <p:column headerText="Create Date">
+                                    <h:outputText value="#{investmentRequest.creationDate}">
+                                        <f:convertDateTime pattern="MM/dd/yy" />
+                                    </h:outputText>
+                                </p:column>
+
+                                <p:column headerText="Customer Expected Return">
+                                    <h:outputText value="#{investmentRequest.customerExpectedReturn}" />
+                                </p:column>
+
+                                <p:column headerText="Amount">
+                                    <h:outputText value="#{investmentRequest.amountOfInvestment}" />
+                                </p:column>
+
+                                <p:column headerText="Prefered Instruments" style="width:180px">
+                                    <p:scrollPanel style="width:180px;height:80px">
+                                        <p:repeat value="#{investmentRequest.preferedFinancialInstrument}" var="instrument" offset="" size="#{investmentRequest.preferedFinancialInstrument.size()}" step="1" varStatus="">
+                                            <div style="margin-bottom: 10px">
+                                                <h:outputText value="*#{instrument.name}" />
+                                            </div>
+                                        </p:repeat>    
+                                    </p:scrollPanel>
+                                </p:column>
+
+                                <p:column headerText="Status">
+                                    <h:outputText value="#{investmentRequest.status}" />
+                                </p:column>
+
+                                <p:column headerText="Remarks">
+                                    <h:outputText value="#{investmentRequest.remarks}" />
+                                </p:column>
+
+                                <p:column headerText="Customer">
+                                    <h:outputText value="#{investmentRequest.wealthManagementSubscriber.mainAccount.customer.firstname}" />
+                                </p:column>
+                            </p:dataTable>
+            </div>
+
+        </h:body> 
+    </f:view>
+
+
+</html>

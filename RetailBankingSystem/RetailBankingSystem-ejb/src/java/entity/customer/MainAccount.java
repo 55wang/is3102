@@ -5,6 +5,8 @@
  */
 package entity.customer;
 
+import entity.bill.BillingOrg;
+import entity.bill.Payee;
 import entity.card.account.CreditCardAccount;
 import entity.card.order.CreditCardOrder;
 import entity.common.AuditLog;
@@ -34,25 +36,37 @@ public class MainAccount implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    
+    // info
     @Column(unique = true)
     private String userID;
     private String password;
     private StatusType status;
+    
+    // mappings
     @OneToOne(cascade = {CascadeType.MERGE}, mappedBy = "mainAccount")
     private Customer customer;
+    @OneToOne(cascade = {CascadeType.MERGE}, mappedBy = "mainAccount")
+    private TransferLimits transferLimits = new TransferLimits(this);
     @OneToMany(cascade = {CascadeType.MERGE}, mappedBy = "mainAccount")
     private List<DepositAccount> bankAcounts = new ArrayList<DepositAccount>();
     @OneToMany(cascade = {CascadeType.MERGE}, mappedBy = "mainAccount")
     private List<CreditCardAccount> creditCardAccounts = new ArrayList<CreditCardAccount>();
     @OneToMany(cascade = {CascadeType.MERGE}, mappedBy = "mainAccount")
-    private List<AuditLog> auditLog = new ArrayList<AuditLog>();
+    private List<Payee> payees = new ArrayList<>(); 
     @OneToMany(cascade = {CascadeType.MERGE}, mappedBy = "mainAccount")
-    private List<CustomerCase> cases = new ArrayList<CustomerCase>();
+    private List<BillingOrg> billingOrgs = new ArrayList<>(); 
     @OneToMany(cascade = {CascadeType.MERGE}, mappedBy = "mainAccount")
     private List<CreditCardOrder> creditCardOrder = new ArrayList<CreditCardOrder>();
     @OneToMany(cascade = {CascadeType.MERGE}, mappedBy = "mainAccount")
     private List<LoanAccount> loanAccounts = new ArrayList<LoanAccount>();
 
+    private List<AuditLog> auditLog = new ArrayList<>();
+    @OneToMany(cascade = {CascadeType.MERGE}, mappedBy = "mainAccount")
+    private List<CustomerCase> cases = new ArrayList<>();
+    @OneToOne(cascade = {CascadeType.MERGE}, mappedBy = "mainAccount")
+    private WealthManagementSubscriber wealthManagementSubscriber;
+    
     public void addDepositAccount(DepositAccount da) {
         this.bankAcounts.add(da);
     }
@@ -172,5 +186,55 @@ public class MainAccount implements Serializable {
 
     public void setLoanAccounts(List<LoanAccount> loanAccounts) {
         this.loanAccounts = loanAccounts;
+    }
+
+    public WealthManagementSubscriber getWealthManagementSubscriber() {
+        return wealthManagementSubscriber;
+    }
+
+    public void setWealthManagementSubscriber(WealthManagementSubscriber wealthManagementSubscriber) {
+        this.wealthManagementSubscriber = wealthManagementSubscriber;
+    }
+
+    /**
+     * @return the payees
+     */
+    public List<Payee> getPayees() {
+        return payees;
+    }
+
+    /**
+     * @param payees the payees to set
+     */
+    public void setPayees(List<Payee> payees) {
+        this.payees = payees;
+    }
+
+    /**
+     * @return the transferLimits
+     */
+    public TransferLimits getTransferLimits() {
+        return transferLimits;
+    }
+
+    /**
+     * @param transferLimits the transferLimits to set
+     */
+    public void setTransferLimits(TransferLimits transferLimits) {
+        this.transferLimits = transferLimits;
+    }
+
+    /**
+     * @return the billingOrgs
+     */
+    public List<BillingOrg> getBillingOrgs() {
+        return billingOrgs;
+    }
+
+    /**
+     * @param billingOrgs the billingOrgs to set
+     */
+    public void setBillingOrgs(List<BillingOrg> billingOrgs) {
+        this.billingOrgs = billingOrgs;
     }
 }

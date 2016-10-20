@@ -12,11 +12,39 @@ package server.utilities;
 // REMARK: To get the list of enum values, just use e.g. CreditType.values()
 public class EnumUtils {
 
+    public enum CardTransactionPaymentStatus {
+
+        UNPAID("UNPAID"),
+        PAID("PAID");
+        private String value;
+
+        CardTransactionPaymentStatus(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        @Override
+        public String toString() {
+            return this.getValue();
+        }
+
+        public static CardTransactionPaymentStatus getEnum(String value) {
+            for (CardTransactionPaymentStatus v : values()) {
+                if (v.getValue().equalsIgnoreCase(value)) {
+                    return v;
+                }
+            }
+            throw new IllegalArgumentException();
+        }
+    }
+
     public enum CardTransactionStatus {
 
         PENDINGTRANSACTION("PENDINGSETTLEMENT"),
-        SETTLEDTRANSACTION("SETTLEDTRANSACTION"),
-        CANCELLED("CANCELLED");
+        SETTLEDTRANSACTION("SETTLEDTRANSACTION");
         private String value;
 
         CardTransactionStatus(String value) {
@@ -724,19 +752,20 @@ public class EnumUtils {
     // Transaction
     public enum TransactionType {
 
-        INITIAL("INITIAL DEPOSIT"),
-        DEPOSIT("DEPOSIT"),
-        WITHDRAW("WITHDRAW"),
-        CHEQUE("CHEQUE"),
-        INTEREST("INTEREST"),
-        TRANSFER("TRANSFER"),
-        LOCALTRANSFER("LOCAL TRANSFER"),
-        INTERBANKTRANSFER("INTER BANK TRANSFER"),
-        OVERSEASTRANSFER("OVERSEAS TRANSFER"),
-        BILL("BILL"),
-        CCSPENDING("CCSPENDING"),
-        INVEST("INVEST"),
-        SALARY("SALARY");
+        INITIAL("Initial Deposit"),
+        DEPOSIT("Deposit"),
+        WITHDRAW("Withdraw"),
+        CHEQUE("Cheque"),
+        INTEREST("Interest"),
+        TRANSFER("Transfer"),
+        TOPUP("Top up"),
+        LOCALTRANSFER("Local Transfer"),
+        INTERBANKTRANSFER("Inter Bank Transfer"),
+        OVERSEASTRANSFER("Overseas transfer"),
+        BILL("Bill"),
+        CCSPENDING("Credit Card Spending"),
+        INVEST("Invest"),
+        SALARY("Salary");
 
         private String value;
 
@@ -809,7 +838,8 @@ public class EnumUtils {
         FINANCIAL_OFFICER("Financial Officer"),
         FINANCIAL_ANALYST("Financial Analyst"),
         PRODUCT_MANAGER("Product Manager"),
-        SUPER_ADMIN("Super Admin");
+        SUPER_ADMIN("Super Admin"),
+        RELATIONSHIP_MANAGER("Relationship Manager");
 
         private String value;
 
@@ -1168,6 +1198,453 @@ public class EnumUtils {
             throw new IllegalArgumentException();
         }
     }
+    
+    // bill
+    public enum BillType {
+
+        CLUBS("Country Clubs/ Recreational Clubs"),
+        EDU("Educational Institution"),
+        COUNCILS("Town Councils"),
+        CARD("Credit Cards"),
+        UTIL("Telecommunications and Utilities"),
+        GOV_AGEN("Government Agencies"),
+        NON_GOV_AGEN("Other Agencies"),
+        INSUR("Insurance Companies"),
+        SECUR("Brokerage/Securities Firms");
+        private String value;
+
+        BillType(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        @Override
+        public String toString() {
+            return this.getValue();
+        }
+
+        public static BillType getEnum(String value) {
+            for (BillType v : values()) {
+                if (v.getValue().equalsIgnoreCase(value)) {
+                    return v;
+                }
+            }
+            throw new IllegalArgumentException();
+        }
+    }
+    // transfer
+    public enum PayeeType {
+
+        MERLION("MERLION"),
+        LOCAL("LOCAL"),
+        OVERSEAS("OVERSEAS");
+        
+        private String value;
+
+        PayeeType(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        @Override
+        public String toString() {
+            return this.getValue();
+        }
+
+        public static PayeeType getEnum(String value) {
+            for (PayeeType v : values()) {
+                if (v.getValue().equalsIgnoreCase(value)) {
+                    return v;
+                }
+            }
+            throw new IllegalArgumentException();
+        }
+    }
+    
+    public enum TransferPurpose {
+        // Personal Expenses
+        CC_PAY("Credit Card Payment"),
+        CARPARK_CHRAGES("Carpark Charges"),
+        CABLE_TV_BILL("Cable TV Bill"),
+        DC_PAY("Debit Card Payment"),
+        DENTAL("Dental Services"),
+        HOSPITAL("Hospital Care"),
+        MEDICAL("Medical Services"),
+        FEES_N_CHARGERS("Payment Of Fees & Charges"),
+        RENT("Rent"),
+        TELCO("Telco Bill"),
+        TELEPHONE("Telephone Bill"),
+        TOWN_COUNCIL("Town Council Service Charges"),
+        TRANSPORT("Transport"),
+        UTILITIES("Utilities"),
+        // Business Expenses
+        BUSINESS_EXPENSE("Business Expenses"),
+        COLLECTION_PAYMENT("Collection Payment"),
+        CASH_DISBURSEMENT("Cash Disbursement"),
+        INSTAL_HIRE_PUR_AGREE("Instalment Hire Purchase Agreement"),
+        INTRA_COM_PAY("Intra Company Payment"),
+        INVOICE_PAY("Invoice Payment"),
+        PURCHASE_SOG("Purchase Sale of Goods"),
+        SUPPLIER_PAYMENT("Supplier Payment"),
+        TRADE_SERVICES("Trade Services"),
+        TREASURY_PAYMENT("Treasury Payment"),
+        // Donation to Charity
+        CHARITY_PAYMENT("Charity Payment"),
+        // Education Expenses
+        EDUCATION("Education"),
+        STUDY("Study"),
+        // Foreign Worker Levy
+        FOREIGN_WORKER_LEVY("Foreign Worker Levy"),
+        // Investments and Insurance
+        GOV_INSUR("Government Insurance"),
+        INSUR_PREMIUM("Insurance Premium"),
+        INVEST_N_SECUR("Investment & Securities"),
+        // Loan Repayment
+        LOAN("Loan"),
+        // Salary / Commission
+        BONUS_PAYMENT("Bonus Payment"),
+        COMMISSION("Commission"),
+        SALARY_PAYMENT("Salary Payment"),
+        // Tax Payments
+        GOODS_N_SERVICES_TAX("Goods & Services Tax"),
+        NET_INCOME_TAX("Net Income Tax"),
+        PROPERTY_TAX("Property Tax"),
+        ROAD_TAX("Road Tax"),
+        TAX_PAYMENT("Tax Payment"),
+        // Others
+        DIVIDEND("Dividend"),
+        INTEREST("Interest"),
+        REBATE("Rebate"),
+        REFUND("Refund"),
+        WITHHOLDING("Withholding"),
+        OTHERS("Others");
+        
+        private String value;
+
+        TransferPurpose(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        @Override
+        public String toString() {
+            return this.getValue();
+        }
+
+        public static TransferPurpose getEnum(String value) {
+            for (TransferPurpose v : values()) {
+                if (v.getValue().equalsIgnoreCase(value)) {
+                    return v;
+                }
+            }
+            throw new IllegalArgumentException();
+        }
+    }
+    
+    public enum RiskToleranceLevel {
+
+        LOW_RISK_TOLERANCE("Low risk tolerance"),
+        BELOW_AVERAGE_RISK_TOLERANCE("Below-average risk tolerance"),
+        AVERAGE_RISK_TOLERANCE("Average/moderate risk tolerance"),
+        ABOVE_AVERAGE_RISK_TOLERANCE("Above-average risk tolerance"),
+        HIGH_RISK_ROLERANCE("High risk tolerance");
+        
+        private String value;
+
+        RiskToleranceLevel(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        @Override
+        public String toString() {
+            return this.getValue();
+        }
+
+        public static RiskToleranceLevel getEnum(String value) {
+            for (RiskToleranceLevel v : values()) {
+                if (v.getValue().equalsIgnoreCase(value)) {
+                    return v;
+                }
+            }
+            throw new IllegalArgumentException();
+        }
+    }
+    
+    public enum InvestmentRiskLevel {
+
+        LOW_RISK("Low risk"),
+        BELOW_AVERAGE_RISK("Below-average risk"),
+        AVERAGE_RISK("Average/moderate risk"),
+        ABOVE_AVERAGE_RISK("Above-average risk"),
+        HIGH_RISK("High risk");
+        
+        private String value;
+
+        InvestmentRiskLevel(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        @Override
+        public String toString() {
+            return this.getValue();
+        }
+
+        public static InvestmentRiskLevel getEnum(String value) {
+            for (InvestmentRiskLevel v : values()) {
+                if (v.getValue().equalsIgnoreCase(value)) {
+                    return v;
+                }
+            }
+            throw new IllegalArgumentException();
+        }
+    }
+    
+    public enum InvestmentPlanStatus {
+
+        PENDING("PENDING"),
+        CANCELLED("CANCELLED"),
+        ONGOING("ONGOING"),
+        WAITING("WAITING APPROVAL"),
+        EXECUTED("EXECUTED");
+        
+        private String value;
+
+        InvestmentPlanStatus(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        @Override
+        public String toString() {
+            return this.getValue();
+        }
+
+        public static InvestmentPlanStatus getEnum(String value) {
+            for (InvestmentPlanStatus v : values()) {
+                if (v.getValue().equalsIgnoreCase(value)) {
+                    return v;
+                }
+            }
+            throw new IllegalArgumentException();
+        }
+    }
+    
+    public enum InvestmentPlanSatisfactionLevel {
+
+        VERY_SATISFIED("Very Satisfied"),
+        SATISFIED("Satisfied"),
+        OK("OK"),
+        DISATISFIED("Dissatisfied"),
+        VERY_DISATISFIED("Very Disatisfied");
+        
+        private String value;
+
+        InvestmentPlanSatisfactionLevel(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        @Override
+        public String toString() {
+            return this.getValue();
+        }
+
+        public static InvestmentPlanSatisfactionLevel getEnum(String value) {
+            for (InvestmentPlanSatisfactionLevel v : values()) {
+                if (v.getValue().equalsIgnoreCase(value)) {
+                    return v;
+                }
+            }
+            throw new IllegalArgumentException();
+        }
+    }
+    
+    public enum FinancialInstrumentClass {
+
+        US_STOCKS("US STOCKS"),
+        FOREIGN_DEVELOPED_STOCKS("FOREIGN DEVELOPED STOCKS"),
+        EMERGING_MARKET_STOCKS("EMERGING MARKET STOCKS"),
+        DIVIDEND_GROWTH_STOCKS("DIVIDEND GROWTH STOCKS"),
+        US_GOVERNMENT_BONDS("US GOVERNMENT BONDS"),
+        CORPORATE_BONDS("CORPORATE BONDS"),
+        EMERGING_MARKET_BONDS("EMERGING MARKET BONDS"),
+        MUNICIPAL_BONDS("MUNICIPAL BONDS"),
+        TREASURY_INFLATION_PROTECTED_SECURITIES ("TREASURY INFLATION-PROTECTED SECURITIES"),
+        REAL_ESTATE("REAL ESTATE"),
+        NATURAL_RESOURCES("NATURAL RESOURCES");
+        
+        private String value;
+
+        FinancialInstrumentClass(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        @Override
+        public String toString() {
+            return this.getValue();
+        }
+
+        public static FinancialInstrumentClass getEnum(String value) {
+            for (FinancialInstrumentClass v : values()) {
+                if (v.getValue().equalsIgnoreCase(value)) {
+                    return v;
+                }
+            }
+            throw new IllegalArgumentException();
+        }
+    }
+    
+    public enum IntraBankTransferLimit {
+
+        _25000("25000.00"),
+        _23500("23500.00"),
+        _22000("22000.00"),
+        _20000("20000.00"),
+        _15000("15000.00"),
+        _14000("14000.00"),
+        _12500("12500.00"),
+        _11000("11000.00"),
+        _10000("10000.00"),
+        _9000("9000.00"),
+        _7500("7500.00"),
+        _5000("5000.00"),
+        _4000("4000.00"),
+        _3000("3000.00"),
+        _2000("2000.00"),
+        _1000("1000.00"),
+        _500("500.00");
+        
+        private String value;
+
+        IntraBankTransferLimit(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        @Override
+        public String toString() {
+            return this.getValue();
+        }
+
+        public static IntraBankTransferLimit getEnum(String value) {
+            for (IntraBankTransferLimit v : values()) {
+                if (v.getValue().equalsIgnoreCase(value)) {
+                    return v;
+                }
+            }
+            throw new IllegalArgumentException();
+        }
+    }
+    
+    public enum InterBankTransferLimit {
+
+        _50000("50000.00"),
+        _40000("40000.00"),
+        _15000("15000.00"),
+        _10000("10000.00"),
+        _7500("7500.00"),
+        _5000("5000.00"),
+        _4000("4000.00"),
+        _3000("3000.00"),
+        _2000("2000.00"),
+        _1000("1000.00"),
+        _500("500.00");
+        
+        private String value;
+
+        InterBankTransferLimit(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        @Override
+        public String toString() {
+            return this.getValue();
+        }
+
+        public static InterBankTransferLimit getEnum(String value) {
+            for (InterBankTransferLimit v : values()) {
+                if (v.getValue().equalsIgnoreCase(value)) {
+                    return v;
+                }
+            }
+            throw new IllegalArgumentException();
+        }
+    }
+    
+    public enum OverseasBankTransferLimit {
+
+        _200000("200000.00"),
+        _150000("150000.00"),
+        _100000("190000.00"),
+        _50000("50000.00"),
+        _40000("40000.00"),
+        _15000("15000.00"),
+        _10000("10000.00"),
+        _7500("7500.00"),
+        _5000("5000.00"),
+        _4000("4000.00"),
+        _3000("3000.00"),
+        _2000("2000.00"),
+        _1000("1000.00"),
+        _500("500.00");
+        
+        private String value;
+
+        OverseasBankTransferLimit(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        @Override
+        public String toString() {
+            return this.getValue();
+        }
+        public static OverseasBankTransferLimit getEnum(String value) {
+            for (OverseasBankTransferLimit v : values()) {
+                if (v.getValue().equalsIgnoreCase(value)) {
+                    return v;
+                }
+            }
+            throw new IllegalArgumentException();
+        }
+    }
 
     public enum LoanAccountStatus {
 
@@ -1208,6 +1685,7 @@ public class EnumUtils {
         LOAN_PRODUCT_TYPE_CAR("MBS Car Loan"),
         LOAN_PRODUCT_TYPE_PERSONAL("MBS Personal Loan"),
         SUSPENDED("SUSPENDED");
+        
         private String value;
 
         LoanProductType(String value) {

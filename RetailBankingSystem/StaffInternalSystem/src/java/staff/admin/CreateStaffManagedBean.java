@@ -69,7 +69,7 @@ public class CreateStaffManagedBean implements Serializable {
         AuditLog a = new AuditLog();
         a.setActivityLog("System user enter create_role.xhtml");
         a.setFunctionName("CreateRoleManagedBean @PostConstruct init()");
-        a.setInput("Getting all roles");
+        a.setFunctionInput("Getting all roles");
         a.setStaffAccount(SessionUtils.getStaff());
         utilsBean.persist(a);
     }

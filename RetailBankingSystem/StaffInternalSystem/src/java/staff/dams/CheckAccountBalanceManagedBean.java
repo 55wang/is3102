@@ -47,7 +47,7 @@ public class CheckAccountBalanceManagedBean implements Serializable {
         AuditLog a = new AuditLog();
         a.setActivityLog("System user enter CheckAccountBalanceManagedBean");
         a.setFunctionName("CheckAccountBalanceManagedBean @PostConstruct init()");
-        a.setInput("Getting all CheckAccountBalanceManagedBean information");
+        a.setFunctionInput("Getting all CheckAccountBalanceManagedBean information");
         a.setStaffAccount(SessionUtils.getStaff());
         utilsBean.persist(a);
 

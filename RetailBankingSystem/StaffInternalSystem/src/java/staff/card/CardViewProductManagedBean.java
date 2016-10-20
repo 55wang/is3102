@@ -5,7 +5,6 @@
  */
 package staff.card;
 
-import ejb.session.card.CardAcctSessionBeanLocal;
 import ejb.session.card.CardProductSessionBeanLocal;
 import ejb.session.utils.UtilsSessionBeanLocal;
 import entity.card.product.CashBackCardProduct;
@@ -48,7 +47,7 @@ public class CardViewProductManagedBean implements Serializable {
         AuditLog a = new AuditLog();
         a.setActivityLog("System user enter view_card_product.xhtml");
         a.setFunctionName("CardViewProductManagedBean @PostConstruct init()");
-        a.setInput("Getting all credit card products");
+        a.setFunctionInput("Getting all credit card products");
         a.setStaffAccount(SessionUtils.getStaff());
         utilsBean.persist(a);
         displayCards();

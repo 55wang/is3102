@@ -20,15 +20,10 @@ import server.utilities.EnumUtils.Gender;
 public class StaffInfo implements Serializable {
     
     private String address;
-     
     private String postalCode;
-    
     private String phone;
-    
     private EnumUtils.Nationality nationality;
-    
     private Gender gender;
-    
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date birthDay;
 

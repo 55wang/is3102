@@ -29,14 +29,17 @@ public class Cheque implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Temporal(value = TemporalType.TIMESTAMP)
+    private final Date creationDate = new Date();
     
+    // info
     private ChequeStatus status = ChequeStatus.UNTOUCHED;
     @Column(precision=12, scale=2)
     private BigDecimal amount = BigDecimal.ZERO;
     @Temporal(value = TemporalType.TIMESTAMP)
-    private final Date creationDate = new Date();
-    @Temporal(value = TemporalType.TIMESTAMP)
     private final Date receivedDate = null;
+    
+    // mapping
     @ManyToOne(cascade={CascadeType.MERGE})
     private CustomerDepositAccount account;
 

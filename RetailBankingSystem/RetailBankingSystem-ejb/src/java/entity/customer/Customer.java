@@ -29,9 +29,6 @@ import server.utilities.EnumUtils.ResidentialType;
 @Entity
 public class Customer implements Serializable {
 
-    public Customer() {
-    }
-
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,7 +36,6 @@ public class Customer implements Serializable {
 
     //personal info
     private IdentityType identityType;
-
     @Column(unique = true)
     private String identityNumber;
     @Temporal(javax.persistence.TemporalType.DATE)
@@ -47,28 +43,27 @@ public class Customer implements Serializable {
     private String firstname;
     private String lastname;
     private String phone;
+    @Column(unique = true)
+    private String email;
+    
+    // general info
     private Nationality nationality;
     private MaritalStatus maritalStatus;
     private String address;
     private String postalCode;
-    @Column(unique = true)
-    private String email;
     private Industry industry;
-
+    private Education education;
     private ResidentialStatus residentialStatus;
-
     private ResidentialType residentialType;
-
     private EmploymentStatus employmentStatus;
     private Income income;
-
     private Gender gender;
 
+    // credit
     private Double creditScore;
     private String BureaCreditScore;
-
-    private Education education;
-
+    
+    // mapping
     @OneToOne(cascade = {CascadeType.MERGE})
     private MainAccount mainAccount;
 

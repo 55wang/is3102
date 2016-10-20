@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:em="http://xmlns.jcp.org/jsf/composite/emcomp">
+
+    <f:view>
+        <h:head>
+            <title>Merlion Bank</title>
+            <em:cssImport></em:cssImport>
+        </h:head>
+        <h:body>
+            <em:customerHeader context="personal" userName="#{customerHomeManagedBean.customer.firstname}"></em:customerHeader>
+            <em:customerNavBar context="personal" personalPage="pay" ></em:customerNavBar>
+            <div class="customer_main_container">
+                <p:panel header="Manage Billing Organizations">
+                <h:form>
+                    <p:messages id="message" redisplay="false" >
+                        <p:wizard widgetVar="myWizard" showNavBar="false">
+
+                            <p:tab id="input_detail" title="1.Input Details">
+                                <h:panelGrid columns="2" cellpadding="5">
+                                    <h:outputText value="Select Billing Org: " />
+                                    <p:selectOneMenu id="type" value="#{manageBillOrgsManagedBean.selectedBillId}">
+                                        <f:selectItems value="#{manageBillOrgsManagedBean.billOrgsOptions}" var="b" itemValue="#{b.id.toString()}" itemLabel="#{b.name}"/>
+                                    </p:selectOneMenu>
+                                    <h:outputText value="Bill Reference Number: " />
+                                    <h:inputText value="#{manageBillOrgsManagedBean.referenceNumber}" required="true" />
+                                </h:panelGrid>
+                                <p:commandButton  value="Next" type="button" onclick="PF('myWizard').next()" />
+                            </p:tab>
+
+                            <p:tab id="verify_details" title="2.Verify Details">
+                                <h:panelGrid columns="2" cellpadding="5">
+                                    <h:outputText value="Bill Organization: " />
+                                    <h:outputText value="#{manageBillOrgsManagedBean.getOrgName(manageBillOrgsManagedBean.selectedBillId)}" />
+                                    <h:outputText value="Bill Reference Number: " />
+                                    <h:outputText value="#{manageBillOrgsManagedBean.referenceNumber}" />
+                                    <p:commandButton  value="Back" type="button" onclick="PF('myWizard').back()" />
+                                    <p:commandButton value="Add Bill Org" action="#{manageBillOrgsManagedBean.addBillOrg}" update="form"/> 
+                                </h:panelGrid>
+                            </p:tab>
+
+                            <p:tab id="completion" title="3.Completion">
+                                <h:panelGrid columns="2" cellpadding="5">
+                                    <h:outputText value="Bill Organization: " />
+                                    <h:outputText value="#{manageBillOrgsManagedBean.getOrgName(manageBillOrgsManagedBean.selectedBillId)}" />
+                                    <h:outputText value="Bill Reference Number: " />
+                                    <h:outputText value="#{manageBillOrgsManagedBean.referenceNumber}" />
+                                </h:panelGrid>
+                            </p:tab>
+                        </p:wizard>
+                    </p:messages>
+                </h:form>
+                <p:separator />
+                <h:form id="form">
+                    <p:messages>
+                            <p:dataTable value="#{manageBillOrgsManagedBean.addedBillOrgs}" var="billOrg">
+                                <p:column headerText="Name" sortBy="#{billOrg.organization.name}">
+                                    <h:outputText value="#{billOrg.organization.name}"/>
+                                </p:column>
+                                <p:column headerText="Bill Reference" sortBy="#{billOrg.billReference}">
+                                    <h:outputText value="#{billOrg.billReference}"/>
+                                </p:column>
+                                <p:column headerText="Delete">
+                                    <p:commandButton value="Delete Receipiant" action="#{manageBillOrgsManagedBean.removeBillOrg(billOrg)}" update="form"/> 
+                                </p:column>
+                            </p:dataTable>
+                    </p:messages>
+                </h:form>
+                </p:panel>
+            </div>
+            <em:customerFooter></em:customerFooter>
+        </h:body>
+    </f:view>
+</html>

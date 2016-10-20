@@ -5,11 +5,14 @@
  */
 package webservice.restful.mobile;
 
-import java.util.ArrayList;
-import java.util.List;
-import javax.json.Json;
-import javax.json.JsonArray;
-import javax.json.JsonArrayBuilder;
+import ejb.session.common.LoginSessionBeanLocal;
+import ejb.session.common.OTPSessionBeanLocal;
+import ejb.session.dams.MobileAccountSessionBeanLocal;
+import ejb.session.utils.UtilsSessionBeanLocal;
+import entity.common.OneTimePassword;
+import entity.customer.MainAccount;
+import entity.dams.account.MobileAccount;
+import javax.ejb.EJB;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
@@ -22,7 +25,8 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 import org.primefaces.json.JSONObject;
-import webservice.restful.creditcard.CreditCardDTO;
+import server.utilities.HashPwdUtils;
+import server.utilities.PincodeGenerationUtils;
 
 /**
  *
@@ -30,37 +34,78 @@ import webservice.restful.creditcard.CreditCardDTO;
  */
 @Path("mobile_login")
 public class MobileUserLoginService {
-    
+
     @Context
     private UriInfo context;
-    
+
+    @EJB
+    private LoginSessionBeanLocal loginBean;
+    @EJB
+    private UtilsSessionBeanLocal utilBean;
+    @EJB
+    private OTPSessionBeanLocal otpBean;
+    @EJB
+    private MobileAccountSessionBeanLocal mobileBean;
+
     // Works
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getStringList(@QueryParam("username") String username) {
+    public Response login(@QueryParam("username") String username, @QueryParam("password") String password) {
         System.out.println("Received username:" + username);
-
         System.out.println("Received GET http");
         // TODO: Some authentication
-        UserDTO user = new UserDTO();
+        UserLoginDTO user = new UserLoginDTO();
         user.setUsername("Test");
         String jsonString = new JSONObject(user).toString();
         return Response.ok(jsonString, MediaType.APPLICATION_JSON).build();
     }
-    
+
     // Works
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-    public Response clearCC (
-            @FormParam("username") String username
-            ) {
+    public Response clearCC(
+            @FormParam("username") String username,
+            @FormParam("password") String password
+    ) {
+        System.out.println("Received username:" + username);
         System.out.println("Received POST http");
-        System.out.println(username);
-        // TODO: Some authentication
-        UserDTO user = new UserDTO();
-        user.setUsername("Test");
-        String jsonString = new JSONObject(user).toString();
-        return Response.ok(jsonString, MediaType.APPLICATION_JSON).build();
+        String jsonString = null;
+        try {
+            MainAccount ma = loginBean.loginAccount(username, HashPwdUtils.hashPwd(password));
+            if (ma != null) {
+                MobileAccount mobileAccount = mobileBean.getMobileAccountByUserId(ma.getUserID());
+                // request to set up mobile password
+                UserLoginDTO user = new UserLoginDTO();
+                user.setId(ma.getId().toString());
+                user.setUsername(ma.getUserID());
+                user.setMobileNumber(ma.getCustomer().getPhone());
+                user.setFirstName(ma.getCustomer().getFirstname());
+                user.setLastName(ma.getCustomer().getLastname());
+                if (mobileAccount == null) {
+                    user.setMobilePassword("");
+                    mobileBean.createMobileAccount(ma);
+                } else {
+                    user.setMobilePassword(mobileAccount.getPassword());
+                }
+                jsonString = new JSONObject(user).toString();
+                otpBean.generateOTP(user.getMobileNumber());
+                return Response.ok(jsonString, MediaType.APPLICATION_JSON).build();
+            } else {
+                ErrorDTO err = new ErrorDTO();
+                err.setCode(-1);
+                err.setError("No such user found!");
+                jsonString = new JSONObject(err).toString();
+                return Response.ok(jsonString, MediaType.APPLICATION_JSON).build();
+            }
+        } catch (Exception e) {
+            ErrorDTO err = new ErrorDTO();
+            err.setCode(-1);
+            err.setError("No user");
+            jsonString = new JSONObject(err).toString();
+            return Response.ok(jsonString, MediaType.APPLICATION_JSON).build();
+        }
     }
+    
+    
 }

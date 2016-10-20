@@ -32,6 +32,8 @@ public class CustomerFixedDepositAccount extends DepositAccount {
     private final Date maturityDate = new Date();
     @Embedded
     private CumulatedInterest cumulatedInterest = new CumulatedInterest();
+    
+    // mapping
     @OneToMany(cascade = {CascadeType.MERGE})
     private List<TimeRangeInterest> interestRules = new ArrayList<>();
 

@@ -15,6 +15,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import server.utilities.DateUtils;
+import server.utilities.EnumUtils.CardTransactionStatus;
 
 /**
  *
@@ -28,6 +29,13 @@ public class CardTransactionSessionBean implements CardTransactionSessionBeanLoc
 
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")
+    
+    @Override
+    public CardTransaction updateCardTransaction(CardTransaction ct) {
+        em.merge(ct);
+        return ct;
+    }
+    
     @Override
     public Boolean createCardTransaction(CardTransaction ct) {
         try {
@@ -38,6 +46,23 @@ public class CardTransactionSessionBean implements CardTransactionSessionBeanLoc
             System.out.println("CardTransactionSessionBean.createCardTransaction: " + ex.toString());
             return false;
         }
+    }
+
+    @Override
+    public List<CardTransaction> getListCardTransactionsByStatus(CardTransactionStatus status) {
+        Query q = em.createQuery("SELECT ct FROM CardTransaction ct WHERE ct.cardTransactionStatus=:inStatus");
+        q.setParameter("inStatus", status);
+        List<CardTransaction> cts = q.getResultList();
+        System.out.println(cts);
+        return cts;
+    }
+
+    @Override
+    public CardTransaction getCardTransactionByVisaId(String visaId) {
+        System.out.println(visaId);
+        Query q = em.createQuery("SELECT ct FROM CardTransaction ct WHERE ct.visaId =:inVisaId");
+        q.setParameter("inVisaId", visaId);
+        return (CardTransaction) q.getSingleResult();
     }
 
     @Override
@@ -60,7 +85,6 @@ public class CardTransactionSessionBean implements CardTransactionSessionBeanLoc
 //        CreditCardAccount ca = getCreditCardAccountByCardNumber(ccNumber);
         if (cca != null) {
             ct.setCreditCardAccount(cca);
-            cca.addOutstandingAmount(ct.getAmount());
             em.persist(ct);
             em.merge(cca);
             return ct;
@@ -70,10 +94,7 @@ public class CardTransactionSessionBean implements CardTransactionSessionBeanLoc
     }
 
     @Override
-    public List<CardTransaction> getTransactionByStartDateAndEndDate(Date sDate, Date eDate) {
-
-        java.sql.Date startDate = new java.sql.Date(sDate.getTime());
-        java.sql.Date endDate = new java.sql.Date(eDate.getTime());
+    public List<CardTransaction> getTransactionByStartDateAndEndDate(Date startDate, Date endDate) {
 
         System.out.println("SELECT ct FROM CardTransaction ct WHERE ct.updateDate BETWEEN " + startDate + " AND " + endDate + "");
         Query q = em.createQuery("SELECT ct FROM CardTransaction ct WHERE "
@@ -87,8 +108,8 @@ public class CardTransactionSessionBean implements CardTransactionSessionBeanLoc
 
     @Override
     public List<CardTransaction> getListDailyTransactionsByCreditCardAccount(CreditCardAccount cca) {
-        java.sql.Date startDate = new java.sql.Date(DateUtils.getBeginOfDay().getTime());
-        java.sql.Date endDate = new java.sql.Date(DateUtils.getEndOfDay().getTime());
+        Date startDate = DateUtils.getBeginOfDay();
+        Date endDate = DateUtils.getEndOfDay();
         System.out.println("Getting Daily Transaction");
         Query q = em.createQuery("SELECT ct FROM CardTransaction ct WHERE "
                 + "ct.creditCardAccount.id =:ccId AND "
@@ -112,8 +133,8 @@ public class CardTransactionSessionBean implements CardTransactionSessionBeanLoc
     @Override
     public List<CardTransaction> getListMonthlyTransactionsByCreditCardAccount(CreditCardAccount cca) {
 
-        java.sql.Date startDate = new java.sql.Date(DateUtils.getBeginOfDay().getTime());
-        java.sql.Date endDate = new java.sql.Date(DateUtils.getEndOfDay().getTime());
+        Date startDate = DateUtils.getBeginOfDay();
+        Date endDate = DateUtils.getEndOfDay();
         System.out.println("Getting Monthly Transaction");
         Query q = em.createQuery("SELECT ct FROM CardTransaction ct WHERE "
                 + "ct.creditCardAccount.id =:ccId AND "
@@ -169,7 +190,6 @@ public class CardTransactionSessionBean implements CardTransactionSessionBeanLoc
         if ((monthlyAmount + requestAmount) > creditCard.getTransactionMonthlyLimit()) {
             return false;
         }
-
         return true;
     }
 }

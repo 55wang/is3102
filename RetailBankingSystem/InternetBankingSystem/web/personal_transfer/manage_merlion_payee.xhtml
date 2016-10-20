@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:em="http://xmlns.jcp.org/jsf/composite/emcomp">
+
+    <f:view>
+        <h:head>
+            <title>Merlion Bank</title>
+            <em:cssImport></em:cssImport>
+        </h:head>
+        <h:body>
+            <em:customerHeader context="personal" userName="#{customerHomeManagedBean.customer.firstname}"></em:customerHeader>
+            <em:customerNavBar context="personal" personalPage="transfer" ></em:customerNavBar>
+            <div class="customer_main_container">
+                <p:panel header="Manage Merlion Bank Receipaint">
+                <h:form>
+                    <p:messages id="message" redisplay="false" >
+                        <p:wizard widgetVar="myWizard" showNavBar="false">
+
+                            <p:tab id="input_detail" title="1.Input Details">
+                                <h1>To</h1>
+                                    <h:panelGrid columns="2" cellpadding="5">
+                                        <h:outputText value="Recipient's Name: " />
+                                        <h:inputText value="#{manageMerlionPayeeManagedBean.payee.name}" required="true" />
+                                        <h:outputText value="Recipient's Account Number: " />
+                                        <h:inputText value="#{manageMerlionPayeeManagedBean.payee.accountNumber}" required="true" />
+                                    </h:panelGrid>
+                                <h1>From</h1>
+                                    <h:panelGrid columns="2" cellpadding="5">
+                                        <h:outputText value="My Account: " />
+                                        <h:outputText value="#{manageMerlionPayeeManagedBean.payee.fromName}"/>
+                                        <h:outputText value="My Initials: " />
+                                        <h:inputText value="#{manageMerlionPayeeManagedBean.payee.myInitial}" required="true" />
+                                        <p:commandButton  value="Next" type="button" onclick="PF('myWizard').next()" />
+                                    </h:panelGrid>
+                            </p:tab>
+
+                            <p:tab id="verify_details" title="2.Verify Details">
+                                <h:panelGrid columns="2" cellpadding="5">
+                                    <h:outputText value="Recipient's Name: " />
+                                    <h:outputText value="#{manageMerlionPayeeManagedBean.payee.name}" />
+                                    <h:outputText value="Recipient's Account Number: " />
+                                    <h:outputText value="#{manageMerlionPayeeManagedBean.payee.accountNumber}" />
+                                    <h:outputText value="My Account: " />
+                                    <h:outputText value="#{manageMerlionPayeeManagedBean.payee.fromName}"/>
+                                    <h:outputText value="My Initials: " />
+                                    <h:outputText value="#{manageMerlionPayeeManagedBean.payee.myInitial}"/>
+                                    <p:commandButton  value="Back" type="button" onclick="PF('myWizard').back()" />
+                                    <p:commandButton value="Add Receipiant" action="#{manageMerlionPayeeManagedBean.addPayee}" update="@form"/> 
+                                </h:panelGrid>
+                            </p:tab>
+
+                            <p:tab id="completion" title="3.Completion">
+                                <h:panelGrid columns="2" cellpadding="5">
+                                    <h:outputText value="Recipient's Name: " />
+                                    <h:outputText value="#{manageMerlionPayeeManagedBean.payee.name}" />
+                                    <h:outputText value="Recipient's Account Number: " />
+                                    <h:outputText value="#{manageMerlionPayeeManagedBean.payee.accountNumber}" />
+                                    <h:outputText value="My Account: " />
+                                    <h:outputText value="#{manageMerlionPayeeManagedBean.payee.fromName}"/>
+                                    <h:outputText value="My Initials: " />
+                                    <h:outputText value="#{manageMerlionPayeeManagedBean.payee.myInitial}"/>
+                                </h:panelGrid>
+                            </p:tab>
+                        </p:wizard>
+                    </p:messages>
+                    </h:form>
+                <h:form id="form">
+                    <p:messages>
+                        <h1>Added Receipiants</h1>
+                        <p:dataTable id="transactions" value="#{manageMerlionPayeeManagedBean.payees}" var="payee">
+                            <p:column headerText="Name" sortBy="#{payee.name}">
+                                <h:outputText value="#{payee.name}"/>
+                            </p:column>
+                            <p:column headerText="Account Number" sortBy="#{payee.accountNumber}">
+                                <h:outputText value="#{payee.accountNumber}"/>
+                            </p:column>
+                            <p:column headerText="Delete">
+                                <p:commandButton value="Delete Receipiant" action="#{manageMerlionPayeeManagedBean.removePayee(payee)}" update="form"/> 
+                            </p:column>
+                        </p:dataTable>
+                    </p:messages>
+                </h:form>
+                </p:panel>
+            </div>
+            <em:customerFooter></em:customerFooter>
+        </h:body>
+    </f:view>
+</html>

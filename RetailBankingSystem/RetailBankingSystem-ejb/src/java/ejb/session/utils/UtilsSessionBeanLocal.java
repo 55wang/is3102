@@ -16,12 +16,11 @@ import javax.ejb.Local;
 @Local
 public interface UtilsSessionBeanLocal {
     public Object find(Class type, Long id);
+    public Object find(Class type, String id);
     public List<Object> findAll(String entityName);
     public Object persist(Object object);
     public Object merge(Object object);
-    
-    
-    
+    public void remove(Object object);
     
     public Boolean checkIdentityNumberIsUnique(String identityNumber);
     public Boolean checkEmailIsUnique(String email);

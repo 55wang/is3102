@@ -17,6 +17,7 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
+import server.utilities.ConstantUtils;
 import utils.RedirectUtils;
 import utils.SessionUtils;
 
@@ -49,7 +50,7 @@ public class CardProductManagedBean implements Serializable {
         AuditLog a = new AuditLog();
         a.setActivityLog("System user enter card_product.xhtml");
         a.setFunctionName("CardProductManagedBean @PostConstruct init()");
-        a.setInput("Getting all card products");
+        a.setFunctionInput("Getting all card products");
         a.setStaffAccount(SessionUtils.getStaff());
         utilsBean.persist(a);
     }
@@ -69,19 +70,18 @@ public class CardProductManagedBean implements Serializable {
         try {
             mcp.setProductName(mcp.getProductName());
             mcp.setMinSpendingAmount(mcp.getMinSpendingAmount());
-            mcp.setMinSpending(mcp.isMinSpending());
             mcp.setOverseaMileRate(mcp.getOverseaMileRate());
             mcp.setLocalMileRate(mcp.getLocalMileRate());
 
             cardProductSessionBean.createMileProduct(mcp);
 
-            RedirectUtils.redirect("/StaffInternalSystem/card/staff-view-card.xhtml");
+            RedirectUtils.redirect(ConstantUtils.STAFF_CARD_STAFF_VIEW_CARD);
 
         } catch (Exception ex) {
             System.out.println("CardProductManagedBean.addNewMileCreditCard Error");
             System.out.println(ex);
 
-            RedirectUtils.redirect("/StaffInternalSystem/card/card-create-product.xhtml");
+            RedirectUtils.redirect(ConstantUtils.STAFF_CARD_CARD_CREATE_PRODUCT);
         }
     }
 
@@ -89,17 +89,16 @@ public class CardProductManagedBean implements Serializable {
         try {
             rcp.setProductName(rcp.getProductName());
             rcp.setMinSpendingAmount(rcp.getMinSpendingAmount());
-            rcp.setMinSpending(rcp.isMinSpending());
             rcp.setLocalMileRate(rcp.getLocalMileRate());
             rcp.setLocalPointRate(rcp.getLocalPointRate());
 
             cardProductSessionBean.createRewardProduct(rcp);
 
-            RedirectUtils.redirect("/StaffInternalSystem/card/staff-view-card.xhtml");
+            RedirectUtils.redirect(ConstantUtils.STAFF_CARD_STAFF_VIEW_CARD);
         } catch (Exception ex) {
             System.out.println("CardProductManagedBean.addNewRewardCreditCard Error");
             System.out.println(ex);
-            RedirectUtils.redirect("/StaffInternalSystem/card/card-create-product.xhtml");
+            RedirectUtils.redirect(ConstantUtils.STAFF_CARD_CARD_CREATE_PRODUCT);
         }
     }
 
@@ -107,18 +106,17 @@ public class CardProductManagedBean implements Serializable {
         try {
             cbcp.setProductName(cbcp.getProductName());
             cbcp.setMinSpendingAmount(cbcp.getMinSpendingAmount());
-            cbcp.setMinSpending(cbcp.isMinSpending());
             cbcp.setPetrolCashBackRate(cbcp.getPetrolCashBackRate());
             cbcp.setGroceryCashBackRate(cbcp.getGroceryCashBackRate());
             cbcp.setDiningCashBackRate(cbcp.getDiningCashBackRate());
 
             cardProductSessionBean.createCashBackProduct(cbcp);
 
-            RedirectUtils.redirect("/StaffInternalSystem/card/staff-view-card.xhtml");
+            RedirectUtils.redirect(ConstantUtils.STAFF_CARD_STAFF_VIEW_CARD);
         } catch (Exception ex) {
             System.out.println("CardProductManagedBean.addNewCashBackCreditCard Error");
             System.out.println(ex);
-            RedirectUtils.redirect("/StaffInternalSystem/card/card-create-product.xhtml");
+            RedirectUtils.redirect(ConstantUtils.STAFF_CARD_CARD_CREATE_PRODUCT);
         }
     }
 

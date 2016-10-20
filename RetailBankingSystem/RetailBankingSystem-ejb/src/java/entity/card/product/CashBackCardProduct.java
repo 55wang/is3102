@@ -5,7 +5,6 @@
  */
 package entity.card.product;
 
-import entity.card.product.CreditCardProduct;
 import javax.persistence.Entity;
 
 /**
@@ -15,6 +14,7 @@ import javax.persistence.Entity;
 @Entity
 public class CashBackCardProduct extends CreditCardProduct {
 
+    // info
     private Double petrolCashBackRate = 0.08; // 8%
     private Double groceryCashBackRate = 0.08; //8%
     private Double diningCashBackRate = 0.08; //8%

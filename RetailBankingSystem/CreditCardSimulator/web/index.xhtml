@@ -12,16 +12,53 @@ and open the template in the editor.
 
     <f:view>
         <h:head>
-            <title>Merlion Internal</title>
+            <title>Credit Card Simulator</title>
             <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
         </h:head>
         <h:body style="background-color: #f9f9f9">
+            <h1>Credit Card Simulator - Send Card Transaction</h1>
             <h:form id="formMain">
-                <h:outputText value="Transaction Amount:" />
+                <h:outputText value="Credit Card Number: " />
+                <h:inputText value="#{simulatedCallManagedBean.creditCardNumber}">
+                </h:inputText><br />
+                <h:outputText value="Transaction Amount: " />
                 <h:inputText required="true" value="#{simulatedCallManagedBean.transactionAmount}">
                 </h:inputText>
-                <p:commandButton id="success" value="Success Test" actionListener="#{simulatedCallManagedBean.sendSuccessAuthorization}" />
+                <p:commandButton id="success" value="Send Transaction" actionListener="#{simulatedCallManagedBean.sendSuccessAuthorization}" update="@form"/>
             </h:form>
+
+            <div class="container">
+                <h:form id="mainForm">
+                    <p:panel header="Credit Card Transactions">
+                        <p:messages id="messagesStatus" redisplay="false" >
+                            <h:panelGrid columns="2" cellpadding="5">
+                                <p:dataTable value="#{simulatedCallManagedBean.vcts}" var="vct" >
+
+                                    <p:column headerText="ID">
+                                        <h:outputText value="#{vct.id}" />
+                                    </p:column>
+
+                                    <p:column headerText="Amount">
+                                        <h:outputText value="#{vct.amount}" />
+                                    </p:column>
+
+                                    <p:column headerText="Credit Card Number">
+                                        <h:outputText value="#{vct.creditCardNumber}" />
+                                    </p:column>
+
+                                    <p:column headerText="Status">
+                                        <h:outputText value="#{vct.settledStatus}" />
+                                    </p:column>
+
+                                </p:dataTable>
+                            </h:panelGrid>
+                            <p:commandButton value="EOD SETTLEMENT" action="#{simulatedCallManagedBean.sendEODSettlement()}" icon="ui-icon-check" update="@form" />
+
+                        </p:messages>
+                    </p:panel>
+                </h:form>
+            </div>
+
         </h:body>
     </f:view>
 </html>

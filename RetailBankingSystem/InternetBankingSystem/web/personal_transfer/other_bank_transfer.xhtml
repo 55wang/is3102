@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:em="http://xmlns.jcp.org/jsf/composite/emcomp">
+
+    <f:view>
+        <h:head>
+            <title>Merlion Bank</title>
+            <em:cssImport></em:cssImport>
+        </h:head>
+        <h:body>
+            <em:customerHeader context="personal" userName="#{customerHomeManagedBean.customer.firstname }"></em:customerHeader>
+            <em:customerNavBar context="personal" personalPage="transfer" ></em:customerNavBar>
+            <div class="customer_main_container">
+                <h:form>
+                    <!--TODO: payee-->
+                    <p:panel header="Transfer to other Bank Account">
+                        <h2>Daily transfer limit left: #{interBankTransferManagedBean.transferLimitLeft}</h2>
+                        <p:messages id="message" redisplay="false" >
+                            <p:wizard widgetVar="myWizard" showNavBar="false">
+                                <p:tab id="input_detail" title="1.Input Details">
+                                    <h1>To</h1>
+                                        <h:panelGrid columns="2" cellpadding="5">
+                                            <h:outputText value="Paying To: " />
+                                            <p:selectOneMenu value="#{interBankTransferManagedBean.payeeId}" rendered="true" required="true">
+                                                <f:selectItem itemValue="New Receipiant" itemLabel="New Receipiant" />
+                                                <c:if test="#{interBankTransferManagedBean.payees.size() > 0 }">
+                                                    <f:selectItems value="#{interBankTransferManagedBean.payees}" var="p" itemValue="#{p.id.toString()}" itemLabel="#{p.name} - #{interBankTransferManagedBean.getBankName(p.bankCode)} #{p.accountNumber}" />
+                                                </c:if>
+                                                <f:ajax render="@form" listener="#{interBankTransferManagedBean.changePayee}" />
+                                            </p:selectOneMenu>
+
+                                            <c:if test="#{interBankTransferManagedBean.payeeId == 'New Receipiant'}">
+                                                <h:outputText value="Recipient's Name: " />
+                                                <p:inputText value="#{interBankTransferManagedBean.payee.name}" required="true" />
+                                                <h:outputText value="Recipient's Bank: " />
+                                                <p:selectOneMenu value="#{interBankTransferManagedBean.bankId}" rendered="true" required="true">
+                                                    <f:selectItems value="#{interBankTransferManagedBean.bankList}" var="b" itemValue="#{b.id.toString()}" itemLabel="#{b.name}" />
+                                                </p:selectOneMenu>
+                                                <h:outputText value="Recipient's Account: " />
+                                                <p:inputText value="#{interBankTransferManagedBean.payee.accountNumber}" required="true" />
+                                                <h:outputText value="My Initials: " />
+                                                <p:inputText value="#{interBankTransferManagedBean.payee.myInitial}" required="true" />
+                                            </c:if>
+                                            <c:if test="#{interBankTransferManagedBean.payeeId != 'New Receipiant'}">
+                                                <p:outputLabel value="Recipient's Name: " />
+                                                <p:outputLabel value="#{interBankTransferManagedBean.payee.name}"/>
+                                                <p:outputLabel value="Recipient's Bank: " />
+                                                <p:outputLabel value="#{interBankTransferManagedBean.getBankName(interBankTransferManagedBean.payee.bankCode)}"/>
+                                                <p:outputLabel value="Recipient's Account: " />
+                                                <p:outputLabel value="#{interBankTransferManagedBean.payee.accountNumber}"/>
+                                            </c:if>
+                                        </h:panelGrid>
+                                    <h1>From</h1>
+                                        <h:panelGrid columns="2" cellpadding="5">
+                                            <h:outputText value="Choose Your Account to transfer from: " />
+                                            <p:selectOneMenu value="#{interBankTransferManagedBean.fromAccountNo}" rendered="true" required="true">
+                                                <f:selectItems value="#{interBankTransferManagedBean.accounts}" var="a" itemValue="#{a.accountNumber}" itemLabel="#{a.product.name} #{a.accountNumber} #{a.balance.setScale(2)}" />
+                                            </p:selectOneMenu>
+                                            <p:outputLabel value="Transfer Amount: " />
+                                            <p:inputText value="#{interBankTransferManagedBean.amount}"/>
+                                            <h:outputText value="Purpose of Transfer: " />
+                                            <p:selectOneMenu value="#{interBankTransferManagedBean.purpose}" rendered="true" required="true">
+                                                <f:selectItems value="#{interBankTransferManagedBean.purposeOptions}"/>
+                                            </p:selectOneMenu>
+                                        </h:panelGrid>
+                                    <p:commandButton  value="Next" type="button" onclick="PF('myWizard').next()" />
+
+                                </p:tab>
+
+                                <p:tab id="verify_details" title="2.Verify Details">
+                                    <h:panelGrid columns="2" cellpadding="5">
+
+                                        <h:outputText value="Recipient's Name: " />
+                                        <h:outputText value="#{interBankTransferManagedBean.payee.name}" />
+                                        <h:outputText value="Recipient's Bank: " />
+                                        <h:outputText value="#{interBankTransferManagedBean.getBankName(interBankTransferManagedBean.payee.bankCode)}" />
+                                        <h:outputText value="Recipient's Account: " />
+                                        <h:outputText value="#{interBankTransferManagedBean.payee.accountNumber}" />
+                                        <h:outputText value="My Initials: " />
+                                        <h:outputText value="#{interBankTransferManagedBean.payee.myInitial}" />
+
+                                        <h:outputText value="Your Account to transfer from: " />
+                                        <h:outputText value="#{interBankTransferManagedBean.fromAccountNo}" />
+                                        <h:outputText value="Transfer Amount: " />
+                                        <h:outputText value="S$ #{interBankTransferManagedBean.amount}"/>
+                                        <h:outputText value="Purpose of Transfer: " />
+                                        <h:outputText value="#{interBankTransferManagedBean.purpose}" />
+                                        
+                                        <p:commandButton  value="Back" type="button" onclick="PF('myWizard').back()" />
+                                        <p:commandButton value="Transfer" action="#{interBankTransferManagedBean.transfer}" update="@form"/> 
+                                    </h:panelGrid>
+                                </p:tab>
+
+                                <p:tab id="completion" title="3.Completion">
+                                    <h:panelGrid columns="2" cellpadding="5">
+
+                                        <h:outputText value="Recipient's Name: " />
+                                        <h:outputText value="#{interBankTransferManagedBean.payee.name}" />
+                                        <h:outputText value="Recipient's Bank: " />
+                                        <h:outputText value="#{interBankTransferManagedBean.getBankName(interBankTransferManagedBean.payee.bankCode)}" />
+                                        <h:outputText value="Recipient's Account: " />
+                                        <h:outputText value="#{interBankTransferManagedBean.payee.accountNumber}" />
+                                        <h:outputText value="My Initials: " />
+                                        <h:outputText value="#{interBankTransferManagedBean.payee.myInitial}" />
+
+                                        <h:outputText value="Your Account to transfer from: " />
+                                        <h:outputText value="#{interBankTransferManagedBean.fromAccountNo}" />
+                                        <h:outputText value="Transfer Amount: " />
+                                        <h:outputText value="S$ #{interBankTransferManagedBean.amount}"/>
+                                        <h:outputText value="Purpose of Transfer: " />
+                                        <h:outputText value="#{interBankTransferManagedBean.purpose}" />
+                                        
+                                    </h:panelGrid>
+                                </p:tab>
+                            </p:wizard>
+                        </p:messages>
+                    </p:panel>
+                </h:form>
+            </div>
+            <em:customerFooter></em:customerFooter>
+        </h:body>
+    </f:view>
+</html>

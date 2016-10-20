@@ -19,7 +19,7 @@ import javax.persistence.Query;
  * @author leiyang
  */
 @Stateless
-public class StaffRoleSessionBean implements StaffRoleSessionBeanLocal, StaffRoleSessionBeanRemote{
+public class StaffRoleSessionBean implements StaffRoleSessionBeanLocal{
     
     @PersistenceContext(unitName = "RetailBankingSystem-ejbPU")
     private EntityManager em;

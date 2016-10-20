@@ -8,7 +8,6 @@ package entity.card.account;
 import entity.dams.account.CustomerDepositAccount;
 import java.io.Serializable;
 import java.util.Date;
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -29,22 +28,25 @@ public class DebitCardAccount implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    /*
-     many to 1 deposit account
-     */
-    @ManyToOne()
-    private CustomerDepositAccount customerDepositAccount;
+    @Temporal(value = TemporalType.TIMESTAMP)
+    private Date creationDate = new Date();
+    
+    // info
+    @Temporal(value = TemporalType.DATE)
+    private Date validDate;
     private EnumUtils.CardNetwork cardNetwork;
     private EnumUtils.CardAccountStatus CardStatus;
     private String creditCardNum;
     private Integer cvv; // LY: Use Integer instead of int
     private String nameOnCard;
-    @Temporal(value = TemporalType.DATE)
-    private Date validDate;
+    
     private double transactionMonthlyLimit;
     private double transactionDailyLimit;
-    @Temporal(value = TemporalType.TIMESTAMP)
-    private Date creationDate = new Date();
+    
+    
+    // mappings
+    @ManyToOne()
+    private CustomerDepositAccount customerDepositAccount;
 
     public Long getId() {
         return id;

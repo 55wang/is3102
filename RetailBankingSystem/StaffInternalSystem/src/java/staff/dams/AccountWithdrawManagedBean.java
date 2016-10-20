@@ -46,7 +46,7 @@ public class AccountWithdrawManagedBean implements Serializable {
         AuditLog a = new AuditLog();
         a.setActivityLog("System user enter AccountWithdrawManagedBean");
         a.setFunctionName("AccountWithdrawManagedBean @PostConstruct init()");
-        a.setInput("Getting all AccountWithdrawManagedBean information");
+        a.setFunctionInput("Getting all AccountWithdrawManagedBean information");
         a.setStaffAccount(SessionUtils.getStaff());
         utilsBean.persist(a);
 
