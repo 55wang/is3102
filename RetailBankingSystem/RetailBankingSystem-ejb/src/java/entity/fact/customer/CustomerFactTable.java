@@ -1,9 +1,11 @@
+package entity.fact.customer;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package entity.fact;
+
 
 import entity.customer.Customer;
 import java.io.Serializable;
@@ -48,6 +50,9 @@ public class CustomerFactTable implements Serializable {
     private BigDecimal totalDepositAmount; //for customer, his own total deposit
     private Double totalLoanAmount;         //loan
     private Double totalCreditCardAmount;  //creditcardamount
+    
+    //transaction fact table of customer
+    
 
     public Long getId() {
         return id;

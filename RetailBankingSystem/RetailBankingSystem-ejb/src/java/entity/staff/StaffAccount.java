@@ -6,6 +6,7 @@
 package entity.staff;
 
 import entity.common.AuditLog;
+import entity.crm.MarketingCampaign;
 import entity.customer.CustomerCase;
 import entity.customer.WealthManagementSubscriber;
 import entity.embedded.StaffInfo;
@@ -39,10 +40,10 @@ public class StaffAccount implements Serializable {
     private StatusType status = StatusType.PENDING;
     @Embedded
     private StaffInfo staffInfo = new StaffInfo();
-    
+
     // mapping
     @ManyToMany(mappedBy = "staffAccounts")
-    private List<Role> roles; // Role already consist of list of permissions
+    private List<Role> roles = new ArrayList<>(); // Role already consist of list of permissions
     @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "staffAccount")
     private List<AuditLog> auditLog = new ArrayList<>();
     @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "sender")
@@ -53,6 +54,8 @@ public class StaffAccount implements Serializable {
     private List<CustomerCase> cases = new ArrayList<>();
     @OneToMany(cascade = {CascadeType.MERGE}, mappedBy = "relationshipManager")
     private List<WealthManagementSubscriber> wealthManagementSubscribers = new ArrayList<>();
+    @OneToMany(mappedBy = "staffAccount")
+    private List<MarketingCampaign> marketingCampaign = new ArrayList<>();
 
     public String getNameLabel() {
         return this.getFirstName().substring(0, 1).toUpperCase() + this.getLastName().substring(0, 1).toUpperCase();
@@ -83,9 +86,8 @@ public class StaffAccount implements Serializable {
     public String toString() {
         return "StaffAccount{" + "username=" + username + ", firstName=" + firstName + ", lastName=" + lastName + ", password=" + password + ", email=" + email + ", status=" + status + ", staffInfo=" + staffInfo + ", roles=" + getRoles() + ", auditLog=" + auditLog + ", senderConversation=" + senderConversation + ", receiverConversation=" + receiverConversation + ", cases=" + cases + ", wealthManagementSubscribers=" + wealthManagementSubscribers + '}';
     }
-    
-    // Getter and Setter
 
+    // Getter and Setter
     public String getUsername() {
         return username;
     }
@@ -242,5 +244,13 @@ public class StaffAccount implements Serializable {
      */
     public void setRoles(List<Role> roles) {
         this.roles = roles;
+    }
+        
+    public List<MarketingCampaign> getMarketingCampaign() {
+        return marketingCampaign;
+    }
+
+    public void setMarketingCampaign(List<MarketingCampaign> marketingCampaign) {
+        this.marketingCampaign = marketingCampaign;
     }
 }

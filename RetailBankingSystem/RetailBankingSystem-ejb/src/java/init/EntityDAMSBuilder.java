@@ -781,7 +781,7 @@ public class EntityDAMSBuilder {
         fixedAccount.setInterestRules(interestSessionBean.getFixedDepositAccountDefaultInterests());
         customerDepositSessionBean.createAccount(fixedAccount);
         
-        return customAccount;
+        return (CustomerDepositAccount) dp;
     }
 
     private void initTransactions(DepositAccount account) {

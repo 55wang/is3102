@@ -5,6 +5,8 @@
  */
 package staff.wealth;
 
+import sentiment.Analyze;
+import com.google.api.services.language.v1beta1.model.Sentiment;
 import ejb.session.mainaccount.MainAccountSessionBeanLocal;
 import ejb.session.wealth.InvestmentPlanSessionBeanLocal;
 import ejb.session.wealth.PortfolioSessionBeanLocal;
@@ -12,7 +14,6 @@ import entity.wealth.Portfolio;
 import java.io.Serializable;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import javax.faces.bean.ManagedProperty;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
@@ -48,9 +49,7 @@ public class UpdatePortfolioManagedBean implements Serializable {
         if (portfolioID != null && portfolioID.length() > 0) {
             p = portfolioSessionBean.getPortfolioById(Long.parseLong(portfolioID));
         }
-        
-        
-        
+
     }
 
     public void retrievePortfolio() {
@@ -72,9 +71,8 @@ public class UpdatePortfolioManagedBean implements Serializable {
     public void updateBuyingPortfolio() {
         //when execute btn is pressed from the viewinvestmentplan, it should already create the portfolio
         //here is just merge and update value instead of persist.
-        
+
         //set current amount and value to buying 
-        
         portfolioSessionBean.updatePortfolio(p);
         MessageUtils.displayInfo("Update Successful");
     }

@@ -12,6 +12,35 @@ package server.utilities;
 // REMARK: To get the list of enum values, just use e.g. CreditType.values()
 public class EnumUtils {
 
+    public enum TypeMarketingCampaign {
+
+        ADSBANNER("ADSBANNERCAMPAIGN"),
+        EMAILCAMPAIGN("EMAILCAMPAIGN");
+        private String value;
+
+        TypeMarketingCampaign(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        @Override
+        public String toString() {
+            return this.getValue();
+        }
+
+        public static TypeMarketingCampaign getEnum(String value) {
+            for (TypeMarketingCampaign v : values()) {
+                if (v.getValue().equalsIgnoreCase(value)) {
+                    return v;
+                }
+            }
+            throw new IllegalArgumentException();
+        }
+    }
+
     public enum CardTransactionPaymentStatus {
 
         UNPAID("UNPAID"),
@@ -1198,7 +1227,7 @@ public class EnumUtils {
             throw new IllegalArgumentException();
         }
     }
-    
+
     // bill
     public enum BillType {
 
@@ -1235,13 +1264,15 @@ public class EnumUtils {
             throw new IllegalArgumentException();
         }
     }
+
     // transfer
+
     public enum PayeeType {
 
         MERLION("MERLION"),
         LOCAL("LOCAL"),
         OVERSEAS("OVERSEAS");
-        
+
         private String value;
 
         PayeeType(String value) {
@@ -1266,9 +1297,11 @@ public class EnumUtils {
             throw new IllegalArgumentException();
         }
     }
-    
+
     public enum TransferPurpose {
+
         // Personal Expenses
+
         CC_PAY("Credit Card Payment"),
         CARPARK_CHRAGES("Carpark Charges"),
         CABLE_TV_BILL("Cable TV Bill"),
@@ -1324,7 +1357,7 @@ public class EnumUtils {
         REFUND("Refund"),
         WITHHOLDING("Withholding"),
         OTHERS("Others");
-        
+
         private String value;
 
         TransferPurpose(String value) {
@@ -1349,7 +1382,7 @@ public class EnumUtils {
             throw new IllegalArgumentException();
         }
     }
-    
+
     public enum RiskToleranceLevel {
 
         LOW_RISK_TOLERANCE("Low risk tolerance"),
@@ -1357,7 +1390,7 @@ public class EnumUtils {
         AVERAGE_RISK_TOLERANCE("Average/moderate risk tolerance"),
         ABOVE_AVERAGE_RISK_TOLERANCE("Above-average risk tolerance"),
         HIGH_RISK_ROLERANCE("High risk tolerance");
-        
+
         private String value;
 
         RiskToleranceLevel(String value) {
@@ -1382,7 +1415,7 @@ public class EnumUtils {
             throw new IllegalArgumentException();
         }
     }
-    
+
     public enum InvestmentRiskLevel {
 
         LOW_RISK("Low risk"),
@@ -1390,7 +1423,7 @@ public class EnumUtils {
         AVERAGE_RISK("Average/moderate risk"),
         ABOVE_AVERAGE_RISK("Above-average risk"),
         HIGH_RISK("High risk");
-        
+
         private String value;
 
         InvestmentRiskLevel(String value) {
@@ -1415,7 +1448,7 @@ public class EnumUtils {
             throw new IllegalArgumentException();
         }
     }
-    
+
     public enum InvestmentPlanStatus {
 
         PENDING("PENDING"),
@@ -1423,7 +1456,7 @@ public class EnumUtils {
         ONGOING("ONGOING"),
         WAITING("WAITING APPROVAL"),
         EXECUTED("EXECUTED");
-        
+
         private String value;
 
         InvestmentPlanStatus(String value) {
@@ -1448,7 +1481,7 @@ public class EnumUtils {
             throw new IllegalArgumentException();
         }
     }
-    
+
     public enum InvestmentPlanSatisfactionLevel {
 
         VERY_SATISFIED("Very Satisfied"),
@@ -1456,7 +1489,7 @@ public class EnumUtils {
         OK("OK"),
         DISATISFIED("Dissatisfied"),
         VERY_DISATISFIED("Very Disatisfied");
-        
+
         private String value;
 
         InvestmentPlanSatisfactionLevel(String value) {
@@ -1481,7 +1514,7 @@ public class EnumUtils {
             throw new IllegalArgumentException();
         }
     }
-    
+
     public enum FinancialInstrumentClass {
 
         US_STOCKS("US STOCKS"),
@@ -1492,10 +1525,10 @@ public class EnumUtils {
         CORPORATE_BONDS("CORPORATE BONDS"),
         EMERGING_MARKET_BONDS("EMERGING MARKET BONDS"),
         MUNICIPAL_BONDS("MUNICIPAL BONDS"),
-        TREASURY_INFLATION_PROTECTED_SECURITIES ("TREASURY INFLATION-PROTECTED SECURITIES"),
+        TREASURY_INFLATION_PROTECTED_SECURITIES("TREASURY INFLATION-PROTECTED SECURITIES"),
         REAL_ESTATE("REAL ESTATE"),
         NATURAL_RESOURCES("NATURAL RESOURCES");
-        
+
         private String value;
 
         FinancialInstrumentClass(String value) {
@@ -1520,7 +1553,7 @@ public class EnumUtils {
             throw new IllegalArgumentException();
         }
     }
-    
+
     public enum IntraBankTransferLimit {
 
         _25000("25000.00"),
@@ -1540,7 +1573,7 @@ public class EnumUtils {
         _2000("2000.00"),
         _1000("1000.00"),
         _500("500.00");
-        
+
         private String value;
 
         IntraBankTransferLimit(String value) {
@@ -1565,7 +1598,7 @@ public class EnumUtils {
             throw new IllegalArgumentException();
         }
     }
-    
+
     public enum InterBankTransferLimit {
 
         _50000("50000.00"),
@@ -1579,7 +1612,7 @@ public class EnumUtils {
         _2000("2000.00"),
         _1000("1000.00"),
         _500("500.00");
-        
+
         private String value;
 
         InterBankTransferLimit(String value) {
@@ -1604,7 +1637,7 @@ public class EnumUtils {
             throw new IllegalArgumentException();
         }
     }
-    
+
     public enum OverseasBankTransferLimit {
 
         _200000("200000.00"),
@@ -1621,7 +1654,7 @@ public class EnumUtils {
         _2000("2000.00"),
         _1000("1000.00"),
         _500("500.00");
-        
+
         private String value;
 
         OverseasBankTransferLimit(String value) {

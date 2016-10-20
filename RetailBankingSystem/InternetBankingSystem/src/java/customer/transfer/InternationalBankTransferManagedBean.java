@@ -101,6 +101,7 @@ public class InternationalBankTransferManagedBean implements Serializable {
         if (getPayeeId().equals("New Receipiant")) {
             getPayee().setType(EnumUtils.PayeeType.OVERSEAS);
             getPayee().setFromName(getMa().getCustomer().getFullName());
+            payee.setMainAccount(ma);
             Payee result = transferBean.createPayee(getPayee());
             if (result != null) {
                 transferClearing();

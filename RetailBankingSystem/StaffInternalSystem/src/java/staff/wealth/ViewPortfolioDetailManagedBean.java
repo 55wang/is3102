@@ -8,9 +8,7 @@ package staff.wealth;
 import ejb.session.cms.CustomerProfileSessionBeanLocal;
 import ejb.session.fact.FactSessionBeanLocal;
 import ejb.session.wealth.PortfolioSessionBeanLocal;
-import entity.customer.MainAccount;
-import entity.fact.CustomerFactTable;
-import entity.fact.SinglePortfolioFactTable;
+import entity.fact.customer.SinglePortfolioFactTable;
 import entity.wealth.Portfolio;
 import java.io.Serializable;
 import java.util.List;
@@ -35,7 +33,6 @@ public class ViewPortfolioDetailManagedBean extends ViewPortfolioAbstractBean im
     @EJB
     CustomerProfileSessionBeanLocal customerProfileSessionBean;
 
-    private CustomerFactTable customerFt;
     private SinglePortfolioFactTable portfolioFt;
     private List<SinglePortfolioFactTable> portfolioFtLineGraph;
     private String portfolioID;
@@ -70,14 +67,6 @@ public class ViewPortfolioDetailManagedBean extends ViewPortfolioAbstractBean im
 
     public void setPortfolioFtLineGraph(List<SinglePortfolioFactTable> portfolioFtLineGraph) {
         this.portfolioFtLineGraph = portfolioFtLineGraph;
-    }
-
-    public CustomerFactTable getCustomerFt() {
-        return customerFt;
-    }
-
-    public void setCustomerFt(CustomerFactTable customerFt) {
-        this.customerFt = customerFt;
     }
 
     public Portfolio getP() {
