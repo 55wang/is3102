@@ -52,9 +52,9 @@ public class StaffUserManagedBean implements Serializable {
     public StaffUserManagedBean() {}
     
     
-    public String getRoleName() {
-        return SessionUtils.getStaff().getRole().getRoleName();
-    }
+//    public String getRoleName() {
+//        return SessionUtils.getStaff().getRole().getRoleName();
+//    }
     
     public String getUserName() {
         return SessionUtils.getStaffUsername();

@@ -182,4 +182,8 @@ public class GenerateAccountAndCCNumber {
 
         return isValid;
     }
+    
+    public static String generateLoanAccountNumber() {
+        return completed_number("", ConstantUtils.LOAN_ACCOUNT_NUBMER_LENGTH);
+    }
 }

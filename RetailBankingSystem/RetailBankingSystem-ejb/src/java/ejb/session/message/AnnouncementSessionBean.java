@@ -24,7 +24,7 @@ public class AnnouncementSessionBean implements AnnouncementSessionBeanLocal {
 
     @PersistenceContext(unitName = "RetailBankingSystem-ejbPU")
     private EntityManager em;
-    
+
     @Override
     public Boolean createAnnouncement(Announcement a) {
         try {
@@ -34,32 +34,46 @@ public class AnnouncementSessionBean implements AnnouncementSessionBeanLocal {
             return false;
         }
     }
-    
+
     @Override
-    public List<Announcement> getAllAnnouncements(Role r, Boolean isforStaff) {
+    public List<Announcement> getAllAnnouncements(List<Role> roles, Boolean isforStaff) {
         Query q = null;
         // customer side
-        if (r == null) {
+        if (roles == null) {
             if (isforStaff) {
                 q = em.createQuery("SELECT a FROM Announcement a WHERE "
-                    + "a.isForStaff = true ORDER BY a.creationDate DESC"
+                        + "a.isForStaff = true ORDER BY a.creationDate DESC"
                 );
-            }else {
+            } else {
                 q = em.createQuery("SELECT a FROM Announcement a WHERE "
-                    + "a.isForStaff = false ORDER BY a.creationDate DESC"
+                        + "a.isForStaff = false ORDER BY a.creationDate DESC"
                 );
             }
-            
+
         } else {
-            if (r.getRoleName().equals(UserRole.SUPER_ADMIN.toString())) {
+            Boolean isSuperAdmin = false;
+            for (Role r : roles) {
+                if (r.getRoleName().equals(UserRole.SUPER_ADMIN.toString())) {
+                    isSuperAdmin = true;
+                }
+            }
+            if (isSuperAdmin) {
                 // retrieve all
-                q = em.createQuery("SELECT a FROM Announcement a ORDER BY a.creationDate DESC"); 
+                q = em.createQuery("SELECT a FROM Announcement a ORDER BY a.creationDate DESC");
             } else {
-                q = em.createQuery("SELECT a FROM Announcement a WHERE a.isForStaff = true OR a.role = :r ORDER BY a.creationDate DESC"); 
-                q.setParameter("r", r);
+                String queryString = "SELECT a FROM Announcement a WHERE a.isForStaff = true AND (";
+                for (int i = 0; i < roles.size(); i++) {
+                    if (i == 0) {
+                        queryString += " a.role.roleName = " + roles.get(i).getRoleName();
+                    } else {
+                        queryString += " OR a.role.roleName = " + roles.get(i).getRoleName();
+                    }
+                }
+                queryString += ") ORDER BY a.creationDate DESC";
+                q = em.createQuery(queryString);
             }
         }
-        
+
         return q.getResultList();
     }
 }

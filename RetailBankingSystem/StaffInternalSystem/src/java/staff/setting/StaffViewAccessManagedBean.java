@@ -9,6 +9,7 @@ import ejb.session.utils.UtilsSessionBeanLocal;
 import entity.common.AuditLog;
 import entity.staff.Role;
 import java.io.Serializable;
+import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
@@ -25,7 +26,7 @@ public class StaffViewAccessManagedBean implements Serializable {
     @EJB
     private UtilsSessionBeanLocal utilsBean;
 
-    private Role role = SessionUtils.getStaff().getRole();
+    private List<Role> roles = SessionUtils.getStaff().getRoles();
     /**
      * Creates a new instance of StaffViewAccessManagedBean
      */
@@ -45,16 +46,19 @@ public class StaffViewAccessManagedBean implements Serializable {
         a.setStaffAccount(SessionUtils.getStaff());
         utilsBean.persist(a);
     }
-    
-    public Role getRole() {
-        return role;
+
+    /**
+     * @return the roles
+     */
+    public List<Role> getRoles() {
+        return roles;
     }
 
     /**
-     * @param role the role to set
+     * @param roles the roles to set
      */
-    public void setRole(Role role) {
-        this.role = role;
+    public void setRoles(List<Role> roles) {
+        this.roles = roles;
     }
     
 }

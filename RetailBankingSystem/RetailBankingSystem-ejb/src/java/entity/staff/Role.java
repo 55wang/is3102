@@ -6,10 +6,15 @@
 package entity.staff;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 
 /**
  *
@@ -23,6 +28,10 @@ public class Role implements Serializable {
     // info
     @Column(length = 4000)
     private String description;
+    
+    @ManyToMany(cascade = {CascadeType.DETACH})
+    @JoinTable(name="Staffaccount_Role_Bdi")
+    private List<StaffAccount> staffAccounts = new ArrayList<>();
     
     public Role() {
         
@@ -73,4 +82,18 @@ public class Role implements Serializable {
         }
         return true;
     }  
+
+    /**
+     * @return the staffAccounts
+     */
+    public List<StaffAccount> getStaffAccounts() {
+        return staffAccounts;
+    }
+
+    /**
+     * @param staffAccounts the staffAccounts to set
+     */
+    public void setStaffAccounts(List<StaffAccount> staffAccounts) {
+        this.staffAccounts = staffAccounts;
+    }
 }

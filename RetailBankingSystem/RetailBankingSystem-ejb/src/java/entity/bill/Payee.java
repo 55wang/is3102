@@ -156,20 +156,6 @@ public class Payee implements Serializable {
     }
 
     /**
-     * @return the mainAccount
-     */
-    public MainAccount getMainAccount() {
-        return mainAccount;
-    }
-
-    /**
-     * @param mainAccount the mainAccount to set
-     */
-    public void setMainAccount(MainAccount mainAccount) {
-        this.mainAccount = mainAccount;
-    }
-
-    /**
      * @return the fromName
      */
     public String getFromName() {
@@ -223,6 +209,20 @@ public class Payee implements Serializable {
      */
     public void setBankAddress(String bankAddress) {
         this.bankAddress = bankAddress;
+    }
+
+    /**
+     * @return the mainAccount
+     */
+    public MainAccount getMainAccount() {
+        return mainAccount;
+    }
+
+    /**
+     * @param mainAccount the mainAccount to set
+     */
+    public void setMainAccount(MainAccount mainAccount) {
+        this.mainAccount = mainAccount;
     }
     
     

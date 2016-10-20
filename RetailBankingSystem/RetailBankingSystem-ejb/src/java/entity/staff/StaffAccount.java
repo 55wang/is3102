@@ -18,7 +18,7 @@ import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import server.utilities.EnumUtils.StatusType;
 
@@ -42,8 +42,8 @@ public class StaffAccount implements Serializable {
     private StaffInfo staffInfo = new StaffInfo();
 
     // mapping
-    @ManyToOne(cascade = {CascadeType.MERGE})
-    private Role role; // Role already consist of list of permissions
+    @ManyToMany(mappedBy = "staffAccounts")
+    private List<Role> roles = new ArrayList<>(); // Role already consist of list of permissions
     @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "staffAccount")
     private List<AuditLog> auditLog = new ArrayList<>();
     @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "sender")
@@ -64,7 +64,11 @@ public class StaffAccount implements Serializable {
     public String getFullName() {
         return this.getFirstName() + " " + this.getLastName();
     }
-
+    
+    public void addRole(Role r) {
+        roles.add(r);
+    }
+    
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
@@ -80,7 +84,7 @@ public class StaffAccount implements Serializable {
 
     @Override
     public String toString() {
-        return "StaffAccount{" + "username=" + username + ", firstName=" + firstName + ", lastName=" + lastName + ", password=" + password + ", email=" + email + ", status=" + status + ", staffInfo=" + staffInfo + ", role=" + role + ", auditLog=" + auditLog + ", senderConversation=" + senderConversation + ", receiverConversation=" + receiverConversation + ", cases=" + cases + '}';
+        return "StaffAccount{" + "username=" + username + ", firstName=" + firstName + ", lastName=" + lastName + ", password=" + password + ", email=" + email + ", status=" + status + ", staffInfo=" + staffInfo + ", roles=" + getRoles() + ", auditLog=" + auditLog + ", senderConversation=" + senderConversation + ", receiverConversation=" + receiverConversation + ", cases=" + cases + ", wealthManagementSubscribers=" + wealthManagementSubscribers + '}';
     }
 
     // Getter and Setter
@@ -98,20 +102,6 @@ public class StaffAccount implements Serializable {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    /**
-     * @return the role
-     */
-    public Role getRole() {
-        return role;
-    }
-
-    /**
-     * @param role the role to set
-     */
-    public void setRole(Role role) {
-        this.role = role;
     }
 
     /**
@@ -242,6 +232,20 @@ public class StaffAccount implements Serializable {
         this.wealthManagementSubscribers = wealthManagementSubscribers;
     }
 
+    /**
+     * @return the roles
+     */
+    public List<Role> getRoles() {
+        return roles;
+    }
+
+    /**
+     * @param roles the roles to set
+     */
+    public void setRoles(List<Role> roles) {
+        this.roles = roles;
+    }
+        
     public List<MarketingCampaign> getMarketingCampaign() {
         return marketingCampaign;
     }

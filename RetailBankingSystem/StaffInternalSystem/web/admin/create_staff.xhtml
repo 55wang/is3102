@@ -34,10 +34,10 @@
                                 <p:outputLabel for="lastname" value="Last Name " />
                                 <p:inputText id="lastname" value="#{createStaffManagedBean.newStaff.lastName}" required="true"/>
 
-                                <p:outputLabel for="staffrole" value="Select Role:" />
-                                <p:selectOneMenu id="staffrole" value="#{createStaffManagedBean.selectedRoleName}" style="width:125px">
-                                    <f:selectItems value="#{createStaffManagedBean.selectRoles}" />
-                                </p:selectOneMenu>
+                                <p:outputLabel value="Select Role:" />
+                                <p:selectCheckboxMenu  value="#{createStaffManagedBean.selectedRoles}" label="Roles" filter="true" filterMatchMode="startsWith" required="true">
+                                    <f:selectItems value="#{createStaffManagedBean.roles}" var="r" itemValue="#{r.roleName}" itemLabel="#{r.roleName}"/>
+                                </p:selectCheckboxMenu>
 
                                 <p:commandButton value="Create" icon="ui-icon-plus" update="@form" actionListener="#{createStaffManagedBean.addStaff}" />
                             </h:panelGrid>
