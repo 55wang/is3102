@@ -30,7 +30,7 @@
 
                         <p:commandButton value="RETRIEVE" action="#{updatePortfolioManagedBean.retrievePortfolio()}" update="@form"/>
                         <p:commandButton value="VIEW DETAIL" action="#{updatePortfolioManagedBean.viewPortfolioDetail()}"/>
-                        <c:if test="#{updatePortfolioManagedBean.portfolioID != null and updatePortfolioManagedBean.portfolioID.length()>0}">
+                        <c:if test="#{updatePortfolioManagedBean.p != null}">
 
 
                             <p:tabView>
