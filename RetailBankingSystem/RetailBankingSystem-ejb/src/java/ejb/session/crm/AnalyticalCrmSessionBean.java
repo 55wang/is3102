@@ -19,10 +19,10 @@ public class AnalyticalCrmSessionBean implements AnalyticalCrmSessionBeanLocal {
     @PersistenceContext(unitName = "RetailBankingSystem-ejbPU")
     private EntityManager em;
 
-    public void getMarketBasketAnalysis() {
+    public void getAssociateRule() {
         //pull data from Product 
     }
-
+    
     
     
     
