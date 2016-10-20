@@ -5,7 +5,7 @@
  */
 package ejb.session.fact;
 
-import entity.fact.SinglePortfolioFactTable;
+import entity.fact.customer.SinglePortfolioFactTable;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;

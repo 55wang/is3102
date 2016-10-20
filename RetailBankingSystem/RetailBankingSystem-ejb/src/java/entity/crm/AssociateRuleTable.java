@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package entity.fact;
+package entity.crm;
 
 import java.io.Serializable;
 import javax.persistence.Entity;
@@ -16,14 +16,11 @@ import javax.persistence.Id;
  * @author wang
  */
 @Entity
-public class DebtFactTable implements Serializable {
+public class AssociateRuleTable implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    
-    private Double totalLoanAmount;
-    private Double totalCreditCardAmount; 
 
     public Long getId() {
         return id;
@@ -43,10 +40,10 @@ public class DebtFactTable implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof DebtFactTable)) {
+        if (!(object instanceof AssociateRuleTable)) {
             return false;
         }
-        DebtFactTable other = (DebtFactTable) object;
+        AssociateRuleTable other = (AssociateRuleTable) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -55,27 +52,7 @@ public class DebtFactTable implements Serializable {
 
     @Override
     public String toString() {
-        return "entity.fact.DebtFacttable[ id=" + id + " ]";
-    }
-
-    public Double getTotalDebtAmount() {
-        return totalCreditCardAmount + totalLoanAmount;
-    }
-
-    public Double getTotalLoanAmount() {
-        return totalLoanAmount;
-    }
-
-    public void setTotalLoanAmount(Double totalLoanAmount) {
-        this.totalLoanAmount = totalLoanAmount;
-    }
-
-    public Double getTotalCreditCardAmount() {
-        return totalCreditCardAmount;
-    }
-
-    public void setTotalCreditCardAmount(Double totalCreditCardAmount) {
-        this.totalCreditCardAmount = totalCreditCardAmount;
+        return "entity.crm.AssociateRuleTable[ id=" + id + " ]";
     }
     
 }

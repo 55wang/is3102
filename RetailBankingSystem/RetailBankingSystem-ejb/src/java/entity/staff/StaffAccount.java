@@ -6,6 +6,7 @@
 package entity.staff;
 
 import entity.common.AuditLog;
+import entity.crm.MarketingCampaign;
 import entity.customer.CustomerCase;
 import entity.customer.WealthManagementSubscriber;
 import entity.embedded.StaffInfo;
@@ -39,7 +40,7 @@ public class StaffAccount implements Serializable {
     private StatusType status = StatusType.PENDING;
     @Embedded
     private StaffInfo staffInfo = new StaffInfo();
-    
+
     // mapping
     @ManyToOne(cascade = {CascadeType.MERGE})
     private Role role; // Role already consist of list of permissions
@@ -53,6 +54,8 @@ public class StaffAccount implements Serializable {
     private List<CustomerCase> cases = new ArrayList<>();
     @OneToMany(cascade = {CascadeType.MERGE}, mappedBy = "relationshipManager")
     private List<WealthManagementSubscriber> wealthManagementSubscribers = new ArrayList<>();
+    @OneToMany(mappedBy = "staffAccount")
+    private List<MarketingCampaign> marketingCampaign = new ArrayList<>();
 
     public String getNameLabel() {
         return this.getFirstName().substring(0, 1).toUpperCase() + this.getLastName().substring(0, 1).toUpperCase();
@@ -61,7 +64,7 @@ public class StaffAccount implements Serializable {
     public String getFullName() {
         return this.getFirstName() + " " + this.getLastName();
     }
-    
+
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
@@ -80,10 +83,7 @@ public class StaffAccount implements Serializable {
         return "StaffAccount{" + "username=" + username + ", firstName=" + firstName + ", lastName=" + lastName + ", password=" + password + ", email=" + email + ", status=" + status + ", staffInfo=" + staffInfo + ", role=" + role + ", auditLog=" + auditLog + ", senderConversation=" + senderConversation + ", receiverConversation=" + receiverConversation + ", cases=" + cases + '}';
     }
 
-    
-    
     // Getter and Setter
-
     public String getUsername() {
         return username;
     }
@@ -240,5 +240,13 @@ public class StaffAccount implements Serializable {
 
     public void setWealthManagementSubscribers(List<WealthManagementSubscriber> wealthManagementSubscribers) {
         this.wealthManagementSubscribers = wealthManagementSubscribers;
+    }
+
+    public List<MarketingCampaign> getMarketingCampaign() {
+        return marketingCampaign;
+    }
+
+    public void setMarketingCampaign(List<MarketingCampaign> marketingCampaign) {
+        this.marketingCampaign = marketingCampaign;
     }
 }

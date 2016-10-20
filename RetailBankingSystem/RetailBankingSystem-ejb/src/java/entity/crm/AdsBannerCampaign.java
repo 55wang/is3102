@@ -3,10 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package entity.fact;
+package entity.crm;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
+import java.sql.Blob;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -17,13 +17,14 @@ import javax.persistence.Id;
  * @author wang
  */
 @Entity
-public class DepositFactTable implements Serializable {
+public class AdsBannerCampaign extends MarketingCampaign implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
-    private BigDecimal totalDepositAmount; //for bank to use, all deposit saving in the bank
+    private String bannerImgFilename;
+    private Integer viewCount; //view only
 
     public Long getId() {
         return id;
@@ -43,10 +44,10 @@ public class DepositFactTable implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof DepositFactTable)) {
+        if (!(object instanceof AdsBannerCampaign)) {
             return false;
         }
-        DepositFactTable other = (DepositFactTable) object;
+        AdsBannerCampaign other = (AdsBannerCampaign) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -55,15 +56,23 @@ public class DepositFactTable implements Serializable {
 
     @Override
     public String toString() {
-        return "entity.fact.DepositFactTable[ id=" + id + " ]";
+        return "entity.crm[ id=" + id + " ]";
     }
 
-    public BigDecimal getTotalDepositAmount() {
-        return totalDepositAmount;
+    public Integer getViewCount() {
+        return viewCount;
     }
 
-    public void setTotalDepositAmount(BigDecimal totalDepositAmount) {
-        this.totalDepositAmount = totalDepositAmount;
+    public void setViewCount(Integer viewCount) {
+        this.viewCount = viewCount;
+    }
+
+    public String getBannerImgFilename() {
+        return bannerImgFilename;
+    }
+
+    public void setBannerImgFilename(String bannerImgFilename) {
+        this.bannerImgFilename = bannerImgFilename;
     }
     
 }
