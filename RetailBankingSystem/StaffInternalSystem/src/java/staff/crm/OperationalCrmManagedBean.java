@@ -5,6 +5,7 @@
  */
 package staff.crm;
 
+import java.io.Serializable;
 import javax.inject.Named;
 import javax.enterprise.context.Dependent;
 
@@ -14,7 +15,7 @@ import javax.enterprise.context.Dependent;
  */
 @Named(value = "operationalCrmManagedBean")
 @Dependent
-public class OperationalCrmManagedBean {
+public class OperationalCrmManagedBean implements Serializable{
 
     /**
      * Creates a new instance of OperationalCrmManagedBean

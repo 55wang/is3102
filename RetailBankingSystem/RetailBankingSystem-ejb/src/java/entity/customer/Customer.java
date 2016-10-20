@@ -5,6 +5,7 @@
  */
 package entity.customer;
 
+import entity.crm.CustomerGroup;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.CascadeType;
@@ -13,6 +14,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.OneToOne;
 import server.utilities.EnumUtils.Education;
@@ -45,7 +47,7 @@ public class Customer implements Serializable {
     private String phone;
     @Column(unique = true)
     private String email;
-    
+
     // general info
     private Nationality nationality;
     private MaritalStatus maritalStatus;
@@ -62,10 +64,12 @@ public class Customer implements Serializable {
     // credit
     private Double creditScore;
     private String BureaCreditScore;
-    
+
     // mapping
     @OneToOne(cascade = {CascadeType.MERGE})
     private MainAccount mainAccount;
+    @ManyToOne
+    private CustomerGroup customerGroup;
 
     public String getFullName() {
         return this.getFirstname() + " " + this.getLastname();
@@ -306,6 +310,14 @@ public class Customer implements Serializable {
 
     public void setIdentityType(IdentityType identityType) {
         this.identityType = identityType;
+    }
+
+    public CustomerGroup getCustomerGroup() {
+        return customerGroup;
+    }
+
+    public void setCustomerGroup(CustomerGroup customerGroup) {
+        this.customerGroup = customerGroup;
     }
 
 }

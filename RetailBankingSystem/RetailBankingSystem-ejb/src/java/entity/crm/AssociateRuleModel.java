@@ -16,10 +16,10 @@ import javax.persistence.Id;
  * @author wang
  */
 @Entity
-public class AssociateRuleTable implements Serializable {
+public class AssociateRuleModel implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     public Long getId() {
@@ -40,10 +40,10 @@ public class AssociateRuleTable implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof AssociateRuleTable)) {
+        if (!(object instanceof AssociateRuleModel)) {
             return false;
         }
-        AssociateRuleTable other = (AssociateRuleTable) object;
+        AssociateRuleModel other = (AssociateRuleModel) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
