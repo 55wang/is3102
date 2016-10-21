@@ -5,35 +5,30 @@
  */
 package entity.crm;
 
-import entity.card.product.CreditCardProduct;
-import entity.dams.account.DepositProduct;
+import entity.customer.Customer;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
 
 /**
  *
  * @author wang
  */
 @Entity
-public class ProductBundle implements Serializable {
+public class CustomerGroup implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @OneToOne
-    private DepositProduct dp;
-    @OneToOne
-    private CreditCardProduct ccp;
-    // @OneToOne
-    // private LoanProduct lp;
     
-    
-    
+    @OneToMany(cascade = CascadeType.MERGE)
+    private List<Customer> customer = new ArrayList<>();
     
     public Long getId() {
         return id;
@@ -53,10 +48,10 @@ public class ProductBundle implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof ProductBundle)) {
+        if (!(object instanceof CustomerGroup)) {
             return false;
         }
-        ProductBundle other = (ProductBundle) object;
+        CustomerGroup other = (CustomerGroup) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -65,23 +60,15 @@ public class ProductBundle implements Serializable {
 
     @Override
     public String toString() {
-        return "entity.crm.ProductBundle[ id=" + id + " ]";
+        return "entity.crm.CustomerGroup[ id=" + id + " ]";
     }
 
-    public DepositProduct getDp() {
-        return dp;
+    public List<Customer> getCustomer() {
+        return customer;
     }
 
-    public void setDp(DepositProduct dp) {
-        this.dp = dp;
-    }
-
-    public CreditCardProduct getCcp() {
-        return ccp;
-    }
-
-    public void setCcp(CreditCardProduct ccp) {
-        this.ccp = ccp;
+    public void setCustomer(List<Customer> customer) {
+        this.customer = customer;
     }
     
 }
