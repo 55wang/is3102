@@ -41,7 +41,9 @@
             <p:socket channel="/chat/#{staffUserManagedBean.userName}" widgetVar='subscriber' onMessage="handleMessage" autoConnect="true" />
             <!-- Global Notification -->
             <p:socket onMessage="handleAnnouncement" channel="/staff_notify"/>
-            <p:socket onMessage="handleAnnouncement" channel="/role_notification/#{staffUserManagedBean.roleName}"/>
+            <c:forEach items="#{staffUserManagedBean.roles}" var="role" >
+                <p:socket onMessage="handleAnnouncement" channel="/role_notification/#{role.roleName}"/>
+            </c:forEach>
             <!--This js function will be replace at notification.xhtml page-->
             <script type="text/javascript">
                 function handleAnnouncement(facesmessage) {

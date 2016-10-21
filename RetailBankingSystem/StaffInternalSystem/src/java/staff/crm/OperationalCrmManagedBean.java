@@ -5,16 +5,17 @@
  */
 package staff.crm;
 
+import java.io.Serializable;
 import javax.inject.Named;
-import javax.enterprise.context.Dependent;
+import javax.faces.view.ViewScoped;
 
 /**
  *
  * @author wang
  */
 @Named(value = "operationalCrmManagedBean")
-@Dependent
-public class OperationalCrmManagedBean {
+@ViewScoped
+public class OperationalCrmManagedBean implements Serializable {
 
     /**
      * Creates a new instance of OperationalCrmManagedBean

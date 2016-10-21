@@ -7,10 +7,12 @@ package staff.admin;
 
 import ejb.session.utils.UtilsSessionBeanLocal;
 import entity.common.AuditLog;
+import entity.staff.Role;
 import entity.staff.StaffAccount;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
+import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.ejb.EJB;
@@ -52,9 +54,9 @@ public class StaffUserManagedBean implements Serializable {
     public StaffUserManagedBean() {}
     
     
-//    public String getRoleName() {
-//        return SessionUtils.getStaff().getRole().getRoleName();
-//    }
+    public List<Role> getRoles() {
+        return SessionUtils.getStaff().getRoles();
+    }
     
     public String getUserName() {
         return SessionUtils.getStaffUsername();
