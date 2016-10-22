@@ -30,11 +30,16 @@ public class LoanRepaymentRecord implements Serializable {
     @Temporal(value = TemporalType.TIMESTAMP)
     private Date transactionDate;
 
-    private Integer period;
+    private Integer nthMonth;
+    // before payment balance
     private Double beginningBalance;
+    // after payment balance
     private Double remainingBalance;
+    // payment amount paid
     private Double paymentAmount;
+    // interest paid for this single period
     private Double interestAccrued;
+    // total interest paid upto this period
     private Double cumulativeInterestAccrued = 0.0;
 
     @ManyToOne(cascade = {CascadeType.MERGE})
@@ -72,14 +77,6 @@ public class LoanRepaymentRecord implements Serializable {
 
     public void setLoanAccount(LoanAccount loanAccount) {
         this.loanAccount = loanAccount;
-    }
-
-    public Integer getPeriod(){
-        return period;
-    }
-    
-    public void setPeriod(Integer period){
-        this.period=period;
     }
     
     public Date getTransactionDate() {
@@ -145,6 +142,20 @@ public class LoanRepaymentRecord implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    /**
+     * @return the nthMonth
+     */
+    public Integer getNthMonth() {
+        return nthMonth;
+    }
+
+    /**
+     * @param nthMonth the nthMonth to set
+     */
+    public void setNthMonth(Integer nthMonth) {
+        this.nthMonth = nthMonth;
     }
 
 }

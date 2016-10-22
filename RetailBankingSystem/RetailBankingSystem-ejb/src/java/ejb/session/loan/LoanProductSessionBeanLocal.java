@@ -5,7 +5,9 @@
  */
 package ejb.session.loan;
 
-import entity.loan.LoanCommonInterest;
+import entity.loan.LoanExternalInterest;
+import entity.loan.LoanInterest;
+import entity.loan.LoanInterestCollection;
 import entity.loan.LoanProduct;
 import javax.ejb.Local;
 
@@ -15,17 +17,14 @@ import javax.ejb.Local;
  */
 @Local
 public interface LoanProductSessionBeanLocal {
-    
     public LoanProduct createLoanProduct(LoanProduct loanProduct);
-
     public LoanProduct getLoanProductByProductName(String productName);
-
     public LoanProduct updateLoanProduct(LoanProduct loanProduct);
-
-    public LoanCommonInterest getCommonInterestByName(String name);
-
-    public LoanCommonInterest createCommonInterest(LoanCommonInterest lci);
-
-    public LoanCommonInterest updateCommonInterest(LoanCommonInterest lci);
-    
+    public LoanExternalInterest getCommonInterestByName(String name);
+    public LoanExternalInterest createCommonInterest(LoanExternalInterest lci);
+    public LoanExternalInterest updateCommonInterest(LoanExternalInterest lci);
+    public LoanInterest createLoanInterest(LoanInterest li);
+    public LoanInterest updateLoanInterest(LoanInterest li);
+    public LoanInterestCollection createInterestCollection(LoanInterestCollection lic);
+    public LoanInterestCollection updateInterestCollection(LoanInterestCollection lic);
 }

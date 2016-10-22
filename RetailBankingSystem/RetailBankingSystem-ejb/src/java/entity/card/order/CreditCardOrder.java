@@ -37,8 +37,6 @@ public class CreditCardOrder implements Serializable {
     private MainAccount mainAccount;
     @OneToOne(cascade = {CascadeType.MERGE}, mappedBy = "creditCardOrder")
     private CreditCardAccount creditCardAccount;
-
-    
     
     public CreditCardOrder() {
     }

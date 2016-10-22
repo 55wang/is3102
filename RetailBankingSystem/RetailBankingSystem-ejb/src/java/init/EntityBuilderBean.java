@@ -82,11 +82,11 @@ public class EntityBuilderBean {
         entityStaffBuilder.initStaffAndRoles();
         entityCustomerBuilder.initCustomer();
         CustomerDepositAccount demoDepositAccount = entityDAMSBuilder.initDAMS();
-//        entityLoanBuilder.initLoanAccount(demoDepositAccount);
+        entityLoanBuilder.initLoanAccount(demoDepositAccount);
         demoPromoProduct = entityPromoProductBuilder.initPromoProduct(demoPromoProduct);
         demoRewardCardProduct = entityCreditCardProductBuilder.initCreditCardProduct(demoPromoProduct);
-        entityCaseBuilder.initCase();
         entityCreditCardOrderBuilder.initCreditCardOrder(demoRewardCardProduct, demoPromoProduct);
+        entityCaseBuilder.initCase();
         entityBillOrgBuilder.initBillOrganization();
         entityPayLahBuilder.initPayLahDemoData();
 //        entityWealthBuilder.initWealth();

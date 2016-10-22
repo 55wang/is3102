@@ -26,6 +26,9 @@ public class ConstantUtils {
     public static final String DEMO_SAVING2_DEPOSIT_PRODUCT_NAME = "Bonus+Savings";
     public static final String DEMO_CURRENT_DEPOSIT_PRODUCT_NAME = "MBS Current Account";
     public static final String DEMO_FIXED_DEPOSIT_PRODUCT_NAME = "Time Deposit";
+    public static final String DEMO_LOAN_PRODUCT_NAME = "MBS Personal Loan";
+    public static final String DEMO_LOAN_INTEREST_NAME = "MBS Personal Loan Interest";
+    public static final String DEMO_LOAN_COMMON_INTEREST_NAME = "MBS Personal Loan Common Interest";
     
     public static final String DEMO_MAIN_ACCOUNT_USER_ID = "c1234567";
     public static final String DEMO_MAIN_ACCOUNT_USER_ID_2 = "c7654321" ;

@@ -21,18 +21,22 @@ import javax.persistence.TemporalType;
  * @author leiyang
  */
 @Entity
-public class LoanPaymentBreakdown implements Serializable{
+public class LoanPaymentBreakdown implements Serializable {
     
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     @Temporal(value = TemporalType.TIMESTAMP)
-    private Date schedulePaymentDate;
+    private Date schedulePaymentDate;//Next payment date
     
-    private Integer period;
+    // month length
+    private Integer nthMonth;
+    // amount to be paid for principal
     private Double principalPayment;
+    // amount to be paid for interest
     private Double interestPayment;
+    // amount left to be paid for principal
     private Double outstandingPrincipalPayment;
     
     @ManyToOne(cascade = {CascadeType.MERGE})
@@ -103,14 +107,6 @@ public class LoanPaymentBreakdown implements Serializable{
        this.outstandingPrincipalPayment=outPrinPayment;
    }
    
-   public Integer getPeriod(){
-       return period;
-   }
-   
-   public void setPeriod(Integer period){
-       this.period=period;
-   }
-   
    public Long getId(){
        return id;
    }
@@ -118,5 +114,19 @@ public class LoanPaymentBreakdown implements Serializable{
    public void setId(Long id){
        this.id=id;
    }
+
+    /**
+     * @return the nthMonth
+     */
+    public Integer getNthMonth() {
+        return nthMonth;
+    }
+
+    /**
+     * @param nthMonth the nthMonth to set
+     */
+    public void setNthMonth(Integer nthMonth) {
+        this.nthMonth = nthMonth;
+    }
 
 }

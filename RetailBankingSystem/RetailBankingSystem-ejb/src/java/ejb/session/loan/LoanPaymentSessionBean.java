@@ -33,28 +33,14 @@ public class LoanPaymentSessionBean implements LoanPaymentSessionBeanLocal {
 
     @Override
     public LoanPaymentBreakdown createLoanPaymentBreakdown(LoanPaymentBreakdown loanPaymentBreakdown) {
-        try {
-            em.persist(loanPaymentBreakdown);
-
-            return loanPaymentBreakdown;
-        } catch (Exception e) {
-            System.out.println("ACACACA _ERROR");
-            e.printStackTrace();
-            return null;
-        }
+        em.persist(loanPaymentBreakdown);
+        return loanPaymentBreakdown;
     }
 
     @Override
     public LoanRepaymentRecord createLoanRepaymentRecord(LoanRepaymentRecord loanRepaymentRecord) {
-        try {
-            em.persist(loanRepaymentRecord);
-
-            return loanRepaymentRecord;
-        } catch (Exception e) {
-            System.out.println("ACACACA _ERROR");
-            e.printStackTrace();
-            return null;
-        }
+        em.persist(loanRepaymentRecord);
+        return loanRepaymentRecord;
     }
 
 // current period is month unit, tenure is year unit
@@ -65,18 +51,18 @@ public class LoanPaymentSessionBean implements LoanPaymentSessionBeanLocal {
         Integer tenure;
         Date beginningDate = DateUtils.addMonths(loanAccount.getPaymentStartDate(), currentPeriod - 1);
         List<LoanPaymentBreakdown> futureBreakdown = new ArrayList<>();
-        List<LoanInterest> loanInterests = loanAccount.getLoanProduct().getLoanInterests();
+        List<LoanInterest> loanInterests = loanAccount.getLoanProduct().getLoanInterestCollection().getLoanInterests();
         for (LoanInterest i : loanInterests) {
             System.out.print("In loan interest loop: " + i);
             Integer endtime;
-            if (i.getEndTime() == -1) {
+            if (i.getEndMonth() == -1) {
                 endtime = loanAccount.getLoanProduct().getTenure();
             } else {
-                endtime = i.getEndTime();
+                endtime = i.getEndMonth();
             }
             System.out.print("Endtime:  " + endtime);
 
-            if (i.getStartTime() < currentPeriod && endtime >= currentPeriod && i.getEndTime() != -1) {
+            if (i.getStartMonth()< currentPeriod && endtime >= currentPeriod && i.getEndMonth()!= -1) {
 
                 tenure = endtime - currentPeriod + 1;
                 System.out.print("Condition1:  " + tenure);
@@ -87,9 +73,9 @@ public class LoanPaymentSessionBean implements LoanPaymentSessionBeanLocal {
                 futureBreakdown = calculatePaymentBreakdown(futureBreakdown, outstandingLoanAmt, tenure, i.getInterestRate() / 12, beginningDate);
                 beginningDate = DateUtils.addMonths(beginningDate, tenure);
 
-            } else if (i.getStartTime() < currentPeriod && i.getEndTime() == -1) {
+            } else if (i.getStartMonth()< currentPeriod && i.getEndMonth()== -1) {
 
-                tenure = endtime - i.getStartTime();
+                tenure = endtime - i.getStartMonth();
                 System.out.print("Condition2:  " + tenure);
                 System.out.print("Outstanding loan amt: " + outstandingLoanAmt);
 
@@ -119,7 +105,7 @@ public class LoanPaymentSessionBean implements LoanPaymentSessionBeanLocal {
         if (paymentBreakdown.isEmpty()) {
             beginningPeriod = 1;
         } else {
-            beginningPeriod = paymentBreakdown.get(paymentBreakdown.size() - 1).getPeriod() + 1;
+            beginningPeriod = paymentBreakdown.get(paymentBreakdown.size() - 1).getNthMonth()+ 1;
         }
 
         System.out.print(beginningPeriod);
@@ -140,7 +126,7 @@ public class LoanPaymentSessionBean implements LoanPaymentSessionBeanLocal {
             LoanPaymentBreakdown lpb = new LoanPaymentBreakdown();
             lpb.setInterestPayment(interestPayment);
             lpb.setOutstandingPrincipalPayment(loanAmt);
-            lpb.setPeriod(period);
+            lpb.setNthMonth(period);
             lpb.setSchedulePaymentDate(schedulePaymentDate);
             lpb.setPrincipalPayment(principalPayment);
             paymentBreakdown.add(lpb);

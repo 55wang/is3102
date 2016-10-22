@@ -6,25 +6,34 @@
 package entity.loan;
 
 import java.io.Serializable;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 
 /**
  *
  * @author leiyang
  */
 @Entity
-public class LoanCommonInterest implements Serializable {
+public class LoanExternalInterest implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @Column(unique = true, nullable = false)
     private String name;
     private Double rate;
+    private Integer version = 0;
+    private Boolean isHistory = Boolean.FALSE;
+    
+    @OneToOne(cascade = {CascadeType.MERGE})
+    private LoanProduct loanProduct;
 
     @Override
     public int hashCode() {
@@ -36,10 +45,10 @@ public class LoanCommonInterest implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof LoanCommonInterest)) {
+        if (!(object instanceof LoanExternalInterest)) {
             return false;
         }
-        LoanCommonInterest other = (LoanCommonInterest) object;
+        LoanExternalInterest other = (LoanExternalInterest) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -73,6 +82,48 @@ public class LoanCommonInterest implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    /**
+     * @return the version
+     */
+    public Integer getVersion() {
+        return version;
+    }
+
+    /**
+     * @param version the version to set
+     */
+    public void setVersion(Integer version) {
+        this.version = version;
+    }
+
+    /**
+     * @return the isHistory
+     */
+    public Boolean getIsHistory() {
+        return isHistory;
+    }
+
+    /**
+     * @param isHistory the isHistory to set
+     */
+    public void setIsHistory(Boolean isHistory) {
+        this.isHistory = isHistory;
+    }
+
+    /**
+     * @return the loanProduct
+     */
+    public LoanProduct getLoanProduct() {
+        return loanProduct;
+    }
+
+    /**
+     * @param loanProduct the loanProduct to set
+     */
+    public void setLoanProduct(LoanProduct loanProduct) {
+        this.loanProduct = loanProduct;
     }
 
 }

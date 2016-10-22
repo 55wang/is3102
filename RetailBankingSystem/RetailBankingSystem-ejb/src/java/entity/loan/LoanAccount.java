@@ -33,30 +33,39 @@ public class LoanAccount implements Serializable {
     @Id
     private String accountNumber;
     @Temporal(value = TemporalType.TIMESTAMP)
-    private Date maturityDate;
-    @Temporal(value = TemporalType.TIMESTAMP)
     private Date creationDate = new Date();
     @Temporal(value = TemporalType.TIMESTAMP)
-    private Date paymentStartDate;
+    private Date maturityDate; // end date
+    @Temporal(value = TemporalType.TIMESTAMP)
+    private Date paymentStartDate; // start date
     
-    private Integer paymentDate;
-    private Double monthlyInstallment;
-    private Double outstandingPrincipal;
-    private Double overduePayment;
-    private Double principal;
+    // payment day in month for example, 
+    // every 23rd of the month is the payment due date
+    private Integer paymentDate; 
+    private Double monthlyInstallment; // monthly payment
+    private Double outstandingPrincipal; // 
+    private Double overduePayment; // late payment
+    private Double principal; // total loan amount
+    // works as loan order too.
     private LoanAccountStatus loanAccountStatus = EnumUtils.LoanAccountStatus.NEW;
 
+    // TODO: Assign algorithm
+    // assigned loan officer to take note
     @ManyToOne(cascade = {CascadeType.MERGE})
     private StaffAccount loanOfficer;
     @ManyToOne(cascade = {CascadeType.MERGE})
     private MainAccount mainAccount;
+    // the deposit account that will get the money
     @ManyToOne(cascade = {CascadeType.MERGE})
     private CustomerDepositAccount depositAccount;
+    // the rules of the loan
     @ManyToOne(cascade = {CascadeType.MERGE})
     private LoanProduct loanProduct;
-    @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "loanAccount")
+    // previous payment record
+    @OneToMany(cascade = {CascadeType.MERGE}, mappedBy = "loanAccount")
     private List<LoanRepaymentRecord> loanRepaymentRecords = new ArrayList<>();
-    @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "loanAccount")
+    // overview of the breakdown
+    @OneToMany(cascade = {CascadeType.MERGE}, mappedBy = "loanAccount")
     private List<LoanPaymentBreakdown> loanPaymentBreakdown = new ArrayList<>();
 
     @Override

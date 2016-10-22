@@ -6,15 +6,14 @@
 package entity.loan;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import server.utilities.EnumUtils.LoanProductType;
 
 /**
  *
@@ -28,8 +27,8 @@ public class LoanProduct implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String productType;
-//    @Column(unique = true, nullable = false)
+    private LoanProductType productType;
+    @Column(unique = true, nullable = false)
     private String productName;
     //lockInDuration unit is month
     private Integer lockInDuration;
@@ -38,8 +37,10 @@ public class LoanProduct implements Serializable {
     //penalty rate is annual rate
     private Double penaltyInterestRate;
     //loan interest is annual rate 
-    @OneToMany(cascade = {CascadeType.MERGE}, mappedBy = "loanProduct")
-    private List<LoanInterest> loanInterests = new ArrayList<>();
+    @OneToOne(cascade = {CascadeType.MERGE}, mappedBy = "loanProduct")
+    private LoanInterestCollection loanInterestCollection;
+    @OneToOne(cascade = {CascadeType.MERGE}, mappedBy = "loanProduct")
+    private LoanExternalInterest loanExternalInterest;// not used by personal loan and car loan
 
     @Override
     public int hashCode() {
@@ -64,14 +65,6 @@ public class LoanProduct implements Serializable {
     @Override
     public String toString() {
         return "entity.loan.LoanProduct[ id=" + id + " ]";
-    }
-
-    public String getProductType() {
-        return productType;
-    }
-
-    public void setProductType(String productType) {
-        this.productType = productType;
     }
 
     public String getProductName() {
@@ -106,20 +99,54 @@ public class LoanProduct implements Serializable {
         this.penaltyInterestRate = penaltyInterestRate;
     }
 
-    public List<LoanInterest> getLoanInterests() {
-        return loanInterests;
-    }
-
-    public void setLoanInterests(List<LoanInterest> loanInterests) {
-        this.loanInterests = loanInterests;
-    }
-
     public Long getId() {
         return id;
     }
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    /**
+     * @return the loanInterestCollection
+     */
+    public LoanInterestCollection getLoanInterestCollection() {
+        return loanInterestCollection;
+    }
+
+    /**
+     * @param loanInterestCollection the loanInterestCollection to set
+     */
+    public void setLoanInterestCollection(LoanInterestCollection loanInterestCollection) {
+        this.loanInterestCollection = loanInterestCollection;
+    }
+
+    /**
+     * @return the productType
+     */
+    public LoanProductType getProductType() {
+        return productType;
+    }
+
+    /**
+     * @param productType the productType to set
+     */
+    public void setProductType(LoanProductType productType) {
+        this.productType = productType;
+    }
+
+    /**
+     * @return the loanExternalInterest
+     */
+    public LoanExternalInterest getLoanExternalInterest() {
+        return loanExternalInterest;
+    }
+
+    /**
+     * @param loanExternalInterest the loanExternalInterest to set
+     */
+    public void setLoanExternalInterest(LoanExternalInterest loanExternalInterest) {
+        this.loanExternalInterest = loanExternalInterest;
     }
 
 }

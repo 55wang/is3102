@@ -6,16 +6,13 @@
 package init;
 
 import ejb.session.card.CardProductSessionBeanLocal;
-import ejb.session.common.LoginSessionBeanLocal;
 import entity.card.product.CashBackCardProduct;
 import entity.card.product.MileCardProduct;
 import entity.card.product.PromoProduct;
 import entity.card.product.RewardCardProduct;
-import entity.customer.MainAccount;
 import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
-import server.utilities.ConstantUtils;
 
 /**
  *
@@ -27,11 +24,8 @@ public class EntityCreditCardProductBuilder {
 
     @EJB
     private CardProductSessionBeanLocal cardProductSessionBean;
-    @EJB
-    private LoginSessionBeanLocal loginBean;
 
     public RewardCardProduct initCreditCardProduct(PromoProduct demoPromoProduct) {
-        MainAccount demoMainAccount = loginBean.getMainAccountByUserID(ConstantUtils.DEMO_MAIN_ACCOUNT_USER_ID);
         MileCardProduct mca = new MileCardProduct();
         mca.setLocalMileRate(1.3);
         mca.setOverseaMileRate(2.0);

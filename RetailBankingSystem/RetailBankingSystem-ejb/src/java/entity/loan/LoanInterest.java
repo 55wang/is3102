@@ -24,55 +24,21 @@ public class LoanInterest implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-
-    private Integer startTime;
-    private Integer endTime;
+    
+    private String name;
+    private Double rate;
+    private Integer version = 0;
+    private Boolean isHistory = Boolean.FALSE;
+    // means ith month to jth month
+    private Integer startMonth;
+    private Integer endMonth;
     // annual rate
     private Double interestRate;
 
     @ManyToOne(cascade = {CascadeType.MERGE})
-    private LoanProduct loanProduct;
-
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof LoanInterest)) {
-            return false;
-        }
-        LoanInterest other = (LoanInterest) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        return "entity.loan.LoanInterest[ id=" + id + " ]";
-    }
-
-    public Integer getStartTime() {
-        return startTime;
-    }
-
-    public void setStartTime(Integer startTime) {
-        this.startTime = startTime;
-    }
-
-    public Integer getEndTime() {
-        return endTime;
-    }
-
-    public void setEndTime(Integer endTime) {
-        this.endTime = endTime;
-    }
+    private LoanInterestCollection loanInterestCollection;
+    
+    // getter and setter
 
     public Double getInterestRate() {
         return interestRate;
@@ -82,18 +48,114 @@ public class LoanInterest implements Serializable {
         this.interestRate = interestRate;
     }
 
-    public LoanProduct getLoanProduct() {
-        return loanProduct;
+    /**
+     * @return the loanInterestCollection
+     */
+    public LoanInterestCollection getLoanInterestCollection() {
+        return loanInterestCollection;
     }
 
-    public void setLoanProduct(LoanProduct loanProduct) {
-        this.loanProduct = loanProduct;
+    /**
+     * @param loanInterestCollection the loanInterestCollection to set
+     */
+    public void setLoanInterestCollection(LoanInterestCollection loanInterestCollection) {
+        this.loanInterestCollection = loanInterestCollection;
     }
 
+    /**
+     * @return the startMonth
+     */
+    public Integer getStartMonth() {
+        return startMonth;
+    }
+
+    /**
+     * @param startMonth the startMonth to set
+     */
+    public void setStartMonth(Integer startMonth) {
+        this.startMonth = startMonth;
+    }
+
+    /**
+     * @return the endMonth
+     */
+    public Integer getEndMonth() {
+        return endMonth;
+    }
+
+    /**
+     * @param endMonth the endMonth to set
+     */
+    public void setEndMonth(Integer endMonth) {
+        this.endMonth = endMonth;
+    }
+
+    /**
+     * @return the name
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * @param name the name to set
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    /**
+     * @return the rate
+     */
+    public Double getRate() {
+        return rate;
+    }
+
+    /**
+     * @param rate the rate to set
+     */
+    public void setRate(Double rate) {
+        this.rate = rate;
+    }
+
+    /**
+     * @return the version
+     */
+    public Integer getVersion() {
+        return version;
+    }
+
+    /**
+     * @param version the version to set
+     */
+    public void setVersion(Integer version) {
+        this.version = version;
+    }
+
+    /**
+     * @return the isHistory
+     */
+    public Boolean getIsHistory() {
+        return isHistory;
+    }
+
+    /**
+     * @param isHistory the isHistory to set
+     */
+    public void setIsHistory(Boolean isHistory) {
+        this.isHistory = isHistory;
+    }
+
+    /**
+     * @return the id
+     */
     public Long getId() {
         return id;
     }
 
+    /**
+     * @param id the id to set
+     */
     public void setId(Long id) {
         this.id = id;
     }
