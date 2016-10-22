@@ -37,9 +37,11 @@ public class ConstantUtils {
     // HDB Fixed
     public static final String DEMO_HDB_FIXED_LOAN_PRODUCT_NAME = "MBS HDB Loan with fixed interest";
     public static final String DEMO_HDB_FIXED_INTEREST_NAME = "MBS HDB Loan fixed Interest";
+    // HDB SIBOR
+    public static final String DEMO_HDB_SIBOR_LOAN_PRODUCT_NAME = "MBS HDB Loan with SIBOR interest";
+    public static final String DEMO_HDB_SIBOR_INTEREST_NAME = "MBS HDB Loan SIBOR Interest";
     
-    // TODO: Need to change
-    public static final String DEMO_LOAN_COMMON_INTEREST_NAME = "MBS Personal Loan Common Interest";
+    public static final String DEMO_LOAN_COMMON_INTEREST_NAME = "SIBOR Interest";
     
     public static final String DEMO_MAIN_ACCOUNT_USER_ID = "c1234567";
     public static final String DEMO_MAIN_ACCOUNT_USER_ID_2 = "c7654321" ;

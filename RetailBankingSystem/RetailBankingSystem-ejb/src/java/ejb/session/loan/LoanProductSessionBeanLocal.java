@@ -9,6 +9,7 @@ import entity.loan.LoanExternalInterest;
 import entity.loan.LoanInterest;
 import entity.loan.LoanInterestCollection;
 import entity.loan.LoanProduct;
+import java.util.List;
 import javax.ejb.Local;
 
 /**
@@ -27,4 +28,6 @@ public interface LoanProductSessionBeanLocal {
     public LoanInterest updateLoanInterest(LoanInterest li);
     public LoanInterestCollection createInterestCollection(LoanInterestCollection lic);
     public LoanInterestCollection updateInterestCollection(LoanInterestCollection lic);
+    public LoanExternalInterest getSIBORInterest();
+    public List<LoanInterest> getAllLoanInterest();
 }

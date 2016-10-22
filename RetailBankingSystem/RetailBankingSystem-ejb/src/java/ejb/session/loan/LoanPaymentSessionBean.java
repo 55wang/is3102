@@ -5,7 +5,10 @@
  */
 package ejb.session.loan;
 
+import ejb.session.dams.InterestSessionBeanLocal;
+import entity.dams.rules.TimeRangeInterest;
 import entity.loan.LoanAccount;
+import entity.loan.LoanExternalInterest;
 import entity.loan.LoanInterest;
 import entity.loan.LoanPaymentBreakdown;
 import entity.loan.LoanRepaymentRecord;
@@ -28,6 +31,8 @@ public class LoanPaymentSessionBean implements LoanPaymentSessionBeanLocal {
 
     @EJB
     private LoanCalculationSessionBeanLocal loanCalculationSessionBean;
+    @EJB
+    private InterestSessionBeanLocal interestBean;
 
     @PersistenceContext(unitName = "RetailBankingSystem-ejbPU")
     private EntityManager em;
@@ -100,7 +105,20 @@ public class LoanPaymentSessionBean implements LoanPaymentSessionBeanLocal {
             } else {
                 totalMonth = 12;
             }
-            totalPercentage += li.getInterestRate() / 12 * totalMonth;
+            Double extraInterest = 0.0;
+            if (li.getFhr18()) {
+                TimeRangeInterest fhr18 = interestBean.getTimeRangeInterestByAmountAndMonth(loanAccount.getPrincipal(), 18);
+                System.out.println("Total principal is: " + loanAccount.getPrincipal());
+                System.out.println("TimeRangeInterest startMonth: " + fhr18.getStartMonth() + " endMonth: " + fhr18.getEndMonth() + " minAmount: " + fhr18.getMinimum() + " maxAmount: " + fhr18.getMaximum());
+                extraInterest = fhr18.getPercentage().doubleValue();
+            } else {
+                LoanExternalInterest exi = li.getLoanExternalInterest();
+                if (exi != null) {
+                    System.out.println("External interest is: " + exi.getRate());
+                    extraInterest = exi.getRate();
+                }
+            }
+            totalPercentage += (li.getInterestRate() + extraInterest) / 12 * totalMonth;
             System.out.println("Current interest percentage: " + totalPercentage + " with totalMonth: " + totalMonth );
         }
         return totalPercentage / tenure;
@@ -215,21 +233,4 @@ public class LoanPaymentSessionBean implements LoanPaymentSessionBeanLocal {
         }
         return null;
     }
-
-//    private Double getTotalCompoundInterestForAccount(LoanAccount loanAccount) {
-//        Double outstandingLoanPrincipal = loanAccount.getOutstandingPrincipal();
-//        Double totalInterest = 0.0;
-//        for (int yearIndex = 0; yearIndex < loanAccount.getTenure(); yearIndex++) {
-//            for (LoanInterest interest : loanAccount.getLoanProduct().getLoanInterestCollection().getLoanInterests()) {
-//                if (yearIndex * 12 == interest.getStartMonth() - 1) {
-//                    Double extraInterest = interest.getLoanExternalInterest() == null ? 0.0 : interest.getLoanExternalInterest().getRate();
-//                    for (int i = 0; i < 12; i ++) {
-//                        totalInterest += (outstandingLoanPrincipal + totalInterest) * ( (interest.getInterestRate() + extraInterest) / 12 );
-//                    }
-//                    System.out.println("Interest for year:" + yearIndex + "is " + totalInterest);
-//                }
-//            }
-//        }
-//        return totalInterest;
-//    }
 }

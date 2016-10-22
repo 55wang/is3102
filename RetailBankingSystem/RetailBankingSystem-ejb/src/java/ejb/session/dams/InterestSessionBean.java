@@ -8,6 +8,7 @@ package ejb.session.dams;
 import entity.dams.account.CustomerFixedDepositAccount;
 import entity.dams.rules.Interest;
 import entity.dams.rules.TimeRangeInterest;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -96,10 +97,12 @@ public class InterestSessionBean implements InterestSessionBeanLocal {
     public TimeRangeInterest getTimeRangeInterestByAmountAndMonth(Double amount, Integer month) {
         Query q = em.createQuery("SELECT i FROM TimeRangeInterest i WHERE "
                 + "i.isHistory = false AND i.version = :version AND "
-                + "i.startMonth <= :monthDiff AND i.endMonth >= :monthDiff"
+                + "i.startMonth <= :monthDiff AND i.endMonth >= :monthDiff AND "
+                + "i.minimum <= :amount AND i.maximum >= :amount"
         );
         q.setParameter("version", getCurrentVersion());
         q.setParameter("monthDiff", month);
+        q.setParameter("amount", new BigDecimal(amount));
         
         List<TimeRangeInterest> result = q.getResultList();
                 

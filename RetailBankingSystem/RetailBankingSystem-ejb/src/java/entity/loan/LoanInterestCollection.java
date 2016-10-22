@@ -31,7 +31,6 @@ public class LoanInterestCollection implements Serializable {
     
     @Column(unique = true, nullable = false)
     private String name;
-    private Double rate;
     private Integer version = 0;
     private Boolean isHistory = Boolean.FALSE;
     
@@ -89,20 +88,6 @@ public class LoanInterestCollection implements Serializable {
      */
     public void setName(String name) {
         this.name = name;
-    }
-
-    /**
-     * @return the rate
-     */
-    public Double getRate() {
-        return rate;
-    }
-
-    /**
-     * @param rate the rate to set
-     */
-    public void setRate(Double rate) {
-        this.rate = rate;
     }
 
     /**

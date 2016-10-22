@@ -12,6 +12,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import server.utilities.EnumUtils;
 
 /**
  *
@@ -34,6 +35,7 @@ public class LoanInterest implements Serializable {
     // annual rate
     private Double interestRate;
     private Boolean fhr18 = false;
+    private EnumUtils.LoanProductType productType;
 
     @ManyToOne(cascade = {CascadeType.MERGE})
     private LoanInterestCollection loanInterestCollection;
@@ -174,6 +176,20 @@ public class LoanInterest implements Serializable {
      */
     public void setFhr18(Boolean fhr18) {
         this.fhr18 = fhr18;
+    }
+
+    /**
+     * @return the productType
+     */
+    public EnumUtils.LoanProductType getProductType() {
+        return productType;
+    }
+
+    /**
+     * @param productType the productType to set
+     */
+    public void setProductType(EnumUtils.LoanProductType productType) {
+        this.productType = productType;
     }
 
 }

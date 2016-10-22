@@ -9,10 +9,12 @@ import entity.loan.LoanExternalInterest;
 import entity.loan.LoanInterest;
 import entity.loan.LoanInterestCollection;
 import entity.loan.LoanProduct;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import server.utilities.ConstantUtils;
 
 /**
  *
@@ -51,7 +53,7 @@ public class LoanProductSessionBean implements LoanProductSessionBeanLocal {
 
     @Override
     public LoanExternalInterest getCommonInterestByName(String name) {
-        Query q = em.createQuery("SELECT lci FROM LoanCommonInterest lci WHERE lci.name = :name");
+        Query q = em.createQuery("SELECT lci FROM LoanExternalInterest lci WHERE lci.name = :name");
         q.setParameter("name", name);
         return (LoanExternalInterest) q.getSingleResult();
     }
@@ -84,5 +86,16 @@ public class LoanProductSessionBean implements LoanProductSessionBeanLocal {
     public LoanInterestCollection updateInterestCollection(LoanInterestCollection lic) {
         em.merge(lic);
         return lic;
+    }
+    
+    @Override
+    public LoanExternalInterest getSIBORInterest() {
+        return getCommonInterestByName(ConstantUtils.DEMO_LOAN_COMMON_INTEREST_NAME);
+    }
+    
+    @Override
+    public List<LoanInterest> getAllLoanInterest() {
+        Query q = em.createQuery("SELECT li FROM LoanInterest li WHERE li.isHistory = false");
+        return q.getResultList();
     }
 }

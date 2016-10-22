@@ -1,0 +1,117 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:em="http://xmlns.jcp.org/jsf/composite/emcomp"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <!--shift + ctrl + F, format-->
+    <f:view>
+        <h:head>
+            <title>Merlion Internal</title>
+            <em:cssImport></em:cssImport>
+        </h:head>
+        <h:body>
+            <em:staffNavBar context="admin"></em:staffNavBar>
+            <em:staffSideBar top="admin" side="createLoanInterest"></em:staffSideBar>
+            <div class="container">
+                <h:form id="mainForm">
+                    <p:panel header="Create Interest">
+                        <p:messages id="messagesStatus" redisplay="false" >
+                            <h:panelGrid columns="2" cellpadding="5">
+                                <p:outputLabel value="Select Interest Type: " />
+                                <p:selectOneButton value="#{createLoanInterestManagedBean.selectedInterestType}">
+                                    <f:selectItem itemLabel="Personal Loan Interest" itemValue="#{createLoanInterestManagedBean.PERSONAL_LOAN_TYPE}" />
+                                    <f:selectItem itemLabel="Car Loan Interest" itemValue="#{createLoanInterestManagedBean.CAR_LOAN_TYPE}" />
+                                    <f:selectItem itemLabel="HDB Loan Interests" itemValue="#{createLoanInterestManagedBean.HDB_LOAN_TYPE}" />
+                                    <f:selectItem itemLabel="Private House Loan Interests" itemValue="#{createLoanInterestManagedBean.PP_LOAN_TYPE}" />
+                                    <f:ajax render="@form" />
+                                </p:selectOneButton>
+
+                                <p:outputLabel value="Interest Name: " />
+                                <p:inputText value="#{createLoanInterestManagedBean.loanName}"/>
+
+                                <c:if test="#{createLoanInterestManagedBean.selectedInterestType == createLoanInterestManagedBean.HDB_LOAN_TYPE || createLoanInterestManagedBean.selectedInterestType == createLoanInterestManagedBean.PP_LOAN_TYPE}" >
+                                    <p:outputLabel value="Edit By Clicking cell: " />
+                                    <p:dataTable value="#{createLoanInterestManagedBean.collectionDTOs}" var="dto" editable="true" editMode="cell">
+                                        
+                                        <p:column headerText="Start Month" sortBy="#{dto.startMonth}">
+                                            <h:outputText value="#{dto.startMonth}" />
+                                        </p:column>
+                                        <p:column headerText="End Month" sortBy="#{dto.endMonth}">
+                                            <h:outputText value="#{dto.endMonth}" />
+                                        </p:column>
+                                        <p:column headerText="Interet Rate" sortBy="#{dto.interestRate}">
+                                            <p:cellEditor>
+                                                <f:facet name="output">
+                                                    <h:outputText value="#{dto.interestRate}" />
+                                                </f:facet>
+                                                <f:facet name="input">
+                                                    <h:inputText value="#{dto.interestRate}">
+                                                        <f:convertNumber type="percent" minFractionDigits="4"/>
+                                                    </h:inputText>
+                                                </f:facet>
+                                            </p:cellEditor>
+                                        </p:column>
+
+                                        <p:column headerText="External Rate" sortBy="#{dto.externalInteret}">
+                                            <p:cellEditor>
+                                                <f:facet name="output">
+                                                    <h:outputText value="#{dto.externalInteret}" />
+                                                </f:facet>
+                                                <f:facet name="input">
+                                                    <h:selectOneMenu value="#{dto.externalInteret}" style="width:100%">
+                                                        <f:selectItem itemLabel="No External Interest" itemValue="#{createLoanInterestManagedBean.NO_EXTERNAL_INTEREST}" />
+                                                        <f:selectItem itemLabel="FHR18" itemValue="#{createLoanInterestManagedBean.FHR18_INTEREST}" />
+                                                        <f:selectItem itemLabel="SIBOR" itemValue="#{createLoanInterestManagedBean.SIBOR_INTEREST}" />
+                                                    </h:selectOneMenu>
+                                                </f:facet>
+                                            </p:cellEditor>
+                                        </p:column>
+                                    </p:dataTable>
+                                </c:if>
+
+                                <c:if test="#{createLoanInterestManagedBean.selectedInterestType == createLoanInterestManagedBean.CAR_LOAN_TYPE || createLoanInterestManagedBean.selectedInterestType == createLoanInterestManagedBean.PERSONAL_LOAN_TYPE}" >
+                                    <p:outputLabel value="Interest Percentage: " />
+                                    <p:inputText value="#{createLoanInterestManagedBean.loanRate}">
+                                        <f:convertNumber type="percent" minFractionDigits="4"/>
+                                    </p:inputText>
+                                </c:if>
+                                
+                                <p:commandButton value="Create" icon="ui-icon-plus" update="@form" actionListener="#{createLoanInterestManagedBean.createLoanInterest}" />
+                            </h:panelGrid>
+                        </p:messages>
+                    </p:panel>
+                    <p:panel header="Added Interests">
+                        <p:dataTable value="#{createLoanInterestManagedBean.addedLoanInterests}" var="interest">
+                            <p:column headerText="Name" sortBy="#{interest.name}">
+                                <h:outputText value="#{interest.name}"/>
+                            </p:column>
+                            <p:column headerText="Start Month" sortBy="#{interest.startMonth}">
+                                <h:outputText value="#{interest.startMonth}"/>
+                            </p:column>
+                            <p:column headerText="End Month" sortBy="#{interest.endMonth}">
+                                <h:outputText value="#{interest.endMonth}"/>
+                            </p:column>
+                            <p:column headerText="Has FHR18" sortBy="#{interest.fhr18}">
+                                <h:outputText value="#{interest.fhr18}"/>
+                            </p:column>
+                            <p:column headerText="Has SIBOR" sortBy="#{interest.loanExternalInterest != null}">
+                                <h:outputText value="#{interest.loanExternalInterest != null}"/>
+                            </p:column>
+                            <p:column headerText="Rate" sortBy="#{interest}">
+                                <h:outputText value="#{interest.interestRate}"> 
+                                    <f:convertNumber type="percent" minFractionDigits="4"/>
+                                </h:outputText>
+                            </p:column>
+                        </p:dataTable>
+                    </p:panel>
+                </h:form>
+            </div>
+        </h:body>
+    </f:view>
+
+
+</html>
+
