@@ -32,16 +32,20 @@ public class LoanProduct implements Serializable {
     private String productName;
     //lockInDuration unit is month
     private Integer lockInDuration;
-    //tenure unit is month
+    private Integer minAge = 21;//default
+    private Integer minIncome = 2000;// default
+    //tenure unit is year
     private Integer tenure;
     //penalty rate is annual rate
     private Double penaltyInterestRate;
     //loan interest is annual rate 
     @OneToOne(cascade = {CascadeType.MERGE}, mappedBy = "loanProduct")
     private LoanInterestCollection loanInterestCollection;
-    @OneToOne(cascade = {CascadeType.MERGE}, mappedBy = "loanProduct")
-    private LoanExternalInterest loanExternalInterest;// not used by personal loan and car loan
 
+    public Integer tenureInMonth() {
+        return tenure * 12;
+    }
+    
     @Override
     public int hashCode() {
         int hash = 0;
@@ -136,17 +140,31 @@ public class LoanProduct implements Serializable {
     }
 
     /**
-     * @return the loanExternalInterest
+     * @return the minAge
      */
-    public LoanExternalInterest getLoanExternalInterest() {
-        return loanExternalInterest;
+    public Integer getMinAge() {
+        return minAge;
     }
 
     /**
-     * @param loanExternalInterest the loanExternalInterest to set
+     * @param minAge the minAge to set
      */
-    public void setLoanExternalInterest(LoanExternalInterest loanExternalInterest) {
-        this.loanExternalInterest = loanExternalInterest;
+    public void setMinAge(Integer minAge) {
+        this.minAge = minAge;
+    }
+
+    /**
+     * @return the minIncome
+     */
+    public Integer getMinIncome() {
+        return minIncome;
+    }
+
+    /**
+     * @param minIncome the minIncome to set
+     */
+    public void setMinIncome(Integer minIncome) {
+        this.minIncome = minIncome;
     }
 
 }

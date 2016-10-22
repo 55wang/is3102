@@ -1745,4 +1745,37 @@ public class EnumUtils {
             throw new IllegalArgumentException();
         }
     }
+    
+    public enum LoanRepaymentType {
+
+        LOAN_REPAYMENT("Loan Repayment"),
+        LOAN_REPAYMENT_LESS("Loan Repayment Less"),
+        LOAN_REPAYMENT_MORE("Loan Repayment More"),
+        LOAN_LUMSUM_PAY("Loan Lumsum Repayment"),
+        LOAN_CHANGE_PERIOD("Loan Change Period");
+        
+        private String value;
+
+        LoanRepaymentType(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        @Override
+        public String toString() {
+            return this.getValue();
+        }
+
+        public static LoanRepaymentType getEnum(String value) {
+            for (LoanRepaymentType v : values()) {
+                if (v.getValue().equalsIgnoreCase(value)) {
+                    return v;
+                }
+            }
+            throw new IllegalArgumentException();
+        }
+    }
 }

@@ -92,6 +92,23 @@ public class InterestSessionBean implements InterestSessionBeanLocal {
         return q.getResultList();
     }
     
+    @Override
+    public TimeRangeInterest getTimeRangeInterestByAmountAndMonth(Double amount, Integer month) {
+        Query q = em.createQuery("SELECT i FROM TimeRangeInterest i WHERE "
+                + "i.isHistory = false AND i.version = :version AND "
+                + "i.startMonth <= :monthDiff AND i.endMonth >= :monthDiff"
+        );
+        q.setParameter("version", getCurrentVersion());
+        q.setParameter("monthDiff", month);
+        
+        List<TimeRangeInterest> result = q.getResultList();
+                
+        if (result.size() > 0) {
+            return result.get(0);
+        }
+        return null;
+    }
+    
     private Integer getCurrentVersion() {
         Query q = em.createQuery("SELECT MAX(i.version) FROM TimeRangeInterest i");
         return (Integer) q.getSingleResult();

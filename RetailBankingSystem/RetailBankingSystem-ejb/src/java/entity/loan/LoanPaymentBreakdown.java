@@ -20,7 +20,7 @@ import javax.persistence.TemporalType;
  *
  * @author leiyang
  */
-@Entity
+@Entity 
 public class LoanPaymentBreakdown implements Serializable {
     
     private static final long serialVersionUID = 1L;
@@ -61,11 +61,13 @@ public class LoanPaymentBreakdown implements Serializable {
         }
         return true;
     }
-    
+
     @Override
     public String toString() {
-        return "entity.loan.LoanPaymentBreakdown[ id=" + id + " ]";
+        return "LoanPaymentBreakdown{" + "id=" + id + ", schedulePaymentDate=" + schedulePaymentDate + ", nthMonth=" + nthMonth + ", principalPayment=" + principalPayment + ", interestPayment=" + interestPayment + ", outstandingPrincipalPayment=" + outstandingPrincipalPayment + ", loanAccount=" + loanAccount + '}';
     }
+    
+    
     
     public LoanAccount getLoanAccount() {
         return loanAccount;

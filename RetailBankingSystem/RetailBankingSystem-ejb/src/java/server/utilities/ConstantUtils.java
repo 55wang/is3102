@@ -21,13 +21,24 @@ public class ConstantUtils {
     public static final String SERVICE_CHARGE_ENTITY = "ServiceCharge";
     
     // DEMO
+    // DAMS
     public static final String DEMO_CUSTOM_DEPOSIT_PRODUCT_NAME = "Merlion Account";
     public static final String DEMO_SAVING1_DEPOSIT_PRODUCT_NAME = "Monthly Savings Account";
     public static final String DEMO_SAVING2_DEPOSIT_PRODUCT_NAME = "Bonus+Savings";
     public static final String DEMO_CURRENT_DEPOSIT_PRODUCT_NAME = "MBS Current Account";
     public static final String DEMO_FIXED_DEPOSIT_PRODUCT_NAME = "Time Deposit";
-    public static final String DEMO_LOAN_PRODUCT_NAME = "MBS Personal Loan";
-    public static final String DEMO_LOAN_INTEREST_NAME = "MBS Personal Loan Interest";
+    // LOAN
+    // Personal loan
+    public static final String DEMO_PERSONAL_LOAN_PRODUCT_NAME = "MBS Personal Loan";
+    public static final String DEMO_PERSONAL_LOAN_INTEREST_NAME = "MBS Personal Loan Interest";
+    // Car loan
+    public static final String DEMO_CAR_LOAN_PRODUCT_NAME = "MBS Car Loan";
+    public static final String DEMO_CAR_LOAN_INTEREST_NAME = "MBS Car Loan Interest";
+    // HDB Fixed
+    public static final String DEMO_HDB_FIXED_LOAN_PRODUCT_NAME = "MBS HDB Loan with fixed interest";
+    public static final String DEMO_HDB_FIXED_INTEREST_NAME = "MBS HDB Loan fixed Interest";
+    
+    // TODO: Need to change
     public static final String DEMO_LOAN_COMMON_INTEREST_NAME = "MBS Personal Loan Common Interest";
     
     public static final String DEMO_MAIN_ACCOUNT_USER_ID = "c1234567";

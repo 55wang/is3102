@@ -26,17 +26,19 @@ public class LoanInterest implements Serializable {
     private Long id;
     
     private String name;
-    private Double rate;
     private Integer version = 0;
     private Boolean isHistory = Boolean.FALSE;
     // means ith month to jth month
-    private Integer startMonth;
+    private Integer startMonth; // 1 - 12, 13 - 24, 25- 36, 37 - -1
     private Integer endMonth;
     // annual rate
     private Double interestRate;
+    private Boolean fhr18 = false;
 
     @ManyToOne(cascade = {CascadeType.MERGE})
     private LoanInterestCollection loanInterestCollection;
+    @ManyToOne(cascade = {CascadeType.MERGE})
+    private LoanExternalInterest loanExternalInterest;// not used by personal loan and car loan
     
     // getter and setter
 
@@ -105,20 +107,6 @@ public class LoanInterest implements Serializable {
     }
 
     /**
-     * @return the rate
-     */
-    public Double getRate() {
-        return rate;
-    }
-
-    /**
-     * @param rate the rate to set
-     */
-    public void setRate(Double rate) {
-        this.rate = rate;
-    }
-
-    /**
      * @return the version
      */
     public Integer getVersion() {
@@ -158,6 +146,34 @@ public class LoanInterest implements Serializable {
      */
     public void setId(Long id) {
         this.id = id;
+    }
+
+    /**
+     * @return the loanExternalInterest
+     */
+    public LoanExternalInterest getLoanExternalInterest() {
+        return loanExternalInterest;
+    }
+
+    /**
+     * @param loanExternalInterest the loanExternalInterest to set
+     */
+    public void setLoanExternalInterest(LoanExternalInterest loanExternalInterest) {
+        this.loanExternalInterest = loanExternalInterest;
+    }
+
+    /**
+     * @return the fhr18
+     */
+    public Boolean getFhr18() {
+        return fhr18;
+    }
+
+    /**
+     * @param fhr18 the fhr18 to set
+     */
+    public void setFhr18(Boolean fhr18) {
+        this.fhr18 = fhr18;
     }
 
 }

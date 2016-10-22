@@ -6,13 +6,11 @@
 package entity.loan;
 
 import java.io.Serializable;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
 
 /**
  *
@@ -31,9 +29,6 @@ public class LoanExternalInterest implements Serializable {
     private Double rate;
     private Integer version = 0;
     private Boolean isHistory = Boolean.FALSE;
-    
-    @OneToOne(cascade = {CascadeType.MERGE})
-    private LoanProduct loanProduct;
 
     @Override
     public int hashCode() {
@@ -110,20 +105,6 @@ public class LoanExternalInterest implements Serializable {
      */
     public void setIsHistory(Boolean isHistory) {
         this.isHistory = isHistory;
-    }
-
-    /**
-     * @return the loanProduct
-     */
-    public LoanProduct getLoanProduct() {
-        return loanProduct;
-    }
-
-    /**
-     * @param loanProduct the loanProduct to set
-     */
-    public void setLoanProduct(LoanProduct loanProduct) {
-        this.loanProduct = loanProduct;
     }
 
 }

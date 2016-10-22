@@ -5,12 +5,7 @@
  */
 package ejb.session.loan;
 
-import entity.loan.LoanPaymentBreakdown;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import java.util.*;
 import javax.ejb.Stateless;
-import org.apache.commons.lang.time.DateUtils;
 
 /**
  *
@@ -24,16 +19,14 @@ public class LoanCalculationSessionBean implements LoanCalculationSessionBeanLoc
     public final static Integer MIDDLE_HDB_LOAN_AGE = 40;
     public final static Integer MIDDLE_PP_LOAN_AGE = 35;
     public final static Integer MAX_HDB_LOAN_TENURE = 25;
-    public final static Integer MAX_PP_LOAN_TENURE = 25;
+    public final static Integer MAX_PP_LOAN_TENURE = 30;
     public final static Double MSR = 0.3;
     public final static Double TDSR = 0.6;
     public final static Double MEDIUM_INTEREST = 0.035;
 
     @Override
     public Double calculateMonthlyInstallment(Double monthlyLoanInterest, Integer tenure, Double loanAmt) {
-        Double monthlyInstallment;
-        monthlyInstallment = loanAmt * monthlyLoanInterest / (1 - Math.pow((1 + monthlyLoanInterest), -tenure));
-        return monthlyInstallment;
+        return loanAmt * monthlyLoanInterest / (1 - Math.pow((1 + monthlyLoanInterest), -tenure));
     }
 
     @Override
@@ -54,7 +47,7 @@ public class LoanCalculationSessionBean implements LoanCalculationSessionBeanLoc
         }
     }
 
-    @Override
+    @Override // checked
     public Integer calculateMaxPPTenure(Integer age, Double monthlyIncome) {
         if (monthlyIncome < 1500) {
             return 0;

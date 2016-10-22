@@ -17,6 +17,7 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.apache.commons.lang.time.DateUtils;
+import server.utilities.EnumUtils;
 
 /**
  *
@@ -43,138 +44,192 @@ public class LoanPaymentSessionBean implements LoanPaymentSessionBeanLocal {
         return loanRepaymentRecord;
     }
 
-// current period is month unit, tenure is year unit
     @Override
-    public List<LoanPaymentBreakdown> futurePaymentBreakdown(LoanAccount loanAccount, Integer currentPeriod) {
-        Double outstandingLoanAmt = loanAccount.getOutstandingPrincipal();
-        Double monthlyInstallment;
-        Integer tenure;
-        Date beginningDate = DateUtils.addMonths(loanAccount.getPaymentStartDate(), currentPeriod - 1);
+    public Double calculateMonthlyInstallment(LoanAccount loanAccount) {
+        EnumUtils.LoanProductType type = loanAccount.getLoanProduct().getProductType();
+
+        if (type == EnumUtils.LoanProductType.LOAN_PRODUCT_TYPE_CAR || type == EnumUtils.LoanProductType.LOAN_PRODUCT_TYPE_PERSONAL) {
+            // simple interest
+            System.out.println("Calculating monthly installment for simple interest");
+            return calculateMonthlyInstallmentForSimpleInterest(loanAccount);
+        } else if (type == EnumUtils.LoanProductType.LOAN_PRODUCT_TYPE_HDB || type == EnumUtils.LoanProductType.LOAN_PRODUCT_TYPE_PRIVATE_HOUSE) {
+            // compound interest
+            System.out.println("Calculating monthly installment for compound interest");
+            return calculateMonthlyInstallmentForCompoundInterest(loanAccount);
+        } else {
+            // suspended
+            return null;
+        }
+    }
+
+    private Double calculateMonthlyInstallmentForSimpleInterest(LoanAccount loanAccount) {
+        List<LoanInterest> loanInterests = loanAccount.getLoanProduct().getLoanInterestCollection().getLoanInterests();
+        // only has one interest
+        if (loanInterests.size() == 1) {
+            LoanInterest interest = loanInterests.get(0);
+            // original calculation
+            Double totalPrincipal = loanAccount.getPrincipal();
+            Double totalInterest = loanAccount.getPrincipal() * interest.getInterestRate() * loanAccount.getTenure();
+            System.out.println("Total principal is: " + totalPrincipal);
+            System.out.println("Total Interest is: " + totalInterest);
+
+            return (totalPrincipal + totalInterest) / loanAccount.tenureInMonth();
+        } else {
+            return null;
+        }
+    }
+
+    private Double calculateMonthlyInstallmentForCompoundInterest(LoanAccount loanAccount) {
+        Integer tenure = loanAccount.tenureInMonth();
+        Double monthlyLoanInterest = getAverageInterest(loanAccount);
+        Double loanAmt = loanAccount.getOutstandingPrincipal();
+        System.out.println("Average monthly interest percentage: " + monthlyLoanInterest);
+        return loanCalculationSessionBean.calculateMonthlyInstallment(monthlyLoanInterest, tenure, loanAmt);
+    }
+    
+    private Double getAverageInterest(LoanAccount loanAccount) {
+        Integer tenure = loanAccount.tenureInMonth();
+        List<LoanInterest> loanInterests = loanAccount.getLoanProduct().getLoanInterestCollection().getLoanInterests();
+        Double totalPercentage = 0.0;
+        // calculate average
+        // check external interest if needed
+        for (LoanInterest li : loanInterests) {
+            Integer totalMonth = 0;
+            if (li.getEndMonth() == -1) {
+                totalMonth = loanAccount.tenureInMonth() - li.getStartMonth() + 1;
+            } else {
+                totalMonth = 12;
+            }
+            totalPercentage += li.getInterestRate() / 12 * totalMonth;
+            System.out.println("Current interest percentage: " + totalPercentage + " with totalMonth: " + totalMonth );
+        }
+        return totalPercentage / tenure;
+    }
+
+    @Override
+    public List<LoanPaymentBreakdown> futurePaymentBreakdown(LoanAccount loanAccount) {
+
+        System.out.println("Generating all futurePaymentBreakdown");
+        EnumUtils.LoanProductType type = loanAccount.getLoanProduct().getProductType();
+        if (type == EnumUtils.LoanProductType.LOAN_PRODUCT_TYPE_CAR || type == EnumUtils.LoanProductType.LOAN_PRODUCT_TYPE_PERSONAL) {
+            // simple interest
+            System.out.println("Generating for simple interest");
+            return futurePaymentBreakdownForSimpleInterest(loanAccount);
+        } else if (type == EnumUtils.LoanProductType.LOAN_PRODUCT_TYPE_HDB || type == EnumUtils.LoanProductType.LOAN_PRODUCT_TYPE_PRIVATE_HOUSE) {
+            // compound interest
+            return futurePaymentBreakdownForCompoundInterest(loanAccount);
+        } else {
+            // suspended
+            return null;
+        }
+    }
+
+    private void removePreviousPaymentBreakDown(LoanAccount loanAccount) {
+        for (LoanPaymentBreakdown lpb : loanAccount.getLoanPaymentBreakdown()) {
+            em.remove(lpb);
+        }
+        em.flush();
+    }
+
+    // every repayment will remove the first one and change it to repayment record
+    private List<LoanPaymentBreakdown> futurePaymentBreakdownForSimpleInterest(LoanAccount loanAccount) {
+
+        Double outstandingLoanPrincipal = loanAccount.getOutstandingPrincipal();
+        // currentPeriod starting in 0
+        Date beginningDate = DateUtils.addMonths(loanAccount.getPaymentStartDate(), loanAccount.getCurrentPeriod());
+
         List<LoanPaymentBreakdown> futureBreakdown = new ArrayList<>();
         List<LoanInterest> loanInterests = loanAccount.getLoanProduct().getLoanInterestCollection().getLoanInterests();
-        for (LoanInterest i : loanInterests) {
-            System.out.print("In loan interest loop: " + i);
-            Integer endtime;
-            if (i.getEndMonth() == -1) {
-                endtime = loanAccount.getLoanProduct().getTenure();
-            } else {
-                endtime = i.getEndMonth();
+        // only has one interest
+        if (loanInterests.size() == 1) {
+            System.out.println("Only 1 loan interest");
+            LoanInterest interest = loanInterests.get(0);
+            // original calculation
+            Double totalPrincipal = loanAccount.getPrincipal();
+            Double totalInterest = loanAccount.getPrincipal() * interest.getInterestRate() * loanAccount.getTenure();
+            Double monthlyInterest = totalInterest / loanAccount.tenureInMonth();
+            Double monthlyPrincipal = totalPrincipal / loanAccount.tenureInMonth();
+            // TODO: check if this is working
+            removePreviousPaymentBreakDown(loanAccount);
+            // insert breakdown
+            for (int i = loanAccount.getCurrentPeriod(); i < loanAccount.tenureInMonth(); i++) {
+                System.out.println("Creating breakdown for nth month: " + i);
+                Date schedulePaymentDate = DateUtils.addMonths(beginningDate, i);
+                LoanPaymentBreakdown lpb = new LoanPaymentBreakdown();
+                lpb.setOutstandingPrincipalPayment(outstandingLoanPrincipal);
+                lpb.setNthMonth(i);
+                lpb.setLoanAccount(loanAccount);
+                lpb.setSchedulePaymentDate(schedulePaymentDate);
+                lpb.setPrincipalPayment(monthlyPrincipal);
+                lpb.setInterestPayment(monthlyInterest);
+                futureBreakdown.add(lpb);
+                em.persist(lpb);
+                outstandingLoanPrincipal = outstandingLoanPrincipal - monthlyPrincipal;
             }
-            System.out.print("Endtime:  " + endtime);
+            em.flush();
+        } else {
+            return null;
+        }
 
-            if (i.getStartMonth()< currentPeriod && endtime >= currentPeriod && i.getEndMonth()!= -1) {
+        return futureBreakdown;
+    }
 
-                tenure = endtime - currentPeriod + 1;
-                System.out.print("Condition1:  " + tenure);
-                System.out.print("Outstanding loan amt: " + outstandingLoanAmt);
-                beginningDate = DateUtils.addMonths(beginningDate, currentPeriod);
-//                monthlyInstallment = loanCalculationSessionBean.calculateMonthlyInstallment(i.getInterestRate(), tenure, outstandingLoanAmt);
-//                outstandingLoanAmt = outstandingLoanAmt - monthlyInstallment * tenure;
-                futureBreakdown = calculatePaymentBreakdown(futureBreakdown, outstandingLoanAmt, tenure, i.getInterestRate() / 12, beginningDate);
-                beginningDate = DateUtils.addMonths(beginningDate, tenure);
+    private List<LoanPaymentBreakdown> futurePaymentBreakdownForCompoundInterest(LoanAccount loanAccount) {
 
-            } else if (i.getStartMonth()< currentPeriod && i.getEndMonth()== -1) {
+        Double outstandingLoanPrincipal = loanAccount.getOutstandingPrincipal();
+        Date beginningDate = DateUtils.addMonths(loanAccount.getPaymentStartDate(), loanAccount.getCurrentPeriod());
+        Double monthlyIntallment = loanAccount.getMonthlyInstallment();
 
-                tenure = endtime - i.getStartMonth();
-                System.out.print("Condition2:  " + tenure);
-                System.out.print("Outstanding loan amt: " + outstandingLoanAmt);
+        List<LoanPaymentBreakdown> futureBreakdown = new ArrayList<>();
+        removePreviousPaymentBreakDown(loanAccount);
+        for (int i = loanAccount.getCurrentPeriod(); i < loanAccount.tenureInMonth(); i++) {
+            LoanInterest currentInterest = getCurrentInterest(i, loanAccount);
+            if (currentInterest != null) {
+                Double monthlyInterest = outstandingLoanPrincipal * getAverageInterest(loanAccount);
+                Double monthlyPrincipal = monthlyIntallment - monthlyInterest;
 
-//                monthlyInstallment = loanCalculationSessionBean.calculateMonthlyInstallment(i.getInterestRate(), tenure, outstandingLoanAmt);
-//                outstandingLoanAmt = outstandingLoanAmt - monthlyInstallment * tenure;
-                futureBreakdown = calculatePaymentBreakdown(futureBreakdown, outstandingLoanAmt, tenure, i.getInterestRate() / 12, beginningDate);
-                beginningDate = DateUtils.addMonths(beginningDate, tenure);
-
-            } else {
+                Date schedulePaymentDate = DateUtils.addMonths(beginningDate, i);
+                LoanPaymentBreakdown lpb = new LoanPaymentBreakdown();
+                lpb.setOutstandingPrincipalPayment(outstandingLoanPrincipal);
+                lpb.setNthMonth(i);
+                lpb.setLoanAccount(loanAccount);
+                lpb.setSchedulePaymentDate(schedulePaymentDate);
+                lpb.setPrincipalPayment(monthlyPrincipal);
+                lpb.setInterestPayment(monthlyInterest);
+                futureBreakdown.add(lpb);
+                em.persist(lpb);
+                outstandingLoanPrincipal = outstandingLoanPrincipal - monthlyPrincipal;
             }
         }
 
         return futureBreakdown;
-
     }
 
-    @Override
-    public List<LoanPaymentBreakdown> calculatePaymentBreakdown(List<LoanPaymentBreakdown> paymentBreakdown, Double loanAmt,
-            Integer tenure, Double loanInterest, Date loanDate) {
-        Double monthlyInstallment = loanCalculationSessionBean.calculateMonthlyInstallment(loanInterest, tenure, loanAmt);
-        Date schedulePaymentDate;
-        Integer period;
-        Double principalPayment;
-        Double interestPayment;
-        Integer beginningPeriod;
-
-        if (paymentBreakdown.isEmpty()) {
-            beginningPeriod = 1;
-        } else {
-            beginningPeriod = paymentBreakdown.get(paymentBreakdown.size() - 1).getNthMonth()+ 1;
-        }
-
-        System.out.print(beginningPeriod);
-        for (int i = beginningPeriod; i <= tenure + beginningPeriod - 1; i++) {
-            schedulePaymentDate = DateUtils.addMonths(loanDate, i - 1);
-
-            interestPayment = loanAmt * loanInterest;
-            principalPayment = monthlyInstallment - loanAmt * loanInterest;
-
-            if (loanAmt >= principalPayment) {
-                loanAmt = loanAmt - principalPayment;
-            } else {
-                principalPayment = loanAmt;
-                loanAmt = 0.0;
+    private LoanInterest getCurrentInterest(Integer currentMonth, LoanAccount loanAccount) {
+        List<LoanInterest> loanInterests = loanAccount.getLoanProduct().getLoanInterestCollection().getLoanInterests();
+        // only has one interest
+        for (LoanInterest i : loanInterests) {
+            if (currentMonth >= i.getStartMonth() - 1 && (i.getEndMonth() == -1 || currentMonth < i.getEndMonth())) {
+                return i;
             }
-
-            period = i;
-            LoanPaymentBreakdown lpb = new LoanPaymentBreakdown();
-            lpb.setInterestPayment(interestPayment);
-            lpb.setOutstandingPrincipalPayment(loanAmt);
-            lpb.setNthMonth(period);
-            lpb.setSchedulePaymentDate(schedulePaymentDate);
-            lpb.setPrincipalPayment(principalPayment);
-            paymentBreakdown.add(lpb);
-            em.persist(lpb);
-
         }
-
-        return paymentBreakdown;
-
+        return null;
     }
-//    
-//    @Override
-//    public List lumSumPayAdjustment(Integer lumSumPayment,Double outstandingLoanAmt,Integer residualTenure, Double loanInterest,Date lumSumPayDate){
-//        if (lumSumPayment<10000){
-//            System.out.println("Not enough to be considered as lum sum payment");
-//            return null;
-//        }
-//        else{
-//            List<LoanPaymentBreakdown> newPaymentBreakdown=new ArrayList<>();
-//        
-//            newPaymentBreakdown=this.calculateRepaymentBreakdown(outstandingLoanAmt-lumSumPayment, residualTenure, loanInterest, lumSumPayDate);
-//            return newPaymentBreakdown;
-//        }
-//    }
-//        
-//    @Override
-//    public Integer transactionPeriod(Date paymentDate,Integer tenure,List<LoanPaymentBreakdown> paymentBreakdown){
-//        for (int i=0;i<tenure;i++){
-//            if (paymentBreakdown.get(i).getSchedulePaymentDate().compareTo(paymentDate)>0){
-//                return i+1;
+
+//    private Double getTotalCompoundInterestForAccount(LoanAccount loanAccount) {
+//        Double outstandingLoanPrincipal = loanAccount.getOutstandingPrincipal();
+//        Double totalInterest = 0.0;
+//        for (int yearIndex = 0; yearIndex < loanAccount.getTenure(); yearIndex++) {
+//            for (LoanInterest interest : loanAccount.getLoanProduct().getLoanInterestCollection().getLoanInterests()) {
+//                if (yearIndex * 12 == interest.getStartMonth() - 1) {
+//                    Double extraInterest = interest.getLoanExternalInterest() == null ? 0.0 : interest.getLoanExternalInterest().getRate();
+//                    for (int i = 0; i < 12; i ++) {
+//                        totalInterest += (outstandingLoanPrincipal + totalInterest) * ( (interest.getInterestRate() + extraInterest) / 12 );
+//                    }
+//                    System.out.println("Interest for year:" + yearIndex + "is " + totalInterest);
+//                }
 //            }
-//            else if (paymentBreakdown.get(i).getSchedulePaymentDate().compareTo(paymentDate)>0)
-//                return i+1;
 //        }
-//        return -1;
+//        return totalInterest;
 //    }
-//    
-//    @Override
-//    public void realPayment(Integer period, Double payment,Date transactionDate,List<LoanRealPayment> realPayment){
-//        Double cummulatedPayment=realPayment.get(period-1).getPayment()+payment;
-//        realPayment.get(period-1).setPayment(cummulatedPayment);
-//        realPayment.get(period-1).setTransactionDate(transactionDate);   
-//    }
-//    
-//    @Override
-//    public Double penaltyCharge(Integer lateDays,Double lateAmount, Double penaltyInterest){
-//        Double penalty=lateAmount*penaltyInterest/365*lateDays;
-//        return penalty;
-//    }// Add business logic below. (Right-click in editor and choose
-//    // "Insert Code > Add Business Method")
 }

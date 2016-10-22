@@ -15,6 +15,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import server.utilities.EnumUtils.LoanRepaymentType;
 
 /**
  *
@@ -41,6 +42,7 @@ public class LoanRepaymentRecord implements Serializable {
     private Double interestAccrued;
     // total interest paid upto this period
     private Double cumulativeInterestAccrued = 0.0;
+    private LoanRepaymentType type;
 
     @ManyToOne(cascade = {CascadeType.MERGE})
     private LoanAccount loanAccount;
@@ -156,6 +158,20 @@ public class LoanRepaymentRecord implements Serializable {
      */
     public void setNthMonth(Integer nthMonth) {
         this.nthMonth = nthMonth;
+    }
+
+    /**
+     * @return the type
+     */
+    public LoanRepaymentType getType() {
+        return type;
+    }
+
+    /**
+     * @param type the type to set
+     */
+    public void setType(LoanRepaymentType type) {
+        this.type = type;
     }
 
 }

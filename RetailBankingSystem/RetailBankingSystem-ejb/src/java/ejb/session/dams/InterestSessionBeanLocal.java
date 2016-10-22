@@ -25,4 +25,5 @@ public interface InterestSessionBeanLocal {
     public List<Interest> showAllPresentInterests();
     public List<TimeRangeInterest> getFixedDepositAccountDefaultInterests();
     public List<TimeRangeInterest> getFixedDepositAccountInterestsByAccount(CustomerFixedDepositAccount account);
+    public TimeRangeInterest getTimeRangeInterestByAmountAndMonth(Double amount, Integer month);
 }

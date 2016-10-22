@@ -20,6 +20,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import org.apache.commons.lang.time.DateUtils;
 import server.utilities.EnumUtils;
 import server.utilities.EnumUtils.LoanAccountStatus;
 
@@ -29,26 +30,34 @@ import server.utilities.EnumUtils.LoanAccountStatus;
  */
 @Entity
 public class LoanAccount implements Serializable {
-
+    
+//http://stackoverflow.com/questions/15638248/save-image-file-in-specific-directory-jsf-primefaces-project
+//http://stackoverflow.com/questions/3428039/download-a-file-with-jsf
+    
     @Id
     private String accountNumber;
     @Temporal(value = TemporalType.TIMESTAMP)
     private Date creationDate = new Date();
+    
+    // info
     @Temporal(value = TemporalType.TIMESTAMP)
     private Date maturityDate; // end date
     @Temporal(value = TemporalType.TIMESTAMP)
     private Date paymentStartDate; // start date
-    
+    private Integer tenure;
     // payment day in month for example, 
     // every 23rd of the month is the payment due date
     private Integer paymentDate; 
+    private Integer currentPeriod = 0;
     private Double monthlyInstallment; // monthly payment
     private Double outstandingPrincipal; // 
-    private Double overduePayment; // late payment
+    private Double overduePayment = 0.0; // late payment
     private Double principal; // total loan amount
     // works as loan order too.
     private LoanAccountStatus loanAccountStatus = EnumUtils.LoanAccountStatus.NEW;
-
+    // list of files
+    
+    // mapping
     // TODO: Assign algorithm
     // assigned loan officer to take note
     @ManyToOne(cascade = {CascadeType.MERGE})
@@ -68,6 +77,10 @@ public class LoanAccount implements Serializable {
     @OneToMany(cascade = {CascadeType.MERGE}, mappedBy = "loanAccount")
     private List<LoanPaymentBreakdown> loanPaymentBreakdown = new ArrayList<>();
 
+    public Integer tenureInMonth() {
+        return tenure * 12;
+    }
+    
     @Override
     public String toString() {
         return "LoanAccount{" + "accountNumber=" + accountNumber + '}';
@@ -227,6 +240,34 @@ public class LoanAccount implements Serializable {
      */
     public void setPaymentDate(Integer paymentDate) {
         this.paymentDate = paymentDate;
+    }
+
+    /**
+     * @return the tenure
+     */
+    public Integer getTenure() {
+        return tenure;
+    }
+
+    /**
+     * @param tenure the tenure to set
+     */
+    public void setTenure(Integer tenure) {
+        this.tenure = tenure;
+    }
+
+    /**
+     * @return the currentPeriod
+     */
+    public Integer getCurrentPeriod() {
+        return currentPeriod;
+    }
+
+    /**
+     * @param currentPeriod the currentPeriod to set
+     */
+    public void setCurrentPeriod(Integer currentPeriod) {
+        this.currentPeriod = currentPeriod;
     }
 
 }
