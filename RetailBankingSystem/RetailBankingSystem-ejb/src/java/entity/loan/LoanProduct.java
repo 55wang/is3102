@@ -28,6 +28,8 @@ public class LoanProduct implements Serializable {
     private Long id;
 
     private LoanProductType productType;
+    private Integer version = 0;
+    private Boolean isHistory = Boolean.FALSE;
     @Column(unique = true, nullable = false)
     private String productName;
     //lockInDuration unit is month
@@ -165,6 +167,34 @@ public class LoanProduct implements Serializable {
      */
     public void setMinIncome(Integer minIncome) {
         this.minIncome = minIncome;
+    }
+
+    /**
+     * @return the version
+     */
+    public Integer getVersion() {
+        return version;
+    }
+
+    /**
+     * @param version the version to set
+     */
+    public void setVersion(Integer version) {
+        this.version = version;
+    }
+
+    /**
+     * @return the isHistory
+     */
+    public Boolean getIsHistory() {
+        return isHistory;
+    }
+
+    /**
+     * @param isHistory the isHistory to set
+     */
+    public void setIsHistory(Boolean isHistory) {
+        this.isHistory = isHistory;
     }
 
 }

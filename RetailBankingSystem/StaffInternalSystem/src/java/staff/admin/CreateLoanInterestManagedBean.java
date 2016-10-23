@@ -66,10 +66,19 @@ public class CreateLoanInterestManagedBean implements Serializable {
             newLoanInterest.setEndMonth(-1);
             newLoanInterest.setStartMonth(0);
             newLoanInterest.setName(loanName);
+            newLoanInterest.setProductType(EnumUtils.LoanProductType.getEnum(selectedInterestType));
             newLoanInterest.setInterestRate(loanRate);
-            if (loanProductBean.createLoanInterest(newLoanInterest) != null) {
-                addedLoanInterests.add(newLoanInterest);
-                MessageUtils.displayInfo("Loan Interest Created");
+            newLoanInterest = loanProductBean.createLoanInterest(newLoanInterest);
+
+            addedLoanInterests.add(newLoanInterest);
+
+            LoanInterestCollection newLoanCollection = new LoanInterestCollection();
+            newLoanCollection.setName(loanName);
+            newLoanCollection.setProductType(EnumUtils.LoanProductType.getEnum(selectedInterestType));
+            newLoanCollection.addLoanInterest(newLoanInterest);
+
+            if (loanProductBean.createInterestCollection(newLoanCollection) != null) {
+                MessageUtils.displayInfo("Loan Interest Collection Created");
             } else {
                 MessageUtils.displayError("This Loan Interest already Exists");
             }
@@ -81,22 +90,24 @@ public class CreateLoanInterestManagedBean implements Serializable {
                 newLoanInterest.setEndMonth(dto.getEndMonth());
                 newLoanInterest.setStartMonth(dto.getStartMonth());
                 newLoanInterest.setName(loanName + dto.getStartMonth() + "-" + dto.getEndMonth());
+                newLoanInterest.setProductType(EnumUtils.LoanProductType.getEnum(selectedInterestType));
                 newLoanInterest.setInterestRate(dto.getInterestRate());
                 if (dto.getExternalInteret().equals(FHR18_INTEREST)) {
                     newLoanInterest.setFhr18(Boolean.TRUE);
                 } else if (dto.getExternalInteret().equals(SIBOR_INTEREST)) {
                     newLoanInterest.setLoanExternalInterest(loanProductBean.getSIBORInterest());
                 }
-                if (loanProductBean.createLoanInterest(newLoanInterest) != null) {
-                    addedLoanInterests.add(newLoanInterest);
-                    tobeSaved.add(newLoanInterest);
-                }
+
+                newLoanInterest = loanProductBean.createLoanInterest(newLoanInterest);
+                addedLoanInterests.add(newLoanInterest);
+                tobeSaved.add(newLoanInterest);
             }
 
             LoanInterestCollection newLoanCollection = new LoanInterestCollection();
             newLoanCollection.setName(loanName);
+            newLoanCollection.setProductType(EnumUtils.LoanProductType.getEnum(selectedInterestType));
             newLoanCollection.setLoanInterests(tobeSaved);
-            
+
             if (loanProductBean.createInterestCollection(newLoanCollection) != null) {
                 MessageUtils.displayInfo("Loan Interest Collection Created");
             } else {

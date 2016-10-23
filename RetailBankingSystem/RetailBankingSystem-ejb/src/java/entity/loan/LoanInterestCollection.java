@@ -16,6 +16,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import server.utilities.EnumUtils;
 
 /**
  *
@@ -33,6 +34,7 @@ public class LoanInterestCollection implements Serializable {
     private String name;
     private Integer version = 0;
     private Boolean isHistory = Boolean.FALSE;
+    private EnumUtils.LoanProductType productType;
     
     @OneToOne(cascade = {CascadeType.MERGE})
     private LoanProduct loanProduct;
@@ -73,9 +75,11 @@ public class LoanInterestCollection implements Serializable {
 
     @Override
     public String toString() {
-        return "entity.loan.LoanInterestCollection[ id=" + id + " ]";
+        return name;
     }
 
+    
+    
     /**
      * @return the name
      */
@@ -144,6 +148,20 @@ public class LoanInterestCollection implements Serializable {
      */
     public void setLoanInterests(List<LoanInterest> loanInterests) {
         this.loanInterests = loanInterests;
+    }
+
+    /**
+     * @return the productType
+     */
+    public EnumUtils.LoanProductType getProductType() {
+        return productType;
+    }
+
+    /**
+     * @param productType the productType to set
+     */
+    public void setProductType(EnumUtils.LoanProductType productType) {
+        this.productType = productType;
     }
     
 }

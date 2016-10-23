@@ -15,6 +15,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import server.utilities.ConstantUtils;
+import server.utilities.EnumUtils;
 
 /**
  *
@@ -43,6 +44,12 @@ public class LoanProductSessionBean implements LoanProductSessionBeanLocal {
     public LoanProduct updateLoanProduct(LoanProduct loanProduct) {
         em.merge(loanProduct);
         return loanProduct;
+    }
+    
+    @Override
+    public List<LoanProduct> getAllLoanProduct() {
+        Query q = em.createQuery("SELECT lp FROM LoanProduct lp WHERE lp.isHistory = false");
+        return q.getResultList();
     }
 
     @Override
@@ -89,6 +96,11 @@ public class LoanProductSessionBean implements LoanProductSessionBeanLocal {
     }
     
     @Override
+    public LoanInterestCollection getInterestCollectionById(Long id) {
+        return em.find(LoanInterestCollection.class, id);
+    }
+    
+    @Override
     public LoanExternalInterest getSIBORInterest() {
         return getCommonInterestByName(ConstantUtils.DEMO_LOAN_COMMON_INTEREST_NAME);
     }
@@ -96,6 +108,34 @@ public class LoanProductSessionBean implements LoanProductSessionBeanLocal {
     @Override
     public List<LoanInterest> getAllLoanInterest() {
         Query q = em.createQuery("SELECT li FROM LoanInterest li WHERE li.isHistory = false");
+        return q.getResultList();
+    }
+    
+    @Override
+    public List<LoanInterestCollection> getAllPersonalLoanInterestCollection() {
+        Query q = em.createQuery("SELECT li FROM LoanInterestCollection li WHERE li.isHistory = false AND li.productType = :productType");
+        q.setParameter("productType", EnumUtils.LoanProductType.LOAN_PRODUCT_TYPE_PERSONAL);
+        return q.getResultList();
+    }
+    
+    @Override
+    public List<LoanInterestCollection> getAllCarLoanInterestCollection() {
+        Query q = em.createQuery("SELECT li FROM LoanInterestCollection li WHERE li.isHistory = false AND li.productType = :productType");
+        q.setParameter("productType", EnumUtils.LoanProductType.LOAN_PRODUCT_TYPE_CAR);
+        return q.getResultList();
+    }
+    
+    @Override
+    public List<LoanInterestCollection> getAllHDBLoanInterestCollection() {
+        Query q = em.createQuery("SELECT li FROM LoanInterestCollection li WHERE li.isHistory = false AND li.productType = :productType");
+        q.setParameter("productType", EnumUtils.LoanProductType.LOAN_PRODUCT_TYPE_HDB);
+        return q.getResultList();
+    }
+    
+    @Override
+    public List<LoanInterestCollection> getAllPPLoanInterestCollection() {
+        Query q = em.createQuery("SELECT li FROM LoanInterestCollection li WHERE li.isHistory = false AND li.productType = :productType");
+        q.setParameter("productType", EnumUtils.LoanProductType.LOAN_PRODUCT_TYPE_PRIVATE_HOUSE);
         return q.getResultList();
     }
 }

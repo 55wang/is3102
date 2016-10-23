@@ -1,0 +1,104 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:em="http://xmlns.jcp.org/jsf/composite/emcomp"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <!--shift + ctrl + F, format-->
+    <f:view>
+        <h:head>
+            <title>Merlion Internal</title>
+            <em:cssImport></em:cssImport>
+        </h:head>
+        <h:body>
+            <em:staffNavBar context="admin"></em:staffNavBar>
+            <em:staffSideBar top="admin" side="createLoanProduct"></em:staffSideBar>
+            <div class="container">
+                <h:form id="mainForm">
+                    <p:panel header="Create Deposit Product">
+                        <p:messages id="messagesStatus" redisplay="false" >
+                            <h:panelGrid columns="2" cellpadding="5">
+                                <p:outputLabel value="Product Type: " />
+                                <p:selectOneButton value="#{createLoanProductManagedBean.selectedProductType}">
+                                    <f:selectItem itemLabel="Personal Loan Interest" itemValue="#{createLoanProductManagedBean.PERSONAL_LOAN_TYPE}" />
+                                    <f:selectItem itemLabel="Car Loan Interest" itemValue="#{createLoanProductManagedBean.CAR_LOAN_TYPE}" />
+                                    <f:selectItem itemLabel="HDB Loan Interests" itemValue="#{createLoanProductManagedBean.HDB_LOAN_TYPE}" />
+                                    <f:selectItem itemLabel="Private House Loan Interests" itemValue="#{createLoanProductManagedBean.PP_LOAN_TYPE}" />
+                                    <f:ajax render="@form" />
+                                </p:selectOneButton>
+
+                                <p:outputLabel value="Name: " />
+                                <p:inputText value="#{createLoanProductManagedBean.newLoanProduct.productName}" required="true" />
+                                <p:outputLabel value="Lock in duration: " />
+                                <p:inputText value="#{createLoanProductManagedBean.newLoanProduct.lockInDuration}" required="true" />
+                                <p:outputLabel value="Tenure in years: " />
+                                <p:inputText value="#{createLoanProductManagedBean.newLoanProduct.tenure}" required="true" />
+                                <p:outputLabel value="Penalty Interest: " />
+                                <p:inputText value="#{createLoanProductManagedBean.newLoanProduct.penaltyInterestRate}" required="true" >
+                                    <f:convertNumber type="percent" minFractionDigits="4"/>
+                                </p:inputText>
+                                <p:outputLabel value="Minimum Age: " />
+                                <p:inputText value="#{createLoanProductManagedBean.newLoanProduct.minAge}" required="true" />
+                                <p:outputLabel value="Minimum Income: " />
+                                <p:inputText value="#{createLoanProductManagedBean.newLoanProduct.minIncome}" required="true" />
+
+                                <p:outputLabel value="Choose Interest: " />
+                                <c:if test="#{createLoanProductManagedBean.selectedProductType == createLoanProductManagedBean.PERSONAL_LOAN_TYPE}" >
+                                    <p:selectOneMenu value="#{createLoanProductManagedBean.selectedInterestCollectionId}" rendered="true" required="true">
+                                        <f:selectItems value="#{createLoanProductManagedBean.personalInterests}" var="i" itemValue="#{i.id}" itemLabel="#{i.name}" />
+                                    </p:selectOneMenu>
+                                </c:if>
+                                <c:if test="#{createLoanProductManagedBean.selectedProductType == createLoanProductManagedBean.CAR_LOAN_TYPE}" >
+                                    <p:selectOneMenu value="#{createLoanProductManagedBean.selectedInterestCollectionId}" rendered="true" required="true">
+                                        <f:selectItems value="#{createLoanProductManagedBean.carInterests}" var="i" itemValue="#{i.id}" itemLabel="#{i.name}" />
+                                    </p:selectOneMenu>
+                                </c:if>
+                                <c:if test="#{createLoanProductManagedBean.selectedProductType == createLoanProductManagedBean.HDB_LOAN_TYPE}" >
+                                    <p:selectOneMenu value="#{createLoanProductManagedBean.selectedInterestCollectionId}" rendered="true" required="true">
+                                        <f:selectItems value="#{createLoanProductManagedBean.hdbInterests}" var="i" itemValue="#{i.id}" itemLabel="#{i.name}" />
+                                    </p:selectOneMenu>
+                                </c:if>
+                                <c:if test="#{createLoanProductManagedBean.selectedProductType == createLoanProductManagedBean.PP_LOAN_TYPE}" >
+                                    <p:selectOneMenu value="#{createLoanProductManagedBean.selectedInterestCollectionId}" rendered="true" required="true">
+                                        <f:selectItems value="#{createLoanProductManagedBean.ppInterest}" var="i" itemValue="#{i.id}" itemLabel="#{i.name}" />
+                                    </p:selectOneMenu>
+                                </c:if>
+
+                                <p:commandButton value="Create" icon="ui-icon-plus" update="@form" actionListener="#{createLoanProductManagedBean.createLoanProduct()}" />
+                            </h:panelGrid>
+                        </p:messages>
+                    </p:panel>
+                    <p:panel header="Added Products">
+                        <p:dataTable value="#{createLoanProductManagedBean.addedLoanProducts}" var="product">
+                            <p:column headerText="Name" sortBy="#{product.productName}">
+                                <h:outputText value="#{product.productName}"/>
+                            </p:column>
+                            <p:column headerText="Type" sortBy="#{product.productType}">
+                                <h:outputText value="#{product.productType}"/>
+                            </p:column>
+                            <p:column headerText="Interest" sortBy="#{product.loanInterestCollection}">
+                                <h:outputText value="#{product.loanInterestCollection}"/>
+                            </p:column>
+                            <p:column headerText="Locked In" sortBy="#{product.lockInDuration}">
+                                <h:outputText value="#{product.lockInDuration}"/>
+                            </p:column>
+                            <p:column headerText="Tenure" sortBy="#{product.tenure}">
+                                <h:outputText value="#{product.tenure}"/>
+                            </p:column>
+                            <p:column headerText="Penalty Interest" sortBy="#{product.penaltyInterestRate}">
+                                <h:outputText value="#{product.penaltyInterestRate}"> 
+                                    <f:convertNumber type="percent" minFractionDigits="4"/>
+                                </h:outputText>
+                            </p:column>
+                        </p:dataTable>
+                    </p:panel>
+                </h:form>
+            </div>
+        </h:body>
+    </f:view>
+
+
+</html>
+

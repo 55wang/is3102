@@ -21,6 +21,7 @@ public interface LoanProductSessionBeanLocal {
     public LoanProduct createLoanProduct(LoanProduct loanProduct);
     public LoanProduct getLoanProductByProductName(String productName);
     public LoanProduct updateLoanProduct(LoanProduct loanProduct);
+    public List<LoanProduct> getAllLoanProduct();
     public LoanExternalInterest getCommonInterestByName(String name);
     public LoanExternalInterest createCommonInterest(LoanExternalInterest lci);
     public LoanExternalInterest updateCommonInterest(LoanExternalInterest lci);
@@ -28,6 +29,11 @@ public interface LoanProductSessionBeanLocal {
     public LoanInterest updateLoanInterest(LoanInterest li);
     public LoanInterestCollection createInterestCollection(LoanInterestCollection lic);
     public LoanInterestCollection updateInterestCollection(LoanInterestCollection lic);
+    public LoanInterestCollection getInterestCollectionById(Long id);
     public LoanExternalInterest getSIBORInterest();
     public List<LoanInterest> getAllLoanInterest();
+    public List<LoanInterestCollection> getAllPersonalLoanInterestCollection();
+    public List<LoanInterestCollection> getAllCarLoanInterestCollection();
+    public List<LoanInterestCollection> getAllHDBLoanInterestCollection();
+    public List<LoanInterestCollection> getAllPPLoanInterestCollection();
 }

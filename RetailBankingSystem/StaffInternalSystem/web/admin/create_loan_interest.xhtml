@@ -21,7 +21,7 @@
                         <p:messages id="messagesStatus" redisplay="false" >
                             <h:panelGrid columns="2" cellpadding="5">
                                 <p:outputLabel value="Select Interest Type: " />
-                                <p:selectOneButton value="#{createLoanInterestManagedBean.selectedInterestType}">
+                                <p:selectOneButton value="#{createLoanInterestManagedBean.selectedInterestType}" >
                                     <f:selectItem itemLabel="Personal Loan Interest" itemValue="#{createLoanInterestManagedBean.PERSONAL_LOAN_TYPE}" />
                                     <f:selectItem itemLabel="Car Loan Interest" itemValue="#{createLoanInterestManagedBean.CAR_LOAN_TYPE}" />
                                     <f:selectItem itemLabel="HDB Loan Interests" itemValue="#{createLoanInterestManagedBean.HDB_LOAN_TYPE}" />
@@ -30,7 +30,7 @@
                                 </p:selectOneButton>
 
                                 <p:outputLabel value="Interest Name: " />
-                                <p:inputText value="#{createLoanInterestManagedBean.loanName}"/>
+                                <p:inputText value="#{createLoanInterestManagedBean.loanName}" required="true" />
 
                                 <c:if test="#{createLoanInterestManagedBean.selectedInterestType == createLoanInterestManagedBean.HDB_LOAN_TYPE || createLoanInterestManagedBean.selectedInterestType == createLoanInterestManagedBean.PP_LOAN_TYPE}" >
                                     <p:outputLabel value="Edit By Clicking cell: " />
@@ -74,7 +74,7 @@
 
                                 <c:if test="#{createLoanInterestManagedBean.selectedInterestType == createLoanInterestManagedBean.CAR_LOAN_TYPE || createLoanInterestManagedBean.selectedInterestType == createLoanInterestManagedBean.PERSONAL_LOAN_TYPE}" >
                                     <p:outputLabel value="Interest Percentage: " />
-                                    <p:inputText value="#{createLoanInterestManagedBean.loanRate}">
+                                    <p:inputText value="#{createLoanInterestManagedBean.loanRate}" required="true" >
                                         <f:convertNumber type="percent" minFractionDigits="4"/>
                                     </p:inputText>
                                 </c:if>
