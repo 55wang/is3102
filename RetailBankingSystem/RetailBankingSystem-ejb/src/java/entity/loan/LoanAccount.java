@@ -52,6 +52,7 @@ public class LoanAccount implements Serializable {
     private Double monthlyInstallment; // monthly payment
     private Double outstandingPrincipal; // 
     private Double overduePayment = 0.0; // late payment
+    private Double amountPaidBeforeDueDate = 0.0; // early payment
     private Double principal; // total loan amount
     // works as loan order too.
     private LoanAccountStatus loanAccountStatus = EnumUtils.LoanAccountStatus.NEW;
@@ -79,6 +80,10 @@ public class LoanAccount implements Serializable {
 
     public Integer tenureInMonth() {
         return tenure * 12;
+    }
+    
+    public void addRepaymentRecord(LoanRepaymentRecord record) {
+        loanRepaymentRecords.add(record);
     }
     
     @Override
@@ -268,6 +273,20 @@ public class LoanAccount implements Serializable {
      */
     public void setCurrentPeriod(Integer currentPeriod) {
         this.currentPeriod = currentPeriod;
+    }
+
+    /**
+     * @return the amountPaidBeforeDueDate
+     */
+    public Double getAmountPaidBeforeDueDate() {
+        return amountPaidBeforeDueDate;
+    }
+
+    /**
+     * @param amountPaidBeforeDueDate the amountPaidBeforeDueDate to set
+     */
+    public void setAmountPaidBeforeDueDate(Double amountPaidBeforeDueDate) {
+        this.amountPaidBeforeDueDate = amountPaidBeforeDueDate;
     }
 
 }

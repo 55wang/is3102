@@ -5,13 +5,16 @@
  */
 package ejb.session.loan;
 
+import ejb.session.dams.CustomerDepositSessionBeanLocal;
 import ejb.session.dams.InterestSessionBeanLocal;
+import entity.dams.account.DepositAccount;
 import entity.dams.rules.TimeRangeInterest;
 import entity.loan.LoanAccount;
 import entity.loan.LoanExternalInterest;
 import entity.loan.LoanInterest;
 import entity.loan.LoanPaymentBreakdown;
 import entity.loan.LoanRepaymentRecord;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -33,7 +36,11 @@ public class LoanPaymentSessionBean implements LoanPaymentSessionBeanLocal {
     @EJB
     private LoanCalculationSessionBeanLocal loanCalculationSessionBean;
     @EJB
+    private LoanAccountSessionBeanLocal loanAccountBean;
+    @EJB
     private InterestSessionBeanLocal interestBean;
+    @EJB
+    private CustomerDepositSessionBeanLocal depositBean;
 
     @PersistenceContext(unitName = "RetailBankingSystem-ejbPU")
     private EntityManager em;
@@ -258,5 +265,38 @@ public class LoanPaymentSessionBean implements LoanPaymentSessionBeanLocal {
             }
         }
         return null;
+    }
+    
+    @Override
+    public String loanRepaymentFromAccount(String loanAccountNumber, String depositAccountNumber, BigDecimal amount) {
+        DepositAccount fromAccount = depositBean.getAccountFromId(depositAccountNumber);
+        if (fromAccount.getBalance().compareTo(amount) < 0) {
+            // not enough money
+            return "FAIL";
+        } else {
+            depositBean.ccSpendingFromAccount(fromAccount, amount);
+            loanAccountRepayment(loanAccountNumber, amount.doubleValue());
+            return "SUCCESS";
+        }
+    }
+    
+    public LoanAccount loanAccountRepayment(String loanAccountNumber, Double amount) {
+        LoanAccount loanAccount = loanAccountBean.getLoanAccountByAccountNumber(loanAccountNumber);
+        loanAccount.setAmountPaidBeforeDueDate(amount + loanAccount.getAmountPaidBeforeDueDate());
+        
+        LoanPaymentBreakdown breakdown = loanAccountBean.getFutureNearestPaymentBreakdownsByLoanAcountNumber(loanAccountNumber);
+        
+        LoanRepaymentRecord record = new LoanRepaymentRecord();
+        record.setBeginningBalance(loanAccount.getOutstandingPrincipal());
+        record.setLoanAccount(loanAccount);
+        record.setNthMonth(breakdown.getNthMonth());
+        record.setPaymentAmount(amount);
+        record.setRemainingBalance(loanAccount.getOutstandingPrincipal() - amount);
+        record.setTransactionDate(new Date());
+        record.setType(EnumUtils.LoanRepaymentType.LOAN_REPAYMENT);
+        em.persist(record);
+        loanAccount.addRepaymentRecord(record);
+        em.merge(loanAccount);
+        return loanAccount;
     }
 }

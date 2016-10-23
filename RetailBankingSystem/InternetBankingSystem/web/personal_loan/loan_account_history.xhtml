@@ -9,8 +9,8 @@
     <!--shift + ctrl + F, format-->
     <f:view>
         <f:metadata>
-            <f:viewParam name="accountId" value="#{loanAccountBreakdownManagedBean.accountId}" />
-            <f:viewAction action="#{loanAccountBreakdownManagedBean.init()}"></f:viewAction>
+            <f:viewParam name="accountId" value="#{loanAccountHistoryManagedBean.accountId}" />
+            <f:viewAction action="#{loanAccountHistoryManagedBean.init()}"></f:viewAction>
         </f:metadata>
         <h:head>
             <title>Account Transactions</title>
@@ -21,10 +21,10 @@
             <em:customerNavBar context="personal" personalPage="home" ></em:customerNavBar>
             <div class="customer_main_container">
                 <h:form id="mainForm">
-                    <p:panel header="History for account #{loanAccountBreakdownManagedBean.loanAccount.accountNumber}">
+                    <p:panel header="History for account #{loanAccountHistoryManagedBean.loanAccount.accountNumber}">
                         <p:messages id="messagesStatus" redisplay="false" >
 
-                            <p:dataTable value="#{loanAccountBreakdownManagedBean.loanAccount.loanRepaymentRecords}" var="record">
+                            <p:dataTable value="#{loanAccountHistoryManagedBean.loanAccount.loanRepaymentRecords}" var="record">
                                 
                                 <p:column headerText="Payment Date" sortBy="#{record.transactionDate}">
                                     <h:outputText value="#{record.transactionDate}"/>

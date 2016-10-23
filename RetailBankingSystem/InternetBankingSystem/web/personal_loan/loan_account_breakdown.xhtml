@@ -21,10 +21,10 @@
             <em:customerNavBar context="personal" personalPage="home" ></em:customerNavBar>
             <div class="customer_main_container">
                 <h:form id="mainForm">
-                    <p:panel header="Transactions for account #{loanAccountBreakdownManagedBean.loanAccount.accountNumber} #{loanAccountBreakdownManagedBean.loanAccount.loanPaymentBreakdown.size()}">
+                    <p:panel header="Transactions for account #{loanAccountBreakdownManagedBean.accountId}">
                         <p:messages id="messagesStatus" redisplay="false" >
 
-                            <p:dataTable value="#{loanAccountBreakdownManagedBean.loanAccount.loanPaymentBreakdown}" var="breakdown">
+                            <p:dataTable value="#{loanAccountBreakdownManagedBean.breakdowns}" var="breakdown">
                                 
                                 <p:column headerText="Payment Date" sortBy="#{breakdown.schedulePaymentDate}">
                                     <h:outputText value="#{breakdown.schedulePaymentDate}">

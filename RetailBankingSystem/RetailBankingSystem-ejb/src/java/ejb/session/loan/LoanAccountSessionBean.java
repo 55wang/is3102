@@ -7,11 +7,15 @@ package ejb.session.loan;
 
 import entity.loan.LoanAccount;
 import entity.loan.LoanApplication;
+import entity.loan.LoanPaymentBreakdown;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import org.apache.commons.lang.time.DateUtils;
+import server.utilities.EnumUtils.LoanAccountStatus;
 import server.utilities.GenerateAccountAndCCNumber;
 
 /**
@@ -64,6 +68,19 @@ public class LoanAccountSessionBean implements LoanAccountSessionBeanLocal {
             return null;
         }
     }
+    
+    @Override
+    public List<LoanAccount> getActiveLoanAccountListByMainAccountId(Long id) {
+        Query q = em.createQuery("SELECT l FROM LoanAccount l WHERE l.mainAccount.id = :mainAccountId AND l.loanAccountStatus =:inStatus");
+        q.setParameter("mainAccountId", id);
+        q.setParameter("inStatus", LoanAccountStatus.APPROVED);
+
+        try {
+            return q.getResultList();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
 
     @Override
     public LoanApplication createLoanApplication(LoanApplication loanApplication) {
@@ -73,9 +90,31 @@ public class LoanAccountSessionBean implements LoanAccountSessionBeanLocal {
     
     @Override
     public List<LoanApplication> getLoanApplicationByStaffUsername(String username) {
-       Query q = em.createQuery("SELECT l FROM LoanApplication l WHERE l.loanOfficer.username = :username");
+        Query q = em.createQuery("SELECT l FROM LoanApplication l WHERE l.loanOfficer.username = :username");
         q.setParameter("username", username); 
         return q.getResultList();
+    }
+    
+    @Override
+    public List<LoanPaymentBreakdown> getFuturePaymentBreakdownsByLoanAcountNumber(String accountNumber) {
+        Query q = em.createQuery("SELECT l FROM LoanPaymentBreakdown l WHERE l.loanAccount.accountNumber = :accountNumber AND l.schedulePaymentDate > :todayDate");
+        q.setParameter("accountNumber", accountNumber); 
+        q.setParameter("todayDate", new Date()); 
+        return q.getResultList();
+    }
+    
+    @Override
+    public LoanPaymentBreakdown getFutureNearestPaymentBreakdownsByLoanAcountNumber(String accountNumber) {
+        Query q = em.createQuery("SELECT l FROM LoanPaymentBreakdown l WHERE l.loanAccount.accountNumber = :accountNumber AND l.schedulePaymentDate BETWEEN :startDate AND :endDate");
+        q.setParameter("accountNumber", accountNumber); 
+        q.setParameter("startDate", new Date()); 
+        q.setParameter("endDate", DateUtils.addMonths(new Date(), 1)); 
+        
+        List<LoanPaymentBreakdown> result = q.getResultList();
+        if (result.size() > 0) {
+            return result.get(0);
+        }
+        return null;
     }
 
     private String generateLoanAccountNumber() {

@@ -7,6 +7,7 @@ package ejb.session.loan;
 
 import entity.loan.LoanAccount;
 import entity.loan.LoanApplication;
+import entity.loan.LoanPaymentBreakdown;
 import java.util.List;
 import javax.ejb.Local;
 
@@ -21,6 +22,9 @@ public interface LoanAccountSessionBeanLocal {
     public LoanAccount getLoanAccountByAccountNumber(String accountNumber);
     public List<LoanAccount> getLoanAccountByStaffUsername(String username);
     public List<LoanAccount> getLoanAccountListByCustomerIndentityNumber(String identityNumber);
+    public List<LoanAccount> getActiveLoanAccountListByMainAccountId(Long id);
     public LoanApplication createLoanApplication(LoanApplication loanApplication);
     public List<LoanApplication> getLoanApplicationByStaffUsername(String username);
+    public List<LoanPaymentBreakdown> getFuturePaymentBreakdownsByLoanAcountNumber(String accountNumber);
+    public LoanPaymentBreakdown getFutureNearestPaymentBreakdownsByLoanAcountNumber(String accountNumber);
 }

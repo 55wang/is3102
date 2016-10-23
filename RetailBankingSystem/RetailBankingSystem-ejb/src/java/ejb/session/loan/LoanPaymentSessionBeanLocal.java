@@ -8,6 +8,7 @@ package ejb.session.loan;
 import entity.loan.LoanAccount;
 import entity.loan.LoanPaymentBreakdown;
 import entity.loan.LoanRepaymentRecord;
+import java.math.BigDecimal;
 import java.util.List;
 import javax.ejb.Local;
 
@@ -21,4 +22,5 @@ public interface LoanPaymentSessionBeanLocal {
     public LoanPaymentBreakdown createLoanPaymentBreakdown(LoanPaymentBreakdown loanPaymentBreakdown);
     public LoanRepaymentRecord createLoanRepaymentRecord(LoanRepaymentRecord loanRepaymentRecord);
     public List<LoanPaymentBreakdown> futurePaymentBreakdown(LoanAccount loanAccount);
+    public String loanRepaymentFromAccount(String loanAccountNumber, String depositAccountNumber, BigDecimal amount);
 }
