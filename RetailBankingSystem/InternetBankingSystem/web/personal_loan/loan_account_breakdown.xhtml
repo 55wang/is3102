@@ -21,7 +21,7 @@
             <em:customerNavBar context="personal" personalPage="home" ></em:customerNavBar>
             <div class="customer_main_container">
                 <h:form id="mainForm">
-                    <p:panel header="Transactions for account #{loanAccountBreakdownManagedBean.loanAccount.accountNumber}">
+                    <p:panel header="Transactions for account #{loanAccountBreakdownManagedBean.loanAccount.accountNumber} #{loanAccountBreakdownManagedBean.loanAccount.loanPaymentBreakdown.size()}">
                         <p:messages id="messagesStatus" redisplay="false" >
 
                             <p:dataTable value="#{loanAccountBreakdownManagedBean.loanAccount.loanPaymentBreakdown}" var="breakdown">

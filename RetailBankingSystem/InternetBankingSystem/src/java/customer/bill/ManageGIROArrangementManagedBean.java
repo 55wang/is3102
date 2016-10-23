@@ -11,6 +11,7 @@ import ejb.session.dams.CustomerDepositSessionBeanLocal;
 import entity.bill.GiroArrangement;
 import entity.bill.Organization;
 import entity.customer.MainAccount;
+import entity.dams.account.CustomerDepositAccount;
 import entity.dams.account.DepositAccount;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -46,7 +47,7 @@ public class ManageGIROArrangementManagedBean implements Serializable {
     private GiroArrangement giroArr = new GiroArrangement();
     private MainAccount ma;
     private List<Organization> billOrgsOptions;
-    private List<DepositAccount> accounts = new ArrayList<>();
+    private List<CustomerDepositAccount> accounts = new ArrayList<>();
     private List<GiroArrangement> addedGiroArrs;
     
     public ManageGIROArrangementManagedBean() {}
@@ -56,7 +57,7 @@ public class ManageGIROArrangementManagedBean implements Serializable {
         setBillOrgsOptions(billBean.getActiveListOrganization());
         setMa(loginBean.getMainAccountByUserID(SessionUtils.getUserName()));
         setAddedGiroArrs(billBean.getGiroArrsByMainAccountId(getMa().getId()));
-        setAccounts(ma.getBankAcounts());
+        accounts = depositBean.getAllNonFixedCustomerAccounts(ma.getId());
     }
     
     public void addGIROArrangement() {
@@ -204,20 +205,6 @@ public class ManageGIROArrangementManagedBean implements Serializable {
     }
 
     /**
-     * @return the accounts
-     */
-    public List<DepositAccount> getAccounts() {
-        return accounts;
-    }
-
-    /**
-     * @param accounts the accounts to set
-     */
-    public void setAccounts(List<DepositAccount> accounts) {
-        this.accounts = accounts;
-    }
-
-    /**
      * @return the billLimit
      */
     public Double getBillLimit() {
@@ -229,5 +216,19 @@ public class ManageGIROArrangementManagedBean implements Serializable {
      */
     public void setBillLimit(Double billLimit) {
         this.billLimit = billLimit;
+    }
+
+    /**
+     * @return the accounts
+     */
+    public List<CustomerDepositAccount> getAccounts() {
+        return accounts;
+    }
+
+    /**
+     * @param accounts the accounts to set
+     */
+    public void setAccounts(List<CustomerDepositAccount> accounts) {
+        this.accounts = accounts;
     }
 }

@@ -43,21 +43,13 @@ public class LoanAccountSessionBean implements LoanAccountSessionBeanLocal {
 
     @Override
     public LoanAccount getLoanAccountByAccountNumber(String accountNumber) {
-        Query q = em.createQuery("SELECT l FROM LoanAccount l WHERE l.accountNumber = :accountNumber");
-
-        q.setParameter("accountNumber", accountNumber);
-
-        try {
-            return (LoanAccount) q.getSingleResult();
-        } catch (Exception ex) {
-            return null;
-        }
+        return em.find(LoanAccount.class, accountNumber);
     }
     
     @Override
     public List<LoanAccount> getLoanAccountByStaffUsername(String username) {
-       Query q = em.createQuery("SELECT l FROM LoanAccount l WHERE l.loanOfficer.username = :username");
-        q.setParameter("username", username); 
+        Query q = em.createQuery("SELECT l FROM LoanAccount l WHERE l.loanOfficer.username = :username");
+        q.setParameter("username", username);
         return q.getResultList();
     }
 

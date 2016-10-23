@@ -19,6 +19,7 @@ import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import org.apache.commons.lang.time.DateUtils;
 import server.utilities.EnumUtils;
 
@@ -147,22 +148,35 @@ public class LoanPaymentSessionBean implements LoanPaymentSessionBeanLocal {
 
     private void removePreviousPaymentBreakDown(LoanAccount loanAccount) {
         System.out.println("Remove previous payment breakdown");
-        for (LoanPaymentBreakdown lpb : loanAccount.getLoanPaymentBreakdown()) {
+        List<LoanPaymentBreakdown> breakdowns = getBreakdownListByAccountNumber(loanAccount.getAccountNumber());
+        
+        loanAccount.setLoanPaymentBreakdown(new ArrayList());
+        em.merge(loanAccount);
+        
+        for (LoanPaymentBreakdown lpb : breakdowns) {
             em.remove(lpb);
         }
+        
         em.flush();
+    }
+    
+    private List<LoanPaymentBreakdown> getBreakdownListByAccountNumber(String accountNumber) {
+        Query q = em.createQuery("SELECT l FROM LoanPaymentBreakdown l WHERE l.loanAccount.accountNumber = :accountNumber");
+        q.setParameter("accountNumber", accountNumber); 
+        return q.getResultList();
     }
 
     // every repayment will remove the first one and change it to repayment record
     private List<LoanPaymentBreakdown> futurePaymentBreakdownForSimpleInterest(LoanAccount loanAccount) {
 
         System.out.println(loanAccount);
-        
+
         Double outstandingLoanPrincipal = loanAccount.getOutstandingPrincipal();
         // currentPeriod starting in 0
         Date beginningDate = DateUtils.addMonths(loanAccount.getPaymentStartDate(), loanAccount.getCurrentPeriod());
 
         List<LoanPaymentBreakdown> futureBreakdown = new ArrayList<>();
+        System.out.println(loanAccount.getLoanProduct().getLoanInterestCollection());
         List<LoanInterest> loanInterests = loanAccount.getLoanProduct().getLoanInterestCollection().getLoanInterests();
         // only has one interest
         if (loanInterests.size() == 1) {
@@ -176,6 +190,7 @@ public class LoanPaymentSessionBean implements LoanPaymentSessionBeanLocal {
             // TODO: check if this is working
             removePreviousPaymentBreakDown(loanAccount);
             // insert breakdown
+            System.out.println();
             for (int i = loanAccount.getCurrentPeriod(); i < loanAccount.tenureInMonth(); i++) {
                 System.out.println("Creating breakdown for nth month: " + i);
                 Date schedulePaymentDate = DateUtils.addMonths(beginningDate, i);
@@ -190,6 +205,8 @@ public class LoanPaymentSessionBean implements LoanPaymentSessionBeanLocal {
                 em.persist(lpb);
                 outstandingLoanPrincipal = outstandingLoanPrincipal - monthlyPrincipal;
             }
+            loanAccount.setLoanPaymentBreakdown(futureBreakdown);
+            em.merge(loanAccount);
             em.flush();
         } else {
             return null;
@@ -201,7 +218,7 @@ public class LoanPaymentSessionBean implements LoanPaymentSessionBeanLocal {
     private List<LoanPaymentBreakdown> futurePaymentBreakdownForCompoundInterest(LoanAccount loanAccount) {
 
         System.out.println(loanAccount);
-        
+
         Double outstandingLoanPrincipal = loanAccount.getOutstandingPrincipal();
         Date beginningDate = DateUtils.addMonths(loanAccount.getPaymentStartDate(), loanAccount.getCurrentPeriod());
         Double monthlyIntallment = loanAccount.getMonthlyInstallment();
@@ -225,6 +242,9 @@ public class LoanPaymentSessionBean implements LoanPaymentSessionBeanLocal {
             em.persist(lpb);
             outstandingLoanPrincipal = outstandingLoanPrincipal - monthlyPrincipal;
         }
+        
+        loanAccount.setLoanPaymentBreakdown(futureBreakdown);
+        em.merge(loanAccount);
 
         return futureBreakdown;
     }

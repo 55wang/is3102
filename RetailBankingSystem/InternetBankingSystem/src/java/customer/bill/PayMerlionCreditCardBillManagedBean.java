@@ -10,6 +10,7 @@ import ejb.session.common.LoginSessionBeanLocal;
 import ejb.session.dams.CustomerDepositSessionBeanLocal;
 import entity.card.account.CreditCardAccount;
 import entity.customer.MainAccount;
+import entity.dams.account.CustomerDepositAccount;
 import entity.dams.account.DepositAccount;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -42,7 +43,7 @@ public class PayMerlionCreditCardBillManagedBean implements Serializable {
     private String fromAccountNo;
     private String toCreditCardNo;
     private BigDecimal amount;
-    private List<DepositAccount> depositAccounts = new ArrayList<>();
+    private List<CustomerDepositAccount> depositAccounts = new ArrayList<>();
     private List<CreditCardAccount> creditCardAccounts = new ArrayList<>();
     
     public PayMerlionCreditCardBillManagedBean() {}
@@ -50,7 +51,7 @@ public class PayMerlionCreditCardBillManagedBean implements Serializable {
     @PostConstruct
     public void init() {
         MainAccount ma = loginBean.getMainAccountByUserID(SessionUtils.getUserName());
-        setDepositAccounts(ma.getBankAcounts());
+        depositAccounts = depositBean.getAllNonFixedCustomerAccounts(ma.getId());
         setCreditCardAccounts(ma.getCreditCardAccounts());
     }
     
@@ -114,20 +115,6 @@ public class PayMerlionCreditCardBillManagedBean implements Serializable {
     }
 
     /**
-     * @return the depositAccounts
-     */
-    public List<DepositAccount> getDepositAccounts() {
-        return depositAccounts;
-    }
-
-    /**
-     * @param depositAccounts the depositAccounts to set
-     */
-    public void setDepositAccounts(List<DepositAccount> depositAccounts) {
-        this.depositAccounts = depositAccounts;
-    }
-
-    /**
      * @return the creditCardAccounts
      */
     public List<CreditCardAccount> getCreditCardAccounts() {
@@ -139,6 +126,20 @@ public class PayMerlionCreditCardBillManagedBean implements Serializable {
      */
     public void setCreditCardAccounts(List<CreditCardAccount> creditCardAccounts) {
         this.creditCardAccounts = creditCardAccounts;
+    }
+
+    /**
+     * @return the depositAccounts
+     */
+    public List<CustomerDepositAccount> getDepositAccounts() {
+        return depositAccounts;
+    }
+
+    /**
+     * @param depositAccounts the depositAccounts to set
+     */
+    public void setDepositAccounts(List<CustomerDepositAccount> depositAccounts) {
+        this.depositAccounts = depositAccounts;
     }
     
 }

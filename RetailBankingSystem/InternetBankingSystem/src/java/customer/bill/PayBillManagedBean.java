@@ -13,6 +13,7 @@ import ejb.session.webservice.WebserviceSessionBeanLocal;
 import entity.bill.BillingOrg;
 import entity.common.BillTransferRecord;
 import entity.customer.MainAccount;
+import entity.dams.account.CustomerDepositAccount;
 import entity.dams.account.DepositAccount;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -52,7 +53,7 @@ public class PayBillManagedBean implements Serializable {
     private BigDecimal amount;
     private MainAccount ma;
     private List<BillingOrg> ccBillList = new ArrayList<>();
-    private List<DepositAccount> accounts = new ArrayList<>();
+    private List<CustomerDepositAccount> accounts = new ArrayList<>();
 
     public PayBillManagedBean() {
     }
@@ -60,7 +61,7 @@ public class PayBillManagedBean implements Serializable {
     @PostConstruct
     public void init() {
         setMa(loginBean.getMainAccountByUserID(SessionUtils.getUserName()));
-        setAccounts(getMa().getBankAcounts());
+        accounts = depositBean.getAllNonFixedCustomerAccounts(ma.getId());
         ccBillList = billBean.getBillingOrgMainAccountId(ma.getId());
     }
 
@@ -175,14 +176,14 @@ public class PayBillManagedBean implements Serializable {
     /**
      * @return the accounts
      */
-    public List<DepositAccount> getAccounts() {
+    public List<CustomerDepositAccount> getAccounts() {
         return accounts;
     }
 
     /**
      * @param accounts the accounts to set
      */
-    public void setAccounts(List<DepositAccount> accounts) {
+    public void setAccounts(List<CustomerDepositAccount> accounts) {
         this.accounts = accounts;
     }
 

@@ -35,6 +35,7 @@ public class LoanAccountBreakdownManagedBean implements Serializable {
         System.out.println("Account id is: " + getAccountId());
         setLoanAccount(loanAccountBean.getLoanAccountByAccountNumber(getAccountId()));
         System.out.println("Account retrieved is: " + loanAccount.getAccountNumber());
+        System.out.println("Breakdown size: " + loanAccount.getLoanPaymentBreakdown().size());
     }
 
     /**

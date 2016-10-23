@@ -11,6 +11,7 @@ import ejb.session.bill.TransferSessionBeanLocal;
 import entity.bill.Payee;
 import entity.common.TransferRecord;
 import entity.customer.MainAccount;
+import entity.dams.account.CustomerDepositAccount;
 import entity.dams.account.DepositAccount;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -49,7 +50,7 @@ public class intraBankTransferManagedBean implements Serializable {
     private String toName;
     private String myInitial;
     private BigDecimal amount;
-    private List<DepositAccount> accounts = new ArrayList<>();
+    private List<CustomerDepositAccount> accounts = new ArrayList<>();
     private List<Payee> payees = new ArrayList<>();
     private MainAccount ma;
     
@@ -59,7 +60,7 @@ public class intraBankTransferManagedBean implements Serializable {
     public void init() {
         ma = loginBean.getMainAccountByUserID(SessionUtils.getUserName());
         payees = transferBean.getPayeeFromUserIdWithType(ma.getId(), EnumUtils.PayeeType.MERLION);
-        setAccounts(ma.getBankAcounts());
+        accounts = depositBean.getAllNonFixedCustomerAccounts(ma.getId());
         calculateTransferLimits();
     }
     
@@ -205,20 +206,6 @@ public class intraBankTransferManagedBean implements Serializable {
     }
 
     /**
-     * @return the accounts
-     */
-    public List<DepositAccount> getAccounts() {
-        return accounts;
-    }
-
-    /**
-     * @param accounts the accounts to set
-     */
-    public void setAccounts(List<DepositAccount> accounts) {
-        this.accounts = accounts;
-    }
-
-    /**
      * @return the payees
      */
     public List<Payee> getPayees() {
@@ -300,5 +287,19 @@ public class intraBankTransferManagedBean implements Serializable {
      */
     public void setMyInitial(String myInitial) {
         this.myInitial = myInitial;
+    }
+
+    /**
+     * @return the accounts
+     */
+    public List<CustomerDepositAccount> getAccounts() {
+        return accounts;
+    }
+
+    /**
+     * @param accounts the accounts to set
+     */
+    public void setAccounts(List<CustomerDepositAccount> accounts) {
+        this.accounts = accounts;
     }
 }

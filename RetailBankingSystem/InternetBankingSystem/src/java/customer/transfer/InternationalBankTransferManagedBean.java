@@ -14,6 +14,7 @@ import entity.bill.BankEntity;
 import entity.bill.Payee;
 import entity.common.TransferRecord;
 import entity.customer.MainAccount;
+import entity.dams.account.CustomerDepositAccount;
 import entity.dams.account.DepositAccount;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -58,7 +59,7 @@ public class InternationalBankTransferManagedBean implements Serializable {
     private Payee payee = new Payee();
     private MainAccount ma;
     private List<Payee> payees = new ArrayList<>();
-    private List<DepositAccount> accounts = new ArrayList<>();
+    private List<CustomerDepositAccount> accounts = new ArrayList<>();
     private List<String> purposeOptions = CommonUtils.getEnumList(EnumUtils.TransferPurpose.class);
     
     public InternationalBankTransferManagedBean() {
@@ -68,7 +69,7 @@ public class InternationalBankTransferManagedBean implements Serializable {
     @PostConstruct
     public void init() {
         setMa(loginBean.getMainAccountByUserID(SessionUtils.getUserName()));
-        setAccounts(getMa().getBankAcounts());
+        accounts = depositBean.getAllNonFixedCustomerAccounts(ma.getId());
         setPayees(transferBean.getPayeeFromUserIdWithType(getMa().getId(), EnumUtils.PayeeType.OVERSEAS));
         setPayeeId("New Receipiant");
         calculateTransferLimits();
@@ -256,20 +257,6 @@ public class InternationalBankTransferManagedBean implements Serializable {
     }
 
     /**
-     * @return the accounts
-     */
-    public List<DepositAccount> getAccounts() {
-        return accounts;
-    }
-
-    /**
-     * @param accounts the accounts to set
-     */
-    public void setAccounts(List<DepositAccount> accounts) {
-        this.accounts = accounts;
-    }
-
-    /**
      * @return the purposeOptions
      */
     public List<String> getPurposeOptions() {
@@ -281,5 +268,19 @@ public class InternationalBankTransferManagedBean implements Serializable {
      */
     public void setPurposeOptions(List<String> purposeOptions) {
         this.purposeOptions = purposeOptions;
+    }
+
+    /**
+     * @return the accounts
+     */
+    public List<CustomerDepositAccount> getAccounts() {
+        return accounts;
+    }
+
+    /**
+     * @param accounts the accounts to set
+     */
+    public void setAccounts(List<CustomerDepositAccount> accounts) {
+        this.accounts = accounts;
     }
 }

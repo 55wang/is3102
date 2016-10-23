@@ -123,6 +123,9 @@ public class EntityLoanBuilder {
         lic.addLoanInterest(loanInterest1);
         lic = loanProductSessionBean.createInterestCollection(lic);
         
+        loanInterest1.setLoanInterestCollection(lic);
+        loanInterest1 = loanProductSessionBean.updateLoanInterest(loanInterest1);
+        
         LoanProduct loanProduct = new LoanProduct();
         loanProduct.setProductName(ConstantUtils.DEMO_PERSONAL_LOAN_PRODUCT_NAME);
         loanProduct.setProductType(EnumUtils.LoanProductType.LOAN_PRODUCT_TYPE_PERSONAL);
@@ -179,6 +182,9 @@ public class EntityLoanBuilder {
         lic.setProductType(EnumUtils.LoanProductType.LOAN_PRODUCT_TYPE_CAR);
         lic.addLoanInterest(loanInterest1);
         lic = loanProductSessionBean.createInterestCollection(lic);
+        
+        loanInterest1.setLoanInterestCollection(lic);
+        loanInterest1 = loanProductSessionBean.updateLoanInterest(loanInterest1);
         
         LoanProduct loanProduct = new LoanProduct();
         loanProduct.setProductName(ConstantUtils.DEMO_CAR_LOAN_PRODUCT_NAME);
@@ -268,6 +274,15 @@ public class EntityLoanBuilder {
         lic.addLoanInterest(loanInterest4);
         lic.setProductType(EnumUtils.LoanProductType.LOAN_PRODUCT_TYPE_HDB);
         lic = loanProductSessionBean.createInterestCollection(lic);
+        
+        loanInterest1.setLoanInterestCollection(lic);
+        loanInterest1 = loanProductSessionBean.updateLoanInterest(loanInterest1);
+        loanInterest2.setLoanInterestCollection(lic);
+        loanInterest2 = loanProductSessionBean.updateLoanInterest(loanInterest2);
+        loanInterest3.setLoanInterestCollection(lic);
+        loanInterest3 = loanProductSessionBean.updateLoanInterest(loanInterest3);
+        loanInterest4.setLoanInterestCollection(lic);
+        loanInterest4 = loanProductSessionBean.updateLoanInterest(loanInterest4);
         
         LoanProduct loanProduct = new LoanProduct();
         loanProduct.setProductName(ConstantUtils.DEMO_HDB_FIXED_LOAN_PRODUCT_NAME);
