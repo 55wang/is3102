@@ -6,14 +6,12 @@
 package ejb.session.loan;
 
 import entity.loan.LoanAccount;
-import entity.loan.LoanProduct;
-import java.util.Date;
+import entity.loan.LoanApplication;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import server.utilities.EnumUtils;
 import server.utilities.GenerateAccountAndCCNumber;
 
 /**
@@ -38,13 +36,9 @@ public class LoanAccountSessionBean implements LoanAccountSessionBeanLocal {
     }
     
     @Override
-    public LoanProduct createLoanProduct(LoanProduct loanProduct) {
-        try {
-            em.persist(loanProduct);
-            return loanProduct;
-        } catch (Exception e) {
-            return null;
-        }
+    public LoanAccount updateLoanAccount(LoanAccount loanAccount) {
+        em.merge(loanAccount);
+        return loanAccount;
     }
 
     @Override
@@ -59,6 +53,13 @@ public class LoanAccountSessionBean implements LoanAccountSessionBeanLocal {
             return null;
         }
     }
+    
+    @Override
+    public List<LoanAccount> getLoanAccountByStaffUsername(String username) {
+       Query q = em.createQuery("SELECT l FROM LoanAccount l WHERE l.loanOfficer.username = :username");
+        q.setParameter("username", username); 
+        return q.getResultList();
+    }
 
     @Override
     public List<LoanAccount> getLoanAccountListByCustomerIndentityNumber(String identityNumber) {
@@ -70,6 +71,19 @@ public class LoanAccountSessionBean implements LoanAccountSessionBeanLocal {
         } catch (Exception ex) {
             return null;
         }
+    }
+
+    @Override
+    public LoanApplication createLoanApplication(LoanApplication loanApplication) {
+        em.persist(loanApplication);
+        return loanApplication;
+    }
+    
+    @Override
+    public List<LoanApplication> getLoanApplicationByStaffUsername(String username) {
+       Query q = em.createQuery("SELECT l FROM LoanApplication l WHERE l.loanOfficer.username = :username");
+        q.setParameter("username", username); 
+        return q.getResultList();
     }
 
     private String generateLoanAccountNumber() {

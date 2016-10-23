@@ -75,8 +75,8 @@
                             <p:column headerText="Name" sortBy="#{product.productName}">
                                 <h:outputText value="#{product.productName}"/>
                             </p:column>
-                            <p:column headerText="Type" sortBy="#{product.productType}">
-                                <h:outputText value="#{product.productType}"/>
+                            <p:column headerText="Type" sortBy="#{product.productType.toString()}">
+                                <h:outputText value="#{product.productType.toString()}"/>
                             </p:column>
                             <p:column headerText="Interest" sortBy="#{product.loanInterestCollection}">
                                 <h:outputText value="#{product.loanInterestCollection}"/>

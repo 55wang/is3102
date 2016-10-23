@@ -19,8 +19,9 @@ import javax.ejb.Local;
 @Local
 public interface LoanProductSessionBeanLocal {
     public LoanProduct createLoanProduct(LoanProduct loanProduct);
-    public LoanProduct getLoanProductByProductName(String productName);
     public LoanProduct updateLoanProduct(LoanProduct loanProduct);
+    public LoanProduct getLoanProductByProductName(String productName);
+    public LoanProduct getLoanProductById(Long id);
     public List<LoanProduct> getAllLoanProduct();
     public LoanExternalInterest getCommonInterestByName(String name);
     public LoanExternalInterest createCommonInterest(LoanExternalInterest lci);

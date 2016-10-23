@@ -1,0 +1,50 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:em="http://xmlns.jcp.org/jsf/composite/emcomp"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <!--shift + ctrl + F, format-->
+    <f:view>
+        <h:head>
+            <title>Merlion Internal</title>
+            <em:cssImport></em:cssImport>
+        </h:head>
+        <h:body>
+            <em:staffNavBar context="loan"></em:staffNavBar>
+            <em:staffSideBar top="loan" side="createLoanAccount"></em:staffSideBar>
+            <div class="container">
+                <h:form id="mainForm">
+                    <p:panel header="Loan Applications">
+                        <p:messages id="messagesStatus" redisplay="false" >
+                            <h:panelGrid columns="2" style="width:100%" cellpadding="5" class="border-bottom" >
+
+                                <p:outputLabel value="Main Account User Id: " />
+                                <p:inputText value="#{createLoanAccountManagedBean.mainAccountId}" required="true" />
+
+                                <p:outputLabel value="Start Date:" />
+                                <p:calendar value="#{createLoanAccountManagedBean.paymentStartDate}" mode="inline" required="true" />
+
+                                <p:outputLabel value="Principal Amount: " />
+                                <p:inputText value="#{createLoanAccountManagedBean.principalAmount}" required="true" />
+
+                                <p:outputLabel value="Select Loan Product: " />
+                                <p:selectOneMenu value="#{createLoanAccountManagedBean.selectedLoanProductId}" rendered="true" required="true">
+                                    <f:selectItems value="#{createLoanAccountManagedBean.loanProducts}" var="l" itemValue="#{l.id}" itemLabel="#{l.productName}" />
+                                </p:selectOneMenu>
+
+                                <p:commandButton value="Create Account" action="#{createLoanAccountManagedBean.creatAccount}" update="mainForm"/> 
+
+                            </h:panelGrid>
+                        </p:messages>
+                    </p:panel>
+                </h:form>
+            </div>
+        </h:body>
+    </f:view>
+
+
+</html>
+

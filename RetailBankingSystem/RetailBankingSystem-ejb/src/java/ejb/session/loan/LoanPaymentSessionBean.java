@@ -91,10 +91,13 @@ public class LoanPaymentSessionBean implements LoanPaymentSessionBeanLocal {
         System.out.println("Average monthly interest percentage: " + monthlyLoanInterest);
         return loanCalculationSessionBean.calculateMonthlyInstallment(monthlyLoanInterest, tenure, loanAmt);
     }
-    
+
     private Double getAverageInterest(LoanAccount loanAccount) {
+        System.out.println("getAverageInterest");
         Integer tenure = loanAccount.tenureInMonth();
+        System.out.println("Tenure: " + tenure);
         List<LoanInterest> loanInterests = loanAccount.getLoanProduct().getLoanInterestCollection().getLoanInterests();
+        System.out.println("Loan interest size: " + loanInterests.size());
         Double totalPercentage = 0.0;
         // calculate average
         // check external interest if needed
@@ -119,7 +122,7 @@ public class LoanPaymentSessionBean implements LoanPaymentSessionBeanLocal {
                 }
             }
             totalPercentage += (li.getInterestRate() + extraInterest) / 12 * totalMonth;
-            System.out.println("Current interest percentage: " + totalPercentage + " with totalMonth: " + totalMonth );
+            System.out.println("Current interest percentage: " + totalPercentage + " with totalMonth: " + totalMonth);
         }
         return totalPercentage / tenure;
     }
@@ -143,6 +146,7 @@ public class LoanPaymentSessionBean implements LoanPaymentSessionBeanLocal {
     }
 
     private void removePreviousPaymentBreakDown(LoanAccount loanAccount) {
+        System.out.println("Remove previous payment breakdown");
         for (LoanPaymentBreakdown lpb : loanAccount.getLoanPaymentBreakdown()) {
             em.remove(lpb);
         }
@@ -152,6 +156,8 @@ public class LoanPaymentSessionBean implements LoanPaymentSessionBeanLocal {
     // every repayment will remove the first one and change it to repayment record
     private List<LoanPaymentBreakdown> futurePaymentBreakdownForSimpleInterest(LoanAccount loanAccount) {
 
+        System.out.println(loanAccount);
+        
         Double outstandingLoanPrincipal = loanAccount.getOutstandingPrincipal();
         // currentPeriod starting in 0
         Date beginningDate = DateUtils.addMonths(loanAccount.getPaymentStartDate(), loanAccount.getCurrentPeriod());
@@ -194,6 +200,8 @@ public class LoanPaymentSessionBean implements LoanPaymentSessionBeanLocal {
 
     private List<LoanPaymentBreakdown> futurePaymentBreakdownForCompoundInterest(LoanAccount loanAccount) {
 
+        System.out.println(loanAccount);
+        
         Double outstandingLoanPrincipal = loanAccount.getOutstandingPrincipal();
         Date beginningDate = DateUtils.addMonths(loanAccount.getPaymentStartDate(), loanAccount.getCurrentPeriod());
         Double monthlyIntallment = loanAccount.getMonthlyInstallment();
@@ -201,23 +209,21 @@ public class LoanPaymentSessionBean implements LoanPaymentSessionBeanLocal {
         List<LoanPaymentBreakdown> futureBreakdown = new ArrayList<>();
         removePreviousPaymentBreakDown(loanAccount);
         for (int i = loanAccount.getCurrentPeriod(); i < loanAccount.tenureInMonth(); i++) {
-            LoanInterest currentInterest = getCurrentInterest(i, loanAccount);
-            if (currentInterest != null) {
-                Double monthlyInterest = outstandingLoanPrincipal * getAverageInterest(loanAccount);
-                Double monthlyPrincipal = monthlyIntallment - monthlyInterest;
+            System.out.println("In loop: " + i);
+            Double monthlyInterest = outstandingLoanPrincipal * getAverageInterest(loanAccount);
+            Double monthlyPrincipal = monthlyIntallment - monthlyInterest;
 
-                Date schedulePaymentDate = DateUtils.addMonths(beginningDate, i);
-                LoanPaymentBreakdown lpb = new LoanPaymentBreakdown();
-                lpb.setOutstandingPrincipalPayment(outstandingLoanPrincipal);
-                lpb.setNthMonth(i);
-                lpb.setLoanAccount(loanAccount);
-                lpb.setSchedulePaymentDate(schedulePaymentDate);
-                lpb.setPrincipalPayment(monthlyPrincipal);
-                lpb.setInterestPayment(monthlyInterest);
-                futureBreakdown.add(lpb);
-                em.persist(lpb);
-                outstandingLoanPrincipal = outstandingLoanPrincipal - monthlyPrincipal;
-            }
+            Date schedulePaymentDate = DateUtils.addMonths(beginningDate, i);
+            LoanPaymentBreakdown lpb = new LoanPaymentBreakdown();
+            lpb.setOutstandingPrincipalPayment(outstandingLoanPrincipal);
+            lpb.setNthMonth(i);
+            lpb.setLoanAccount(loanAccount);
+            lpb.setSchedulePaymentDate(schedulePaymentDate);
+            lpb.setPrincipalPayment(monthlyPrincipal);
+            lpb.setInterestPayment(monthlyInterest);
+            futureBreakdown.add(lpb);
+            em.persist(lpb);
+            outstandingLoanPrincipal = outstandingLoanPrincipal - monthlyPrincipal;
         }
 
         return futureBreakdown;

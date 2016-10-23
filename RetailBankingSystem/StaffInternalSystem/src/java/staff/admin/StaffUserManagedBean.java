@@ -33,6 +33,7 @@ public class StaffUserManagedBean implements Serializable {
     private UtilsSessionBeanLocal utilsBean;
 
     private String SUPER_ADMIN = EnumUtils.UserRole.SUPER_ADMIN.toString();
+    private String LOAN_OFFICER = EnumUtils.UserRole.LOAN_OFFICIER.toString();
     
     @PostConstruct
     public void init() {
@@ -86,5 +87,19 @@ public class StaffUserManagedBean implements Serializable {
      */
     public void setSUPER_ADMIN(String SUPER_ADMIN) {
         this.SUPER_ADMIN = SUPER_ADMIN;
+    }
+
+    /**
+     * @return the LOAN_OFFICER
+     */
+    public String getLOAN_OFFICER() {
+        return LOAN_OFFICER;
+    }
+
+    /**
+     * @param LOAN_OFFICER the LOAN_OFFICER to set
+     */
+    public void setLOAN_OFFICER(String LOAN_OFFICER) {
+        this.LOAN_OFFICER = LOAN_OFFICER;
     }
 }

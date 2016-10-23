@@ -7,15 +7,18 @@ package ejb.session.dams;
 
 import entity.dams.account.CustomerDepositAccount;
 import entity.common.TransactionRecord;
+import entity.customer.MainAccount;
 import entity.dams.account.DepositAccount;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.List;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import server.utilities.ConstantUtils;
 import server.utilities.EnumUtils;
 import server.utilities.GenerateAccountAndCCNumber;
 
@@ -28,6 +31,9 @@ public class CustomerDepositSessionBean implements CustomerDepositSessionBeanLoc
 
     @PersistenceContext(unitName = "RetailBankingSystem-ejbPU")
     private EntityManager em;
+    
+    @EJB
+    private DepositProductSessionBeanLocal depositProductBean;
 
     @Override
     public long showNumberOfAccounts() {
@@ -43,20 +49,28 @@ public class CustomerDepositSessionBean implements CustomerDepositSessionBeanLoc
     @Override
     public DepositAccount createAccount(DepositAccount account) {
         try {
-            TransactionRecord t = new TransactionRecord();
-            t.setAmount(account.getBalance());
-            t.setCredit(Boolean.TRUE);
-            t.setActionType(EnumUtils.TransactionType.INITIAL);
-            t.setReferenceNumber(generateReferenceNumber());
-            account.addTransaction(t);
-            if (account instanceof CustomerDepositAccount) {
-                ((CustomerDepositAccount) account).setPreviousBalance(account.getBalance());
+            if (account.getBalance().compareTo(BigDecimal.ZERO) != 0) {
+                TransactionRecord t = new TransactionRecord();
+                t.setAmount(account.getBalance());
+                t.setCredit(Boolean.TRUE);
+                t.setActionType(EnumUtils.TransactionType.INITIAL);
+                t.setReferenceNumber(generateReferenceNumber());
+                account.addTransaction(t);
+                if (account instanceof CustomerDepositAccount) {
+                    ((CustomerDepositAccount) account).setPreviousBalance(account.getBalance());
+                }
+                account.setAccountNumber(generateAccountNumber());
+                em.persist(account);
+                t.setFromAccount(account);
+                em.merge(t);
+            } else {
+                if (account instanceof CustomerDepositAccount) {
+                    ((CustomerDepositAccount) account).setPreviousBalance(account.getBalance());
+                }
+                account.setAccountNumber(generateAccountNumber());
+                em.persist(account);
             }
 
-            account.setAccountNumber(generateAccountNumber());
-            em.persist(account);
-            t.setFromAccount(account);
-            em.merge(t);
             return account;
         } catch (EntityExistsException e) {
             return null;
@@ -107,6 +121,28 @@ public class CustomerDepositSessionBean implements CustomerDepositSessionBeanLoc
         q.setParameter("mainAccountId", mainAccountId);
         q.setParameter("status", EnumUtils.StatusType.CLOSED);
         return q.getResultList();
+    }
+    
+    @Override
+    public CustomerDepositAccount getDaytoDayAccountByMainAccount(MainAccount ma) {
+        Query q = em.createQuery("SELECT ba FROM CustomerDepositAccount ba WHERE ba.mainAccount.id =:mainAccountId AND ba.type = :inType");
+        q.setParameter("mainAccountId", ma.getId());
+        q.setParameter("inType", EnumUtils.DepositAccountType.CURRENT);
+        List<CustomerDepositAccount> results = q.getResultList();
+        if (results.size() > 0) {
+            return results.get(0);
+        } else {
+            // create a default one
+            CustomerDepositAccount cda = new CustomerDepositAccount();
+            cda.setType(EnumUtils.DepositAccountType.CURRENT);
+            cda.setProduct(depositProductBean.getDepositProductByName(ConstantUtils.DEMO_CURRENT_DEPOSIT_PRODUCT_NAME));
+            cda.setBalance(BigDecimal.ZERO);
+            cda.setStatus(EnumUtils.StatusType.ACTIVE);
+            cda.setMainAccount(ma);
+            cda.setAccountNumber(generateAccountNumber());
+            em.persist(cda);
+            return cda;
+        }
     }
 
     @Override

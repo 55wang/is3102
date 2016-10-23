@@ -54,6 +54,7 @@
                                 <p:submenu label="My Accounts"  class="navbar-submenu #{cc.attrs.personalPage == 'home' ? 'active' : ''}">
                                     <p:menuitem value="Home" outcome="/personal_home/customer_home" />
                                     <p:menuitem value="Deposits" outcome="/personal_deposit/deposit_account_summary" />
+                                    <p:menuitem value="Loans" outcome="/personal_loan/loan_account_summary" />
                                     <p:menuitem value="eStatement" outcome="/personal_request/request_statement" />
                                 </p:submenu>
 
@@ -95,6 +96,7 @@
                                     <p:menuitem value="Debit Cards" outcome="/personal_apply/existing_apply_debit_card" />
                                     <p:menuitem value="Credit Cards" outcome="/personal_apply/existing_apply_credit_card" />
                                     <p:menuitem value="Credit Card Application Status" outcome="/personal_apply/view_credit_card_application" />
+                                    <p:menuitem value="Personal Loan" outcome="/personal_loan/apply_personal_loan" />
                                 </p:submenu>
                                 
                                 <p:submenu label="Request" class="navbar-submenu #{cc.attrs.personalPage == 'request' ? 'active' : ''}">

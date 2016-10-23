@@ -206,6 +206,12 @@ public class DateUtils {
         cal.setTime(date);
         return cal;
     }
+    
+    public static Integer getDayNumber(Date date) {
+        Calendar cal = GregorianCalendar.getInstance();
+        cal.setTime(date);
+        return cal.get(Calendar.DATE);
+    }
 
     public static Integer getMonthNumber(Date date) {
         Calendar cal = GregorianCalendar.getInstance();
@@ -222,6 +228,12 @@ public class DateUtils {
     public static Calendar addDaysToDate(Calendar cal, Integer days) {
         cal.add(Calendar.DATE, days);
         return cal;
+    }
+    
+    public static Date addYearsToDate(Date date, Integer years) {
+        Calendar cal = dateToCalender(date);
+        cal.add(Calendar.YEAR, years);
+        return cal.getTime();
     }
 
     public static String readableDate(Date date) {

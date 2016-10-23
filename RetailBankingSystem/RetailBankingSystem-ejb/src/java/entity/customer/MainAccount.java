@@ -12,6 +12,7 @@ import entity.card.order.CreditCardOrder;
 import entity.common.AuditLog;
 import entity.dams.account.DepositAccount;
 import entity.dams.account.MobileAccount;
+import entity.loan.LoanAccount;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -50,6 +51,8 @@ public class MainAccount implements Serializable {
     private TransferLimits transferLimits = new TransferLimits(this);
     @OneToMany(cascade = {CascadeType.MERGE}, mappedBy = "mainAccount")
     private List<DepositAccount> bankAcounts = new ArrayList<>(); 
+    @OneToMany(cascade = {CascadeType.MERGE}, mappedBy = "mainAccount")
+    private List<LoanAccount> loanAccounts = new ArrayList<>(); 
     @OneToMany(cascade = {CascadeType.MERGE}, mappedBy = "mainAccount")
     private List<Payee> payees = new ArrayList<>(); 
     @OneToMany(cascade = {CascadeType.MERGE}, mappedBy = "mainAccount")
@@ -226,5 +229,19 @@ public class MainAccount implements Serializable {
      */
     public void setBillingOrgs(List<BillingOrg> billingOrgs) {
         this.billingOrgs = billingOrgs;
+    }
+
+    /**
+     * @return the loanAccounts
+     */
+    public List<LoanAccount> getLoanAccounts() {
+        return loanAccounts;
+    }
+
+    /**
+     * @param loanAccounts the loanAccounts to set
+     */
+    public void setLoanAccounts(List<LoanAccount> loanAccounts) {
+        this.loanAccounts = loanAccounts;
     }
 }

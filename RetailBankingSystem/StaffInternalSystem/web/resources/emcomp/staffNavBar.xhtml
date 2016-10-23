@@ -26,6 +26,9 @@
                     <c:if test="#{staffUserManagedBean.isUserInRole(staffUserManagedBean.SUPER_ADMIN)}">
                         <li id="header-overview" class="#{cc.attrs.context == 'admin' ? 'active' : ''}" value="admin"><a href="../admin/create_interest.xhtml">Admin</a></li>
                     </c:if>
+                    <c:if test="#{staffUserManagedBean.isUserInRole(staffUserManagedBean.LOAN_OFFICER)}">
+                        <li id="header-overview" class="#{cc.attrs.context == 'loan' ? 'active' : ''}" value="loan"><a href="../loan/view_loan_application.xhtml">Loan</a></li>
+                    </c:if>
                     <li id="header-overview" class="#{cc.attrs.context == 'message' ? 'active' : ''}" value="message"><a href="../message/chat.xhtml">Message</a></li>
                     <li id="header-overview" class="#{cc.attrs.context == 'customer' ? 'active' : ''}" value="customer"><a href="../cms/staff_view_customer.xhtml">Customer</a></li>
                     <li id="header-overview" class="#{cc.attrs.context == 'card' ? 'active' : ''}" value="card"><a href="../card/card-view-product.xhtml">Card</a></li>

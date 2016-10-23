@@ -6,7 +6,6 @@
 package init;
 
 import ejb.session.common.LoginSessionBeanLocal;
-import ejb.session.dams.InterestSessionBeanLocal;
 import ejb.session.loan.LoanAccountSessionBeanLocal;
 import ejb.session.loan.LoanPaymentSessionBeanLocal;
 import ejb.session.loan.LoanProductSessionBeanLocal;
@@ -14,6 +13,7 @@ import ejb.session.staff.StaffAccountSessionBeanLocal;
 import entity.customer.MainAccount;
 import entity.dams.account.CustomerDepositAccount;
 import entity.loan.LoanAccount;
+import entity.loan.LoanApplication;
 import entity.loan.LoanExternalInterest;
 import entity.loan.LoanInterest;
 import entity.loan.LoanInterestCollection;
@@ -56,10 +56,55 @@ public class EntityLoanBuilder {
         demoMainAccount = loginBean.getMainAccountByUserID(ConstantUtils.DEMO_MAIN_ACCOUNT_USER_ID);
         System.out.print("Creating account !!!!================");
         
+        initDemoLoanApplications();
         initDemoPersonalLoanAccount();
         initDemoCarLoanAccount();
         initDemoHDBLoanAccount();
 //        initDemoPPLoanAccount();
+    }
+    
+    private void initDemoLoanApplications() {
+        LoanApplication loanApplication1 = new LoanApplication();
+        loanApplication1.setAge(21);
+        loanApplication1.setIncome(3000.0);
+        loanApplication1.setName("Lei Yang");
+        loanApplication1.setEmail("raymondlei90s@gmail.com");
+        loanApplication1.setPhone("94761895");
+        loanApplication1.setOtherCommitment(0.0);
+        loanApplication1.setOtherHousingLoan(null);
+        loanApplication1.setRequestedAmount(10000.0);
+        loanApplication1.setMarketValue(null);
+        loanApplication1.setProductType(EnumUtils.LoanProductType.LOAN_PRODUCT_TYPE_PERSONAL);
+        loanApplication1.setLoanOfficer(staffAccountSessionBean.getAccountByUsername(ConstantUtils.LOAN_OFFICIER_USERNAME));
+        loanApplication1 = loanAccountSessionBean.createLoanApplication(loanApplication1);
+        
+        LoanApplication loanApplication2 = new LoanApplication();
+        loanApplication2.setAge(21);
+        loanApplication2.setIncome(3000.0);
+        loanApplication2.setName("Lei Yang");
+        loanApplication2.setEmail("raymondlei90s@gmail.com");
+        loanApplication2.setPhone("94761895");
+        loanApplication2.setOtherCommitment(0.0);
+        loanApplication2.setOtherHousingLoan(null);
+        loanApplication2.setRequestedAmount(80000.0);
+        loanApplication2.setMarketValue(100000.0);
+        loanApplication2.setProductType(EnumUtils.LoanProductType.LOAN_PRODUCT_TYPE_CAR);
+        loanApplication2.setLoanOfficer(staffAccountSessionBean.getAccountByUsername(ConstantUtils.LOAN_OFFICIER_USERNAME));
+        loanApplication2 = loanAccountSessionBean.createLoanApplication(loanApplication2);
+        
+        LoanApplication loanApplication3 = new LoanApplication();
+        loanApplication3.setAge(21);
+        loanApplication3.setIncome(3000.0);
+        loanApplication3.setName("Lei Yang");
+        loanApplication3.setEmail("raymondlei90s@gmail.com");
+        loanApplication3.setPhone("94761895");
+        loanApplication3.setOtherCommitment(0.0);
+        loanApplication3.setOtherHousingLoan(0);
+        loanApplication3.setRequestedAmount(220000.0);
+        loanApplication3.setMarketValue(300000.0);
+        loanApplication3.setProductType(EnumUtils.LoanProductType.LOAN_PRODUCT_TYPE_HDB);
+        loanApplication3.setLoanOfficer(staffAccountSessionBean.getAccountByUsername(ConstantUtils.LOAN_OFFICIER_USERNAME));
+        loanApplication3 = loanAccountSessionBean.createLoanApplication(loanApplication3);
     }
     
     private void initDemoPersonalLoanAccount() {
@@ -85,7 +130,9 @@ public class EntityLoanBuilder {
         loanProduct.setTenure(1);
         loanProduct.setLockInDuration(0);
         loanProduct.setPenaltyInterestRate(0.2); // TODO: this need to be calculated
-        loanProduct = loanAccountSessionBean.createLoanProduct(loanProduct);
+        loanProduct = loanProductSessionBean.createLoanProduct(loanProduct);
+        lic.setLoanProduct(loanProduct);
+        lic = loanProductSessionBean.updateInterestCollection(lic);
         System.out.print("EntityLoanBuilder PERSONAL LOAN ========== " + loanProduct.getProductName());
         System.out.print(demoMainAccount.getBankAcounts().size());
         
@@ -140,7 +187,9 @@ public class EntityLoanBuilder {
         loanProduct.setTenure(7);
         loanProduct.setLockInDuration(0);
         loanProduct.setPenaltyInterestRate(0.2); // TODO: this need to be calculated
-        loanProduct = loanAccountSessionBean.createLoanProduct(loanProduct);
+        loanProduct = loanProductSessionBean.createLoanProduct(loanProduct);
+        lic.setLoanProduct(loanProduct);
+        lic = loanProductSessionBean.updateInterestCollection(lic);
         System.out.print("EntityLoanBuilder CAR LOAN========== " + loanProduct.getProductName());
         System.out.print(demoMainAccount.getBankAcounts().size());
         
@@ -227,7 +276,9 @@ public class EntityLoanBuilder {
         loanProduct.setTenure(25);
         loanProduct.setLockInDuration(3);
         loanProduct.setPenaltyInterestRate(0.2); // TODO: this need to be calculated
-        loanProduct = loanAccountSessionBean.createLoanProduct(loanProduct);
+        loanProduct = loanProductSessionBean.createLoanProduct(loanProduct);
+        lic.setLoanProduct(loanProduct);
+        lic = loanProductSessionBean.updateInterestCollection(lic);
         System.out.print("EntityLoanBuilder HDB LOAN========== " + loanProduct.getProductName());
         System.out.print(demoMainAccount.getBankAcounts().size());
         
@@ -314,7 +365,9 @@ public class EntityLoanBuilder {
         loanProduct.setTenure(25);
         loanProduct.setLockInDuration(0);
         loanProduct.setPenaltyInterestRate(0.5); // TODO: this need to be calculated
-        loanProduct = loanAccountSessionBean.createLoanProduct(loanProduct);
+        loanProduct = loanProductSessionBean.createLoanProduct(loanProduct);
+        lic.setLoanProduct(loanProduct);
+        lic = loanProductSessionBean.updateInterestCollection(lic);
         System.out.print("EntityLoanBuilder HDB LOAN========== " + loanProduct.getProductName());
         System.out.print(demoMainAccount.getBankAcounts().size());
         

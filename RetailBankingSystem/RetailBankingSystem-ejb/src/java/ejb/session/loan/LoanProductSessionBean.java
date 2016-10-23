@@ -34,16 +34,21 @@ public class LoanProductSessionBean implements LoanProductSessionBeanLocal {
     }
 
     @Override
+    public LoanProduct updateLoanProduct(LoanProduct loanProduct) {
+        em.merge(loanProduct);
+        return loanProduct;
+    }
+    
+    @Override
     public LoanProduct getLoanProductByProductName(String productName) {
         Query q = em.createQuery("SELECT lp FROM LoanProduct lp WHERE lp.productName = :productName");
         q.setParameter("productName", productName);
         return (LoanProduct) q.getSingleResult();
     }
-
+    
     @Override
-    public LoanProduct updateLoanProduct(LoanProduct loanProduct) {
-        em.merge(loanProduct);
-        return loanProduct;
+    public LoanProduct getLoanProductById(Long id) {
+        return em.find(LoanProduct.class, id);
     }
     
     @Override

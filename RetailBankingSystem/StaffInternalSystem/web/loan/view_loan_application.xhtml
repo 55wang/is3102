@@ -1,0 +1,67 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:em="http://xmlns.jcp.org/jsf/composite/emcomp"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <!--shift + ctrl + F, format-->
+    <f:view>
+        <h:head>
+            <title>Merlion Internal</title>
+            <em:cssImport></em:cssImport>
+        </h:head>
+        <h:body>
+            <em:staffNavBar context="loan"></em:staffNavBar>
+            <em:staffSideBar top="loan" side="viewLoanApplication"></em:staffSideBar>
+            <div class="container">
+                <h:form id="mainForm">
+                    <p:panel header="Loan Applications">
+                        <p:dataScroller value="#{viewLoanApplicationManagedBean.myLoanApplications}" var="loanApplication" chunkSize="10">
+                            <f:facet name="header">
+                                Scroll Down to Load More Applications
+                            </f:facet>
+                            <h:panelGrid columns="4" style="width:100%" cellpadding="5" class="border-bottom" >
+
+                                <h:outputText value="Customer Name:"/>
+                                <h:outputText value="#{loanApplication.name}"/>
+
+                                <h:outputText value="Email:"/>
+                                <h:outputText value="#{loanApplication.email}"/> 
+
+                                <h:outputText value="Phone:"/>
+                                <h:outputText value="#{loanApplication.phone}"/> 
+
+                                <h:outputText value="Type:"/>
+                                <h:outputText value="#{loanApplication.productType.toString()}"/> 
+
+                                <h:outputText value="Income:"/>
+                                <h:outputText value="#{loanApplication.income}"/> 
+
+                                <h:outputText value="Age:"/>
+                                <h:outputText value="#{loanApplication.age}"/> 
+
+                                <h:outputText value="Request Amount:"/>
+                                <h:outputText value="#{loanApplication.requestedAmount}"/> 
+
+                                <h:outputText value="Market Value:"/>
+                                <h:outputText value="#{loanApplication.marketValue}"/> 
+
+                                <h:outputText value="Other Commitment:"/>
+                                <h:outputText value="#{loanApplication.otherCommitment}"/> 
+
+                                <h:outputText value="Other Housing Loans:"/>
+                                <h:outputText value="#{loanApplication.otherHousingLoan}"/> 
+
+                            </h:panelGrid>
+                        </p:dataScroller>
+                    </p:panel>
+                </h:form>
+            </div>
+        </h:body>
+    </f:view>
+
+
+</html>
+

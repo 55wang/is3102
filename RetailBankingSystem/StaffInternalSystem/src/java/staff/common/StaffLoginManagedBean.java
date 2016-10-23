@@ -35,8 +35,6 @@ public class StaffLoginManagedBean implements Serializable {
     @EJB
     private StaffAccountSessionBeanLocal staffBean;
     @EJB
-    private StaffRoleSessionBeanLocal roleBean;
-    @EJB
     private EmailServiceSessionBeanLocal emailBean;
     @EJB
     private UtilsSessionBeanLocal utilsBean;
@@ -60,9 +58,9 @@ public class StaffLoginManagedBean implements Serializable {
         a.setFunctionInput("Getting all customer information");
         a.setStaffAccount(SessionUtils.getStaff());
         utilsBean.persist(a);
-        StaffAccount sa = staffBean.loginAccount("adminadmin", HashPwdUtils.hashPwd("password"));
+        StaffAccount sa = staffBean.loginAccount("loan_officer", HashPwdUtils.hashPwd("password"));
         SessionUtils.setStaffAccount(sa);
-        RedirectUtils.redirect(SessionUtils.getContextPath() + "/admin/create_loan_interest.xhtml");
+        RedirectUtils.redirect(SessionUtils.getContextPath() + "/loan/view_loan_application.xhtml");
     }
 
     public void loginStaff(ActionEvent event) {

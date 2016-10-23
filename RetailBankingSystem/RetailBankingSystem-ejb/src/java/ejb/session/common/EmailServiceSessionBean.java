@@ -402,6 +402,7 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
         }
     }
 
+    @Override
     public Boolean sendCaseStatusChangeToCustomer(String recipient, CustomerCase cc) {
         Session session = getSession();
 
@@ -441,6 +442,32 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
             message.setText("Dear Customer, \n Your transaction limit of MBS card has been updated. "
                     + "Click the link to check updated transaction limit: "
                     + "https://localhost:8181/InternetBankingSystem/personal_cards/credit_card_summary.xhtml .");
+
+            Transport.send(message);
+
+            System.out.println("Email send out successfully");
+            return;
+
+        } catch (MessagingException e) {
+            System.out.println(e);
+            return;
+        }
+    }
+    
+    @Override
+    public void sendLoanApplicationApprovalNotice(String recipient) {
+        Session session = getSession();
+
+        try {
+
+            Message message = new MimeMessage(session);
+            message.setFrom(new InternetAddress("merlionbanking@gmail.com"));
+            message.setRecipients(Message.RecipientType.TO,
+                    InternetAddress.parse(recipient));
+            message.setSubject("Your Loan Application is Approved! - Merlion Bank");
+            message.setText("Dear Customer, \n Your Loan Application is Approved! "
+                    + "Click the link to view more details "
+                    + "https://localhost:8181/InternetBankingSystem/personal_loan/view_loan_summary.xhtml .");
 
             Transport.send(message);
 

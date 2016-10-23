@@ -10,6 +10,8 @@ import entity.crm.MarketingCampaign;
 import entity.customer.CustomerCase;
 import entity.customer.WealthManagementSubscriber;
 import entity.embedded.StaffInfo;
+import entity.loan.LoanAccount;
+import entity.loan.LoanApplication;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -56,6 +58,10 @@ public class StaffAccount implements Serializable {
     private List<WealthManagementSubscriber> wealthManagementSubscribers = new ArrayList<>();
     @OneToMany(mappedBy = "staffAccount")
     private List<MarketingCampaign> marketingCampaign = new ArrayList<>();
+    @OneToMany(cascade = {CascadeType.MERGE}, mappedBy = "loanOfficer")
+    private List<LoanAccount> loanAccounts = new ArrayList<>();
+    @OneToMany(cascade = {CascadeType.MERGE}, mappedBy = "loanOfficer")
+    private List<LoanApplication> loanApplications = new ArrayList<>();
 
     public String getNameLabel() {
         return this.getFirstName().substring(0, 1).toUpperCase() + this.getLastName().substring(0, 1).toUpperCase();
@@ -252,5 +258,33 @@ public class StaffAccount implements Serializable {
 
     public void setMarketingCampaign(List<MarketingCampaign> marketingCampaign) {
         this.marketingCampaign = marketingCampaign;
+    }
+
+    /**
+     * @return the loanAccounts
+     */
+    public List<LoanAccount> getLoanAccounts() {
+        return loanAccounts;
+    }
+
+    /**
+     * @param loanAccounts the loanAccounts to set
+     */
+    public void setLoanAccounts(List<LoanAccount> loanAccounts) {
+        this.loanAccounts = loanAccounts;
+    }
+
+    /**
+     * @return the loanApplications
+     */
+    public List<LoanApplication> getLoanApplications() {
+        return loanApplications;
+    }
+
+    /**
+     * @param loanApplications the loanApplications to set
+     */
+    public void setLoanApplications(List<LoanApplication> loanApplications) {
+        this.loanApplications = loanApplications;
     }
 }
