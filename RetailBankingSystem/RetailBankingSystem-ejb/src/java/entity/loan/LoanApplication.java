@@ -28,6 +28,7 @@ public class LoanApplication implements Serializable {
     
     // info
     private String name;
+    private String idNumber;
     private String email;
     private String phone;
     private Integer age;
@@ -41,6 +42,8 @@ public class LoanApplication implements Serializable {
     // mapping
     @ManyToOne(cascade = {CascadeType.MERGE})
     private StaffAccount loanOfficer;
+    @ManyToOne(cascade = {CascadeType.MERGE})
+    private LoanProduct loanProduct;
     
     public Long getId() {
         return id;
@@ -227,6 +230,34 @@ public class LoanApplication implements Serializable {
      */
     public void setMarketValue(Double marketValue) {
         this.marketValue = marketValue;
+    }
+
+    /**
+     * @return the idNumber
+     */
+    public String getIdNumber() {
+        return idNumber;
+    }
+
+    /**
+     * @param idNumber the idNumber to set
+     */
+    public void setIdNumber(String idNumber) {
+        this.idNumber = idNumber;
+    }
+
+    /**
+     * @return the loanProduct
+     */
+    public LoanProduct getLoanProduct() {
+        return loanProduct;
+    }
+
+    /**
+     * @param loanProduct the loanProduct to set
+     */
+    public void setLoanProduct(LoanProduct loanProduct) {
+        this.loanProduct = loanProduct;
     }
     
 }

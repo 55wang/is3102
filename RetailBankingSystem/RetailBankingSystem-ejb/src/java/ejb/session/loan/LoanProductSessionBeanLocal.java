@@ -23,6 +23,10 @@ public interface LoanProductSessionBeanLocal {
     public LoanProduct getLoanProductByProductName(String productName);
     public LoanProduct getLoanProductById(Long id);
     public List<LoanProduct> getAllLoanProduct();
+    public List<LoanProduct> getAllPersonalLoanProduct();
+    public List<LoanProduct> getAllCarLoanProduct();
+    public List<LoanProduct> getAllHDBLoanProduct();
+    public List<LoanProduct> getAllPPLoanProduct();
     public LoanExternalInterest getCommonInterestByName(String name);
     public LoanExternalInterest createCommonInterest(LoanExternalInterest lci);
     public LoanExternalInterest updateCommonInterest(LoanExternalInterest lci);

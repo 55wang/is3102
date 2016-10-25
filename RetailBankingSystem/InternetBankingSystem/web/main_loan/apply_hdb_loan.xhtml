@@ -1,0 +1,149 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:em="http://xmlns.jcp.org/jsf/composite/emcomp"
+      xmlns:p="http://primefaces.org/ui">
+    <!--shift + ctrl + F, format-->
+    <f:view>
+        <h:head>
+            <title>Merlion Bank</title>
+            <h:outputStylesheet library="css" name="reset.css"/>
+            <h:outputStylesheet library="css" name="theme.css"/>
+        </h:head>
+        <h:body>
+            <em:customerHeader context="main" userName="Log in"></em:customerHeader>
+            <em:customerNavBar context="main" mainPage="mainLoans"></em:customerNavBar>
+
+            <em:cssImport></em:cssImport>
+            <div class="customer_main_container">
+                <h1> Apply for HDB Loan</h1>
+                <h:form>
+                    <p:growl id="growl" sticky="true" showDetail="true"/>
+                    <p:messages id="msgs"/>
+                    <p:wizard widgetVar="myWizard" showNavBar="false">
+
+                        <p:tab id="p-info" title="Personal Information" >
+                            <p:panel>
+
+                                <h:panelGrid columns="2" cellpadding="5px" columnClasses="label, value">
+
+                                    <h:outputText value="Your name: " />
+                                    <p:inputText value="#{hdbLoanApplicationManagedBean.name}" required="true" requiredMessage="Name is required." />
+
+                                    <h:outputText value="ID Number: " />
+                                    <p:inputText value="#{hdbLoanApplicationManagedBean.idNumber}" required="true" requiredMessage="ID Number is required." />
+
+                                    <h:outputText value="Age: " />
+                                    <p:inputText value="#{hdbLoanApplicationManagedBean.age}" required="true" requiredMessage="Age is required." />
+
+                                    <h:outputText value="Phone Number: " />
+                                    <p:inputText value="#{hdbLoanApplicationManagedBean.phoneNumber}" required="true" requiredMessage="Phone number is required." />
+
+                                    <h:outputText value="Email Address: " />
+                                    <p:inputText value="#{hdbLoanApplicationManagedBean.email}" required="true" requiredMessage="Email is required." />
+
+                                </h:panelGrid>
+
+                                <div class="register-form-button">
+                                    <p:commandButton value="Next" type="button" onclick="PF('myWizard').next();" />
+                                </div>
+                            </p:panel>
+                        </p:tab>
+
+                        <p:tab id="f-info" title="Financial Information" >
+                            <p:panel>
+                                <h:panelGrid columns="2" cellpadding="5px" columnClasses="label, value">
+
+                                    <h:outputText value="Monthly income: " />
+                                    <p:inputText value="#{hdbLoanApplicationManagedBean.monthlyIncome}" required="true" requiredMessage="Monthly income is required." />
+
+                                    <h:outputText value="Other financial commitments (S$): " />
+                                    <p:inputText value="#{hdbLoanApplicationManagedBean.otherLoan}" required="true" requiredMessage="Other financial commitment is required." />
+
+                                    <h:outputText value="Number of Other Housing loans: " />
+                                    <p:inputText value="#{hdbLoanApplicationManagedBean.numOfHousingLoan}" required="true" requiredMessage="Other financial commitment is required." />
+
+                                </h:panelGrid>
+
+                                <div class="register-form-button">
+                                    <p:commandButton value="Back" type="button" onclick="PF('myWizard').back();" />
+                                    <p:commandButton value="Next" actionListener="#{hdbLoanApplicationManagedBean.calculateHDB()}" update="@form:msgs"/>
+                                </div>
+                            </p:panel>
+                        </p:tab>
+
+                        <p:tab id="m-info" title="Maximum HDB Loan" >
+                            <p:panel>
+                                <h:panelGrid columns="2" cellpadding="5px" columnClasses="label, value">
+
+                                    <h:outputText value="Maximum loan amount (S$): " />
+                                    <h:outputText value="#{hdbLoanApplicationManagedBean.maxLoanAmount}" styleClass="outputLabel">
+                                        <f:convertNumber pattern="###00.00"/>
+                                    </h:outputText>
+
+                                    <h:outputText value="Maximum Monthly instalment (S$):: " />
+                                    <h:outputText value="#{hdbLoanApplicationManagedBean.monthlyInstalment}" styleClass="outputLabel">
+                                        <f:convertNumber pattern="###00.00"/>
+                                    </h:outputText>
+
+                                    <h:outputText value="Maximum Tenure: " />
+                                    <h:outputText value="#{hdbLoanApplicationManagedBean.maxHousingTenure}" styleClass="outputLabel"/>
+
+                                    <h:outputText value="Maximum Housing market value: " />
+                                    <h:outputText value="#{hdbLoanApplicationManagedBean.maxMarketValue}" styleClass="outputLabel">
+                                        <f:convertNumber pattern="###00.00"/>
+                                    </h:outputText>
+
+                                </h:panelGrid>
+
+                                <div class="register-form-button">
+                                    <p:commandButton value="Back" type="button" onclick="PF('myWizard').back();" />
+                                    <p:commandButton value="Next" type="button" onclick="PF('myWizard').next();" />
+                                </div>
+                            </p:panel>
+                        </p:tab>
+
+                        <p:tab id="l-info" title="Loan Information" >
+                            <p:panel>
+                                <h:panelGrid columns="2" cellpadding="5px" columnClasses="label, value">
+
+                                    <h:outputText value="Loan Amount: " />
+                                    <p:inputText value="#{hdbLoanApplicationManagedBean.loanAmount}" required="true" requiredMessage="Loan Amount is required." />
+                                    
+                                    <h:outputText value="Market Value: " />
+                                    <p:inputText value="#{hdbLoanApplicationManagedBean.marketValue}" required="true" requiredMessage="Market Value is required." />
+
+                                    <h:outputText value="Choose a loan term: " />
+                                    <p:selectOneMenu value="#{hdbLoanApplicationManagedBean.loanProductId}" rendered="true" required="true">
+                                        <f:selectItems value="#{hdbLoanApplicationManagedBean.hdbLoanProducts}" var="p" itemValue="#{p.id}" itemLabel="#{p.productName} #{p.tenure}" />
+                                    </p:selectOneMenu>
+
+                                </h:panelGrid>
+
+                                <div class="register-form-button">
+                                    <p:commandButton value="Back" type="button" onclick="PF('myWizard').back();" />
+                                    <p:commandButton value="Next" actionListener="#{hdbLoanApplicationManagedBean.applyHDBLoan()}" update="@form:msgs"/>
+                                </div>
+                            </p:panel>
+                        </p:tab>
+
+                        <p:tab id="result" title="Results">
+                            <p:panel>
+                                <h2>Your application has submitted. Please wait for your staff to approach you.</h2>
+                                <h2>Your application number is #{hdbLoanApplicationManagedBean.applicationNumber}.</h2>
+                            </p:panel>
+                        </p:tab>
+                    </p:wizard>
+
+                </h:form>
+            </div>   
+
+            <em:customerFooter></em:customerFooter>
+        </h:body>
+    </f:view>
+
+
+</html>
+
