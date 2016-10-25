@@ -8,9 +8,8 @@ package entity.wealth;
 import java.io.Serializable;
 import java.util.Objects;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import static server.utilities.CommonUtils.round;
 import server.utilities.EnumUtils.FinancialInstrumentClass;
 
 /**
@@ -67,7 +66,7 @@ public class FinancialInstrument implements Serializable {
     }
 
     public Double getStandardDeviation() {
-        return standardDeviation;
+        return round(standardDeviation,3);
     }
 
     public void setStandardDeviation(Double standardDeviation) {
@@ -75,7 +74,7 @@ public class FinancialInstrument implements Serializable {
     }
 
     public Double getExpectedReturn() {
-        return expectedReturn;
+        return round(expectedReturn,3);
     }
 
     public void setExpectedReturn(Double expectedReturn) {
