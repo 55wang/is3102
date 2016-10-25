@@ -141,7 +141,7 @@ public class Portfolio implements Serializable {
     }
     
     public Double getPercentageChange() {
-        return getTotalCurrentValue() / getTotalBuyingValue();
+        return getTotalCurrentValue() / getTotalBuyingValue() * 100;
     }
 
     public Long getId() {
