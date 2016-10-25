@@ -65,8 +65,8 @@
                                 <p:column headerText="Name" sortBy="#{staff.fullName}">
                                     <h:outputText value="#{staff.fullName}"></h:outputText>
                                 </p:column>
-                                <p:column headerText="Role" sortBy="#{staff.role}">
-                                    <h:outputText value="#{staff.role}"></h:outputText>
+                                <p:column headerText="Role" sortBy="#{staff.roles.get(0)}">
+                                    <h:outputText value="#{staff.roles.get(0)}"></h:outputText>
                                 </p:column>
                                 <p:column headerText="" sortBy="#{staff.username}">
                                     <p:commandButton value="New Message" actionListener="#{chatViewManagedBean.newConversation(staff)}"/>

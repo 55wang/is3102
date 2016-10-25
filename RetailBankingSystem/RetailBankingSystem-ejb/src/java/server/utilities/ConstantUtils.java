@@ -29,8 +29,10 @@ public class ConstantUtils {
     public static final String DEMO_FIXED_DEPOSIT_PRODUCT_NAME = "Time Deposit";
     // LOAN
     // Personal loan
-    public static final String DEMO_PERSONAL_LOAN_PRODUCT_NAME = "MBS Personal Loan";
-    public static final String DEMO_PERSONAL_LOAN_INTEREST_NAME = "MBS Personal Loan Interest";
+    public static final String DEMO_PERSONAL_LOAN_PRODUCT_NAME_12 = "MBS Personal Loan 0-12 Month";
+    public static final String DEMO_PERSONAL_LOAN_PRODUCT_NAME_24 = "MBS Personal Loan 0-24 Month";
+    public static final String DEMO_PERSONAL_LOAN_INTEREST_NAME_12 = "MBS Personal Loan Interest 1 year";
+    public static final String DEMO_PERSONAL_LOAN_INTEREST_NAME_24 = "MBS Personal Loan Interest 2 years";
     // Car loan
     public static final String DEMO_CAR_LOAN_PRODUCT_NAME = "MBS Car Loan";
     public static final String DEMO_CAR_LOAN_INTEREST_NAME = "MBS Car Loan Interest";
@@ -69,6 +71,10 @@ public class ConstantUtils {
     // General
     public static final String SOMETHING_WENT_WRONG = "Something went wrong.";
     public static final String NOT_ENOUGH_BALANCE = "Not enough balance.";
+    public static final String NOT_ENOUGH_AGE = "Your age must be above 21 years old to apply this loan.";
+    public static final String NOT_ENOUGH_INCOME_2000 = "Your monthly income must be above $2000 to apply this loan.";
+    public static final String NOT_ENOUGH_INCOME_1500 = "Your monthly income must be above $1500 to apply this loan.";
+    public static final String NOT_ENOUGH_LOAN_LIMIT = "Your loan request amount has exceed maximum loan amount.";
     // Password
     public static final String OLD_PASSWORD_NOTMTACH = "You have entered a wrong password! ";
     public static final String PASSWORD_CHANGE_SUCCESS = "Successful! You have reset your password. ";

@@ -25,11 +25,34 @@
                                 <p:link outcome='risk_tolerance_quiz' value='Take the quiz now!'/>
                             </h:panelGrid>
                             <h:panelGrid columns="2" cellpadding="5" rendered="#{requestInvestmentPlanManagedBean.wms.riskToleranceScore != null}">
-                                <h:outputLabel for="expectReturn" value="Expected return  " />
+                                <h:outputLabel for="expectReturn" value="Expected return(0-1)  " />
                                 <h:inputText id="expectReturn" value="#{requestInvestmentPlanManagedBean.newInvestmenPlan.customerExpectedReturn}"/>
                                 
-                                <h:outputLabel for="amount" value="Investment Amount  " />
+                                <h:outputLabel for="amount" value="Investment Amount(SGD)  " />
                                 <h:inputText id="amount" value="#{requestInvestmentPlanManagedBean.newInvestmenPlan.amountOfInvestment}"/>
+                                
+                                
+                                <p:overlayPanel id="introPanel" for="introBtn" hideEffect="fade" at="">
+                                    <p:dataTable id="intro" value="#{requestInvestmentPlanManagedBean.allFinancialInstruments}" var="fi">
+                                        <p:column id="name" headerText="Name" style="width:400px">
+                                            <h:outputText value="#{fi.name}"/>
+                                        </p:column>
+                                        <p:tooltip id="toolTipTrack" for="name" value="#{fi.description}" trackMouse="true"/>
+
+                                        <p:column headerText="Return">
+                                            <h:outputText value="#{(fi.expectedReturn*100).intValue()}%" />
+                                        </p:column>
+
+                                        <p:column headerText="Standard Deviation">
+                                            <h:outputText value="#{(fi.standardDeviation*100).intValue()}%" />
+                                        </p:column>
+
+                                        <p:column headerText="Description" style="width:480px">
+                                            <h:outputText value="#{fi.description}" />
+                                        </p:column>
+                                    </p:dataTable>
+                                </p:overlayPanel>
+                                <p:commandButton id="introBtn" value="Read more about financial instruments" type="button" style="width: 100%"/>
                                 
                                 <h:outputLabel for="fi" value="Prefered Financial Instruments  " />
                                 <p:pickList id="fi" value="#{requestInvestmentPlanManagedBean.financialInstruments}" var="financialInstrument" itemLabel="#{financialInstrument.name}" itemValue="#{financialInstrument.name}" style="width:200px"/>

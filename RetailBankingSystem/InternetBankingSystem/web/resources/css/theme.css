@@ -501,9 +501,7 @@ and open the template in the editor.
     height:40px;
     line-height: 20px;
     color:white;
-    position: fixed;
     width: 100%;
-    bottom: 0;
     background: url(../resources/img/footer_bg.png) repeat;
     z-index: 999;
     display: block;
@@ -550,7 +548,67 @@ and open the template in the editor.
     padding-right: 10px;
     padding-left: 10px;
 }
+
+.mainfooter {
+    font-size: 12px;
+    height:40px;
+    line-height: 20px;
+    color:white;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background: url(../resources/img/footer_bg.png) repeat;
+    z-index: 999;
+    display: block;
+}
+
+.mainfooter .footer-links {
+    float: left;
+    width: 70%;
+}
+
+.mainfooter .footer-links ul {
+    margin-left: 20px;
+    text-decoration: none;
+}
+.mainfooter .footer-links ul li{
+    float: left;
+    list-style-type: none;
+    padding-right: 10px;
+    padding-left: 10px;
+    border-right: 1px solid #fff;
+}
+
+.mainfooter .footer-links li:last-child {
+    border-right: none;
+    padding-right: 0;
+}
+
+.mainfooter .contact-links {
+    width:30%;
+    float: right;
+}
+
+.mainfooter .contact-links ul {
+    margin-left: 20px;
+    text-decoration: none;
+}
+.mainfooter .contact-links ul li{
+    float:left;
+    list-style-type: none;
+    padding-right: 10px;
+    padding-left: 10px;
+}
 /*end of footer*/
+.viewInvestmentPlanDetailLayout{
+    font-size: 12px !important;
+}
+
+.viewInvestmentPlanDetailAction{
+    width:fit-content;
+    margin:auto;
+    padding-top: 20px;
+}
 /* general */
 .container {
     padding-top: 100px;
@@ -567,6 +625,8 @@ and open the template in the editor.
     margin-right: auto;
     width:80%;
     padding-top:180px;
+    height: 100%;
+    min-height: 65vh;
 }
 
 .h-center {
@@ -626,6 +686,9 @@ and open the template in the editor.
 }
 .hidden {
     display: none;
+}
+.top-65 {
+    top: 65%!important;
 }
 
 

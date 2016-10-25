@@ -1455,6 +1455,7 @@ public class EnumUtils {
         CANCELLED("CANCELLED"),
         ONGOING("ONGOING"),
         WAITING("WAITING APPROVAL"),
+        APPROVAL("APPROVAL"),
         EXECUTED("EXECUTED");
 
         private String value;

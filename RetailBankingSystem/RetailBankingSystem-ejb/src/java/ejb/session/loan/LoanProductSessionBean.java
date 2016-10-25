@@ -56,6 +56,34 @@ public class LoanProductSessionBean implements LoanProductSessionBeanLocal {
         Query q = em.createQuery("SELECT lp FROM LoanProduct lp WHERE lp.isHistory = false");
         return q.getResultList();
     }
+    
+    @Override
+    public List<LoanProduct> getAllPersonalLoanProduct() {
+        Query q = em.createQuery("SELECT lp FROM LoanProduct lp WHERE lp.isHistory = false AND lp.productType = :inType");
+        q.setParameter("inType", EnumUtils.LoanProductType.LOAN_PRODUCT_TYPE_PERSONAL);
+        return q.getResultList();
+    }
+    
+    @Override
+    public List<LoanProduct> getAllCarLoanProduct() {
+        Query q = em.createQuery("SELECT lp FROM LoanProduct lp WHERE lp.isHistory = false AND lp.productType = :inType");
+        q.setParameter("inType", EnumUtils.LoanProductType.LOAN_PRODUCT_TYPE_CAR);
+        return q.getResultList();
+    }
+    
+    @Override
+    public List<LoanProduct> getAllHDBLoanProduct() {
+        Query q = em.createQuery("SELECT lp FROM LoanProduct lp WHERE lp.isHistory = false AND lp.productType = :inType");
+        q.setParameter("inType", EnumUtils.LoanProductType.LOAN_PRODUCT_TYPE_HDB);
+        return q.getResultList();
+    }
+    
+    @Override
+    public List<LoanProduct> getAllPPLoanProduct() {
+        Query q = em.createQuery("SELECT lp FROM LoanProduct lp WHERE lp.isHistory = false AND lp.productType = :inType");
+        q.setParameter("inType", EnumUtils.LoanProductType.LOAN_PRODUCT_TYPE_PRIVATE_HOUSE);
+        return q.getResultList();
+    }
 
     @Override
     public LoanExternalInterest createCommonInterest(LoanExternalInterest lci) {

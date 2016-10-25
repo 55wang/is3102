@@ -67,17 +67,20 @@
                                 <h:outputText value="#{investmentRequest.wealthManagementSubscriber.mainAccount.customer.firstname}" />
                             </p:column>
                             
-                            <p:column headerText="Action" style="width:150px" rendered="#{investmentRequest.status != 'WAITING' and investmentRequest.status != 'CANCELLED' and investmentRequest.status != 'EXECUTED'}">
+                            <p:column headerText="Action" style="width:150px" rendered="#{investmentRequest.status != 'CANCELLED' and investmentRequest.status != 'EXECUTED' and investmentRequest.status != 'APPROVAL'}">
                                 <p:splitButton value="Design" action="#{viewInvestmentRequestManagedBean.start(investmentRequest)}" update="@form" icon="ui-icon-disk">
                                     <p:menuitem value="Cancel" action="#{viewInvestmentRequestManagedBean.cancel(investmentRequest)}" update="@form" icon="ui-icon-arrowrefresh-1-w" /> 
                                 </p:splitButton>
                             </p:column>
-                            <p:column headerText="Action" style="width:150px" rendered="#{investmentRequest.status == 'WAITING' and investmentRequest.status != 'CANCELLED'}">
+                            <p:column headerText="Action" style="width:150px" rendered="#{investmentRequest.status == 'APPROVAL' and investmentRequest.status != 'CANCELLED'}">
                                 <p:splitButton value="Execute" action="#{viewInvestmentRequestManagedBean.execute(investmentRequest)}" update="@form" icon="ui-icon-disk">
                                     <p:menuitem value="Cancel" action="#{viewInvestmentRequestManagedBean.cancel(investmentRequest)}" update="@form" icon="ui-icon-arrowrefresh-1-w" /> 
                                 </p:splitButton>
                             </p:column>
-                            <p:column headerText="Action" style="width:150px" rendered="#{investmentRequest.status == 'CANCELLED' or investmentRequest.status == 'EXECUTED'}">
+                            <p:column headerText="Action" style="width:150px" rendered="#{investmentRequest.status == 'CANCELLED'}">
+                                -
+                            </p:column>
+                            <p:column headerText="Action" style="width:150px" rendered="#{investmentRequest.status == 'EXECUTED'}">
                                 <p:commandButton value="View" action="#{viewInvestmentRequestManagedBean.view(investmentRequest)}" update="@form" icon="ui-icon-disk">
                                 </p:commandButton>
                             </p:column>
