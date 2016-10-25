@@ -1,16 +1,71 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
-    <head>
-        <title>TODO supply a title</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    </head>
-    <body>
-        <div>TODO write content</div>
-    </body>
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:em="http://xmlns.jcp.org/jsf/composite/emcomp"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <!--shift + ctrl + F, format-->
+    <f:view>
+        <h:head>
+            <title>Merlion Internal</title>
+            <em:cssImport></em:cssImport>
+        </h:head>
+        <h:body>
+            <em:customerHeader context="personal" userName="#{customerHomeManagedBean.customer.firstname }"></em:customerHeader>
+            <em:customerNavBar context="personal" personalPage="wealth"></em:customerNavBar>
+
+            <div class="customer_main_container">
+                <h:form id="mainForm">
+
+                    <p:panel header="#{customerHomeManagedBean.customer.fullName}'s Portfolio Detail">
+
+                        <h:panelGrid columns="2" cellpadding="5">
+                            <h:outputText value="Total Deposit Amount: " />
+                            <h:outputText value="#{portfolioManagedBean.getTotalDepositAmount(portfolioManagedBean.customer.mainAccount)}" />
+
+                            <h:outputText value="Total Loan Amount: " />
+                            <h:outputText value="#{portfolioManagedBean.getTotalLoanAmount(portfolioManagedBean.customer.mainAccount)}" />
+
+                            <h:outputText value="Total Credit Card Outstanding Amount: " />
+                            <h:outputText value="#{portfolioManagedBean.getTotalCreditAmount(portfolioManagedBean.customer.mainAccount)}" />
+                            <p:column colspan="2">
+                                <p:dataTable value="#{portfolioManagedBean.portfolios}" var="p" >
+                                    <p:column headerText="Id">
+                                        <h:outputText value="#{p.id}" />
+                                    </p:column>
+                                    <p:column headerText="Portfolio Value">
+                                        <h:outputText value="#{p.totalCurrentValue}" />
+                                    </p:column>
+                                    <p:column headerText="% Change">
+                                        <h:outputText value="#{p.percentageChange - 100}%"/>
+                                    </p:column>
+                                </p:dataTable>
+                            </p:column>
+                            <br />
+
+                            <h:outputText value="Overall Total Portfolio Value: " />
+                            <h:outputText value="#{portfolioManagedBean.getTotalPortfolioCurrentValue(portfolioManagedBean.customer.mainAccount)}" />
+
+                            <h:outputText value="Portfolio Total Percentage Change: " />
+                            <h:outputText value="#{portfolioManagedBean.getPortfolioPercentageChange(portfolioManagedBean.customer.mainAccount) - 100}" />
+                            <p:chart type="pie" model="#{portfolioManagedBean.pieModel2}" style="width:400px;height:300px" />
+                            <br />
+                            <p:chart type="line" model="#{portfolioManagedBean.lineModel1}" style="height:300px;"/>
+                            <br />
+                            <h:outputText value="Financial Health: " />
+                            <h:outputText value="#{portfolioManagedBean.financialHealth}" />
+                        </h:panelGrid>
+                        <p:messages id="messagesStatus" redisplay="false"></p:messages>
+                    </p:panel>
+                </h:form>
+
+            </div>
+            <em:customerFooter></em:customerFooter>
+        </h:body> 
+    </f:view>
+
+
 </html>
+

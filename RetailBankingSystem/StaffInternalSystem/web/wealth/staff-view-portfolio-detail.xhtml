@@ -22,39 +22,36 @@
                 <h:form id="mainForm">
                     <p:panel header="#{updatePortfolioManagedBean.p.wealthManagementSubscriber.mainAccount.customer.fullName}'s Portfolio Detail">
 
-                        <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
-
-                        <p:growl id="msgs" showDetail="true" />
-
                         <h:panelGrid columns="2" cellpadding="5">
                             <h:outputText value="Total Deposit Amount: " />
                             <h:outputText value="#{viewPortfolioDetailManagedBean.getTotalDepositAmount(viewPortfolioDetailManagedBean.p.wealthManagementSubscriber.mainAccount)}" />
-                            
+
                             <h:outputText value="Total Loan Amount: " />
                             <h:outputText value="#{viewPortfolioDetailManagedBean.getTotalDebtAmount(viewPortfolioDetailManagedBean.p.wealthManagementSubscriber.mainAccount)}" />
-                            
+
                             <h:outputText value="Portfolio Value: " />
                             <h:outputText value="#{viewPortfolioDetailManagedBean.p.totalCurrentValue}" />
-                            
+
                             <h:outputText value="Portfolio Percentage Change: " />
                             <h:outputText value="#{viewPortfolioDetailManagedBean.p.percentageChange}" />
-                            
+
                             <h:outputText value="Overall Total Portfolio Value: " />
                             <h:outputText value="#{viewPortfolioDetailManagedBean.getTotalPortfolioCurrentValue(viewPortfolioDetailManagedBean.p.wealthManagementSubscriber.mainAccount)}" />
-                            
+
                             <h:outputText value="Portfolio Total Percentage Change: " />
                             <h:outputText value="#{viewPortfolioDetailManagedBean.getPortfolioPercentageChange(viewPortfolioDetailManagedBean.p.wealthManagementSubscriber.mainAccount)}" />
-                            
+
                             <p>the pie chart, would retrieve value from p and display, might need DAO</p>
-                            
-                            
+
+
                             <p:column headerText="Action">
                                 <br />
                                 <p:commandButton value="Update Portfolio" action="#{viewInvestmentRequestManagedBean.view(viewPortfolioDetailManagedBean.p.executedInvestmentPlan)}" icon="ui-icon-lightbulb" update="@form" />
                             </p:column>
                         </h:panelGrid>
 
-
+                        <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+                        <p:growl id="msgs" showDetail="true" />
                     </p:panel>
                 </h:form>
             </div>

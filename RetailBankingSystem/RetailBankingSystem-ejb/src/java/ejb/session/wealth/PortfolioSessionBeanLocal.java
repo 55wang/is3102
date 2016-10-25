@@ -19,4 +19,5 @@ public interface PortfolioSessionBeanLocal {
     public Portfolio getPortfolioById(Long Id);
     public Portfolio createPortfolio(Portfolio p);
     public Portfolio updatePortfolio(Portfolio p);
+    public List<Portfolio> getListPortfoliosByCustomerId(Long Id);
 }
