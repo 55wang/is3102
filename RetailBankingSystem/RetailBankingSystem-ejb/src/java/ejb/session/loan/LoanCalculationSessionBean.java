@@ -121,5 +121,72 @@ public class LoanCalculationSessionBean implements LoanCalculationSessionBeanLoc
 
         }
     }
+    
+    @Override
+    public Double calculateMaxHDBMonthlyInstalment(Double monthlyIncome, Double otherLoan){
+        Double maxHDBMonthlyPayment1=MSR * monthlyIncome;
+        Double maxTotalMonthlyPayment=TDSR*monthlyIncome;
+        Double maxHDBMonthlyPayment2=maxTotalMonthlyPayment-otherLoan;
+        if(maxHDBMonthlyPayment2<=0) return 0.0;
+        Double maxMonthlyPayment;
+        if(maxHDBMonthlyPayment1<=maxHDBMonthlyPayment2) 
+            maxMonthlyPayment=maxHDBMonthlyPayment1;
+        else
+            maxMonthlyPayment=maxHDBMonthlyPayment2;
+        return maxMonthlyPayment;
+    }
+    @Override
+     public Double calculateMaxPPMonthlyInstalment(Double monthlyIncome, Double otherLoan){
+        Double maxMonthlyPayment=TDSR*monthlyIncome;
+        Double monthlyInstalment=maxMonthlyPayment-otherLoan;
+        if (monthlyInstalment<=0.0) return 0.0;
+        
+        return monthlyInstalment;
+     }
+
+    @Override
+    public Double calculateMaxHomeLoanAmt(Double monthlyInstalment, Integer tenure) {
+        Double maxHDBLoanAmt = monthlyInstalment * (1 - Math.pow((1 + MEDIUM_INTEREST), -tenure*12))/MEDIUM_INTEREST;
+        return maxHDBLoanAmt;
+
+    }
+    
+    @Override
+    public Double homeMarketValue(Double loanAmt, Integer numberOfHousingLoan){
+        Double LTV;
+        Double homeMarketValue=0.0;
+        if (numberOfHousingLoan==0){
+            LTV=0.8;
+            homeMarketValue=loanAmt/LTV;
+            
+        }
+        else if(numberOfHousingLoan==1){
+            LTV=0.5;
+            homeMarketValue=loanAmt/LTV;
+        
+        }else if(numberOfHousingLoan>=2){
+            LTV=0.4;
+            homeMarketValue=loanAmt/LTV;
+            
+        }
+        return homeMarketValue;
+    }
+    
+
+    @Override
+    public Double calculateMaxCarLoanAmt(Double openMarketValue) {
+        Double maxCarLoanAmt=0.0;
+        if(openMarketValue>20000.0)
+            maxCarLoanAmt=0.6*openMarketValue;
+        else if (openMarketValue<=20000.0)
+            maxCarLoanAmt=0.7*openMarketValue;
+        return maxCarLoanAmt;
+    }
+    @Override
+    public Double calculateCarMonthlyInstalment(Double annualInterest,Integer tenure,Double loanAmt){
+        Double interest = loanAmt*annualInterest*tenure;
+        Double monthlyInstalment=(interest+loanAmt)/tenure/12;
+        return monthlyInstalment;
+}
 
 }
