@@ -91,7 +91,7 @@ public class InvestmentPlanDetailManagedBean implements Serializable{
     }
     
     public void approve(){
-        investmentPlan.setStatus(InvestmentPlanStatus.APPROVAL);
+        investmentPlan.setStatus(InvestmentPlanStatus.EXECUTED);
         investmentPlanSessionBean.updateInvestmentPlan(investmentPlan);
         RedirectUtils.redirect("view_investment_plan.xhtml");
     }

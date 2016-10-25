@@ -9,14 +9,11 @@ import entity.fact.customer.SinglePortfolioFactTable;
 import entity.wealth.MovingAverage;
 import entity.wealth.Portfolio;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Queue;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import sun.awt.image.WritableRasterNative;
 
 /**
  *
@@ -27,10 +24,6 @@ public class PortfolioSessionBean implements PortfolioSessionBeanLocal {
 
     @PersistenceContext(unitName = "RetailBankingSystem-ejbPU")
     private EntityManager em;
-
-    public static void main(String[] args) {
-
-    }
 
     //must be sorted the input spf, with ascending date order
     @Override

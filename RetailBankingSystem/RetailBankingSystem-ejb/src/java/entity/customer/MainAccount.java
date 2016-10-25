@@ -48,7 +48,7 @@ public class MainAccount implements Serializable {
     @OneToOne(cascade = {CascadeType.MERGE}, mappedBy = "mainAccount")
     private Customer customer;
     @OneToOne(cascade = {CascadeType.MERGE}, mappedBy = "mainAccount")
-    private TransferLimits transferLimits = new TransferLimits(this);
+    private TransferLimits transferLimits;
     @OneToMany(cascade = {CascadeType.MERGE}, mappedBy = "mainAccount")
     private List<DepositAccount> bankAcounts = new ArrayList<>(); 
     @OneToMany(cascade = {CascadeType.MERGE}, mappedBy = "mainAccount")
