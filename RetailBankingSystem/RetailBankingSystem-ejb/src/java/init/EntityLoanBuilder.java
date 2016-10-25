@@ -56,11 +56,12 @@ public class EntityLoanBuilder {
         demoMainAccount = loginBean.getMainAccountByUserID(ConstantUtils.DEMO_MAIN_ACCOUNT_USER_ID);
         System.out.print("Creating account !!!!================");
         
-        initDemoLoanApplications();
+        
         initDemoPersonalLoanAccount();
         initDemoCarLoanAccount();
         initDemoHDBLoanAccount();
 //        initDemoPPLoanAccount();
+        initDemoLoanApplications();
     }
     
     private void initDemoLoanApplications() {
@@ -70,11 +71,13 @@ public class EntityLoanBuilder {
         loanApplication1.setName("Lei Yang");
         loanApplication1.setEmail("raymondlei90s@gmail.com");
         loanApplication1.setPhone("94761895");
+        loanApplication1.setIdNumber("S9876543I");
         loanApplication1.setOtherCommitment(0.0);
         loanApplication1.setOtherHousingLoan(null);
         loanApplication1.setRequestedAmount(10000.0);
         loanApplication1.setMarketValue(null);
         loanApplication1.setProductType(EnumUtils.LoanProductType.LOAN_PRODUCT_TYPE_PERSONAL);
+        loanApplication1.setLoanProduct(loanProductSessionBean.getLoanProductByProductName(ConstantUtils.DEMO_PERSONAL_LOAN_PRODUCT_NAME_12));
         loanApplication1.setLoanOfficer(staffAccountSessionBean.getAccountByUsername(ConstantUtils.LOAN_OFFICIER_USERNAME));
         loanApplication1 = loanAccountSessionBean.createLoanApplication(loanApplication1);
         
@@ -84,11 +87,13 @@ public class EntityLoanBuilder {
         loanApplication2.setName("Lei Yang");
         loanApplication2.setEmail("raymondlei90s@gmail.com");
         loanApplication2.setPhone("94761895");
+        loanApplication2.setIdNumber("S9876543I");
         loanApplication2.setOtherCommitment(0.0);
         loanApplication2.setOtherHousingLoan(null);
         loanApplication2.setRequestedAmount(80000.0);
         loanApplication2.setMarketValue(100000.0);
         loanApplication2.setProductType(EnumUtils.LoanProductType.LOAN_PRODUCT_TYPE_CAR);
+        loanApplication2.setLoanProduct(loanProductSessionBean.getLoanProductByProductName(ConstantUtils.DEMO_CAR_LOAN_PRODUCT_NAME));
         loanApplication2.setLoanOfficer(staffAccountSessionBean.getAccountByUsername(ConstantUtils.LOAN_OFFICIER_USERNAME));
         loanApplication2 = loanAccountSessionBean.createLoanApplication(loanApplication2);
         
@@ -102,15 +107,24 @@ public class EntityLoanBuilder {
         loanApplication3.setOtherHousingLoan(0);
         loanApplication3.setRequestedAmount(220000.0);
         loanApplication3.setMarketValue(300000.0);
+        loanApplication3.setIdNumber("S9876543I");
         loanApplication3.setProductType(EnumUtils.LoanProductType.LOAN_PRODUCT_TYPE_HDB);
+        loanApplication3.setLoanProduct(loanProductSessionBean.getLoanProductByProductName(ConstantUtils.DEMO_HDB_FIXED_LOAN_PRODUCT_NAME));
         loanApplication3.setLoanOfficer(staffAccountSessionBean.getAccountByUsername(ConstantUtils.LOAN_OFFICIER_USERNAME));
         loanApplication3 = loanAccountSessionBean.createLoanApplication(loanApplication3);
     }
     
     private void initDemoPersonalLoanAccount() {
         // start of personal loan
+        initDemoPersonalLoanAccount12();
+        initDemoPersonalLoanAccount24();
+        // end of personal loan
+    }
+    
+    private void initDemoPersonalLoanAccount12() {
+        // start of personal loan
         LoanInterest loanInterest1 = new LoanInterest();
-        loanInterest1.setName(ConstantUtils.DEMO_PERSONAL_LOAN_INTEREST_NAME);
+        loanInterest1.setName(ConstantUtils.DEMO_PERSONAL_LOAN_INTEREST_NAME_12);
         loanInterest1.setStartMonth(0);
         loanInterest1.setEndMonth(12); // need to differetiate
         loanInterest1.setProductType(EnumUtils.LoanProductType.LOAN_PRODUCT_TYPE_PERSONAL);
@@ -118,7 +132,7 @@ public class EntityLoanBuilder {
         loanInterest1 = loanProductSessionBean.createLoanInterest(loanInterest1);
         
         LoanInterestCollection lic = new LoanInterestCollection();
-        lic.setName(ConstantUtils.DEMO_PERSONAL_LOAN_INTEREST_NAME);
+        lic.setName(ConstantUtils.DEMO_PERSONAL_LOAN_INTEREST_NAME_12);
         lic.setProductType(EnumUtils.LoanProductType.LOAN_PRODUCT_TYPE_PERSONAL);
         lic.addLoanInterest(loanInterest1);
         lic = loanProductSessionBean.createInterestCollection(lic);
@@ -127,10 +141,69 @@ public class EntityLoanBuilder {
         loanInterest1 = loanProductSessionBean.updateLoanInterest(loanInterest1);
         
         LoanProduct loanProduct = new LoanProduct();
-        loanProduct.setProductName(ConstantUtils.DEMO_PERSONAL_LOAN_PRODUCT_NAME);
+        loanProduct.setProductName(ConstantUtils.DEMO_PERSONAL_LOAN_PRODUCT_NAME_12);
         loanProduct.setProductType(EnumUtils.LoanProductType.LOAN_PRODUCT_TYPE_PERSONAL);
         loanProduct.setLoanInterestCollection(lic);
         loanProduct.setTenure(1);
+        loanProduct.setLockInDuration(0);
+        loanProduct.setPenaltyInterestRate(0.2); // TODO: this need to be calculated
+        loanProduct = loanProductSessionBean.createLoanProduct(loanProduct);
+        lic.setLoanProduct(loanProduct);
+        lic = loanProductSessionBean.updateInterestCollection(lic);
+        System.out.print("EntityLoanBuilder PERSONAL LOAN ========== " + loanProduct.getProductName());
+        System.out.print(demoMainAccount.getBankAcounts().size());
+        
+        LoanAccount loanAccount = new LoanAccount();
+        loanAccount.setTenure(loanProduct.getTenure());
+        loanAccount.setDepositAccount(demoDepositAccount);
+        loanAccount.setLoanProduct(loanProduct);
+        loanAccount.setMainAccount(demoMainAccount);
+        loanAccount.setLoanOfficer(staffAccountSessionBean.getAccountByUsername(ConstantUtils.LOAN_OFFICIER_USERNAME));
+        loanAccount.setPaymentStartDate(new Date());
+        loanAccount.setMaturityDate(DateUtils.addYears(new Date(), loanAccount.getTenure()));// calculated 
+        loanAccount.setPrincipal(10000.0);
+        loanAccount.setOutstandingPrincipal(loanAccount.getPrincipal());
+        loanAccount.setLoanAccountStatus(EnumUtils.LoanAccountStatus.APPROVED);
+        loanAccount.setCurrentPeriod(0);
+        loanAccount.setPaymentDate(23);
+        
+        loanAccount.setMonthlyInstallment(loanPaymentSessionBean.calculateMonthlyInstallment(loanAccount));
+        System.out.println("Monthly installment is: $" + loanAccount.getMonthlyInstallment());
+        
+        loanAccount = loanAccountSessionBean.createLoanAccount(loanAccount);
+        System.out.print("EntityLoanBuilder PERSONAL LOAN ========== " + loanAccount.getAccountNumber());
+        List<LoanPaymentBreakdown> result = loanPaymentSessionBean.futurePaymentBreakdown(loanAccount);
+        for (LoanPaymentBreakdown r : result) {
+            System.out.println(r.toString());
+        }
+        
+        // end of personal loan
+    }
+    
+    private void initDemoPersonalLoanAccount24() {
+        // start of personal loan
+        LoanInterest loanInterest1 = new LoanInterest();
+        loanInterest1.setName(ConstantUtils.DEMO_PERSONAL_LOAN_INTEREST_NAME_24);
+        loanInterest1.setStartMonth(0);
+        loanInterest1.setEndMonth(12); // need to differetiate
+        loanInterest1.setProductType(EnumUtils.LoanProductType.LOAN_PRODUCT_TYPE_PERSONAL);
+        loanInterest1.setInterestRate(0.2);
+        loanInterest1 = loanProductSessionBean.createLoanInterest(loanInterest1);
+        
+        LoanInterestCollection lic = new LoanInterestCollection();
+        lic.setName(ConstantUtils.DEMO_PERSONAL_LOAN_INTEREST_NAME_24);
+        lic.setProductType(EnumUtils.LoanProductType.LOAN_PRODUCT_TYPE_PERSONAL);
+        lic.addLoanInterest(loanInterest1);
+        lic = loanProductSessionBean.createInterestCollection(lic);
+        
+        loanInterest1.setLoanInterestCollection(lic);
+        loanInterest1 = loanProductSessionBean.updateLoanInterest(loanInterest1);
+        
+        LoanProduct loanProduct = new LoanProduct();
+        loanProduct.setProductName(ConstantUtils.DEMO_PERSONAL_LOAN_PRODUCT_NAME_24);
+        loanProduct.setProductType(EnumUtils.LoanProductType.LOAN_PRODUCT_TYPE_PERSONAL);
+        loanProduct.setLoanInterestCollection(lic);
+        loanProduct.setTenure(2);
         loanProduct.setLockInDuration(0);
         loanProduct.setPenaltyInterestRate(0.2); // TODO: this need to be calculated
         loanProduct = loanProductSessionBean.createLoanProduct(loanProduct);

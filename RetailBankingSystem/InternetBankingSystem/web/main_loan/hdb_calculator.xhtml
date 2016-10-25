@@ -31,10 +31,10 @@
                                     <h:panelGrid columns="2" columnClasses="label, value">
 
                                         <h:outputText value="Age: " />
-                                        <p:inputText value="#{loanCalculatorManagedBean.age}" required="true" requiredMessage="Age is required." validatorMessage="Invalid identity number."/>
+                                        <p:inputText value="#{loanCalculatorManagedBean.age}" required="true" requiredMessage="Age is required." />
 
                                         <h:outputText value="Monthly income: " />
-                                        <p:inputText value="#{loanCalculatorManagedBean.monthlyIncome}" required="true" requiredMessage="Monthly income is required." validatorMessage="Invalid identity number."/>
+                                        <p:inputText value="#{loanCalculatorManagedBean.monthlyIncome}" required="true" requiredMessage="Monthly income is required." />
 
                                         <h:outputText value="Other financial commitments (S$): " />
                                         <p:inputText value="#{loanCalculatorManagedBean.otherLoan}" required="true" requiredMessage="Other financial commitment is required." />
@@ -79,7 +79,6 @@
 
                                     <div class="register-form-button" style="margin-top: 20px">
                                         <p:commandButton value="Back" type="button" onclick="PF('myWizard').back();" />
-
                                     </div>
                                 
                             </p:tab>

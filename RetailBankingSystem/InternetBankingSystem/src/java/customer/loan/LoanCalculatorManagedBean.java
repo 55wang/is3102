@@ -10,7 +10,9 @@ import java.io.Serializable;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
+import server.utilities.ConstantUtils;
 import utils.JSUtils;
+import utils.MessageUtils;
 
 /**
  *
@@ -53,12 +55,32 @@ public class LoanCalculatorManagedBean implements Serializable {
     
     
     public void calculateCar(){
+        
+        if (age < 21) {
+            MessageUtils.displayError(ConstantUtils.NOT_ENOUGH_AGE);
+            return;
+        }
+        
+        if (monthlyIncome < 2000) {
+            MessageUtils.displayError(ConstantUtils.NOT_ENOUGH_INCOME_2000);
+            return;
+        }
+        
         setCarLoanAmt(calculator.calculateMaxCarLoanAmt(getCarOpenMarketValue()));
         setCarLoanMonthlyInstalment(calculator.calculateCarMonthlyInstalment(getCarLoanAnnualInterestRate(), Integer.parseInt(getCarTenure()), getCarLoanAmt()));    
         JSUtils.callJSMethod("PF('myWizard').next()");
     }
 
     public void calculateHDB(){
+        if (age < 21) {
+            MessageUtils.displayError(ConstantUtils.NOT_ENOUGH_AGE);
+            return;
+        }
+        
+        if (monthlyIncome < 1500) {
+            MessageUtils.displayError(ConstantUtils.NOT_ENOUGH_INCOME_1500);
+            return;
+        }
         setTenure(calculator.calculateMaxHDBTenure(getAge(), getMonthlyIncome()));
         setMonthlyInstalment(calculator.calculateMaxHDBMonthlyInstalment(getMonthlyIncome(), getOtherLoan()));
         setLoanAmt(calculator.calculateMaxHomeLoanAmt(getMonthlyInstalment(), getTenure()));
@@ -67,6 +89,15 @@ public class LoanCalculatorManagedBean implements Serializable {
     }
 
     public void calculatePP(){
+        if (age < 21) {
+            MessageUtils.displayError(ConstantUtils.NOT_ENOUGH_AGE);
+            return;
+        }
+        
+        if (monthlyIncome < 1500) {
+            MessageUtils.displayError(ConstantUtils.NOT_ENOUGH_INCOME_1500);
+            return;
+        }
         setTenure(calculator.calculateMaxPPTenure(getAge(), getMonthlyIncome()));
         setMonthlyInstalment(calculator.calculateMaxPPMonthlyInstalment(getMonthlyIncome(), getOtherLoan()));
         setLoanAmt(calculator.calculateMaxHomeLoanAmt(getMonthlyInstalment(), getTenure()));
@@ -74,7 +105,7 @@ public class LoanCalculatorManagedBean implements Serializable {
         JSUtils.callJSMethod("PF('myWizard').next()");
     }
 
-    
+    // getters and setters
     public Double getCarLoanAmt() {
         return carLoanAmt;
     }
