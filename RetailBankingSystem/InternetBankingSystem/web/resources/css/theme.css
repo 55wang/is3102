@@ -600,6 +600,15 @@ and open the template in the editor.
     padding-left: 10px;
 }
 /*end of footer*/
+.viewInvestmentPlanDetailLayout{
+    font-size: 12px !important;
+}
+
+.viewInvestmentPlanDetailAction{
+    width:fit-content;
+    margin:auto;
+    padding-top: 20px;
+}
 /* general */
 .container {
     padding-top: 100px;
