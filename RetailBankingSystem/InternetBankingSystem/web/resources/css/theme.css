@@ -505,8 +505,6 @@ and open the template in the editor.
     background: url(../resources/img/footer_bg.png) repeat;
     z-index: 999;
     display: block;
-    position: absolute;
-    bottom: 0;
 }
 
 .footer .footer-links {
@@ -602,6 +600,15 @@ and open the template in the editor.
     padding-left: 10px;
 }
 /*end of footer*/
+.viewInvestmentPlanDetailLayout{
+    font-size: 12px !important;
+}
+
+.viewInvestmentPlanDetailAction{
+    width:fit-content;
+    margin:auto;
+    padding-top: 20px;
+}
 /* general */
 .container {
     padding-top: 100px;
@@ -680,8 +687,8 @@ and open the template in the editor.
 .hidden {
     display: none;
 }
-.top-60 {
-    top: 60%!important;
+.top-65 {
+    top: 65%!important;
 }
 
 

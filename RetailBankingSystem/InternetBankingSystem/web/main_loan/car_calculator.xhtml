@@ -18,14 +18,14 @@
 
             <em:cssImport></em:cssImport>
             <div class="customer_main_container">
-                <div id="register-form-container" class="h-center top-60">
+                <div id="register-form-container" class="h-center top-65">
+                    <p:panel>
                     <h:form>
                         <p:growl id="growl" sticky="true" showDetail="true"/>
 
                         <p:wizard widgetVar="myWizard" showNavBar="false">
 
                             <p:tab id="identity" title="Information" >
-                                <p:panel>
                                     <p:messages id="msgs2"/>
                                     <h:panelGrid columns="2" columnClasses="label, value">
 
@@ -57,11 +57,11 @@
                                     <div class="register-form-button">
                                         <p:commandButton value="Next" actionListener="#{loanCalculatorManagedBean.calculateCar()}" update="@form:msgs2"/>
                                     </div>
-                                </p:panel>
+                                
                             </p:tab>
 
                             <p:tab id="result" title="Results">
-                                <p:panel>
+                                
                                     <p:scrollPanel style="height:238px">
                                         <h:panelGrid columns="2" columnClasses="label, value">
                                             <h:outputText value="Maximum loan amount: " />
@@ -81,14 +81,15 @@
                                     <div class="register-form-button" style="margin-top: 20px">
                                         <p:commandButton value="Back" type="button" onclick="PF('myWizard').back();" />
                                     </div>
-                                </p:panel>
+                                
                             </p:tab>
                         </p:wizard>
 
                     </h:form>
+                        </p:panel>
                 </div>
             </div>
-            <em:customerFooter></em:customerFooter>
+            <em:customerMainFooter></em:customerMainFooter>
         </h:body>
     </f:view>
 

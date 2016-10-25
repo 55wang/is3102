@@ -9,6 +9,8 @@ import ejb.session.staff.StaffAccountSessionBeanLocal;
 import ejb.session.staff.StaffRoleSessionBeanLocal;
 import entity.staff.Role;
 import entity.staff.StaffAccount;
+import java.util.ArrayList;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
@@ -69,6 +71,9 @@ public class EntityStaffBuilder {
         superAdminAccount.setEmail("superadmin@merlionbank.com");
         superAdminAccount.setStatus(EnumUtils.StatusType.ACTIVE);
         superAdminAccount.addRole(superAdminRole);
+        List<StaffAccount> staffAccounts1 = new ArrayList<StaffAccount>();
+        staffAccounts1.add(superAdminAccount);
+        superAdminRole.setStaffAccounts(staffAccounts1);
         staffAccountSessionBean.createAccount(superAdminAccount);
 
         StaffAccount customerServiceAccount = new StaffAccount();
@@ -79,6 +84,9 @@ public class EntityStaffBuilder {
         customerServiceAccount.setEmail("customer_service@merlionbank.com");
         customerServiceAccount.setStatus(EnumUtils.StatusType.ACTIVE);
         customerServiceAccount.addRole(customerServiceRole);
+        List<StaffAccount> staffAccounts2 = new ArrayList<StaffAccount>();
+        staffAccounts2.add(customerServiceAccount);
+        customerServiceRole.setStaffAccounts(staffAccounts2);
         staffAccountSessionBean.createAccount(customerServiceAccount);
 
         StaffAccount financialAnalystAccount = new StaffAccount();
@@ -89,6 +97,9 @@ public class EntityStaffBuilder {
         financialAnalystAccount.setEmail("financial_analyst@merlionbank.com");
         financialAnalystAccount.setStatus(EnumUtils.StatusType.ACTIVE);
         financialAnalystAccount.addRole(financialAnalystRole);
+        List<StaffAccount> staffAccounts3 = new ArrayList<StaffAccount>();
+        staffAccounts3.add(financialAnalystAccount);
+        financialAnalystRole.setStaffAccounts(staffAccounts3);
         staffAccountSessionBean.createAccount(financialAnalystAccount);
 
         StaffAccount financialOfficerAccount = new StaffAccount();
@@ -99,6 +110,9 @@ public class EntityStaffBuilder {
         financialOfficerAccount.setEmail("financial_officer@merlionbank.com");
         financialOfficerAccount.setStatus(EnumUtils.StatusType.ACTIVE);
         financialOfficerAccount.addRole(financialOfficerRole);
+        List<StaffAccount> staffAccounts4 = new ArrayList<StaffAccount>();
+        staffAccounts4.add(financialOfficerAccount);
+        financialOfficerRole.setStaffAccounts(staffAccounts4);
         staffAccountSessionBean.createAccount(financialOfficerAccount);
 
         StaffAccount generalTellerAccount = new StaffAccount();
@@ -109,6 +123,9 @@ public class EntityStaffBuilder {
         generalTellerAccount.setEmail("general_teller@merlionbank.com");
         generalTellerAccount.setStatus(EnumUtils.StatusType.ACTIVE);
         generalTellerAccount.addRole(generalTellerRole);
+        List<StaffAccount> staffAccounts5 = new ArrayList<StaffAccount>();
+        staffAccounts5.add(generalTellerAccount);
+        generalTellerRole.setStaffAccounts(staffAccounts5);
         staffAccountSessionBean.createAccount(generalTellerAccount);
 
         StaffAccount loanOfficerAccount = new StaffAccount();
@@ -119,6 +136,9 @@ public class EntityStaffBuilder {
         loanOfficerAccount.setEmail("loan_officer@merlionbank.com");
         loanOfficerAccount.setStatus(EnumUtils.StatusType.ACTIVE);
         loanOfficerAccount.addRole(loanOfficerRole);
+        List<StaffAccount> staffAccounts6 = new ArrayList<StaffAccount>();
+        staffAccounts6.add(loanOfficerAccount);
+        loanOfficerRole.setStaffAccounts(staffAccounts6);
         staffAccountSessionBean.createAccount(loanOfficerAccount);
 
         StaffAccount productManagerAccount = new StaffAccount();
@@ -129,6 +149,9 @@ public class EntityStaffBuilder {
         productManagerAccount.setEmail("product_manager@merlionbank.com");
         productManagerAccount.setStatus(EnumUtils.StatusType.ACTIVE);
         productManagerAccount.addRole(productManagerRole);
+        List<StaffAccount> staffAccounts7 = new ArrayList<StaffAccount>();
+        staffAccounts7.add(productManagerAccount);
+        productManagerRole.setStaffAccounts(staffAccounts7);
         staffAccountSessionBean.createAccount(productManagerAccount);
         
         StaffAccount relationshipManagerAccount = new StaffAccount();
@@ -139,6 +162,9 @@ public class EntityStaffBuilder {
         relationshipManagerAccount.setEmail("relationship_manager@merlionbank.com");
         relationshipManagerAccount.setStatus(EnumUtils.StatusType.ACTIVE);
         relationshipManagerAccount.addRole(relationshipManagerRole);
+        List<StaffAccount> staffAccounts8 = new ArrayList<StaffAccount>();
+        staffAccounts8.add(relationshipManagerAccount);
+        relationshipManagerRole.setStaffAccounts(staffAccounts8);
         staffAccountSessionBean.createAccount(relationshipManagerAccount);
     }
 }
