@@ -5,6 +5,7 @@
  */
 package ejb.session.wealth;
 
+import entity.fact.customer.SinglePortfolioFactTable;
 import entity.wealth.InvestmentPlan;
 import entity.wealth.Portfolio;
 import java.util.List;
@@ -20,4 +21,5 @@ public interface PortfolioSessionBeanLocal {
     public Portfolio createPortfolio(Portfolio p);
     public Portfolio updatePortfolio(Portfolio p);
     public List<Portfolio> getListPortfoliosByCustomerId(Long Id);
+    public void calcMovingAverage(List<SinglePortfolioFactTable> spf);
 }
