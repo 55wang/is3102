@@ -10,8 +10,10 @@ import ejb.session.common.LoginSessionBeanLocal;
 import ejb.session.utils.UtilsSessionBeanLocal;
 import entity.common.AuditLog;
 import entity.customer.MainAccount;
+import entity.staff.StaffAccount;
 import java.io.Serializable;
 import java.util.Date;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
@@ -46,6 +48,12 @@ public class CustomerLoginManagedBean implements Serializable {
     /**
      * Creates a new instance of CustomerLoginManagedBean
      */
+    
+    @PostConstruct
+    public void init() {
+        loginCustomer("c1234567", "password");
+    }
+    
     public CustomerLoginManagedBean() {
     }
 
