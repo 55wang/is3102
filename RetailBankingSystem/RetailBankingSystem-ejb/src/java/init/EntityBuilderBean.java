@@ -89,6 +89,6 @@ public class EntityBuilderBean {
         entityCaseBuilder.initCase();
         entityBillOrgBuilder.initBillOrganization();
         entityPayLahBuilder.initPayLahDemoData();
-        entityWealthBuilder.initWealth();
+//        entityWealthBuilder.initWealth();
     }
 }
