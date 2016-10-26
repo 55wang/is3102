@@ -319,12 +319,10 @@ public class LoanPaymentSessionBean implements LoanPaymentSessionBeanLocal {
         LoanAccount loanAccount = loanAccountBean.getLoanAccountByAccountNumber(loanAccountNumber);
         loanAccount.setAmountPaidBeforeDueDate(amount + loanAccount.getAmountPaidBeforeDueDate());
 
-        LoanPaymentBreakdown breakdown = loanAccountBean.getFutureNearestPaymentBreakdownsByLoanAcountNumber(loanAccountNumber);
-
         LoanRepaymentRecord record = new LoanRepaymentRecord();
         record.setBeginningBalance(loanAccount.getOutstandingPrincipal());
         record.setLoanAccount(loanAccount);
-        record.setNthMonth(breakdown.getNthMonth());
+        record.setNthMonth(loanAccount.getCurrentPeriod());
         record.setPaymentAmount(amount);
         record.setRemainingBalance(loanAccount.getOutstandingPrincipal() - amount);
         record.setTransactionDate(new Date());

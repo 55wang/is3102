@@ -64,12 +64,14 @@ public class LoanAdjustmentApplicationManagedBean implements Serializable {
             System.out.println(r.toString());
         }
         MessageUtils.displayInfo("Application Approved!");
+        myLoanApplications.remove(app);
     }
     
     public void rejectLoanAdjustment(LoanAdjustmentApplication app) {
         app.setStatus(EnumUtils.LoanAccountStatus.REJECTED);
         loanAccountBean.updateLoanAdjustmentApplication(app);
         MessageUtils.displayInfo("Application Rejected!");
+        myLoanApplications.remove(app);
     }
     
     public void calculateCreditScore(LoanAccount la) {

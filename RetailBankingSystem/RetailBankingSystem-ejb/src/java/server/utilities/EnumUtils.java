@@ -1737,6 +1737,7 @@ public class EnumUtils {
     public enum LoanAccountStatus {
 
         NEW("NEW"),
+        INPROGRESS("INPROGRESS"),
         PENDING("PENDING"),
         APPROVED("APPROVED"),
         REJECTED("REJECTED"),
