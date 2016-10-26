@@ -24,6 +24,8 @@ public interface LoanAccountSessionBeanLocal {
     public List<LoanAccount> getLoanAccountListByCustomerIndentityNumber(String identityNumber);
     public List<LoanAccount> getActiveLoanAccountListByMainAccountId(Long id);
     public LoanApplication createLoanApplication(LoanApplication loanApplication);
+    public LoanApplication updateLoanApplication(LoanApplication loanApplication);
+    public LoanApplication getLoanApplicationById(Long id);
     public List<LoanApplication> getLoanApplicationByStaffUsername(String username);
     public List<LoanPaymentBreakdown> getFuturePaymentBreakdownsByLoanAcountNumber(String accountNumber);
     public LoanPaymentBreakdown getFutureNearestPaymentBreakdownsByLoanAcountNumber(String accountNumber);

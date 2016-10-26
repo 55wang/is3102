@@ -13,6 +13,7 @@ import entity.common.AuditLog;
 import entity.dams.account.DepositAccount;
 import entity.dams.account.MobileAccount;
 import entity.loan.LoanAccount;
+import entity.loan.LoanApplication;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -47,8 +48,8 @@ public class MainAccount implements Serializable {
     // mappings
     @OneToOne(cascade = {CascadeType.MERGE}, mappedBy = "mainAccount")
     private Customer customer;
-    @OneToOne(cascade = {CascadeType.MERGE}, mappedBy = "mainAccount")
-    private TransferLimits transferLimits;
+    @OneToOne(cascade = {CascadeType.PERSIST}, mappedBy = "mainAccount")
+    private TransferLimits transferLimits = new TransferLimits(this);
     @OneToMany(cascade = {CascadeType.MERGE}, mappedBy = "mainAccount")
     private List<DepositAccount> bankAcounts = new ArrayList<>(); 
     @OneToMany(cascade = {CascadeType.MERGE}, mappedBy = "mainAccount")
@@ -65,11 +66,17 @@ public class MainAccount implements Serializable {
     private List<CustomerCase> cases = new ArrayList<>();
     @OneToMany(cascade = {CascadeType.MERGE}, mappedBy = "mainAccount")
     private List<CreditCardOrder> creditCardOrder = new ArrayList<>();
+    @OneToMany(cascade = {CascadeType.MERGE}, mappedBy = "mainAccount")
+    private List<LoanApplication> loanApplications = new ArrayList<>();
     @OneToOne(cascade = {CascadeType.MERGE}, mappedBy = "mainAccount")
     private WealthManagementSubscriber wealthManagementSubscriber;
     
     public void addDepositAccount(DepositAccount da) {
         this.bankAcounts.add(da);
+    }
+    
+    public void addLoanApplication(LoanApplication la) {
+        this.loanApplications.add(la);
     }
     
     public void addCase(CustomerCase cc){
@@ -243,5 +250,19 @@ public class MainAccount implements Serializable {
      */
     public void setLoanAccounts(List<LoanAccount> loanAccounts) {
         this.loanAccounts = loanAccounts;
+    }
+
+    /**
+     * @return the loanApplications
+     */
+    public List<LoanApplication> getLoanApplications() {
+        return loanApplications;
+    }
+
+    /**
+     * @param loanApplications the loanApplications to set
+     */
+    public void setLoanApplications(List<LoanApplication> loanApplications) {
+        this.loanApplications = loanApplications;
     }
 }

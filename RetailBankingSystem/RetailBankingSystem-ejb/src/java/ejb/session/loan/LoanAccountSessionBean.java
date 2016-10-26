@@ -89,6 +89,17 @@ public class LoanAccountSessionBean implements LoanAccountSessionBeanLocal {
     }
     
     @Override
+    public LoanApplication updateLoanApplication(LoanApplication loanApplication) {
+        em.merge(loanApplication);
+        return loanApplication;
+    }
+    
+    @Override
+    public LoanApplication getLoanApplicationById(Long id) {
+        return em.find(LoanApplication.class, id);
+    }
+    
+    @Override
     public List<LoanApplication> getLoanApplicationByStaffUsername(String username) {
         Query q = em.createQuery("SELECT l FROM LoanApplication l WHERE l.loanOfficer.username = :username");
         q.setParameter("username", username); 

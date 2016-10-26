@@ -5,15 +5,20 @@
  */
 package staff.loan;
 
+
 import ejb.session.loan.LoanAccountSessionBeanLocal;
 import entity.loan.LoanApplication;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
+import server.utilities.EnumUtils;
+import utils.RedirectUtils;
 import utils.SessionUtils;
 
 /**
@@ -25,18 +30,31 @@ import utils.SessionUtils;
 public class ViewLoanApplicationManagedBean implements Serializable {
 
     @EJB
-    private LoanAccountSessionBeanLocal loanAccountBean; 
-    
+    private LoanAccountSessionBeanLocal loanAccountBean;
+
     private List<LoanApplication> myLoanApplications = new ArrayList<>();
+
     /**
      * Creates a new instance of ViewLoanApplicationManagedBean
      */
     public ViewLoanApplicationManagedBean() {
     }
-    
+
     @PostConstruct
     public void init() {
         myLoanApplications = loanAccountBean.getLoanApplicationByStaffUsername(SessionUtils.getStaffUsername());
+    }
+
+    public void startProcess(LoanApplication la) {
+        la.setStatus(EnumUtils.LoanAccountStatus.PENDING);
+        loanAccountBean.updateLoanApplication(la);
+    }
+
+    public void creatLoanAccount(LoanApplication la) {
+        Map<String, String> map = new HashMap<>();
+        map.put("applicationId", la.getId().toString());
+        String params = RedirectUtils.generateParameters(map);
+        RedirectUtils.redirect("create_loan_account.xhtml" + params);
     }
 
     /**
