@@ -51,7 +51,7 @@ public class CustomerLoginManagedBean implements Serializable {
     
     @PostConstruct
     public void init() {
-        loginCustomer("c1234567", "password");
+//        loginCustomer("c1234567", "password");
     }
     
     public CustomerLoginManagedBean() {

@@ -63,11 +63,11 @@
                         <li class="side-menu-item #{cc.attrs.side == 'viewLoanApplication' ? 'active' : ''}">
                             <h:link outcome="view_loan_application" value="Loan Applications" />
                         </li>
-                        <li class="side-menu-item #{cc.attrs.side == 'createLoanAccount' ? 'active' : ''}">
-                            <h:link outcome="create_loan_account" value="Create Loan Account" />
-                        </li>
                         <li class="side-menu-item #{cc.attrs.side == 'approveLoanAccount' ? 'active' : ''}">
                             <h:link outcome="approve_loan_account" value="Approve Loan Account" />
+                        </li>
+                        <li class="side-menu-item #{cc.attrs.side == 'loanCalculator' ? 'active' : ''}">
+                            <h:link outcome="staff_loan_calculator_directory" value="Loan Calculator" />
                         </li>
                     </c:if>
                     <c:if test="#{cc.attrs.top == 'message'}">

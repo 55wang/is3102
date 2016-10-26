@@ -8,21 +8,69 @@
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     <!--shift + ctrl + F, format-->
     <f:view>
+        <f:metadata>
+            <f:viewParam name="applicationId" value="#{createLoanAccountManagedBean.applicationId}" />
+            <f:viewAction action="#{createLoanAccountManagedBean.retrieveLoanApplication()}"></f:viewAction>
+        </f:metadata>
         <h:head>
             <title>Merlion Internal</title>
             <em:cssImport></em:cssImport>
         </h:head>
         <h:body>
             <em:staffNavBar context="loan"></em:staffNavBar>
-            <em:staffSideBar top="loan" side="createLoanAccount"></em:staffSideBar>
+            <em:staffSideBar top="loan" side="viewLoanApplication"></em:staffSideBar>
             <div class="container">
                 <h:form id="mainForm">
                     <p:panel header="Loan Applications">
                         <p:messages id="messagesStatus" redisplay="false" >
-                            <h:panelGrid columns="2" style="width:100%" cellpadding="5" class="border-bottom" >
+                            <h1>Application information</h1>
+                            <h:panelGrid columns="4" style="width:100%" cellpadding="5" class="border-bottom" >
 
-                                <p:outputLabel value="Main Account User Id: " />
-                                <p:inputText value="#{createLoanAccountManagedBean.mainAccountId}" required="true" />
+                                <h:outputText value="Customer Name:"/>
+                                <h:outputText value="#{createLoanAccountManagedBean.currentApplication.name}"/>
+
+                                <h:outputText value="ID Number:"/>
+                                <h:outputText value="#{createLoanAccountManagedBean.currentApplication.idNumber}"/>
+
+                                <h:outputText value="Email:"/>
+                                <h:outputText value="#{createLoanAccountManagedBean.currentApplication.email}"/> 
+
+                                <h:outputText value="Phone:"/>
+                                <h:outputText value="#{createLoanAccountManagedBean.currentApplication.phone}"/> 
+
+                                <h:outputText value="Type:"/>
+                                <h:outputText value="#{createLoanAccountManagedBean.currentApplication.productType.toString()}"/> 
+                                
+                                <h:outputText value="Loan Product"/>
+                                <h:outputText value="#{createLoanAccountManagedBean.currentApplication.loanProduct.productName}"/> 
+
+                                <h:outputText value="Income:"/>
+                                <h:outputText value="#{createLoanAccountManagedBean.currentApplication.income}"/> 
+
+                                <h:outputText value="Age:"/>
+                                <h:outputText value="#{createLoanAccountManagedBean.currentApplication.age}"/> 
+
+                                <h:outputText value="Request Amount:"/>
+                                <h:outputText value="#{createLoanAccountManagedBean.currentApplication.requestedAmount}"/> 
+
+                                <c:if test="#{createLoanAccountManagedBean.currentApplication.marketValue != null}">
+                                    <h:outputText value="Market Value:"/>
+                                    <h:outputText value="#{createLoanAccountManagedBean.currentApplication.marketValue}"/> 
+                                </c:if>
+
+
+                                <c:if test="#{loanApplication.otherCommitment != null}">
+                                    <h:outputText value="Other Commitment:"/>
+                                    <h:outputText value="#{createLoanAccountManagedBean.currentApplication.otherCommitment}"/> 
+                                </c:if>
+
+                                <c:if test="#{createLoanAccountManagedBean.currentApplication.otherHousingLoan != null}">
+                                    <h:outputText value="Other Housing Loans:"/>
+                                    <h:outputText value="#{createLoanAccountManagedBean.currentApplication.otherHousingLoan}"/> 
+                                </c:if>
+                            </h:panelGrid>
+                            <h1>Input confirmation</h1>
+                            <h:panelGrid columns="2" style="width:100%" cellpadding="5" class="border-bottom" >
 
                                 <p:outputLabel value="Start Date:" />
                                 <p:calendar value="#{createLoanAccountManagedBean.paymentStartDate}" mode="inline" required="true" />
@@ -35,7 +83,7 @@
                                     <f:selectItems value="#{createLoanAccountManagedBean.loanProducts}" var="l" itemValue="#{l.id}" itemLabel="#{l.productName}" />
                                 </p:selectOneMenu>
 
-                                <p:commandButton value="Create Account" action="#{createLoanAccountManagedBean.creatAccount}" update="mainForm"/> 
+                                <p:commandButton value="Create Account" action="#{createLoanAccountManagedBean.creatLoanAccount}" update="mainForm"/> 
 
                             </h:panelGrid>
                         </p:messages>

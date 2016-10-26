@@ -18,7 +18,7 @@ public interface EmailServiceSessionBeanLocal {
     public Boolean sendActivationEmailForCustomer(String recipient);
     public Boolean sendActivationGmailForCustomer(String recipient, String pwd);
     public Boolean sendCreditCardActivationGmailForCustomer(String recipient, String pwd, String ccNumber);
-    
+    public void sendUpdatePortfolioNotice(String recipient);
     public Boolean sendUserIDforForgottenCustomer(String recipient, MainAccount forgotAccount);
     public Boolean sendResetPwdLinkforForgottenCustomer(String recipient, MainAccount forgotAccount);
     public Boolean sendchargeBackGmailForSuccessfulCustomer(String recipient, Long ID);

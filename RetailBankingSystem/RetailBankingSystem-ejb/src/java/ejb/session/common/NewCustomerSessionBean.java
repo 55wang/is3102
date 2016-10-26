@@ -22,12 +22,14 @@ public class NewCustomerSessionBean implements NewCustomerSessionBeanLocal {
 
     @Override
     public Customer createCustomer(Customer customer) {
+        customer.setFullName(customer.getFirstname() + " " + customer.getLastname());
         em.persist(customer);
         return customer;
     }
     
     @Override
     public Customer updateCustomer(Customer customer) {
+        customer.setFullName(customer.getFirstname() + " " + customer.getLastname());
         em.merge(customer);
         return customer;
     }

@@ -75,6 +75,7 @@ public class EntityStaffBuilder {
         staffAccounts1.add(superAdminAccount);
         superAdminRole.setStaffAccounts(staffAccounts1);
         staffAccountSessionBean.createAccount(superAdminAccount);
+        staffRoleSessionBean.updateRole(superAdminRole);
 
         StaffAccount customerServiceAccount = new StaffAccount();
         customerServiceAccount.setUsername(ConstantUtils.CUSTOMER_SERVICE_USERNAME);
@@ -88,6 +89,7 @@ public class EntityStaffBuilder {
         staffAccounts2.add(customerServiceAccount);
         customerServiceRole.setStaffAccounts(staffAccounts2);
         staffAccountSessionBean.createAccount(customerServiceAccount);
+        staffRoleSessionBean.updateRole(customerServiceRole);
 
         StaffAccount financialAnalystAccount = new StaffAccount();
         financialAnalystAccount.setUsername(ConstantUtils.FINANCIAL_ANALYST_USERNAME);
@@ -101,6 +103,7 @@ public class EntityStaffBuilder {
         staffAccounts3.add(financialAnalystAccount);
         financialAnalystRole.setStaffAccounts(staffAccounts3);
         staffAccountSessionBean.createAccount(financialAnalystAccount);
+        staffRoleSessionBean.updateRole(financialAnalystRole);
 
         StaffAccount financialOfficerAccount = new StaffAccount();
         financialOfficerAccount.setUsername(ConstantUtils.FINANCIAL_OFFICER_USERNAME);
@@ -114,6 +117,7 @@ public class EntityStaffBuilder {
         staffAccounts4.add(financialOfficerAccount);
         financialOfficerRole.setStaffAccounts(staffAccounts4);
         staffAccountSessionBean.createAccount(financialOfficerAccount);
+        staffRoleSessionBean.updateRole(financialOfficerRole);
 
         StaffAccount generalTellerAccount = new StaffAccount();
         generalTellerAccount.setUsername(ConstantUtils.GENERAL_TELLER_USERNAME);
@@ -127,6 +131,7 @@ public class EntityStaffBuilder {
         staffAccounts5.add(generalTellerAccount);
         generalTellerRole.setStaffAccounts(staffAccounts5);
         staffAccountSessionBean.createAccount(generalTellerAccount);
+        staffRoleSessionBean.updateRole(generalTellerRole);
 
         StaffAccount loanOfficerAccount = new StaffAccount();
         loanOfficerAccount.setUsername(ConstantUtils.LOAN_OFFICIER_USERNAME);
@@ -140,6 +145,7 @@ public class EntityStaffBuilder {
         staffAccounts6.add(loanOfficerAccount);
         loanOfficerRole.setStaffAccounts(staffAccounts6);
         staffAccountSessionBean.createAccount(loanOfficerAccount);
+        staffRoleSessionBean.updateRole(loanOfficerRole);
 
         StaffAccount productManagerAccount = new StaffAccount();
         productManagerAccount.setUsername(ConstantUtils.PRODUCT_MANAGER_USERNAME);
@@ -153,6 +159,7 @@ public class EntityStaffBuilder {
         staffAccounts7.add(productManagerAccount);
         productManagerRole.setStaffAccounts(staffAccounts7);
         staffAccountSessionBean.createAccount(productManagerAccount);
+        staffRoleSessionBean.updateRole(productManagerRole);
         
         StaffAccount relationshipManagerAccount = new StaffAccount();
         relationshipManagerAccount.setUsername(ConstantUtils.RELATIONSHIP_MANAGER_USERNAME);
@@ -166,5 +173,6 @@ public class EntityStaffBuilder {
         staffAccounts8.add(relationshipManagerAccount);
         relationshipManagerRole.setStaffAccounts(staffAccounts8);
         staffAccountSessionBean.createAccount(relationshipManagerAccount);
+        staffRoleSessionBean.updateRole(relationshipManagerRole);
     }
 }

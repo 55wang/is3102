@@ -26,6 +26,7 @@ import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
 import org.apache.commons.lang.time.DateUtils;
 import server.utilities.ConstantUtils;
+import static server.utilities.ConstantUtils.DEMO_MAIN_ACCOUNT_USER_ID_2;
 import server.utilities.EnumUtils;
 
 /**
@@ -48,12 +49,15 @@ public class EntityLoanBuilder {
     private LoginSessionBeanLocal loginBean;
     
     private MainAccount demoMainAccount;
+    private MainAccount demoMainAccount2;
     private CustomerDepositAccount demoDepositAccount;
     
     public void initLoanAccount(CustomerDepositAccount da) {
         // TODO: Calculator testing methods
         demoDepositAccount = da;
         demoMainAccount = loginBean.getMainAccountByUserID(ConstantUtils.DEMO_MAIN_ACCOUNT_USER_ID);
+        demoMainAccount2 = loginBean.getMainAccountByUserID(ConstantUtils.DEMO_MAIN_ACCOUNT_USER_ID_2);
+        
         System.out.print("Creating account !!!!================");
         
         
@@ -463,7 +467,7 @@ public class EntityLoanBuilder {
         loanAccount.setTenure(loanProduct.getTenure());
         loanAccount.setDepositAccount(demoDepositAccount);
         loanAccount.setLoanProduct(loanProduct);
-        loanAccount.setMainAccount(demoMainAccount);
+        loanAccount.setMainAccount(demoMainAccount2);
         loanAccount.setLoanOfficer(staffAccountSessionBean.getAccountByUsername(ConstantUtils.LOAN_OFFICIER_USERNAME)); // assignment
         loanAccount.setPaymentStartDate(new Date());
         loanAccount.setMaturityDate(DateUtils.addYears(new Date(), loanAccount.getTenure()));// calculated 

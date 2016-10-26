@@ -104,6 +104,8 @@ public class Portfolio implements Serializable {
 
     @OneToOne(cascade = CascadeType.MERGE, optional = false)
     private InvestmentPlan executedInvestmentPlan;
+    @OneToMany(mappedBy = "portfolio")
+    private List<MovingAverage> movingAverages;
     @ManyToOne(cascade = CascadeType.MERGE)
     private WealthManagementSubscriber wealthManagementSubscriber;
 
@@ -596,5 +598,13 @@ public class Portfolio implements Serializable {
 //    public EnumUtils.FinancialInstrumentClass getName_NATURAL_RESOURCES() {
 //        return name_NATURAL_RESOURCES;
 //    }
+
+    public List<MovingAverage> getMovingAverages() {
+        return movingAverages;
+    }
+
+    public void setMovingAverages(List<MovingAverage> movingAverages) {
+        this.movingAverages = movingAverages;
+    }
 
 }

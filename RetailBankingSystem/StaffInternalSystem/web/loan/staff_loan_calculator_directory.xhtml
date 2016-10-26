@@ -1,0 +1,33 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:em="http://xmlns.jcp.org/jsf/composite/emcomp"
+      xmlns:p="http://primefaces.org/ui">
+    <!--shift + ctrl + F, format-->
+    <f:view>
+        <h:head>
+            <title>Merlion Bank</title>
+            <h:outputStylesheet library="css" name="reset.css"/>
+            <h:outputStylesheet library="css" name="theme.css"/>
+        </h:head>
+        <h:body>
+            <em:staffNavBar context="loan"></em:staffNavBar>
+            <em:staffSideBar top="loan" side="loanCalculator"></em:staffSideBar>
+            <em:cssImport></em:cssImport>
+
+            <div class="container">
+                <h1>Loan Calculators</h1>
+                <a href="https://localhost:8181/StaffInternalSystem/loan/staff_car_calculator.xhtml">Car Calculator</a>
+                <br/><br/>
+                <a href="https://localhost:8181/StaffInternalSystem/loan/staff_hdb_calculator.xhtml">HDB Calculator</a>
+                <br/><br/>
+                <a href="https://localhost:8181/StaffInternalSystem/loan/staff_pp_calculator.xhtml">Private House Calculator</a>
+            </div>
+        </h:body>
+    </f:view>
+
+
+</html>
+

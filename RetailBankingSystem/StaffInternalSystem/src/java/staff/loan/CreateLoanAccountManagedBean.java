@@ -6,12 +6,18 @@
 package staff.loan;
 
 import ejb.session.common.LoginSessionBeanLocal;
+import ejb.session.common.NewCustomerSessionBeanLocal;
 import ejb.session.dams.CustomerDepositSessionBeanLocal;
+import ejb.session.dams.DepositProductSessionBeanLocal;
 import ejb.session.loan.LoanAccountSessionBeanLocal;
+import ejb.session.loan.LoanPaymentSessionBeanLocal;
 import ejb.session.loan.LoanProductSessionBeanLocal;
+import ejb.session.mainaccount.MainAccountSessionBeanLocal;
+import entity.customer.Customer;
 import entity.customer.MainAccount;
 import entity.dams.account.CustomerDepositAccount;
 import entity.loan.LoanAccount;
+import entity.loan.LoanApplication;
 import entity.loan.LoanProduct;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -21,8 +27,10 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
+import server.utilities.ConstantUtils;
 import server.utilities.DateUtils;
 import server.utilities.EnumUtils;
+import server.utilities.PincodeGenerationUtils;
 import utils.MessageUtils;
 import utils.SessionUtils;
 
@@ -39,14 +47,25 @@ public class CreateLoanAccountManagedBean implements Serializable {
     @EJB
     private LoanAccountSessionBeanLocal loanAccountBean;
     @EJB
-    private LoginSessionBeanLocal loginBean;
+    private LoanPaymentSessionBeanLocal loanPaymentSessionBean;
     @EJB
-    private CustomerDepositSessionBeanLocal depositBean;
+    private LoginSessionBeanLocal loginBean;
+    @EJB 
+    private MainAccountSessionBeanLocal mainAccountSessionBean;
+    @EJB
+    private NewCustomerSessionBeanLocal newCustomerBean;
+    @EJB
+    private DepositProductSessionBeanLocal depositProductBean;
+    @EJB
+    private CustomerDepositSessionBeanLocal depositAccountBean;
+    
+    private String applicationId;
 
     private String mainAccountId;
     private Long selectedLoanProductId;
     private Date paymentStartDate;
     private Double principalAmount;
+    private LoanApplication currentApplication;
     
     private List<LoanProduct> loanProducts = new ArrayList<>();
     /**
@@ -55,14 +74,19 @@ public class CreateLoanAccountManagedBean implements Serializable {
     public CreateLoanAccountManagedBean() {
     }
     
+    public void retrieveLoanApplication() {
+        currentApplication = loanAccountBean.getLoanApplicationById(Long.parseLong(applicationId));
+    }
+    
     @PostConstruct
     public void init() {
         setLoanProducts(loanProductBean.getAllLoanProduct());
     }
     
-    public void creatAccount() {
-        MainAccount ma = loginBean.getMainAccountByUserID(mainAccountId);
-        CustomerDepositAccount cda = depositBean.getDaytoDayAccountByMainAccount(ma);
+    public void creatLoanAccount() {
+        createOhterAccounts(currentApplication);
+        MainAccount ma = loginBean.getMainAccountByUserID(getMainAccountId());
+        CustomerDepositAccount cda = depositAccountBean.getDaytoDayAccountByMainAccount(ma);
         LoanAccount la = new LoanAccount();
         // mapping
         la.setMainAccount(ma);
@@ -75,6 +99,8 @@ public class CreateLoanAccountManagedBean implements Serializable {
         la.setMaturityDate(DateUtils.addYearsToDate(getPaymentStartDate(), la.getLoanProduct().getTenure()));
         la.setTenure(la.getLoanProduct().getTenure());
         la.setPrincipal(getPrincipalAmount());
+        la.setOutstandingPrincipal(principalAmount);
+        la.setMonthlyInstallment(loanPaymentSessionBean.calculateMonthlyInstallment(la));
         la.setLoanAccountStatus(EnumUtils.LoanAccountStatus.PENDING);
         
         LoanAccount result = loanAccountBean.createLoanAccount(la);
@@ -84,19 +110,63 @@ public class CreateLoanAccountManagedBean implements Serializable {
             MessageUtils.displayError("Loan Account Not Created!");
         }
     }
+    
+    private void createOhterAccounts(LoanApplication la) {
+        MainAccount ma = null;
+        try {
+            ma = loginBean.getMainAccountByUserIC(la.getIdNumber());
+        } catch (Exception e) {
+            System.out.println("Main Account not found, creating new..");
+        }
+        
+        if (ma == null) {
+            // new customer
+            MainAccount mainAccount = new MainAccount();
+            mainAccount.setStatus(EnumUtils.StatusType.PENDING);
+            mainAccount.setUserID(generateUserID(EnumUtils.IdentityType.NRIC, la.getIdNumber()));
+            String randomPwd = PincodeGenerationUtils.generatePwd();
+            mainAccount.setPassword(randomPwd);
+            mainAccount = mainAccountSessionBean.createMainAccount(mainAccount);
+            mainAccountId = mainAccount.getUserID();
 
-    /**
-     * @return the mainAccountId
-     */
-    public String getMainAccountId() {
-        return mainAccountId;
+            Customer customer = new Customer();
+            customer.setIncome(EnumUtils.Income.getEnumFromNumber(la.getIncome()));
+            customer.setActualIncome(la.getIncome());
+            customer.setMainAccount(mainAccount);
+            newCustomerBean.createCustomer(customer);
+
+            CustomerDepositAccount depostiAccount = new CustomerDepositAccount();
+            depostiAccount.setMainAccount(mainAccount);
+            depostiAccount.setType(EnumUtils.DepositAccountType.CURRENT);
+            depostiAccount.setProduct(depositProductBean.getDepositProductByName(ConstantUtils.DEMO_CURRENT_DEPOSIT_PRODUCT_NAME));
+            depositAccountBean.createAccount(depostiAccount);
+            
+            la.setMainAccount(mainAccount);
+            la.setStatus(EnumUtils.LoanAccountStatus.PENDING);
+            loanAccountBean.updateLoanApplication(la);
+        } else {
+            mainAccountId = ma.getUserID();
+            
+            la.setMainAccount(ma);
+            la.setStatus(EnumUtils.LoanAccountStatus.PENDING);
+            loanAccountBean.updateLoanApplication(la);
+            
+            Customer customer = ma.getCustomer();
+            customer.setIncome(EnumUtils.Income.getEnumFromNumber(la.getIncome()));
+            customer.setActualIncome(la.getIncome());
+            newCustomerBean.updateCustomer(customer);
+            
+            depositAccountBean.getDaytoDayAccountByMainAccount(ma);
+        }
     }
+    
+    private String generateUserID(EnumUtils.IdentityType identityType, String identityNum) {
 
-    /**
-     * @param mainAccountId the mainAccountId to set
-     */
-    public void setMainAccountId(String mainAccountId) {
-        this.mainAccountId = mainAccountId;
+        if (identityType.equals(EnumUtils.IdentityType.NRIC)) {
+            return "c" + identityNum.substring(1, identityNum.length() - 1);
+        } else {
+            return "error";
+        }
     }
 
     /**
@@ -153,6 +223,48 @@ public class CreateLoanAccountManagedBean implements Serializable {
      */
     public void setPrincipalAmount(Double principalAmount) {
         this.principalAmount = principalAmount;
+    }
+
+    /**
+     * @return the mainAccountId
+     */
+    public String getMainAccountId() {
+        return mainAccountId;
+    }
+
+    /**
+     * @param mainAccountId the mainAccountId to set
+     */
+    public void setMainAccountId(String mainAccountId) {
+        this.mainAccountId = mainAccountId;
+    }
+
+    /**
+     * @return the applicationId
+     */
+    public String getApplicationId() {
+        return applicationId;
+    }
+
+    /**
+     * @param applicationId the applicationId to set
+     */
+    public void setApplicationId(String applicationId) {
+        this.applicationId = applicationId;
+    }
+
+    /**
+     * @return the currentApplication
+     */
+    public LoanApplication getCurrentApplication() {
+        return currentApplication;
+    }
+
+    /**
+     * @param currentApplication the currentApplication to set
+     */
+    public void setCurrentApplication(LoanApplication currentApplication) {
+        this.currentApplication = currentApplication;
     }
 
 }
