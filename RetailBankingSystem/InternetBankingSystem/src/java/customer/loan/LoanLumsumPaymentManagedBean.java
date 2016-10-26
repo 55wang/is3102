@@ -62,14 +62,14 @@ public class LoanLumsumPaymentManagedBean implements Serializable {
     }
     
     public void transfer() {
-        String result = loanPaymentBena.loanLumsumPaymentFromAccount(loanAccount.getAccountNumber(), fromAccountNo, new BigDecimal(totalAmount()));
-        if (result.equals("SUCCESS")) {
-            JSUtils.callJSMethod("PF('myWizard').next()");
-            MessageUtils.displayInfo(ConstantUtils.TRANSFER_SUCCESS);
-        } else {
-            JSUtils.callJSMethod("PF('myWizard').back()");
-            MessageUtils.displayError(ConstantUtils.TRANSFER_FAILED);
-        }
+//        String result = loanPaymentBena.loanLumsumPaymentFromAccount(loanAccount.getAccountNumber(), fromAccountNo, new BigDecimal(totalAmount()));
+//        if (result.equals("SUCCESS")) {
+//            JSUtils.callJSMethod("PF('myWizard').next()");
+//            MessageUtils.displayInfo(ConstantUtils.TRANSFER_SUCCESS);
+//        } else {
+//            JSUtils.callJSMethod("PF('myWizard').back()");
+//            MessageUtils.displayError(ConstantUtils.TRANSFER_FAILED);
+//        }
     }
 
     /**

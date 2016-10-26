@@ -104,17 +104,22 @@
                                     </h:outputText>
 
                                     <h:outputText value="Maximum Monthly instalment (S$):: " />
-                                    <h:outputText value="#{carLoanApplicationManagedBean.carLoanMonthlyInstalment}" styleClass="outputLabel">
+                                    <h:outputText value="#{carLoanApplicationManagedBean.maxCarLoanMonthlyInstalment}" styleClass="outputLabel">
                                         <f:convertNumber pattern="###00.00"/>
                                     </h:outputText>
 
                                     <h:outputText value="Loan Amount: " />
-                                    <p:inputText value="#{carLoanApplicationManagedBean.loanAmount}" required="true" requiredMessage="Loan Amount is required."/>
+                                    <p:inputText value="#{carLoanApplicationManagedBean.loanAmount}" required="true" requiredMessage="Loan Amount is required." onchange="submit()" valueChangeListener="#{carLoanApplicationManagedBean.changeLoanAmt}"/>
 
                                     <h:outputText value="Choose a loan term: " />
                                     <p:selectOneMenu value="#{carLoanApplicationManagedBean.loanProductId}" rendered="true" required="true">
                                         <f:selectItems value="#{carLoanApplicationManagedBean.carLoanProducts}" var="p" itemValue="#{p.id}" itemLabel="#{p.productName} #{p.tenure}" />
                                     </p:selectOneMenu>
+                                    
+                                    <h:outputText value="Estimated Monthly instalment (S$):: " />
+                                    <h:outputText value="#{carLoanApplicationManagedBean.carLoanMonthlyInstalment}" styleClass="outputLabel">
+                                        <f:convertNumber pattern="###00.00"/>
+                                    </h:outputText>
                                     
                                 </h:panelGrid>
 

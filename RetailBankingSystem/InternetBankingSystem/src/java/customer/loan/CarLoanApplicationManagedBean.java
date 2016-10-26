@@ -56,7 +56,8 @@ public class CarLoanApplicationManagedBean implements Serializable {
     
     private Double carLoanAnnualInterestRate;
     private Double carLoanAmt=0.0;       
-    private Double carLoanMonthlyInstalment;
+    private Double maxCarLoanMonthlyInstalment;
+    private Double carLoanMonthlyInstalment=0.0;
     private Double carOpenMarketValue;
     private Integer carTenure;
     private Long carTenureProductId;
@@ -84,6 +85,12 @@ public class CarLoanApplicationManagedBean implements Serializable {
         }
         
     }
+    
+    public void changeLoanAmt(ValueChangeEvent e){
+        setCarLoanAmt((Double)e.getNewValue());
+        setCarLoanMonthlyInstalment(calculator.calculateCarMonthlyInstalment(getCarLoanAnnualInterestRate(), getCarTenure(), getCarLoanAmt()));   
+        
+    }
       
     public void calculateCar(){
         if (getMonthlyIncome() < 2000) {
@@ -92,7 +99,7 @@ public class CarLoanApplicationManagedBean implements Serializable {
         }
         
         setCarLoanAmt(calculator.calculateMaxCarLoanAmt(getCarOpenMarketValue()));
-        setCarLoanMonthlyInstalment(calculator.calculateCarMonthlyInstalment(getCarLoanAnnualInterestRate(), getCarTenure(), getCarLoanAmt()));   
+        setMaxCarLoanMonthlyInstalment(calculator.calculateCarMonthlyInstalment(getCarLoanAnnualInterestRate(), getCarTenure(), getCarLoanAmt()));   
         
         JSUtils.callJSMethod("PF('myWizard').next()");
     }
@@ -363,6 +370,14 @@ public class CarLoanApplicationManagedBean implements Serializable {
      */
     public void setApplicationNumber(Long applicationNumber) {
         this.applicationNumber = applicationNumber;
+    }
+
+    public Double getMaxCarLoanMonthlyInstalment() {
+        return maxCarLoanMonthlyInstalment;
+    }
+
+    public void setMaxCarLoanMonthlyInstalment(Double maxCarLoanMonthlyInstalment) {
+        this.maxCarLoanMonthlyInstalment = maxCarLoanMonthlyInstalment;
     }
     
 }
