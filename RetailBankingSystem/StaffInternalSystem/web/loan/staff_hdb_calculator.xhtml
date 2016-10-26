@@ -1,0 +1,95 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:em="http://xmlns.jcp.org/jsf/composite/emcomp"
+      xmlns:p="http://primefaces.org/ui">
+    <!--shift + ctrl + F, format-->
+    <f:view>
+        <h:head>
+            <title>Merlion Bank</title>
+            <h:outputStylesheet library="css" name="reset.css"/>
+            <h:outputStylesheet library="css" name="theme.css"/>
+        </h:head>
+        <h:body>
+            <em:staffNavBar context="loan"></em:staffNavBar>
+            <em:staffSideBar top="loan" side="loanCalculator"></em:staffSideBar>
+
+            <em:cssImport></em:cssImport>
+            <div class="container">
+                <h1>HDB Calculator</h1>
+                <p:panel>
+                    <h:form>
+                        <p:growl id="growl" sticky="true" showDetail="true"/>
+
+                        <p:wizard widgetVar="myWizard" showNavBar="false">
+
+                            <p:tab id="identity" title="Information" >
+
+                                <p:messages id="msgs2"/>
+                                <h:panelGrid columns="2" columnClasses="label, value">
+
+                                    <h:outputText value="Age: " />
+                                    <p:inputText value="#{staffLoanCalculationManagedBean.age}" required="true" requiredMessage="Age is required." />
+
+                                    <h:outputText value="Monthly income: " />
+                                    <p:inputText value="#{staffLoanCalculationManagedBean.monthlyIncome}" required="true" requiredMessage="Monthly income is required." />
+
+                                    <h:outputText value="Other financial commitments (S$): " />
+                                    <p:inputText value="#{staffLoanCalculationManagedBean.otherLoan}" required="true" requiredMessage="Other financial commitment is required." />
+
+                                    <h:outputText value="Nubmer Other Housing Loans: " />
+                                    <p:inputText value="#{staffLoanCalculationManagedBean.numOfHousingLoan}" required="true" requiredMessage="Other financial commitment is required." />
+
+                                </h:panelGrid>
+
+                                <div class="register-form-button">
+                                    <p:commandButton value="Next" actionListener="#{staffLoanCalculationManagedBean.calculateHDB()}" update="@form:msgs2"/>
+                                </div>
+
+                            </p:tab>
+
+
+
+                            <p:tab id="result" title="Results">
+
+                                <p:scrollPanel style="height:238px">
+                                    <h:panelGrid columns="2" columnClasses="label, value">
+                                        <h:outputText value="Maximum Tenure: " />
+                                        <h:outputText value="#{staffLoanCalculationManagedBean.tenure}" styleClass="outputLabel"/>
+
+                                        <h:outputText value="Monthly instalment: " />
+                                        <h:outputText value="#{staffLoanCalculationManagedBean.monthlyInstalment}" styleClass="outputLabel">
+                                            <f:convertNumber pattern="###00.00"/>
+                                        </h:outputText>
+
+                                        <h:outputText value="Maximum loan amount: " />
+                                        <h:outputText value="#{staffLoanCalculationManagedBean.loanAmt}" styleClass="outputLabel">
+                                            <f:convertNumber pattern="###00.00"/>
+                                        </h:outputText>
+
+                                        <h:outputText value="Housing market value: " />
+                                        <h:outputText value="#{staffLoanCalculationManagedBean.value}" styleClass="outputLabel">
+                                            <f:convertNumber pattern="###00.00"/>
+                                        </h:outputText>
+                                    </h:panelGrid>
+
+                                </p:scrollPanel>
+
+                                <div class="register-form-button" style="margin-top: 20px">
+                                    <p:commandButton value="Back" type="button" onclick="PF('myWizard').back();" />
+                                </div>
+
+                            </p:tab>
+                        </p:wizard>
+
+                    </h:form>
+                </p:panel>
+            </div>
+        </h:body>
+    </f:view>
+
+
+</html>
+

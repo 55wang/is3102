@@ -15,10 +15,18 @@
         <h:body>
             <em:staffNavBar context="wealth"></em:staffNavBar>
             <em:staffSideBar top="wealth" side="viewPortfolio"></em:staffSideBar>
-  
+
             <div class="container">
                 <h:form id="mainForm">
                     <p:panel header="Customer Financial Profile">
+
+                        <h:outputText value="Customer Name: "/>
+                        <h:inputText value="#{viewPortfolioManagedBean.searchText}"/>
+
+                        <p:commandButton value="RETRIEVE" action="#{viewPortfolioManagedBean.searchCustomerFullName(viewPortfolioManagedBean.searchText)}" update="mainForm"/>
+
+
+
                         <p:messages id="messagesStatus" redisplay="false" >
                             <h:panelGrid columns="2" cellpadding="5">
                                 <p:dataTable value="#{viewPortfolioManagedBean.portfolios}" var="p" >

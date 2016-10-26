@@ -12,6 +12,38 @@ package server.utilities;
 // REMARK: To get the list of enum values, just use e.g. CreditType.values()
 public class EnumUtils {
 
+    public enum FinancialHealthLevel {
+
+        VERYUNHEALTHY("VERY UNHEALTHY"),
+        UNHEALTHY("UNHEALTHY"),
+        HEALTHY("HEALTHY"),
+        VERYHEALTHY("VERY HEALTHY");
+
+        private String value;
+
+        FinancialHealthLevel(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        @Override
+        public String toString() {
+            return this.getValue();
+        }
+
+        public static FinancialHealthLevel getEnum(String value) {
+            for (FinancialHealthLevel v : values()) {
+                if (v.getValue().equalsIgnoreCase(value)) {
+                    return v;
+                }
+            }
+            throw new IllegalArgumentException();
+        }
+    }
+
     public enum TypeMarketingCampaign {
 
         ADSBANNER("ADSBANNERCAMPAIGN"),
@@ -684,21 +716,43 @@ public class EnumUtils {
 
     public enum Income {
 
-        BELOW_2000("< S$2000"),
-        FROM_2000_TO_4000("S$2000 to 4000"),
-        FROM_4000_TO_6000("S$4000 to 6000"),
-        FROM_6000_TO_8000("S$6000 to 8000"),
-        FROM_8000_TO_10000("S$8000 to 10000"),
-        OVER_10000("> S$10000");
+        BELOW_2000("< S$2000", 2000.0),
+        FROM_2000_TO_4000("S$2000 to 4000", 3000.0),
+        FROM_4000_TO_6000("S$4000 to 6000", 5000.0),
+        FROM_6000_TO_8000("S$6000 to 8000", 7000.0),
+        FROM_8000_TO_10000("S$8000 to 10000", 9000.0),
+        OVER_10000("> S$10000", 10000.0);
 
-        private String value;
+        private final String value;
+        private final Double avgValue;
 
-        Income(String value) {
+        Income(String value, Double avgValue) {
             this.value = value;
+            this.avgValue = avgValue;
         }
 
         public String getValue() {
             return value;
+        }
+        
+        public static Income getEnumFromNumber(Double income) {
+            if (income < 2000) {
+                return Income.BELOW_2000;
+            } else if (income >= 2000 & income < 4000) {
+                return Income.FROM_2000_TO_4000;
+            } else if (income >= 4000 & income < 6000) {
+                return Income.FROM_4000_TO_6000;
+            } else if (income >= 6000 & income < 8000) {
+                return Income.FROM_6000_TO_8000;
+            } else if (income >= 8000 & income < 10000) {
+                return Income.FROM_8000_TO_10000;
+            } else {
+                return Income.OVER_10000;
+            }
+        }
+
+        public Double getAvgValue() {
+            return avgValue;
         }
 
         @Override
@@ -1266,7 +1320,6 @@ public class EnumUtils {
     }
 
     // transfer
-
     public enum PayeeType {
 
         MERLION("MERLION"),
@@ -1301,7 +1354,6 @@ public class EnumUtils {
     public enum TransferPurpose {
 
         // Personal Expenses
-
         CC_PAY("Credit Card Payment"),
         CARPARK_CHRAGES("Carpark Charges"),
         CABLE_TV_BILL("Cable TV Bill"),
@@ -1680,7 +1732,7 @@ public class EnumUtils {
             throw new IllegalArgumentException();
         }
     }
-    
+
     // loan
     public enum LoanAccountStatus {
 
@@ -1721,7 +1773,7 @@ public class EnumUtils {
         LOAN_PRODUCT_TYPE_CAR("MBS Car Loan"),
         LOAN_PRODUCT_TYPE_PERSONAL("MBS Personal Loan"),
         SUSPENDED("SUSPENDED");
-        
+
         private String value;
 
         LoanProductType(String value) {
@@ -1746,7 +1798,7 @@ public class EnumUtils {
             throw new IllegalArgumentException();
         }
     }
-    
+
     public enum LoanRepaymentType {
 
         LOAN_REPAYMENT("Loan Repayment"),
@@ -1754,7 +1806,7 @@ public class EnumUtils {
         LOAN_REPAYMENT_MORE("Loan Repayment More"),
         LOAN_LUMSUM_PAY("Loan Lumsum Repayment"),
         LOAN_CHANGE_PERIOD("Loan Change Period");
-        
+
         private String value;
 
         LoanRepaymentType(String value) {

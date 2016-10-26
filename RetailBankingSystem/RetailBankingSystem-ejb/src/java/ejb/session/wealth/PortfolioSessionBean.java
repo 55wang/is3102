@@ -5,7 +5,10 @@
  */
 package ejb.session.wealth;
 
+import entity.fact.customer.SinglePortfolioFactTable;
+import entity.wealth.MovingAverage;
 import entity.wealth.Portfolio;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -22,6 +25,43 @@ public class PortfolioSessionBean implements PortfolioSessionBeanLocal {
     @PersistenceContext(unitName = "RetailBankingSystem-ejbPU")
     private EntityManager em;
 
+    //must be sorted the input spf, with ascending date order
+    @Override
+    public void calcMovingAverage(List<SinglePortfolioFactTable> spf) {
+
+        List<Double> q = new ArrayList<>();
+        for (int i = 0; i < spf.size(); i++) {
+            Double value = spf.get(i).getTotalCurrentValue();
+
+            if (q.size() == 4) {
+                q.remove(0);
+                q.add(value);
+
+                Double total = 0.0;
+                for (int j = 0; j < q.size(); j++) {
+                    total += q.get(j);
+                }
+
+                Double avg = total / 4;
+                System.out.println("Average: " + avg);
+                //persist movingAverage
+                MovingAverage movingAvg;
+                try {
+                    movingAvg = em.find(MovingAverage.class, spf.get(i).getCreationDate());
+                } catch (Exception ex) {
+                    movingAvg = new MovingAverage();
+                    em.persist(movingAvg);
+                }
+
+                movingAvg.setCreationDate(spf.get(i).getCreationDate());
+                movingAvg.setAvgValue(avg);
+                movingAvg.setPortfolio(spf.get(i).getPortfolio());
+                em.merge(movingAvg);
+
+            }
+        }
+    }
+
     @Override
     public List<Portfolio> getListPortfolios() {
         Query q = em.createQuery("SELECT p FROM Portfolio p");
@@ -32,6 +72,13 @@ public class PortfolioSessionBean implements PortfolioSessionBeanLocal {
     public List<Portfolio> getListPortfoliosByCustomerId(Long Id) {
         Query q = em.createQuery("Select p from Portfolio p where p.wealthManagementSubscriber.mainAccount.customer.id=:inId");
         q.setParameter("inId", Id);
+        return q.getResultList();
+    }
+
+    @Override
+    public List<Portfolio> getListPortfoliosByCustomerName(String searchText) {
+        Query q = em.createQuery("Select p from Portfolio p where UPPER(p.wealthManagementSubscriber.mainAccount.customer.fullName) like :inSearchText");
+        q.setParameter("inSearchText", "%" + searchText.toUpperCase() + "%");
         return q.getResultList();
     }
 

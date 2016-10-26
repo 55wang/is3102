@@ -23,4 +23,5 @@ public interface LoanPaymentSessionBeanLocal {
     public LoanRepaymentRecord createLoanRepaymentRecord(LoanRepaymentRecord loanRepaymentRecord);
     public List<LoanPaymentBreakdown> futurePaymentBreakdown(LoanAccount loanAccount);
     public String loanRepaymentFromAccount(String loanAccountNumber, String depositAccountNumber, BigDecimal amount);
+    public String loanLumsumPaymentFromAccount(String loanAccountNumber, String depositAccountNumber, BigDecimal amount);
 }

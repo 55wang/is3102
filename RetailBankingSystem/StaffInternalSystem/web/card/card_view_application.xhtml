@@ -20,7 +20,20 @@
                 <h:form id="mainForm">
                     <p:panel header="Credit Card Applications">
                         <p:messages id="messagesStatus" redisplay="false" >
+                            <h:outputText value="Input Bureau CreditScore: "></h:outputText>
+                                <p:selectOneMenu value="#{cardViewCreditApplicationManagedBean.bureauCreditScore}" style="width:10px; height: 31px; line-height: 21px; top:8px" rendered="true" required="true">
+                                    <f:selectItem itemLabel="AA" itemValue="AA" />
+                                    <f:selectItem itemLabel="BB" itemValue="BB" />
+                                    <f:selectItem itemLabel="CC" itemValue="CC" />
+                                    <f:selectItem itemLabel="DD" itemValue="DD" />
+                                    <f:selectItem itemLabel="EE" itemValue="EE" />
+                                    <f:selectItem itemLabel="FF" itemValue="FF" />
+                                    <f:selectItem itemLabel="GG" itemValue="GG" />
+                                    <f:selectItem itemLabel="HH" itemValue="HH" />
+                                </p:selectOneMenu>
+                            
                             <h:panelGrid columns="2" cellpadding="5">
+
                                 <p:dataTable value="#{cardViewCreditApplicationManagedBean.ccos}" var="cco" >
 
                                     <p:column style="width:16px">
@@ -68,25 +81,14 @@
                                     <p:column headerText="Status">
                                         <h:outputText value="#{cco.applicationStatus}" />
                                     </p:column>
-                                    <p:column headerText="Input Bureau CreditScore">
-                                        <p:selectOneMenu value="#{cardViewCreditApplicationManagedBean.bureauCreditScore}" style="width:10px; height: 31px; line-height: 21px; top:8px" rendered="true" required="true">
-                                            <f:selectItem itemLabel="AA" itemValue="AA" />
-                                            <f:selectItem itemLabel="BB" itemValue="BB" />
-                                            <f:selectItem itemLabel="CC" itemValue="CC" />
-                                            <f:selectItem itemLabel="DD" itemValue="DD" />
-                                            <f:selectItem itemLabel="EE" itemValue="EE" />
-                                            <f:selectItem itemLabel="FF" itemValue="FF" />
-                                            <f:selectItem itemLabel="GG" itemValue="GG" />
-                                            <f:selectItem itemLabel="HH" itemValue="HH" />
-                                        </p:selectOneMenu>
-                                    </p:column>
+
                                     <p:column headerText="CreditScore">
                                         <h:outputText value="#{cco.mainAccount.customer.creditScore}" />
                                     </p:column>
                                     <p:column headerText="Action">
-                                        <p:commandButton value="Credit Score" action="#{cardViewCreditApplicationManagedBean.calculateCreditScore(cco)}" icon="ui-icon-lightbulb" update="@form" />
-                                        <p:commandButton value="Approve" action="#{cardViewCreditApplicationManagedBean.approveOrder(cco)}" icon="ui-icon-check" update="@form" />
-                                        <p:commandButton value="Reject" action="#{cardViewCreditApplicationManagedBean.rejectOrder(cco)}" icon="ui-icon-close" update="@form" />
+                                        <p:commandButton value="Credit Score" action="#{cardViewCreditApplicationManagedBean.calculateCreditScore(cco)}" icon="ui-icon-lightbulb" update="mainForm" />
+                                        <p:commandButton value="Approve" action="#{cardViewCreditApplicationManagedBean.approveOrder(cco)}" icon="ui-icon-check" update="mainForm" />
+                                        <p:commandButton value="Reject" action="#{cardViewCreditApplicationManagedBean.rejectOrder(cco)}" icon="ui-icon-close" update="mainForm" />
                                     </p:column>
                                 </p:dataTable>
                             </h:panelGrid>

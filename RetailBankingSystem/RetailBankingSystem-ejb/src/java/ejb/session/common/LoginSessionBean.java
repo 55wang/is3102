@@ -84,6 +84,13 @@ public class LoginSessionBean implements LoginSessionBeanLocal {
             return null;
         }
     }
+    
+    @Override
+    public MainAccount getMainAccountByUserIC(String userIC) {
+        Query q = em.createQuery("SELECT ma FROM MainAccount ma WHERE ma.customer.identityNumber = :userIC");
+        q.setParameter("userIC", userIC);
+        return (MainAccount) q.getSingleResult();
+    }
 
     public List<MainAccount> showAllAccounts() {
         Query q = em.createQuery("SELECT a FROM MainAccount a");

@@ -24,8 +24,14 @@
                             </f:facet>
                             <h:panelGrid columns="4" style="width:100%" cellpadding="5" class="border-bottom" >
 
+                                <h:outputText value="Status:"/>
+                                <h:outputText value="#{loanApplication.status}"/>
+                                
                                 <h:outputText value="Customer Name:"/>
                                 <h:outputText value="#{loanApplication.name}"/>
+
+                                <h:outputText value="ID Number:"/>
+                                <h:outputText value="#{loanApplication.idNumber}"/>
 
                                 <h:outputText value="Email:"/>
                                 <h:outputText value="#{loanApplication.email}"/> 
@@ -35,6 +41,9 @@
 
                                 <h:outputText value="Type:"/>
                                 <h:outputText value="#{loanApplication.productType.toString()}"/> 
+                                
+                                <h:outputText value="Loan Product"/>
+                                <h:outputText value="#{loanApplication.loanProduct.productName}"/> 
 
                                 <h:outputText value="Income:"/>
                                 <h:outputText value="#{loanApplication.income}"/> 
@@ -45,22 +54,31 @@
                                 <h:outputText value="Request Amount:"/>
                                 <h:outputText value="#{loanApplication.requestedAmount}"/> 
 
-                                <h:outputText value="Market Value:"/>
-                                <h:outputText value="#{loanApplication.marketValue}"/> 
+                                <c:if test="#{loanApplication.marketValue != null}">
+                                    <h:outputText value="Market Value:"/>
+                                    <h:outputText value="#{loanApplication.marketValue}"/> 
+                                </c:if>
 
-                                <h:outputText value="Other Commitment:"/>
-                                <h:outputText value="#{loanApplication.otherCommitment}"/> 
 
-                                <h:outputText value="Other Housing Loans:"/>
-                                <h:outputText value="#{loanApplication.otherHousingLoan}"/> 
+                                <c:if test="#{loanApplication.otherCommitment != null}">
+                                    <h:outputText value="Other Commitment:"/>
+                                    <h:outputText value="#{loanApplication.otherCommitment}"/> 
+                                </c:if>
+
+                                <c:if test="#{loanApplication.otherHousingLoan != null}">
+                                    <h:outputText value="Other Housing Loans:"/>
+                                    <h:outputText value="#{loanApplication.otherHousingLoan}"/> 
+                                </c:if>
 
                             </h:panelGrid>
-                        </p:dataScroller>
-                    </p:panel>
-                </h:form>
-            </div>
-        </h:body>
-    </f:view>
+                            <p:commandButton value="Start Process" action="#{viewLoanApplicationManagedBean.startProcess(loanApplication)}" update="mainForm"/> 
+                            <p:commandButton value="Create Account" action="#{viewLoanApplicationManagedBean.creatLoanAccount(loanApplication)}" update="mainForm"/> 
+                    </p:dataScroller>
+                </p:panel>
+            </h:form>
+        </div>
+    </h:body>
+</f:view>
 
 
 </html>

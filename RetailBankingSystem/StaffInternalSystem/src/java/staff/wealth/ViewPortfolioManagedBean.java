@@ -32,6 +32,7 @@ public class ViewPortfolioManagedBean extends ViewPortfolioAbstractBean implemen
     PortfolioSessionBeanLocal portfolioSessionBean;
 
     private List<Portfolio> portfolios;
+    private String searchText;
 
     public ViewPortfolioManagedBean() {
     }
@@ -39,6 +40,10 @@ public class ViewPortfolioManagedBean extends ViewPortfolioAbstractBean implemen
     @PostConstruct
     public void init() {
         portfolios = portfolioSessionBean.getListPortfolios();
+    }
+    
+    public void searchCustomerFullName(String searchText) {
+        portfolios = portfolioSessionBean.getListPortfoliosByCustomerName(searchText);
     }
 
     public void viewPortfolioDetail(Portfolio p) {
@@ -51,6 +56,14 @@ public class ViewPortfolioManagedBean extends ViewPortfolioAbstractBean implemen
 
     public void setPortfolios(List<Portfolio> portfolios) {
         this.portfolios = portfolios;
+    }
+
+    public String getSearchText() {
+        return searchText;
+    }
+
+    public void setSearchText(String searchText) {
+        this.searchText = searchText;
     }
 
 }

@@ -44,6 +44,15 @@ public class WealthManagementSubscriber implements Serializable {
     @OneToMany(cascade = CascadeType.MERGE, mappedBy = "wealthManagementSubscriber")
     private List<Portfolio> portfolios = new ArrayList<>();
     
+    public Double getTotalPortfolioValue() {
+        Double totalBalance = 0.0;
+        for (Portfolio p: portfolios) {
+            totalBalance += p.getTotalCurrentValue();
+        }
+        return totalBalance;
+    }
+    
+    
     public Long getId() {
         return id;
     }

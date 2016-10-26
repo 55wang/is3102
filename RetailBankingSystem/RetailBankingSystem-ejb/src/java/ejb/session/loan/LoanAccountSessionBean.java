@@ -51,9 +51,10 @@ public class LoanAccountSessionBean implements LoanAccountSessionBeanLocal {
     }
     
     @Override
-    public List<LoanAccount> getLoanAccountByStaffUsername(String username) {
-        Query q = em.createQuery("SELECT l FROM LoanAccount l WHERE l.loanOfficer.username = :username");
+    public List<LoanAccount> getLoanAccountByStaffUsernameAndStatus(String username, LoanAccountStatus status) {
+        Query q = em.createQuery("SELECT l FROM LoanAccount l WHERE l.loanOfficer.username = :username AND l.loanAccountStatus =:inStatus");
         q.setParameter("username", username);
+        q.setParameter("inStatus", status);
         return q.getResultList();
     }
 
@@ -86,6 +87,17 @@ public class LoanAccountSessionBean implements LoanAccountSessionBeanLocal {
     public LoanApplication createLoanApplication(LoanApplication loanApplication) {
         em.persist(loanApplication);
         return loanApplication;
+    }
+    
+    @Override
+    public LoanApplication updateLoanApplication(LoanApplication loanApplication) {
+        em.merge(loanApplication);
+        return loanApplication;
+    }
+    
+    @Override
+    public LoanApplication getLoanApplicationById(Long id) {
+        return em.find(LoanApplication.class, id);
     }
     
     @Override

@@ -80,7 +80,7 @@ public class NotificationViewManagedBean implements Serializable {
 
     public void send() { 
         
-        if (!isForStaff() && selectedRoleName!= null) {
+        if (isForStaff() && !forAllStaff && selectedRoleName!= null) {
             newAnnouncement.setRole(staffRoleSessionBean.findRoleByName(selectedRoleName));
         }
             

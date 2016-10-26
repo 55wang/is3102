@@ -64,12 +64,12 @@ public class AnnouncementSessionBean implements AnnouncementSessionBeanLocal {
                 String queryString = "SELECT a FROM Announcement a WHERE a.isForStaff = true AND (";
                 for (int i = 0; i < roles.size(); i++) {
                     if (i == 0) {
-                        queryString += " a.role.roleName = " + roles.get(i).getRoleName();
+                        queryString += " a.role.roleName = '" + roles.get(i).getRoleName() + "'";
                     } else {
-                        queryString += " OR a.role.roleName = " + roles.get(i).getRoleName();
+                        queryString += " OR a.role.roleName = '" + roles.get(i).getRoleName() + "'";
                     }
                 }
-                queryString += ") ORDER BY a.creationDate DESC";
+                queryString += " ) ORDER BY a.creationDate DESC";
                 q = em.createQuery(queryString);
             }
         }
