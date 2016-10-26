@@ -32,6 +32,8 @@ import org.primefaces.model.chart.AxisType;
 import org.primefaces.model.chart.LineChartModel;
 import org.primefaces.model.chart.LineChartSeries;
 import org.primefaces.model.chart.PieChartModel;
+import server.utilities.EnumUtils;
+import server.utilities.EnumUtils.LoanProductType;
 import utils.SessionUtils;
 
 /**
@@ -52,7 +54,6 @@ public class PortfolioManagedBean implements Serializable {
     private List<Portfolio> portfolios;
     private Customer customer;
     private PieChartModel pieModel2;
-    private Double financialHealth;
     private LineChartModel lineModel1;
 
     public PortfolioManagedBean() {
@@ -64,7 +65,6 @@ public class PortfolioManagedBean implements Serializable {
         portfolios = portfolioSessionBean.getListPortfoliosByCustomerId(customer.getId());
         createPieModels();
         createLineModels();
-        financialHealth = 0.0;
     }
 
     public LineChartModel getLineModel1() {
@@ -99,7 +99,7 @@ public class PortfolioManagedBean implements Serializable {
 
         for (int i = 0; i < data.size(); i++) {
             JsonArray innerData = (JsonArray) data.getJsonArray(i);
-            System.out.println(innerData.get(0)+" "+ innerData.get(1));
+            System.out.println(innerData.get(0) + " " + innerData.get(1));
             series1.set(innerData.get(0), innerData.getInt(1));
         }
 
@@ -107,7 +107,101 @@ public class PortfolioManagedBean implements Serializable {
         return model;
     }
 
-    public Double getFinancialHealthScore() {
+    public Double getTotalMortgageMonthlyInstallment(MainAccount main) {
+        List<LoanAccount> las = main.getLoanAccounts();
+
+        Double totalBalance = 0.0;
+        for (LoanAccount la : las) {
+            if (la.getLoanProduct().getProductType().equals(LoanProductType.LOAN_PRODUCT_TYPE_HDB) || la.getLoanProduct().getProductType().equals(LoanProductType.LOAN_PRODUCT_TYPE_HDB)) {
+                totalBalance += la.getMonthlyInstallment();
+            }
+        }
+        return totalBalance;
+    }
+
+    public Double getTotalMonthlyInstallment(MainAccount main) {
+        List<LoanAccount> las = main.getLoanAccounts();
+
+        Double totalBalance = 0.0;
+        for (LoanAccount la : las) {
+            totalBalance += la.getMonthlyInstallment();
+        }
+        return totalBalance;
+    }
+
+    public Double getTotalAsset(MainAccount main) {
+        return main.getWealthManagementSubscriber().getTotalPortfolioValue() + getTotalDepositAmount(customer.getMainAccount()).doubleValue();
+    }
+
+    public Double getSavingToIncome() {
+        return getTotalDepositAmount(customer.getMainAccount()).doubleValue() / customer.getIncome().getAvgValue() * 100;
+    }
+
+    public Double getDebtToIncome() {
+        return getTotalDebtAmount(customer.getMainAccount()) / (customer.getIncome().getAvgValue() * 12) * 100;
+    }
+
+    public Double getHousingCostRatio() {
+        return getTotalMortgageMonthlyInstallment(customer.getMainAccount()) / customer.getIncome().getAvgValue() * 100;
+    }
+
+    public Double getDebtRatio() {
+        return getTotalMonthlyInstallment(customer.getMainAccount()) / customer.getIncome().getAvgValue();
+    }
+
+    public Double getNetWorth() {
+        return getTotalAsset(customer.getMainAccount()) - getTotalDebtAmount(customer.getMainAccount());
+    }
+
+    public Double calcFinancialHealthScore() {
+        Double score = 100.0;
+        if (getSavingToIncome() >= 10 && getSavingToIncome() <= 20) {
+            score += 5;
+        } else if (getSavingToIncome() < 10) {
+            //too little saving
+            score -= 20;
+        } else if (getSavingToIncome() > 20) {
+            //too much saving
+            score -= 5;
+        }
+
+        if (getHousingCostRatio() >= 28) {
+            score -= 20;
+        } else {
+            score += 5;
+        }
+
+        if (getDebtRatio() >= 36) {
+            score -= 20;
+        } else {
+            score += 5;
+        }
+
+        if (customer.getAge() <= 22 && getNetWorth() > 0.0) {
+            score += 5;
+        } else if (customer.getAge() <= 25 && getNetWorth() > 50000.0) {
+            score += 20;
+        } else if (customer.getAge() <= 30 && getNetWorth() > 150000.0) {
+            score += 20;
+        } else if (customer.getAge() <= 35 && getNetWorth() > 250000.0) {
+            score += 20;
+        } else if (customer.getAge() <= 40 && getNetWorth() > 400000.0) {
+            score += 20;
+        } else if (customer.getAge() <= 45 && getNetWorth() > 600000.0) {
+            score += 20;
+        } else if (customer.getAge() <= 50 && getNetWorth() > 850000.0) {
+            score += 20;
+        } else if (customer.getAge() <= 55 && getNetWorth() > 1000000.0) {
+            score += 20;
+        } else if (customer.getAge() <= 60 && getNetWorth() > 1500000.0) {
+            score += 20;
+        } else if (customer.getAge() >= 60 && getNetWorth() > 2000000.0) {
+            score += 20;
+        } else {
+            score -= 20;
+        }
+
+        return score;
         /*
          http://www.thefrugaltoad.com/personalfinance/personal-financial-ratios-everyone-should-know
         
@@ -122,8 +216,20 @@ public class PortfolioManagedBean implements Serializable {
          Calculated by dividing total monthly loan payments by monthly income.
         
          networth = asset - liabilities
+         http://www.financialsamurai.com/the-average-net-worth-for-the-above-average-person/
          */
-        return 0.0;
+    }
+
+    public String calcFinancialHealthScoreLevel() {
+        if (calcFinancialHealthScore() >= 80) {
+            return EnumUtils.FinancialHealthLevel.VERYHEALTHY.getValue();
+        } else if (calcFinancialHealthScore() >= 60 && calcFinancialHealthScore() < 80) {
+            return EnumUtils.FinancialHealthLevel.HEALTHY.getValue();
+        } else if (calcFinancialHealthScore() >= 40 && calcFinancialHealthScore() < 60) {
+            return EnumUtils.FinancialHealthLevel.UNHEALTHY.getValue();
+        } else {
+            return EnumUtils.FinancialHealthLevel.VERYUNHEALTHY.getValue();
+        }
     }
 
     public PieChartModel getPieModel2() {
@@ -156,6 +262,10 @@ public class PortfolioManagedBean implements Serializable {
             totalBalance = totalBalance.add(da.getBalance());
         }
         return totalBalance;
+    }
+
+    public Double getTotalDebtAmount(MainAccount main) {
+        return getTotalLoanAmount(main) + getTotalCreditAmount(main);
     }
 
     public Double getTotalLoanAmount(MainAccount main) {
@@ -214,14 +324,6 @@ public class PortfolioManagedBean implements Serializable {
 
     public void setCustomer(Customer customer) {
         this.customer = customer;
-    }
-
-    public Double getFinancialHealth() {
-        return financialHealth;
-    }
-
-    public void setFinancialHealth(Double financialHealth) {
-        this.financialHealth = financialHealth;
     }
 
 }

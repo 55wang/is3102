@@ -7,6 +7,8 @@ package staff.wealth;
 
 import sentiment.Analyze;
 import com.google.api.services.language.v1beta1.model.Sentiment;
+import ejb.session.common.EmailServiceSessionBean;
+import ejb.session.common.EmailServiceSessionBeanLocal;
 import ejb.session.mainaccount.MainAccountSessionBeanLocal;
 import ejb.session.wealth.InvestmentPlanSessionBeanLocal;
 import ejb.session.wealth.PortfolioSessionBeanLocal;
@@ -28,6 +30,8 @@ import utils.RedirectUtils;
 @ViewScoped
 public class UpdatePortfolioManagedBean implements Serializable {
 
+    @EJB
+    EmailServiceSessionBeanLocal EmailServiceSessionBean;
     @EJB
     PortfolioSessionBeanLocal portfolioSessionBean;
     @EJB
@@ -74,6 +78,8 @@ public class UpdatePortfolioManagedBean implements Serializable {
 
         //set current amount and value to buying 
         portfolioSessionBean.updatePortfolio(p);
+        String email = p.getWealthManagementSubscriber().getMainAccount().getCustomer().getEmail();
+        sendEmailNotification(email);
         MessageUtils.displayInfo("Update Successful");
     }
 
@@ -81,7 +87,13 @@ public class UpdatePortfolioManagedBean implements Serializable {
         //when execute btn is pressed from the viewinvestmentplan, it should already create the portfolio
         //here is just merge and update value instead of persist.
         portfolioSessionBean.updatePortfolio(p);
+        String email = p.getWealthManagementSubscriber().getMainAccount().getCustomer().getEmail();
+        sendEmailNotification(email);
         MessageUtils.displayInfo("Update Successful");
+    }
+    
+    public void sendEmailNotification(String email) {
+        EmailServiceSessionBean.sendUpdatePortfolioNotice(email);
     }
 
     public Portfolio getP() {

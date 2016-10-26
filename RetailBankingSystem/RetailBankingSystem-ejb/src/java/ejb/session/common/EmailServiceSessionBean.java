@@ -31,6 +31,31 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
 
     String emailServerName = "mailauth.comp.nus.edu.sg";
     String mailer = "JavaMailer";
+    
+    
+    @Override
+    public void sendUpdatePortfolioNotice(String recipient) {
+        Session session = getSession();
+
+        try {
+
+            Message message = new MimeMessage(session);
+            message.setFrom(new InternetAddress("merlionbanking@gmail.com"));
+            message.setRecipients(Message.RecipientType.TO,
+                    InternetAddress.parse(recipient));
+            message.setSubject("Your Portfolio is updated - Merlion Bank");
+            message.setText("Dear Customer, \n Your portfolio has been updated.");
+
+            Transport.send(message);
+
+            System.out.println("Email send out successfully");
+            return;
+
+        } catch (MessagingException e) {
+            System.out.println(e);
+            return;
+        }
+    }
 
     @Override
     public Boolean sendActivationEmailForCustomer(String recipient) {

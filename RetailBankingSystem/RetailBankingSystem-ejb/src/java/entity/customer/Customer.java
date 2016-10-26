@@ -44,6 +44,7 @@ public class Customer implements Serializable {
     private Date birthDay;
     private String firstname;
     private String lastname;
+    private String fullName;
     private String phone;
     @Column(unique = true)
     private String email;
@@ -71,8 +72,9 @@ public class Customer implements Serializable {
     @ManyToOne
     private CustomerGroup customerGroup;
 
-    public String getFullName() {
-        return this.getFirstname() + " " + this.getLastname();
+    public Integer getAge() {
+        Integer age = (int) (System.currentTimeMillis() - getBirthDay().getTime()) / (24 * 60 * 60 * 1000);
+        return age;
     }
 
     public Long getId() {
@@ -318,6 +320,17 @@ public class Customer implements Serializable {
 
     public void setCustomerGroup(CustomerGroup customerGroup) {
         this.customerGroup = customerGroup;
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
+    public Customer() {
     }
 
 }

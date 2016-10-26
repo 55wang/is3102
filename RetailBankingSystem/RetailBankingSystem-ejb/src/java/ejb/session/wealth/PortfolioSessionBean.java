@@ -76,6 +76,13 @@ public class PortfolioSessionBean implements PortfolioSessionBeanLocal {
     }
 
     @Override
+    public List<Portfolio> getListPortfoliosByCustomerName(String searchText) {
+        Query q = em.createQuery("Select p from Portfolio p where UPPER(p.wealthManagementSubscriber.mainAccount.customer.fullName) like :inSearchText");
+        q.setParameter("inSearchText", "%" + searchText.toUpperCase() + "%");
+        return q.getResultList();
+    }
+
+    @Override
     public Portfolio getPortfolioById(Long Id) {
         return em.find(Portfolio.class, Id);
     }
