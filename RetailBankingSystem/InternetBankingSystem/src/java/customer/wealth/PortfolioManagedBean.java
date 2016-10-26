@@ -130,23 +130,25 @@ public class PortfolioManagedBean implements Serializable {
     }
 
     public Double getTotalAsset(MainAccount main) {
-        return main.getWealthManagementSubscriber().getTotalPortfolioValue() + getTotalDepositAmount(customer.getMainAccount()).doubleValue();
+        return main.getWealthManagementSubscriber().getTotalPortfolioValue() 
+                + getTotalDepositAmount(customer.getMainAccount()).doubleValue()
+                +getTotalDebtAmount(main);
     }
 
     public Double getSavingToIncome() {
-        return getTotalDepositAmount(customer.getMainAccount()).doubleValue() / customer.getIncome().getAvgValue() * 100;
+        return getTotalDepositAmount(customer.getMainAccount()).doubleValue() / customer.getIncome().getAvgValue();
     }
 
     public Double getDebtToIncome() {
-        return getTotalDebtAmount(customer.getMainAccount()) / (customer.getIncome().getAvgValue() * 12) * 100;
+        return getTotalMonthlyInstallment(customer.getMainAccount()) / customer.getIncome().getAvgValue();
     }
 
     public Double getHousingCostRatio() {
-        return getTotalMortgageMonthlyInstallment(customer.getMainAccount()) / customer.getIncome().getAvgValue() * 100;
+        return getTotalMortgageMonthlyInstallment(customer.getMainAccount()) / customer.getIncome().getAvgValue();
     }
 
     public Double getDebtRatio() {
-        return getTotalMonthlyInstallment(customer.getMainAccount()) / customer.getIncome().getAvgValue();
+        return getTotalDebtAmount(customer.getMainAccount()) / getTotalAsset(customer.getMainAccount());
     }
 
     public Double getNetWorth() {
@@ -208,12 +210,14 @@ public class PortfolioManagedBean implements Serializable {
          Savings to Income (S to I) Savings Ratio: Should be between 10% to 20%.
         
          Debt to Income (D to I) Consumer Debt Ratio: Should not exceed 20%.
+        Calculated by dividing total monthly loan payments by monthly income.
         
          Housing Cost Ratio:  Should not exceed 28% of gross income.  
          = Total of monthly mortgage payment (principal + interest) / the gross monthly income
         
          Total Debt Ratio: Should not exceed 36% of gross income.  
-         Calculated by dividing total monthly loan payments by monthly income.
+        = total Debt / Total Asset
+         
         
          networth = asset - liabilities
          http://www.financialsamurai.com/the-average-net-worth-for-the-above-average-person/

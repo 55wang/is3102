@@ -58,6 +58,25 @@
                             <h:outputText value="#{portfolioManagedBean.calcFinancialHealthScore()}" />
                             <h:outputText value="Financial Health Level: " />
                             <h:outputText value="#{portfolioManagedBean.calcFinancialHealthScoreLevel()}" />
+
+
+                            <table style="width:100%">
+                                <tr>
+                                    <th><h:outputText value="Saving to Income" /></th>
+                                    <th><h:outputText value="Debt to Income" /></th> 
+                                    <th><h:outputText value="HousingCost Ratio" /></th>
+                                    <th><h:outputText value="Debt Ratio" /></th>
+                                    <th><h:outputText value="Networth" /></th>
+                                </tr>
+                                <tr>
+                                    <td><h:outputText value="#{portfolioManagedBean.getSavingToIncome()}" /></td>
+                                    <td><h:outputText value="#{portfolioManagedBean.getDebtToIncome()}" /></td> 
+                                    <td><h:outputText value="#{portfolioManagedBean.getHousingCostRatio()}" /></td>
+                                    <td><h:outputText value="#{portfolioManagedBean.getDebtRatio()}" /></td> 
+                                    <td><h:outputText value="#{portfolioManagedBean.getNetWorth()}" /></td>
+                                </tr>
+                            </table>
+
                         </h:panelGrid>
                         <p:messages id="messagesStatus" redisplay="false"></p:messages>
                     </p:panel>
