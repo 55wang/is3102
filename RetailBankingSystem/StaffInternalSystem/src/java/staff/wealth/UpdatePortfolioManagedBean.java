@@ -19,6 +19,7 @@ import javax.ejb.EJB;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
+import server.utilities.EnumUtils;
 import utils.MessageUtils;
 import utils.RedirectUtils;
 
@@ -42,6 +43,10 @@ public class UpdatePortfolioManagedBean implements Serializable {
     private String portfolioID;
 
     private Portfolio p;
+    
+    private String updateType = "updateBuy";
+    private String updateBuy = "updateBuy";
+    private String updateCurrent = "updateCurrent";
 
     public UpdatePortfolioManagedBean() {
     }
@@ -78,6 +83,9 @@ public class UpdatePortfolioManagedBean implements Serializable {
 
         //set current amount and value to buying 
         if(validator()){
+            p.setStatus(EnumUtils.PortfolioStatus.BOUGHT);
+            for(int i = 0; i < p.getExecutedInvestmentPlan().getSuggestedFinancialInstruments().size(); i++)
+                p.getExecutedInvestmentPlan().getSuggestedFinancialInstruments().get(i).setCurrentValuePerShare(p.getExecutedInvestmentPlan().getSuggestedFinancialInstruments().get(i).getBuyingValuePerShare());    
             portfolioSessionBean.updatePortfolio(p);
             MessageUtils.displayInfo("Update Successful");
             String email = p.getWealthManagementSubscriber().getMainAccount().getCustomer().getEmail();
@@ -86,18 +94,19 @@ public class UpdatePortfolioManagedBean implements Serializable {
         else{
             MessageUtils.displayError("Please enter all buying values!");
         }   
-        portfolioSessionBean.updatePortfolio(p);
-        
-        MessageUtils.displayInfo("Update Successful");
     }
 
     public void updateCurrentPortfolio() {
         //when execute btn is pressed from the viewinvestmentplan, it should already create the portfolio
         //here is just merge and update value instead of persist.
-        portfolioSessionBean.updatePortfolio(p);
-        String email = p.getWealthManagementSubscriber().getMainAccount().getCustomer().getEmail();
-        sendEmailNotification(email);
-        MessageUtils.displayInfo("Update Successful");
+        if(validator()){
+            portfolioSessionBean.updatePortfolio(p);
+            String email = p.getWealthManagementSubscriber().getMainAccount().getCustomer().getEmail();
+            sendEmailNotification(email);
+            MessageUtils.displayInfo("Update Successful");
+        }else{
+            MessageUtils.displayError("Please enter correct values!");
+        }  
     }
     
     public void reset(){
@@ -119,11 +128,17 @@ public class UpdatePortfolioManagedBean implements Serializable {
         }
     }
     
+    public void resetCurrentValue(){
+        for(int i = 0; i < p.getExecutedInvestmentPlan().getSuggestedFinancialInstruments().size(); i++)
+            p.getExecutedInvestmentPlan().getSuggestedFinancialInstruments().get(i).setCurrentValuePerShare(0.0);           
+        calculate();
+    }
+    
     public Boolean validator(){
         Boolean flag = true;
         
         for(int i = 0; i < p.getExecutedInvestmentPlan().getSuggestedFinancialInstruments().size(); i++){
-            if(p.getExecutedInvestmentPlan().getSuggestedFinancialInstruments().get(i).getBuyingValuePerShare() == 0.0 && p.getExecutedInvestmentPlan().getSuggestedFinancialInstruments().get(i).getWeight() != 0.0)
+            if(p.getExecutedInvestmentPlan().getSuggestedFinancialInstruments().get(i).getBuyingValuePerShare() <= 0.0 && p.getExecutedInvestmentPlan().getSuggestedFinancialInstruments().get(i).getWeight() != 0.0)
                 flag = false;
         }
         
@@ -150,4 +165,27 @@ public class UpdatePortfolioManagedBean implements Serializable {
         this.portfolioID = portfolioID;
     }
 
+    public String getUpdateType() {
+        return updateType;
+    }
+
+    public void setUpdateType(String updateType) {
+        this.updateType = updateType;
+    }
+
+    public String getUpdateBuy() {
+        return updateBuy;
+    }
+
+    public void setUpdateBuy(String updateBuy) {
+        this.updateBuy = updateBuy;
+    }
+
+    public String getUpdateCurrent() {
+        return updateCurrent;
+    }
+
+    public void setUpdateCurrent(String updateCurrent) {
+        this.updateCurrent = updateCurrent;
+    }
 }
