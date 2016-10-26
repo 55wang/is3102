@@ -10,6 +10,7 @@ import entity.loan.LoanApplication;
 import entity.loan.LoanPaymentBreakdown;
 import java.util.List;
 import javax.ejb.Local;
+import server.utilities.EnumUtils;
 
 /**
  *
@@ -20,7 +21,7 @@ public interface LoanAccountSessionBeanLocal {
     public LoanAccount createLoanAccount(LoanAccount loanAccount);
     public LoanAccount updateLoanAccount(LoanAccount loanAccount);
     public LoanAccount getLoanAccountByAccountNumber(String accountNumber);
-    public List<LoanAccount> getLoanAccountByStaffUsername(String username);
+    public List<LoanAccount> getLoanAccountByStaffUsernameAndStatus(String username, EnumUtils.LoanAccountStatus status);
     public List<LoanAccount> getLoanAccountListByCustomerIndentityNumber(String identityNumber);
     public List<LoanAccount> getActiveLoanAccountListByMainAccountId(Long id);
     public LoanApplication createLoanApplication(LoanApplication loanApplication);

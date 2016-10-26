@@ -72,12 +72,16 @@ public class HdbLoanApplicationManagedBean implements Serializable {
         hdbLoanProducts = loanProductBean.getAllHDBLoanProduct();
     }
     
-    public void calculateHDB(){
+    public void checkAge(){
         if (getAge() < 21) {
             MessageUtils.displayError(ConstantUtils.NOT_ENOUGH_AGE);
-            return;
+        } else {
+            JSUtils.callJSMethod("PF('myWizard').next();");
         }
-        
+    }
+    
+    public void calculateHDB(){
+   
         if (getMonthlyIncome() < 1500) {
             MessageUtils.displayError(ConstantUtils.NOT_ENOUGH_INCOME_1500);
             return;

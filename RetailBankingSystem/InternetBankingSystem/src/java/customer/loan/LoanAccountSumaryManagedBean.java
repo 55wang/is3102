@@ -45,20 +45,12 @@ public class LoanAccountSumaryManagedBean implements Serializable {
         setLoanAccounts(ma.getLoanAccounts());
     }
     
-    public void viewBreakdowns(LoanAccount la) {
+    public void viewDetails(LoanAccount la) {
         // Go to Message View
         Map<String, String> map = new HashMap<>();
         map.put("accountId", la.getAccountNumber());
         String params = RedirectUtils.generateParameters(map);
-        RedirectUtils.redirect("loan_account_breakdown.xhtml" + params);
-    }
-    
-    public void viewHistory(LoanAccount la) {
-        // Go to Message View
-        Map<String, String> map = new HashMap<>();
-        map.put("accountId", la.getAccountNumber());
-        String params = RedirectUtils.generateParameters(map);
-        RedirectUtils.redirect("loan_account_history.xhtml" + params);
+        RedirectUtils.redirect("loan_account_details.xhtml" + params);
     }
 
     /**
