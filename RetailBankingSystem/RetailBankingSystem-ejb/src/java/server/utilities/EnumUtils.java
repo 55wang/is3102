@@ -1741,7 +1741,9 @@ public class EnumUtils {
         PENDING("PENDING"),
         APPROVED("APPROVED"),
         REJECTED("REJECTED"),
+        CLOSED("CLOSED"),
         SUSPENDED("SUSPENDED");
+        
         private String value;
 
         LoanAccountStatus(String value) {

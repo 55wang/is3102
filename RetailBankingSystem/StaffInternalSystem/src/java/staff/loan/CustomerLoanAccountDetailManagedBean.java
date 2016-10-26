@@ -13,6 +13,7 @@ import java.util.Map;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
+import utils.MessageUtils;
 import utils.RedirectUtils;
 
 /**
@@ -53,6 +54,17 @@ public class CustomerLoanAccountDetailManagedBean implements Serializable {
         map.put("accountId", getLoanAccount().getAccountNumber());
         String params = RedirectUtils.generateParameters(map);
         RedirectUtils.redirect("customer_loan_payment_history.xhtml" + params);
+    }
+    
+    public void closeAccount() {
+        // Go to Message View
+        String result = loanAccountBean.closeLoanAccountByAccountNumber(accountId);
+        if (result.equals("SUCCESS")) {
+            loanAccount = loanAccountBean.getLoanAccountByAccountNumber(accountId);
+            MessageUtils.displayInfo("Account Closed");
+        } else {
+            MessageUtils.displayError("Check your account outstanding due and principals!");
+        }
     }
 
     /**

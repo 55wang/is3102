@@ -28,7 +28,7 @@
                                 <p:inputText value="#{checkLoanApplicationManagedBean.applicationId}" required="true" requiredMessage="Age is required." />
                             </h:panelGrid>
                             <p:commandButton value="Check" action="#{checkLoanApplicationManagedBean.retrieveLoanApplication()}" update="@form" rendered="#{checkLoanApplicationManagedBean.loanApplication == null}"/>
-                            <h:outputText class="font-25" value="Status: #{checkLoanApplicationManagedBean.loanApplication.status}" rendered="#{checkLoanApplicationManagedBean.loanApplication != null}" />
+                            <h:outputText class="font-25" value="Status: #{checkLoanApplicationManagedBean.loanApplication.status.toString()}" rendered="#{checkLoanApplicationManagedBean.loanApplication != null}" />
                         </h:form>
                     </p:panel>
                 </div>
