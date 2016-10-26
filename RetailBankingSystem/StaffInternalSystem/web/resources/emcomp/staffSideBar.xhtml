@@ -69,6 +69,9 @@
                         <li class="side-menu-item #{cc.attrs.side == 'loanCalculator' ? 'active' : ''}">
                             <h:link outcome="staff_loan_calculator_directory" value="Loan Calculator" />
                         </li>
+                        <li class="side-menu-item #{cc.attrs.side == 'updateSiborRate' ? 'active' : ''}">
+                            <h:link outcome="update_sibor_rate" value="Update Sibor Rate" />
+                        </li>
                     </c:if>
                     <c:if test="#{cc.attrs.top == 'message'}">
                         <li class="side-menu-item #{cc.attrs.side == 'chat' ? 'active' : ''}">
