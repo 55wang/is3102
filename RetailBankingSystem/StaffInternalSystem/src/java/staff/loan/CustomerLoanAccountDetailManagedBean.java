@@ -3,42 +3,56 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package customer.loan;
+package staff.loan;
 
 import ejb.session.loan.LoanAccountSessionBeanLocal;
 import entity.loan.LoanAccount;
-import entity.loan.LoanPaymentBreakdown;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
+import utils.RedirectUtils;
 
 /**
  *
  * @author leiyang
  */
-@Named(value = "loanAccountBreakdownManagedBean")
+@Named(value = "customerLoanAccountDetailManagedBean")
 @ViewScoped
-public class LoanAccountBreakdownManagedBean implements Serializable {
-    
+public class CustomerLoanAccountDetailManagedBean implements Serializable {
+
     @EJB
     private LoanAccountSessionBeanLocal loanAccountBean;
 
     private String accountId;
     private LoanAccount loanAccount;
-    private List<LoanPaymentBreakdown> breakdowns = new ArrayList<>();
+    
     /**
-     * Creates a new instance of LoanAccountBreakdownManagedBean
+     * Creates a new instance of CustomerLoanAccountDetailManagedBean
      */
-    public LoanAccountBreakdownManagedBean() {
+    public CustomerLoanAccountDetailManagedBean() {
     }
     
-    public void init() {
-        System.out.println("Account id is: " + getAccountId());
-        breakdowns = loanAccountBean.getFuturePaymentBreakdownsByLoanAcountNumber(getAccountId());
-        setLoanAccount(loanAccountBean.getLoanAccountByAccountNumber(getAccountId()));
+    public void findLoanAccount() {
+        loanAccount = loanAccountBean.getLoanAccountByAccountNumber(accountId);
+    }
+    
+    public void viewBreakdowns() {
+        // Go to Message View
+        Map<String, String> map = new HashMap<>();
+        map.put("accountId", getLoanAccount().getAccountNumber());
+        String params = RedirectUtils.generateParameters(map);
+        RedirectUtils.redirect("customer_loan_repayment_breakdown.xhtml" + params);
+    }
+    
+    public void viewHistory() {
+        // Go to Message View
+        Map<String, String> map = new HashMap<>();
+        map.put("accountId", getLoanAccount().getAccountNumber());
+        String params = RedirectUtils.generateParameters(map);
+        RedirectUtils.redirect("customer_loan_payment_history.xhtml" + params);
     }
 
     /**
@@ -53,20 +67,6 @@ public class LoanAccountBreakdownManagedBean implements Serializable {
      */
     public void setAccountId(String accountId) {
         this.accountId = accountId;
-    }
-
-    /**
-     * @return the breakdowns
-     */
-    public List<LoanPaymentBreakdown> getBreakdowns() {
-        return breakdowns;
-    }
-
-    /**
-     * @param breakdowns the breakdowns to set
-     */
-    public void setBreakdowns(List<LoanPaymentBreakdown> breakdowns) {
-        this.breakdowns = breakdowns;
     }
 
     /**
