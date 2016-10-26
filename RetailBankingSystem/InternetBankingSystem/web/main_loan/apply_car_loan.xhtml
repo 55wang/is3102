@@ -26,14 +26,19 @@
 
                         <p:tab id="p-info" title="Personal Information" >
                             <p:panel>
-
+                                <p:messages id="msgs1"/>
                                 <h:panelGrid columns="2" cellpadding="5px" columnClasses="label, value">
 
                                     <h:outputText value="Your name: " />
-                                    <p:inputText value="#{carLoanApplicationManagedBean.name}" required="true" requiredMessage="Name is required." />
+                                    <p:inputText value="#{carLoanApplicationManagedBean.name}" required="true" requiredMessage="Name is required." validatorMessage="Invalid name.">
+                                        <f:validateLength minimum="2" />
+                                    </p:inputText>
 
                                     <h:outputText value="ID Number: " />
-                                    <p:inputText value="#{carLoanApplicationManagedBean.idNumber}" required="true" requiredMessage="ID Number is required." />
+                                    <p:inputText value="#{carLoanApplicationManagedBean.idNumber}" required="true" requiredMessage="ID Number is required." validatorMessage="Invalid identity number.">
+                                        <f:validateRegex
+                                            pattern="^[A-Za-z0-9]{9}$" />
+                                    </p:inputText>
 
                                     <h:outputText value="Age: " />
                                     <p:inputText value="#{carLoanApplicationManagedBean.age}" required="true" requiredMessage="Age is required." />
@@ -42,17 +47,21 @@
                                     <p:inputText value="#{carLoanApplicationManagedBean.phoneNumber}" required="true" requiredMessage="Phone number is required." />
 
                                     <h:outputText value="Email Address: " />
-                                    <p:inputText value="#{carLoanApplicationManagedBean.email}" required="true" requiredMessage="Email is required." />
+                                    <p:inputText value="#{carLoanApplicationManagedBean.email}" required="true" requiredMessage="Email is required." validatorMessage="Invalid email format" >
+                                    <f:validateRegex
+                                            pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+                                    </p:inputText>
 
                                 </h:panelGrid>
 
                                 <div class="register-form-button">
-                                    <p:commandButton value="Next" type="button" onclick="PF('myWizard').next();" />
+                    
+                                    <p:commandButton value="Next" actionListener="#{carLoanApplicationManagedBean.checkAge()}" update="@form:msgs1"/>
                                 </div>
                             </p:panel>
                         </p:tab>
 
-                        <p:tab id="f-info" title="Financial Information" >
+                        <p:tab id="f-info" title="Financial status" >
                             <p:panel>
                                 <h:panelGrid columns="2" cellpadding="5px" columnClasses="label, value">
 
@@ -85,10 +94,10 @@
                             </p:panel>
                         </p:tab>
 
-                        <p:tab id="m-info" title="Maximum Car Loan" >
+                        <p:tab id="l-info" title="Loan Information" >
                             <p:panel>
                                 <h:panelGrid columns="2" cellpadding="5px" columnClasses="label, value">
-
+                                    
                                     <h:outputText value="Maximum loan amount (S$):: " />
                                     <h:outputText value="#{carLoanApplicationManagedBean.carLoanAmt}" styleClass="outputLabel">
                                         <f:convertNumber pattern="###00.00"/>
@@ -98,27 +107,15 @@
                                     <h:outputText value="#{carLoanApplicationManagedBean.carLoanMonthlyInstalment}" styleClass="outputLabel">
                                         <f:convertNumber pattern="###00.00"/>
                                     </h:outputText>
-                                </h:panelGrid>
-
-                                <div class="register-form-button">
-                                    <p:commandButton value="Back" type="button" onclick="PF('myWizard').back();" />
-                                    <p:commandButton value="Next" type="button" onclick="PF('myWizard').next();" />
-                                </div>
-                            </p:panel>
-                        </p:tab>
-
-                        <p:tab id="l-info" title="Loan Information" >
-                            <p:panel>
-                                <h:panelGrid columns="2" cellpadding="5px" columnClasses="label, value">
 
                                     <h:outputText value="Loan Amount: " />
-                                    <p:inputText value="#{carLoanApplicationManagedBean.loanAmount}" required="true" requiredMessage="Loan Amount is required." />
+                                    <p:inputText value="#{carLoanApplicationManagedBean.loanAmount}" required="true" requiredMessage="Loan Amount is required."/>
 
                                     <h:outputText value="Choose a loan term: " />
                                     <p:selectOneMenu value="#{carLoanApplicationManagedBean.loanProductId}" rendered="true" required="true">
                                         <f:selectItems value="#{carLoanApplicationManagedBean.carLoanProducts}" var="p" itemValue="#{p.id}" itemLabel="#{p.productName} #{p.tenure}" />
                                     </p:selectOneMenu>
-
+                                    
                                 </h:panelGrid>
 
                                 <div class="register-form-button">
@@ -127,7 +124,7 @@
                             </p:panel>
                         </p:tab>
 
-                        <p:tab id="result" title="Results">
+                        <p:tab id="result" title="Confirmation">
                             <p:panel>
                                 <h2>Your application has submitted. Please wait for your staff to approach you.</h2>
                                 <h2>Your application number is #{carLoanApplicationManagedBean.applicationNumber}.</h2>

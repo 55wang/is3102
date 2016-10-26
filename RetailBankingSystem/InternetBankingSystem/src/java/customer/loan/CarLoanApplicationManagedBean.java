@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.event.ValueChangeEvent;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import server.utilities.ConstantUtils;
@@ -75,13 +76,16 @@ public class CarLoanApplicationManagedBean implements Serializable {
         }
     }
     
-    public void calculateCar(){
-        
+    public void checkAge(){
         if (getAge() < 21) {
             MessageUtils.displayError(ConstantUtils.NOT_ENOUGH_AGE);
-            return;
+        } else {
+            JSUtils.callJSMethod("PF('myWizard').next();");
         }
         
+    }
+      
+    public void calculateCar(){
         if (getMonthlyIncome() < 2000) {
             MessageUtils.displayError(ConstantUtils.NOT_ENOUGH_INCOME_2000);
             return;
