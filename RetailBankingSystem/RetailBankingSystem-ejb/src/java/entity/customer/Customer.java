@@ -59,6 +59,7 @@ public class Customer implements Serializable {
     private ResidentialType residentialType;
     private EmploymentStatus employmentStatus;
     private Income income;
+    private Double actualIncome;
     private Gender gender;
 
     // credit
@@ -318,6 +319,20 @@ public class Customer implements Serializable {
 
     public void setCustomerGroup(CustomerGroup customerGroup) {
         this.customerGroup = customerGroup;
+    }
+
+    /**
+     * @return the actualIncome
+     */
+    public Double getActualIncome() {
+        return actualIncome;
+    }
+
+    /**
+     * @param actualIncome the actualIncome to set
+     */
+    public void setActualIncome(Double actualIncome) {
+        this.actualIncome = actualIncome;
     }
 
 }

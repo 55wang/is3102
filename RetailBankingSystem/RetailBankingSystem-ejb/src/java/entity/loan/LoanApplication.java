@@ -5,6 +5,7 @@
  */
 package entity.loan;
 
+import entity.customer.MainAccount;
 import entity.staff.StaffAccount;
 import java.io.Serializable;
 import javax.persistence.CascadeType;
@@ -38,12 +39,15 @@ public class LoanApplication implements Serializable {
     private Double marketValue;
     private Integer otherHousingLoan;
     private EnumUtils.LoanProductType productType;
+    private EnumUtils.LoanAccountStatus status = EnumUtils.LoanAccountStatus.NEW;
     
     // mapping
     @ManyToOne(cascade = {CascadeType.MERGE})
     private StaffAccount loanOfficer;
     @ManyToOne(cascade = {CascadeType.MERGE})
     private LoanProduct loanProduct;
+    @ManyToOne
+    private MainAccount mainAccount;
     
     public Long getId() {
         return id;
@@ -258,6 +262,34 @@ public class LoanApplication implements Serializable {
      */
     public void setLoanProduct(LoanProduct loanProduct) {
         this.loanProduct = loanProduct;
+    }
+
+    /**
+     * @return the status
+     */
+    public EnumUtils.LoanAccountStatus getStatus() {
+        return status;
+    }
+
+    /**
+     * @param status the status to set
+     */
+    public void setStatus(EnumUtils.LoanAccountStatus status) {
+        this.status = status;
+    }
+
+    /**
+     * @return the mainAccount
+     */
+    public MainAccount getMainAccount() {
+        return mainAccount;
+    }
+
+    /**
+     * @param mainAccount the mainAccount to set
+     */
+    public void setMainAccount(MainAccount mainAccount) {
+        this.mainAccount = mainAccount;
     }
     
 }

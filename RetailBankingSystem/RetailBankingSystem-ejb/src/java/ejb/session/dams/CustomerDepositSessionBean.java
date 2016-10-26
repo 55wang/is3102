@@ -125,8 +125,8 @@ public class CustomerDepositSessionBean implements CustomerDepositSessionBeanLoc
     
     @Override
     public CustomerDepositAccount getDaytoDayAccountByMainAccount(MainAccount ma) {
-        Query q = em.createQuery("SELECT ba FROM CustomerDepositAccount ba WHERE ba.mainAccount.id =:mainAccountId AND ba.type = :inType");
-        q.setParameter("mainAccountId", ma.getId());
+        Query q = em.createQuery("SELECT ba FROM CustomerDepositAccount ba WHERE ba.mainAccount.userID =:mainAccountId AND ba.type = :inType");
+        q.setParameter("mainAccountId", ma.getUserID());
         q.setParameter("inType", EnumUtils.DepositAccountType.CURRENT);
         List<CustomerDepositAccount> results = q.getResultList();
         if (results.size() > 0) {

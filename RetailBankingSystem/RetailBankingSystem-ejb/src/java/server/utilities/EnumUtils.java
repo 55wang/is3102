@@ -700,6 +700,22 @@ public class EnumUtils {
         public String getValue() {
             return value;
         }
+        
+        public static Income getEnumFromNumber(Double income) {
+            if (income < 2000) {
+                return Income.BELOW_2000;
+            } else if (income >= 2000 & income < 4000) {
+                return Income.FROM_2000_TO_4000;
+            } else if (income >= 4000 & income < 6000) {
+                return Income.FROM_4000_TO_6000;
+            } else if (income >= 6000 & income < 8000) {
+                return Income.FROM_6000_TO_8000;
+            } else if (income >= 8000 & income < 10000) {
+                return Income.FROM_8000_TO_10000;
+            } else {
+                return Income.OVER_10000;
+            }
+        }
 
         @Override
         public String toString() {

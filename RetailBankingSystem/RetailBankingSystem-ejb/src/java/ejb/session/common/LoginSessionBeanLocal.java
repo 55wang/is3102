@@ -19,4 +19,5 @@ public interface LoginSessionBeanLocal {
     public Customer getCustomerByUserID(String userID);
     public MainAccount getMainAccountByEmail(String email);
     public MainAccount getMainAccountByUserID(String userID);
+    public MainAccount getMainAccountByUserIC(String userIC);
 }
