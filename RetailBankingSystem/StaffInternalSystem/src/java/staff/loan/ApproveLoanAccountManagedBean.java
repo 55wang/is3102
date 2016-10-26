@@ -67,6 +67,16 @@ public class ApproveLoanAccountManagedBean implements Serializable {
         MessageUtils.displayInfo("Application Approved!");
     }
     
+    public void rejectLoanAccount(LoanAccount la) {
+        // change status
+        la.setLoanAccountStatus(EnumUtils.LoanAccountStatus.REJECTED);
+        la = loanAccountBean.updateLoanAccount(la);
+        // inform customer by email
+        emailBean.sendLoanApplicationRejectNotice(la.getMainAccount().getCustomer().getEmail());
+        
+        MessageUtils.displayInfo("Application Rejected!");
+    }
+    
     public void calculateCreditScore(LoanAccount la) {
         try {
             la.getMainAccount().getCustomer().setBureaCreditScore(bureauCreditScore);

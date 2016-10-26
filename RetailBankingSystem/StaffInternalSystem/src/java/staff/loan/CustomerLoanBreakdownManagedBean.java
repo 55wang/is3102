@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package customer.loan;
+package staff.loan;
 
 import ejb.session.loan.LoanAccountSessionBeanLocal;
 import entity.loan.LoanAccount;
@@ -19,20 +19,21 @@ import javax.faces.view.ViewScoped;
  *
  * @author leiyang
  */
-@Named(value = "loanAccountBreakdownManagedBean")
+@Named(value = "customerLoanBreakdownManagedBean")
 @ViewScoped
-public class LoanAccountBreakdownManagedBean implements Serializable {
-    
+public class CustomerLoanBreakdownManagedBean implements Serializable {
+
     @EJB
     private LoanAccountSessionBeanLocal loanAccountBean;
 
     private String accountId;
     private LoanAccount loanAccount;
     private List<LoanPaymentBreakdown> breakdowns = new ArrayList<>();
+    
     /**
-     * Creates a new instance of LoanAccountBreakdownManagedBean
+     * Creates a new instance of CustomerLoanBreakdownManagedBean
      */
-    public LoanAccountBreakdownManagedBean() {
+    public CustomerLoanBreakdownManagedBean() {
     }
     
     public void init() {
@@ -56,20 +57,6 @@ public class LoanAccountBreakdownManagedBean implements Serializable {
     }
 
     /**
-     * @return the breakdowns
-     */
-    public List<LoanPaymentBreakdown> getBreakdowns() {
-        return breakdowns;
-    }
-
-    /**
-     * @param breakdowns the breakdowns to set
-     */
-    public void setBreakdowns(List<LoanPaymentBreakdown> breakdowns) {
-        this.breakdowns = breakdowns;
-    }
-
-    /**
      * @return the loanAccount
      */
     public LoanAccount getLoanAccount() {
@@ -81,6 +68,20 @@ public class LoanAccountBreakdownManagedBean implements Serializable {
      */
     public void setLoanAccount(LoanAccount loanAccount) {
         this.loanAccount = loanAccount;
+    }
+
+    /**
+     * @return the breakdowns
+     */
+    public List<LoanPaymentBreakdown> getBreakdowns() {
+        return breakdowns;
+    }
+
+    /**
+     * @param breakdowns the breakdowns to set
+     */
+    public void setBreakdowns(List<LoanPaymentBreakdown> breakdowns) {
+        this.breakdowns = breakdowns;
     }
     
 }

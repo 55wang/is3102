@@ -3,14 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package customer.loan;
+package staff.loan;
 
 import ejb.session.loan.LoanAccountSessionBeanLocal;
 import entity.loan.LoanAccount;
-import entity.loan.LoanPaymentBreakdown;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
@@ -19,26 +16,26 @@ import javax.faces.view.ViewScoped;
  *
  * @author leiyang
  */
-@Named(value = "loanAccountBreakdownManagedBean")
+@Named(value = "customerLoanHistoryManagedBean")
 @ViewScoped
-public class LoanAccountBreakdownManagedBean implements Serializable {
-    
+public class CustomerLoanHistoryManagedBean implements Serializable {
+
     @EJB
     private LoanAccountSessionBeanLocal loanAccountBean;
 
     private String accountId;
     private LoanAccount loanAccount;
-    private List<LoanPaymentBreakdown> breakdowns = new ArrayList<>();
+    
     /**
-     * Creates a new instance of LoanAccountBreakdownManagedBean
+     * Creates a new instance of CustomerLoanHistoryManagedBean
      */
-    public LoanAccountBreakdownManagedBean() {
+    public CustomerLoanHistoryManagedBean() {
     }
     
     public void init() {
         System.out.println("Account id is: " + getAccountId());
-        breakdowns = loanAccountBean.getFuturePaymentBreakdownsByLoanAcountNumber(getAccountId());
         setLoanAccount(loanAccountBean.getLoanAccountByAccountNumber(getAccountId()));
+        System.out.println("Account retrieved is: " + getLoanAccount().getAccountNumber());
     }
 
     /**
@@ -53,20 +50,6 @@ public class LoanAccountBreakdownManagedBean implements Serializable {
      */
     public void setAccountId(String accountId) {
         this.accountId = accountId;
-    }
-
-    /**
-     * @return the breakdowns
-     */
-    public List<LoanPaymentBreakdown> getBreakdowns() {
-        return breakdowns;
-    }
-
-    /**
-     * @param breakdowns the breakdowns to set
-     */
-    public void setBreakdowns(List<LoanPaymentBreakdown> breakdowns) {
-        this.breakdowns = breakdowns;
     }
 
     /**

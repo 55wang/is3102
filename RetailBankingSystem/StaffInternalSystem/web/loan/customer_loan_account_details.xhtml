@@ -1,0 +1,78 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:em="http://xmlns.jcp.org/jsf/composite/emcomp"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <!--shift + ctrl + F, format-->
+    <f:view>
+        <h:head>
+            <title>Your Debit Card Summary</title>
+            <em:cssImport></em:cssImport>
+        </h:head>
+        <h:body>
+
+            <em:staffNavBar context="loan"></em:staffNavBar>
+            <em:staffSideBar top="loan" side="loanAccountDetail"></em:staffSideBar>
+            <div class="container">
+                <h:form id="mainForm">
+                    <p:panel header="Loan Accounts account number #{loanAccountBreakdownManagedBean.accountId}">
+                        <p:messages id="messagesStatus" redisplay="false" >
+                            <h:panelGrid columns="2" cellpadding="5">
+                                <p:inputText value="#{customerLoanAccountDetailManagedBean.accountId}" />
+                                <p:commandButton value="Search" actionListener="#{customerLoanAccountDetailManagedBean.findLoanAccount()}" update="mainForm" />
+                                
+                                <c:if test="#{customerLoanAccountDetailManagedBean.accountId != null}">
+
+
+                                    <h:outputText value="Account Number:" />
+                                    <h:outputText value="#{customerLoanAccountDetailManagedBean.loanAccount.accountNumber}" />
+
+                                    <h:outputText value="Product Name:" />
+                                    <h:outputText value="#{customerLoanAccountDetailManagedBean.loanAccount.loanProduct.productName}" />
+
+                                    <h:outputText value="Outstanding (in SGD):" />
+                                    <h:outputText value="#{customerLoanAccountDetailManagedBean.loanAccount.outstandingPrincipal}" >
+                                        <f:convertNumber type="number" pattern="#0.00"/>
+                                    </h:outputText>
+
+                                    <h:outputText value="Amount paid in current period (in SGD):" />
+                                    <h:outputText value="#{customerLoanAccountDetailManagedBean.loanAccount.amountPaidBeforeDueDate}" />
+
+                                    <h:outputText value="Nth Month:" />
+                                    <h:outputText value="#{customerLoanAccountDetailManagedBean.loanAccount.currentPeriod}" />
+
+                                    <h:outputText value="Status:" />
+                                    <h:outputText value="#{customerLoanAccountDetailManagedBean.loanAccount.loanAccountStatus}" />
+
+                                    <h:outputText value="Officer incharge:" />
+                                    <h:outputText value="#{customerLoanAccountDetailManagedBean.loanAccount.loanOfficer.fullName}" />
+
+                                    <h:outputText value="Matrity Date:" />
+                                    <h:outputText value="#{customerLoanAccountDetailManagedBean.loanAccount.maturityDate}" />
+
+                                    <h:outputText value="Monthly Installment:" />
+                                    <h:outputText value="#{customerLoanAccountDetailManagedBean.loanAccount.monthlyInstallment}" />
+
+                                    <h:outputText value="Overdue Payment:" />
+                                    <h:outputText value="#{customerLoanAccountDetailManagedBean.loanAccount.overduePayment}" />
+
+                                    <h:outputText value="Next Payment due date:" />
+                                    <h:outputText value="#{customerLoanAccountDetailManagedBean.loanAccount.paymentDate}" />
+
+                                    <p:commandButton value="Breakdowns" actionListener="#{customerLoanAccountDetailManagedBean.viewBreakdowns()}"/>
+                                    <p:commandButton value="History" actionListener="#{customerLoanAccountDetailManagedBean.viewHistory()}"/>
+                                </c:if>
+                            </h:panelGrid>
+                        </p:messages>
+                    </p:panel>
+                </h:form>
+            </div>
+        </h:body>
+    </f:view>
+
+
+</html>
+

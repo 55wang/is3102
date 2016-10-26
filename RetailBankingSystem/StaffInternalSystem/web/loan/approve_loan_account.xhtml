@@ -55,6 +55,7 @@
                                 <p:column headerText="Action">
                                     <p:commandButton value="Credit Score" action="#{approveLoanAccountManagedBean.calculateCreditScore(loanAccount)}" icon="ui-icon-lightbulb" update="mainForm" />
                                     <p:commandButton value="Approve" actionListener="#{approveLoanAccountManagedBean.approveLoanAccount(loanAccount)}" update="mainForm"/>
+                                    <p:commandButton value="Reject" actionListener="#{approveLoanAccountManagedBean.rejectLoanAccount(loanAccount)}" update="mainForm"/>
                                 </p:column>
                             </p:dataTable>
                         </p:panel>

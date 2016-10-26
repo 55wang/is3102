@@ -504,6 +504,31 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
             return;
         }
     }
+    
+    @Override
+    public void sendLoanApplicationRejectNotice(String recipient) {
+        Session session = getSession();
+
+        try {
+
+            Message message = new MimeMessage(session);
+            message.setFrom(new InternetAddress("merlionbanking@gmail.com"));
+            message.setRecipients(Message.RecipientType.TO,
+                    InternetAddress.parse(recipient));
+            message.setSubject("Your Loan Application is Rejected! - Merlion Bank");
+            message.setText("Dear Customer, \n We are sorry that your Loan Application is Approved! "
+                    + "Please contact our loan officer for more information.");
+
+            Transport.send(message);
+
+            System.out.println("Email send out successfully");
+            return;
+
+        } catch (MessagingException e) {
+            System.out.println(e);
+            return;
+        }
+    }
 
     @Override
     public void sendCreditCardApplicationNotice(String recipient) {
