@@ -22,6 +22,9 @@ import org.primefaces.model.chart.Axis;
 import org.primefaces.model.chart.AxisType;
 import org.primefaces.model.chart.BarChartModel;
 import org.primefaces.model.chart.ChartSeries;
+import server.utilities.EnumUtils;
+import server.utilities.EnumUtils.InvestmentPlanStatus;
+import utils.RedirectUtils;
 
 /**
  *
@@ -85,6 +88,19 @@ public class InvestmentPlanDetailManagedBean implements Serializable{
         } 
  
         return model;
+    }
+    
+    public void approve(){
+        investmentPlan.setStatus(InvestmentPlanStatus.EXECUTED);
+        investmentPlanSessionBean.updateInvestmentPlan(investmentPlan);
+        RedirectUtils.redirect("view_investment_plan.xhtml");
+    }
+    
+    public void cancel(){
+        investmentPlan.setStatus(InvestmentPlanStatus.CANCELLED);
+        investmentPlanSessionBean.updateInvestmentPlan(investmentPlan);
+        
+        RedirectUtils.redirect("view_investment_plan.xhtml");
     }
 
     public String getPlanID() {

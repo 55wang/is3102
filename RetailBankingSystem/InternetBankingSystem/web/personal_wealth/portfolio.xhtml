@@ -55,7 +55,9 @@
                             <p:chart type="line" model="#{portfolioManagedBean.lineModel1}" style="height:300px;"/>
                             <br />
                             <h:outputText value="Financial Health: " />
-                            <h:outputText value="#{portfolioManagedBean.financialHealth}" />
+                            <h:outputText value="#{portfolioManagedBean.calcFinancialHealthScore()}" />
+                            <h:outputText value="Financial Health Level: " />
+                            <h:outputText value="#{portfolioManagedBean.calcFinancialHealthScoreLevel()}" />
                         </h:panelGrid>
                         <p:messages id="messagesStatus" redisplay="false"></p:messages>
                     </p:panel>

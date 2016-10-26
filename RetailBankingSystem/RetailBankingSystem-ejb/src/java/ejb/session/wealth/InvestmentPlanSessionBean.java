@@ -37,7 +37,11 @@ public class InvestmentPlanSessionBean implements InvestmentPlanSessionBeanLocal
 
     @Override
     public InvestmentPlan getInvestmentPlanById(Long id) {
-        return em.find(InvestmentPlan.class, id);
+        InvestmentPlanStatus cancelstatus = InvestmentPlanStatus.CANCELLED;
+        Query q = em.createQuery("SELECT r FROM InvestmentPlan r WHERE r.id =:id AND r.status !=:cancel");
+        q.setParameter("id", id);
+        q.setParameter("cancel", cancelstatus);
+        return (InvestmentPlan) q.getSingleResult();
     }
 
     @Override

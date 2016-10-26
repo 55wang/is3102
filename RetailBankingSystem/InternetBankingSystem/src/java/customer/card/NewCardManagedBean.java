@@ -38,6 +38,7 @@ import utils.SessionUtils;
 @Named(value = "newCardManagedBean")
 @ViewScoped
 public class NewCardManagedBean implements Serializable {
+
     @EJB
     private CustomerProfileSessionBeanLocal customerProfileSessionBean;
 
@@ -99,7 +100,7 @@ public class NewCardManagedBean implements Serializable {
     @PostConstruct
     public void retrieveProducts() {
         cco = new CreditCardOrder();
-        setMa(new MainAccount());
+        ma = new MainAccount();
         setCustomer(new Customer());
         setCca(new CreditCardAccount());
         List<CreditCardProduct> ccps = newCardProductSessionBean.getListCreditCardProducts();
@@ -125,10 +126,8 @@ public class NewCardManagedBean implements Serializable {
         customer.setNationality(Nationality.getEnum(getSelectedNationality()));
         newCustomerSessionBean.createCustomer(customer);
 
-        setMa(new MainAccount());
-        getMa().setUserID(CommonHelper.generateUserID(customer.getIdentityType(), customer.getIdentityNumber()));
-        getMa().setStatus(StatusType.NEW);
-        mainAccountSessionBean.createMainAccount(getMa());
+        ma = new MainAccount();
+        mainAccountSessionBean.createMainAccount(ma);
 
         cca.setCardStatus(CardAccountStatus.NEW);
         cardAcctSessionBean.createCardAccount(cca);
@@ -146,7 +145,13 @@ public class NewCardManagedBean implements Serializable {
         cardAcctSessionBean.updateCreditCardAccount(cca);
 
         cco.setMainAccount(ma);
+        cco.setCreditCardAccount(cca);
         creditCardOrderSessionBean.updateCreditCardOrder(cco);
+
+        ma.setUserID(CommonHelper.generateUserID(customer.getIdentityType(), customer.getIdentityNumber()));
+        ma.setStatus(StatusType.NEW);
+        ma.setCustomer(customer);
+        mainAccountSessionBean.updateMainAccount(ma);
 
         emailServiceSessionBean.sendCreditCardApplicationNotice(customer.getEmail());
         RedirectUtils.redirect("/InternetBankingSystem/common/application_success.xhtml");
@@ -157,7 +162,6 @@ public class NewCardManagedBean implements Serializable {
         System.out.println("inside saveupdatedCreditcardorder");
 
         //persist
-
         cca.setCardStatus(CardAccountStatus.NEW);
         cardAcctSessionBean.createCardAccount(cca);
 
@@ -170,14 +174,14 @@ public class NewCardManagedBean implements Serializable {
         cardAcctSessionBean.updateCreditCardAccount(cca);
 
         cco.setMainAccount(existingCustomer.getMainAccount());
+        cco.setCreditCardAccount(cca);
         creditCardOrderSessionBean.updateCreditCardOrder(cco);
 
         emailServiceSessionBean.sendCreditCardApplicationNotice(existingCustomer.getEmail());
         RedirectUtils.redirect("https://localhost:8181/InternetBankingSystem/personal_cards/credit_card_summary.xhtml");
 
     }
-    
-        
+
     public void setExistingCustomerForCardApplication() {
         existingCustomer = customerProfileSessionBean.getCustomerByUserID(SessionUtils.getUserName());
     }
@@ -189,7 +193,6 @@ public class NewCardManagedBean implements Serializable {
     public void setCco(CreditCardOrder cco) {
         this.cco = cco;
     }
-
 
     public String getSelectedResidentialStatus() {
         return selectedResidentialStatus;
@@ -327,11 +330,9 @@ public class NewCardManagedBean implements Serializable {
         return existingCustomer;
     }
 
-
     public void setExistingCustomer(Customer existingCustomer) {
         this.existingCustomer = existingCustomer;
     }
-
 
     public List<String> getProductNameOptions() {
         return productNameOptions;

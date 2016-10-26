@@ -9,6 +9,7 @@ import ejb.session.common.NewCustomerSessionBeanLocal;
 import ejb.session.mainaccount.MainAccountSessionBeanLocal;
 import entity.customer.Customer;
 import entity.customer.MainAccount;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.ejb.EJB;
 import javax.ejb.LocalBean;
@@ -34,8 +35,11 @@ public class EntityCustomerBuilder {
         String p = HashPwdUtils.hashPwd("password");
 
         Customer c = new Customer();
-        c.setAddress("some fake address"); //make it a bit more real
-        c.setBirthDay(new Date()); //make some real birthday.
+        c.setAddress("10 Punggol, 08-08"); //make it a bit more real
+        try {
+        c.setBirthDay(new SimpleDateFormat("dd-MM-yyyy").parse("04-02-1993"));
+        } catch (Exception ex) {
+        }
         c.setEmail("wangzhe.lynx@gmail.com");
         c.setFirstname("Yifan");
         c.setGender(EnumUtils.Gender.MALE); // pls modify gender to enum type
