@@ -72,14 +72,22 @@ public class UpdatePortfolioManagedBean implements Serializable {
         }
     }
 
-    public void updateBuyingPortfolio() {
+    public void submitUpdateBuyingPortfolio() {
         //when execute btn is pressed from the viewinvestmentplan, it should already create the portfolio
         //here is just merge and update value instead of persist.
 
         //set current amount and value to buying 
+        if(validator()){
+            portfolioSessionBean.updatePortfolio(p);
+            MessageUtils.displayInfo("Update Successful");
+            String email = p.getWealthManagementSubscriber().getMainAccount().getCustomer().getEmail();
+            sendEmailNotification(email);
+        }
+        else{
+            MessageUtils.displayError("Please enter all buying values!");
+        }   
         portfolioSessionBean.updatePortfolio(p);
-        String email = p.getWealthManagementSubscriber().getMainAccount().getCustomer().getEmail();
-        sendEmailNotification(email);
+        
         MessageUtils.displayInfo("Update Successful");
     }
 
@@ -92,6 +100,36 @@ public class UpdatePortfolioManagedBean implements Serializable {
         MessageUtils.displayInfo("Update Successful");
     }
     
+    public void reset(){
+        for(int i = 0; i < p.getExecutedInvestmentPlan().getSuggestedFinancialInstruments().size(); i++)
+            p.getExecutedInvestmentPlan().getSuggestedFinancialInstruments().get(i).setBuyingValuePerShare(0.0);           
+        calculate();
+    }
+    
+    public void calculate(){
+        for(int i = 0; i < p.getExecutedInvestmentPlan().getSuggestedFinancialInstruments().size(); i++){
+            if(p.getExecutedInvestmentPlan().getSuggestedFinancialInstruments().get(i).getBuyingValuePerShare() != 0.0){
+                System.out.println("Name:" + p.getExecutedInvestmentPlan().getSuggestedFinancialInstruments().get(i).getFi().getName());
+                System.out.println("Price" + p.getExecutedInvestmentPlan().getSuggestedFinancialInstruments().get(i).getBuyingValuePerShare());
+                Double newNumberOfShare = 0.0;
+                newNumberOfShare = (p.getExecutedInvestmentPlan().getAmountOfInvestment() * p.getExecutedInvestmentPlan().getSuggestedFinancialInstruments().get(i).getWeight())/p.getExecutedInvestmentPlan().getSuggestedFinancialInstruments().get(i).getBuyingValuePerShare();
+                p.getExecutedInvestmentPlan().getSuggestedFinancialInstruments().get(i).setBuyingNumberOfShare(newNumberOfShare.intValue());
+            }else if(p.getExecutedInvestmentPlan().getSuggestedFinancialInstruments().get(i).getBuyingValuePerShare() == 0.0)
+                p.getExecutedInvestmentPlan().getSuggestedFinancialInstruments().get(i).setBuyingNumberOfShare(0);
+        }
+    }
+    
+    public Boolean validator(){
+        Boolean flag = true;
+        
+        for(int i = 0; i < p.getExecutedInvestmentPlan().getSuggestedFinancialInstruments().size(); i++){
+            if(p.getExecutedInvestmentPlan().getSuggestedFinancialInstruments().get(i).getBuyingValuePerShare() == 0.0 && p.getExecutedInvestmentPlan().getSuggestedFinancialInstruments().get(i).getWeight() != 0.0)
+                flag = false;
+        }
+        
+        return flag;
+    }
+        
     public void sendEmailNotification(String email) {
         EmailServiceSessionBean.sendUpdatePortfolioNotice(email);
     }

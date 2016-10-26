@@ -240,6 +240,11 @@ defineWorkingDirectory <- function() {
     setwd("/Users/leiyang")
   } else if (Sys.info()['user'] == "qiuxiaqing") {
     setwd("/Users/qiuxiaqing")
+  } else if (Sys.info()['user'] == "chenyifan") {
+    setwd("/Users/lemon")
+  } else if (Sys.info()['user'] == "litong") {
+    setwd("/Users/litong")
   }
+  
 }
 
