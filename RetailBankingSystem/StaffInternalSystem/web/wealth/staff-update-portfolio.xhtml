@@ -27,14 +27,18 @@
 
                         <p:commandButton value="RETRIEVE" action="#{updatePortfolioManagedBean.retrievePortfolio()}" update="@form"/>
                         <p:commandButton value="VIEW DETAIL" action="#{updatePortfolioManagedBean.viewPortfolioDetail()}"/>
+                    </p:panel>
                         <c:if test="#{updatePortfolioManagedBean.p != null}">
-
-
-                            <p:tabView>
-                                <p:tab title="Update Buying Value &amp; Amount">
-                                    
-                                    
-                                    <p:dataTable var="fi" value="#{updatePortfolioManagedBean.p.executedInvestmentPlan.suggestedFinancialInstruments}">
+                            <br/>
+                            <p:selectOneButton id="updateType" value="#{updatePortfolioManagedBean.updateType}">
+                                <f:selectItem itemLabel="Update Buying Value" itemValue="#{updatePortfolioManagedBean.updateBuy}" />
+                                <f:selectItem itemLabel="Update Current Value" itemValue="#{updatePortfolioManagedBean.updateCurrent}" />
+                                <f:ajax render="@form" />
+                            </p:selectOneButton>
+                            <br/><br/><br/>
+                    
+                            <p:panel header="Update Buying Value" rendered="#{updatePortfolioManagedBean.updateType == updatePortfolioManagedBean.updateBuy}">
+                            <p:dataTable var="fi" value="#{updatePortfolioManagedBean.p.executedInvestmentPlan.suggestedFinancialInstruments}">
                                         <p:columnGroup type="header">
                                             <p:row>
                                                 <p:column rowspan="3" headerText="Financial Instrument" style="width:320px;"/>
@@ -58,16 +62,21 @@
                                         <p:column rendered="#{fi.weight != 0.0}">
                                             <h:outputText id="numberofshare" value="#{fi.buyingNumberOfShare}" /> 
                                         </p:column>
-                                         <p:column rendered="#{fi.weight != 0.0}">
-                                             <h:inputText valueChangeListener="#{updatePortfolioManagedBean.calculate()}" value="#{fi.buyingValuePerShare}">
-                                                <p:ajax update="@form" process="@this" />
+                                        <p:column rendered="#{fi.weight != 0.0 and updatePortfolioManagedBean.p.status != 'BOUGHT'}">
+                                             <h:inputText value="#{fi.buyingValuePerShare}" onchange="#{updatePortfolioManagedBean.calculate()}">
+                                                <p:ajax update="@form" process="@this"/>
                                                 <f:convertNumber type="currency" currencySymbol="S$" />
                                             </h:inputText>
+                                        </p:column>
+                                        <p:column rendered="#{fi.weight != 0.0 and updatePortfolioManagedBean.p.status == 'BOUGHT'}">
+                                             <h:outputText value="#{fi.buyingValuePerShare}">
+                                                <f:convertNumber type="currency" currencySymbol="S$" />
+                                            </h:outputText>
                                         </p:column>
                                         <p:column rendered="#{fi.weight != 0.0}">
                                             <h:outputText value="#{fi.weight*100}%" /> 
                                         </p:column>
-                                         <p:column rendered="#{fi.weight != 0.0}">
+                                        <p:column rendered="#{fi.weight != 0.0}">
                                             <h:outputText value="#{fi.buyingValuePerShare * fi.buyingNumberOfShare}">
                                                 <f:convertNumber type="currency" currencySymbol="S$" />
                                             </h:outputText>
@@ -83,22 +92,82 @@
                                         </p:columnGroup>
                                     </p:dataTable>
                                     <br />
-                                    <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true"/>
+                                    <p:messages id="messages1" showDetail="true" autoUpdate="true" closable="true"/>
                                     
                                     <p:commandButton value="Reset" action="#{updatePortfolioManagedBean.reset()}" update="@form" oncomplete="setTimeout(function() { $('.ui-messages-info.ui-corner-all').slideUp(); },  3000);"/>
                                     <p:commandButton value="Calculate" action="#{updatePortfolioManagedBean.calculate()}" update="@form" oncomplete="setTimeout(function() { $('.ui-messages-info.ui-corner-all').slideUp(); },  3000);"/>
                                     <p:commandButton value="Update" action="#{updatePortfolioManagedBean.submitUpdateBuyingPortfolio()}" update="@form" oncomplete="setTimeout(function() { $('.ui-messages-info.ui-corner-all').slideUp(); },  3000);"/>
-                                </p:tab>
-                                <p:tab title="Update Current Value &amp; Amount">
+                                </p:panel>
+                                <p:panel header="Update Current Value" rendered="#{updatePortfolioManagedBean.updateType == updatePortfolioManagedBean.updateCurrent}">    
+                                <p:dataTable var="fi" value="#{updatePortfolioManagedBean.p.executedInvestmentPlan.suggestedFinancialInstruments}" >
+                                        <p:columnGroup type="header">
+                                            <p:row>
+                                                <p:column rowspan="3" headerText="Financial Instrument" style="width:320px;"/>
+                                                <p:column colspan="6" headerText="Buying Information" />
+                                            </p:row>
+                                            <p:row>
+                                                <p:column colspan="3" headerText="Total Investment" />
+                                                <p:column colspan="3" headerText="S$#{updatePortfolioManagedBean.p.executedInvestmentPlan.amountOfInvestment}" />
+                                            </p:row>
+                                            <p:row>
+                                                <p:column headerText="Number of Shares" />
+                                                <p:column headerText="Buying Value per Share" />
+                                                <p:column headerText="Buying Subtotal" />
+                                                <p:column headerText="Current Value per Share" />
+                                                <p:column headerText="Current Subtotal" />
+                                                <p:column headerText="Difference" />
+                                            </p:row>
+                                        </p:columnGroup>
+                                        
+                                        <p:column rendered="#{fi.weight != 0.0}">
+                                            <h:outputText value="#{fi.fi.name}"/> 
+                                        </p:column>
+                                        <p:column rendered="#{fi.weight != 0.0}">
+                                            <h:outputText id="numberofshare" value="#{fi.buyingNumberOfShare}" /> 
+                                        </p:column>
+                                        <p:column rendered="#{fi.weight != 0.0}">
+                                             <h:outputText value="#{fi.buyingValuePerShare}">
+                                                <f:convertNumber type="currency" currencySymbol="S$" />
+                                            </h:outputText>
+                                        </p:column>
+                                        <p:column rendered="#{fi.weight != 0.0}">
+                                            <h:outputText value="#{fi.buyingValuePerShare * fi.buyingNumberOfShare}">
+                                                <f:convertNumber type="currency" currencySymbol="S$" />
+                                            </h:outputText>
+                                        </p:column> 
+                                        <p:column rendered="#{fi.weight != 0.0}">
+                                            <h:inputText value="#{fi.currentValuePerShare}">
+                                                <p:ajax update="@form" process="@this"/>
+                                                <f:convertNumber type="currency" currencySymbol="S$" />
+                                            </h:inputText>
+                                        </p:column>
+                                        <p:column rendered="#{fi.weight != 0.0}">
+                                            <h:outputText value="#{fi.currentValuePerShare * fi.buyingNumberOfShare}">
+                                                <f:convertNumber type="currency" currencySymbol="S$" />
+                                            </h:outputText>
+                                        </p:column> 
+                                         <p:column rendered="#{fi.weight != 0.0}">
+                                             <h:outputText value="#{(fi.currentValuePerShare/fi.buyingValuePerShare *100).shortValue() - 100}%" /> 
+                                        </p:column>                    
 
-                                 
+                                        <p:columnGroup type="footer">
+                                            <p:row>
+                                                <p:column colspan="3" style="text-align:right" footerText="Totals:" /> 
+
+                                                <p:column footerText="$#{updatePortfolioManagedBean.p.totalBuyingValue}" />
+                                                <p:column />
+                                                <p:column footerText="$#{updatePortfolioManagedBean.p.totalCurrentValue}" />
+                                                <p:column footerText="#{(updatePortfolioManagedBean.p.totalCurrentValue/updatePortfolioManagedBean.p.totalBuyingValue*100).shortValue()-100}%"/>
+                                            </p:row>
+                                        </p:columnGroup>
+                                    </p:dataTable>
                                     <br />
-
-                                    <p:commandButton value="UPDATE" action="#{updatePortfolioManagedBean.updateCurrentPortfolio()}" oncomplete="setTimeout(function() { $('.ui-messages-info.ui-corner-all').slideUp(); },  3000);" />
-                                </p:tab>
-                            </p:tabView>
+                                    <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true"/>
+                                    
+                                    <p:commandButton value="Reset" action="#{updatePortfolioManagedBean.resetCurrentValue()}" update="@form" oncomplete="setTimeout(function() { $('.ui-messages-info.ui-corner-all').slideUp(); },  3000);"/>
+                                    <p:commandButton value="Update" action="#{updatePortfolioManagedBean.updateCurrentPortfolio()}" update="@form" oncomplete="setTimeout(function() { $('.ui-messages-info.ui-corner-all').slideUp(); },  3000);"/>
+                                </p:panel>
                         </c:if>
-                    </p:panel>
                 </h:form>
             </div>
 

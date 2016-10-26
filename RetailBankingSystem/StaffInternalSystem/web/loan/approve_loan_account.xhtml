@@ -17,46 +17,49 @@
             <em:staffSideBar top="loan" side="approveLoanAccount"></em:staffSideBar>
             <div class="container">
                 <h:form id="mainForm">
-                    <p:panel header="Pending Loan Accounts">
-                        <h:outputText value="Input Bureau CreditScore: "/>
-                        <p:selectOneMenu value="#{approveLoanAccountManagedBean.bureauCreditScore}" style="width:10px; height: 31px; line-height: 21px; top:8px" rendered="true" required="true">
-                            <f:selectItem itemLabel="AA" itemValue="AA" />
-                            <f:selectItem itemLabel="BB" itemValue="BB" />
-                            <f:selectItem itemLabel="CC" itemValue="CC" />
-                            <f:selectItem itemLabel="DD" itemValue="DD" />
-                            <f:selectItem itemLabel="EE" itemValue="EE" />
-                            <f:selectItem itemLabel="FF" itemValue="FF" />
-                            <f:selectItem itemLabel="GG" itemValue="GG" />
-                            <f:selectItem itemLabel="HH" itemValue="HH" />
-                        </p:selectOneMenu>
-                        <br/><br/>
-                        <p:dataTable value="#{approveLoanAccountManagedBean.myLoanAccounts}" var="loanAccount">
-                            <p:column headerText="Main Account Id" sortBy="#{loanAccount.mainAccount.userID}">
-                                <h:outputText value="#{loanAccount.mainAccount.userID}"/>
-                            </p:column>
+                    <p:messages id="messagesStatus" redisplay="false" >
+                        <p:panel header="Pending Loan Accounts">
+                            <h:outputText value="Input Bureau CreditScore: "/>
+                            <p:selectOneMenu value="#{approveLoanAccountManagedBean.bureauCreditScore}" style="width:10px; height: 31px; line-height: 21px; top:8px" rendered="true" required="true">
+                                <f:selectItem itemLabel="AA" itemValue="AA" />
+                                <f:selectItem itemLabel="BB" itemValue="BB" />
+                                <f:selectItem itemLabel="CC" itemValue="CC" />
+                                <f:selectItem itemLabel="DD" itemValue="DD" />
+                                <f:selectItem itemLabel="EE" itemValue="EE" />
+                                <f:selectItem itemLabel="FF" itemValue="FF" />
+                                <f:selectItem itemLabel="GG" itemValue="GG" />
+                                <f:selectItem itemLabel="HH" itemValue="HH" />
+                            </p:selectOneMenu>
+                            <br/><br/>
+                            <p:dataTable value="#{approveLoanAccountManagedBean.myLoanAccounts}" var="loanAccount">
+                                <p:column headerText="Main Account Id" sortBy="#{loanAccount.mainAccount.userID}">
+                                    <h:outputText value="#{loanAccount.mainAccount.userID}"/>
+                                </p:column>
 
-                            <p:column headerText="Principal" sortBy="#{loanAccount.principal}">
-                                <h:outputText value="#{loanAccount.principal}"/> 
-                            </p:column>
-                            
-                            <p:column headerText="Type" sortBy="#{loanAccount.loanProduct.productType.toString()}">
-                                <h:outputText value="#{loanAccount.loanProduct.productType.toString()}"/> 
-                            </p:column>
-                            
-                            <p:column headerText="Curruent Status" sortBy="#{loanAccount.loanAccountStatus}">
-                                <h:outputText value="#{loanAccount.loanAccountStatus}"/>
-                            </p:column>
+                                <p:column headerText="Principal" sortBy="#{loanAccount.principal}">
+                                    <h:outputText value="#{loanAccount.principal}"/> 
+                                </p:column>
 
-                            <p:column headerText="Credit Score" sortBy="#{loanAccount.mainAccount.customer.creditScore}">
-                                <h:outputText value="#{loanAccount.mainAccount.customer.creditScore}"/>
-                            </p:column>
+                                <p:column headerText="Type" sortBy="#{loanAccount.loanProduct.productType.toString()}">
+                                    <h:outputText value="#{loanAccount.loanProduct.productType.toString()}"/> 
+                                </p:column>
 
-                            <p:column headerText="Action">
-                                <p:commandButton value="Credit Score" action="#{approveLoanAccountManagedBean.calculateCreditScore(loanAccount)}" icon="ui-icon-lightbulb" update="mainForm" />
-                                <p:commandButton value="Approve" actionListener="#{approveLoanAccountManagedBean.approveLoanAccount(loanAccount)}" update="mainForm"/>
-                            </p:column>
-                        </p:dataTable>
-                    </p:panel>
+                                <p:column headerText="Curruent Status" sortBy="#{loanAccount.loanAccountStatus}">
+                                    <h:outputText value="#{loanAccount.loanAccountStatus}"/>
+                                </p:column>
+
+                                <p:column headerText="Credit Score" sortBy="#{loanAccount.mainAccount.customer.creditScore}">
+                                    <h:outputText value="#{loanAccount.mainAccount.customer.creditScore}"/>
+                                </p:column>
+
+                                <p:column headerText="Action">
+                                    <p:commandButton value="Credit Score" action="#{approveLoanAccountManagedBean.calculateCreditScore(loanAccount)}" icon="ui-icon-lightbulb" update="mainForm" />
+                                    <p:commandButton value="Approve" actionListener="#{approveLoanAccountManagedBean.approveLoanAccount(loanAccount)}" update="mainForm"/>
+                                    <p:commandButton value="Reject" actionListener="#{approveLoanAccountManagedBean.rejectLoanAccount(loanAccount)}" update="mainForm"/>
+                                </p:column>
+                            </p:dataTable>
+                        </p:panel>
+                    </p:messages>
                 </h:form>
             </div>
         </h:body>

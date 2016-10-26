@@ -9,23 +9,23 @@
     <!--shift + ctrl + F, format-->
     <f:view>
         <f:metadata>
-            <f:viewParam name="accountId" value="#{loanAccountBreakdownManagedBean.accountId}" />
-            <f:viewAction action="#{loanAccountBreakdownManagedBean.init()}"></f:viewAction>
+            <f:viewParam name="accountId" value="#{customerLoanBreakdownManagedBean.accountId}" />
+            <f:viewAction action="#{customerLoanBreakdownManagedBean.init()}"></f:viewAction>
         </f:metadata>
         <h:head>
             <title>Account Transactions</title>
             <em:cssImport></em:cssImport>
         </h:head>
         <h:body>
-            <em:customerHeader context="personal" userName="#{customerHomeManagedBean.customer.firstname }"></em:customerHeader>
-            <em:customerNavBar context="personal" personalPage="home" ></em:customerNavBar>
-            <div class="customer_main_container">
+            <em:staffNavBar context="loan"></em:staffNavBar>
+            <em:staffSideBar top="loan" side="loanAccountDetail"></em:staffSideBar>
+            <div class="container">
                 <h:form id="mainForm">
-                    <p:panel header="Breakdown for account #{loanAccountBreakdownManagedBean.accountId}">
-                        <h2>Monthly installment is #{loanAccountBreakdownManagedBean.loanAccount.monthlyInstallment}</h2>
+                    <p:panel header="Breakdown for account #{customerLoanBreakdownManagedBean.accountId}">
+                        <h2>Monthly installment is #{customerLoanBreakdownManagedBean.loanAccount.monthlyInstallment}</h2>
                         <p:messages id="messagesStatus" redisplay="false" >
 
-                            <p:dataTable value="#{loanAccountBreakdownManagedBean.breakdowns}" var="breakdown">
+                            <p:dataTable value="#{customerLoanBreakdownManagedBean.breakdowns}" var="breakdown">
                                 
                                 <p:column headerText="Payment Date" sortBy="#{breakdown.schedulePaymentDate}">
                                     <h:outputText value="#{breakdown.schedulePaymentDate}">
@@ -61,7 +61,6 @@
                     </p:panel>
                 </h:form>
             </div>
-            <em:customerFooter></em:customerFooter>
         </h:body>
     </f:view>
 

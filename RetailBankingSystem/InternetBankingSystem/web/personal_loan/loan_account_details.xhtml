@@ -23,7 +23,7 @@
             <em:customerNavBar context="personal" personalPage="home" ></em:customerNavBar>
             <div class="customer_main_container">
                 <h:form id="mainForm">
-                    <p:panel header="Loan Accounts account number">
+                    <p:panel header="Loan Accounts account number #{loanAccountBreakdownManagedBean.accountId}">
                         <p:messages id="messagesStatus" redisplay="false" >
                             <h:panelGrid columns="2" cellpadding="5">
                                 <h:outputText value="Account Number:" />

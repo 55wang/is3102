@@ -18,9 +18,9 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import org.apache.commons.lang.time.DateUtils;
 import server.utilities.EnumUtils;
 import server.utilities.EnumUtils.LoanAccountStatus;
 
@@ -77,9 +77,11 @@ public class LoanAccount implements Serializable {
     // overview of the breakdown
     @OneToMany(cascade = {CascadeType.MERGE}, mappedBy = "loanAccount")
     private List<LoanPaymentBreakdown> loanPaymentBreakdown = new ArrayList<>();
-
+    @OneToOne(cascade = {CascadeType.MERGE}, mappedBy = "loanAccount")
+    private LoanAdjustmentApplication loanAdjustmentApplication;
+    
     public Integer tenureInMonth() {
-        return tenure * 12;
+        return tenure * 12 - currentPeriod;
     }
     
     public void addRepaymentRecord(LoanRepaymentRecord record) {
@@ -287,6 +289,20 @@ public class LoanAccount implements Serializable {
      */
     public void setAmountPaidBeforeDueDate(Double amountPaidBeforeDueDate) {
         this.amountPaidBeforeDueDate = amountPaidBeforeDueDate;
+    }
+
+    /**
+     * @return the loanAdjustmentApplication
+     */
+    public LoanAdjustmentApplication getLoanAdjustmentApplication() {
+        return loanAdjustmentApplication;
+    }
+
+    /**
+     * @param loanAdjustmentApplication the loanAdjustmentApplication to set
+     */
+    public void setLoanAdjustmentApplication(LoanAdjustmentApplication loanAdjustmentApplication) {
+        this.loanAdjustmentApplication = loanAdjustmentApplication;
     }
 
 }
