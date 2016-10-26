@@ -75,6 +75,7 @@ public class ConstantUtils {
     public static final String NOT_ENOUGH_INCOME_2000 = "Your monthly income must be above $2000 to apply this loan.";
     public static final String NOT_ENOUGH_INCOME_1500 = "Your monthly income must be above $1500 to apply this loan.";
     public static final String NOT_ENOUGH_LOAN_LIMIT = "Your loan request amount has exceed maximum loan amount.";
+    public static final String LoanToValue_NOT_RIGHT="Your Loan-To-Value ratio is exceeded. Please reduce loan amount or increase housing value.";
     // Password
     public static final String OLD_PASSWORD_NOTMTACH = "You have entered a wrong password! ";
     public static final String PASSWORD_CHANGE_SUCCESS = "Successful! You have reset your password. ";

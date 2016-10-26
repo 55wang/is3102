@@ -99,6 +99,17 @@ public class PpLoanApplicationManagedBean implements Serializable {
             return;
         }
         
+        if(numOfHousingLoan==0 && loanAmount>=0.8*marketValue){
+            MessageUtils.displayError(ConstantUtils.LoanToValue_NOT_RIGHT);
+            return;
+        } else if (numOfHousingLoan==1 && loanAmount>=0.5*marketValue){
+            MessageUtils.displayError(ConstantUtils.LoanToValue_NOT_RIGHT);
+            return;
+        } else if (numOfHousingLoan>=2 && loanAmount>=0.4*marketValue){
+            MessageUtils.displayError(ConstantUtils.LoanToValue_NOT_RIGHT);
+            return;
+        }
+        
         LoanApplication newApplication = new LoanApplication();
         newApplication.setAge(age);
         newApplication.setIdNumber(idNumber);
