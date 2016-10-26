@@ -42,7 +42,7 @@ public class ViewLoanApplicationManagedBean implements Serializable {
 
     @PostConstruct
     public void init() {
-        myLoanApplications = loanAccountBean.getLoanApplicationByStaffUsername(SessionUtils.getStaffUsername());
+        myLoanApplications = loanAccountBean.getLoanApplicationByStaffUsername(SessionUtils.getStaffUsername(), EnumUtils.LoanAccountStatus.NEW);
     }
 
     public void startProcess(LoanApplication la) {

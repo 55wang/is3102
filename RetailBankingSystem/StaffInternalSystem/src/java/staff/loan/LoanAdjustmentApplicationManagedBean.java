@@ -5,10 +5,11 @@
  */
 package staff.loan;
 
-import ejb.session.common.EmailServiceSessionBeanLocal;
 import ejb.session.loan.LoanAccountSessionBeanLocal;
 import ejb.session.loan.LoanPaymentSessionBeanLocal;
 import entity.loan.LoanAccount;
+import entity.loan.LoanAdjustmentApplication;
+import entity.loan.LoanApplication;
 import entity.loan.LoanPaymentBreakdown;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -19,7 +20,6 @@ import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import server.utilities.EnumUtils;
-import server.utilities.EnumUtils.LoanAccountStatus;
 import utils.MessageUtils;
 import utils.SessionUtils;
 
@@ -27,44 +27,49 @@ import utils.SessionUtils;
  *
  * @author leiyang
  */
-@Named(value = "approveLoanAccountManagedBean")
+@Named(value = "loanAdjustmentApplicationManagedBean")
 @ViewScoped
-public class ApproveLoanAccountManagedBean implements Serializable {
-    
+public class LoanAdjustmentApplicationManagedBean implements Serializable {
+
     @EJB
     private LoanAccountSessionBeanLocal loanAccountBean;
     @EJB
-    private LoanPaymentSessionBeanLocal loanPaymentBean;
-    @EJB
-    private EmailServiceSessionBeanLocal emailBean;
+    private LoanPaymentSessionBeanLocal loanPaymentSessionBean;
 
     private String bureauCreditScore;
-    private List<LoanAccount> myLoanAccounts = new ArrayList<>();
+    private List<LoanAdjustmentApplication> myLoanApplications = new ArrayList<>();
+    
     /**
-     * Creates a new instance of ApproveLoanAccountManagedBean
+     * Creates a new instance of LoanAdjustmentApplicationManagedBean
      */
-    public ApproveLoanAccountManagedBean() {
+    public LoanAdjustmentApplicationManagedBean() {
     }
     
     @PostConstruct
     public void init() {
-        myLoanAccounts = loanAccountBean.getLoanAccountByStaffUsernameAndStatus(SessionUtils.getStaffUsername(), LoanAccountStatus.PENDING);
+        myLoanApplications = loanAccountBean.getLoanAdjustmentApplicationByStaffUsername(SessionUtils.getStaffUsername(), EnumUtils.LoanAccountStatus.NEW);
     }
-
-    public void approveLoanAccount(LoanAccount la) {
-        // change status
-        la.setLoanAccountStatus(EnumUtils.LoanAccountStatus.APPROVED);
-        la = loanAccountBean.updateLoanAccount(la);
-                
-        // generate breakdown
-        List<LoanPaymentBreakdown> result = loanPaymentBean.futurePaymentBreakdown(la);
+    
+    public void approveLoanAdjustment(LoanAdjustmentApplication app) {
+        app.setStatus(EnumUtils.LoanAccountStatus.APPROVED);
+        loanAccountBean.updateLoanAdjustmentApplication(app);
+        
+        LoanAccount la = app.getLoanAccount();
+        la.setTenure(app.getTenure());
+        
+        la.setMonthlyInstallment(loanPaymentSessionBean.calculateMonthlyInstallment(la));
+        
+        List<LoanPaymentBreakdown> result = loanPaymentSessionBean.futurePaymentBreakdown(la);
         for (LoanPaymentBreakdown r : result) {
             System.out.println(r.toString());
         }
-        // inform customer by email
-        emailBean.sendLoanApplicationApprovalNotice(la.getMainAccount().getCustomer().getEmail());
-        
         MessageUtils.displayInfo("Application Approved!");
+    }
+    
+    public void rejectLoanAdjustment(LoanAdjustmentApplication app) {
+        app.setStatus(EnumUtils.LoanAccountStatus.REJECTED);
+        loanAccountBean.updateLoanAdjustmentApplication(app);
+        MessageUtils.displayInfo("Application Rejected!");
     }
     
     public void calculateCreditScore(LoanAccount la) {
@@ -170,19 +175,19 @@ public class ApproveLoanAccountManagedBean implements Serializable {
         delta = delta / 365;
         return delta;
     }
-    
+
     /**
-     * @return the myLoanAccounts
+     * @return the myLoanApplications
      */
-    public List<LoanAccount> getMyLoanAccounts() {
-        return myLoanAccounts;
+    public List<LoanAdjustmentApplication> getMyLoanApplications() {
+        return myLoanApplications;
     }
 
     /**
-     * @param myLoanAccounts the myLoanAccounts to set
+     * @param myLoanApplications the myLoanApplications to set
      */
-    public void setMyLoanAccounts(List<LoanAccount> myLoanAccounts) {
-        this.myLoanAccounts = myLoanAccounts;
+    public void setMyLoanApplications(List<LoanAdjustmentApplication> myLoanApplications) {
+        this.myLoanApplications = myLoanApplications;
     }
 
     /**
