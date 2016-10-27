@@ -41,7 +41,7 @@ and open the template in the editor.
                                         <p:inputText value="#{intraBankTransferManagedBean.toName}" required="true" />
                                         <p:outputLabel value="My initial " />
                                         <p:inputText value="#{intraBankTransferManagedBean.myInitial}" required="true" />
-                                        <p:commandButton  value="Next" type="button" onclick="PF('myWizard').next()" />
+                                        <p:commandButton  value="Next" actionListener="#{intraBankTransferManagedBean.sendOpt()}" update="@form" />
                                     </h:panelGrid>
                                 </p:tab>
 
@@ -57,6 +57,10 @@ and open the template in the editor.
                                         <p:outputLabel value="#{intraBankTransferManagedBean.toName}"/>
                                         <p:outputLabel value="My initial " />
                                         <p:outputLabel value="#{intraBankTransferManagedBean.myInitial}"/>
+                                        
+                                        <h2>Input Token Number</h2>
+                                        <p:inputText value="#{intraBankTransferManagedBean.inputTokenString}" />
+                                        
                                         <p:commandButton  value="Back" type="button" onclick="PF('myWizard').back()" />
                                         <p:commandButton value="Transfer" action="#{intraBankTransferManagedBean.adhocTransfer}" update="@form"/> 
                                     </h:panelGrid>

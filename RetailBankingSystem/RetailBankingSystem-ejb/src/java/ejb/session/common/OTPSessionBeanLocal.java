@@ -15,6 +15,8 @@ import javax.ejb.Local;
 @Local
 public interface OTPSessionBeanLocal {
     public void generateOTP(String number);
+    public Boolean checkOTPValidByPhoneNumber(String number, String mobileNumber);
+    public Boolean isOTPExpiredByPhoneNumber(String number, String mobileNumber);
     public OneTimePassword getOTPByPhoneNumber(String number);
     public void remove(OneTimePassword otp);
 }

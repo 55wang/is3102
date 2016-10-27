@@ -5,9 +5,11 @@
  */
 package customer.loan;
 
+import ejb.session.common.OTPSessionBeanLocal;
 import ejb.session.dams.CustomerDepositSessionBeanLocal;
 import ejb.session.loan.LoanAccountSessionBeanLocal;
 import ejb.session.loan.LoanPaymentSessionBeanLocal;
+import entity.customer.MainAccount;
 import entity.dams.account.CustomerDepositAccount;
 import entity.loan.LoanAccount;
 import java.io.Serializable;
@@ -35,13 +37,18 @@ public class LoanLumsumPaymentManagedBean implements Serializable {
     private LoanPaymentSessionBeanLocal loanPaymentBena;
     @EJB
     private CustomerDepositSessionBeanLocal depositBean;
+    @EJB
+    private OTPSessionBeanLocal otpBean;
 
     private String accountId;
     private String fromAccountNo;
     private Integer additionalAmount;
     private Double totalAmount;
     private LoanAccount loanAccount;
+    private MainAccount ma;
     private List<CustomerDepositAccount> accounts = new ArrayList<>();
+    
+    private String inputTokenString;
     
     /**
      * Creates a new instance of LoanLumsumPaymentManagedBean
@@ -54,6 +61,7 @@ public class LoanLumsumPaymentManagedBean implements Serializable {
         setLoanAccount(loanAccountBean.getLoanAccountByAccountNumber(getAccountId()));
         System.out.println("Account retrieved is: " + getLoanAccount().getAccountNumber());
         setAccounts(depositBean.getAllNonFixedCustomerAccounts(getLoanAccount().getMainAccount().getId()));
+        ma = loanAccount.getMainAccount();
     }
     
     public Double totalAmount() {
@@ -62,6 +70,11 @@ public class LoanLumsumPaymentManagedBean implements Serializable {
     }
     
     public void transfer() {
+        
+        if (!checkOptAndProceed()) {
+            return;
+        }
+        
         String result = loanPaymentBena.loanLumsumPaymentFromAccount(loanAccount.getAccountNumber(), fromAccountNo, new BigDecimal(totalAmount()));
         if (result.equals("SUCCESS")) {
             JSUtils.callJSMethod("PF('myWizard').next()");
@@ -69,6 +82,30 @@ public class LoanLumsumPaymentManagedBean implements Serializable {
         } else {
             JSUtils.callJSMethod("PF('myWizard').back()");
             MessageUtils.displayError(ConstantUtils.TRANSFER_FAILED);
+        }
+    }
+    
+    public void sendOpt() {
+        System.out.println("sendOTP clicked, sending otp to: " + ma.getCustomer().getPhone());
+        JSUtils.callJSMethod("PF('myWizard').next()");
+        otpBean.generateOTP(ma.getCustomer().getPhone());
+    }
+    
+    private Boolean checkOptAndProceed() {
+        if (inputTokenString == null || inputTokenString.isEmpty()) {
+            MessageUtils.displayError("Please enter one time password!");
+            return false;
+        }
+        if (!otpBean.isOTPExpiredByPhoneNumber(inputTokenString, ma.getCustomer().getPhone())) {
+            if (otpBean.checkOTPValidByPhoneNumber(inputTokenString, ma.getCustomer().getPhone())) {
+                return true;
+            } else {
+                MessageUtils.displayError("One Time Password Not Match!");
+                return false;
+            }
+        } else {
+            MessageUtils.displayError("One Time Password Expired!");
+            return false;
         }
     }
 
@@ -154,6 +191,20 @@ public class LoanLumsumPaymentManagedBean implements Serializable {
      */
     public void setTotalAmount(Double totalAmount) {
         this.totalAmount = totalAmount;
+    }
+    
+    /**
+     * @return the inputTokenString
+     */
+    public String getInputTokenString() {
+        return inputTokenString;
+    }
+
+    /**
+     * @param inputTokenString the inputTokenString to set
+     */
+    public void setInputTokenString(String inputTokenString) {
+        this.inputTokenString = inputTokenString;
     }
     
 }

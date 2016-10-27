@@ -49,7 +49,7 @@ public class ViewLoanApplicationManagedBean implements Serializable {
     }
 
     public void startProcess(LoanApplication la) {
-        la.setStatus(EnumUtils.LoanAccountStatus.PENDING);
+        la.setStatus(EnumUtils.LoanAccountStatus.INPROGRESS);
         loanAccountBean.updateLoanApplication(la);
     }
 

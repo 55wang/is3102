@@ -9,7 +9,9 @@ import entity.fact.customer.SinglePortfolioFactTable;
 import entity.wealth.MovingAverage;
 import entity.wealth.Portfolio;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -25,10 +27,38 @@ public class PortfolioSessionBean implements PortfolioSessionBeanLocal {
     @PersistenceContext(unitName = "RetailBankingSystem-ejbPU")
     private EntityManager em;
 
+    public static void main(String[] args) {
+        Queue<Double> q = new LinkedList();
+        
+    }
+    
+    public List<Double> calcMovingAverageValue(Queue<Double> q, int windowSize) {
+//        int n = 4;
+        List<Double> result = new ArrayList<>();
+        Double[] a = new Double[windowSize];
+        for (int i=0; i<windowSize; i++) {
+            a[i] = 0.0;
+        }
+        
+        Double sum = 0.0;
+        for (int i = 1; !q.isEmpty(); i++) {
+            sum -= a[i % windowSize];
+            a[i % windowSize] = q.poll();
+            sum += a[i % windowSize];
+            if (i >= windowSize) {
+                result.add(sum/windowSize);
+            }
+        }
+        return result;
+    }
+    
     //must be sorted the input spf, with ascending date order
     @Override
     public void calcMovingAverage(List<SinglePortfolioFactTable> spf) {
-
+        //cut the input
+        //calculate the value
+        
+        //finally store as hashmap
         List<Double> q = new ArrayList<>();
         for (int i = 0; i < spf.size(); i++) {
             Double value = spf.get(i).getTotalCurrentValue();
@@ -76,9 +106,9 @@ public class PortfolioSessionBean implements PortfolioSessionBeanLocal {
     }
 
     @Override
-    public List<Portfolio> getListPortfoliosByCustomerName(String searchText) {
-        Query q = em.createQuery("Select p from Portfolio p where UPPER(p.wealthManagementSubscriber.mainAccount.customer.fullName) like :inSearchText");
-        q.setParameter("inSearchText", "%" + searchText.toUpperCase() + "%");
+    public List<Portfolio> getListPortfoliosByCustomerID(Long Id) {
+        Query q = em.createQuery("Select p from Portfolio p where p.wealthManagementSubscriber.mainAccount.customer.id =:id");
+        q.setParameter("id", Id);
         return q.getResultList();
     }
 

@@ -10,55 +10,58 @@ and open the template in the editor.
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui"
       xmlns:em="http://xmlns.jcp.org/jsf/composite/emcomp"
-      xmlns:cc="http://xmlns.jcp.org/jsf/composite">
-    
+      xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
     <cc:interface>
         <cc:attribute name="context" required="true"/>
     </cc:interface>
 
     <cc:implementation>
         <h:form>
- 
-    <body>
-        <style>
-                
-                .floating-menu {
-                    font-family: sans-serif;
-                    background: gainsboro;
-                    position: fixed;
-                    right: 0;
-                    top: 40%;
-                    width: 200px;
-                    height: 300px;
-                    margin-top: -2.5em;
-                }
 
-                .floating-menu a, 
-                .floating-menu h3 {
-                    font-size: 0.9em;
-                    display: block;
-                    margin: 0 0.5em;
-                    color: white;
-                }
+            <body>
+                <style>
 
-            </style>
-        <nav class="floating-menu">
-            
-<!--                <h:commandButton style="margin-top: 30px;margin-left: 20px;width: 180px;height: 60px" value="Login now" action="./common/customer_login.xhtml">
-                </h:commandButton>
-            
-                <h:commandButton style="margin-top: 20px;margin-left: 20px;width: 180px;height: 60px" value="Apply now" action="../common/customer_login.xhtml" >
-                </h:commandButton>
-                <h:commandButton style="margin-top: 20px;margin-left: 20px;width: 180px;height: 60px" value="Contact us" />
-                --> 
-                <div style="margin-top:60px;margin-left: 40px"><h2><a href="https://localhost:8181/InternetBankingSystem/common/customer_login.xhtml" style="text-decoration: none">Login</a></h2>
-                <h2><a href="https://localhost:8181/InternetBankingSystem/main_cards/apply_card_account.xhtml" style="text-decoration: none">Apply now</a></h2>
-                <h2><a href="#" style="text-decoration: none">Contact us</a></h2>
-                </div>
+                    .floating-menu {
+                        font-family: sans-serif;
+                        background: gainsboro;
+                        position: fixed;
+                        right: 0;
+                        top: 40%;
+                        width: 200px;
+                        height: 250px;
+                        margin-top: -2.5em;
+                    }
+
+                    .floating-menu a, 
+                    .floating-menu h3 {
+                        font-size: 0.9em;
+                        display: block;
+                        margin: 0 0.5em;
+                        color: white;
+                    }
+
+                </style>
+                <nav class="floating-menu">
+
+                    <!--                <h:commandButton style="margin-top: 30px;margin-left: 20px;width: 180px;height: 60px" value="Login now" action="./common/customer_login.xhtml">
+                                    </h:commandButton>
+                                
+                                    <h:commandButton style="margin-top: 20px;margin-left: 20px;width: 180px;height: 60px" value="Apply now" action="../common/customer_login.xhtml" >
+                                    </h:commandButton>
+                                    <h:commandButton style="margin-top: 20px;margin-left: 20px;width: 180px;height: 60px" value="Contact us" />
+                    --> 
+                    <div style="margin-top:60px;margin-left: 40px"><h2><a href="https://localhost:8181/InternetBankingSystem/common/customer_login.xhtml" style="text-decoration: none">Login</a></h2>
+                        <c:if test="#{cc.attrs.context == 'credit'}">
+                            <h2><a href="https://localhost:8181/InternetBankingSystem/main_cards/apply_card_account.xhtml" style="text-decoration: none">Apply now</a></h2>
+                        </c:if>
+                        <h2><a href="#" style="text-decoration: none">Contact us</a></h2>
+                    </div>
 
 
-            </nav>  
-    </body>
+                </nav>  
+            </body>
         </h:form>
     </cc:implementation>
 </html>

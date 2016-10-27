@@ -38,6 +38,7 @@ public class RiskToleranceQuizManagedBean implements Serializable {
     private int questionNumber = 1;
     private List<Integer> riskScores = new ArrayList<Integer>();
     private int selectValue = 0;
+    private Double savingAmount;
     /**
      * Creates a new instance of RiskToleranceQuizManagedBean
      */
@@ -68,6 +69,9 @@ public class RiskToleranceQuizManagedBean implements Serializable {
     }
     
     public void submit(){
+        System.out.println("submit button pressed: ");
+        System.out.println(savingAmount);
+        wms.getMainAccount().getCustomer().setSavingPerMonth(savingAmount);
         wms.setRiskToleranceScore(totalScore());
         if(totalScore() < 18)
             wms.setRiskToleranceLevel(EnumUtils.RiskToleranceLevel.LOW_RISK_TOLERANCE);
@@ -86,6 +90,7 @@ public class RiskToleranceQuizManagedBean implements Serializable {
     }   
     
     private Integer totalScore(){
+        System.out.println("riskscore size: "+riskScores.size());
         int total = 0;
         for(int i = 0; i < riskScores.size(); i++)
             total+=riskScores.get(i);
@@ -130,5 +135,13 @@ public class RiskToleranceQuizManagedBean implements Serializable {
 
     public void setSelectValue(int selectValue) {
         this.selectValue = selectValue;
+    }
+
+    public Double getSavingAmount() {
+        return savingAmount;
+    }
+
+    public void setSavingAmount(Double savingAmount) {
+        this.savingAmount = savingAmount;
     }
 }

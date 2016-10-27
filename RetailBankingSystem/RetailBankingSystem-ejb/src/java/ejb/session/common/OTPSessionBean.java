@@ -6,6 +6,7 @@
 package ejb.session.common;
 
 import entity.common.OneTimePassword;
+import java.util.Date;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -36,6 +37,27 @@ public class OTPSessionBean implements OTPSessionBeanLocal {
         otp.setPassword(code);
         em.persist(otp);
         em.flush();
+    }
+    
+    @Override
+    public Boolean checkOTPValidByPhoneNumber(String otpCode, String mobileNumber) {
+        OneTimePassword otp = getOTPByPhoneNumber(mobileNumber);
+        if (otp == null) {
+            return false;
+        } else {
+            return otp.getPassword().equals(otpCode);
+        }
+    }
+    
+    @Override
+    public Boolean isOTPExpiredByPhoneNumber(String otpCode, String mobileNumber) {
+        if (checkOTPValidByPhoneNumber(otpCode, mobileNumber)) {
+            OneTimePassword otp = getOTPByPhoneNumber(mobileNumber);
+            Date now = new Date();
+            long seconds = (otp.getCreationDate().getTime() - now.getTime())/1000;
+            return seconds > 60;
+        }
+        return true;
     }
     
     @Override

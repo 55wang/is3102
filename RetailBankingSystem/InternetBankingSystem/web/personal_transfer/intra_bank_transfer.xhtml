@@ -37,11 +37,11 @@ and open the template in the editor.
                                         </p:selectOneMenu>
                                         <h:outputText value="Choose Payee to transfer to " />
                                         <p:selectOneMenu value="#{intraBankTransferManagedBean.payeeId}" rendered="true" required="true">
-                                            <f:selectItems value="#{intraBankTransferManagedBean.payees}" var="p" itemValue="#{p.id}" itemLabel="#{a.name} #{a.accountNumber}" />
+                                            <f:selectItems value="#{intraBankTransferManagedBean.payees}" var="p" itemValue="#{p.id}" itemLabel="#{p.name} #{p.accountNumber}" />
                                         </p:selectOneMenu>
                                         <p:outputLabel for="amount" value="Amount: " />
                                         <p:inputText id="amount" value="#{intraBankTransferManagedBean.amount}"/>
-                                        <p:commandButton  value="Next" type="button" onclick="PF('myWizard').next()" />
+                                        <p:commandButton  value="Next" actionListener="#{intraBankTransferManagedBean.sendOpt()}" update="@form" />
                                     </h:panelGrid>
 
                                 </p:tab>
@@ -54,6 +54,10 @@ and open the template in the editor.
                                         <h:outputText value="#{intraBankTransferManagedBean.toAccountNo}" />
                                         <p:outputLabel value="Amount: " />
                                         <p:outputLabel value="#{intraBankTransferManagedBean.amount}"/>
+                                        
+                                        <h2>Input Token Number</h2>
+                                        <p:inputText value="#{intraBankTransferManagedBean.inputTokenString}" />
+                                    
                                         <p:commandButton  value="Back" type="button" onclick="PF('myWizard').back()" />
                                         <p:commandButton value="Transfer" action="#{intraBankTransferManagedBean.transferToPayee}" update="@form"/> 
                                     </h:panelGrid>

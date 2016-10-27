@@ -7,6 +7,7 @@ package customer.bill;
 
 import ejb.session.bill.BillSessionBeanLocal;
 import ejb.session.common.LoginSessionBeanLocal;
+import ejb.session.common.OTPSessionBeanLocal;
 import entity.bill.BillingOrg;
 import entity.bill.Organization;
 import entity.customer.MainAccount;
@@ -34,6 +35,8 @@ public class ManageCreditCardBillManagedBean implements Serializable {
     private BillSessionBeanLocal billBean;
     @EJB
     private LoginSessionBeanLocal loginBean;
+    @EJB
+    private OTPSessionBeanLocal otpBean;
     
     private String selectedBillId;
     private String referenceNumber;
@@ -41,6 +44,8 @@ public class ManageCreditCardBillManagedBean implements Serializable {
     private MainAccount ma;
     private List<Organization> billOrgsOptions;
     private List<BillingOrg> addedBillOrgs;
+    
+    private String inputTokenString;
     
     public ManageCreditCardBillManagedBean() {}
     
@@ -52,6 +57,11 @@ public class ManageCreditCardBillManagedBean implements Serializable {
     }
     
     public void addBillOrg() {
+        
+        if (!checkOptAndProceed()) {
+            return;
+        }
+        
         // TODO: Check valid cc number
         if (!GenerateAccountAndCCNumber.isValidCreditCardNumber(referenceNumber)) {
             JSUtils.callJSMethod("PF('myWizard').back()");
@@ -85,6 +95,30 @@ public class ManageCreditCardBillManagedBean implements Serializable {
             MessageUtils.displayInfo(ConstantUtils.BILL_ORG_DELETE_SUCCESS);
         } else {
             MessageUtils.displayError(ConstantUtils.BILL_ORG_DELETE_FAILED);
+        }
+    }
+    
+    public void sendOpt() {
+        System.out.println("sendOTP clicked, sending otp to: " + ma.getCustomer().getPhone());
+        JSUtils.callJSMethod("PF('myWizard').next()");
+        otpBean.generateOTP(ma.getCustomer().getPhone());
+    }
+    
+    private Boolean checkOptAndProceed() {
+        if (inputTokenString == null || inputTokenString.isEmpty()) {
+            MessageUtils.displayError("Please enter one time password!");
+            return false;
+        }
+        if (!otpBean.isOTPExpiredByPhoneNumber(inputTokenString, ma.getCustomer().getPhone())) {
+            if (otpBean.checkOTPValidByPhoneNumber(inputTokenString, ma.getCustomer().getPhone())) {
+                return true;
+            } else {
+                MessageUtils.displayError("One Time Password Not Match!");
+                return false;
+            }
+        } else {
+            MessageUtils.displayError("One Time Password Expired!");
+            return false;
         }
     }
 
@@ -170,6 +204,20 @@ public class ManageCreditCardBillManagedBean implements Serializable {
      */
     public void setAddedBillOrgs(List<BillingOrg> addedBillOrgs) {
         this.addedBillOrgs = addedBillOrgs;
+    }
+    
+    /**
+     * @return the inputTokenString
+     */
+    public String getInputTokenString() {
+        return inputTokenString;
+    }
+
+    /**
+     * @param inputTokenString the inputTokenString to set
+     */
+    public void setInputTokenString(String inputTokenString) {
+        this.inputTokenString = inputTokenString;
     }
     
 }

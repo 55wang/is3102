@@ -61,19 +61,11 @@ public class UpdatePortfolioManagedBean implements Serializable {
 
     }
 
-    public void retrievePortfolio() {
-        System.out.println("retrievePortfolio()");
-        System.out.println(portfolioID);
-        if (portfolioID != null && portfolioID.length() > 0) {
-            p = portfolioSessionBean.getPortfolioById(Long.parseLong(portfolioID));
-        }
-    }
-
     public void viewPortfolioDetail() {
         System.out.println("viewPortfolioDetail()");
         System.out.println(portfolioID);
         if (portfolioID != null && portfolioID.length() > 0) {
-            RedirectUtils.redirect("staff-view-portfolio-detail.xhtml?port=" + portfolioID);
+            RedirectUtils.redirect("staff-view-executed-investment-detail.xhtml?port=" + portfolioID);
         }
     }
 

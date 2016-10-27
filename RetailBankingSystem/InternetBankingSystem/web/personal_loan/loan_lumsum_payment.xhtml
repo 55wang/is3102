@@ -12,7 +12,7 @@
             <f:viewParam name="accountId" value="#{loanLumsumPaymentManagedBean.accountId}" />
             <f:viewAction action="#{loanLumsumPaymentManagedBean.init()}"></f:viewAction>
         </f:metadata>
-        
+
         <h:head>
             <title>Your Debit Card Summary</title>
             <em:cssImport></em:cssImport>
@@ -38,7 +38,7 @@
                                         <p:outputLabel for="amount" value="Additional Amount in Thousands: " />
                                         <p:inputText id="amount" value="#{loanLumsumPaymentManagedBean.additionalAmount}"/>
                                     </h:panelGrid>
-                                    <p:commandButton  value="Next" type="button" onclick="PF('myWizard').next()" />
+                                    <p:commandButton  value="Next" actionListener="#{loanLumsumPaymentManagedBean.sendOpt()}" update="@form" />
                                 </p:tab>
 
                                 <p:tab id="verify_details" title="2.Verify Details">
@@ -49,6 +49,10 @@
                                         <h:outputText value="#{loanLumsumPaymentManagedBean.loanAccount.accountNumber}" />
                                         <h:outputText value="Amount (S$):: " />
                                         <h:outputText value="#{loanLumsumPaymentManagedBean.totalAmount()}"/>
+
+                                        <h2>Input Token Number</h2>
+                                        <p:inputText value="#{loanLumsumPaymentManagedBean.inputTokenString}" />
+
                                         <p:commandButton  value="Back" type="button" onclick="PF('myWizard').back()" />
                                         <p:commandButton value="Pay Loan" action="#{loanLumsumPaymentManagedBean.transfer()}" update="@form"/> 
                                     </h:panelGrid>

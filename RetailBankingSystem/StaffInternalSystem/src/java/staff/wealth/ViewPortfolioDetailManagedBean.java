@@ -55,7 +55,7 @@ public class ViewPortfolioDetailManagedBean extends ViewPortfolioAbstractBean im
     }
     
     public void view(){
-        RedirectUtils.redirect("staff-update-portfolio.xhtml?port=" + portfolioID);
+        RedirectUtils.redirect("staff-update-executed-investment-plan.xhtml?port=" + portfolioID);
     }
 
     public SinglePortfolioFactTable getPortfolioFt() {
