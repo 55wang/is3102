@@ -62,13 +62,19 @@
                                             <h:outputText value="#{loanCalculatorManagedBean.tenure}" styleClass="outputLabel"/>
 
                                             <h:outputText value="Monthly instalment: " />
-                                            <h:outputText value="#{loanCalculatorManagedBean.monthlyInstalment}" styleClass="outputLabel"/>
+                                            <h:outputText value="#{loanCalculatorManagedBean.monthlyInstalment}" styleClass="outputLabel">
+                                                <f:convertNumber pattern="###00.00"/>
+                                            </h:outputText>
 
                                             <h:outputText value="Maximum loan amount: " />
-                                            <h:outputText value="#{loanCalculatorManagedBean.loanAmt}" styleClass="outputLabel"/>
+                                            <h:outputText value="#{loanCalculatorManagedBean.loanAmt}" styleClass="outputLabel">
+                                                <f:convertNumber pattern="###00.00"/>
+                                            </h:outputText>
 
                                             <h:outputText value="Housing market value: " />
-                                            <h:outputText value="#{loanCalculatorManagedBean.value}" styleClass="outputLabel"/>
+                                            <h:outputText value="#{loanCalculatorManagedBean.value}" styleClass="outputLabel">
+                                                <f:convertNumber pattern="###00.00"/>
+                                            </h:outputText>
                                         </h:panelGrid>
 
 
