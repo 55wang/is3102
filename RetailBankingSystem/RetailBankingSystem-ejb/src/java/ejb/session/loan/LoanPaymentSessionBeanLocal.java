@@ -9,6 +9,7 @@ import entity.loan.LoanAccount;
 import entity.loan.LoanPaymentBreakdown;
 import entity.loan.LoanRepaymentRecord;
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.Local;
 
@@ -24,4 +25,7 @@ public interface LoanPaymentSessionBeanLocal {
     public List<LoanPaymentBreakdown> futurePaymentBreakdown(LoanAccount loanAccount);
     public String loanRepaymentFromAccount(String loanAccountNumber, String depositAccountNumber, BigDecimal amount);
     public String loanLumsumPaymentFromAccount(String loanAccountNumber, String depositAccountNumber, BigDecimal amount);
+    public Date getNextPaymentDateByLoanAccountNumber (String loanAccountNumber);
+    public Date getPreviousPaymentDateByLoanAccountNumber (String loanAccountNumber);
+
 }
