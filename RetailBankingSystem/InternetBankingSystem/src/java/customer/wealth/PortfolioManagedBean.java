@@ -105,6 +105,11 @@ public class PortfolioManagedBean implements Serializable {
         } catch (Exception ex) {
             System.out.println(ex);
         }
+        
+        System.out.println("### portfolio testing");
+        System.out.println(customer.getPortfolioPercentageChange());
+        System.out.println(customer.getTotalPortfolioCurrentValue());
+        
 
     }
 

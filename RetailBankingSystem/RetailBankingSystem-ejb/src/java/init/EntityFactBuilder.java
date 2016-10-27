@@ -6,6 +6,8 @@
 package init;
 
 import ejb.session.fact.FactSessionBeanLocal;
+import ejb.session.wealth.PortfolioSessionBean;
+import ejb.session.wealth.PortfolioSessionBeanLocal;
 import entity.customer.MainAccount;
 import entity.fact.customer.SinglePortfolioFactTable;
 import entity.wealth.Portfolio;
@@ -33,6 +35,8 @@ public class EntityFactBuilder {
 
     @EJB
     private FactSessionBeanLocal factSessionBean;
+    @EJB
+    private PortfolioSessionBeanLocal portfolioSessionBean;
 
     private String currentDate;
     private String monthStartDate;
@@ -78,6 +82,7 @@ public class EntityFactBuilder {
             spf.setTotalCurrentValue(demoPortfolio.getTotalCurrentValue() + actualChanges);
             spf.setTotalBuyingValue(demoPortfolio.getTotalBuyingValue());
             factSessionBean.createSinglePortfolioFactTable(spf);
+            portfolioSessionBean.updatePortfolio(demoPortfolio);
 
         }
 

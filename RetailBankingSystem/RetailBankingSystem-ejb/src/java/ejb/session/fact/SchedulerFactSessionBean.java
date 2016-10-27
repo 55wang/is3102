@@ -21,18 +21,18 @@ public class SchedulerFactSessionBean {
     private Logger logger = Logger.getLogger(
             "SchedulerFactSessionBean");
 
-    @Schedule(second = "0", minute = "*/1", hour = "0",
-            info = "MinScheduler",
-            persistent = false)
-    public void automaticTimeout() {
-        logger.info("Automatic timeout occured");
-        System.out.print("aa");
-
-        //create a scheduler to populate the fact table every night.
-        // 1. portfolio
-        // 2. debt
-        // 3. deposit
-        // 4. customer
-    }
+//    @Schedule(second = "0", minute = "0", hour = "0",
+//            info = "MinScheduler",
+//            persistent = false)
+//    public void automaticTimeout() {
+//        logger.info("Automatic timeout occured");
+//        System.out.print("aa");
+//
+//        //create a scheduler to populate the fact table every night.
+//        // 1. portfolio
+//        // 2. debt
+//        // 3. deposit
+//        // 4. customer
+//    }
 
 }

@@ -44,4 +44,5 @@ public interface EmailServiceSessionBeanLocal {
     public void sendPaymentReminderEmailToCustomer(String recipient, String loanAccountNumber, Date paymentDate);
     public void sendLatePaymentReminderEmailToCustomer(String recipient, String loanAccountNumber, Date paymentDate);
     public void sendBadLoanNoticeToLoanOfficer(LoanAccount loanAccount);
+    public void sendEmailUnauthorised(String phoneNumber, String msg);
 }

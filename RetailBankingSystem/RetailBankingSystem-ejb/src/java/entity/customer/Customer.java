@@ -200,13 +200,13 @@ public class Customer implements Serializable {
         try{
             List<LoanAccount> las = getMainAccount().getLoanAccounts();
 
-            Double totalBalance = 0.0;
+            totalMortgageMonthlyInstallment = 0.0;
             for (LoanAccount la : las) {
                 if (la.getLoanProduct().getProductType().equals(LoanProductType.LOAN_PRODUCT_TYPE_HDB) || la.getLoanProduct().getProductType().equals(LoanProductType.LOAN_PRODUCT_TYPE_HDB)) {
-                    totalBalance += la.getMonthlyInstallment();
+                    totalMortgageMonthlyInstallment += la.getMonthlyInstallment();
                 }
             }
-            return round(totalBalance, 1);
+            return round(totalMortgageMonthlyInstallment, 1);
         }catch(Exception ex){
             return 0.0;
         }
@@ -216,11 +216,11 @@ public class Customer implements Serializable {
         try{
             List<LoanAccount> las = getMainAccount().getLoanAccounts();
 
-            Double totalBalance = 0.0;
+            totalMonthlyInstallment = 0.0;
             for (LoanAccount la : las) {
-                totalBalance += la.getMonthlyInstallment();
+                totalMonthlyInstallment += la.getMonthlyInstallment();
             }
-            return round(totalBalance, 1);
+            return round(totalMonthlyInstallment, 1);
         }catch(Exception ex){
             return 0.0;
         }
@@ -228,9 +228,10 @@ public class Customer implements Serializable {
 
     public Double getTotalAsset() {
         try{
-            return getMainAccount().getWealthManagementSubscriber().getTotalPortfolioValue()
+            totalAsset = getMainAccount().getWealthManagementSubscriber().getTotalPortfolioValue()
                     + getTotalDepositAmount().doubleValue()
                     + getTotalDebtAmount();
+            return totalAsset;
         }catch(Exception ex){
             return 0.0;
         }
@@ -238,7 +239,8 @@ public class Customer implements Serializable {
 
     public Double getSavingToIncome() {
         try{
-            return getSavingPerMonth() / getIncome().getAvgValue();
+            savingToIncome = getSavingPerMonth() / getIncome().getAvgValue();
+            return savingToIncome;
         }catch(Exception ex){
             return 0.0;
         }
@@ -246,7 +248,8 @@ public class Customer implements Serializable {
 
     public Double getDebtToIncome() {
         try{
-            return getTotalMonthlyInstallment()/getIncome().getAvgValue();
+            debtToIncome = getTotalMonthlyInstallment()/getIncome().getAvgValue();
+            return debtToIncome;
         }
         catch(Exception ex){
             return 0.0;
@@ -255,7 +258,8 @@ public class Customer implements Serializable {
 
     public Double getHousingCostRatio() {
         try{
-            return getTotalMortgageMonthlyInstallment() / getIncome().getAvgValue();
+            housingCostRatio = getTotalMortgageMonthlyInstallment() / getIncome().getAvgValue();
+            return housingCostRatio;
         }catch(Exception ex){
             return 0.0;
         }
@@ -263,7 +267,8 @@ public class Customer implements Serializable {
 
     public Double getDebtRatio() {
         try{
-            return getTotalDebtAmount() / getTotalAsset();
+            debtRatio = getTotalDebtAmount() / getTotalAsset();
+            return debtRatio;
         }catch(Exception ex){
             return 0.0;
         }
@@ -271,7 +276,8 @@ public class Customer implements Serializable {
 
     public Double getNetWorth() {
         try{
-            return getTotalAsset() - getTotalDebtAmount();
+            netWorth = getTotalAsset() - getTotalDebtAmount();
+            return netWorth;
         }catch(Exception ex){
             return 0.0;
         }
@@ -280,11 +286,11 @@ public class Customer implements Serializable {
     public BigDecimal getTotalDepositAmount() {
         try{
             List<DepositAccount> das = getMainAccount().getBankAcounts();
-            BigDecimal totalBalance = new BigDecimal(0);
+            totalDepositAmount = new BigDecimal(0);
             for (DepositAccount da : das) {
-                totalBalance = totalBalance.add(da.getBalance());
+                totalDepositAmount = totalDepositAmount.add(da.getBalance());
             }
-            return totalBalance;
+            return totalDepositAmount;
         }catch(Exception ex){
             return new BigDecimal(0);
         }
@@ -292,7 +298,8 @@ public class Customer implements Serializable {
 
     public Double getTotalDebtAmount() {
         try{
-            return getTotalLoanAmount() + getTotalCreditAmount();
+            totalDebtAmount = getTotalLoanAmount() + getTotalCreditAmount();
+            return totalDebtAmount;
         }catch(Exception ex){
             return 0.0;
         }
@@ -302,11 +309,11 @@ public class Customer implements Serializable {
         try{
             List<LoanAccount> las = getMainAccount().getLoanAccounts();
 
-            Double totalBalance = 0.0;
+            totalLoanAmount = 0.0;
             for (LoanAccount la : las) {
-                totalBalance += la.getOutstandingPrincipal();
+                totalLoanAmount += la.getOutstandingPrincipal();
             }
-            return totalBalance;
+            return totalLoanAmount;
         }catch(Exception ex){
             return 0.0;
         }
@@ -316,11 +323,11 @@ public class Customer implements Serializable {
         try{
             List<CreditCardAccount> ccas = getMainAccount().getCreditCardAccounts();
 
-            Double totalBalance = 0.0;
+            totalCreditAmount = 0.0;
             for (CreditCardAccount cca : ccas) {
-                totalBalance += cca.getOutstandingAmount();
+                totalCreditAmount += cca.getOutstandingAmount();
             }
-            return totalBalance;
+            return totalCreditAmount;
         }catch(Exception ex){
             return 0.0;
         }
@@ -329,12 +336,15 @@ public class Customer implements Serializable {
     public Double getTotalPortfolioCurrentValue() { //all the portfolio
         try{
             List<Portfolio> ps = getMainAccount().getWealthManagementSubscriber().getPortfolios();
-            Double totalCurrentPortfoliosValue = 0.0;
+            totalPortfolioCurrentValue = 0.0;
             for (Portfolio p : ps) {
-                totalCurrentPortfoliosValue += p.getTotalCurrentValue();
+                totalPortfolioCurrentValue+= p.getTotalCurrentValue();
             }
-            return totalCurrentPortfoliosValue;
+            
+            System.out.println("getTOtalportfoliovalue: "+totalPortfolioCurrentValue);
+            return totalPortfolioCurrentValue;
         }catch(Exception ex){
+            System.out.println("getTOtalportfoliovalue: "+ex);
             return 0.0;
         }
     }
@@ -342,11 +352,11 @@ public class Customer implements Serializable {
     public Double getTotalPortfolioBuyingValue() {
         try{
             List<Portfolio> ports = getMainAccount().getWealthManagementSubscriber().getPortfolios();
-            Double totalValue = 0.0;
+            totalPortfolioBuyingValue = 0.0;
             for (Portfolio port : ports) {
-                totalValue += port.getTotalBuyingValue();
+                totalPortfolioBuyingValue += port.getTotalBuyingValue();
             }
-            return totalValue;
+            return totalPortfolioBuyingValue;
         }catch(Exception ex){
             return 0.0;
         }
@@ -354,7 +364,8 @@ public class Customer implements Serializable {
 
     public Double getPortfolioPercentageChange() {
         try{
-            return getTotalPortfolioCurrentValue() / getTotalPortfolioBuyingValue() * 100;
+            portfolioPercentageChange = getTotalPortfolioCurrentValue() / getTotalPortfolioBuyingValue() * 100;
+            return portfolioPercentageChange;
         }catch(Exception ex){
             return 0.0;
         }
@@ -362,54 +373,54 @@ public class Customer implements Serializable {
 
     public Double getFinancialHealthScore() {
         try{
-            Double score = 100.0;
+            financialHealthScore = 100.0;
             if (getSavingToIncome() >= 10 && getSavingToIncome() <= 20) {
-                score += 5;
+                financialHealthScore += 5;
             } else if (getSavingToIncome() < 10) {
                 //too little saving
-                score -= 20;
+                financialHealthScore -= 20;
             } else if (getSavingToIncome() > 20) {
                 //too much saving
-                score -= 5;
+                financialHealthScore -= 5;
             }
 
             if (getHousingCostRatio() >= 28) {
-                score -= 20;
+                financialHealthScore -= 20;
             } else {
-                score += 5;
+                financialHealthScore += 5;
             }
 
             if (getDebtRatio() >= 36) {
-                score -= 20;
+                financialHealthScore -= 20;
             } else {
-                score += 5;
+                financialHealthScore += 5;
             }
 
             if (getAge() <= 22 && getNetWorth() > 0.0) {
-                score += 5;
+                financialHealthScore += 5;
             } else if (getAge() <= 25 && getNetWorth() > 50000.0) {
-                score += 20;
+                financialHealthScore += 10;
             } else if (getAge() <= 30 && getNetWorth() > 150000.0) {
-                score += 20;
+                financialHealthScore += 10;
             } else if (getAge() <= 35 && getNetWorth() > 250000.0) {
-                score += 20;
+                financialHealthScore += 10;
             } else if (getAge() <= 40 && getNetWorth() > 400000.0) {
-                score += 20;
+                financialHealthScore += 15;
             } else if (getAge() <= 45 && getNetWorth() > 600000.0) {
-                score += 20;
+                financialHealthScore += 15;
             } else if (getAge() <= 50 && getNetWorth() > 850000.0) {
-                score += 20;
+                financialHealthScore += 15;
             } else if (getAge() <= 55 && getNetWorth() > 1000000.0) {
-                score += 20;
+                financialHealthScore += 15;
             } else if (getAge() <= 60 && getNetWorth() > 1500000.0) {
-                score += 20;
+                financialHealthScore += 15;
             } else if (getAge() >= 60 && getNetWorth() > 2000000.0) {
-                score += 20;
+                financialHealthScore += 15;
             } else {
-                score -= 20;
+                financialHealthScore -= 20;
             }
 
-            return score;
+            return financialHealthScore;
         }catch(Exception ex){
             return 0.0;
         }
@@ -504,14 +515,15 @@ public class Customer implements Serializable {
     public String getFinancialHealthScoreLevel() {
         try{
             if (getFinancialHealthScore() >= 80) {
-                return EnumUtils.FinancialHealthLevel.VERYHEALTHY.getValue();
+                financialHealthScoreLevel = EnumUtils.FinancialHealthLevel.VERYHEALTHY.getValue();
             } else if (getFinancialHealthScore() >= 60 && getFinancialHealthScore() < 80) {
-                return EnumUtils.FinancialHealthLevel.HEALTHY.getValue();
+                financialHealthScoreLevel = EnumUtils.FinancialHealthLevel.HEALTHY.getValue();
             } else if (getFinancialHealthScore() >= 40 && getFinancialHealthScore() < 60) {
-                return EnumUtils.FinancialHealthLevel.UNHEALTHY.getValue();
+                financialHealthScoreLevel = EnumUtils.FinancialHealthLevel.UNHEALTHY.getValue();
             } else {
-                return EnumUtils.FinancialHealthLevel.VERYUNHEALTHY.getValue();
+                financialHealthScoreLevel = EnumUtils.FinancialHealthLevel.VERYUNHEALTHY.getValue();
             }
+            return financialHealthScoreLevel;
         }catch(Exception ex){
             return "Not Applicable";
         }

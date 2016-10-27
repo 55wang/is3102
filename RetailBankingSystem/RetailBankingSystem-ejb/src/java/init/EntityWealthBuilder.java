@@ -207,6 +207,10 @@ public class EntityWealthBuilder {
         portfolioSessionBean.updatePortfolio(p);
         executedInvestmentPlan.setPortfolio(p);
         investmentPlanSessionBean.updateInvestmentPlan(executedInvestmentPlan);
+        List<Portfolio> ps = wms.getPortfolios();
+        ps.add(p);
+        wms.setPortfolios(ps);
+        wealthManegementSubscriberSessionBean.updateWealthManagementSubscriber(wms);
 
         return p;
     }
@@ -329,6 +333,11 @@ public class EntityWealthBuilder {
         executedInvestmentPlan.setPortfolio(p3);
 
         investmentPlanSessionBean.updateInvestmentPlan(executedInvestmentPlan);
+        List<Portfolio> ps = ma.getWealthManagementSubscriber().getPortfolios();
+        ps.add(p3);
+        ma.getWealthManagementSubscriber().setPortfolios(ps);
+        wealthManegementSubscriberSessionBean.updateWealthManagementSubscriber(ma.getWealthManagementSubscriber());
+
         return p3;
 
     }

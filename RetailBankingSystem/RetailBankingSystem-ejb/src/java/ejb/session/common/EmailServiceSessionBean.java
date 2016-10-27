@@ -683,6 +683,29 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
         }
 
     }
+    
+    @Asynchronous
+    @Override
+    public void sendEmailUnauthorised(String recipient, String msg){
+        
+        Session session = getSession();
+
+        try {
+
+            Message message = new MimeMessage(session);
+            message.setFrom(new InternetAddress("merlionbanking@gmail.com"));
+            message.setRecipients(Message.RecipientType.TO,
+                    InternetAddress.parse(recipient));
+            message.setSubject("Unauthorise Transaction");
+            message.setText(msg);
+            Transport.send(message);
+
+            System.out.println("Email send out successfully");
+
+        } catch (MessagingException e) {
+            System.out.println(e);
+        }
+    }
 
     private Properties getGmailProperties() {
         Properties props = new Properties();
