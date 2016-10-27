@@ -16,6 +16,7 @@ import entity.loan.LoanAccount;
 import entity.wealth.Portfolio;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.MathContext;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -32,6 +33,7 @@ import org.primefaces.model.chart.AxisType;
 import org.primefaces.model.chart.LineChartModel;
 import org.primefaces.model.chart.LineChartSeries;
 import org.primefaces.model.chart.PieChartModel;
+import static server.utilities.CommonUtils.round;
 import server.utilities.EnumUtils;
 import server.utilities.EnumUtils.LoanProductType;
 import utils.SessionUtils;
@@ -116,7 +118,7 @@ public class PortfolioManagedBean implements Serializable {
                 totalBalance += la.getMonthlyInstallment();
             }
         }
-        return totalBalance;
+        return round(totalBalance, 1);
     }
 
     public Double getTotalMonthlyInstallment(MainAccount main) {
@@ -126,7 +128,7 @@ public class PortfolioManagedBean implements Serializable {
         for (LoanAccount la : las) {
             totalBalance += la.getMonthlyInstallment();
         }
-        return totalBalance;
+        return round(totalBalance, 1);
     }
 
     public Double getTotalAsset(MainAccount main) {
@@ -250,7 +252,6 @@ public class PortfolioManagedBean implements Serializable {
 
         pieModel2.setTitle("Financial Overview");
         pieModel2.setLegendPosition("e");
-        pieModel2.setFill(false);
         pieModel2.setShowDataLabels(true);
         pieModel2.setDiameter(150);
     }
