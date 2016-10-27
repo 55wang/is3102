@@ -1737,10 +1737,13 @@ public class EnumUtils {
     public enum LoanAccountStatus {
 
         NEW("NEW"),
+        INPROGRESS("INPROGRESS"),
         PENDING("PENDING"),
         APPROVED("APPROVED"),
         REJECTED("REJECTED"),
+        CLOSED("CLOSED"),
         SUSPENDED("SUSPENDED");
+        
         private String value;
 
         LoanAccountStatus(String value) {

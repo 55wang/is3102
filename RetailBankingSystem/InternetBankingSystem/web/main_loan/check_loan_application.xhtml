@@ -1,0 +1,42 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:em="http://xmlns.jcp.org/jsf/composite/emcomp"
+      xmlns:p="http://primefaces.org/ui">
+    <!--shift + ctrl + F, format-->
+    <f:view>
+        <h:head>
+            <title>Merlion Bank</title>
+            <h:outputStylesheet library="css" name="reset.css"/>
+            <h:outputStylesheet library="css" name="theme.css"/>
+        </h:head>
+        <h:body>
+            <em:customerHeader context="main" userName="Log in"></em:customerHeader>
+            <em:customerNavBar context="main" mainPage="mainLoans"></em:customerNavBar>
+
+            <em:cssImport></em:cssImport>
+            <div class="customer_main_container">
+                <div id="register-form-container" class="h-center top-50">
+                    <p:panel>
+                        <h:form>
+                            <p:growl id="growl" sticky="true" showDetail="true"/>
+                            <p:messages id="msgs2"/>
+                            <h:panelGrid columns="2" columnClasses="label, value">
+                                <h:outputText value="Application Number: " />
+                                <p:inputText value="#{checkLoanApplicationManagedBean.applicationId}" required="true" requiredMessage="Age is required." />
+                            </h:panelGrid>
+                            <p:commandButton value="Check" action="#{checkLoanApplicationManagedBean.retrieveLoanApplication()}" update="@form" rendered="#{checkLoanApplicationManagedBean.loanApplication == null}"/>
+                            <h:outputText class="font-25" value="Status: #{checkLoanApplicationManagedBean.loanApplication.status.toString()}" rendered="#{checkLoanApplicationManagedBean.loanApplication != null}" />
+                        </h:form>
+                    </p:panel>
+                </div>
+            </div>
+            <em:customerMainFooter></em:customerMainFooter>
+        </h:body>
+    </f:view>
+
+
+</html>
+

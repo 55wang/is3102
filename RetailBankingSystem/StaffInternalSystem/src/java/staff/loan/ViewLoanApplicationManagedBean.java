@@ -18,6 +18,7 @@ import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import server.utilities.EnumUtils;
+import server.utilities.EnumUtils.LoanAccountStatus;
 import utils.RedirectUtils;
 import utils.SessionUtils;
 
@@ -32,6 +33,8 @@ public class ViewLoanApplicationManagedBean implements Serializable {
     @EJB
     private LoanAccountSessionBeanLocal loanAccountBean;
 
+    private final String STATUS_NEW = LoanAccountStatus.NEW.toString();
+    private final String STATUS_INPROGRESS = LoanAccountStatus.INPROGRESS.toString();
     private List<LoanApplication> myLoanApplications = new ArrayList<>();
 
     /**
@@ -69,5 +72,19 @@ public class ViewLoanApplicationManagedBean implements Serializable {
      */
     public void setMyLoanApplications(List<LoanApplication> myLoanApplications) {
         this.myLoanApplications = myLoanApplications;
+    }
+
+    /**
+     * @return the STATUS_NEW
+     */
+    public String getSTATUS_NEW() {
+        return STATUS_NEW;
+    }
+
+    /**
+     * @return the STATUS_INPROGRESS
+     */
+    public String getSTATUS_INPROGRESS() {
+        return STATUS_INPROGRESS;
     }
 }

@@ -36,6 +36,7 @@ public interface LoanProductSessionBeanLocal {
     public LoanInterestCollection updateInterestCollection(LoanInterestCollection lic);
     public LoanInterestCollection getInterestCollectionById(Long id);
     public LoanExternalInterest getSIBORInterest();
+    public LoanExternalInterest updateSIBORInterest(LoanExternalInterest siborRate);
     public List<LoanInterest> getAllLoanInterest();
     public List<LoanInterestCollection> getAllPersonalLoanInterestCollection();
     public List<LoanInterestCollection> getAllCarLoanInterestCollection();

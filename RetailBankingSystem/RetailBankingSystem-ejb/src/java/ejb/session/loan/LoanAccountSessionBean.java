@@ -52,6 +52,17 @@ public class LoanAccountSessionBean implements LoanAccountSessionBeanLocal {
     }
     
     @Override
+    public String closeLoanAccountByAccountNumber(String accountNumber) {
+        LoanAccount la = getLoanAccountByAccountNumber(accountNumber);
+        if (la.getOutstandingPrincipal() > 0 && la.getOverduePayment() > 0) {
+            return "FAIL";
+        }
+        la.setLoanAccountStatus(LoanAccountStatus.CLOSED);
+        em.merge(la);
+        return "SUCCESS";
+    }
+    
+    @Override
     public List<LoanAccount> getLoanAccountByStaffUsernameAndStatus(String username, LoanAccountStatus status) {
         Query q = em.createQuery("SELECT l FROM LoanAccount l WHERE l.loanOfficer.username = :username AND l.loanAccountStatus =:inStatus");
         q.setParameter("username", username);

@@ -65,6 +65,7 @@ public class ApproveLoanAccountManagedBean implements Serializable {
         emailBean.sendLoanApplicationApprovalNotice(la.getMainAccount().getCustomer().getEmail());
         
         MessageUtils.displayInfo("Application Approved!");
+        myLoanAccounts.remove(la);
     }
     
     public void rejectLoanAccount(LoanAccount la) {
@@ -75,6 +76,7 @@ public class ApproveLoanAccountManagedBean implements Serializable {
         emailBean.sendLoanApplicationRejectNotice(la.getMainAccount().getCustomer().getEmail());
         
         MessageUtils.displayInfo("Application Rejected!");
+        myLoanAccounts.remove(la);
     }
     
     public void calculateCreditScore(LoanAccount la) {

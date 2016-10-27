@@ -681,11 +681,17 @@ and open the template in the editor.
 .font-20 {
     font-size: 20px;
 }
+.font-25 {
+    font-size: 25px;
+}
 .padding-20{
     padding: 20px;
 }
 .hidden {
     display: none;
+}
+.top-50 {
+    top: 50%!important;
 }
 .top-65 {
     top: 65%!important;
