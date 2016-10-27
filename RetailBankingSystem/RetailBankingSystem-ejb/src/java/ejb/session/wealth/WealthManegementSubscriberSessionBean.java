@@ -6,9 +6,11 @@
 package ejb.session.wealth;
 
 import entity.customer.WealthManagementSubscriber;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -30,6 +32,12 @@ public class WealthManegementSubscriberSessionBean implements WealthManegementSu
     @Override
     public WealthManagementSubscriber getWealthManagementSubscriberById(Long id){
         return em.find(WealthManagementSubscriber.class, id);
+    }
+    
+    @Override
+    public List<WealthManagementSubscriber> getAllWealthManagementSubscribers(){
+        Query q = em.createQuery("Select w from WealthManagementSubscriber w");
+        return q.getResultList();
     }
     
     @Override

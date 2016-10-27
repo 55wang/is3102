@@ -1,0 +1,72 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:em="http://xmlns.jcp.org/jsf/composite/emcomp"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <!--shift + ctrl + F, format-->
+    <f:view>
+        <h:head>
+            <title>Facelet Title</title>
+            <em:cssImport></em:cssImport>
+        </h:head>
+        <h:body>
+            <div class="center-container">
+                <h:form id="mainForm">
+                    <p:growl id="msgs" showDetail="true"/>
+                    <!--TODO: Add function here-->
+                    <p:panel header="Payment Reminder">
+                        <h:panelGrid columns="3" cellpadding="5">
+
+                            <p:outputLabel for="paymentReminder" value="Payment Reminder Demo" />
+                            <p:calendar id="paymentReminder" value="#{loanDemoManagedBean.currentDate1}" navigator="true" yearRange="c-100:c+0" pattern="yyyy-MM-dd" />
+
+                            <p:commandButton value="Send Reminder" update="@form" actionListener="#{loanDemoManagedBean.sendPaymentReminder}" />
+
+                        </h:panelGrid>
+                        <h:panelGrid columns="1" cellpadding="5">
+
+                            <h:outputText value="(System will send out email to customers 5 days before repayment due date)" />
+
+                        </h:panelGrid>
+                    </p:panel>
+                    <p:panel header="Late Payment Reminder">
+                        <h:panelGrid columns="3" cellpadding="5">
+
+                            <p:outputLabel for="latePaymentReminder" value="Late Payment Reminder Demo" />
+                            <p:calendar id="latePaymentReminder" value="#{loanDemoManagedBean.currentDate2}" navigator="true" yearRange="c-100:c+0" 
+                                        pattern="yyyy-MM-dd" maxdate="#{customerApplicationManagedBean.currentDate2}"/>
+
+                            <p:commandButton value="Send Reminder" update="@form" actionListener="#{loanDemoManagedBean.sendLatePaymentReminder}" />
+
+                        </h:panelGrid>
+                        <h:panelGrid columns="1" cellpadding="5">
+
+                            <h:outputText value="(System will send out email to customers 1 day after repayment due date)" />
+
+                        </h:panelGrid>
+                    </p:panel>
+                    <p:panel header="Bad Loan Notice">
+                        <h:panelGrid columns="3" cellpadding="5">
+
+                            <h:outputText  value="Bad Loan Notice Demo" />
+
+                            <p:commandButton value="Send Notice" update="@form" actionListener="#{loanDemoManagedBean.sendBadLoanNotice()}" />
+
+                        </h:panelGrid>
+                        <h:panelGrid columns="1" cellpadding="5">
+
+                            <h:outputText value="(System will send out email to customers 1 day after repayment due date)" />
+
+                        </h:panelGrid>
+                    </p:panel>
+                </h:form>
+            </div>
+        </h:body>
+    </f:view>
+
+
+</html>
+

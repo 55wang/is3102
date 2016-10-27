@@ -23,7 +23,7 @@ and open the template in the editor.
             <em:customerNavBar context="personal" personalPage="pay" ></em:customerNavBar>
             <div class="customer_main_container">
                 <p:panel header="Pay your Merlion Bank Credit Card Bills">
-                    <h:form>
+                    <h:form id="mainForm">
                         <p:messages id="message" redisplay="false" >
                             <p:wizard widgetVar="myWizard" showNavBar="false">
                                 <p:tab id="input_detail" title="1.Input Details">
@@ -55,7 +55,7 @@ and open the template in the editor.
                                         <p:inputText value="#{payMerlionCreditCardBillManagedBean.inputTokenString}" />
 
                                         <p:commandButton  value="Back" type="button" onclick="PF('myWizard').back()" />
-                                        <p:commandButton value="Add Bill Org" action="#{payMerlionCreditCardBillManagedBean.transfer()}" update="form"/> 
+                                        <p:commandButton value="Add Bill Org" action="#{payMerlionCreditCardBillManagedBean.transfer()}" update="mainForm"/> 
                                     </h:panelGrid>
                                 </p:tab>
 

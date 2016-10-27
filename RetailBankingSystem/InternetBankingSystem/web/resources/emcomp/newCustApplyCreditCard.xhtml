@@ -23,9 +23,9 @@
                     <p:wizard widgetVar="myWizard" showNavBar="false">
                         <c:if test="#{cc.attrs.context == 'apply_card_account'}">
                             <p:tab id="account" title="1. Apply">
-                                <p:panel style=" padding-top: 50px ; margin-left: 8% ">
+                                <p:panel>
                                     <p:messages />
-                                    <table style="margin-top:-90px ">
+                                    <table>
 
                                         <tr><div class="h-center"  style="margin-top:80px">
                                                 <h:outputText style="font-weight:bolder" value="Choose your Credit Card account: " />
@@ -36,9 +36,10 @@
 
                                             </div></tr>
                                         <tr><div>
-                                                <p style="margin-left:17%; margin-top:30px"> Terms and Conditions</p>
+                                                <p style="margin-left:24%; margin-top:30px"> Terms and Conditions</p>
                                             </div></tr>
-                                        <tr><p:scrollPanel mode="native" style="width:500px;height:200px;margin-left:17%;margin-top:0px;border:1px solid grey">
+                                        <tr>
+                                            <p:scrollPanel mode="native" style="width:500px;height:200px;margin-left:23%;margin-top:0px;border:1px solid grey">
                                                 <p>
                                                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean blandit tortor a ipsum vehicula, in semper sapien auctor. Nulla tempor eget est non consequat. Nulla sit amet lorem justo. Cras non tellus eros. Sed ultricies orci ut quam interdum fringilla. Nam vitae massa ac mi elementum mattis vel vitae sem. Ut eros ipsum, scelerisque a erat a, eleifend luctus nibh. Interdum et malesuada fames ac ante ipsum primis in faucibus.
                                                 </p>
@@ -57,23 +58,24 @@
                                             </p:scrollPanel></tr>
 
 
-                                        <tr><div  style="margin-left: 17%; margin-top: 30px" >
+                                        <tr><div  style="margin-left: 23%; margin-top: 30px" >
                                                 <input type="checkbox" name="term" value="Term" id="TCcheck">I acknowledge and agree to the above. </input>
                                             </div></tr>
                                     </table>
-                                </p:panel>
-                                <div class="register-form-button" style="margin-top: 120px">
-                                    <p:commandButton class="h-center"  value="Next" type="button" onclick="myFunction()" />
-                                    <script>
-                                        function myFunction() {
-                                            if (document.getElementById("TCcheck").checked === false) {
-                                                alert("Please read and agree to the Terms and Conditions first!");
-                                            } else {
-                                                PF('myWizard').next();
+                                    <div class="register-form-button" style="margin-top: 20px">
+                                        <p:commandButton value="Next" type="button" onclick="myFunction()" />
+                                        <script>
+                                            function myFunction() {
+                                                if (document.getElementById("TCcheck").checked === false) {
+                                                    alert("Please read and agree to the Terms and Conditions first!");
+                                                } else {
+                                                    PF('myWizard').next();
+                                                }
                                             }
-                                        }
-                                    </script>
-                                </div>
+                                        </script>
+                                    </div>
+                                </p:panel>
+
                             </p:tab>
                         </c:if>
                         <p:tab id="basic" title="2. Basic Information" >

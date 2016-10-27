@@ -14,42 +14,45 @@
         </h:head>
         <h:body>
             <em:staffNavBar context="wealth"></em:staffNavBar>
-            <em:staffSideBar top="wealth" side="viewPortfolio"></em:staffSideBar>
+            <em:staffSideBar top="wealth" side="viewInvestList"></em:staffSideBar>
 
             <div class="container">
                 <h:form id="mainForm">
-                    <p:panel header="Customer Financial Profile">
+                    <p:panel header="Executed Investment Plans List">
+                        <h:outputText value="ID: "/>
+                        <h:inputText value="#{viewPortfolioManagedBean.portfolioID}"/>
 
-                        <h:outputText value="Customer Name: "/>
-                        <h:inputText value="#{viewPortfolioManagedBean.searchText}"/>
-
-                        <p:commandButton value="RETRIEVE" action="#{viewPortfolioManagedBean.searchCustomerFullName(viewPortfolioManagedBean.searchText)}" update="mainForm"/>
-
-
+                        <p:commandButton value="RETRIEVE" action="#{viewPortfolioManagedBean.retrievePortfolio()}" update="@form"/>
+                        <p:commandButton value="RETRIEVE ALL" action="#{viewPortfolioManagedBean.retrieveAllPortfolio()}" update="@form"/>
 
                         <p:messages id="messagesStatus" redisplay="false" >
                             <h:panelGrid columns="2" cellpadding="5">
                                 <p:dataTable value="#{viewPortfolioManagedBean.portfolios}" var="p" >
-                                    <p:column headerText="Portfolio Id">
+                                    <p:column headerText="Id">
                                         <h:outputText value="#{p.id}" />
                                     </p:column>
                                     <p:column headerText="Customer Name">
                                         <h:outputText value="#{p.wealthManagementSubscriber.mainAccount.customer.fullName}" />
                                     </p:column>
-                                    <p:column headerText="Total Deposit Amount">
-                                        <h:outputText value="#{viewPortfolioManagedBean.getTotalDepositAmount(p.wealthManagementSubscriber.mainAccount)}" />
+                                    <p:column headerText="Investment Amount">
+                                        <h:outputText value="S$#{p.executedInvestmentPlan.amountOfInvestment}" />
                                     </p:column>
-                                    <p:column headerText="Total Debt Amount">
-                                        <h:outputText value="#{viewPortfolioManagedBean.getTotalDebtAmount(p.wealthManagementSubscriber.mainAccount)}" />
+                                    <p:column headerText="Buying Value">
+                                        <h:outputText value="#{p.totalBuyingValue}">
+                                            <f:convertNumber type="currency" currencySymbol="S$" />
+                                        </h:outputText>
                                     </p:column>
-                                    <p:column headerText="Current Ratio">
-                                        <h:outputText value="#{viewPortfolioManagedBean.getCurrentRatio(p.wealthManagementSubscriber.mainAccount)}" />
+                                    <p:column headerText="Current Value">
+                                        <h:outputText value="#{p.totalCurrentValue}">
+                                            <f:convertNumber type="currency" currencySymbol="S$" />
+                                        </h:outputText>
                                     </p:column>
-                                    <p:column headerText="Investment Assets to Total Assets">
-                                        <h:outputText value="#{p.executedInvestmentPlan.systemPredictReturn}" />
+                                    <p:column headerText="Current Return">
+                                        <h:outputText value="#{(p.totalCurrentValue/p.totalBuyingValue*100).shortValue()-100}%" rendered="#{p.status == 'BOUGHT'}" />
+                                        <h:outputText value="NaN" rendered="#{p.status != 'BOUGHT'}" />
                                     </p:column>
-                                    <p:column headerText="Investment % Change">
-                                        <h:outputText value="#{viewPortfolioManagedBean.getPortfolioPercentageChange(p.wealthManagementSubscriber.mainAccount)}" />
+                                    <p:column headerText="Status">
+                                        <h:outputText value="#{p.status}" />
                                     </p:column>
                                     <p:column headerText="Action">
                                         <p:commandButton value="View Details" action="#{viewPortfolioManagedBean.viewPortfolioDetail(p)}" icon="ui-icon-lightbulb" update="@form" />

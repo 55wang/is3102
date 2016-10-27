@@ -94,11 +94,11 @@ public class ViewInvestmentRequestManagedBean implements Serializable {
         ip.setPortfolio(p);
         investmentPlanSessionBean.updateInvestmentPlan(ip);
 
-        RedirectUtils.redirect("staff-update-portfolio.xhtml?port=" + p.getId());
+        RedirectUtils.redirect("staff-update-executed-investment-plan.xhtml?port=" + p.getId());
     }
 
     public void view(InvestmentPlan ip) {
-        RedirectUtils.redirect("staff-update-portfolio.xhtml?port=" + ip.getPortfolio().getId());
+        RedirectUtils.redirect("staff-view-executed-investment-detail.xhtml?port=" + ip.getPortfolio().getId());
     }
 
     public String getSearchText() {

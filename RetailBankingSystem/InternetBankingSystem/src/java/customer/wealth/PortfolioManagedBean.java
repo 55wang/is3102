@@ -7,11 +7,14 @@ package customer.wealth;
 
 import ejb.session.cms.CustomerProfileSessionBeanLocal;
 import ejb.session.common.LoginSessionBeanLocal;
+import ejb.session.fact.FactSessionBean;
+import ejb.session.fact.FactSessionBeanLocal;
 import ejb.session.wealth.PortfolioSessionBeanLocal;
 import entity.card.account.CreditCardAccount;
 import entity.customer.Customer;
 import entity.customer.MainAccount;
 import entity.dams.account.DepositAccount;
+import entity.fact.customer.SinglePortfolioFactTable;
 import entity.loan.LoanAccount;
 import entity.wealth.Portfolio;
 import java.io.Serializable;
@@ -55,6 +58,8 @@ public class PortfolioManagedBean implements Serializable {
     LoginSessionBeanLocal loginSessionBean;
     @EJB
     CustomerProfileSessionBeanLocal customerProfileSessionBean;
+    @EJB
+    FactSessionBeanLocal factSessionBean;
 
     private List<Portfolio> portfolios;
     private Customer customer;
@@ -69,7 +74,7 @@ public class PortfolioManagedBean implements Serializable {
 
     @PostConstruct
     public void init() {
-        initDate();    
+        initDate();
         customer = customerProfileSessionBean.getCustomerByUserID(SessionUtils.getUserName());
         portfolios = portfolioSessionBean.getListPortfoliosByCustomerId(customer.getId());
         createPieModels();
@@ -82,42 +87,47 @@ public class PortfolioManagedBean implements Serializable {
 
     private void createLineModels() {
         lineModel = initLinearModel();
-        lineModel.setTitle("Linear Chart");
+        lineModel.setTitle("Single Portfolio Graph");
         lineModel.setLegendPosition("e");
         Axis yAxis = lineModel.getAxis(AxisType.Y);
-        yAxis.setMin(-5);
-        yAxis.setMax(5);
-        
+
         DateAxis axis = new DateAxis("Dates");
         axis.setTickAngle(-50);
-        axis.setMax(monthEndDate);
-        axis.setMin(monthStartDate);
         axis.setTickFormat("%Y-%m-%d");
         lineModel.getAxes().put(AxisType.X, axis);
-        
     }
 
     private LineChartModel initLinearModel() {
-        String quandl = "https://www.quandl.com/api/v3/datasets/WIKI/FB.json?column_index=4&start_date="+monthStartDate+"&transform=diff&api_key=wh4e1aGKQwZyE4RXWP7s";
-        Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(quandl);
+//        String quandl = "https://www.quandl.com/api/v3/datasets/WIKI/FB.json?column_index=4&start_date="+monthStartDate+"&transform=diff&api_key=wh4e1aGKQwZyE4RXWP7s";
+//        Client client = ClientBuilder.newClient();
+//        WebTarget target = client.target(quandl);
+//
+//        // This is the response
+//        JsonObject jsonString = target.request(MediaType.APPLICATION_JSON).get(JsonObject.class);
+//        System.out.println(jsonString);
+//
+//        JsonObject dataset = (JsonObject) jsonString.getJsonObject("dataset");
+//        JsonArray data = (JsonArray) dataset.getJsonArray("data");
 
-        // This is the response
-        JsonObject jsonString = target.request(MediaType.APPLICATION_JSON).get(JsonObject.class);
-        System.out.println(jsonString);
-
-        JsonObject dataset = (JsonObject) jsonString.getJsonObject("dataset");
-        JsonArray data = (JsonArray) dataset.getJsonArray("data");
-
+        //sql 
+        List<SinglePortfolioFactTable> spf = factSessionBean.getListPortfoliosFtByCustomerId(customer.getId());
+        SimpleDateFormat simpleformat = new SimpleDateFormat("yyyy-MM-dd");
         LineChartModel model = new LineChartModel();
 
         LineChartSeries series1 = new LineChartSeries();
-        series1.setLabel("Series 1");
+        series1.setLabel("Portfolio ID"); //insert id number
 
-        for (int i = 0; i < data.size(); i++) {
-            JsonArray innerData = (JsonArray) data.getJsonArray(i);
-            System.out.println(innerData.get(0) + " " + innerData.get(1));
-            series1.set(innerData.get(0).toString(), innerData.getInt(1));
+//        for (int i = 0; i < data.size(); i++) {
+//            JsonArray innerData = (JsonArray) data.getJsonArray(i);
+//            System.out.println(innerData.get(0) + " " + innerData.get(1));
+//            series1.set(innerData.get(0).toString(), innerData.getInt(1));
+//        }
+        for (int i = 0; i < spf.size(); i++) {
+            String dateGraph = simpleformat.format(spf.get(i).getCreationDate());
+            System.out.println(spf.get(i).getCreationDate() + " " + simpleformat.format(spf.get(i).getCreationDate()));
+            System.out.println(spf.get(i).getTotalCurrentValue());
+            series1.set(dateGraph, spf.get(i).getTotalCurrentValue());
+
         }
 
         model.addSeries(series1);
@@ -147,23 +157,25 @@ public class PortfolioManagedBean implements Serializable {
     }
 
     public Double getTotalAsset(MainAccount main) {
-        return main.getWealthManagementSubscriber().getTotalPortfolioValue() + getTotalDepositAmount(customer.getMainAccount()).doubleValue();
+        return main.getWealthManagementSubscriber().getTotalPortfolioValue()
+                + getTotalDepositAmount(customer.getMainAccount()).doubleValue()
+                + getTotalDebtAmount(main);
     }
 
     public Double getSavingToIncome() {
-        return getTotalDepositAmount(customer.getMainAccount()).doubleValue() / customer.getIncome().getAvgValue() * 100;
+        return customer.getSavingPerMonth() / customer.getIncome().getAvgValue();
     }
 
     public Double getDebtToIncome() {
-        return getTotalDebtAmount(customer.getMainAccount()) / (customer.getIncome().getAvgValue() * 12) * 100;
+        return getTotalMonthlyInstallment(customer.getMainAccount()) / customer.getIncome().getAvgValue();
     }
 
     public Double getHousingCostRatio() {
-        return getTotalMortgageMonthlyInstallment(customer.getMainAccount()) / customer.getIncome().getAvgValue() * 100;
+        return getTotalMortgageMonthlyInstallment(customer.getMainAccount()) / customer.getIncome().getAvgValue();
     }
 
     public Double getDebtRatio() {
-        return getTotalMonthlyInstallment(customer.getMainAccount()) / customer.getIncome().getAvgValue();
+        return getTotalDebtAmount(customer.getMainAccount()) / getTotalAsset(customer.getMainAccount());
     }
 
     public Double getNetWorth() {
@@ -225,12 +237,14 @@ public class PortfolioManagedBean implements Serializable {
          Savings to Income (S to I) Savings Ratio: Should be between 10% to 20%.
         
          Debt to Income (D to I) Consumer Debt Ratio: Should not exceed 20%.
+         Calculated by dividing total monthly loan payments by monthly income.
         
          Housing Cost Ratio:  Should not exceed 28% of gross income.  
          = Total of monthly mortgage payment (principal + interest) / the gross monthly income
         
          Total Debt Ratio: Should not exceed 36% of gross income.  
-         Calculated by dividing total monthly loan payments by monthly income.
+         = total Debt / Total Asset
+         
         
          networth = asset - liabilities
          http://www.financialsamurai.com/the-average-net-worth-for-the-above-average-person/
@@ -248,15 +262,15 @@ public class PortfolioManagedBean implements Serializable {
             return EnumUtils.FinancialHealthLevel.VERYUNHEALTHY.getValue();
         }
     }
-    
-    public void initDate(){
+
+    public void initDate() {
         Date current = new Date();
         setCurrentDate(new SimpleDateFormat("yyyy-MM-dd").format(current));
-        
+
         Calendar cStart = Calendar.getInstance();   // this takes current date
         cStart.set(Calendar.DAY_OF_MONTH, 1);
         setMonthStartDate(new SimpleDateFormat("yyyy-MM-dd").format(cStart.getTime()));
-        
+
         Calendar cEnd = Calendar.getInstance();   // this takes current date
         cEnd.set(Calendar.DAY_OF_MONTH, cEnd.getActualMaximum(Calendar.DAY_OF_MONTH));
         setMonthEndDate(new SimpleDateFormat("yyyy-MM-dd").format(cEnd.getTime()));
@@ -276,7 +290,7 @@ public class PortfolioManagedBean implements Serializable {
         pieModel.set("Deposit", getTotalDepositAmount(customer.getMainAccount()));
         pieModel.set("Loan", getTotalLoanAmount(customer.getMainAccount()));
         pieModel.set("Credit Card Outstanding", getTotalCreditAmount(customer.getMainAccount()));
-        pieModel.set("Portfolio Value", getTotalPortfolioCurrentValue(customer.getMainAccount()));
+        pieModel.set("Investment Value", getTotalPortfolioCurrentValue(customer.getMainAccount()));
 
         pieModel.setTitle("Financial Overview");
         pieModel.setLegendPosition("e");
