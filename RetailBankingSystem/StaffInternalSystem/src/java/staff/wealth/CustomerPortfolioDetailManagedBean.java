@@ -14,6 +14,7 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
+import utils.MessageUtils;
 
 /**
  *
@@ -38,11 +39,17 @@ public class CustomerPortfolioDetailManagedBean implements Serializable {
        wmsLists = wealthManegementSubscriberSessionBean.getAllWealthManagementSubscribers();
     }
     
-    public void searchCustomer(String searchText) {
-        wmsLists = new ArrayList<WealthManagementSubscriber>();
-        WealthManagementSubscriber wms = wealthManegementSubscriberSessionBean.getWealthManagementSubscriberById(Long.parseLong(searchText));
-        if(wms != null)
-            wmsLists.add(wms);
+    public void searchCustomer() {
+        try{
+            wmsLists = new ArrayList<WealthManagementSubscriber>();
+            System.out.println("search: "+searchText);
+            WealthManagementSubscriber wms = wealthManegementSubscriberSessionBean.getWealthManagementSubscriberById(Long.parseLong(searchText));
+             System.out.println("wms: "+wms.getId());
+            if(wms != null)
+                wmsLists.add(wms);
+        }catch(Exception ex){
+            MessageUtils.displayError("Input Error");
+        }
     }
     
     public void searchAllCustomer(){

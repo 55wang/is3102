@@ -12,6 +12,7 @@ import entity.wealth.Portfolio;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
@@ -37,10 +38,10 @@ public class EntityFactBuilder {
     private String monthStartDate;
     private String monthEndDate;
 
-    public void initSinglePortfolioFact(MainAccount demoMainAccount, Portfolio demoPortfolio) {
+    public void initSinglePortfolioFact(MainAccount demoMainAccount, Portfolio demoPortfolio, String stockName) {
 
         initDate();
-        String quandl = "https://www.quandl.com/api/v3/datasets/WIKI/FB.json?column_index=4&start_date=" + monthStartDate + "&transform=diff&api_key=wh4e1aGKQwZyE4RXWP7s";
+        String quandl = "https://www.quandl.com/api/v3/datasets/WIKI/"+stockName+".json?column_index=4&start_date=" + monthStartDate + "&transform=diff&api_key=wh4e1aGKQwZyE4RXWP7s";
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(quandl);
 
