@@ -12,6 +12,7 @@ import entity.loan.LoanAccount;
 import entity.loan.LoanApplication;
 import java.util.Date;
 import java.util.Properties;
+import javax.ejb.Asynchronous;
 import javax.ejb.Stateless;
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -36,6 +37,7 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
     String emailServerName = "mailauth.comp.nus.edu.sg";
     String mailer = "JavaMailer";
 
+    
     @Override
     public void sendUpdatePortfolioNotice(String recipient) {
         Session session = getSession();
@@ -60,6 +62,7 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
         }
     }
 
+    
     @Override
     public Boolean sendActivationEmailForCustomer(String recipient) {
         String activationCode = "123456";
@@ -95,6 +98,7 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
         }
     }
 
+    
     @Override
     public Boolean sendActivationGmailForCustomer(String recipient, String pwd) {
 
@@ -122,6 +126,7 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
 
     }
 
+    
     @Override
     public Boolean sendCreditCardActivationGmailForCustomer(String recipient, String pwd, String ccNumber) {
         Session session = getSession();
@@ -149,6 +154,7 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
 
     }
 
+    
     @Override
     public Boolean sendchargeBackGmailForSuccessfulCustomer(String recipient, Long ID) {
 
@@ -176,6 +182,7 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
 
     }
 
+    
     @Override
     public Boolean sendchargeBackGmailForRejectedCustomer(String recipient, Long ID) {
 
@@ -203,6 +210,7 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
 
     }
 
+    
     @Override
     public Boolean sendRequireAdditionalInfo(String recipient, String msg) {
 
@@ -229,6 +237,7 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
 
     }
 
+    
     @Override
     public Boolean sendActivationGmailForStaff(String recipient, String pwd) {
 
@@ -256,6 +265,7 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
 
     }
 
+    
     @Override
     public Boolean sendUserIDforForgottenCustomer(String recipient, MainAccount forgotAccount) {
         Session session = getSession();
@@ -280,6 +290,7 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
         }
     }
 
+    
     @Override
     public Boolean sendUserNameforForgottenStaff(String recipient, String username) {
         Session session = getSession();
@@ -304,6 +315,7 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
         }
     }
 
+    
     @Override
     public Boolean sendResetPwdLinkforForgottenCustomer(String recipient, MainAccount forgotAccount) {
         Session session = getSession();
@@ -328,6 +340,7 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
         }
     }
 
+    
     @Override
     public Boolean sendResetPwdLinkforForgottenStaff(String recipient) {
         Session session = getSession();
@@ -352,6 +365,7 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
         }
     }
 
+    
     @Override
     public Boolean sendNewCaseConfirmationToCustomer(String recipient, CustomerCase cc) {
         Session session = getSession();
@@ -377,6 +391,7 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
         }
     }
 
+    
     @Override
     public Boolean sendCancelCaseConfirmationToCustomer(String recipient, CustomerCase cc) {
         Session session = getSession();
@@ -402,6 +417,7 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
         }
     }
 
+    
     @Override
     public void sendUpdatedProfile(String recipient) {
         Session session = getSession();
@@ -428,6 +444,7 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
         }
     }
 
+    
     @Override
     public Boolean sendCaseStatusChangeToCustomer(String recipient, CustomerCase cc) {
         Session session = getSession();
@@ -454,6 +471,7 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
         }
     }
 
+    
     @Override
     public void sendTransactionLimitChangeNotice(String recipient) {
         Session session = getSession();
@@ -480,6 +498,7 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
         }
     }
 
+    
     @Override
     public void sendLoanApplicationApprovalNotice(String recipient) {
         Session session = getSession();
@@ -506,6 +525,7 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
         }
     }
     
+    
     @Override
     public void sendLoanApplicationRejectNotice(String recipient) {
         Session session = getSession();
@@ -531,6 +551,7 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
         }
     }
 
+    
     @Override
     public void sendCreditCardApplicationNotice(String recipient) {
         Session session = getSession();
@@ -557,6 +578,7 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
         }
     }
 
+    
     @Override
     public Boolean sendLoanApplicationNoticeToStaff(LoanApplication lp) {
 
@@ -589,6 +611,7 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
 
     }
 
+    
     @Override
     public Boolean sendLoanApplicationNoticeToCustomer(String recipient) {
 
@@ -616,6 +639,7 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
 
     }
 
+    
     @Override
     public Boolean sendPaymentReminderEmailToCustomer(String recipient, String loanAccountNumber, Date paymentDate) {
 
@@ -643,6 +667,7 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
 
     }
 
+    
     @Override
     public Boolean sendLatePaymentReminderEmailToCustomer(String recipient, String loanAccountNumber, Date paymentDate) {
 
@@ -670,6 +695,7 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
 
     }
 
+    
     @Override
     public Boolean sendBadLoanNoticeToLoanOfficer(LoanAccount loanAccount) {
 
