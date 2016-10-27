@@ -65,9 +65,12 @@
                                 <h:panelGrid columns="2" cellpadding="5px" columnClasses="label, value">
 
                                     <h:outputText value="Monthly income: " />
-                                    <p:inputText value="#{personalLoanApplicationManagedBean.monthlyIncome}" required="true" requiredMessage="Monthly income is required." />
+                                    <p:inputText value="#{personalLoanApplicationManagedBean.monthlyIncome}" required="true" requiredMessage="Monthly income is required." onchange="submit()" valueChangeListener="#{personalLoanApplicationManagedBean.changeLoanUpperLimit}"/>
 
-                                    <h:outputText value="Other financial commitments (S$): " />
+                                    <h:outputText id="upperLimitDescription" value="You can get up to" styleClass="outputLabel"/>
+                                    <h:outputText id="upperLimit" value="#{personalLoanApplicationManagedBean.upperLimit}" styleClass="outputLabel"/>
+                                    
+                                    <h:outputText value="Other monthly unsecured credit (S$): " />
                                     <p:inputText value="#{personalLoanApplicationManagedBean.otherLoan}" required="true" requiredMessage="Other financial commitment is required." />
 
                                     <h:outputText value="Tenure: " />

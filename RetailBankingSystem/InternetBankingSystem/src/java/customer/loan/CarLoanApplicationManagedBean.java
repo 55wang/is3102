@@ -65,6 +65,7 @@ public class CarLoanApplicationManagedBean implements Serializable {
     private Double carOpenMarketValue;
     private Integer carTenure;
     private Long carTenureProductId;
+    private Double LTV;
     
     /**
      * Creates a new instance of CarLoanApplicationManagedBean
@@ -94,6 +95,14 @@ public class CarLoanApplicationManagedBean implements Serializable {
         setCarLoanAmt((Double)e.getNewValue());
         setCarLoanMonthlyInstalment(calculator.calculateCarMonthlyInstalment(getCarLoanAnnualInterestRate(), getCarTenure(), getCarLoanAmt()));   
         
+    }
+    
+    public void changeLTV(ValueChangeEvent e){
+        if((Double)e.getNewValue()<=20000.0)
+            setLTV(0.7);
+        if((Double)e.getNewValue()>20000.0)
+            setLTV(0.6);
+   
     }
       
     public void calculateCar(){
@@ -394,5 +403,14 @@ public class CarLoanApplicationManagedBean implements Serializable {
     public void setMaxCarLoanAmt(Double maxCarLoanAmt) {
         this.maxCarLoanAmt = maxCarLoanAmt;
     }
+
+    public Double getLTV() {
+        return LTV;
+    }
+
+    public void setLTV(Double LTV) {
+        this.LTV = LTV;
+    }
+    
     
 }

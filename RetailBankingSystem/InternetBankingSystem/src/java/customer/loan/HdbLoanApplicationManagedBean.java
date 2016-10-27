@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.event.ValueChangeEvent;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import server.utilities.ConstantUtils;
@@ -62,7 +63,8 @@ public class HdbLoanApplicationManagedBean implements Serializable {
     private Integer numOfHousingLoan = 0;
     private Double monthlyInstalment;
     private Double maxMarketValue;
-    private Double marketValue;
+    private Double marketValue=0.0;
+    private Double LTV;
     
     /**
      * Creates a new instance of HdbLoanApplicationManagedBean
@@ -81,6 +83,20 @@ public class HdbLoanApplicationManagedBean implements Serializable {
         } else {
             JSUtils.callJSMethod("PF('myWizard').next();");
         }
+    }
+    
+    public void changeLTV(ValueChangeEvent e){
+        if((Integer)e.getNewValue()==0)
+            setLTV(0.8);
+        else if((Integer)e.getNewValue()==1)
+            setLTV(0.5);
+        else if((Integer)e.getNewValue()>=2)
+            setLTV(0.4);
+   
+    }
+    
+    public void changeMarketValue(ValueChangeEvent e){
+        setMarketValue((Double)e.getNewValue()/LTV);
     }
     
     public void calculateHDB(){
@@ -102,16 +118,6 @@ public class HdbLoanApplicationManagedBean implements Serializable {
             return;
         }
         
-        if(numOfHousingLoan==0 && loanAmount>=0.8*marketValue){
-            MessageUtils.displayError(ConstantUtils.LoanToValue_NOT_RIGHT);
-            return;
-        } else if (numOfHousingLoan==1 && loanAmount>=0.5*marketValue){
-            MessageUtils.displayError(ConstantUtils.LoanToValue_NOT_RIGHT);
-            return;
-        } else if (numOfHousingLoan>=2 && loanAmount>=0.4*marketValue){
-            MessageUtils.displayError(ConstantUtils.LoanToValue_NOT_RIGHT);
-            return;
-        }
         
         LoanApplication newApplication = new LoanApplication();
         newApplication.setAge(age);
@@ -389,4 +395,13 @@ public class HdbLoanApplicationManagedBean implements Serializable {
     public void setMaxMarketValue(Double maxMarketValue) {
         this.maxMarketValue = maxMarketValue;
     }
+
+    public Double getLTV() {
+        return LTV;
+    }
+
+    public void setLTV(Double LTV) {
+        this.LTV = LTV;
+    }
+    
 }
