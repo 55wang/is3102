@@ -8,6 +8,7 @@ package customer.bill;
 import ejb.session.bill.BillSessionBeanLocal;
 import ejb.session.bill.TransferSessionBeanLocal;
 import ejb.session.common.LoginSessionBeanLocal;
+import ejb.session.common.OTPSessionBeanLocal;
 import ejb.session.dams.CustomerDepositSessionBeanLocal;
 import ejb.session.webservice.WebserviceSessionBeanLocal;
 import entity.bill.BillingOrg;
@@ -47,6 +48,8 @@ public class PayCCBillManagedBean implements Serializable {
     private CustomerDepositSessionBeanLocal depositBean;
     @EJB
     private WebserviceSessionBeanLocal webserviceBean;
+    @EJB
+    private OTPSessionBeanLocal otpBean;
     
     private String fromAccountNo;
     private String ccBillOrgId;
@@ -54,6 +57,8 @@ public class PayCCBillManagedBean implements Serializable {
     private MainAccount ma;
     private List<BillingOrg> ccBillList = new ArrayList<>();
     private List<CustomerDepositAccount> accounts = new ArrayList<>();
+    
+    private String inputTokenString;
     
     public PayCCBillManagedBean() {}
     
@@ -65,6 +70,10 @@ public class PayCCBillManagedBean implements Serializable {
     }
     
     public void transfer() {
+        
+        if (!checkOptAndProceed()) {
+            return;
+        }
         
         DepositAccount fromAccount = depositBean.getAccountFromId(fromAccountNo);
         if (fromAccount != null && fromAccount.getBalance().compareTo(amount) < 0) {
@@ -101,6 +110,30 @@ public class PayCCBillManagedBean implements Serializable {
     public String getBillName(String id) {
         BillingOrg bo = billBean.getBillingOrganizationById(Long.parseLong(ccBillOrgId));
         return bo.getOrganization().getName() + " - " + bo.getBillReference();
+    }
+    
+    public void sendOpt() {
+        System.out.println("sendOTP clicked, sending otp to: " + ma.getCustomer().getPhone());
+        JSUtils.callJSMethod("PF('myWizard').next()");
+        otpBean.generateOTP(ma.getCustomer().getPhone());
+    }
+    
+    private Boolean checkOptAndProceed() {
+        if (inputTokenString == null || inputTokenString.isEmpty()) {
+            MessageUtils.displayError("Please enter one time password!");
+            return false;
+        }
+        if (!otpBean.isOTPExpiredByPhoneNumber(inputTokenString, ma.getCustomer().getPhone())) {
+            if (otpBean.checkOTPValidByPhoneNumber(inputTokenString, ma.getCustomer().getPhone())) {
+                return true;
+            } else {
+                MessageUtils.displayError("One Time Password Not Match!");
+                return false;
+            }
+        } else {
+            MessageUtils.displayError("One Time Password Expired!");
+            return false;
+        }
     }
 
     /**
@@ -185,6 +218,20 @@ public class PayCCBillManagedBean implements Serializable {
      */
     public void setAccounts(List<CustomerDepositAccount> accounts) {
         this.accounts = accounts;
+    }
+    
+    /**
+     * @return the inputTokenString
+     */
+    public String getInputTokenString() {
+        return inputTokenString;
+    }
+
+    /**
+     * @param inputTokenString the inputTokenString to set
+     */
+    public void setInputTokenString(String inputTokenString) {
+        this.inputTokenString = inputTokenString;
     }
   
 }

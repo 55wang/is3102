@@ -7,6 +7,7 @@ package customer.transfer;
 
 import ejb.session.common.LoginSessionBeanLocal;
 import ejb.session.bill.TransferSessionBeanLocal;
+import ejb.session.common.OTPSessionBeanLocal;
 import ejb.session.dams.CustomerDepositSessionBeanLocal;
 import entity.customer.MainAccount;
 import entity.dams.account.DepositAccount;
@@ -37,21 +38,31 @@ public class InterAccountTransferManagedBean implements Serializable {
     private TransferSessionBeanLocal transferBean;
     @EJB
     private CustomerDepositSessionBeanLocal depositBean;
+    @EJB
+    private OTPSessionBeanLocal otpBean;
     
     private String fromAccountNo;
     private String toAccountNo;
     private BigDecimal amount;
+    private MainAccount ma;
     private List<DepositAccount> accounts = new ArrayList<>();
+    
+    private String inputTokenString;
     
     public InterAccountTransferManagedBean() {}
     
     @PostConstruct
     public void init() {
-        MainAccount ma = loginBean.getMainAccountByUserID(SessionUtils.getUserName());
+        ma = loginBean.getMainAccountByUserID(SessionUtils.getUserName());
         accounts = ma.getBankAcounts();
     }
     
     public void transfer() {
+        
+        if (!checkOptAndProceed()) {
+            return;
+        }
+        
         DepositAccount fromAccount = depositBean.getAccountFromId(fromAccountNo);
         if (fromAccount != null && fromAccount.getBalance().compareTo(amount) < 0) {
             JSUtils.callJSMethod("PF('myWizard').back()");
@@ -67,6 +78,30 @@ public class InterAccountTransferManagedBean implements Serializable {
         } else {
             JSUtils.callJSMethod("PF('myWizard').back()");
             MessageUtils.displayError(ConstantUtils.TRANSFER_FAILED);
+        }
+    }
+    
+    public void sendOpt() {
+        System.out.println("sendOTP clicked, sending otp to: " + ma.getCustomer().getPhone());
+        JSUtils.callJSMethod("PF('myWizard').next()");
+        otpBean.generateOTP(ma.getCustomer().getPhone());
+    }
+    
+    private Boolean checkOptAndProceed() {
+        if (inputTokenString == null || inputTokenString.isEmpty()) {
+            MessageUtils.displayError("Please enter one time password!");
+            return false;
+        }
+        if (!otpBean.isOTPExpiredByPhoneNumber(inputTokenString, ma.getCustomer().getPhone())) {
+            if (otpBean.checkOTPValidByPhoneNumber(inputTokenString, ma.getCustomer().getPhone())) {
+                return true;
+            } else {
+                MessageUtils.displayError("One Time Password Not Match!");
+                return false;
+            }
+        } else {
+            MessageUtils.displayError("One Time Password Expired!");
+            return false;
         }
     }
 
@@ -124,6 +159,20 @@ public class InterAccountTransferManagedBean implements Serializable {
      */
     public void setAmount(BigDecimal amount) {
         this.amount = amount;
+    }
+    
+    /**
+     * @return the inputTokenString
+     */
+    public String getInputTokenString() {
+        return inputTokenString;
+    }
+
+    /**
+     * @param inputTokenString the inputTokenString to set
+     */
+    public void setInputTokenString(String inputTokenString) {
+        this.inputTokenString = inputTokenString;
     }
     
 }

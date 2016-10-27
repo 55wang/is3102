@@ -7,6 +7,7 @@ package customer.bill;
 
 import ejb.session.bill.BillSessionBeanLocal;
 import ejb.session.common.LoginSessionBeanLocal;
+import ejb.session.common.OTPSessionBeanLocal;
 import ejb.session.dams.CustomerDepositSessionBeanLocal;
 import entity.bill.GiroArrangement;
 import entity.bill.Organization;
@@ -39,6 +40,8 @@ public class ManageGIROArrangementManagedBean implements Serializable {
     private LoginSessionBeanLocal loginBean;
     @EJB
     private CustomerDepositSessionBeanLocal depositBean;
+    @EJB
+    private OTPSessionBeanLocal otpBean;
     
     private String selectedBillId;
     private String referenceNumber;
@@ -49,6 +52,8 @@ public class ManageGIROArrangementManagedBean implements Serializable {
     private List<Organization> billOrgsOptions;
     private List<CustomerDepositAccount> accounts = new ArrayList<>();
     private List<GiroArrangement> addedGiroArrs;
+    
+    private String inputTokenString;
     
     public ManageGIROArrangementManagedBean() {}
     
@@ -61,6 +66,11 @@ public class ManageGIROArrangementManagedBean implements Serializable {
     }
     
     public void addGIROArrangement() {
+        
+        if (!checkOptAndProceed()) {
+            return;
+        }
+        
         DepositAccount da = depositBean.getAccountFromId(getFromAccountNo());
         Organization o = billBean.getOrganizationById(Long.parseLong(selectedBillId));
         giroArr.setOrganization(o);
@@ -101,6 +111,30 @@ public class ManageGIROArrangementManagedBean implements Serializable {
             MessageUtils.displayInfo(ConstantUtils.GIRO_LIMIT_SUCCESS);
         } else {
             MessageUtils.displayInfo(ConstantUtils.GIRO_LIMIT_FAIL);
+        }
+    }
+    
+    public void sendOpt() {
+        System.out.println("sendOTP clicked, sending otp to: " + ma.getCustomer().getPhone());
+        JSUtils.callJSMethod("PF('myWizard').next()");
+        otpBean.generateOTP(ma.getCustomer().getPhone());
+    }
+    
+    private Boolean checkOptAndProceed() {
+        if (inputTokenString == null || inputTokenString.isEmpty()) {
+            MessageUtils.displayError("Please enter one time password!");
+            return false;
+        }
+        if (!otpBean.isOTPExpiredByPhoneNumber(inputTokenString, ma.getCustomer().getPhone())) {
+            if (otpBean.checkOTPValidByPhoneNumber(inputTokenString, ma.getCustomer().getPhone())) {
+                return true;
+            } else {
+                MessageUtils.displayError("One Time Password Not Match!");
+                return false;
+            }
+        } else {
+            MessageUtils.displayError("One Time Password Expired!");
+            return false;
         }
     }
 
@@ -230,5 +264,19 @@ public class ManageGIROArrangementManagedBean implements Serializable {
      */
     public void setAccounts(List<CustomerDepositAccount> accounts) {
         this.accounts = accounts;
+    }
+    
+    /**
+     * @return the inputTokenString
+     */
+    public String getInputTokenString() {
+        return inputTokenString;
+    }
+
+    /**
+     * @param inputTokenString the inputTokenString to set
+     */
+    public void setInputTokenString(String inputTokenString) {
+        this.inputTokenString = inputTokenString;
     }
 }

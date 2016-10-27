@@ -35,6 +35,4 @@ public interface EmailServiceSessionBeanLocal {
     public void sendLoanApplicationApprovalNotice(String recipient);
     public void sendLoanApplicationRejectNotice(String recipient);
     public void sendCreditCardApplicationNotice(String recipient);
-
-
 }
