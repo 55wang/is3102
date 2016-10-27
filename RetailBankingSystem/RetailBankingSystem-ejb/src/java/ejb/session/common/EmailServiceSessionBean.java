@@ -59,7 +59,7 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
             return;
         }
     }
-
+    
     @Override
     public Boolean sendActivationEmailForCustomer(String recipient) {
         String activationCode = "123456";

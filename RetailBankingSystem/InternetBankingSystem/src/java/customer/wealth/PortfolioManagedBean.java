@@ -20,6 +20,7 @@ import entity.wealth.Portfolio;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -69,6 +70,23 @@ public class PortfolioManagedBean implements Serializable {
     private String monthStartDate;
     private String monthEndDate;
 
+    //dropdown menu
+    private String selectedPortfolio;
+
+    private List<String> portfolioOptions = new ArrayList<>();
+
+    public void onDropDownChange() {
+        
+        System.out.println("on drop down changed");
+        System.out.println(selectedPortfolio);
+        if (!selectedPortfolio.equals("None")) {
+            System.out.println("activate model");
+            String[] selectedPortfolioIdStringSplit = selectedPortfolio.split("\\s+");
+            String selectedPortfolioIdString = selectedPortfolioIdStringSplit[selectedPortfolioIdStringSplit.length - 1];
+            createLineModels(selectedPortfolioIdString);
+        }
+    }
+
     public PortfolioManagedBean() {
     }
 
@@ -78,26 +96,36 @@ public class PortfolioManagedBean implements Serializable {
         customer = customerProfileSessionBean.getCustomerByUserID(SessionUtils.getUserName());
         portfolios = portfolioSessionBean.getListPortfoliosByCustomerId(customer.getId());
         createPieModels();
-        createLineModels();
+        System.out.println("portfolio size: " + portfolios.size());
+        try {
+            for (Portfolio pOption : portfolios) {
+                System.out.println(pOption.getId());
+                portfolioOptions.add("Investment Plan " + Long.toString(pOption.getId()));
+            }
+        } catch (Exception ex) {
+            System.out.println(ex);
+        }
+
     }
 
     public LineChartModel getLineModel() {
         return lineModel;
     }
 
-    private void createLineModels() {
-        lineModel = initLinearModel();
-        lineModel.setTitle("Single Portfolio Graph");
-        lineModel.setLegendPosition("e");
+    private LineChartModel createLineModels(String selectedPortfolioIdString) {
+        lineModel = initLinearModel(Long.parseLong(selectedPortfolioIdString));
+        lineModel.setTitle("Investment Plan " + selectedPortfolioIdString);
+//        lineModel.setLegendPosition("e");
         Axis yAxis = lineModel.getAxis(AxisType.Y);
 
         DateAxis axis = new DateAxis("Dates");
         axis.setTickAngle(-50);
         axis.setTickFormat("%Y-%m-%d");
         lineModel.getAxes().put(AxisType.X, axis);
+        return lineModel;
     }
 
-    private LineChartModel initLinearModel() {
+    private LineChartModel initLinearModel(Long selectedPortfolioIdString) {
 //        String quandl = "https://www.quandl.com/api/v3/datasets/WIKI/FB.json?column_index=4&start_date="+monthStartDate+"&transform=diff&api_key=wh4e1aGKQwZyE4RXWP7s";
 //        Client client = ClientBuilder.newClient();
 //        WebTarget target = client.target(quandl);
@@ -110,7 +138,8 @@ public class PortfolioManagedBean implements Serializable {
 //        JsonArray data = (JsonArray) dataset.getJsonArray("data");
 
         //sql 
-        List<SinglePortfolioFactTable> spf = factSessionBean.getListPortfoliosFtByCustomerId(customer.getId());
+        List<SinglePortfolioFactTable> spf = factSessionBean.getListPortfoliosFtByCustomerIdPortfolioId(customer.getId(), selectedPortfolioIdString);
+        System.out.println("spf: " + spf.size());
         SimpleDateFormat simpleformat = new SimpleDateFormat("yyyy-MM-dd");
         LineChartModel model = new LineChartModel();
 
@@ -127,7 +156,6 @@ public class PortfolioManagedBean implements Serializable {
             System.out.println(spf.get(i).getCreationDate() + " " + simpleformat.format(spf.get(i).getCreationDate()));
             System.out.println(spf.get(i).getTotalCurrentValue());
             series1.set(dateGraph, spf.get(i).getTotalCurrentValue());
-
         }
 
         model.addSeries(series1);
@@ -392,4 +420,21 @@ public class PortfolioManagedBean implements Serializable {
     public void setMonthEndDate(String monthEndDate) {
         this.monthEndDate = monthEndDate;
     }
+
+    public String getSelectedPortfolio() {
+        return selectedPortfolio;
+    }
+
+    public void setSelectedPortfolio(String selectedPortfolio) {
+        this.selectedPortfolio = selectedPortfolio;
+    }
+
+    public List<String> getPortfolioOptions() {
+        return portfolioOptions;
+    }
+
+    public void setPortfolioOptions(List<String> portfolioOptions) {
+        this.portfolioOptions = portfolioOptions;
+    }
+
 }

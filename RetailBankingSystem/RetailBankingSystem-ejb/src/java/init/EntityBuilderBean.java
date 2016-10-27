@@ -11,7 +11,9 @@ import entity.card.product.RewardCardProduct;
 import entity.customer.MainAccount;
 import entity.dams.account.CustomerDepositAccount;
 import entity.staff.StaffAccount;
+import entity.wealth.FinancialInstrument;
 import entity.wealth.Portfolio;
+import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.ejb.Singleton;
@@ -99,7 +101,10 @@ public class EntityBuilderBean {
         entityBillOrgBuilder.initBillOrganization();
         entityPayLahBuilder.initPayLahDemoData();
         
-        demoPortfolio = entityWealthBuilder.initWealth();
-        entityFactBuilder.initSinglePortfolioFact(demoMainAccount, demoPortfolio);
+        List<FinancialInstrument> allFinancialInstruments = entityWealthBuilder.allFinancialInstrument();
+        demoPortfolio = entityWealthBuilder.initWealth(allFinancialInstruments);
+        entityFactBuilder.initSinglePortfolioFact(demoMainAccount, demoPortfolio, "FB");
+        demoPortfolio = entityWealthBuilder.initPortfolioFactTable2(demoMainAccount, allFinancialInstruments);
+        entityFactBuilder.initSinglePortfolioFact(demoMainAccount, demoPortfolio, "AAPL");
     }
 }

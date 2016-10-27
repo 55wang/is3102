@@ -22,6 +22,7 @@ import org.rosuda.REngine.REXPMismatchException;
 import org.rosuda.REngine.Rserve.RConnection;
 import org.rosuda.REngine.Rserve.RserveException;
 import server.utilities.CommonUtils;
+import server.utilities.ConstantUtils;
 import server.utilities.EnumUtils.FinancialInstrumentClass;
 import server.utilities.EnumUtils.InvestmentRiskLevel;
 
@@ -159,7 +160,7 @@ public class DesignInvestmentPlanSessionBean implements DesignInvestmentPlanSess
             /* Create a connection to Rserve instance running
              * on default port 6311
              */
-            connection = new RConnection("127.0.0.1", 6311);
+            connection = new RConnection(ConstantUtils.ipAddress, 6311);
 
             String prependingPath = CommonUtils.getPrependFolderName();
             connection.eval("source('" + prependingPath + "ConstructPortfolioModel.R')");

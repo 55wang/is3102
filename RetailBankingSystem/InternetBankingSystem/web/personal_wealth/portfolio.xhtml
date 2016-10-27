@@ -104,8 +104,21 @@
                                 </h:outputText>
                             </h:panelGrid>
                         </p:layoutUnit>
-                        
-                        <p:chart type="line" model="#{portfolioManagedBean.lineModel}" style="height:300px;"/>
+                        <br />
+
+                        <p:outputLabel for="portfolio" value="Investment Plan: " />
+                        <p:selectOneMenu id="portfolio" value="#{portfolioManagedBean.selectedPortfolio}" style="width:200px">
+                            <p:ajax listener="#{portfolioManagedBean.onDropDownChange}" update="@form" />
+                            <f:selectItem itemLabel="Select Investment Plan" itemValue="None" noSelectionOption="true" />
+                            <f:selectItems value="#{portfolioManagedBean.portfolioOptions}" />
+                        </p:selectOneMenu>
+
+                        <c:if test="#{portfolioManagedBean.selectedPortfolio != null or portfolioManagedBean.selectedPortfolio != None}">
+                            <p:chart type="line" model="#{portfolioManagedBean.lineModel}" style="height:300px;"/>
+                        </c:if>
+
+
+
                         <p:messages id="messagesStatus" redisplay="false"></p:messages>
                     </p:panel>
                 </h:form>
