@@ -45,7 +45,9 @@
                                         <p:column headerText="Interet Rate" sortBy="#{dto.interestRate}">
                                             <p:cellEditor>
                                                 <f:facet name="output">
-                                                    <h:outputText value="#{dto.interestRate}" />
+                                                    <h:outputText value="#{dto.interestRate}" >
+                                                        <f:convertNumber type="percent" minFractionDigits="4"/>
+                                                    </h:outputText>
                                                 </f:facet>
                                                 <f:facet name="input">
                                                     <h:inputText value="#{dto.interestRate}">
