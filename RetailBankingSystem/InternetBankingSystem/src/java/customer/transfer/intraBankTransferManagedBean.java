@@ -8,6 +8,7 @@ package customer.transfer;
 import ejb.session.common.LoginSessionBeanLocal;
 import ejb.session.dams.CustomerDepositSessionBeanLocal;
 import ejb.session.bill.TransferSessionBeanLocal;
+import ejb.session.common.OTPSessionBeanLocal;
 import entity.bill.Payee;
 import entity.common.TransferRecord;
 import entity.customer.MainAccount;
@@ -42,6 +43,8 @@ public class intraBankTransferManagedBean implements Serializable {
     private TransferSessionBeanLocal transferBean;
     @EJB
     private CustomerDepositSessionBeanLocal depositBean;
+    @EJB
+    private OTPSessionBeanLocal otpBean;
     
     private String fromAccountNo;
     private String payeeId;
@@ -54,6 +57,8 @@ public class intraBankTransferManagedBean implements Serializable {
     private List<Payee> payees = new ArrayList<>();
     private MainAccount ma;
     
+    private String inputTokenString;
+    
     public intraBankTransferManagedBean() {}
     
     @PostConstruct
@@ -65,6 +70,10 @@ public class intraBankTransferManagedBean implements Serializable {
     }
     
     public void adhocTransfer() {
+        
+        if (!checkOptAndProceed()) {
+            return;
+        }
         
         DepositAccount fromAccount = depositBean.getAccountFromId(fromAccountNo);
         if (fromAccount != null && fromAccount.getBalance().compareTo(amount) < 0) {
@@ -119,6 +128,10 @@ public class intraBankTransferManagedBean implements Serializable {
     
     public void transferToPayee() {
         
+        if (!checkOptAndProceed()) {
+            return;
+        }
+        
         DepositAccount fromAccount = depositBean.getAccountFromId(fromAccountNo);
         if (fromAccount != null && fromAccount.getBalance().compareTo(amount) < 0) {
             JSUtils.callJSMethod("PF('myWizard').back()");
@@ -171,10 +184,36 @@ public class intraBankTransferManagedBean implements Serializable {
         }
     }
     
+    
+    
+    public void sendOpt() {
+        System.out.println("sendOTP clicked, sending otp to: " + ma.getCustomer().getPhone());
+        JSUtils.callJSMethod("PF('myWizard').next()");
+        otpBean.generateOTP(ma.getCustomer().getPhone());
+    }
+    
     private void calculateTransferLimits() {
         BigDecimal todayTransferAmount = transferBean.getTodayBankTransferAmount(ma, EnumUtils.PayeeType.MERLION);
         BigDecimal currentTransferLimit = new BigDecimal(ma.getTransferLimits().getDailyInterBankLimit().toString());
         transferLimitLeft = currentTransferLimit.subtract(todayTransferAmount).setScale(2).toString();
+    }
+    
+    private Boolean checkOptAndProceed() {
+        if (inputTokenString == null || inputTokenString.isEmpty()) {
+            MessageUtils.displayError("Please enter one time password!");
+            return false;
+        }
+        if (!otpBean.isOTPExpiredByPhoneNumber(inputTokenString, ma.getCustomer().getPhone())) {
+            if (otpBean.checkOTPValidByPhoneNumber(inputTokenString, ma.getCustomer().getPhone())) {
+                return true;
+            } else {
+                MessageUtils.displayError("One Time Password Not Match!");
+                return false;
+            }
+        } else {
+            MessageUtils.displayError("One Time Password Expired!");
+            return false;
+        }
     }
 
     /**
@@ -301,5 +340,19 @@ public class intraBankTransferManagedBean implements Serializable {
      */
     public void setAccounts(List<CustomerDepositAccount> accounts) {
         this.accounts = accounts;
+    }
+
+    /**
+     * @return the inputTokenString
+     */
+    public String getInputTokenString() {
+        return inputTokenString;
+    }
+
+    /**
+     * @param inputTokenString the inputTokenString to set
+     */
+    public void setInputTokenString(String inputTokenString) {
+        this.inputTokenString = inputTokenString;
     }
 }

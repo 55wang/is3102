@@ -44,7 +44,7 @@ and open the template in the editor.
                                             <f:selectItems value="#{manageGIROArrangementManagedBean.accounts}" var="a" itemValue="#{a.accountNumber}" itemLabel="#{a.product.name} #{a.accountNumber} #{a.balance.setScale(2)}" />
                                         </p:selectOneMenu>
                                     </h:panelGrid>
-                                <p:commandButton  value="Next" type="button" onclick="PF('myWizard').next()" />
+                                <p:commandButton  value="Next" actionListener="#{manageGIROArrangementManagedBean.sendOpt()}" update="@form" />
                             </p:tab>
 
                             <p:tab id="verify_details" title="2.Verify Details">
@@ -57,6 +57,10 @@ and open the template in the editor.
                                     <h:outputText value="#{manageGIROArrangementManagedBean.billLimit}" />
                                     <h:outputText value="From Account Number: " />
                                     <h:outputText value="#{manageGIROArrangementManagedBean.fromAccountNo}" />
+                                    
+                                    <h2>Input Token Number</h2>
+                                    <p:inputText value="#{manageGIROArrangementManagedBean.inputTokenString}" />
+                                    
                                     <p:commandButton  value="Back" type="button" onclick="PF('myWizard').back()" />
                                     <p:commandButton value="Add GIRO" action="#{manageGIROArrangementManagedBean.addGIROArrangement}" update="form"/> 
                                 </h:panelGrid>

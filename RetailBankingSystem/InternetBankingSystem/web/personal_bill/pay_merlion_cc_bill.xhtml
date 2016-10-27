@@ -39,7 +39,7 @@ and open the template in the editor.
                                         <p:outputLabel for="amount" value="Amount: " />
                                         <p:inputText id="amount" value="#{payMerlionCreditCardBillManagedBean.amount}"/>
                                     </h:panelGrid>
-                                    <p:commandButton  value="Next" type="button" onclick="PF('myWizard').next()" />
+                                    <p:commandButton  value="Next" actionListener="#{payMerlionCreditCardBillManagedBean.sendOpt()}" update="@form" />
                                 </p:tab>
 
                                 <p:tab id="verify_details" title="2.Verify Details">
@@ -50,6 +50,10 @@ and open the template in the editor.
                                         <h:outputText value="#{payMerlionCreditCardBillManagedBean.toCreditCardNo}" />
                                         <h:outputText value="Amount: " />
                                         <h:outputText value="#{payMerlionCreditCardBillManagedBean.amount}"/>
+
+                                        <h2>Input Token Number</h2>
+                                        <p:inputText value="#{payMerlionCreditCardBillManagedBean.inputTokenString}" />
+
                                         <p:commandButton  value="Back" type="button" onclick="PF('myWizard').back()" />
                                         <p:commandButton value="Add Bill Org" action="#{payMerlionCreditCardBillManagedBean.transfer()}" update="mainForm"/> 
                                     </h:panelGrid>

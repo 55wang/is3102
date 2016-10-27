@@ -106,5 +106,6 @@ public class EntityBuilderBean {
         entityFactBuilder.initSinglePortfolioFact(demoMainAccount, demoPortfolio, "FB");
         demoPortfolio = entityWealthBuilder.initPortfolioFactTable2(demoMainAccount, allFinancialInstruments);
         entityFactBuilder.initSinglePortfolioFact(demoMainAccount, demoPortfolio, "AAPL");
+
     }
 }

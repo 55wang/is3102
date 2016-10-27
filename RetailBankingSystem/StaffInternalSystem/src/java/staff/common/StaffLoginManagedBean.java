@@ -38,16 +38,16 @@ public class StaffLoginManagedBean implements Serializable {
     private EmailServiceSessionBeanLocal emailBean;
     @EJB
     private UtilsSessionBeanLocal utilsBean;
-    
+
     private String username;
     private String password;
     private String findPasswordEmail;
     private String findUsernameEmail;
-    
+
     public StaffLoginManagedBean() {
         System.out.println("StaffLoginManagedBean() Created!!");
     }
-    
+
     @PostConstruct
     public void init() {
         // Set a default super account
@@ -60,7 +60,7 @@ public class StaffLoginManagedBean implements Serializable {
         utilsBean.persist(a);
 //        StaffAccount sa = staffBean.loginAccount("loan_officer", HashPwdUtils.hashPwd("password"));
 //        SessionUtils.setStaffAccount(sa);
-//        RedirectUtils.redirect(SessionUtils.getContextPath() + "/wealth/staff-view-portfolio.xhtml");
+//        RedirectUtils.redirect(SessionUtils.getContextPath() + "/wealth/staff-view-executed-investment");
     }
 
     public void loginStaff(ActionEvent event) {
@@ -76,43 +76,35 @@ public class StaffLoginManagedBean implements Serializable {
             }
         }
     }
-    
+
     public void forgotPassword() {
         StaffAccount forgotAccount = staffBean.getAccountByEmail(findPasswordEmail);
         if (forgotAccount != null) {
-            if (emailBean.sendResetPwdLinkforForgottenStaff(findPasswordEmail)) {
-                String msg = "Check your email and reset password.";
-                MessageUtils.displayInfo(msg);
-            } else {
-                String msg = "Email sent fail. Please try again";
-                MessageUtils.displayError(msg);
-            }
+            emailBean.sendResetPwdLinkforForgottenStaff(findPasswordEmail, forgotAccount);
+            String msg = "Check your email and reset password.";
+            MessageUtils.displayInfo(msg);
         } else {
             String msg = "The email is not registered.";
             MessageUtils.displayError(msg);
         }
     }
-    
+
     public void forgotUserID() {
         StaffAccount forgotAccount = staffBean.getAccountByEmail(findUsernameEmail);
         if (forgotAccount != null) {
-            if (emailBean.sendUserNameforForgottenStaff(findUsernameEmail, forgotAccount.getUsername())) {
-                String msg = "User ID has been sent to your email.";
-                MessageUtils.displayInfo(msg);
-            } else {
-                String msg = "Email sent fail. Please try again";
-                MessageUtils.displayError(msg);
-            }
+            emailBean.sendUserNameforForgottenStaff(findUsernameEmail, forgotAccount.getUsername());
+            String msg = "User ID has been sent to your email.";
+            MessageUtils.displayInfo(msg);
         } else {
             String msg = "The email is not registered.";
             MessageUtils.displayError(msg);
         }
     }
-    
+
     public void backtoLogin() {
         RedirectUtils.redirect("../index.xhtml");
     }
-    
+
     /**
      * @return the username
      */
@@ -168,5 +160,5 @@ public class StaffLoginManagedBean implements Serializable {
     public void setFindUsernameEmail(String findUsernameEmail) {
         this.findUsernameEmail = findUsernameEmail;
     }
-    
+
 }

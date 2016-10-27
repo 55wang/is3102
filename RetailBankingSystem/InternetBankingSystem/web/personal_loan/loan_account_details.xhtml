@@ -12,7 +12,7 @@
             <f:viewParam name="accountId" value="#{loanAccountDetailsManagedBean.accountId}" />
             <f:viewAction action="#{loanAccountDetailsManagedBean.init()}"></f:viewAction>
         </f:metadata>
-        
+
         <h:head>
             <title>Your Debit Card Summary</title>
             <em:cssImport></em:cssImport>
@@ -23,9 +23,9 @@
             <em:customerNavBar context="personal" personalPage="home" ></em:customerNavBar>
             <div class="customer_main_container">
                 <h:form id="mainForm">
-                    <p:panel header="Loan Accounts account number #{loanAccountBreakdownManagedBean.accountId}">
+                    <p:panel header="Loan Accounts account number #{loanAccountBreakdownManagedBean.accountId}" >
                         <p:messages id="messagesStatus" redisplay="false" >
-                            <h:panelGrid columns="2" cellpadding="5">
+                            <h:panelGrid columns="2" cellpadding="5" >
                                 <h:outputText value="Account Number:" />
                                 <h:outputText value="#{loanAccountDetailsManagedBean.loanAccount.accountNumber}" />
 
@@ -36,28 +36,28 @@
                                 <h:outputText value="#{loanAccountDetailsManagedBean.loanAccount.outstandingPrincipal}" >
                                     <f:convertNumber type="number" pattern="#0.00"/>
                                 </h:outputText>
-                                
+
                                 <h:outputText value="Amount paid in current period (in SGD):" />
                                 <h:outputText value="#{loanAccountDetailsManagedBean.loanAccount.amountPaidBeforeDueDate}" />
-                                
+
                                 <h:outputText value="Nth Month:" />
                                 <h:outputText value="#{loanAccountDetailsManagedBean.loanAccount.currentPeriod}" />
-                                
+
                                 <h:outputText value="Status:" />
                                 <h:outputText value="#{loanAccountDetailsManagedBean.loanAccount.loanAccountStatus}" />
-                                
+
                                 <h:outputText value="Officer incharge:" />
                                 <h:outputText value="#{loanAccountDetailsManagedBean.loanAccount.loanOfficer.fullName}" />
-                                
+
                                 <h:outputText value="Matrity Date:" />
                                 <h:outputText value="#{loanAccountDetailsManagedBean.loanAccount.maturityDate}" />
-                                
+
                                 <h:outputText value="Monthly Installment:" />
                                 <h:outputText value="#{loanAccountDetailsManagedBean.loanAccount.monthlyInstallment}" />
-                                
+
                                 <h:outputText value="Overdue Payment:" />
                                 <h:outputText value="#{loanAccountDetailsManagedBean.loanAccount.overduePayment}" />
-                                
+
                                 <h:outputText value="Next Payment due date:" />
                                 <h:outputText value="#{loanAccountDetailsManagedBean.loanAccount.paymentDate}" />
 
@@ -67,6 +67,22 @@
                                 <p:commandButton value="Request Tenure Change" actionListener="#{loanAccountDetailsManagedBean.requestTenureChange()}"/>
 
                             </h:panelGrid>
+
+                            <h2>Interest for your loan account</h2>
+
+                            <p:dataTable value="#{loanAccountDetailsManagedBean.loanAccount.loanProduct.loanInterestCollection.loanInterests}" var="interest">
+                                <p:column headerText="Start Month" sortBy="#{interest.startMonth}">
+                                    <h:outputText value="#{interest.startMonth}" />
+                                </p:column>
+                                <p:column headerText="End Month" sortBy="#{interest.endMonth}">
+                                    <h:outputText value="#{interest.endMonth == -1 ? 'End of Tenure': interest.endMonth}" />
+                                </p:column>
+                                <p:column headerText="Percentage" sortBy="#{interest.interestRate}">
+                                    <h:outputText value="#{interest.interestRate}#{interest.fhr18 ? ' + FHR18' : ''}#{interest.loanExternalInterest != null ? '+ 3-SIBOR' : ''}">
+                                        <f:convertNumber type="percent" minFractionDigits="4"/>
+                                    </h:outputText>
+                                </p:column>
+                            </p:dataTable>
                         </p:messages>
                     </p:panel>
                 </h:form>

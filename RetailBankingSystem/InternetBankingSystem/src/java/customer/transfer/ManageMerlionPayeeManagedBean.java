@@ -8,6 +8,7 @@ package customer.transfer;
 import ejb.session.common.LoginSessionBeanLocal;
 import ejb.session.dams.CustomerDepositSessionBeanLocal;
 import ejb.session.bill.TransferSessionBeanLocal;
+import ejb.session.common.OTPSessionBeanLocal;
 import entity.bill.Payee;
 import entity.customer.MainAccount;
 import entity.dams.account.DepositAccount;
@@ -38,9 +39,14 @@ public class ManageMerlionPayeeManagedBean implements Serializable {
     private TransferSessionBeanLocal transferBean;
     @EJB
     private CustomerDepositSessionBeanLocal depositBean;
+    @EJB
+    private OTPSessionBeanLocal otpBean;
     
     private Payee payee;
+    private MainAccount ma;
     private List<Payee> payees = new ArrayList<>();
+    
+    private String inputTokenString;
     
     /**
      * Creates a new instance of ManageMerlionPayeeManagedBean
@@ -50,7 +56,7 @@ public class ManageMerlionPayeeManagedBean implements Serializable {
     
     @PostConstruct
     public void init() {
-        MainAccount ma = loginBean.getMainAccountByUserID(SessionUtils.getUserName());
+        ma = loginBean.getMainAccountByUserID(SessionUtils.getUserName());
         setPayees(ma.getPayees());
         setPayee(new Payee());
         getPayee().setFromName(ma.getCustomer().getFullName());
@@ -59,6 +65,11 @@ public class ManageMerlionPayeeManagedBean implements Serializable {
     }
     
     public void addPayee() {
+        
+        if (!checkOptAndProceed()) {
+            return;
+        }
+        
         try {
             DepositAccount da = depositBean.getAccountFromId(getPayee().getAccountNumber());
             if (da == null) {
@@ -90,6 +101,30 @@ public class ManageMerlionPayeeManagedBean implements Serializable {
             MessageUtils.displayError(ConstantUtils.PAYEE_DELETE_FAILED);
         }
     }
+    
+    public void sendOpt() {
+        System.out.println("sendOTP clicked, sending otp to: " + ma.getCustomer().getPhone());
+        JSUtils.callJSMethod("PF('myWizard').next()");
+        otpBean.generateOTP(ma.getCustomer().getPhone());
+    }
+    
+    private Boolean checkOptAndProceed() {
+        if (inputTokenString == null || inputTokenString.isEmpty()) {
+            MessageUtils.displayError("Please enter one time password!");
+            return false;
+        }
+        if (!otpBean.isOTPExpiredByPhoneNumber(inputTokenString, ma.getCustomer().getPhone())) {
+            if (otpBean.checkOTPValidByPhoneNumber(inputTokenString, ma.getCustomer().getPhone())) {
+                return true;
+            } else {
+                MessageUtils.displayError("One Time Password Not Match!");
+                return false;
+            }
+        } else {
+            MessageUtils.displayError("One Time Password Expired!");
+            return false;
+        }
+    }
 
     // Getters and Setters
     /**
@@ -118,5 +153,19 @@ public class ManageMerlionPayeeManagedBean implements Serializable {
      */
     public void setPayees(List<Payee> payees) {
         this.payees = payees;
+    }
+    
+    /**
+     * @return the inputTokenString
+     */
+    public String getInputTokenString() {
+        return inputTokenString;
+    }
+
+    /**
+     * @param inputTokenString the inputTokenString to set
+     */
+    public void setInputTokenString(String inputTokenString) {
+        this.inputTokenString = inputTokenString;
     }
 }

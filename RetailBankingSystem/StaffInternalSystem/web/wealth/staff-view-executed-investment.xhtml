@@ -14,21 +14,21 @@
         </h:head>
         <h:body>
             <em:staffNavBar context="wealth"></em:staffNavBar>
-            <em:staffSideBar top="wealth" side="viewPortfolio"></em:staffSideBar>
+            <em:staffSideBar top="wealth" side="viewInvestList"></em:staffSideBar>
 
             <div class="container">
                 <h:form id="mainForm">
-                    <p:panel header="Customer Financial Profile">
+                    <p:panel header="Executed Investment Plans List">
+                        <h:outputText value="ID: "/>
+                        <h:inputText value="#{viewPortfolioManagedBean.portfolioID}"/>
 
-                        <h:outputText value="Customer Name: "/>
-                        <h:inputText value="#{viewPortfolioManagedBean.searchText}"/>
-
-                        <p:commandButton value="RETRIEVE" action="#{viewPortfolioManagedBean.searchCustomerFullName(viewPortfolioManagedBean.searchText)}" update="mainForm"/>
+                        <p:commandButton value="RETRIEVE" action="#{viewPortfolioManagedBean.retrievePortfolio()}" update="@form"/>
+                        <p:commandButton value="RETRIEVE ALL" action="#{viewPortfolioManagedBean.retrieveAllPortfolio()}" update="@form"/>
 
                         <p:messages id="messagesStatus" redisplay="false" >
                             <h:panelGrid columns="2" cellpadding="5">
                                 <p:dataTable value="#{viewPortfolioManagedBean.portfolios}" var="p" >
-                                    <p:column headerText="Portfolio Id">
+                                    <p:column headerText="Id">
                                         <h:outputText value="#{p.id}" />
                                     </p:column>
                                     <p:column headerText="Customer Name">

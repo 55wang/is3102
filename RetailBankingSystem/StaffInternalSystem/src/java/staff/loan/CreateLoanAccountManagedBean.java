@@ -58,6 +58,8 @@ public class CreateLoanAccountManagedBean implements Serializable {
     private DepositProductSessionBeanLocal depositProductBean;
     @EJB
     private CustomerDepositSessionBeanLocal depositAccountBean;
+    @EJB
+    private MainAccountSessionBeanLocal mainAccountBean;
     
     private String applicationId;
 
@@ -105,6 +107,8 @@ public class CreateLoanAccountManagedBean implements Serializable {
         
         LoanAccount result = loanAccountBean.createLoanAccount(la);
         if (result != null) {
+            ma.addLoanAccount(la);
+            mainAccountBean.updateMainAccount(ma);
             MessageUtils.displayInfo("Loan Account Created!");
         } else {
             MessageUtils.displayError("Loan Account Not Created!");
@@ -144,6 +148,9 @@ public class CreateLoanAccountManagedBean implements Serializable {
             la.setMainAccount(mainAccount);
             la.setStatus(EnumUtils.LoanAccountStatus.PENDING);
             loanAccountBean.updateLoanApplication(la);
+            
+            mainAccount.setCustomer(customer);
+            mainAccountBean.updateMainAccount(ma);
         } else {
             mainAccountId = ma.getUserID();
             
@@ -157,6 +164,9 @@ public class CreateLoanAccountManagedBean implements Serializable {
             newCustomerBean.updateCustomer(customer);
             
             depositAccountBean.getDaytoDayAccountByMainAccount(ma);
+            
+            ma.setCustomer(customer);
+            mainAccountBean.updateMainAccount(ma);
         }
     }
     

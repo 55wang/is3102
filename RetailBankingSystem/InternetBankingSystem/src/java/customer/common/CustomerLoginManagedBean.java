@@ -48,12 +48,11 @@ public class CustomerLoginManagedBean implements Serializable {
     /**
      * Creates a new instance of CustomerLoginManagedBean
      */
-    
     @PostConstruct
     public void init() {
 //        loginCustomer("c1234567", "password");
     }
-    
+
     public CustomerLoginManagedBean() {
     }
 
@@ -112,13 +111,9 @@ public class CustomerLoginManagedBean implements Serializable {
         MainAccount forgotAccount = null;
         forgotAccount = loginSessionBean.getMainAccountByEmail(findUsernameEmail);
         if (forgotAccount != null) {
-            if (emailServiceSessionBean.sendUserIDforForgottenCustomer(findUsernameEmail, forgotAccount)) {
-                String msg = "User ID has been sent to your email.";
-                MessageUtils.displayInfo(msg);
-            } else {
-                String msg = "Email sent fail. Please try again";
-                MessageUtils.displayError(msg);
-            }
+            emailServiceSessionBean.sendUserIDforForgottenCustomer(findUsernameEmail, forgotAccount);
+            String msg = "User ID has been sent to your email.";
+            MessageUtils.displayInfo(msg);
         } else {
             String msg = "The email is not registered.";
             MessageUtils.displayError(msg);
@@ -129,13 +124,9 @@ public class CustomerLoginManagedBean implements Serializable {
         MainAccount forgotAccount = null;
         forgotAccount = loginSessionBean.getMainAccountByEmail(findPasswordEmail);
         if (forgotAccount != null) {
-            if (emailServiceSessionBean.sendResetPwdLinkforForgottenCustomer(findPasswordEmail, forgotAccount)) {
-                String msg = "Check your email and reset password.";
-                MessageUtils.displayInfo(msg);
-            } else {
-                String msg = "Email sent fail. Please try again";
-                MessageUtils.displayError(msg);
-            }
+            emailServiceSessionBean.sendResetPwdLinkforForgottenCustomer(findPasswordEmail, forgotAccount);
+            String msg = "Check your email and reset password.";
+            MessageUtils.displayInfo(msg);
         } else {
             String msg = "The email is not registered.";
             MessageUtils.displayError(msg);

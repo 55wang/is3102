@@ -75,6 +75,10 @@ public class MainAccount implements Serializable {
         this.bankAcounts.add(da);
     }
     
+    public void addLoanAccount(LoanAccount la) {
+        this.loanAccounts.add(la);
+    }
+    
     public void addLoanApplication(LoanApplication la) {
         this.loanApplications.add(la);
     }

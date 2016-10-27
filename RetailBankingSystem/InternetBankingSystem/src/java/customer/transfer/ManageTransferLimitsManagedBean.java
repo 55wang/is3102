@@ -7,6 +7,7 @@ package customer.transfer;
 
 import ejb.session.bill.TransferSessionBeanLocal;
 import ejb.session.common.LoginSessionBeanLocal;
+import ejb.session.common.OTPSessionBeanLocal;
 import entity.customer.MainAccount;
 import entity.customer.TransferLimits;
 import java.io.Serializable;
@@ -34,11 +35,17 @@ public class ManageTransferLimitsManagedBean implements Serializable {
     private LoginSessionBeanLocal loginBean;
     @EJB
     private TransferSessionBeanLocal transferBean;
+    @EJB
+    private OTPSessionBeanLocal otpBean;
     
     private TransferLimits transferLimits;
     private String newIntraBankLimit;
     private String newInterBankLimit;
     private String newOverseasBankLimit;
+    
+    private String inputTokenString;
+    
+    private MainAccount ma;
     
     private List<String> intraBankLimitOptions = CommonUtils.getEnumList(EnumUtils.IntraBankTransferLimit.class);
     private List<String> interBankLimitOptions = CommonUtils.getEnumList(EnumUtils.InterBankTransferLimit.class);
@@ -51,14 +58,34 @@ public class ManageTransferLimitsManagedBean implements Serializable {
     
     @PostConstruct
     public void init() {
-        MainAccount ma = loginBean.getMainAccountByUserID(SessionUtils.getUserName());
+        System.out.println("manageTransferLimitsManagedBean @PostConstruct");
+        ma = loginBean.getMainAccountByUserID(SessionUtils.getUserName());
         transferLimits = ma.getTransferLimits();
         newIntraBankLimit = transferLimits.getDailyIntraBankLimit().toString();
         newInterBankLimit = transferLimits.getDailyInterBankLimit().toString();
         newOverseasBankLimit = transferLimits.getDailyOverseasBankLimit().toString();
+        System.out.println("@PostConstruct finished init");
+    }
+    
+    public void checkOptAndProceed() {
+        if (inputTokenString == null || inputTokenString.isEmpty()) {
+            MessageUtils.displayError("Please enter one time password!");
+            return;
+        }
+        if (!otpBean.isOTPExpiredByPhoneNumber(inputTokenString, ma.getCustomer().getPhone())) {
+            if (otpBean.checkOTPValidByPhoneNumber(inputTokenString, ma.getCustomer().getPhone())) {
+                changeLimits();
+            } else {
+                MessageUtils.displayError("One Time Password Not Match!");
+            }
+        } else {
+            MessageUtils.displayError("One Time Password Expired!");
+        }
     }
     
     public void changeLimits() {
+        System.out.println("changeLimits clicked");
+        // check if otp valid
         transferLimits.setDailyIntraBankLimit(EnumUtils.IntraBankTransferLimit.getEnum(newIntraBankLimit));
         transferLimits.setDailyInterBankLimit(EnumUtils.InterBankTransferLimit.getEnum(newInterBankLimit));
         transferLimits.setDailyOverseasBankLimit(EnumUtils.OverseasBankTransferLimit.getEnum(newOverseasBankLimit));
@@ -70,6 +97,12 @@ public class ManageTransferLimitsManagedBean implements Serializable {
             JSUtils.callJSMethod("PF('myWizard').back()");
             MessageUtils.displayError(ConstantUtils.UPDATE_TRANSFER_LIMIT_FAIL);
         }
+    }
+    
+    public void sendOpt() {
+        System.out.println("sendOTP clicked, sending otp to: " + ma.getCustomer().getPhone());
+        JSUtils.callJSMethod("PF('myWizard').next()");
+        otpBean.generateOTP(ma.getCustomer().getPhone());
     }
 
     /**
@@ -168,6 +201,20 @@ public class ManageTransferLimitsManagedBean implements Serializable {
      */
     public void setOverseasBankLimitOptions(List<String> overseasBankLimitOptions) {
         this.overseasBankLimitOptions = overseasBankLimitOptions;
+    }
+
+    /**
+     * @return the inputTokenString
+     */
+    public String getInputTokenString() {
+        return inputTokenString;
+    }
+
+    /**
+     * @param inputTokenString the inputTokenString to set
+     */
+    public void setInputTokenString(String inputTokenString) {
+        this.inputTokenString = inputTokenString;
     }
     
 }

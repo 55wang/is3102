@@ -6,6 +6,7 @@
 package customer.loan;
 
 import ejb.session.common.LoginSessionBeanLocal;
+import ejb.session.loan.LoanAccountSessionBeanLocal;
 import entity.customer.MainAccount;
 import entity.loan.LoanAccount;
 import java.io.Serializable;
@@ -30,6 +31,8 @@ public class LoanAccountSumaryManagedBean implements Serializable {
 
     @EJB
     private LoginSessionBeanLocal loginBean;
+    @EJB
+    private LoanAccountSessionBeanLocal loanAccountBean;
     
     private List<LoanAccount> loanAccounts = new ArrayList<>();
     
@@ -42,7 +45,7 @@ public class LoanAccountSumaryManagedBean implements Serializable {
     @PostConstruct
     public void init() {
         MainAccount ma = loginBean.getMainAccountByUserID(SessionUtils.getUserName());
-        setLoanAccounts(ma.getLoanAccounts());
+        loanAccounts = loanAccountBean.getActiveLoanAccountListByMainAccountId(ma.getId());
     }
     
     public void viewDetails(LoanAccount la) {
