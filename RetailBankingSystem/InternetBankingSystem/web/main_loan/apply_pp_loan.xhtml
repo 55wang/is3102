@@ -71,7 +71,12 @@
                                     <p:inputText value="#{ppLoanApplicationManagedBean.otherLoan}" required="true" requiredMessage="Other financial commitment is required." />
 
                                     <h:outputText value="Number of Other Housing loans: " />
-                                    <p:inputText value="#{ppLoanApplicationManagedBean.numOfHousingLoan}" required="true" requiredMessage="Other financial commitment is required." />
+                                    <p:inputText value="#{ppLoanApplicationManagedBean.numOfHousingLoan}" required="true" requiredMessage="Other financial commitment is required." onchange="submit()" valueChangeListener="#{ppLoanApplicationManagedBean.changeLTV}"/>
+
+                                    <h:outputText value="Maximum Loan-To-Value Ratio: " />
+                                    <h:outputText id="LTV" value="#{ppLoanApplicationManagedBean.LTV}" styleClass="outputLabel">
+                                        <f:convertNumber type="percent" minFractionDigits="4"/>
+                                    </h:outputText>
 
                                 </h:panelGrid>
 
@@ -105,11 +110,14 @@
                                     </h:outputText>
                                     
                                     <h:outputText value="Loan Amount: " />
-                                    <p:inputText value="#{ppLoanApplicationManagedBean.loanAmount}" required="true" requiredMessage="Loan Amount is required." />
+                                    <p:inputText value="#{ppLoanApplicationManagedBean.loanAmount}" required="true" requiredMessage="Loan Amount is required." onchange="submit()" valueChangeListener="#{ppLoanApplicationManagedBean.changeMarketValue}"/>
                                     
                                     <h:outputText value="Market Value: " />
-                                    <p:inputText value="#{ppLoanApplicationManagedBean.marketValue}" required="true" requiredMessage="Market Value is required." />
+                                    <h:outputText value="#{ppLoanApplicationManagedBean.marketValue}" styleClass="outputLabel">
+                                        <f:convertNumber pattern="###00.00"/>
+                                    </h:outputText>
 
+                                    
                                     <h:outputText value="Choose a loan term: " />
                                     <p:selectOneMenu value="#{ppLoanApplicationManagedBean.loanProductId}" rendered="true" required="true">
                                         <f:selectItems value="#{ppLoanApplicationManagedBean.ppLoanProducts}" var="p" itemValue="#{p.id}" itemLabel="#{p.productName} #{p.tenure}" />
