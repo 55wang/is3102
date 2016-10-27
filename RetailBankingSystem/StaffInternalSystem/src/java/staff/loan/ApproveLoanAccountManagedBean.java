@@ -33,7 +33,7 @@ import utils.SessionUtils;
 @Named(value = "approveLoanAccountManagedBean")
 @ViewScoped
 public class ApproveLoanAccountManagedBean implements Serializable {
-    
+
     @EJB
     private LoanAccountSessionBeanLocal loanAccountBean;
     @EJB
@@ -45,10 +45,10 @@ public class ApproveLoanAccountManagedBean implements Serializable {
 
     private String bureauCreditScore;
     private List<LoanAccount> myLoanAccounts = new ArrayList<>();
-    
+
     public ApproveLoanAccountManagedBean() {
     }
-    
+
     @PostConstruct
     public void init() {
         myLoanAccounts = loanAccountBean.getLoanAccountByStaffUsernameAndStatus(SessionUtils.getStaffUsername(), LoanAccountStatus.PENDING);
@@ -58,7 +58,7 @@ public class ApproveLoanAccountManagedBean implements Serializable {
         // change status
         la.setLoanAccountStatus(EnumUtils.LoanAccountStatus.APPROVED);
         la = loanAccountBean.updateLoanAccount(la);
-                
+
         // generate breakdown
         List<LoanPaymentBreakdown> result = loanPaymentBean.futurePaymentBreakdown(la);
         for (LoanPaymentBreakdown r : result) {
@@ -68,26 +68,29 @@ public class ApproveLoanAccountManagedBean implements Serializable {
         System.out.println(la.getMainAccount().getCustomer().getEmail());
         String randomPwd = PincodeGenerationUtils.generatePwd();
         MainAccount mainAccount = la.getMainAccount();
-        mainAccount.setPassword(randomPwd);
-        mainAccount = mainAccountBean.updateMainAccount(mainAccount);
-        emailBean.sendActivationGmailForCustomer(mainAccount.getCustomer().getEmail(), randomPwd);
-        emailBean.sendLoanApplicationApprovalNotice(la.getMainAccount().getCustomer().getEmail());
-        
+
+        if (mainAccount.getStatus() == EnumUtils.StatusType.PENDING) {
+            mainAccount.setPassword(randomPwd);
+            mainAccount = mainAccountBean.updateMainAccount(mainAccount);
+            emailBean.sendActivationGmailForCustomer(mainAccount.getCustomer().getEmail(), randomPwd);
+            emailBean.sendLoanApplicationApprovalNotice(la.getMainAccount().getCustomer().getEmail());
+        }
+
         MessageUtils.displayInfo("Application Approved!");
         myLoanAccounts.remove(la);
     }
-    
+
     public void rejectLoanAccount(LoanAccount la) {
         // change status
         la.setLoanAccountStatus(EnumUtils.LoanAccountStatus.REJECTED);
         la = loanAccountBean.updateLoanAccount(la);
         // inform customer by email
         emailBean.sendLoanApplicationRejectNotice(la.getMainAccount().getCustomer().getEmail());
-        
+
         MessageUtils.displayInfo("Application Rejected!");
         myLoanAccounts.remove(la);
     }
-    
+
     public void calculateCreditScore(LoanAccount la) {
         try {
             la.getMainAccount().getCustomer().setBureaCreditScore(bureauCreditScore);
@@ -98,12 +101,12 @@ public class ApproveLoanAccountManagedBean implements Serializable {
             System.out.println("error");
             MessageUtils.displayError("Error! Not updated!");
         }
-        
+
     }
-    
+
     public double calculateCreditLvl(LoanAccount la, String creditBureauScore) {
         try {
-            
+
             System.out.println("inside calculateCreditLvl");
             System.out.println(creditBureauScore);
             double creditScore = 0;
@@ -135,7 +138,7 @@ public class ApproveLoanAccountManagedBean implements Serializable {
                 creditScore += 0;
             }
             System.out.println("calculated age");
-            
+
             EnumUtils.Education education = la.getMainAccount().getCustomer().getEducation();
             if (education.equals(EnumUtils.Education.POSTGRAD)) {
                 creditScore += 50;
@@ -179,19 +182,19 @@ public class ApproveLoanAccountManagedBean implements Serializable {
             System.out.println("error in credit score");
         }
         return 0;
-        
+
     }
-    
+
     public long getAge(Date dateOne, Date dateTwo) {
         long timeOne = dateOne.getTime();
         long timeTwo = dateTwo.getTime();
         long oneDay = 1000 * 60 * 60 * 24;
         long delta = (timeTwo - timeOne) / oneDay;
-        
+
         delta = delta / 365;
         return delta;
     }
-    
+
     /**
      * @return the myLoanAccounts
      */
@@ -219,5 +222,5 @@ public class ApproveLoanAccountManagedBean implements Serializable {
     public void setBureauCreditScore(String bureauCreditScore) {
         this.bureauCreditScore = bureauCreditScore;
     }
-    
+
 }
