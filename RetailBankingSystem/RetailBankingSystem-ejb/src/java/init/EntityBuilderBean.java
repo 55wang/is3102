@@ -98,8 +98,8 @@ public class EntityBuilderBean {
         entityCaseBuilder.initCase();
         entityBillOrgBuilder.initBillOrganization();
         entityPayLahBuilder.initPayLahDemoData();
-        demoPortfolio = entityWealthBuilder.initWealth();
-        entityFactBuilder.initSinglePortfolioFact(demoMainAccount, demoPortfolio);
+//        demoPortfolio = entityWealthBuilder.initWealth();
+//        entityFactBuilder.initSinglePortfolioFact(demoMainAccount, demoPortfolio);
 
     }
 }

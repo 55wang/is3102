@@ -38,7 +38,7 @@ and open the template in the editor.
                                     </p:selectOneMenu>
                                     <p:outputLabel for="amount" value="Amount: " />
                                     <p:inputText id="amount" value="#{payCCBillManagedBean.amount}"/>
-                                    <p:commandButton  value="Next" type="button" onclick="PF('myWizard').next()" />
+                                    <p:commandButton  value="Next" actionListener="#{payCCBillManagedBean.sendOpt()}" update="@form" />
                                 </h:panelGrid>
 
                             </p:tab>
@@ -51,6 +51,10 @@ and open the template in the editor.
                                     <h:outputText value="#{payCCBillManagedBean.getBillName(payCCBillManagedBean.ccBillOrgId)}" />
                                     <p:outputLabel value="Amount: " />
                                     <p:outputLabel value="#{payCCBillManagedBean.amount}"/>
+                                    
+                                    <h2>Input Token Number</h2>
+                                    <p:inputText value="#{payCCBillManagedBean.inputTokenString}" />
+                                    
                                     <p:commandButton  value="Back" type="button" onclick="PF('myWizard').back()" />
                                     <p:commandButton value="Transfer" action="#{payCCBillManagedBean.transfer}" update="@form"/> 
                                 </h:panelGrid>

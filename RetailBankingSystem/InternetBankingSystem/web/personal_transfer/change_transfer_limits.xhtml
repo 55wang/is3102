@@ -24,11 +24,11 @@ and open the template in the editor.
             <div class="customer_main_container">
                 <h:form>
                     <p:panel header="Manage Transfer Limits">
-                    <p:messages id="message" redisplay="false" >
-                        <p:wizard widgetVar="myWizard" showNavBar="false">
+                        <p:messages id="message" redisplay="false" >
+                            <p:wizard widgetVar="myWizard" showNavBar="false">
 
-                            <p:tab id="input_detail" title="1.Input Details">
-                                <h1>Other Merlion Bank</h1>
+                                <p:tab id="input_detail" title="1.Input Details">
+                                    <h1>Other Merlion Bank</h1>
                                     <h:panelGrid columns="2" cellpadding="5">
                                         <h:outputText value="Existing Limit: " />
                                         <h:outputText value="S$  #{manageTransferLimitsManagedBean.transferLimits.dailyIntraBankLimit.toString()}" />
@@ -37,7 +37,7 @@ and open the template in the editor.
                                             <f:selectItems value="#{manageTransferLimitsManagedBean.intraBankLimitOptions}"/>
                                         </p:selectOneMenu>
                                     </h:panelGrid>
-                                <h1>To Local Bank</h1>
+                                    <h1>To Local Bank</h1>
                                     <h:panelGrid columns="2" cellpadding="5">
                                         <h:outputText value="Existing Limit: " />
                                         <h:outputText value="S$  #{manageTransferLimitsManagedBean.transferLimits.dailyInterBankLimit.toString()}" />
@@ -46,7 +46,7 @@ and open the template in the editor.
                                             <f:selectItems value="#{manageTransferLimitsManagedBean.interBankLimitOptions}" />
                                         </p:selectOneMenu>
                                     </h:panelGrid>
-                                <h1>To Overseas Bank</h1>
+                                    <h1>To Overseas Bank</h1>
                                     <h:panelGrid columns="2" cellpadding="5">
                                         <h:outputText value="Existing Limit: " />
                                         <h:outputText value="S$ #{manageTransferLimitsManagedBean.transferLimits.dailyOverseasBankLimit.toString()}" />
@@ -56,57 +56,59 @@ and open the template in the editor.
                                         </p:selectOneMenu>
                                     </h:panelGrid>
 
-                                <p:commandButton  value="Next" type="button" onclick="PF('myWizard').next()" />
-                            </p:tab>
+                                    <p:commandButton  value="Next" actionListener="#{manageTransferLimitsManagedBean.sendOpt()}" update="@form" />
+                                </p:tab>
 
-                            <p:tab id="verify_details" title="2.Verify Details">
-                                <h1>Other Merlion Bank</h1>
+                                <p:tab id="verify_details" title="2.Verify Details">
+                                    <h2>Other Merlion Bank</h2>
                                     <h:panelGrid columns="2" cellpadding="5">
                                         <h:panelGrid columns="2" cellpadding="5">
                                             <h:outputText value="Limit: " />
                                             <h:outputText value="S$ #{manageTransferLimitsManagedBean.newIntraBankLimit}" />
                                         </h:panelGrid>
                                     </h:panelGrid>
-                                <h1>To Local Bank</h1>
+                                    <h2>To Local Bank</h2>
                                     <h:panelGrid columns="2" cellpadding="5">
                                         <h:panelGrid columns="2" cellpadding="5">
                                             <h:outputText value="Limit: " />
                                             <h:outputText value="S$ #{manageTransferLimitsManagedBean.newInterBankLimit}" />
                                         </h:panelGrid>
                                     </h:panelGrid>
-                                <h1>To Overseas Bank</h1>
+                                    <h2>To Overseas Bank</h2>
                                     <h:panelGrid columns="2" cellpadding="5">
                                         <h:outputText value="Limit: " />
                                         <h:outputText value="S$ #{manageTransferLimitsManagedBean.newOverseasBankLimit}" />
                                     </h:panelGrid>
 
-                                <p:commandButton  value="Back" type="button" onclick="PF('myWizard').back()" />
-                                <p:commandButton value="Change Limits" action="#{manageTransferLimitsManagedBean.changeLimits}" update="@form"/> 
-                            </p:tab>
+                                    <h2>Input Token Number</h2>
+                                    <p:inputText value="#{manageTransferLimitsManagedBean.inputTokenString}" />
+                                    <p:commandButton value="Back" type="button" onclick="PF('myWizard').back()" />
+                                    <p:commandButton value="Change Limits" actionListener="#{manageTransferLimitsManagedBean.checkOptAndProceed()}" update="@form" /> 
+                                </p:tab>
 
-                            <p:tab id="completion" title="3.Completion">
-                                <h1>Other Merlion Bank</h1>
+                                <p:tab id="completion" title="3.Completion">
+                                    <h1>Other Merlion Bank</h1>
                                     <h:panelGrid columns="2" cellpadding="5">
                                         <h:panelGrid columns="2" cellpadding="5">
                                             <h:outputText value="Limit: " />
                                             <h:outputText value="S$ #{manageTransferLimitsManagedBean.transferLimits.dailyIntraBankLimit.toString()}" />
                                         </h:panelGrid>
                                     </h:panelGrid>
-                                <h1>To Local Bank</h1>
+                                    <h1>To Local Bank</h1>
                                     <h:panelGrid columns="2" cellpadding="5">
                                         <h:panelGrid columns="2" cellpadding="5">
                                             <h:outputText value="Limit: " />
                                             <h:outputText value="S$ #{manageTransferLimitsManagedBean.transferLimits.dailyInterBankLimit.toString()}" />
                                         </h:panelGrid>
                                     </h:panelGrid>
-                                <h1>To Overseas Bank</h1>
+                                    <h1>To Overseas Bank</h1>
                                     <h:panelGrid columns="2" cellpadding="5">
                                         <h:outputText value="Limit: " />
                                         <h:outputText value="S$ #{manageTransferLimitsManagedBean.transferLimits.dailyOverseasBankLimit.toString()}" />
                                     </h:panelGrid>
-                            </p:tab>
-                        </p:wizard>
-                    </p:messages>
+                                </p:tab>
+                            </p:wizard>
+                        </p:messages>
                     </p:panel>
                 </h:form>
             </div>

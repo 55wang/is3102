@@ -48,8 +48,8 @@ public class MobileOTPService {
             System.out.println("Receiving otp...");
             OneTimePassword otp = otpBean.getOTPByPhoneNumber(mobileNumber);
             System.out.println("otp received: " + otp != null);
-            if (otp != null) {
-                if (otp.getPassword().equals(otpCode)) {
+            if (!otpBean.isOTPExpiredByPhoneNumber(otpCode, mobileNumber)) {
+                if (otpBean.checkOTPValidByPhoneNumber(otpCode, mobileNumber)) {
                     // TODO: Resend logic
                     ErrorDTO err = new ErrorDTO();
                     err.setCode(0);
@@ -64,7 +64,6 @@ public class MobileOTPService {
                     jsonString = new JSONObject(err).toString();
                     return Response.ok(jsonString, MediaType.APPLICATION_JSON).build();
                 }
-
             } else {
                 ErrorDTO err = new ErrorDTO();
                 err.setCode(-1);

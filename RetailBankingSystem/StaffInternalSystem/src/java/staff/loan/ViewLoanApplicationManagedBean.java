@@ -49,7 +49,7 @@ public class ViewLoanApplicationManagedBean implements Serializable {
     }
 
     public void startProcess(LoanApplication la) {
-        la.setStatus(EnumUtils.LoanAccountStatus.PENDING);
+        la.setStatus(EnumUtils.LoanAccountStatus.INPROGRESS);
         loanAccountBean.updateLoanApplication(la);
     }
 
@@ -57,7 +57,7 @@ public class ViewLoanApplicationManagedBean implements Serializable {
         Map<String, String> map = new HashMap<>();
         map.put("applicationId", la.getId().toString());
         String params = RedirectUtils.generateParameters(map);
-        RedirectUtils.redirect("create_loan_account.xhtml" + params);
+        RedirectUtils.redirect("approve_loan_account.xhtml" + params);
     }
 
     /**
