@@ -6,6 +6,7 @@
 package ejb.session.loan;
 
 import entity.loan.LoanAccount;
+import entity.loan.LoanAdjustmentApplication;
 import entity.loan.LoanApplication;
 import entity.loan.LoanPaymentBreakdown;
 import java.util.Date;
@@ -51,9 +52,21 @@ public class LoanAccountSessionBean implements LoanAccountSessionBeanLocal {
     }
     
     @Override
-    public List<LoanAccount> getLoanAccountByStaffUsername(String username) {
-        Query q = em.createQuery("SELECT l FROM LoanAccount l WHERE l.loanOfficer.username = :username");
+    public String closeLoanAccountByAccountNumber(String accountNumber) {
+        LoanAccount la = getLoanAccountByAccountNumber(accountNumber);
+        if (la.getOutstandingPrincipal() > 0 && la.getOverduePayment() > 0) {
+            return "FAIL";
+        }
+        la.setLoanAccountStatus(LoanAccountStatus.CLOSED);
+        em.merge(la);
+        return "SUCCESS";
+    }
+    
+    @Override
+    public List<LoanAccount> getLoanAccountByStaffUsernameAndStatus(String username, LoanAccountStatus status) {
+        Query q = em.createQuery("SELECT l FROM LoanAccount l WHERE l.loanOfficer.username = :username AND l.loanAccountStatus =:inStatus");
         q.setParameter("username", username);
+        q.setParameter("inStatus", status);
         return q.getResultList();
     }
 
@@ -100,10 +113,36 @@ public class LoanAccountSessionBean implements LoanAccountSessionBeanLocal {
     }
     
     @Override
-    public List<LoanApplication> getLoanApplicationByStaffUsername(String username) {
-        Query q = em.createQuery("SELECT l FROM LoanApplication l WHERE l.loanOfficer.username = :username");
+    public List<LoanApplication> getLoanApplicationByStaffUsername(String username, LoanAccountStatus inStatus) {
+        Query q = em.createQuery("SELECT l FROM LoanApplication l WHERE l.loanOfficer.username = :username AND l.status =:inStatus");
         q.setParameter("username", username); 
+        q.setParameter("inStatus", inStatus);
         return q.getResultList();
+    }
+    
+    @Override
+    public List<LoanAdjustmentApplication> getLoanAdjustmentApplicationByStaffUsername(String username, LoanAccountStatus inStatus) {
+        Query q = em.createQuery("SELECT l FROM LoanAdjustmentApplication l WHERE l.loanAccount.loanOfficer.username = :username AND l.status =:inStatus");
+        q.setParameter("username", username); 
+        q.setParameter("inStatus", inStatus);
+        return q.getResultList();
+    }
+    
+    @Override
+    public LoanAdjustmentApplication createLoanAdjustmentApplication(LoanAdjustmentApplication loanApplication) {
+        em.persist(loanApplication);
+        return loanApplication;
+    }
+    
+    @Override
+    public LoanAdjustmentApplication updateLoanAdjustmentApplication(LoanAdjustmentApplication loanApplication) {
+        em.merge(loanApplication);
+        return loanApplication;
+    }
+    
+    @Override
+    public LoanAdjustmentApplication getLoanAdjustmentApplicationById(Long id) {
+        return em.find(LoanAdjustmentApplication.class, id);
     }
     
     @Override

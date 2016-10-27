@@ -1,0 +1,78 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:em="http://xmlns.jcp.org/jsf/composite/emcomp"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <!--shift + ctrl + F, format-->
+    <f:view>
+        <f:metadata>
+            <f:viewParam name="accountId" value="#{loanLumsumPaymentManagedBean.accountId}" />
+            <f:viewAction action="#{loanLumsumPaymentManagedBean.init()}"></f:viewAction>
+        </f:metadata>
+        
+        <h:head>
+            <title>Your Debit Card Summary</title>
+            <em:cssImport></em:cssImport>
+        </h:head>
+        <h:body>
+
+            <em:customerHeader context="personal" userName="#{customerHomeManagedBean.customer.firstname }"></em:customerHeader>
+            <em:customerNavBar context="personal" personalPage="home" ></em:customerNavBar>
+            <div class="customer_main_container">
+                <h2>Loan Accounts account number #{loanLumsumPaymentManagedBean.accountId}</h2>
+                <p:panel header="Pay your Merlion Bank Loans">
+                    <h:form id="mainForm">
+                        <p:messages id="message" redisplay="false" >
+                            <p:wizard widgetVar="myWizard" showNavBar="false">
+                                <p:tab id="input_detail" title="1.Input Details">
+                                    <h:panelGrid columns="2" cellpadding="5">
+                                        <h:outputText value="Choose Your Deposit Account to transfer from: " />
+                                        <p:selectOneMenu value="#{loanLumsumPaymentManagedBean.fromAccountNo}" rendered="true" required="true">
+                                            <f:selectItems value="#{loanLumsumPaymentManagedBean.accounts}" var="a" itemValue="#{a.accountNumber}" itemLabel="#{a.product.name} #{a.accountNumber} #{a.balance.setScale(2)}" />
+                                        </p:selectOneMenu>
+                                        <p:outputLabel for="amount" value="Base Amount (S$): " />
+                                        <p:outputLabel for="amount" value="10,000.00 " />
+                                        <p:outputLabel for="amount" value="Additional Amount in Thousands: " />
+                                        <p:inputText id="amount" value="#{loanLumsumPaymentManagedBean.additionalAmount}"/>
+                                    </h:panelGrid>
+                                    <p:commandButton  value="Next" type="button" onclick="PF('myWizard').next()" />
+                                </p:tab>
+
+                                <p:tab id="verify_details" title="2.Verify Details">
+                                    <h:panelGrid columns="2" cellpadding="5">
+                                        <h:outputText value="Transfer From Deposit Account: " />
+                                        <h:outputText value="#{loanLumsumPaymentManagedBean.fromAccountNo}" />
+                                        <h:outputText value="Transfer To Loan Account: " />
+                                        <h:outputText value="#{loanLumsumPaymentManagedBean.loanAccount.accountNumber}" />
+                                        <h:outputText value="Amount (S$):: " />
+                                        <h:outputText value="#{loanLumsumPaymentManagedBean.totalAmount()}"/>
+                                        <p:commandButton  value="Back" type="button" onclick="PF('myWizard').back()" />
+                                        <p:commandButton value="Pay Loan" action="#{loanLumsumPaymentManagedBean.transfer()}" update="@form"/> 
+                                    </h:panelGrid>
+                                </p:tab>
+
+                                <p:tab id="completion" title="3.Completion">
+                                    <h:panelGrid columns="2" cellpadding="5">
+                                        <h:outputText value="Transfer From Deposit Account: " />
+                                        <h:outputText value="#{loanLumsumPaymentManagedBean.fromAccountNo}" />
+                                        <h:outputText value="Transfer To Loan Account: " />
+                                        <h:outputText value="#{loanLumsumPaymentManagedBean.loanAccount.accountNumber}" />
+                                        <h:outputText value="Amount (S$):: " />
+                                        <h:outputText value="#{loanLumsumPaymentManagedBean.totalAmount()}"/>
+                                    </h:panelGrid>
+                                </p:tab>
+                            </p:wizard>
+                        </p:messages>
+                    </h:form>
+                </p:panel>
+            </div>
+            <em:customerFooter></em:customerFooter>
+        </h:body>
+    </f:view>
+
+
+</html>
+

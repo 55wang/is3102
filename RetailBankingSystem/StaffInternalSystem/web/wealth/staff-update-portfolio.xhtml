@@ -21,187 +21,153 @@
             <div class="container">
                 <h:form id="mainForm">
                     <p:panel header="Update Portfolio">
-
-                        <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
-
                         <p:growl id="msgs" showDetail="true" />
                         <h:outputText value="Portfolio ID: "/>
                         <h:inputText value="#{updatePortfolioManagedBean.portfolioID}"/>
 
                         <p:commandButton value="RETRIEVE" action="#{updatePortfolioManagedBean.retrievePortfolio()}" update="@form"/>
                         <p:commandButton value="VIEW DETAIL" action="#{updatePortfolioManagedBean.viewPortfolioDetail()}"/>
-                        <c:if test="#{updatePortfolioManagedBean.p != null}">
-
-
-                            <p:tabView>
-                                <p:tab title="Update Buying Value &amp; Amount">
-                                    <p:panelGrid style="width:800px; margin:0 auto " >
-                                        <!-- begin of 1 set -->
-                                        <p:row>
-                                            <p:column  colspan="2" rowspan="2">
-                                                #{updatePortfolioManagedBean.p.name_US_STOCKS}
-                                            </p:column>
-
-                                            <p:column  colspan="4" style="text-align: right">
-                                                Buying Value/Share
-                                            </p:column>
-                                            <p:column  colspan="2">
-                                                <h:inputText value="#{updatePortfolioManagedBean.p.buyingValuePerShare_US_STOCKS}"/>
-                                            </p:column>
-
-                                        </p:row>
-
-                                        <p:row>
-                                            <p:column  colspan="4" style="text-align: right">
-                                                Buying # of Share
-                                            </p:column>
-                                            <p:column  colspan="2">
-                                                <h:inputText value="#{updatePortfolioManagedBean.p.buyingNumberOfShare_US_STOCKS}"/>
-                                            </p:column>
-                                        </p:row>
-                                        <!-- end of 1 set -->
-
-                                        <!-- begin of 1 set -->
-                                        <p:row>
-                                            <p:column  colspan="2" rowspan="2">
-                                                #{updatePortfolioManagedBean.p.name_FOREIGN_DEVELOPED_STOCKS}
-                                            </p:column>
-
-                                            <p:column  colspan="4" style="text-align: right">
-                                                Buying Value/Share
-                                            </p:column>
-                                            <p:column  colspan="2">
-                                                <h:inputText value="#{updatePortfolioManagedBean.p.buyingValuePerShare_FOREIGN_DEVELOPED_STOCKS}"/>
-                                            </p:column>
-
-                                        </p:row>
-
-                                        <p:row>
-                                            <p:column  colspan="4" style="text-align: right">
-                                                Buying # of Share
-                                            </p:column>
-                                            <p:column  colspan="2">
-                                                <h:inputText value="#{updatePortfolioManagedBean.p.buyingNumberOfShare_FOREIGN_DEVELOPED_STOCKS}"/>
-                                            </p:column>
-                                        </p:row>
-                                        <!-- end of 1 set -->
-
-                                        <!-- begin of 1 set -->
-                                        <p:row>
-                                            <p:column  colspan="2" rowspan="2">
-                                                #{updatePortfolioManagedBean.p.name_EMERGING_MARKET_STOCKS}
-                                            </p:column>
-
-                                            <p:column  colspan="4" style="text-align: right">
-                                                Buying Value/Share
-                                            </p:column>
-                                            <p:column  colspan="2">
-                                                <h:inputText value="#{updatePortfolioManagedBean.p.buyingValuePerShare_EMERGING_MARKET_STOCKS}"/>
-                                            </p:column>
-
-                                        </p:row>
-
-                                        <p:row>
-                                            <p:column  colspan="4" style="text-align: right">
-                                                Buying # of Share
-                                            </p:column>
-                                            <p:column  colspan="2">
-                                                <h:inputText value="#{updatePortfolioManagedBean.p.buyingNumberOfShare_EMERGING_MARKET_STOCKS}"/>
-                                            </p:column>
-                                        </p:row>
-                                        <!-- end of 1 set -->
-
-                                    </p:panelGrid>
-                                    <br />
-
-                                    <p:commandButton value="UPDATE" action="#{updatePortfolioManagedBean.updateBuyingPortfolio()}" oncomplete="setTimeout(function() { $('.ui-messages-info.ui-corner-all').slideUp(); },  3000);"/>
-                                </p:tab>
-                                <p:tab title="Update Current Value &amp; Amount">
-
-                                    <p:panelGrid style="width:800px; margin:0 auto " >
-                                        <!-- begin of 1 set -->
-                                        <p:row>
-                                            <p:column  colspan="2" rowspan="2">
-                                                #{updatePortfolioManagedBean.p.name_US_STOCKS}
-                                            </p:column>
-
-                                            <p:column  colspan="4" style="text-align: right">
-                                                Current Value/Share
-                                            </p:column>
-                                            <p:column  colspan="2">
-                                                <h:inputText value="#{updatePortfolioManagedBean.p.currentValuePerShare_US_STOCKS}"/>
-                                            </p:column>
-
-                                        </p:row>
-
-                                        <p:row>
-                                            <p:column  colspan="4" style="text-align: right">
-                                                Buying # of Share
-                                            </p:column>
-                                            <p:column  colspan="2">
-                                                <h:inputText value="#{updatePortfolioManagedBean.p.currentNumberOfShare_US_STOCKS}"/>
-                                            </p:column>
-                                        </p:row>
-                                        <!-- end of 1 set -->
-
-                                        <!-- begin of 1 set -->
-                                        <p:row>
-                                            <p:column  colspan="2" rowspan="2">
-                                                #{updatePortfolioManagedBean.p.name_FOREIGN_DEVELOPED_STOCKS}
-                                            </p:column>
-
-                                            <p:column  colspan="4" style="text-align: right">
-                                                Current Value/Share
-                                            </p:column>
-                                            <p:column  colspan="2">
-                                                <h:inputText value="#{updatePortfolioManagedBean.p.currentValuePerShare_FOREIGN_DEVELOPED_STOCKS}"/>
-                                            </p:column>
-
-                                        </p:row>
-
-                                        <p:row>
-                                            <p:column  colspan="4" style="text-align: right">
-                                                Buying # of Share
-                                            </p:column>
-                                            <p:column  colspan="2">
-                                                <h:inputText value="#{updatePortfolioManagedBean.p.currentNumberOfShare_FOREIGN_DEVELOPED_STOCKS}"/>
-                                            </p:column>
-                                        </p:row>
-                                        <!-- end of 1 set -->
-
-                                        <!-- begin of 1 set -->
-                                        <p:row>
-                                            <p:column  colspan="2" rowspan="2">
-                                                #{updatePortfolioManagedBean.p.name_EMERGING_MARKET_STOCKS}
-                                            </p:column>
-
-                                            <p:column  colspan="4" style="text-align: right">
-                                                Current Value/Share
-                                            </p:column>
-                                            <p:column  colspan="2">
-                                                <h:inputText value="#{updatePortfolioManagedBean.p.currentValuePerShare_EMERGING_MARKET_STOCKS}"/>
-                                            </p:column>
-
-                                        </p:row>
-
-                                        <p:row>
-                                            <p:column  colspan="4" style="text-align: right">
-                                                Buying # of Share
-                                            </p:column>
-                                            <p:column  colspan="2">
-                                                <h:inputText value="#{updatePortfolioManagedBean.p.currentNumberOfShare_EMERGING_MARKET_STOCKS}"/>
-                                            </p:column>
-                                        </p:row>
-                                        <!-- end of 1 set -->
-
-                                    </p:panelGrid>
-                                    <br />
-
-                                    <p:commandButton value="UPDATE" action="#{updatePortfolioManagedBean.updateCurrentPortfolio()}" oncomplete="setTimeout(function() { $('.ui-messages-info.ui-corner-all').slideUp(); },  3000);" />
-                                </p:tab>
-                            </p:tabView>
-                        </c:if>
                     </p:panel>
+                        <c:if test="#{updatePortfolioManagedBean.p != null}">
+                            <br/>
+                            <p:selectOneButton id="updateType" value="#{updatePortfolioManagedBean.updateType}">
+                                <f:selectItem itemLabel="Update Buying Value" itemValue="#{updatePortfolioManagedBean.updateBuy}" />
+                                <f:selectItem itemLabel="Update Current Value" itemValue="#{updatePortfolioManagedBean.updateCurrent}" />
+                                <f:ajax render="@form" />
+                            </p:selectOneButton>
+                            <br/><br/><br/>
+                    
+                            <p:panel header="Update Buying Value" rendered="#{updatePortfolioManagedBean.updateType == updatePortfolioManagedBean.updateBuy}">
+                            <p:dataTable var="fi" value="#{updatePortfolioManagedBean.p.executedInvestmentPlan.suggestedFinancialInstruments}">
+                                        <p:columnGroup type="header">
+                                            <p:row>
+                                                <p:column rowspan="3" headerText="Financial Instrument" style="width:320px;"/>
+                                                <p:column colspan="4" headerText="Buying Information" />
+                                            </p:row>
+                                            <p:row>
+                                                <p:column colspan="2" headerText="Total Investment" />
+                                                <p:column colspan="2" headerText="S$#{updatePortfolioManagedBean.p.executedInvestmentPlan.amountOfInvestment}" />
+                                            </p:row>
+                                            <p:row>
+                                                <p:column headerText="Number of Shares" />
+                                                <p:column headerText="Buying Value per Share" />
+                                                <p:column headerText="Weight" />
+                                                <p:column headerText="Subtotal" />
+                                            </p:row>
+                                        </p:columnGroup>
+                                        
+                                        <p:column rendered="#{fi.weight != 0.0}">
+                                            <h:outputText value="#{fi.fi.name}"/> 
+                                        </p:column>
+                                        <p:column rendered="#{fi.weight != 0.0}">
+                                            <h:outputText id="numberofshare" value="#{fi.buyingNumberOfShare}" /> 
+                                        </p:column>
+                                        <p:column rendered="#{fi.weight != 0.0 and updatePortfolioManagedBean.p.status != 'BOUGHT'}">
+                                             <h:inputText value="#{fi.buyingValuePerShare}" onchange="#{updatePortfolioManagedBean.calculate()}">
+                                                <p:ajax update="@form" process="@this"/>
+                                                <f:convertNumber type="currency" currencySymbol="S$" />
+                                            </h:inputText>
+                                        </p:column>
+                                        <p:column rendered="#{fi.weight != 0.0 and updatePortfolioManagedBean.p.status == 'BOUGHT'}">
+                                             <h:outputText value="#{fi.buyingValuePerShare}">
+                                                <f:convertNumber type="currency" currencySymbol="S$" />
+                                            </h:outputText>
+                                        </p:column>
+                                        <p:column rendered="#{fi.weight != 0.0}">
+                                            <h:outputText value="#{fi.weight*100}%" /> 
+                                        </p:column>
+                                        <p:column rendered="#{fi.weight != 0.0}">
+                                            <h:outputText value="#{fi.buyingValuePerShare * fi.buyingNumberOfShare}">
+                                                <f:convertNumber type="currency" currencySymbol="S$" />
+                                            </h:outputText>
+                                        </p:column>                    
+
+                                        <p:columnGroup type="footer">
+                                            <p:row>
+                                                <p:column colspan="3" style="text-align:right" footerText="Totals:" />
+                                                <p:column footerText="100%" />
+
+                                                <p:column footerText="$#{updatePortfolioManagedBean.p.totalBuyingValue}" />
+                                            </p:row>
+                                        </p:columnGroup>
+                                    </p:dataTable>
+                                    <br />
+                                    <p:messages id="messages1" showDetail="true" autoUpdate="true" closable="true"/>
+                                    
+                                    <p:commandButton value="Reset" action="#{updatePortfolioManagedBean.reset()}" update="@form" oncomplete="setTimeout(function() { $('.ui-messages-info.ui-corner-all').slideUp(); },  3000);"/>
+                                    <p:commandButton value="Calculate" action="#{updatePortfolioManagedBean.calculate()}" update="@form" oncomplete="setTimeout(function() { $('.ui-messages-info.ui-corner-all').slideUp(); },  3000);"/>
+                                    <p:commandButton value="Update" action="#{updatePortfolioManagedBean.submitUpdateBuyingPortfolio()}" update="@form" oncomplete="setTimeout(function() { $('.ui-messages-info.ui-corner-all').slideUp(); },  3000);"/>
+                                </p:panel>
+                                <p:panel header="Update Current Value" rendered="#{updatePortfolioManagedBean.updateType == updatePortfolioManagedBean.updateCurrent}">    
+                                <p:dataTable var="fi" value="#{updatePortfolioManagedBean.p.executedInvestmentPlan.suggestedFinancialInstruments}" >
+                                        <p:columnGroup type="header">
+                                            <p:row>
+                                                <p:column rowspan="3" headerText="Financial Instrument" style="width:320px;"/>
+                                                <p:column colspan="6" headerText="Buying Information" />
+                                            </p:row>
+                                            <p:row>
+                                                <p:column colspan="3" headerText="Total Investment" />
+                                                <p:column colspan="3" headerText="S$#{updatePortfolioManagedBean.p.executedInvestmentPlan.amountOfInvestment}" />
+                                            </p:row>
+                                            <p:row>
+                                                <p:column headerText="Number of Shares" />
+                                                <p:column headerText="Buying Value per Share" />
+                                                <p:column headerText="Buying Subtotal" />
+                                                <p:column headerText="Current Value per Share" />
+                                                <p:column headerText="Current Subtotal" />
+                                                <p:column headerText="Difference" />
+                                            </p:row>
+                                        </p:columnGroup>
+                                        
+                                        <p:column rendered="#{fi.weight != 0.0}">
+                                            <h:outputText value="#{fi.fi.name}"/> 
+                                        </p:column>
+                                        <p:column rendered="#{fi.weight != 0.0}">
+                                            <h:outputText id="numberofshare" value="#{fi.buyingNumberOfShare}" /> 
+                                        </p:column>
+                                        <p:column rendered="#{fi.weight != 0.0}">
+                                             <h:outputText value="#{fi.buyingValuePerShare}">
+                                                <f:convertNumber type="currency" currencySymbol="S$" />
+                                            </h:outputText>
+                                        </p:column>
+                                        <p:column rendered="#{fi.weight != 0.0}">
+                                            <h:outputText value="#{fi.buyingValuePerShare * fi.buyingNumberOfShare}">
+                                                <f:convertNumber type="currency" currencySymbol="S$" />
+                                            </h:outputText>
+                                        </p:column> 
+                                        <p:column rendered="#{fi.weight != 0.0}">
+                                            <h:inputText value="#{fi.currentValuePerShare}">
+                                                <p:ajax update="@form" process="@this"/>
+                                                <f:convertNumber type="currency" currencySymbol="S$" />
+                                            </h:inputText>
+                                        </p:column>
+                                        <p:column rendered="#{fi.weight != 0.0}">
+                                            <h:outputText value="#{fi.currentValuePerShare * fi.buyingNumberOfShare}">
+                                                <f:convertNumber type="currency" currencySymbol="S$" />
+                                            </h:outputText>
+                                        </p:column> 
+                                         <p:column rendered="#{fi.weight != 0.0}">
+                                             <h:outputText value="#{(fi.currentValuePerShare/fi.buyingValuePerShare *100).shortValue() - 100}%" /> 
+                                        </p:column>                    
+
+                                        <p:columnGroup type="footer">
+                                            <p:row>
+                                                <p:column colspan="3" style="text-align:right" footerText="Totals:" /> 
+
+                                                <p:column footerText="$#{updatePortfolioManagedBean.p.totalBuyingValue}" />
+                                                <p:column />
+                                                <p:column footerText="$#{updatePortfolioManagedBean.p.totalCurrentValue}" />
+                                                <p:column footerText="#{(updatePortfolioManagedBean.p.totalCurrentValue/updatePortfolioManagedBean.p.totalBuyingValue*100).shortValue()-100}%"/>
+                                            </p:row>
+                                        </p:columnGroup>
+                                    </p:dataTable>
+                                    <br />
+                                    <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true"/>
+                                    
+                                    <p:commandButton value="Reset" action="#{updatePortfolioManagedBean.resetCurrentValue()}" update="@form" oncomplete="setTimeout(function() { $('.ui-messages-info.ui-corner-all').slideUp(); },  3000);"/>
+                                    <p:commandButton value="Update" action="#{updatePortfolioManagedBean.updateCurrentPortfolio()}" update="@form" oncomplete="setTimeout(function() { $('.ui-messages-info.ui-corner-all').slideUp(); },  3000);"/>
+                                </p:panel>
+                        </c:if>
                 </h:form>
             </div>
 

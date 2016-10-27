@@ -10,6 +10,7 @@ import ejb.session.common.NewCustomerSessionBeanLocal;
 import ejb.session.dams.CustomerDepositSessionBeanLocal;
 import ejb.session.dams.DepositProductSessionBeanLocal;
 import ejb.session.loan.LoanAccountSessionBeanLocal;
+import ejb.session.loan.LoanPaymentSessionBeanLocal;
 import ejb.session.loan.LoanProductSessionBeanLocal;
 import ejb.session.mainaccount.MainAccountSessionBeanLocal;
 import entity.customer.Customer;
@@ -45,6 +46,8 @@ public class CreateLoanAccountManagedBean implements Serializable {
     private LoanProductSessionBeanLocal loanProductBean;
     @EJB
     private LoanAccountSessionBeanLocal loanAccountBean;
+    @EJB
+    private LoanPaymentSessionBeanLocal loanPaymentSessionBean;
     @EJB
     private LoginSessionBeanLocal loginBean;
     @EJB 
@@ -96,6 +99,8 @@ public class CreateLoanAccountManagedBean implements Serializable {
         la.setMaturityDate(DateUtils.addYearsToDate(getPaymentStartDate(), la.getLoanProduct().getTenure()));
         la.setTenure(la.getLoanProduct().getTenure());
         la.setPrincipal(getPrincipalAmount());
+        la.setOutstandingPrincipal(principalAmount);
+        la.setMonthlyInstallment(loanPaymentSessionBean.calculateMonthlyInstallment(la));
         la.setLoanAccountStatus(EnumUtils.LoanAccountStatus.PENDING);
         
         LoanAccount result = loanAccountBean.createLoanAccount(la);

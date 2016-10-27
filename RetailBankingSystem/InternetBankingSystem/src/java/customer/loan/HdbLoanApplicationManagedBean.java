@@ -72,12 +72,16 @@ public class HdbLoanApplicationManagedBean implements Serializable {
         hdbLoanProducts = loanProductBean.getAllHDBLoanProduct();
     }
     
-    public void calculateHDB(){
+    public void checkAge(){
         if (getAge() < 21) {
             MessageUtils.displayError(ConstantUtils.NOT_ENOUGH_AGE);
-            return;
+        } else {
+            JSUtils.callJSMethod("PF('myWizard').next();");
         }
-        
+    }
+    
+    public void calculateHDB(){
+   
         if (getMonthlyIncome() < 1500) {
             MessageUtils.displayError(ConstantUtils.NOT_ENOUGH_INCOME_1500);
             return;
@@ -92,6 +96,17 @@ public class HdbLoanApplicationManagedBean implements Serializable {
     public void applyHDBLoan() {
         if (loanAmount > maxLoanAmount) {
             MessageUtils.displayError(ConstantUtils.NOT_ENOUGH_LOAN_LIMIT);
+            return;
+        }
+        
+        if(numOfHousingLoan==0 && loanAmount>=0.8*marketValue){
+            MessageUtils.displayError(ConstantUtils.LoanToValue_NOT_RIGHT);
+            return;
+        } else if (numOfHousingLoan==1 && loanAmount>=0.5*marketValue){
+            MessageUtils.displayError(ConstantUtils.LoanToValue_NOT_RIGHT);
+            return;
+        } else if (numOfHousingLoan>=2 && loanAmount>=0.4*marketValue){
+            MessageUtils.displayError(ConstantUtils.LoanToValue_NOT_RIGHT);
             return;
         }
         

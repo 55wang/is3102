@@ -19,6 +19,7 @@ import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import server.utilities.EnumUtils;
+import server.utilities.EnumUtils.LoanAccountStatus;
 import utils.MessageUtils;
 import utils.SessionUtils;
 
@@ -47,7 +48,7 @@ public class ApproveLoanAccountManagedBean implements Serializable {
     
     @PostConstruct
     public void init() {
-        myLoanAccounts = loanAccountBean.getLoanAccountByStaffUsername(SessionUtils.getStaffUsername());
+        myLoanAccounts = loanAccountBean.getLoanAccountByStaffUsernameAndStatus(SessionUtils.getStaffUsername(), LoanAccountStatus.PENDING);
     }
 
     public void approveLoanAccount(LoanAccount la) {
@@ -62,6 +63,20 @@ public class ApproveLoanAccountManagedBean implements Serializable {
         }
         // inform customer by email
         emailBean.sendLoanApplicationApprovalNotice(la.getMainAccount().getCustomer().getEmail());
+        
+        MessageUtils.displayInfo("Application Approved!");
+        myLoanAccounts.remove(la);
+    }
+    
+    public void rejectLoanAccount(LoanAccount la) {
+        // change status
+        la.setLoanAccountStatus(EnumUtils.LoanAccountStatus.REJECTED);
+        la = loanAccountBean.updateLoanAccount(la);
+        // inform customer by email
+        emailBean.sendLoanApplicationRejectNotice(la.getMainAccount().getCustomer().getEmail());
+        
+        MessageUtils.displayInfo("Application Rejected!");
+        myLoanAccounts.remove(la);
     }
     
     public void calculateCreditScore(LoanAccount la) {

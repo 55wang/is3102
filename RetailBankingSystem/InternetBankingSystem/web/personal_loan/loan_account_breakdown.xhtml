@@ -21,7 +21,8 @@
             <em:customerNavBar context="personal" personalPage="home" ></em:customerNavBar>
             <div class="customer_main_container">
                 <h:form id="mainForm">
-                    <p:panel header="Transactions for account #{loanAccountBreakdownManagedBean.accountId}">
+                    <p:panel header="Breakdown for account #{loanAccountBreakdownManagedBean.accountId}">
+                        <h2>Monthly installment is #{loanAccountBreakdownManagedBean.loanAccount.monthlyInstallment}</h2>
                         <p:messages id="messagesStatus" redisplay="false" >
 
                             <p:dataTable value="#{loanAccountBreakdownManagedBean.breakdowns}" var="breakdown">

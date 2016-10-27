@@ -1737,10 +1737,13 @@ public class EnumUtils {
     public enum LoanAccountStatus {
 
         NEW("NEW"),
+        INPROGRESS("INPROGRESS"),
         PENDING("PENDING"),
         APPROVED("APPROVED"),
         REJECTED("REJECTED"),
+        CLOSED("CLOSED"),
         SUSPENDED("SUSPENDED");
+        
         private String value;
 
         LoanAccountStatus(String value) {
@@ -1824,6 +1827,36 @@ public class EnumUtils {
 
         public static LoanRepaymentType getEnum(String value) {
             for (LoanRepaymentType v : values()) {
+                if (v.getValue().equalsIgnoreCase(value)) {
+                    return v;
+                }
+            }
+            throw new IllegalArgumentException();
+        }
+    }
+    
+    public enum PortfolioStatus {
+
+        PENDING("PENDING"),
+        BOUGHT("BOUGHT");
+
+        private String value;
+
+        PortfolioStatus(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        @Override
+        public String toString() {
+            return this.getValue();
+        }
+
+        public static PortfolioStatus getEnum(String value) {
+            for (PortfolioStatus v : values()) {
                 if (v.getValue().equalsIgnoreCase(value)) {
                     return v;
                 }

@@ -20,40 +20,49 @@
                 <h:form id="mainForm">
 
                     <p:panel header="#{customerHomeManagedBean.customer.fullName}'s Portfolio Detail">
+                        <h:panelGrid columns="2" columnClasses="left,right" style="width:100%">
+                            <p:layoutUnit style="width:100%" position="left">
+                                <h2>General Information</h2>
+                                <p:panelGrid columns="2">
+                                    <h:outputText value="Total Deposit Amount: " />
+                                    <h:outputText value="#{portfolioManagedBean.getTotalDepositAmount(portfolioManagedBean.customer.mainAccount)}" />
 
-                        <h:panelGrid columns="2" cellpadding="5">
-                            <h:outputText value="Total Deposit Amount: " />
-                            <h:outputText value="#{portfolioManagedBean.getTotalDepositAmount(portfolioManagedBean.customer.mainAccount)}" />
+                                    <h:outputText value="Total Loan Amount: " />
+                                    <h:outputText value="#{portfolioManagedBean.getTotalLoanAmount(portfolioManagedBean.customer.mainAccount)}" />
 
-                            <h:outputText value="Total Loan Amount: " />
-                            <h:outputText value="#{portfolioManagedBean.getTotalLoanAmount(portfolioManagedBean.customer.mainAccount)}" />
-
-                            <h:outputText value="Total Credit Card Outstanding Amount: " />
-                            <h:outputText value="#{portfolioManagedBean.getTotalCreditAmount(portfolioManagedBean.customer.mainAccount)}" />
-                            <p:column colspan="2">
-                                <p:dataTable value="#{portfolioManagedBean.portfolios}" var="p" >
+                                    <h:outputText value="Total Credit Card Outstanding Amount: " />
+                                    <h:outputText value="#{portfolioManagedBean.getTotalCreditAmount(portfolioManagedBean.customer.mainAccount)}" />
+                                </p:panelGrid>
+                                
+                                <p:separator></p:separator>
+                                
+                                <h2>Investment Information</h2>
+                                <p:dataTable value="#{portfolioManagedBean.portfolios}" var="p">
                                     <p:column headerText="Id">
                                         <h:outputText value="#{p.id}" />
                                     </p:column>
-                                    <p:column headerText="Portfolio Value">
+                                    <p:column headerText="Investment Value">
                                         <h:outputText value="#{p.totalCurrentValue}" />
                                     </p:column>
                                     <p:column headerText="% Change">
                                         <h:outputText value="#{p.percentageChange - 100}%"/>
                                     </p:column>
                                 </p:dataTable>
-                            </p:column>
-                            <br />
-
-                            <h:outputText value="Overall Total Portfolio Value: " />
-                            <h:outputText value="#{portfolioManagedBean.getTotalPortfolioCurrentValue(portfolioManagedBean.customer.mainAccount)}" />
-
-                            <h:outputText value="Portfolio Total Percentage Change: " />
-                            <h:outputText value="#{portfolioManagedBean.getPortfolioPercentageChange(portfolioManagedBean.customer.mainAccount) - 100}" />
-                            <p:chart type="pie" model="#{portfolioManagedBean.pieModel2}" style="width:400px;height:300px" />
-                            <br />
-                            <p:chart type="line" model="#{portfolioManagedBean.lineModel1}" style="height:300px;"/>
-                            <br />
+                                <br/>
+                                
+                                <h:outputText value="Overall Total Investment Value: " />
+                                <h:outputText value="#{portfolioManagedBean.getTotalPortfolioCurrentValue(portfolioManagedBean.customer.mainAccount)}" />
+                                <br/><br/>
+                                <h:outputText value="Investment Total Percentage Change: " />
+                                <h:outputText value="#{portfolioManagedBean.getPortfolioPercentageChange(portfolioManagedBean.customer.mainAccount) - 100}" />
+                                
+                            </p:layoutUnit>
+                            <p:layoutUnit style="width:50%" position="right">
+                                <p:chart type="pie" model="#{portfolioManagedBean.pieModel}" style="width:400px;height:350px" />
+                            </p:layoutUnit>
+                        </h:panelGrid>
+                        <p:separator></p:separator>
+                        <h:panelGrid columns="2">
                             <h:outputText value="Financial Health: " />
                             <h:outputText value="#{portfolioManagedBean.calcFinancialHealthScore()}" />
                             <h:outputText value="Financial Health Level: " />
@@ -78,6 +87,7 @@
                             </table>
 
                         </h:panelGrid>
+                        <p:chart type="line" model="#{portfolioManagedBean.lineModel}" style="height:300px;"/>
                         <p:messages id="messagesStatus" redisplay="false"></p:messages>
                     </p:panel>
                 </h:form>

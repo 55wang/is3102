@@ -1,0 +1,50 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:em="http://xmlns.jcp.org/jsf/composite/emcomp"
+      xmlns:p="http://primefaces.org/ui">
+    <!--shift + ctrl + F, format-->
+    <f:view>
+        <h:head>
+            <title>Merlion Bank</title>
+            <h:outputStylesheet library="css" name="reset.css"/>
+            <h:outputStylesheet library="css" name="theme.css"/>
+        </h:head>
+        <h:body>
+            <em:staffNavBar context="loan"></em:staffNavBar>
+            <em:staffSideBar top="loan" side="updateSiborRate"></em:staffSideBar>
+            <em:cssImport></em:cssImport>
+
+            <div class="container">                
+                <h:form id="mainForm">
+                    <p:tab id="p-info" title="Update 3-month SIBOR" >
+                        <p:panel>
+                            <p:messages id="msgs1"/>
+                            <h:panelGrid columns="2" cellpadding="5px" columnClasses="label, value">
+                                <h:outputText value="Previous 3-month SIBOR: " />
+                                <h:outputText value="#{updateRateManagedBean.preSibor}" styleClass="outputLabel"/>
+                                    
+                               
+                                <h:outputText value="Current 3-month SIBOR: " />
+                                <p:inputText value="#{updateRateManagedBean.rate}" required="true" requiredMessage="New SIBOR is required." />
+                                                           
+                                </h:panelGrid>
+
+                                <div class="register-form-button">
+                    
+                                    <p:commandButton value="Update" actionListener="#{updateRateManagedBean.updateSibor}" update="msgs1" icon="ui-icon-arrowrefresh-1-w"/>
+                                </div>
+                            </p:panel>
+                        </p:tab>
+         
+                </h:form>
+            </div>
+
+        </h:body>
+    </f:view>
+
+
+</html>
+

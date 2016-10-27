@@ -26,6 +26,9 @@ public class FinancialInstrumentAndWeight implements Serializable {
     private Long id;
     private FinancialInstrument fi;
     private Double weight;
+    private Double currentValuePerShare = 0.0;
+    private Double buyingValuePerShare = 0.0;
+    private Integer buyingNumberOfShare = 0;
 
     public Long getId() {
         return id;
@@ -74,5 +77,29 @@ public class FinancialInstrumentAndWeight implements Serializable {
 
     public void setWeight(Double weight) {
         this.weight = weight;
+    }
+
+    public Double getCurrentValuePerShare() {
+        return currentValuePerShare;
+    }
+
+    public void setCurrentValuePerShare(Double currentValuePerShare) {
+        this.currentValuePerShare = currentValuePerShare;
+    }
+
+    public Double getBuyingValuePerShare() {
+        return buyingValuePerShare;
+    }
+
+    public void setBuyingValuePerShare(Double buyingValuePerShare) {
+        this.buyingValuePerShare = buyingValuePerShare;
+    }
+
+    public Integer getBuyingNumberOfShare() {
+        return buyingNumberOfShare;
+    }
+
+    public void setBuyingNumberOfShare(Integer buyingNumberOfShare) {
+        this.buyingNumberOfShare = buyingNumberOfShare;
     }
 }

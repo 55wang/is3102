@@ -41,8 +41,9 @@ public class CommonUtils {
         } else if (systemUser.equals("qiuxiaqing")) {
             System.out.println("qiuxiaqing");
             prependingPath = "/Users/qiuxiaqing/Documents/is3102/RCode/";
-        } else if (systemUser.equals("yifan")) {
-
+        } else if (systemUser.equals("ChenYifan")) {
+            System.out.println("ChenYifan");
+            prependingPath = "/Users/lemon/Desktop/is3102/RCode/";
         }
         return prependingPath;
     }

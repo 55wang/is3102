@@ -1,0 +1,47 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:em="http://xmlns.jcp.org/jsf/composite/emcomp"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <!--shift + ctrl + F, format-->
+    <f:view>
+        <f:metadata>
+            <f:viewParam name="accountId" value="#{loanAdjustmentRequestManagedBean.accountId}" />
+            <f:viewAction action="#{loanAdjustmentRequestManagedBean.init()}"></f:viewAction>
+        </f:metadata>
+        
+        <h:head>
+            <title>Your Debit Card Summary</title>
+            <em:cssImport></em:cssImport>
+        </h:head>
+        <h:body>
+
+            <em:customerHeader context="personal" userName="#{customerHomeManagedBean.customer.firstname }"></em:customerHeader>
+            <em:customerNavBar context="personal" personalPage="home" ></em:customerNavBar>
+            <div class="customer_main_container">
+                <h:form id="mainForm">
+                    <p:panel header="Loan Accounts account number #{loanAdjustmentRequestManagedBean.accountId}">
+                        <p:messages id="messagesStatus" redisplay="false" >
+                            <h:panelGrid columns="2" cellpadding="5">
+                                <h:outputText value="Previous Tenure:" />
+                                <h:outputText value="#{loanAdjustmentRequestManagedBean.loanAccount.tenure}" />
+                                <h:outputText value="Request Tenure:" />
+                                <p:inputText value="#{loanAdjustmentRequestManagedBean.adjustmentRequest.tenure}" />
+                                
+                                <p:commandButton value="Request Tenure Change" actionListener="#{loanAdjustmentRequestManagedBean.requestTenureChange()}" update="@form" />
+
+                            </h:panelGrid>
+                        </p:messages>
+                    </p:panel>
+                </h:form>
+            </div>
+            <em:customerFooter></em:customerFooter>
+        </h:body>
+    </f:view>
+
+
+</html>
+

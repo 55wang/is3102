@@ -27,6 +27,7 @@ public class LoanAccountBreakdownManagedBean implements Serializable {
     private LoanAccountSessionBeanLocal loanAccountBean;
 
     private String accountId;
+    private LoanAccount loanAccount;
     private List<LoanPaymentBreakdown> breakdowns = new ArrayList<>();
     /**
      * Creates a new instance of LoanAccountBreakdownManagedBean
@@ -36,8 +37,8 @@ public class LoanAccountBreakdownManagedBean implements Serializable {
     
     public void init() {
         System.out.println("Account id is: " + getAccountId());
-        
         breakdowns = loanAccountBean.getFuturePaymentBreakdownsByLoanAcountNumber(getAccountId());
+        setLoanAccount(loanAccountBean.getLoanAccountByAccountNumber(getAccountId()));
     }
 
     /**
@@ -66,6 +67,20 @@ public class LoanAccountBreakdownManagedBean implements Serializable {
      */
     public void setBreakdowns(List<LoanPaymentBreakdown> breakdowns) {
         this.breakdowns = breakdowns;
+    }
+
+    /**
+     * @return the loanAccount
+     */
+    public LoanAccount getLoanAccount() {
+        return loanAccount;
+    }
+
+    /**
+     * @param loanAccount the loanAccount to set
+     */
+    public void setLoanAccount(LoanAccount loanAccount) {
+        this.loanAccount = loanAccount;
     }
     
 }
