@@ -7,6 +7,9 @@ package ejb.session.common;
 
 import entity.customer.CustomerCase;
 import entity.customer.MainAccount;
+import entity.loan.LoanAccount;
+import entity.loan.LoanApplication;
+import java.util.Date;
 import javax.ejb.Local;
 
 /**
@@ -35,6 +38,9 @@ public interface EmailServiceSessionBeanLocal {
     public void sendLoanApplicationApprovalNotice(String recipient);
     public void sendLoanApplicationRejectNotice(String recipient);
     public void sendCreditCardApplicationNotice(String recipient);
-
-
+    public Boolean sendLoanApplicationNoticeToStaff(LoanApplication lp);
+    public Boolean sendLoanApplicationNoticeToCustomer(String recipient);
+    public Boolean sendPaymentReminderEmailToCustomer(String recipient, String loanAccountNumber, Date paymentDate);
+    public Boolean sendLatePaymentReminderEmailToCustomer(String recipient, String loanAccountNumber, Date paymentDate);
+    public Boolean sendBadLoanNoticeToLoanOfficer(LoanAccount loanAccount);
 }

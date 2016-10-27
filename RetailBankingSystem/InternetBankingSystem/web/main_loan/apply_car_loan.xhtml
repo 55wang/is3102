@@ -69,8 +69,13 @@
                                     <p:inputText value="#{carLoanApplicationManagedBean.monthlyIncome}" required="true" requiredMessage="Monthly income is required." />
                                     
                                     <h:outputText value="Open Market Value: " />
-                                    <p:inputText value="#{carLoanApplicationManagedBean.carOpenMarketValue}" required="true" requiredMessage="Market Value is required." />
+                                    <p:inputText value="#{carLoanApplicationManagedBean.carOpenMarketValue}" required="true" requiredMessage="Market Value is required." onchange="submit()" valueChangeListener="#{carLoanApplicationManagedBean.changeLTV}"/>
 
+                                    <h:outputText value="Maximum Loan-To-Value Ratio: " />
+                                    <h:outputText id="LTV" value="#{carLoanApplicationManagedBean.LTV}" styleClass="outputLabel">
+                                        <f:convertNumber type="percent" minFractionDigits="4"/>
+                                    </h:outputText>
+                                    
                                     <h:outputText value="Other financial commitments (S$): " />
                                     <p:inputText value="#{carLoanApplicationManagedBean.otherLoan}" required="true" requiredMessage="Other financial commitment is required." />
 

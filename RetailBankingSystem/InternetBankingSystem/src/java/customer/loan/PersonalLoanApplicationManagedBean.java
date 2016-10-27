@@ -5,6 +5,7 @@
  */
 package customer.loan;
 
+import ejb.session.common.EmailServiceSessionBeanLocal;
 import ejb.session.loan.LoanAccountSessionBeanLocal;
 import ejb.session.loan.LoanCalculationSessionBeanLocal;
 import ejb.session.loan.LoanProductSessionBeanLocal;
@@ -16,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.event.ValueChangeEvent;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import server.utilities.ConstantUtils;
@@ -30,7 +32,9 @@ import utils.MessageUtils;
 @Named(value = "personalLoanApplicationManagedBean")
 @ViewScoped
 public class PersonalLoanApplicationManagedBean implements Serializable {
-
+    
+    @EJB
+    private EmailServiceSessionBeanLocal emailServiceSessionBean;
     @EJB
     private LoanCalculationSessionBeanLocal calculator;
     @EJB
@@ -58,6 +62,7 @@ public class PersonalLoanApplicationManagedBean implements Serializable {
     private Long personalTenureProductId;
     private Double personalLoanAmt = 0.0;
     private Double personalLoanMonthlyInstalment;
+    private String upperLimit;
     /**
      * Creates a new instance of PersonalLoanApplicationManagedBean
      */
@@ -80,6 +85,13 @@ public class PersonalLoanApplicationManagedBean implements Serializable {
         } else {
             JSUtils.callJSMethod("PF('myWizard').next();");
         }  
+    }
+    
+     public void changeLoanUpperLimit(ValueChangeEvent e){
+        if((Double)e.getNewValue()>=10000.0)
+            setUpperLimit("10x monthly income");
+        else if((Double)e.getNewValue()<10000.0 && (Double)e.getNewValue()>=2000.0)
+            setUpperLimit("4x monthly income");
     }
     
     public void calculatePersonal(){
@@ -117,6 +129,8 @@ public class PersonalLoanApplicationManagedBean implements Serializable {
         LoanApplication result = loanAccountBean.createLoanApplication(newApplication);
         if (result != null) {
             setApplicationNumber(result.getId());
+            emailServiceSessionBean.sendLoanApplicationNoticeToStaff(result);
+            emailServiceSessionBean.sendLoanApplicationNoticeToCustomer(result.getEmail());
             JSUtils.callJSMethod("PF('myWizard').next()");
         }
         
@@ -347,4 +361,14 @@ public class PersonalLoanApplicationManagedBean implements Serializable {
     public void setApplicationNumber(Long applicationNumber) {
         this.applicationNumber = applicationNumber;
     }
+
+    public String getUpperLimit() {
+        return upperLimit;
+    }
+
+    public void setUpperLimit(String upperLimit) {
+        this.upperLimit = upperLimit;
+    }
+    
+    
 }

@@ -16,6 +16,7 @@ import entity.loan.LoanPaymentBreakdown;
 import entity.loan.LoanRepaymentRecord;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
@@ -295,6 +296,24 @@ public class LoanPaymentSessionBean implements LoanPaymentSessionBeanLocal {
             return "SUCCESS";
         }
     }
+    
+    
+    @Override
+    public Date getNextPaymentDateByLoanAccountNumber (String loanAccountNumber){
+       
+        LoanPaymentBreakdown breakdown = loanAccountBean.getFutureNearestPaymentBreakdownsByLoanAcountNumber(loanAccountNumber);
+        return breakdown.getSchedulePaymentDate();
+    }
+    
+    @Override
+    public Date getPreviousPaymentDateByLoanAccountNumber (String loanAccountNumber){
+        //for Demo purpose, retrieve from future payment date but not payment record
+        LoanPaymentBreakdown breakdown = loanAccountBean.getFutureNearestPaymentBreakdownsByLoanAcountNumber(loanAccountNumber);
+        Date nextPaymentDate = breakdown.getSchedulePaymentDate();
+        Calendar cal = DateUtils.toCalendar(nextPaymentDate);
+        cal.add(Calendar.MONTH, -1);
+        return cal.getTime();
+    }
 
     private LoanAccount loanAccountLumsumPayment(String loanAccountNumber, Double amount) {
         LoanAccount loanAccount = loanAccountBean.getLoanAccountByAccountNumber(loanAccountNumber);
@@ -332,4 +351,7 @@ public class LoanPaymentSessionBean implements LoanPaymentSessionBeanLocal {
         em.merge(loanAccount);
         return loanAccount;
     }
+    
+
+    
 }

@@ -5,6 +5,7 @@
  */
 package customer.loan;
 
+import ejb.session.common.EmailServiceSessionBeanLocal;
 import ejb.session.loan.LoanAccountSessionBeanLocal;
 import ejb.session.loan.LoanCalculationSessionBeanLocal;
 import ejb.session.loan.LoanProductSessionBeanLocal;
@@ -30,7 +31,9 @@ import utils.MessageUtils;
 @Named(value = "ppLoanApplicationManagedBean")
 @ViewScoped
 public class PpLoanApplicationManagedBean implements Serializable {
-
+    
+    @EJB
+    private EmailServiceSessionBeanLocal emailServiceSessionBean;
     @EJB
     private LoanCalculationSessionBeanLocal calculator;
     @EJB
@@ -128,6 +131,8 @@ public class PpLoanApplicationManagedBean implements Serializable {
         LoanApplication result = loanAccountBean.createLoanApplication(newApplication);
         if (result != null) {
             setApplicationNumber(result.getId());
+            emailServiceSessionBean.sendLoanApplicationNoticeToStaff(result);
+            emailServiceSessionBean.sendLoanApplicationNoticeToCustomer(result.getEmail());
             JSUtils.callJSMethod("PF('myWizard').next()");
         }
         

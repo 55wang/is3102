@@ -102,7 +102,7 @@ public class DateUtils {
         calendar.set(Calendar.SECOND, 0);
         calendar.set(Calendar.MILLISECOND, 0);
     }
-    
+
     public static Date setTimeToBeginningOfDay(Date day) {
         Calendar calendar = dateToCalender(day);
         calendar.set(Calendar.HOUR_OF_DAY, 0);
@@ -118,7 +118,7 @@ public class DateUtils {
         calendar.set(Calendar.SECOND, 59);
         calendar.set(Calendar.MILLISECOND, 999);
     }
-    
+
     public static Date setTimeToEndofDay(Date day) {
         Calendar calendar = dateToCalender(day);
         calendar.set(Calendar.HOUR_OF_DAY, 23);
@@ -177,6 +177,17 @@ public class DateUtils {
         }
     }
 
+    //date2-date1
+
+    public static int dayDifferenceWithSign(Date date1, Date date2) {
+        int dayDifference = dayDifference(date1, date2);
+        if (date1.before(date2)) {
+            return dayDifference;
+        } else {
+            return (0 - dayDifference);
+        }
+    }
+
     public static int dayDifference(Calendar dayOne, Calendar dayTwo) {
 
         if (dayOne.get(Calendar.YEAR) == dayTwo.get(Calendar.YEAR)) {
@@ -206,7 +217,7 @@ public class DateUtils {
         cal.setTime(date);
         return cal;
     }
-    
+
     public static Integer getDayNumber(Date date) {
         Calendar cal = GregorianCalendar.getInstance();
         cal.setTime(date);
@@ -229,7 +240,7 @@ public class DateUtils {
         cal.add(Calendar.DATE, days);
         return cal;
     }
-    
+
     public static Date addYearsToDate(Date date, Integer years) {
         Calendar cal = dateToCalender(date);
         cal.add(Calendar.YEAR, years);
@@ -238,6 +249,11 @@ public class DateUtils {
 
     public static String readableDate(Date date) {
         SimpleDateFormat dt1 = new SimpleDateFormat("dd MMM, h:mm a");
+        return dt1.format(date);
+    }
+
+    public static String normalDisplayDate(Date date) {
+        SimpleDateFormat dt1 = new SimpleDateFormat("dd/MM/yyyy");
         return dt1.format(date);
     }
 }
