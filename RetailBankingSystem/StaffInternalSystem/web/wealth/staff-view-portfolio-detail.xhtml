@@ -20,39 +20,119 @@
             </f:metadata>
             <div class="container">
                 <h:form id="mainForm">
-                    <p:panel header="#{updatePortfolioManagedBean.p.wealthManagementSubscriber.mainAccount.customer.fullName}'s Portfolio Detail">
+                    <p:panel header="Portfolio Information">    
+                                <p:dataTable var="fi" value="#{viewPortfolioDetailManagedBean.p.executedInvestmentPlan.suggestedFinancialInstruments}" >
+                                        <p:columnGroup type="header">
+                                            <p:row>
+                                                <p:column rowspan="3" headerText="Financial Instrument" style="width:320px;"/>
+                                                <p:column colspan="6" headerText="Buying Information" />
+                                            </p:row>
+                                            <p:row>
+                                                <p:column colspan="3" headerText="Total Investment" />
+                                                <p:column colspan="3" headerText="S$#{viewPortfolioDetailManagedBean.p.executedInvestmentPlan.amountOfInvestment}" />
+                                            </p:row>
+                                            <p:row>
+                                                <p:column headerText="Number of Shares" />
+                                                <p:column headerText="Buying Value per Share" />
+                                                <p:column headerText="Buying Subtotal" />
+                                                <p:column headerText="Current Value per Share" />
+                                                <p:column headerText="Current Subtotal" />
+                                                <p:column headerText="Current Return" />
+                                            </p:row>
+                                        </p:columnGroup>
+                                        
+                                        <p:column rendered="#{fi.weight != 0.0}">
+                                            <h:outputText value="#{fi.fi.name}"/> 
+                                        </p:column>
+                                        <p:column rendered="#{fi.weight != 0.0}">
+                                            <h:outputText id="numberofshare" value="#{fi.buyingNumberOfShare}" /> 
+                                        </p:column>
+                                        <p:column rendered="#{fi.weight != 0.0}">
+                                             <h:outputText value="#{fi.buyingValuePerShare}">
+                                                <f:convertNumber type="currency" currencySymbol="S$" />
+                                            </h:outputText>
+                                        </p:column>
+                                        <p:column rendered="#{fi.weight != 0.0}">
+                                            <h:outputText value="#{fi.buyingValuePerShare * fi.buyingNumberOfShare}">
+                                                <f:convertNumber type="currency" currencySymbol="S$" />
+                                            </h:outputText>
+                                        </p:column> 
+                                        <p:column rendered="#{fi.weight != 0.0}">
+                                            <h:outputText value="#{fi.currentValuePerShare}">
+                                                <f:convertNumber type="currency" currencySymbol="S$" />
+                                            </h:outputText>
+                                        </p:column>
+                                        <p:column rendered="#{fi.weight != 0.0}">
+                                            <h:outputText value="#{fi.currentValuePerShare * fi.buyingNumberOfShare}">
+                                                <f:convertNumber type="currency" currencySymbol="S$" />
+                                            </h:outputText>
+                                        </p:column> 
+                                         <p:column rendered="#{fi.weight != 0.0}">
+                                             <h:outputText value="#{(fi.currentValuePerShare/fi.buyingValuePerShare *100).shortValue() - 100}%" rendered="#{updatePortfolioManagedBean.p.status == 'BOUGHT'}"/> 
+                                             <h:outputText value="0%" rendered="#{viewPortfolioDetailManagedBean.p.status != 'BOUGHT'}"/> 
+                                        </p:column>                    
 
-                        <h:panelGrid columns="2" cellpadding="5">
-                            <h:outputText value="Total Deposit Amount: " />
-                            <h:outputText value="#{viewPortfolioDetailManagedBean.getTotalDepositAmount(viewPortfolioDetailManagedBean.p.wealthManagementSubscriber.mainAccount)}" />
+                                        <p:columnGroup type="footer">
+                                            <p:row>
+                                                <p:column colspan="3" style="text-align:right" footerText="Totals:" /> 
 
-                            <h:outputText value="Total Loan Amount: " />
-                            <h:outputText value="#{viewPortfolioDetailManagedBean.getTotalDebtAmount(viewPortfolioDetailManagedBean.p.wealthManagementSubscriber.mainAccount)}" />
+                                                <p:column footerText="$#{viewPortfolioDetailManagedBean.p.totalBuyingValue}" />
+                                                <p:column />
+                                                <p:column footerText="$#{viewPortfolioDetailManagedBean.p.totalCurrentValue}" />
+                                                <p:column footerText="#{(viewPortfolioDetailManagedBean.p.totalCurrentValue/updatePortfolioManagedBean.p.totalBuyingValue*100).shortValue()-100}%" rendered="#{viewPortfolioDetailManagedBean.p.status == 'BOUGHT'}"/>
+                                                <p:column footerText="0%" rendered="#{viewPortfolioDetailManagedBean.p.status != 'BOUGHT'}"/>
+                                            </p:row>
+                                        </p:columnGroup>
+                                    </p:dataTable>
+                                    <br />
+                                    <p:commandButton value="Update Portfolio Value" action="#{viewPortfolioDetailManagedBean.view()}" icon="ui-icon-lightbulb" update="@form" style="float: right"/>
+                                    <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true"/>
+                                    
+                                </p:panel>
+                        <p:panel header="Original Investment Plan">
+                            <p:dataTable id="requestList" value="#{viewPortfolioDetailManagedBean.p.executedInvestmentPlan}" var="investmentRequest" sortMode="multiple" >
+                                <p:column headerText="ID" sortBy="#{investmentRequest.id}" style="width:15px">
+                                    <h:outputText value="#{investmentRequest.id}" />
+                                </p:column>
 
-                            <h:outputText value="Portfolio Value: " />
-                            <h:outputText value="#{viewPortfolioDetailManagedBean.p.totalCurrentValue}" />
+                                <p:column headerText="Create Date" sortBy="#{investmentRequest.creationDate}">
+                                    <h:outputText value="#{investmentRequest.creationDate}">
+                                        <f:convertDateTime pattern="MM/dd/yy" />
+                                    </h:outputText>
+                                </p:column>
 
-                            <h:outputText value="Portfolio Percentage Change: " />
-                            <h:outputText value="#{viewPortfolioDetailManagedBean.p.percentageChange}" />
+                                <p:column headerText="Expected Return" sortBy="#{investmentRequest.customerExpectedReturn}">
+                                    <h:outputText value="#{investmentRequest.customerExpectedReturn*100}%" />
+                                </p:column>
 
-                            <h:outputText value="Overall Total Portfolio Value: " />
-                            <h:outputText value="#{viewPortfolioDetailManagedBean.getTotalPortfolioCurrentValue(viewPortfolioDetailManagedBean.p.wealthManagementSubscriber.mainAccount)}" />
+                                <p:column headerText="Amount" sortBy="#{investmentRequest.amountOfInvestment}">
+                                    <h:outputText value="S$#{investmentRequest.amountOfInvestment}" />
+                                </p:column>
 
-                            <h:outputText value="Portfolio Total Percentage Change: " />
-                            <h:outputText value="#{viewPortfolioDetailManagedBean.getPortfolioPercentageChange(viewPortfolioDetailManagedBean.p.wealthManagementSubscriber.mainAccount)}" />
+                                <p:column headerText="Prefered Instruments" style="width:180px">
+                                    <p:scrollPanel style="width:180px;height:80px">
+                                        <p:repeat value="#{investmentRequest.preferedFinancialInstrument}" var="instrument" offset="" size="#{investmentRequest.preferedFinancialInstrument.size()}" step="1" varStatus="">
+                                            <div style="margin-bottom: 10px">
+                                                <h:outputText value="*#{instrument.name}" />
+                                            </div>
+                                        </p:repeat>    
+                                    </p:scrollPanel>
+                                </p:column>
 
-                            <p>the pie chart, would retrieve value from p and display, might need DAO</p>
+                                <p:column headerText="Status" sortBy="#{investmentRequest.status}" style="width:100px">
+                                    <h:outputText value="#{investmentRequest.status}" />
+                                </p:column>
 
+                                <p:column headerText="Remarks" sortBy="#{investmentRequest.remarks}">
+                                    <h:outputText value="#{investmentRequest.remarks}" />
+                                </p:column>
 
-                            <p:column headerText="Action">
-                                <br />
-                                <p:commandButton value="Update Portfolio" action="#{viewPortfolioDetailManagedBean.view()}" icon="ui-icon-lightbulb" update="@form" />
-                            </p:column>
-                        </h:panelGrid>
-
-                        <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
-                        <p:growl id="msgs" showDetail="true" />
-                    </p:panel>
+                                <p:column headerText="Customer" sortBy="#{investmentRequest.wealthManagementSubscriber}">
+                                    <h:outputText value="#{investmentRequest.wealthManagementSubscriber.mainAccount.customer.firstname}" />
+                                </p:column>
+                            </p:dataTable>
+                        </p:panel>
+                    
                 </h:form>
             </div>
 

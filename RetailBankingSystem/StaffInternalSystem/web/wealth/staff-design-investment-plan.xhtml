@@ -75,11 +75,11 @@
                                 </p:column>
 
                                 <p:column headerText="Customer Expected Return">
-                                    <h:outputText value="#{investmentRequest.customerExpectedReturn}" />
+                                    <h:outputText value="#{investmentRequest.customerExpectedReturn*100}%" />
                                 </p:column>
 
                                 <p:column headerText="Amount">
-                                    <h:outputText value="#{investmentRequest.amountOfInvestment}" />
+                                    <h:outputText value="S$#{investmentRequest.amountOfInvestment}" />
                                 </p:column>
 
                                 <p:column headerText="Prefered Instruments" style="width:180px">
