@@ -21,21 +21,27 @@
                     <h:outputText value="Customer ID: "/>
                     <h:inputText value="#{customerPortfolioManagedBean.searchText}"/>
 
-                    <p:commandButton value="RETRIEVE" action="#{customerPortfolioManagedBean.searchCustomer()}" update="mainForm"/>
-                    <p:commandButton value="RETRIEVE ALL" action="#{customerPortfolioManagedBean.searchAllCustomer()}" update="mainForm"/>
-                    
+                    <p:commandButton value="RETRIEVE" action="#{customerPortfolioManagedBean.searchCustomer()}" update="@form"/>
+                    <p:commandButton value="RETRIEVE ALL" action="#{customerPortfolioManagedBean.searchAllCustomer()}" update="@form"/>
+                    <p:messages id="messagesStatus" redisplay="false" ></p:messages>
                     <br/><br/><br/>
                     
                     <p:panel header="Customer List">
                         <p:dataTable value="#{customerPortfolioManagedBean.wmsLists}" var="wms">
-                            <p:column headerText="ID" sortBy="#{wms.mainAccount.customer.id}">
-                                <h:outputText value="#{wms.mainAccount.customer.id}" />
+                            <p:column headerText="ID" sortBy="#{wms.id}">
+                                <h:outputText value="#{wms.id}" />
                             </p:column>
                             <p:column headerText="Name" sortBy="#{wms.mainAccount.customer.fullName}">
                                 <h:outputText value="#{wms.mainAccount.customer.fullName}" />
                             </p:column>
-                            <p:column headerText="Name" sortBy="#{wms.mainAccount.customer}">
-                                <h:outputText value="#{wms.mainAccount.customer.fullName}" />
+                            <p:column headerText="Financial Health Score" sortBy="#{wms.mainAccount.customer.financialHealthScore}">
+                                <h:outputText value="#{wms.mainAccount.customer.financialHealthScore}" />
+                            </p:column>
+                            <p:column headerText="Level" sortBy="#{wms.mainAccount.customer.financialHealthScoreLevel}">
+                                <h:outputText value="#{wms.mainAccount.customer.financialHealthScoreLevel}" />
+                            </p:column>
+                            <p:column headerText="Level" sortBy="#{wms.mainAccount.customer.financialHealthScoreLevel}">
+                                <p:commandButton value="View Details" icon="ui-icon-lightbulb" update="@form" />
                             </p:column>
                         </p:dataTable>
                     </p:panel>
