@@ -280,7 +280,7 @@ public class PortfolioManagedBean implements Serializable {
         pieModel.set("Deposit", getTotalDepositAmount(customer.getMainAccount()));
         pieModel.set("Loan", getTotalLoanAmount(customer.getMainAccount()));
         pieModel.set("Credit Card Outstanding", getTotalCreditAmount(customer.getMainAccount()));
-        pieModel.set("Portfolio Value", getTotalPortfolioCurrentValue(customer.getMainAccount()));
+        pieModel.set("Investment Value", getTotalPortfolioCurrentValue(customer.getMainAccount()));
 
         pieModel.setTitle("Financial Overview");
         pieModel.setLegendPosition("e");

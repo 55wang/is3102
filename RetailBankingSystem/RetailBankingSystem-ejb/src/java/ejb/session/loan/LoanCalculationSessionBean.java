@@ -78,7 +78,7 @@ public class LoanCalculationSessionBean implements LoanCalculationSessionBeanLoc
                 return 0.0;
             } else {
                 monthlyInstallment = maxHDBMonthlyPayment - otherHDBLoan;
-                maxHDBLoanAmt = monthlyInstallment * MEDIUM_INTEREST / (1 - Math.pow((1 + MEDIUM_INTEREST), -tenure));
+                maxHDBLoanAmt = monthlyInstallment * (1 - Math.pow((1 + MEDIUM_INTEREST/12), -tenure))/(MEDIUM_INTEREST/12);
                 return maxHDBLoanAmt;
             }
         }
@@ -97,7 +97,7 @@ public class LoanCalculationSessionBean implements LoanCalculationSessionBeanLoc
                 return 0.0;
             } else {
                 monthlyInstallment = maxTotalMonthlyPayment - otherHomeLoan - otherLoan;
-                maxPPLoanAmt = monthlyInstallment * (1 - Math.pow((1 + MEDIUM_INTEREST), -tenure)) / MEDIUM_INTEREST;
+                maxPPLoanAmt = monthlyInstallment * (1 - Math.pow((1 + MEDIUM_INTEREST/12), -tenure)) / (MEDIUM_INTEREST/12);
                 return maxPPLoanAmt;
             }
         }
@@ -152,7 +152,7 @@ public class LoanCalculationSessionBean implements LoanCalculationSessionBeanLoc
 
     @Override
     public Double calculateMaxHomeLoanAmt(Double monthlyInstalment, Integer tenure) {
-        Double maxHDBLoanAmt = monthlyInstalment * (1 - Math.pow((1 + MEDIUM_INTEREST), -tenure * 12)) / MEDIUM_INTEREST;
+        Double maxHDBLoanAmt = monthlyInstalment * (1 - Math.pow((1 + MEDIUM_INTEREST/12), -tenure * 12)) / (MEDIUM_INTEREST/12);
         return maxHDBLoanAmt;
 
     }
@@ -197,10 +197,27 @@ public class LoanCalculationSessionBean implements LoanCalculationSessionBeanLoc
 
     @Override
     public Double calculateMaxPersonalLoanAmt(Double monthlyIncome, Double otherMonthlyCommitment) {
-        if (monthlyIncome - otherMonthlyCommitment < 0) {
-            return 0.0;
+        Double personalLoan;
+        if(monthlyIncome>=2000.0 && monthlyIncome<10000.0){ 
+            personalLoan=4*monthlyIncome;
+            if (24*monthlyIncome - otherMonthlyCommitment >= personalLoan) 
+            return personalLoan;
+            else if(24*monthlyIncome - otherMonthlyCommitment<=0)
+                return 0.0;
+            else
+                return (24*monthlyIncome - otherMonthlyCommitment);
+            
+        }else if(monthlyIncome>=10000.0){
+            personalLoan=10*monthlyIncome;
+            if (24*monthlyIncome - otherMonthlyCommitment >= personalLoan) 
+            return personalLoan;
+            else if(24*monthlyIncome - otherMonthlyCommitment<=0)
+                return 0.0;
+            else
+                return (24*monthlyIncome - otherMonthlyCommitment);
         }
-        return 24 * (monthlyIncome - otherMonthlyCommitment);
+        else
+            return 0.0;
     }
     
     @Override

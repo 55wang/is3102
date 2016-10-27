@@ -5,6 +5,7 @@
  */
 package customer.loan;
 
+import ejb.session.common.EmailServiceSessionBeanLocal;
 import ejb.session.loan.LoanAccountSessionBeanLocal;
 import ejb.session.loan.LoanCalculationSessionBeanLocal;
 import ejb.session.loan.LoanProductSessionBeanLocal;
@@ -16,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.event.ValueChangeEvent;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import server.utilities.ConstantUtils;
@@ -30,7 +32,9 @@ import utils.MessageUtils;
 @Named(value = "ppLoanApplicationManagedBean")
 @ViewScoped
 public class PpLoanApplicationManagedBean implements Serializable {
-
+    
+    @EJB
+    private EmailServiceSessionBeanLocal emailServiceSessionBean;
     @EJB
     private LoanCalculationSessionBeanLocal calculator;
     @EJB
@@ -59,7 +63,8 @@ public class PpLoanApplicationManagedBean implements Serializable {
     private Integer numOfHousingLoan = 0;
     private Double monthlyInstalment;
     private Double maxMarketValue;
-    private Double marketValue;
+    private Double marketValue=0.0;
+    private Double LTV;
     
     /**
      * Creates a new instance of HdbLoanApplicationManagedBean
@@ -80,6 +85,21 @@ public class PpLoanApplicationManagedBean implements Serializable {
         }
         
     }
+    
+    public void changeLTV(ValueChangeEvent e){
+        if((Integer)e.getNewValue()==0)
+            setLTV(0.8);
+        else if((Integer)e.getNewValue()==1)
+            setLTV(0.5);
+        else if((Integer)e.getNewValue()>=2)
+            setLTV(0.4);
+   
+    }
+    
+    public void changeMarketValue(ValueChangeEvent e){
+        setMarketValue((Double)e.getNewValue()/LTV);
+    }
+    
     public void calculatePP(){
         
         if (getMonthlyIncome() < 1500) {
@@ -96,17 +116,6 @@ public class PpLoanApplicationManagedBean implements Serializable {
     public void applyPPLoan() {
         if (loanAmount > maxLoanAmount) {
             MessageUtils.displayError(ConstantUtils.NOT_ENOUGH_LOAN_LIMIT);
-            return;
-        }
-        
-        if(numOfHousingLoan==0 && loanAmount>=0.8*marketValue){
-            MessageUtils.displayError(ConstantUtils.LoanToValue_NOT_RIGHT);
-            return;
-        } else if (numOfHousingLoan==1 && loanAmount>=0.5*marketValue){
-            MessageUtils.displayError(ConstantUtils.LoanToValue_NOT_RIGHT);
-            return;
-        } else if (numOfHousingLoan>=2 && loanAmount>=0.4*marketValue){
-            MessageUtils.displayError(ConstantUtils.LoanToValue_NOT_RIGHT);
             return;
         }
         
@@ -128,6 +137,8 @@ public class PpLoanApplicationManagedBean implements Serializable {
         LoanApplication result = loanAccountBean.createLoanApplication(newApplication);
         if (result != null) {
             setApplicationNumber(result.getId());
+            emailServiceSessionBean.sendLoanApplicationNoticeToStaff(result);
+            emailServiceSessionBean.sendLoanApplicationNoticeToCustomer(result.getEmail());
             JSUtils.callJSMethod("PF('myWizard').next()");
         }
         
@@ -384,5 +395,15 @@ public class PpLoanApplicationManagedBean implements Serializable {
     public void setPpLoanProducts(List<LoanProduct> ppLoanProducts) {
         this.ppLoanProducts = ppLoanProducts;
     }
+
+    public Double getLTV() {
+        return LTV;
+    }
+
+    public void setLTV(Double LTV) {
+        this.LTV = LTV;
+    }
+    
+    
     
 }

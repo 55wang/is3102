@@ -8,6 +8,7 @@ package init;
 import ejb.session.common.LoginSessionBeanLocal;
 import ejb.session.mainaccount.MainAccountSessionBeanLocal;
 import ejb.session.staff.StaffAccountSessionBeanLocal;
+import ejb.session.wealth.DesignInvestmentPlanSessionBeanLocal;
 import ejb.session.wealth.FinancialInstrumentSessionBeanLocal;
 import ejb.session.wealth.InvestmentPlanSessionBeanLocal;
 import ejb.session.wealth.PortfolioSessionBean;
@@ -16,6 +17,7 @@ import ejb.session.wealth.WealthManegementSubscriberSessionBeanLocal;
 import entity.customer.MainAccount;
 import entity.customer.WealthManagementSubscriber;
 import entity.wealth.FinancialInstrument;
+import entity.wealth.FinancialInstrumentAndWeight;
 import entity.wealth.InvestmentPlan;
 import entity.wealth.Portfolio;
 import java.util.ArrayList;
@@ -37,6 +39,8 @@ import server.utilities.EnumUtils;
 @Stateless
 @LocalBean
 public class EntityWealthBuilder {
+    @EJB
+    private DesignInvestmentPlanSessionBeanLocal designInvestmentPlanSessionBean;
 
     @EJB
     private LoginSessionBeanLocal loginBean;
@@ -62,6 +66,9 @@ public class EntityWealthBuilder {
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")
     public WealthManagementSubscriber initWealth() {
+        //generate PortfolioModel table
+        constructPortfolioModel();
+        
         MainAccount demoMainAccount = loginBean.getMainAccountByUserID(ConstantUtils.DEMO_MAIN_ACCOUNT_USER_ID);
         demoMainAccount.getCustomer().setSavingPerMonth(500.0);
         WealthManagementSubscriber wms = new WealthManagementSubscriber();
@@ -164,18 +171,100 @@ public class EntityWealthBuilder {
         investmentPlan.setRemarks("test plan");
         investmentPlan.setStatus(EnumUtils.InvestmentPlanStatus.PENDING);
         investmentPlan.setWealthManagementSubscriber(wms);
-        investmentPlan.setSatisfactionLevel(EnumUtils.InvestmentPlanSatisfactionLevel.VERY_SATISFIED);
-        investmentPlan.setSystemPredictReturn(0.5);
-        investmentPlan.setSystemPredictRisk(40);
         investmentPlanSessionBean.createInvestmentPlan(investmentPlan);
+        
+        InvestmentPlan executedInvestmentPlan = new InvestmentPlan();
+        executedInvestmentPlan.setAmountOfInvestment(100000);
+        executedInvestmentPlan.setCustomerExpectedReturn(0.13);
+        List<FinancialInstrument> preferedInstruments2 = new ArrayList<FinancialInstrument>();
+        preferedInstruments2.add(allFinancialInstruments.get(0));
+        preferedInstruments2.add(allFinancialInstruments.get(2));
+        preferedInstruments2.add(allFinancialInstruments.get(5));
+        preferedInstruments2.add(allFinancialInstruments.get(7));
+        executedInvestmentPlan.setPreferedFinancialInstrument(preferedInstruments2);
+        executedInvestmentPlan.setRemarks("test executed plan");
+        executedInvestmentPlan.setStatus(EnumUtils.InvestmentPlanStatus.EXECUTED);
+        executedInvestmentPlan.setWealthManagementSubscriber(wms);
+        investmentPlanSessionBean.createInvestmentPlan(executedInvestmentPlan);   
+        
+        List<FinancialInstrumentAndWeight> suggestedFinancialInstruments = new ArrayList<FinancialInstrumentAndWeight>();
+        
+        for (int i = 0; i < allFinancialInstruments.size(); i++) {
+            if (allFinancialInstruments.get(i).getName().equals(EnumUtils.FinancialInstrumentClass.CORPORATE_BONDS)) {
+                FinancialInstrumentAndWeight fiaw = new FinancialInstrumentAndWeight();
+                fiaw.setFi(allFinancialInstruments.get(i));
+                fiaw.setWeight(0.0);
+                suggestedFinancialInstruments.add(fiaw);
+            } else if (allFinancialInstruments.get(i).getName().equals(EnumUtils.FinancialInstrumentClass.DIVIDEND_GROWTH_STOCKS)) {
+                FinancialInstrumentAndWeight fiaw = new FinancialInstrumentAndWeight();
+                fiaw.setFi(allFinancialInstruments.get(i));
+                fiaw.setWeight(0.12);
+                suggestedFinancialInstruments.add(fiaw);
+            } else if (allFinancialInstruments.get(i).getName().equals(EnumUtils.FinancialInstrumentClass.EMERGING_MARKET_BONDS)) {
+                FinancialInstrumentAndWeight fiaw = new FinancialInstrumentAndWeight();
+                fiaw.setFi(allFinancialInstruments.get(i));
+                fiaw.setWeight(0.0);
+                suggestedFinancialInstruments.add(fiaw);
+            } else if (allFinancialInstruments.get(i).getName().equals(EnumUtils.FinancialInstrumentClass.EMERGING_MARKET_STOCKS)) {
+                FinancialInstrumentAndWeight fiaw = new FinancialInstrumentAndWeight();
+                fiaw.setFi(allFinancialInstruments.get(i));
+                fiaw.setWeight(0.11);
+                suggestedFinancialInstruments.add(fiaw);
+            } else if (allFinancialInstruments.get(i).getName().equals(EnumUtils.FinancialInstrumentClass.FOREIGN_DEVELOPED_STOCKS)) {
+                FinancialInstrumentAndWeight fiaw = new FinancialInstrumentAndWeight();
+                fiaw.setFi(allFinancialInstruments.get(i));
+                fiaw.setWeight(0.15);
+                suggestedFinancialInstruments.add(fiaw);
+            } else if (allFinancialInstruments.get(i).getName().equals(EnumUtils.FinancialInstrumentClass.MUNICIPAL_BONDS)) {
+                FinancialInstrumentAndWeight fiaw = new FinancialInstrumentAndWeight();
+                fiaw.setFi(allFinancialInstruments.get(i));
+                fiaw.setWeight(0.01);
+                suggestedFinancialInstruments.add(fiaw);
+            } else if (allFinancialInstruments.get(i).getName().equals(EnumUtils.FinancialInstrumentClass.NATURAL_RESOURCES)) {
+                FinancialInstrumentAndWeight fiaw = new FinancialInstrumentAndWeight();
+                fiaw.setFi(allFinancialInstruments.get(i));
+                fiaw.setWeight(0.13);
+                suggestedFinancialInstruments.add(fiaw);
+            } else if (allFinancialInstruments.get(i).getName().equals(EnumUtils.FinancialInstrumentClass.REAL_ESTATE)) {
+                FinancialInstrumentAndWeight fiaw = new FinancialInstrumentAndWeight();
+                fiaw.setFi(allFinancialInstruments.get(i));
+                fiaw.setWeight(0.09);
+                suggestedFinancialInstruments.add(fiaw);
+            } else if (allFinancialInstruments.get(i).getName().equals(EnumUtils.FinancialInstrumentClass.TREASURY_INFLATION_PROTECTED_SECURITIES)) {
+                FinancialInstrumentAndWeight fiaw = new FinancialInstrumentAndWeight();
+                fiaw.setFi(allFinancialInstruments.get(i));
+                fiaw.setWeight(0.0);
+                suggestedFinancialInstruments.add(fiaw);
+            } else if (allFinancialInstruments.get(i).getName().equals(EnumUtils.FinancialInstrumentClass.US_GOVERNMENT_BONDS)) {
+                FinancialInstrumentAndWeight fiaw = new FinancialInstrumentAndWeight();
+                fiaw.setFi(allFinancialInstruments.get(i));
+                fiaw.setWeight(0.06);
+                suggestedFinancialInstruments.add(fiaw);
+            } else if (allFinancialInstruments.get(i).getName().equals(EnumUtils.FinancialInstrumentClass.US_STOCKS)) {
+                FinancialInstrumentAndWeight fiaw = new FinancialInstrumentAndWeight();
+                fiaw.setFi(allFinancialInstruments.get(i));
+                fiaw.setWeight(0.33);
+                suggestedFinancialInstruments.add(fiaw);
+            }
+        }
+        
+        executedInvestmentPlan.setSuggestedFinancialInstruments(suggestedFinancialInstruments);
+        executedInvestmentPlan.setSystemPredictReturn(0.053);
+        executedInvestmentPlan.setSystemPredictRisk(31);
+        executedInvestmentPlan.setRiskLevel(EnumUtils.InvestmentRiskLevel.ABOVE_AVERAGE_RISK);
+        
+        
         Portfolio p = new Portfolio();
+        p.setStatus(EnumUtils.PortfolioStatus.PENDING);
         portfolioSessionBean.createPortfolio(p);
-        p.setExecutedInvestmentPlan(investmentPlan);
+        p.setExecutedInvestmentPlan(executedInvestmentPlan);
         p.setWealthManagementSubscriber(wms);
         portfolioSessionBean.updatePortfolio(p);
-
-        //generate PortfolioModel table
-        constructPortfolioModel();
+        
+        executedInvestmentPlan.setPortfolio(p);
+        
+        investmentPlanSessionBean.updateInvestmentPlan(executedInvestmentPlan);
+       
         return wms;
     }
 

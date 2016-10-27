@@ -5,6 +5,7 @@
  */
 package customer.loan;
 
+import ejb.session.common.EmailServiceSessionBeanLocal;
 import ejb.session.loan.LoanAccountSessionBeanLocal;
 import ejb.session.loan.LoanCalculationSessionBeanLocal;
 import ejb.session.loan.LoanProductSessionBeanLocal;
@@ -31,7 +32,9 @@ import utils.MessageUtils;
 @Named(value = "carLoanApplicationManagedBean")
 @ViewScoped
 public class CarLoanApplicationManagedBean implements Serializable {
-
+    
+    @EJB
+    private EmailServiceSessionBeanLocal emailServiceSessionBean;
     @EJB
     private LoanCalculationSessionBeanLocal calculator;
     @EJB
@@ -62,6 +65,7 @@ public class CarLoanApplicationManagedBean implements Serializable {
     private Double carOpenMarketValue;
     private Integer carTenure;
     private Long carTenureProductId;
+    private Double LTV;
     
     /**
      * Creates a new instance of CarLoanApplicationManagedBean
@@ -91,6 +95,14 @@ public class CarLoanApplicationManagedBean implements Serializable {
         setCarLoanAmt((Double)e.getNewValue());
         setCarLoanMonthlyInstalment(calculator.calculateCarMonthlyInstalment(getCarLoanAnnualInterestRate(), getCarTenure(), getCarLoanAmt()));   
         
+    }
+    
+    public void changeLTV(ValueChangeEvent e){
+        if((Double)e.getNewValue()<=20000.0)
+            setLTV(0.7);
+        if((Double)e.getNewValue()>20000.0)
+            setLTV(0.6);
+   
     }
       
     public void calculateCar(){
@@ -128,7 +140,10 @@ public class CarLoanApplicationManagedBean implements Serializable {
         LoanApplication result = loanAccountBean.createLoanApplication(newApplication);
         if (result != null) {
             setApplicationNumber(result.getId());
+            emailServiceSessionBean.sendLoanApplicationNoticeToStaff(result);
+            emailServiceSessionBean.sendLoanApplicationNoticeToCustomer(result.getEmail());
             JSUtils.callJSMethod("PF('myWizard').next()");
+            
         }
         
     }
@@ -388,5 +403,14 @@ public class CarLoanApplicationManagedBean implements Serializable {
     public void setMaxCarLoanAmt(Double maxCarLoanAmt) {
         this.maxCarLoanAmt = maxCarLoanAmt;
     }
+
+    public Double getLTV() {
+        return LTV;
+    }
+
+    public void setLTV(Double LTV) {
+        this.LTV = LTV;
+    }
+    
     
 }
