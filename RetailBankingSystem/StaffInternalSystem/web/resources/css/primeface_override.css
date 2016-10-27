@@ -157,4 +157,8 @@ and open the template in the editor.
 .ui-selectonebutton .ui-state-active{
     border: 1px solid #c00 !important;
 }
+
+.ui-selectonemenu .ui-selectonemenu-trigger{
+    background: #c00 !important;
+}
 /*end of css overwrite*/

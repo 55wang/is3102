@@ -76,9 +76,6 @@
                                         <f:convertNumber type="percent" minFractionDigits="4"/>
                                     </h:outputText>
                                     
-                                    <h:outputText value="Other financial commitments (S$): " />
-                                    <p:inputText value="#{carLoanApplicationManagedBean.otherLoan}" required="true" requiredMessage="Other financial commitment is required." />
-
                                     <h:outputText value="Tenure: " />
                                     <h:selectOneMenu value="#{carLoanApplicationManagedBean.carTenureProductId}" required="true" requiredMessage="Tenure is required.">
                                         <f:selectItems value="#{carLoanApplicationManagedBean.carLoanProducts}" var="p" itemValue="#{p.tenure}" itemLabel="#{p.tenure} years" />

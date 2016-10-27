@@ -31,7 +31,7 @@ public class CommonUtils {
         if (systemUser.equals("wang")) {
             prependingPath = "/Users/wang/NEW_IS3102/is3102/RCode/";
         } else if (systemUser.equals("litong")) {
-            //#prependingPath = "/Users/litong/Documents/is3102/RCode/";
+            prependingPath = "/Users/litong/documents/is3102/is3102/RCode/";
         } else if (systemUser.equals("leiyang")) {
             prependingPath = "/Users/leiyang/Desktop/IS3102/workspace/is3102/RCode/";
         } else if (systemUser.equals("VIN-S")) {
