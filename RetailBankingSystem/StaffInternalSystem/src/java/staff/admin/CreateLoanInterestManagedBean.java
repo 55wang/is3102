@@ -33,6 +33,8 @@ public class CreateLoanInterestManagedBean implements Serializable {
     private String selectedInterestType = EnumUtils.LoanProductType.LOAN_PRODUCT_TYPE_PERSONAL.toString();
     private String loanName;
     private Double loanRate;
+    private Integer startMonth;
+    private Integer endMonth;
 
     // added interests
     private List<LoanInterest> addedLoanInterests = new ArrayList<>();
@@ -63,8 +65,9 @@ public class CreateLoanInterestManagedBean implements Serializable {
     public void createLoanInterest() {
         if (selectedInterestType.equals(PERSONAL_LOAN_TYPE) || selectedInterestType.equals(CAR_LOAN_TYPE)) {
             LoanInterest newLoanInterest = new LoanInterest();
-            newLoanInterest.setEndMonth(-1);
-            newLoanInterest.setStartMonth(0);
+            newLoanInterest.setEndMonth(endMonth);
+            newLoanInterest.setStartMonth(startMonth);
+
             newLoanInterest.setName(loanName);
             newLoanInterest.setProductType(EnumUtils.LoanProductType.getEnum(selectedInterestType));
             newLoanInterest.setInterestRate(loanRate);
@@ -77,10 +80,12 @@ public class CreateLoanInterestManagedBean implements Serializable {
             newLoanCollection.setProductType(EnumUtils.LoanProductType.getEnum(selectedInterestType));
             newLoanCollection.addLoanInterest(newLoanInterest);
 
-            if (loanProductBean.createInterestCollection(newLoanCollection) != null) {
+            LoanInterestCollection result = loanProductBean.createInterestCollection(newLoanCollection);
+
+            if (result != null) {
                 MessageUtils.displayInfo("Loan Interest Collection Created");
-            } else {
-                MessageUtils.displayError("This Loan Interest already Exists");
+                newLoanInterest.setLoanInterestCollection(result);
+                newLoanInterest = loanProductBean.updateLoanInterest(newLoanInterest);
             }
         } else {
             List<LoanInterest> tobeSaved = new ArrayList<>();
@@ -108,8 +113,13 @@ public class CreateLoanInterestManagedBean implements Serializable {
             newLoanCollection.setProductType(EnumUtils.LoanProductType.getEnum(selectedInterestType));
             newLoanCollection.setLoanInterests(tobeSaved);
 
-            if (loanProductBean.createInterestCollection(newLoanCollection) != null) {
+            LoanInterestCollection result = loanProductBean.createInterestCollection(newLoanCollection);
+            if (result != null) {
                 MessageUtils.displayInfo("Loan Interest Collection Created");
+                for (LoanInterest i : tobeSaved) {
+                    i.setLoanInterestCollection(result);
+                    loanProductBean.updateLoanInterest(i);
+                }
             } else {
                 MessageUtils.displayError("This Loan Interest already Exists");
             }
@@ -265,6 +275,34 @@ public class CreateLoanInterestManagedBean implements Serializable {
      */
     public void setLoanRate(Double loanRate) {
         this.loanRate = loanRate;
+    }
+
+    /**
+     * @return the startMonth
+     */
+    public Integer getStartMonth() {
+        return startMonth;
+    }
+
+    /**
+     * @param startMonth the startMonth to set
+     */
+    public void setStartMonth(Integer startMonth) {
+        this.startMonth = startMonth;
+    }
+
+    /**
+     * @return the endMonth
+     */
+    public Integer getEndMonth() {
+        return endMonth;
+    }
+
+    /**
+     * @param endMonth the endMonth to set
+     */
+    public void setEndMonth(Integer endMonth) {
+        this.endMonth = endMonth;
     }
 
 }
