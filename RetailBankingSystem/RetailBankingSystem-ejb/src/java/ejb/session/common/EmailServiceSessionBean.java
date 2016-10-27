@@ -544,7 +544,7 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
             message.setSubject("Your credit card application is submitted - Merlion Bank");
             message.setText("Dear Customer, \n Your credit card application is submitted."
                     + "We are processing your application. Meanwhile, you can go to this link to check your application status."
-                    + "https://localhost:8181/InternetBankingSystem/personal_cards/credit_card_summary.xhtml .");
+                    + "https://localhost:8181/InternetBankingSystem/main_cards/default.xhtml.");
 
             Transport.send(message);
 
