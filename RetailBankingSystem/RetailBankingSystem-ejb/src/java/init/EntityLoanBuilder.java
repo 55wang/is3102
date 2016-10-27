@@ -187,7 +187,7 @@ public class EntityLoanBuilder {
         loanInterest1.setStartMonth(0);
         loanInterest1.setEndMonth(12); // need to differetiate
         loanInterest1.setProductType(EnumUtils.LoanProductType.LOAN_PRODUCT_TYPE_PERSONAL);
-        loanInterest1.setInterestRate(0.2);
+        loanInterest1.setInterestRate(0.085);
         loanInterest1 = loanProductSessionBean.createLoanInterest(loanInterest1);
         
         LoanInterestCollection lic = new LoanInterestCollection();
@@ -244,7 +244,7 @@ public class EntityLoanBuilder {
         loanInterest1.setStartMonth(0);
         loanInterest1.setEndMonth(-1); // no end date
         loanInterest1.setProductType(EnumUtils.LoanProductType.LOAN_PRODUCT_TYPE_CAR);
-        loanInterest1.setInterestRate(0.2);
+        loanInterest1.setInterestRate(0.085);
         loanInterest1 = loanProductSessionBean.createLoanInterest(loanInterest1);
         
         LoanInterestCollection lic = new LoanInterestCollection();
