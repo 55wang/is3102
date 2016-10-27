@@ -27,9 +27,9 @@ import utils.RedirectUtils;
  *
  * @author wang
  */
-@Named(value = "updatePortfolioManagedBean")
+@Named(value = "updateExecutedInvestManagedBean")
 @ViewScoped
-public class UpdatePortfolioManagedBean implements Serializable {
+public class UpdateExecutedInvestManagedBean implements Serializable {
 
     @EJB
     EmailServiceSessionBeanLocal EmailServiceSessionBean;
@@ -48,7 +48,7 @@ public class UpdatePortfolioManagedBean implements Serializable {
     private String updateBuy = "updateBuy";
     private String updateCurrent = "updateCurrent";
 
-    public UpdatePortfolioManagedBean() {
+    public UpdateExecutedInvestManagedBean() {
     }
 
     @PostConstruct

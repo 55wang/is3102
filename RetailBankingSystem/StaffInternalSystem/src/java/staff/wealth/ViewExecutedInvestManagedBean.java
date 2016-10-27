@@ -25,9 +25,9 @@ import utils.RedirectUtils;
  *
  * @author wang
  */
-@Named(value = "viewPortfolioManagedBean")
+@Named(value = "viewExecutedInvestManagedBean")
 @ViewScoped
-public class ViewPortfolioManagedBean extends ViewPortfolioAbstractBean implements Serializable {
+public class ViewExecutedInvestManagedBean extends ViewPortfolioAbstractBean implements Serializable {
 
     @EJB
     PortfolioSessionBeanLocal portfolioSessionBean;
@@ -36,7 +36,7 @@ public class ViewPortfolioManagedBean extends ViewPortfolioAbstractBean implemen
     private String searchText;
     private String portfolioID;
 
-    public ViewPortfolioManagedBean() {
+    public ViewExecutedInvestManagedBean() {
     }
 
     @PostConstruct
