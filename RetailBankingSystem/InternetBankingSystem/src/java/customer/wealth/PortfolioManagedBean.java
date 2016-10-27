@@ -134,135 +134,6 @@ public class PortfolioManagedBean implements Serializable {
         return model;
     }
 
-    public Double getTotalMortgageMonthlyInstallment(MainAccount main) {
-        List<LoanAccount> las = main.getLoanAccounts();
-
-        Double totalBalance = 0.0;
-        for (LoanAccount la : las) {
-            if (la.getLoanProduct().getProductType().equals(LoanProductType.LOAN_PRODUCT_TYPE_HDB) || la.getLoanProduct().getProductType().equals(LoanProductType.LOAN_PRODUCT_TYPE_HDB)) {
-                totalBalance += la.getMonthlyInstallment();
-            }
-        }
-        return round(totalBalance, 1);
-    }
-
-    public Double getTotalMonthlyInstallment(MainAccount main) {
-        List<LoanAccount> las = main.getLoanAccounts();
-
-        Double totalBalance = 0.0;
-        for (LoanAccount la : las) {
-            totalBalance += la.getMonthlyInstallment();
-        }
-        return round(totalBalance, 1);
-    }
-
-    public Double getTotalAsset(MainAccount main) {
-        return main.getWealthManagementSubscriber().getTotalPortfolioValue()
-                + getTotalDepositAmount(customer.getMainAccount()).doubleValue()
-                + getTotalDebtAmount(main);
-    }
-
-    public Double getSavingToIncome() {
-        return customer.getSavingPerMonth() / customer.getIncome().getAvgValue();
-    }
-
-    public Double getDebtToIncome() {
-        return getTotalMonthlyInstallment(customer.getMainAccount()) / customer.getIncome().getAvgValue();
-    }
-
-    public Double getHousingCostRatio() {
-        return getTotalMortgageMonthlyInstallment(customer.getMainAccount()) / customer.getIncome().getAvgValue();
-    }
-
-    public Double getDebtRatio() {
-        return getTotalDebtAmount(customer.getMainAccount()) / getTotalAsset(customer.getMainAccount());
-    }
-
-    public Double getNetWorth() {
-        return getTotalAsset(customer.getMainAccount()) - getTotalDebtAmount(customer.getMainAccount());
-    }
-
-    public Double calcFinancialHealthScore() {
-        Double score = 100.0;
-        if (getSavingToIncome() >= 10 && getSavingToIncome() <= 20) {
-            score += 5;
-        } else if (getSavingToIncome() < 10) {
-            //too little saving
-            score -= 20;
-        } else if (getSavingToIncome() > 20) {
-            //too much saving
-            score -= 5;
-        }
-
-        if (getHousingCostRatio() >= 28) {
-            score -= 20;
-        } else {
-            score += 5;
-        }
-
-        if (getDebtRatio() >= 36) {
-            score -= 20;
-        } else {
-            score += 5;
-        }
-
-        if (customer.getAge() <= 22 && getNetWorth() > 0.0) {
-            score += 5;
-        } else if (customer.getAge() <= 25 && getNetWorth() > 50000.0) {
-            score += 20;
-        } else if (customer.getAge() <= 30 && getNetWorth() > 150000.0) {
-            score += 20;
-        } else if (customer.getAge() <= 35 && getNetWorth() > 250000.0) {
-            score += 20;
-        } else if (customer.getAge() <= 40 && getNetWorth() > 400000.0) {
-            score += 20;
-        } else if (customer.getAge() <= 45 && getNetWorth() > 600000.0) {
-            score += 20;
-        } else if (customer.getAge() <= 50 && getNetWorth() > 850000.0) {
-            score += 20;
-        } else if (customer.getAge() <= 55 && getNetWorth() > 1000000.0) {
-            score += 20;
-        } else if (customer.getAge() <= 60 && getNetWorth() > 1500000.0) {
-            score += 20;
-        } else if (customer.getAge() >= 60 && getNetWorth() > 2000000.0) {
-            score += 20;
-        } else {
-            score -= 20;
-        }
-
-        return score;
-        /*
-         http://www.thefrugaltoad.com/personalfinance/personal-financial-ratios-everyone-should-know
-        
-         Savings to Income (S to I) Savings Ratio: Should be between 10% to 20%.
-        
-         Debt to Income (D to I) Consumer Debt Ratio: Should not exceed 20%.
-         Calculated by dividing total monthly loan payments by monthly income.
-        
-         Housing Cost Ratio:  Should not exceed 28% of gross income.  
-         = Total of monthly mortgage payment (principal + interest) / the gross monthly income
-        
-         Total Debt Ratio: Should not exceed 36% of gross income.  
-         = total Debt / Total Asset
-         
-        
-         networth = asset - liabilities
-         http://www.financialsamurai.com/the-average-net-worth-for-the-above-average-person/
-         */
-    }
-
-    public String calcFinancialHealthScoreLevel() {
-        if (calcFinancialHealthScore() >= 80) {
-            return EnumUtils.FinancialHealthLevel.VERYHEALTHY.getValue();
-        } else if (calcFinancialHealthScore() >= 60 && calcFinancialHealthScore() < 80) {
-            return EnumUtils.FinancialHealthLevel.HEALTHY.getValue();
-        } else if (calcFinancialHealthScore() >= 40 && calcFinancialHealthScore() < 60) {
-            return EnumUtils.FinancialHealthLevel.UNHEALTHY.getValue();
-        } else {
-            return EnumUtils.FinancialHealthLevel.VERYUNHEALTHY.getValue();
-        }
-    }
-
     public void initDate() {
         Date current = new Date();
         setCurrentDate(new SimpleDateFormat("yyyy-MM-dd").format(current));
@@ -287,70 +158,15 @@ public class PortfolioManagedBean implements Serializable {
     private void createPieModel() {
         pieModel = new PieChartModel();
 
-        pieModel.set("Deposit", getTotalDepositAmount(customer.getMainAccount()));
-        pieModel.set("Loan", getTotalLoanAmount(customer.getMainAccount()));
-        pieModel.set("Credit Card Outstanding", getTotalCreditAmount(customer.getMainAccount()));
-        pieModel.set("Investment Value", getTotalPortfolioCurrentValue(customer.getMainAccount()));
+        pieModel.set("Deposit", customer.getTotalDepositAmount());
+        pieModel.set("Loan", customer.getTotalLoanAmount());
+        pieModel.set("Credit Card Outstanding", customer.getTotalCreditAmount());
+        pieModel.set("Investment Value", customer.getTotalPortfolioCurrentValue());
 
         pieModel.setTitle("Financial Overview");
         pieModel.setLegendPosition("e");
         pieModel.setShowDataLabels(true);
         pieModel.setDiameter(150);
-    }
-
-    public BigDecimal getTotalDepositAmount(MainAccount main) {
-        List<DepositAccount> das = main.getBankAcounts();
-        BigDecimal totalBalance = new BigDecimal(0);
-        for (DepositAccount da : das) {
-            totalBalance = totalBalance.add(da.getBalance());
-        }
-        return totalBalance;
-    }
-
-    public Double getTotalDebtAmount(MainAccount main) {
-        return getTotalLoanAmount(main) + getTotalCreditAmount(main);
-    }
-
-    public Double getTotalLoanAmount(MainAccount main) {
-        List<LoanAccount> las = main.getLoanAccounts();
-
-        Double totalBalance = 0.0;
-        for (LoanAccount la : las) {
-            totalBalance += la.getOutstandingPrincipal();
-        }
-        return totalBalance;
-    }
-
-    public Double getTotalCreditAmount(MainAccount main) {
-        List<CreditCardAccount> ccas = main.getCreditCardAccounts();
-
-        Double totalBalance = 0.0;
-        for (CreditCardAccount cca : ccas) {
-            totalBalance += cca.getOutstandingAmount();
-        }
-        return totalBalance;
-    }
-
-    public Double getTotalPortfolioCurrentValue(MainAccount main) { //all the portfolio
-        List<Portfolio> ps = main.getWealthManagementSubscriber().getPortfolios();
-        Double totalCurrentPortfoliosValue = 0.0;
-        for (Portfolio p : ps) {
-            totalCurrentPortfoliosValue += p.getTotalCurrentValue();
-        }
-        return totalCurrentPortfoliosValue;
-    }
-
-    public Double getTotalPortfolioBuyingValue(MainAccount main) {
-        List<Portfolio> ports = main.getWealthManagementSubscriber().getPortfolios();
-        Double totalValue = 0.0;
-        for (Portfolio port : ports) {
-            totalValue += port.getTotalBuyingValue();
-        }
-        return totalValue;
-    }
-
-    public Double getPortfolioPercentageChange(MainAccount main) {
-        return getTotalPortfolioCurrentValue(main) / getTotalPortfolioBuyingValue(main) * 100;
     }
 
     public List<Portfolio> getPortfolios() {
