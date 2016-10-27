@@ -57,7 +57,7 @@ public class ViewLoanApplicationManagedBean implements Serializable {
         Map<String, String> map = new HashMap<>();
         map.put("applicationId", la.getId().toString());
         String params = RedirectUtils.generateParameters(map);
-        RedirectUtils.redirect("approve_loan_account.xhtml" + params);
+        RedirectUtils.redirect("create_loan_account.xhtml" + params);
     }
 
     /**

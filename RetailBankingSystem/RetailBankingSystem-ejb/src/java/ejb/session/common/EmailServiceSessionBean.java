@@ -468,6 +468,31 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
             System.out.println(e);
         }
     }
+    
+    @Asynchronous
+    @Override
+    public void sendLoanApplicationReceivedNotice(String recipient) {
+        Session session = getSession();
+
+        try {
+
+            Message message = new MimeMessage(session);
+            message.setFrom(new InternetAddress("merlionbanking@gmail.com"));
+            message.setRecipients(Message.RecipientType.TO,
+                    InternetAddress.parse(recipient));
+            message.setSubject("Your Loan Application is Approved! - Merlion Bank");
+            message.setText("Dear Customer, \n Your Loan Application is Approved! "
+                    + "Click the link to view more details "
+                    + "https://localhost:8181/InternetBankingSystem/main_loan/check_loan_application.xhtml .");
+
+            Transport.send(message);
+
+            System.out.println("Email send out successfully");
+
+        } catch (MessagingException e) {
+            System.out.println(e);
+        }
+    }
 
     @Asynchronous
     @Override
@@ -587,8 +612,9 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
             message.setRecipients(Message.RecipientType.TO,
                     InternetAddress.parse(recipient));
             message.setSubject("Your loan application is submitted - Merlion Bank");
-            message.setText("Dear Customer, \n Your loan application is submitted."
-                    + "We are processing your application and will reply to you soon. Thank you.");
+            message.setText("Dear Customer, \n Your loan application is submitted.\n"
+                    + "We are processing your application and will reply to you soon. Thank you.\n"
+            + "View more details at: https://localhost:8181/StaffInternalSystem/loan/view_loan_application.xhtml");
 
             Transport.send(message);
 

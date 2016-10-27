@@ -36,6 +36,7 @@ public interface EmailServiceSessionBeanLocal {
     public void sendCaseStatusChangeToCustomer(String recipient, CustomerCase cc);
     public void sendUpdatedProfile(String recipient);
     public void sendTransactionLimitChangeNotice(String recipient);
+    public void sendLoanApplicationReceivedNotice(String recipient);
     public void sendLoanApplicationApprovalNotice(String recipient);
     public void sendLoanApplicationRejectNotice(String recipient);
     public void sendCreditCardApplicationNotice(String recipient);
