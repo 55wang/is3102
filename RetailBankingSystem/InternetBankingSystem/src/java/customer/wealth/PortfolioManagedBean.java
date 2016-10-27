@@ -82,7 +82,7 @@ public class PortfolioManagedBean implements Serializable {
 
     private void createLineModels() {
         lineModel = initLinearModel();
-        lineModel.setTitle("Linear Chart");
+        lineModel.setTitle("Single Portfolio Graph");
         lineModel.setLegendPosition("e");
         Axis yAxis = lineModel.getAxis(AxisType.Y);
         yAxis.setMin(-5);

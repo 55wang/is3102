@@ -19,5 +19,6 @@ public interface FactSessionBeanLocal {
 
     public List<SinglePortfolioFactTable> getListPortfoliosFtByCustomerIdPortfolioId(Long custId, Long portId);
     public SinglePortfolioFactTable getLatestPortfolioFtByCustomerIdPortfolioId(Long custId, Long portId);
+    public SinglePortfolioFactTable createSinglePortfolioFactTable(SinglePortfolioFactTable spf);
 
 }

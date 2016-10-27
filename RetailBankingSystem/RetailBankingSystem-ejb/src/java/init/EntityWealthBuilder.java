@@ -63,6 +63,7 @@ public class EntityWealthBuilder {
     // "Insert Code > Add Business Method")
     public WealthManagementSubscriber initWealth() {
         MainAccount demoMainAccount = loginBean.getMainAccountByUserID(ConstantUtils.DEMO_MAIN_ACCOUNT_USER_ID);
+        demoMainAccount.getCustomer().setSavingPerMonth(500.0);
         WealthManagementSubscriber wms = new WealthManagementSubscriber();
         wms.setMainAccount(demoMainAccount);
         wms.setRelationshipManager(staffAccountSessionBean.getAccountByUsername(ConstantUtils.RELATIONSHIP_MANAGER_USERNAME));

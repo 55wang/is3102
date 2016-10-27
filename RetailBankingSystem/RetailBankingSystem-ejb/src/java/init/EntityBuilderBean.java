@@ -51,7 +51,9 @@ public class EntityBuilderBean {
     private EntityPayLahBuilder entityPayLahBuilder;
     @EJB
     private EntityWealthBuilder entityWealthBuilder;
-
+    @EJB
+    private EntityFactBuilder entityFactBuilder;
+    
     // session beans
     @EJB
     private StaffAccountSessionBeanLocal staffAccountSessionBean;
@@ -89,6 +91,7 @@ public class EntityBuilderBean {
         entityCaseBuilder.initCase();
         entityBillOrgBuilder.initBillOrganization();
         entityPayLahBuilder.initPayLahDemoData();
-//        entityWealthBuilder.initWealth();
+        entityWealthBuilder.initWealth();
+        entityFactBuilder.initSinglePortfolioFact();
     }
 }
