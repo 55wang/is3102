@@ -27,12 +27,19 @@ public class FactSessionBean implements FactSessionBeanLocal {
         em.persist(spf);
         return spf;
     }
-    
+
     @Override
     public List<SinglePortfolioFactTable> getListPortfoliosFtByCustomerIdPortfolioId(Long custId, Long portId) {
-        Query q = em.createQuery("SELECT p FROM portfoliofacttable p where p.portfolio.id =:inPortId AND p.customer.id =: inCustId");
+        Query q = em.createQuery("SELECT p FROM SinglePortfolioFactTable p where p.portfolio.id =:inPortId AND p.customer.id =:inCustId");
         q.setParameter("inCustId", custId);
         q.setParameter("inPortId", portId);
+        return q.getResultList();
+    }
+
+    @Override
+    public List<SinglePortfolioFactTable> getListPortfoliosFtByCustomerId(Long custId) {
+        Query q = em.createQuery("SELECT p FROM SinglePortfolioFactTable p where p.customer.id =:inCustId");
+        q.setParameter("inCustId", custId);
         return q.getResultList();
     }
 
