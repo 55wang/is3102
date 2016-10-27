@@ -61,6 +61,7 @@ public class Customer implements Serializable {
     private EmploymentStatus employmentStatus;
     private Income income;
     private Double actualIncome;
+    private Double savingPerMonth;
     private Gender gender;
 
     // credit
@@ -346,6 +347,14 @@ public class Customer implements Serializable {
     }
 
     public Customer() {
+    }
+
+    public Double getSavingPerMonth() {
+        return savingPerMonth;
+    }
+
+    public void setSavingPerMonth(Double savingPerMonth) {
+        this.savingPerMonth = savingPerMonth;
     }
 
 }

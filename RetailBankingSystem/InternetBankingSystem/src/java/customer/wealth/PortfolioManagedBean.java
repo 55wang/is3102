@@ -136,7 +136,7 @@ public class PortfolioManagedBean implements Serializable {
     }
 
     public Double getSavingToIncome() {
-        return getTotalDepositAmount(customer.getMainAccount()).doubleValue() / customer.getIncome().getAvgValue();
+        return customer.getSavingPerMonth() / customer.getIncome().getAvgValue();
     }
 
     public Double getDebtToIncome() {
