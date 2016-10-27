@@ -65,7 +65,7 @@ public abstract class ViewPortfolioAbstractBean implements Serializable {
         return new BigDecimal(getTotalPortfolioCurrentValue(main)).divide(getTotalAsset(main), 2, RoundingMode.HALF_UP);
     }
 
-    public Double getPortfolioPercentageChange(MainAccount main) {
+    public Double getTotalPortfolioPercentageChange(MainAccount main) {
         return getTotalPortfolioCurrentValue(main)/getTotalPortfolioBuyingValue(main) * 100;
     }
 
