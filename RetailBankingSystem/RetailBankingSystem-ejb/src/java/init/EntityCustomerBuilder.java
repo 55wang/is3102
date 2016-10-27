@@ -31,7 +31,7 @@ public class EntityCustomerBuilder {
     @EJB
     private MainAccountSessionBeanLocal mainAccountSessionBean;
 
-    public void initCustomer() {
+    public MainAccount initCustomer() {
         String p = HashPwdUtils.hashPwd("password");
 
         Customer c = new Customer();
@@ -294,6 +294,7 @@ public class EntityCustomerBuilder {
         c9.setMainAccount(ma9);
         newCustomerSessionBean.updateCustomer(c9);
         
+        return ma;
     }
 
 }

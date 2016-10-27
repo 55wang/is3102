@@ -65,11 +65,12 @@ public class EntityWealthBuilder {
 
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")
-    public WealthManagementSubscriber initWealth() {
+    public Portfolio initWealth() {
         //generate PortfolioModel table
         constructPortfolioModel();
         
         MainAccount demoMainAccount = loginBean.getMainAccountByUserID(ConstantUtils.DEMO_MAIN_ACCOUNT_USER_ID);
+        demoMainAccount.getCustomer().setSavingPerMonth(500.0);
         WealthManagementSubscriber wms = new WealthManagementSubscriber();
         wms.setMainAccount(demoMainAccount);
         wms.setRelationshipManager(staffAccountSessionBean.getAccountByUsername(ConstantUtils.RELATIONSHIP_MANAGER_USERNAME));
@@ -196,6 +197,9 @@ public class EntityWealthBuilder {
                 suggestedFinancialInstruments.add(fiaw);
             } else if (allFinancialInstruments.get(i).getName().equals(EnumUtils.FinancialInstrumentClass.DIVIDEND_GROWTH_STOCKS)) {
                 FinancialInstrumentAndWeight fiaw = new FinancialInstrumentAndWeight();
+                fiaw.setBuyingNumberOfShare(1714);
+                fiaw.setBuyingValuePerShare(7.0);
+                fiaw.setCurrentValuePerShare(7.0);
                 fiaw.setFi(allFinancialInstruments.get(i));
                 fiaw.setWeight(0.12);
                 suggestedFinancialInstruments.add(fiaw);
@@ -206,26 +210,41 @@ public class EntityWealthBuilder {
                 suggestedFinancialInstruments.add(fiaw);
             } else if (allFinancialInstruments.get(i).getName().equals(EnumUtils.FinancialInstrumentClass.EMERGING_MARKET_STOCKS)) {
                 FinancialInstrumentAndWeight fiaw = new FinancialInstrumentAndWeight();
+                fiaw.setBuyingNumberOfShare(1222);
+                fiaw.setBuyingValuePerShare(9.0);
+                fiaw.setCurrentValuePerShare(9.0);
                 fiaw.setFi(allFinancialInstruments.get(i));
                 fiaw.setWeight(0.11);
                 suggestedFinancialInstruments.add(fiaw);
             } else if (allFinancialInstruments.get(i).getName().equals(EnumUtils.FinancialInstrumentClass.FOREIGN_DEVELOPED_STOCKS)) {
                 FinancialInstrumentAndWeight fiaw = new FinancialInstrumentAndWeight();
+                fiaw.setBuyingNumberOfShare(3000);
+                fiaw.setBuyingValuePerShare(5.0);
+                fiaw.setCurrentValuePerShare(5.0);
                 fiaw.setFi(allFinancialInstruments.get(i));
                 fiaw.setWeight(0.15);
                 suggestedFinancialInstruments.add(fiaw);
             } else if (allFinancialInstruments.get(i).getName().equals(EnumUtils.FinancialInstrumentClass.MUNICIPAL_BONDS)) {
                 FinancialInstrumentAndWeight fiaw = new FinancialInstrumentAndWeight();
+                fiaw.setBuyingNumberOfShare(166);
+                fiaw.setBuyingValuePerShare(6.0);
+                fiaw.setCurrentValuePerShare(6.0);
                 fiaw.setFi(allFinancialInstruments.get(i));
                 fiaw.setWeight(0.01);
                 suggestedFinancialInstruments.add(fiaw);
             } else if (allFinancialInstruments.get(i).getName().equals(EnumUtils.FinancialInstrumentClass.NATURAL_RESOURCES)) {
                 FinancialInstrumentAndWeight fiaw = new FinancialInstrumentAndWeight();
+                fiaw.setBuyingNumberOfShare(1444);
+                fiaw.setBuyingValuePerShare(9.0);
+                fiaw.setCurrentValuePerShare(9.0);
                 fiaw.setFi(allFinancialInstruments.get(i));
                 fiaw.setWeight(0.13);
                 suggestedFinancialInstruments.add(fiaw);
             } else if (allFinancialInstruments.get(i).getName().equals(EnumUtils.FinancialInstrumentClass.REAL_ESTATE)) {
                 FinancialInstrumentAndWeight fiaw = new FinancialInstrumentAndWeight();
+                fiaw.setBuyingNumberOfShare(1125);
+                fiaw.setBuyingValuePerShare(8.0);
+                fiaw.setCurrentValuePerShare(8.0);
                 fiaw.setFi(allFinancialInstruments.get(i));
                 fiaw.setWeight(0.09);
                 suggestedFinancialInstruments.add(fiaw);
@@ -236,11 +255,17 @@ public class EntityWealthBuilder {
                 suggestedFinancialInstruments.add(fiaw);
             } else if (allFinancialInstruments.get(i).getName().equals(EnumUtils.FinancialInstrumentClass.US_GOVERNMENT_BONDS)) {
                 FinancialInstrumentAndWeight fiaw = new FinancialInstrumentAndWeight();
+                fiaw.setBuyingNumberOfShare(1200);
+                fiaw.setBuyingValuePerShare(5.0);
+                fiaw.setCurrentValuePerShare(5.0);
                 fiaw.setFi(allFinancialInstruments.get(i));
                 fiaw.setWeight(0.06);
                 suggestedFinancialInstruments.add(fiaw);
             } else if (allFinancialInstruments.get(i).getName().equals(EnumUtils.FinancialInstrumentClass.US_STOCKS)) {
                 FinancialInstrumentAndWeight fiaw = new FinancialInstrumentAndWeight();
+                fiaw.setBuyingNumberOfShare(3300);
+                fiaw.setBuyingValuePerShare(10.0);
+                fiaw.setCurrentValuePerShare(10.0);
                 fiaw.setFi(allFinancialInstruments.get(i));
                 fiaw.setWeight(0.33);
                 suggestedFinancialInstruments.add(fiaw);
@@ -254,7 +279,7 @@ public class EntityWealthBuilder {
         
         
         Portfolio p = new Portfolio();
-        p.setStatus(EnumUtils.PortfolioStatus.PENDING);
+        p.setStatus(EnumUtils.PortfolioStatus.BOUGHT);
         portfolioSessionBean.createPortfolio(p);
         p.setExecutedInvestmentPlan(executedInvestmentPlan);
         p.setWealthManagementSubscriber(wms);
@@ -264,7 +289,7 @@ public class EntityWealthBuilder {
         
         investmentPlanSessionBean.updateInvestmentPlan(executedInvestmentPlan);
        
-        return wms;
+        return p;
     }
 
     public static void constructPortfolioModel() {
