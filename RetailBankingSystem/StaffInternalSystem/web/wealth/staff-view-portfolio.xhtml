@@ -25,8 +25,6 @@
 
                         <p:commandButton value="RETRIEVE" action="#{viewPortfolioManagedBean.searchCustomerFullName(viewPortfolioManagedBean.searchText)}" update="mainForm"/>
 
-
-
                         <p:messages id="messagesStatus" redisplay="false" >
                             <h:panelGrid columns="2" cellpadding="5">
                                 <p:dataTable value="#{viewPortfolioManagedBean.portfolios}" var="p" >
@@ -36,20 +34,18 @@
                                     <p:column headerText="Customer Name">
                                         <h:outputText value="#{p.wealthManagementSubscriber.mainAccount.customer.fullName}" />
                                     </p:column>
-                                    <p:column headerText="Total Deposit Amount">
-                                        <h:outputText value="#{viewPortfolioManagedBean.getTotalDepositAmount(p.wealthManagementSubscriber.mainAccount)}" />
-                                    </p:column>
-                                    <p:column headerText="Total Debt Amount">
-                                        <h:outputText value="#{viewPortfolioManagedBean.getTotalDebtAmount(p.wealthManagementSubscriber.mainAccount)}" />
-                                    </p:column>
-                                    <p:column headerText="Current Ratio">
-                                        <h:outputText value="#{viewPortfolioManagedBean.getCurrentRatio(p.wealthManagementSubscriber.mainAccount)}" />
+                                    <p:column headerText="Investment Amount">
+                                        <h:outputText value="S$#{p.executedInvestmentPlan.amountOfInvestment}" />
                                     </p:column>
                                     <p:column headerText="Investment Assets to Total Assets">
                                         <h:outputText value="#{p.executedInvestmentPlan.systemPredictReturn}" />
                                     </p:column>
-                                    <p:column headerText="Investment % Change">
-                                        <h:outputText value="#{viewPortfolioManagedBean.getPortfolioPercentageChange(p.wealthManagementSubscriber.mainAccount)}" />
+                                    <p:column headerText="Current Return">
+                                        <h:outputText value="#{(p.totalCurrentValue/p.totalBuyingValue*100).shortValue()-100}%" rendered="#{p.status == 'BOUGHT'}" />
+                                        <h:outputText value="NaN(Update Portfolio First)" rendered="#{p.status != 'BOUGHT'}" />
+                                    </p:column>
+                                    <p:column headerText="Status">
+                                        <h:outputText value="#{p.status}" />
                                     </p:column>
                                     <p:column headerText="Action">
                                         <p:commandButton value="View Details" action="#{viewPortfolioManagedBean.viewPortfolioDetail(p)}" icon="ui-icon-lightbulb" update="@form" />

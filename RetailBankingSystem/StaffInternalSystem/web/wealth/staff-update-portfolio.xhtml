@@ -147,7 +147,8 @@
                                             </h:outputText>
                                         </p:column> 
                                          <p:column rendered="#{fi.weight != 0.0}">
-                                             <h:outputText value="#{(fi.currentValuePerShare/fi.buyingValuePerShare *100).shortValue() - 100}%" /> 
+                                             <h:outputText value="#{(fi.currentValuePerShare/fi.buyingValuePerShare *100).shortValue() - 100}%" rendered="#{updatePortfolioManagedBean.p.status == 'BOUGHT'}"/> 
+                                             <h:outputText value="0%" rendered="#{updatePortfolioManagedBean.p.status != 'BOUGHT'}"/> 
                                         </p:column>                    
 
                                         <p:columnGroup type="footer">
@@ -157,7 +158,8 @@
                                                 <p:column footerText="$#{updatePortfolioManagedBean.p.totalBuyingValue}" />
                                                 <p:column />
                                                 <p:column footerText="$#{updatePortfolioManagedBean.p.totalCurrentValue}" />
-                                                <p:column footerText="#{(updatePortfolioManagedBean.p.totalCurrentValue/updatePortfolioManagedBean.p.totalBuyingValue*100).shortValue()-100}%"/>
+                                                <p:column footerText="#{(updatePortfolioManagedBean.p.totalCurrentValue/updatePortfolioManagedBean.p.totalBuyingValue*100).shortValue()-100}%" rendered="#{updatePortfolioManagedBean.p.status == 'BOUGHT'}"/>
+                                                <p:column footerText="0%" rendered="#{updatePortfolioManagedBean.p.status != 'BOUGHT'}"/>
                                             </p:row>
                                         </p:columnGroup>
                                     </p:dataTable>
