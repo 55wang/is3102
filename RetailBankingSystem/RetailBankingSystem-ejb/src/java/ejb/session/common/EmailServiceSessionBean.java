@@ -10,6 +10,7 @@ import entity.customer.CustomerCase;
 import entity.customer.MainAccount;
 import entity.loan.LoanAccount;
 import entity.loan.LoanApplication;
+import entity.staff.StaffAccount;
 import java.util.Date;
 import java.util.Properties;
 import javax.ejb.Asynchronous;
@@ -37,7 +38,7 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
     String emailServerName = "mailauth.comp.nus.edu.sg";
     String mailer = "JavaMailer";
 
-    
+    @Asynchronous
     @Override
     public void sendUpdatePortfolioNotice(String recipient) {
         Session session = getSession();
@@ -62,9 +63,9 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
         }
     }
 
-    
+    @Asynchronous
     @Override
-    public Boolean sendActivationEmailForCustomer(String recipient) {
+    public void sendActivationEmailForCustomer(String recipient) {
         String activationCode = "123456";
 
         try {
@@ -91,16 +92,14 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
                 msg.setSentDate(timeStamp);
                 Transport.send(msg);
             }
-            return true;
         } catch (MessagingException mex) {
             System.out.println("send failed, exception: " + mex);
-            return false;
         }
     }
 
-    
+    @Asynchronous
     @Override
-    public Boolean sendActivationGmailForCustomer(String recipient, String pwd) {
+    public void sendActivationGmailForCustomer(String recipient, String pwd) {
 
         Session session = getSession();
 
@@ -117,18 +116,16 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
             Transport.send(message);
 
             System.out.println("Email send out successfully");
-            return (true);
 
         } catch (MessagingException e) {
             System.out.println(e);
-            return (false);
         }
 
     }
 
-    
+    @Asynchronous
     @Override
-    public Boolean sendCreditCardActivationGmailForCustomer(String recipient, String pwd, String ccNumber) {
+    public void sendCreditCardActivationGmailForCustomer(String recipient, String pwd, String ccNumber) {
         Session session = getSession();
 
         try {
@@ -145,18 +142,16 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
             Transport.send(message);
 
             System.out.println("Email send out successfully");
-            return (true);
 
         } catch (MessagingException e) {
             System.out.println(e);
-            return (false);
         }
 
     }
 
-    
+    @Asynchronous
     @Override
-    public Boolean sendchargeBackGmailForSuccessfulCustomer(String recipient, Long ID) {
+    public void sendchargeBackGmailForSuccessfulCustomer(String recipient, Long ID) {
 
         Session session = getSession();
 
@@ -173,18 +168,16 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
             Transport.send(message);
 
             System.out.println("Email send out successfully");
-            return (true);
 
         } catch (MessagingException e) {
             System.out.println(e);
-            return (false);
         }
 
     }
 
-    
+    @Asynchronous
     @Override
-    public Boolean sendchargeBackGmailForRejectedCustomer(String recipient, Long ID) {
+    public void sendchargeBackGmailForRejectedCustomer(String recipient, Long ID) {
 
         Session session = getSession();
 
@@ -201,18 +194,16 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
             Transport.send(message);
 
             System.out.println("Email send out successfully");
-            return (true);
 
         } catch (MessagingException e) {
             System.out.println(e);
-            return (false);
         }
 
     }
 
-    
+    @Asynchronous
     @Override
-    public Boolean sendRequireAdditionalInfo(String recipient, String msg) {
+    public void sendRequireAdditionalInfo(String recipient, String msg) {
 
         Session session = getSession();
 
@@ -228,18 +219,16 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
             Transport.send(message);
 
             System.out.println("sendRequireAdditionalInfo: Email send out successfully");
-            return (true);
 
         } catch (MessagingException e) {
             System.out.println(e);
-            return (false);
         }
 
     }
 
-    
+    @Asynchronous
     @Override
-    public Boolean sendActivationGmailForStaff(String recipient, String pwd) {
+    public void sendActivationGmailForStaff(String recipient, String pwd) {
 
         Session session = getSession();
 
@@ -256,18 +245,16 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
             Transport.send(message);
 
             System.out.println("Email send out successfully");
-            return (true);
 
         } catch (MessagingException e) {
             System.out.println(e);
-            return (false);
         }
 
     }
 
-    
+    @Asynchronous
     @Override
-    public Boolean sendUserIDforForgottenCustomer(String recipient, MainAccount forgotAccount) {
+    public void sendUserIDforForgottenCustomer(String recipient, MainAccount forgotAccount) {
         Session session = getSession();
 
         try {
@@ -282,17 +269,15 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
             Transport.send(message);
 
             System.out.println("Email send out successfully");
-            return (true);
 
         } catch (MessagingException e) {
             System.out.println(e);;
-            return (false);
         }
     }
 
-    
+    @Asynchronous
     @Override
-    public Boolean sendUserNameforForgottenStaff(String recipient, String username) {
+    public void sendUserNameforForgottenStaff(String recipient, String username) {
         Session session = getSession();
 
         try {
@@ -307,17 +292,15 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
             Transport.send(message);
 
             System.out.println("Email send out successfully");
-            return (true);
 
         } catch (MessagingException e) {
             System.out.println(e);;
-            return (false);
         }
     }
 
-    
+    @Asynchronous
     @Override
-    public Boolean sendResetPwdLinkforForgottenCustomer(String recipient, MainAccount forgotAccount) {
+    public void sendResetPwdLinkforForgottenCustomer(String recipient, MainAccount forgotAccount) {
         Session session = getSession();
 
         try {
@@ -327,22 +310,21 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
             message.setRecipients(Message.RecipientType.TO,
                     InternetAddress.parse(recipient));
             message.setSubject("Reset your password");
-            message.setText("Dear Customer, please go to following link to reset your password: ");
+            message.setText("Dear Customer, please go to following link to reset your password: \n"
+            + "https://localhost:8181/InternetBankingSystem/common/customer_activate_account.xhtml?email=" + recipient + "&code=" + forgotAccount.getPassword());
 
             Transport.send(message);
 
             System.out.println("Email send out successfully");
-            return (true);
 
         } catch (MessagingException e) {
             System.out.println(e);
-            return (false);
         }
     }
 
-    
+    @Asynchronous
     @Override
-    public Boolean sendResetPwdLinkforForgottenStaff(String recipient) {
+    public void sendResetPwdLinkforForgottenStaff(String recipient, StaffAccount forgotAccount) {
         Session session = getSession();
 
         try {
@@ -352,22 +334,21 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
             message.setRecipients(Message.RecipientType.TO,
                     InternetAddress.parse(recipient));
             message.setSubject("Reset your password");
-            message.setText("Dear Staff, please go to following link to reset your password: ");
+            message.setText("Dear Staff, please go to following link to reset your password: \n"
+            + "https://localhost:8181/StaffInternalSystem/common/staff_activate_account.xhtml?email=" + recipient + "&code=" + forgotAccount.getPassword());
 
             Transport.send(message);
 
             System.out.println("Email send out successfully");
-            return (true);
 
         } catch (MessagingException e) {
             System.out.println(e);
-            return (false);
         }
     }
 
-    
+    @Asynchronous
     @Override
-    public Boolean sendNewCaseConfirmationToCustomer(String recipient, CustomerCase cc) {
+    public void sendNewCaseConfirmationToCustomer(String recipient, CustomerCase cc) {
         Session session = getSession();
 
         try {
@@ -383,17 +364,15 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
             Transport.send(message);
 
             System.out.println("Email send out successfully");
-            return (true);
 
         } catch (MessagingException e) {
             System.out.println(e);
-            return (false);
         }
     }
 
-    
+    @Asynchronous
     @Override
-    public Boolean sendCancelCaseConfirmationToCustomer(String recipient, CustomerCase cc) {
+    public void sendCancelCaseConfirmationToCustomer(String recipient, CustomerCase cc) {
         Session session = getSession();
 
         try {
@@ -409,15 +388,13 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
             Transport.send(message);
 
             System.out.println("Email send out successfully");
-            return (true);
 
         } catch (MessagingException e) {
             System.out.println(e);
-            return (false);
         }
     }
 
-    
+    @Asynchronous
     @Override
     public void sendUpdatedProfile(String recipient) {
         Session session = getSession();
@@ -436,17 +413,15 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
             Transport.send(message);
 
             System.out.println("Email send out successfully");
-            return;
 
         } catch (MessagingException e) {
             System.out.println(e);
-            return;
         }
     }
 
-    
+    @Asynchronous
     @Override
-    public Boolean sendCaseStatusChangeToCustomer(String recipient, CustomerCase cc) {
+    public void sendCaseStatusChangeToCustomer(String recipient, CustomerCase cc) {
         Session session = getSession();
 
         try {
@@ -463,15 +438,13 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
             Transport.send(message);
 
             System.out.println("Email send out successfully");
-            return true;
 
         } catch (MessagingException e) {
             System.out.println(e);
-            return false;
         }
     }
 
-    
+    @Asynchronous
     @Override
     public void sendTransactionLimitChangeNotice(String recipient) {
         Session session = getSession();
@@ -490,15 +463,13 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
             Transport.send(message);
 
             System.out.println("Email send out successfully");
-            return;
 
         } catch (MessagingException e) {
             System.out.println(e);
-            return;
         }
     }
 
-    
+    @Asynchronous
     @Override
     public void sendLoanApplicationApprovalNotice(String recipient) {
         Session session = getSession();
@@ -517,15 +488,13 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
             Transport.send(message);
 
             System.out.println("Email send out successfully");
-            return;
 
         } catch (MessagingException e) {
             System.out.println(e);
-            return;
         }
     }
     
-    
+    @Asynchronous
     @Override
     public void sendLoanApplicationRejectNotice(String recipient) {
         Session session = getSession();
@@ -543,15 +512,13 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
             Transport.send(message);
 
             System.out.println("Email send out successfully");
-            return;
 
         } catch (MessagingException e) {
             System.out.println(e);
-            return;
         }
     }
 
-    
+    @Asynchronous
     @Override
     public void sendCreditCardApplicationNotice(String recipient) {
         Session session = getSession();
@@ -570,17 +537,15 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
             Transport.send(message);
 
             System.out.println("Email send out successfully");
-            return;
 
         } catch (MessagingException e) {
             System.out.println(e);
-            return;
         }
     }
 
-    
+    @Asynchronous
     @Override
-    public Boolean sendLoanApplicationNoticeToStaff(LoanApplication lp) {
+    public void sendLoanApplicationNoticeToStaff(LoanApplication lp) {
 
         Session session = getSession();
 
@@ -602,18 +567,16 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
             Transport.send(message);
 
             System.out.println("Email send out successfully");
-            return (true);
 
         } catch (MessagingException e) {
             System.out.println(e);
-            return (false);
         }
 
     }
 
-    
+    @Asynchronous
     @Override
-    public Boolean sendLoanApplicationNoticeToCustomer(String recipient) {
+    public void sendLoanApplicationNoticeToCustomer(String recipient) {
 
         Session session = getSession();
 
@@ -630,18 +593,16 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
             Transport.send(message);
 
             System.out.println("Email send out successfully");
-            return (true);
 
         } catch (MessagingException e) {
             System.out.println(e);
-            return (false);
         }
 
     }
 
-    
+    @Asynchronous
     @Override
-    public Boolean sendPaymentReminderEmailToCustomer(String recipient, String loanAccountNumber, Date paymentDate) {
+    public void sendPaymentReminderEmailToCustomer(String recipient, String loanAccountNumber, Date paymentDate) {
 
         Session session = getSession();
 
@@ -658,18 +619,16 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
             Transport.send(message);
 
             System.out.println("Email send out successfully");
-            return (true);
 
         } catch (MessagingException e) {
             System.out.println(e);
-            return (false);
         }
 
     }
 
-    
+    @Asynchronous
     @Override
-    public Boolean sendLatePaymentReminderEmailToCustomer(String recipient, String loanAccountNumber, Date paymentDate) {
+    public void sendLatePaymentReminderEmailToCustomer(String recipient, String loanAccountNumber, Date paymentDate) {
 
         Session session = getSession();
 
@@ -686,18 +645,16 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
             Transport.send(message);
 
             System.out.println("Email send out successfully");
-            return (true);
 
         } catch (MessagingException e) {
             System.out.println(e);
-            return (false);
         }
 
     }
 
-    
+    @Asynchronous
     @Override
-    public Boolean sendBadLoanNoticeToLoanOfficer(LoanAccount loanAccount) {
+    public void sendBadLoanNoticeToLoanOfficer(LoanAccount loanAccount) {
 
         Session session = getSession();
         Customer customer = loanAccount.getMainAccount().getCustomer();
@@ -720,11 +677,9 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
             Transport.send(message);
 
             System.out.println("Email send out successfully");
-            return (true);
 
         } catch (MessagingException e) {
             System.out.println(e);
-            return (false);
         }
 
     }
