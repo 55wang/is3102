@@ -42,7 +42,7 @@ public class UpdateRateManagedBean implements Serializable {
         System.out.print(sb.getRate());
         loanProductBean.updateSIBORInterest(sb);
         MessageUtils.displayInfo("3-month SIBOR has been updated successfully");
-           
+        preSibor = rate;
     }
 
     public LoanExternalInterest getSb() {

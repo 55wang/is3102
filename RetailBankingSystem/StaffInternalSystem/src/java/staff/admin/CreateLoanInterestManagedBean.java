@@ -33,7 +33,7 @@ public class CreateLoanInterestManagedBean implements Serializable {
     private String selectedInterestType = EnumUtils.LoanProductType.LOAN_PRODUCT_TYPE_PERSONAL.toString();
     private String loanName;
     private Double loanRate;
-    private Integer startMonth;
+    private Integer startMonth = 0;
     private Integer endMonth;
 
     // added interests
