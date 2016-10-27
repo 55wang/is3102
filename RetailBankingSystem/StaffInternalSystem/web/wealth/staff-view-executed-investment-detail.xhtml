@@ -14,13 +14,13 @@
         </h:head>
         <h:body>
             <em:staffNavBar context="wealth"></em:staffNavBar>
-            <em:staffSideBar top="wealth" side="viewPortfolio"></em:staffSideBar>
+            <em:staffSideBar top="wealth" side="viewInvestList"></em:staffSideBar>
             <f:metadata>
                 <f:viewParam name="port" value="#{updatePortfolioManagedBean.portfolioID}" />
             </f:metadata>
             <div class="container">
                 <h:form id="mainForm">
-                    <p:panel header="Portfolio Information">    
+                    <p:panel header="Executed Investment Plan Information">    
                                 <p:dataTable var="fi" value="#{viewPortfolioDetailManagedBean.p.executedInvestmentPlan.suggestedFinancialInstruments}" >
                                         <p:columnGroup type="header">
                                             <p:row>
@@ -85,7 +85,7 @@
                                         </p:columnGroup>
                                     </p:dataTable>
                                     <br />
-                                    <p:commandButton value="Update Portfolio Value" action="#{viewPortfolioDetailManagedBean.view()}" icon="ui-icon-lightbulb" update="@form" style="float: right"/>
+                                    <p:commandButton value="Update Value" action="#{viewPortfolioDetailManagedBean.view()}" icon="ui-icon-lightbulb" update="@form" style="float: right"/>
                                     <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true"/>
                                     
                                 </p:panel>

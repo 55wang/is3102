@@ -60,7 +60,7 @@ public class StaffLoginManagedBean implements Serializable {
         utilsBean.persist(a);
 //        StaffAccount sa = staffBean.loginAccount("loan_officer", HashPwdUtils.hashPwd("password"));
 //        SessionUtils.setStaffAccount(sa);
-//        RedirectUtils.redirect(SessionUtils.getContextPath() + "/wealth/staff-view-portfolio.xhtml");
+//        RedirectUtils.redirect(SessionUtils.getContextPath() + "/wealth/staff-view-executed-investment");
     }
 
     public void loginStaff(ActionEvent event) {

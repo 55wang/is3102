@@ -20,22 +20,13 @@
             </f:metadata>
             <div class="container">
                 <h:form id="mainForm">
-                    <p:panel header="Update Portfolio">
-                        <p:growl id="msgs" showDetail="true" />
-                        <h:outputText value="Portfolio ID: "/>
-                        <h:inputText value="#{updatePortfolioManagedBean.portfolioID}"/>
-
-                        <p:commandButton value="RETRIEVE" action="#{updatePortfolioManagedBean.retrievePortfolio()}" update="@form"/>
-                        <p:commandButton value="VIEW DETAIL" action="#{updatePortfolioManagedBean.viewPortfolioDetail()}"/>
-                    </p:panel>
-                        <c:if test="#{updatePortfolioManagedBean.p != null}">
-                            <br/>
+                    <p:panel header="Select Update Type">
                             <p:selectOneButton id="updateType" value="#{updatePortfolioManagedBean.updateType}">
                                 <f:selectItem itemLabel="Update Buying Value" itemValue="#{updatePortfolioManagedBean.updateBuy}" />
                                 <f:selectItem itemLabel="Update Current Value" itemValue="#{updatePortfolioManagedBean.updateCurrent}" />
                                 <f:ajax render="@form" />
                             </p:selectOneButton>
-                            <br/><br/><br/>
+                    </p:panel>
                     
                             <p:panel header="Update Buying Value" rendered="#{updatePortfolioManagedBean.updateType == updatePortfolioManagedBean.updateBuy}">
                             <p:dataTable var="fi" value="#{updatePortfolioManagedBean.p.executedInvestmentPlan.suggestedFinancialInstruments}">
@@ -169,7 +160,6 @@
                                     <p:commandButton value="Reset" action="#{updatePortfolioManagedBean.resetCurrentValue()}" update="@form" oncomplete="setTimeout(function() { $('.ui-messages-info.ui-corner-all').slideUp(); },  3000);"/>
                                     <p:commandButton value="Update" action="#{updatePortfolioManagedBean.updateCurrentPortfolio()}" update="@form" oncomplete="setTimeout(function() { $('.ui-messages-info.ui-corner-all').slideUp(); },  3000);"/>
                                 </p:panel>
-                        </c:if>
                 </h:form>
             </div>
 
