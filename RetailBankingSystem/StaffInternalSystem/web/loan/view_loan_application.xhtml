@@ -25,7 +25,7 @@
                             <h:panelGrid columns="4" style="width:100%" cellpadding="5" class="border-bottom" >
 
                                 <h:outputText value="Status:"/>
-                                <h:outputText value="#{loanApplication.status}"/>
+                                <h:outputText value="#{loanApplication.status} #{viewLoanApplicationManagedBean.STATUS_NEW}"/>
                                 
                                 <h:outputText value="Customer Name:"/>
                                 <h:outputText value="#{loanApplication.name}"/>
@@ -71,8 +71,9 @@
                                 </c:if>
 
                             </h:panelGrid>
-                            <p:commandButton value="Start Process" action="#{viewLoanApplicationManagedBean.startProcess(loanApplication)}" update="mainForm"/> 
-                            <p:commandButton value="Create Account" action="#{viewLoanApplicationManagedBean.creatLoanAccount(loanApplication)}" update="mainForm"/> 
+                            <p:commandButton value="Start Process" action="#{viewLoanApplicationManagedBean.startProcess(loanApplication)}" update="mainForm" rendered="#{loanApplication.status.toString() == viewLoanApplicationManagedBean.STATUS_NEW}" /> 
+                            <p:commandButton value="Create Account" action="#{viewLoanApplicationManagedBean.creatLoanAccount(loanApplication)}" update="mainForm" rendered="#{loanApplication.status.toString() == viewLoanApplicationManagedBean.STATUS_INPROGRESS}" /> 
+                            
                     </p:dataScroller>
                 </p:panel>
             </h:form>

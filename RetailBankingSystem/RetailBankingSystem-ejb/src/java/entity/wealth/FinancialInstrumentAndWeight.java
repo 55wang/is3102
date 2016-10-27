@@ -27,7 +27,6 @@ public class FinancialInstrumentAndWeight implements Serializable {
     private FinancialInstrument fi;
     private Double weight;
     private Double currentValuePerShare = 0.0;
-    private Integer currentNumberOfShare = 0;
     private Double buyingValuePerShare = 0.0;
     private Integer buyingNumberOfShare = 0;
 
@@ -86,14 +85,6 @@ public class FinancialInstrumentAndWeight implements Serializable {
 
     public void setCurrentValuePerShare(Double currentValuePerShare) {
         this.currentValuePerShare = currentValuePerShare;
-    }
-
-    public Integer getCurrentNumberOfShare() {
-        return currentNumberOfShare;
-    }
-
-    public void setCurrentNumberOfShare(Integer currentNumberOfShare) {
-        this.currentNumberOfShare = currentNumberOfShare;
     }
 
     public Double getBuyingValuePerShare() {

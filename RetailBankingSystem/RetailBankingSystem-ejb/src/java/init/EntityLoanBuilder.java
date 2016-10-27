@@ -26,7 +26,6 @@ import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
 import org.apache.commons.lang.time.DateUtils;
 import server.utilities.ConstantUtils;
-import static server.utilities.ConstantUtils.DEMO_MAIN_ACCOUNT_USER_ID_2;
 import server.utilities.EnumUtils;
 
 /**
@@ -132,7 +131,7 @@ public class EntityLoanBuilder {
         loanInterest1.setStartMonth(0);
         loanInterest1.setEndMonth(12); // need to differetiate
         loanInterest1.setProductType(EnumUtils.LoanProductType.LOAN_PRODUCT_TYPE_PERSONAL);
-        loanInterest1.setInterestRate(0.2);
+        loanInterest1.setInterestRate(0.08);
         loanInterest1 = loanProductSessionBean.createLoanInterest(loanInterest1);
         
         LoanInterestCollection lic = new LoanInterestCollection();
@@ -177,9 +176,6 @@ public class EntityLoanBuilder {
         loanAccount = loanAccountSessionBean.createLoanAccount(loanAccount);
         System.out.print("EntityLoanBuilder PERSONAL LOAN ========== " + loanAccount.getAccountNumber());
         List<LoanPaymentBreakdown> result = loanPaymentSessionBean.futurePaymentBreakdown(loanAccount);
-        for (LoanPaymentBreakdown r : result) {
-            System.out.println(r.toString());
-        }
         
         // end of personal loan
     }
@@ -236,9 +232,6 @@ public class EntityLoanBuilder {
         loanAccount = loanAccountSessionBean.createLoanAccount(loanAccount);
         System.out.print("EntityLoanBuilder PERSONAL LOAN ========== " + loanAccount.getAccountNumber());
         List<LoanPaymentBreakdown> result = loanPaymentSessionBean.futurePaymentBreakdown(loanAccount);
-        for (LoanPaymentBreakdown r : result) {
-            System.out.println(r.toString());
-        }
         
         // end of personal loan
     }
@@ -296,9 +289,6 @@ public class EntityLoanBuilder {
         loanAccount = loanAccountSessionBean.createLoanAccount(loanAccount);
         System.out.print("EntityLoanBuilder CAR LOAN========== " + loanAccount.getAccountNumber());
         List<LoanPaymentBreakdown> result = loanPaymentSessionBean.futurePaymentBreakdown(loanAccount);
-        for (LoanPaymentBreakdown r : result) {
-            System.out.println(r.toString());
-        }
         
         // end of car loan
     }
@@ -393,9 +383,7 @@ public class EntityLoanBuilder {
         loanAccount = loanAccountSessionBean.createLoanAccount(loanAccount);
         System.out.print("EntityLoanBuilder HDB LOAN========== " + loanAccount.getAccountNumber());
         List<LoanPaymentBreakdown> result = loanPaymentSessionBean.futurePaymentBreakdown(loanAccount);
-        for (LoanPaymentBreakdown r : result) {
-            System.out.println(r.toString());
-        }
+
     }
     
     private void initDemoHDBLoanSIBOR() {
@@ -482,9 +470,7 @@ public class EntityLoanBuilder {
         loanAccount = loanAccountSessionBean.createLoanAccount(loanAccount);
         System.out.print("EntityLoanBuilder HDB LOAN========== " + loanAccount.getAccountNumber());
         List<LoanPaymentBreakdown> result = loanPaymentSessionBean.futurePaymentBreakdown(loanAccount);
-        for (LoanPaymentBreakdown r : result) {
-            System.out.println(r.toString());
-        }
+
     }
     
     private void initDemoPPLoanAccount() {

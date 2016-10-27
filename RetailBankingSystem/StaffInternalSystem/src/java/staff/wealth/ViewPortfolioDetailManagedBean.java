@@ -17,6 +17,7 @@ import javax.ejb.EJB;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
+import utils.RedirectUtils;
 
 /**
  *
@@ -51,6 +52,10 @@ public class ViewPortfolioDetailManagedBean extends ViewPortfolioAbstractBean im
         
         //portfolioFt = factSessionBean.getLatestPortfolioFtByCustomerIdPortfolioId(1L, 2L);
         //portfolioFtLineGraph = factSessionBean.getListPortfoliosFtByCustomerIdPortfolioId(1L, 2L);
+    }
+    
+    public void view(){
+        RedirectUtils.redirect("staff-update-portfolio.xhtml?port=" + portfolioID);
     }
 
     public SinglePortfolioFactTable getPortfolioFt() {

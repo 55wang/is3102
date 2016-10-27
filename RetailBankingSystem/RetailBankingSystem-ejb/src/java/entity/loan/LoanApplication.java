@@ -8,12 +8,15 @@ package entity.loan;
 import entity.customer.MainAccount;
 import entity.staff.StaffAccount;
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import server.utilities.EnumUtils;
 
 /**
@@ -26,6 +29,8 @@ public class LoanApplication implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    @Temporal(value = TemporalType.TIMESTAMP)
+    private Date creationDate = new Date();
     
     // info
     private String name;
@@ -290,6 +295,20 @@ public class LoanApplication implements Serializable {
      */
     public void setMainAccount(MainAccount mainAccount) {
         this.mainAccount = mainAccount;
+    }
+
+    /**
+     * @return the creationDate
+     */
+    public Date getCreationDate() {
+        return creationDate;
+    }
+
+    /**
+     * @param creationDate the creationDate to set
+     */
+    public void setCreationDate(Date creationDate) {
+        this.creationDate = creationDate;
     }
     
 }

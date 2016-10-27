@@ -139,6 +139,12 @@ public class LoanProductSessionBean implements LoanProductSessionBeanLocal {
     }
     
     @Override
+    public LoanExternalInterest updateSIBORInterest(LoanExternalInterest siborRate){
+        em.merge(siborRate);
+        return siborRate;
+    }
+    
+    @Override
     public List<LoanInterest> getAllLoanInterest() {
         Query q = em.createQuery("SELECT li FROM LoanInterest li WHERE li.isHistory = false");
         return q.getResultList();

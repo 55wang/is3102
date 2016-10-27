@@ -116,6 +116,7 @@
                                 </h:panelGrid>
 
                                 <div class="register-form-button">
+                                    <p:commandButton value="Back" type="button" onclick="PF('myWizard').back();" />
                                     <p:commandButton value="Next" actionListener="#{personalLoanApplicationManagedBean.applyPersonalLoan()}" update="@form:msgs"/>
                                 </div>
                             </p:panel>

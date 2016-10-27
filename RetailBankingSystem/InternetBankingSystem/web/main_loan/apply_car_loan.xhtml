@@ -99,7 +99,7 @@
                                 <h:panelGrid columns="2" cellpadding="5px" columnClasses="label, value">
                                     
                                     <h:outputText value="Maximum loan amount (S$):: " />
-                                    <h:outputText value="#{carLoanApplicationManagedBean.carLoanAmt}" styleClass="outputLabel">
+                                    <h:outputText value="#{carLoanApplicationManagedBean.maxCarLoanAmt}" styleClass="outputLabel">
                                         <f:convertNumber pattern="###00.00"/>
                                     </h:outputText>
 
@@ -124,6 +124,7 @@
                                 </h:panelGrid>
 
                                 <div class="register-form-button">
+                                    <p:commandButton value="Back" type="button" onclick="PF('myWizard').back();" />
                                     <p:commandButton value="Next" actionListener="#{carLoanApplicationManagedBean.applyCarLoan()}" update="@form:msgs"/>
                                 </div>
                             </p:panel>

@@ -63,11 +63,20 @@
                         <li class="side-menu-item #{cc.attrs.side == 'viewLoanApplication' ? 'active' : ''}">
                             <h:link outcome="view_loan_application" value="Loan Applications" />
                         </li>
+                        <li class="side-menu-item #{cc.attrs.side == 'viewLoanAdjustmentApplication' ? 'active' : ''}">
+                            <h:link outcome="view_loan_adjustment_application" value="Adjustment Applications" />
+                        </li>
                         <li class="side-menu-item #{cc.attrs.side == 'approveLoanAccount' ? 'active' : ''}">
                             <h:link outcome="approve_loan_account" value="Approve Loan Account" />
                         </li>
                         <li class="side-menu-item #{cc.attrs.side == 'loanCalculator' ? 'active' : ''}">
                             <h:link outcome="staff_loan_calculator_directory" value="Loan Calculator" />
+                        </li>
+                        <li class="side-menu-item #{cc.attrs.side == 'updateSiborRate' ? 'active' : ''}">
+                            <h:link outcome="update_sibor_rate" value="Update Sibor Rate" />
+                        </li>
+                        <li class="side-menu-item #{cc.attrs.side == 'loanAccountDetail' ? 'active' : ''}">
+                            <h:link outcome="customer_loan_account_details" value="Find Details" />
                         </li>
                     </c:if>
                     <c:if test="#{cc.attrs.top == 'message'}">
@@ -156,11 +165,11 @@
                         <li class="side-menu-item #{cc.attrs.side == 'viewInvestmentRequest' ? 'active' : ''}">
                             <h:link outcome="staff-view-investment-request" value="Investment Request" />
                         </li>
-                        <li class="side-menu-item #{cc.attrs.side == 'updatePortfolio' ? 'active' : ''}">
-                            <h:link outcome="staff-update-portfolio" value="Update Portfolio" />
-                        </li>
                         <li class="side-menu-item #{cc.attrs.side == 'viewPortfolio' ? 'active' : ''}">
                             <h:link outcome="staff-view-portfolio" value="View Portfolios" />
+                        </li>
+                        <li class="side-menu-item #{cc.attrs.side == 'updatePortfolio' ? 'active' : ''}">
+                            <h:link outcome="staff-update-portfolio" value="Update Portfolio" />
                         </li>
                     </c:if>
                 </ul>
