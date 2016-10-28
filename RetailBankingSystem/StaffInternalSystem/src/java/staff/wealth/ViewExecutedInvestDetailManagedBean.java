@@ -23,9 +23,9 @@ import utils.RedirectUtils;
  *
  * @author wang
  */
-@Named(value = "viewPortfolioDetailManagedBean")
+@Named(value = "viewExecutedInvestDetailManagedBean")
 @ViewScoped
-public class ViewPortfolioDetailManagedBean extends ViewPortfolioAbstractBean implements Serializable {
+public class ViewExecutedInvestDetailManagedBean extends ViewPortfolioAbstractBean implements Serializable {
 
     @EJB
     FactSessionBeanLocal factSessionBean;
@@ -39,7 +39,7 @@ public class ViewPortfolioDetailManagedBean extends ViewPortfolioAbstractBean im
     private String portfolioID;
     private Portfolio p;
     
-    public ViewPortfolioDetailManagedBean() {
+    public ViewExecutedInvestDetailManagedBean() {
 
     }
 
@@ -55,7 +55,7 @@ public class ViewPortfolioDetailManagedBean extends ViewPortfolioAbstractBean im
     }
     
     public void view(){
-        RedirectUtils.redirect("staff-update-portfolio.xhtml?port=" + portfolioID);
+        RedirectUtils.redirect("staff-update-executed-investment-plan.xhtml?port=" + portfolioID);
     }
 
     public SinglePortfolioFactTable getPortfolioFt() {

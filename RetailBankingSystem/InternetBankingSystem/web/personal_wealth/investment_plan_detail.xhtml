@@ -17,7 +17,7 @@
             <em:customerNavBar context="personal" personalPage="wealth"></em:customerNavBar>
             <div class="customer_main_container">
                 <h:form id="mainForm">
-                    <p:panel header="Suggested Invetment Plan" >
+                    <p:panel header="Suggested Invetment Plan" rendered="#{investmentPlanDetailManagedBean.investmentPlan.status != 'EXECUTED'}">
                         <h:panelGrid columns="2" columnClasses="left,right" style="width:100%">
                             <p:layoutUnit style="width:500px" position="left">
                                 <p:chart type="bar" model="#{investmentPlanDetailManagedBean.animatedModel}" style="height:320px"/>
@@ -96,6 +96,118 @@
                             </p:column>
                         </p:dataTable>
                     </p:panel>
+                    <p:panel header="Executed Investment Plan Information" rendered="#{investmentPlanDetailManagedBean.investmentPlan.status == 'EXECUTED'}">    
+                        <p:dataTable var="fi" value="#{investmentPlanDetailManagedBean.investmentPlan.suggestedFinancialInstruments}" >
+                                        <p:columnGroup type="header">
+                                            <p:row>
+                                                <p:column rowspan="3" headerText="Financial Instrument" style="width:320px;"/>
+                                                <p:column colspan="6" headerText="Buying Information" />
+                                            </p:row>
+                                            <p:row>
+                                                <p:column colspan="3" headerText="Total Investment" />
+                                                <p:column colspan="3" headerText="S$#{investmentPlanDetailManagedBean.investmentPlan.amountOfInvestment}" />
+                                            </p:row>
+                                            <p:row>
+                                                <p:column headerText="Number of Shares" />
+                                                <p:column headerText="Buying Value per Share" />
+                                                <p:column headerText="Buying Subtotal" />
+                                                <p:column headerText="Current Value per Share" />
+                                                <p:column headerText="Current Subtotal" />
+                                                <p:column headerText="Current Return" />
+                                            </p:row>
+                                        </p:columnGroup>
+                                        
+                                        <p:column rendered="#{fi.weight != 0.0}">
+                                            <h:outputText value="#{fi.fi.name}"/> 
+                                        </p:column>
+                                        <p:column rendered="#{fi.weight != 0.0}">
+                                            <h:outputText id="numberofshare" value="#{fi.buyingNumberOfShare}" /> 
+                                        </p:column>
+                                        <p:column rendered="#{fi.weight != 0.0}">
+                                             <h:outputText value="#{fi.buyingValuePerShare}">
+                                                <f:convertNumber type="currency" currencySymbol="S$" />
+                                            </h:outputText>
+                                        </p:column>
+                                        <p:column rendered="#{fi.weight != 0.0}">
+                                            <h:outputText value="#{fi.buyingValuePerShare * fi.buyingNumberOfShare}">
+                                                <f:convertNumber type="currency" currencySymbol="S$" />
+                                            </h:outputText>
+                                        </p:column> 
+                                        <p:column rendered="#{fi.weight != 0.0}">
+                                            <h:outputText value="#{fi.currentValuePerShare}">
+                                                <f:convertNumber type="currency" currencySymbol="S$" />
+                                            </h:outputText>
+                                        </p:column>
+                                        <p:column rendered="#{fi.weight != 0.0}">
+                                            <h:outputText value="#{fi.currentValuePerShare * fi.buyingNumberOfShare}">
+                                                <f:convertNumber type="currency" currencySymbol="S$" />
+                                            </h:outputText>
+                                        </p:column> 
+                                         <p:column rendered="#{fi.weight != 0.0}">
+                                             <h:outputText value="#{(fi.currentValuePerShare/fi.buyingValuePerShare *100).shortValue() - 100}%" rendered="#{investmentPlanDetailManagedBean.investmentPlan.portfolio.status == 'BOUGHT'}"/> 
+                                             <h:outputText value="0%" rendered="#{investmentPlanDetailManagedBean.investmentPlan.portfolio.status != 'BOUGHT'}"/> 
+                                        </p:column>                    
+
+                                        <p:columnGroup type="footer">
+                                            <p:row>
+                                                <p:column colspan="3" style="text-align:right" footerText="Totals:" /> 
+
+                                                <p:column footerText="$#{investmentPlanDetailManagedBean.investmentPlan.portfolio.totalBuyingValue}" />
+                                                <p:column />
+                                                <p:column footerText="$#{investmentPlanDetailManagedBean.investmentPlan.portfolio.totalCurrentValue}" />
+                                                <p:column footerText="#{(investmentPlanDetailManagedBean.investmentPlan.portfolio.totalCurrentValue/investmentPlanDetailManagedBean.investmentPlan.portfolio.totalBuyingValue*100).shortValue()-100}%" rendered="#{investmentPlanDetailManagedBean.investmentPlan.portfolio.status == 'BOUGHT'}"/>
+                                                <p:column footerText="0%" rendered="#{investmentPlanDetailManagedBean.investmentPlan.portfolio.status != 'BOUGHT'}"/>
+                                            </p:row>
+                                        </p:columnGroup>
+                                    </p:dataTable>
+                                    <br />
+                                    <p:separator/>
+                                    <h1>Original Request</h1>
+                                    <p:dataTable id="requestList2" value="#{investmentPlanDetailManagedBean.investmentPlan}" var="investmentRequest" sortMode="multiple" >
+                                        <p:column headerText="ID" sortBy="#{investmentRequest.id}" style="width:15px">
+                                            <h:outputText value="#{investmentRequest.id}" />
+                                        </p:column>
+
+                                        <p:column headerText="Create Date" sortBy="#{investmentRequest.creationDate}">
+                                            <h:outputText value="#{investmentRequest.creationDate}">
+                                                <f:convertDateTime pattern="MM/dd/yy" />
+                                            </h:outputText>
+                                        </p:column>
+
+                                        <p:column headerText="Expected Return" sortBy="#{investmentRequest.customerExpectedReturn}">
+                                            <h:outputText value="#{investmentRequest.customerExpectedReturn*100}%" />
+                                        </p:column>
+
+                                        <p:column headerText="Amount" sortBy="#{investmentRequest.amountOfInvestment}">
+                                            <h:outputText value="S$#{investmentRequest.amountOfInvestment}" />
+                                        </p:column>
+
+                                        <p:column headerText="Prefered Instruments" style="width:180px">
+                                            <p:scrollPanel style="width:180px;height:80px">
+                                                <p:repeat value="#{investmentRequest.preferedFinancialInstrument}" var="instrument" offset="" size="#{investmentRequest.preferedFinancialInstrument.size()}" step="1" varStatus="">
+                                                    <div style="margin-bottom: 10px">
+                                                        <h:outputText value="*#{instrument.name}" />
+                                                    </div>
+                                                </p:repeat>    
+                                            </p:scrollPanel>
+                                        </p:column>
+
+                                        <p:column headerText="Status" sortBy="#{investmentRequest.status}" style="width:100px">
+                                            <h:outputText value="#{investmentRequest.status}" />
+                                        </p:column>
+
+                                        <p:column headerText="Remarks" sortBy="#{investmentRequest.remarks}">
+                                            <h:outputText value="#{investmentRequest.remarks}" />
+                                        </p:column>
+
+                                        <p:column headerText="Customer" sortBy="#{investmentRequest.wealthManagementSubscriber}">
+                                            <h:outputText value="#{investmentRequest.wealthManagementSubscriber.mainAccount.customer.firstname}" />
+                                        </p:column>
+                                    </p:dataTable>
+                                    
+                                    <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true"/>
+                                    
+                                </p:panel>
                 </h:form>
             </div>
             <em:customerFooter></em:customerFooter>

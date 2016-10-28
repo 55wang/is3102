@@ -36,7 +36,7 @@ and open the template in the editor.
                                         <h:outputText value="Credit Card Number: " />
                                         <h:inputText value="#{manageCreditCardBillManagedBean.referenceNumber}" required="true" />
                                     </h:panelGrid>
-                                <p:commandButton  value="Next" type="button" onclick="PF('myWizard').next()" />
+                                <p:commandButton  value="Next" actionListener="#{manageCreditCardBillManagedBean.sendOpt()}" update="@form" />
                             </p:tab>
 
                             <p:tab id="verify_details" title="2.Verify Details">
@@ -45,6 +45,10 @@ and open the template in the editor.
                                     <h:outputText value="#{manageCreditCardBillManagedBean.getOrgName(manageCreditCardBillManagedBean.selectedBillId)}" />
                                     <h:outputText value="Credit Card Number: " />
                                     <h:outputText value="#{manageCreditCardBillManagedBean.referenceNumber}" />
+                                    
+                                    <h2>Input Token Number</h2>
+                                    <p:inputText value="#{manageCreditCardBillManagedBean.inputTokenString}" />
+                                    
                                     <p:commandButton  value="Back" type="button" onclick="PF('myWizard').back()" />
                                     <p:commandButton value="Add Bill Org" action="#{manageCreditCardBillManagedBean.addBillOrg}" update="form"/> 
                                 </h:panelGrid>

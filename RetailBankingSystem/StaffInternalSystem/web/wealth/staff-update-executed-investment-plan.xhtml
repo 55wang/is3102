@@ -16,29 +16,20 @@
             <em:staffNavBar context="wealth"></em:staffNavBar>
             <em:staffSideBar top="wealth" side="updatePortfolio"></em:staffSideBar>
             <f:metadata>
-                <f:viewParam name="port" value="#{updatePortfolioManagedBean.portfolioID}" />
+                <f:viewParam name="port" value="#{updateExecutedInvestManagedBean.portfolioID}" />
             </f:metadata>
             <div class="container">
                 <h:form id="mainForm">
-                    <p:panel header="Update Portfolio">
-                        <p:growl id="msgs" showDetail="true" />
-                        <h:outputText value="Portfolio ID: "/>
-                        <h:inputText value="#{updatePortfolioManagedBean.portfolioID}"/>
-
-                        <p:commandButton value="RETRIEVE" action="#{updatePortfolioManagedBean.retrievePortfolio()}" update="@form"/>
-                        <p:commandButton value="VIEW DETAIL" action="#{updatePortfolioManagedBean.viewPortfolioDetail()}"/>
-                    </p:panel>
-                        <c:if test="#{updatePortfolioManagedBean.p != null}">
-                            <br/>
-                            <p:selectOneButton id="updateType" value="#{updatePortfolioManagedBean.updateType}">
-                                <f:selectItem itemLabel="Update Buying Value" itemValue="#{updatePortfolioManagedBean.updateBuy}" />
-                                <f:selectItem itemLabel="Update Current Value" itemValue="#{updatePortfolioManagedBean.updateCurrent}" />
+                    <p:panel header="Select Update Type">
+                            <p:selectOneButton id="updateType" value="#{updateExecutedInvestManagedBean.updateType}">
+                                <f:selectItem itemLabel="Update Buying Value" itemValue="#{updateExecutedInvestManagedBean.updateBuy}" />
+                                <f:selectItem itemLabel="Update Current Value" itemValue="#{updateExecutedInvestManagedBean.updateCurrent}" />
                                 <f:ajax render="@form" />
                             </p:selectOneButton>
-                            <br/><br/><br/>
+                    </p:panel>
                     
-                            <p:panel header="Update Buying Value" rendered="#{updatePortfolioManagedBean.updateType == updatePortfolioManagedBean.updateBuy}">
-                            <p:dataTable var="fi" value="#{updatePortfolioManagedBean.p.executedInvestmentPlan.suggestedFinancialInstruments}">
+                            <p:panel header="Update Buying Value" rendered="#{updateExecutedInvestManagedBean.updateType == updateExecutedInvestManagedBean.updateBuy}">
+                            <p:dataTable var="fi" value="#{updateExecutedInvestManagedBean.p.executedInvestmentPlan.suggestedFinancialInstruments}">
                                         <p:columnGroup type="header">
                                             <p:row>
                                                 <p:column rowspan="3" headerText="Financial Instrument" style="width:320px;"/>
@@ -46,7 +37,7 @@
                                             </p:row>
                                             <p:row>
                                                 <p:column colspan="2" headerText="Total Investment" />
-                                                <p:column colspan="2" headerText="S$#{updatePortfolioManagedBean.p.executedInvestmentPlan.amountOfInvestment}" />
+                                                <p:column colspan="2" headerText="S$#{updateExecutedInvestManagedBean.p.executedInvestmentPlan.amountOfInvestment}" />
                                             </p:row>
                                             <p:row>
                                                 <p:column headerText="Number of Shares" />
@@ -62,13 +53,13 @@
                                         <p:column rendered="#{fi.weight != 0.0}">
                                             <h:outputText id="numberofshare" value="#{fi.buyingNumberOfShare}" /> 
                                         </p:column>
-                                        <p:column rendered="#{fi.weight != 0.0 and updatePortfolioManagedBean.p.status != 'BOUGHT'}">
-                                             <h:inputText value="#{fi.buyingValuePerShare}" onchange="#{updatePortfolioManagedBean.calculate()}">
+                                        <p:column rendered="#{fi.weight != 0.0 and updateExecutedInvestManagedBean.p.status != 'BOUGHT'}">
+                                             <h:inputText value="#{fi.buyingValuePerShare}" onchange="#{updateExecutedInvestManagedBean.calculate()}">
                                                 <p:ajax update="@form" process="@this"/>
                                                 <f:convertNumber type="currency" currencySymbol="S$" />
                                             </h:inputText>
                                         </p:column>
-                                        <p:column rendered="#{fi.weight != 0.0 and updatePortfolioManagedBean.p.status == 'BOUGHT'}">
+                                        <p:column rendered="#{fi.weight != 0.0 and updateExecutedInvestManagedBean.p.status == 'BOUGHT'}">
                                              <h:outputText value="#{fi.buyingValuePerShare}">
                                                 <f:convertNumber type="currency" currencySymbol="S$" />
                                             </h:outputText>
@@ -87,19 +78,19 @@
                                                 <p:column colspan="3" style="text-align:right" footerText="Totals:" />
                                                 <p:column footerText="100%" />
 
-                                                <p:column footerText="$#{updatePortfolioManagedBean.p.totalBuyingValue}" />
+                                                <p:column footerText="$#{updateExecutedInvestManagedBean.p.totalBuyingValue}" />
                                             </p:row>
                                         </p:columnGroup>
                                     </p:dataTable>
                                     <br />
                                     <p:messages id="messages1" showDetail="true" autoUpdate="true" closable="true"/>
                                     
-                                    <p:commandButton value="Reset" action="#{updatePortfolioManagedBean.reset()}" update="@form" oncomplete="setTimeout(function() { $('.ui-messages-info.ui-corner-all').slideUp(); },  3000);"/>
-                                    <p:commandButton value="Calculate" action="#{updatePortfolioManagedBean.calculate()}" update="@form" oncomplete="setTimeout(function() { $('.ui-messages-info.ui-corner-all').slideUp(); },  3000);"/>
-                                    <p:commandButton value="Update" action="#{updatePortfolioManagedBean.submitUpdateBuyingPortfolio()}" update="@form" oncomplete="setTimeout(function() { $('.ui-messages-info.ui-corner-all').slideUp(); },  3000);"/>
+                                    <p:commandButton value="Reset" action="#{updateExecutedInvestManagedBean.reset()}" update="@form" oncomplete="setTimeout(function() { $('.ui-messages-info.ui-corner-all').slideUp(); },  3000);"/>
+                                    <p:commandButton value="Calculate" action="#{updateExecutedInvestManagedBean.calculate()}" update="@form" oncomplete="setTimeout(function() { $('.ui-messages-info.ui-corner-all').slideUp(); },  3000);"/>
+                                    <p:commandButton value="Update" action="#{updateExecutedInvestManagedBean.submitUpdateBuyingPortfolio()}" update="@form" oncomplete="setTimeout(function() { $('.ui-messages-info.ui-corner-all').slideUp(); },  3000);"/>
                                 </p:panel>
-                                <p:panel header="Update Current Value" rendered="#{updatePortfolioManagedBean.updateType == updatePortfolioManagedBean.updateCurrent}">    
-                                <p:dataTable var="fi" value="#{updatePortfolioManagedBean.p.executedInvestmentPlan.suggestedFinancialInstruments}" >
+                                <p:panel header="Update Current Value" rendered="#{updateExecutedInvestManagedBean.updateType == updateExecutedInvestManagedBean.updateCurrent}">    
+                                <p:dataTable var="fi" value="#{updateExecutedInvestManagedBean.p.executedInvestmentPlan.suggestedFinancialInstruments}" >
                                         <p:columnGroup type="header">
                                             <p:row>
                                                 <p:column rowspan="3" headerText="Financial Instrument" style="width:320px;"/>
@@ -107,7 +98,7 @@
                                             </p:row>
                                             <p:row>
                                                 <p:column colspan="3" headerText="Total Investment" />
-                                                <p:column colspan="3" headerText="S$#{updatePortfolioManagedBean.p.executedInvestmentPlan.amountOfInvestment}" />
+                                                <p:column colspan="3" headerText="S$#{updateExecutedInvestManagedBean.p.executedInvestmentPlan.amountOfInvestment}" />
                                             </p:row>
                                             <p:row>
                                                 <p:column headerText="Number of Shares" />
@@ -147,29 +138,28 @@
                                             </h:outputText>
                                         </p:column> 
                                          <p:column rendered="#{fi.weight != 0.0}">
-                                             <h:outputText value="#{(fi.currentValuePerShare/fi.buyingValuePerShare *100).shortValue() - 100}%" rendered="#{updatePortfolioManagedBean.p.status == 'BOUGHT'}"/> 
-                                             <h:outputText value="0%" rendered="#{updatePortfolioManagedBean.p.status != 'BOUGHT'}"/> 
+                                             <h:outputText value="#{(fi.currentValuePerShare/fi.buyingValuePerShare *100).shortValue() - 100}%" rendered="#{updateExecutedInvestManagedBean.p.status == 'BOUGHT'}"/> 
+                                             <h:outputText value="0%" rendered="#{updateExecutedInvestManagedBean.p.status != 'BOUGHT'}"/> 
                                         </p:column>                    
 
                                         <p:columnGroup type="footer">
                                             <p:row>
                                                 <p:column colspan="3" style="text-align:right" footerText="Totals:" /> 
 
-                                                <p:column footerText="$#{updatePortfolioManagedBean.p.totalBuyingValue}" />
+                                                <p:column footerText="$#{updateExecutedInvestManagedBean.p.totalBuyingValue}" />
                                                 <p:column />
-                                                <p:column footerText="$#{updatePortfolioManagedBean.p.totalCurrentValue}" />
-                                                <p:column footerText="#{(updatePortfolioManagedBean.p.totalCurrentValue/updatePortfolioManagedBean.p.totalBuyingValue*100).shortValue()-100}%" rendered="#{updatePortfolioManagedBean.p.status == 'BOUGHT'}"/>
-                                                <p:column footerText="0%" rendered="#{updatePortfolioManagedBean.p.status != 'BOUGHT'}"/>
+                                                <p:column footerText="$#{updateExecutedInvestManagedBean.p.totalCurrentValue}" />
+                                                <p:column footerText="#{(updateExecutedInvestManagedBean.p.totalCurrentValue/updateExecutedInvestManagedBean.p.totalBuyingValue*100).shortValue()-100}%" rendered="#{updateExecutedInvestManagedBean.p.status == 'BOUGHT'}"/>
+                                                <p:column footerText="0%" rendered="#{updateExecutedInvestManagedBean.p.status != 'BOUGHT'}"/>
                                             </p:row>
                                         </p:columnGroup>
                                     </p:dataTable>
                                     <br />
                                     <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true"/>
                                     
-                                    <p:commandButton value="Reset" action="#{updatePortfolioManagedBean.resetCurrentValue()}" update="@form" oncomplete="setTimeout(function() { $('.ui-messages-info.ui-corner-all').slideUp(); },  3000);"/>
-                                    <p:commandButton value="Update" action="#{updatePortfolioManagedBean.updateCurrentPortfolio()}" update="@form" oncomplete="setTimeout(function() { $('.ui-messages-info.ui-corner-all').slideUp(); },  3000);"/>
+                                    <p:commandButton value="Reset" action="#{updateExecutedInvestManagedBean.resetCurrentValue()}" update="@form" oncomplete="setTimeout(function() { $('.ui-messages-info.ui-corner-all').slideUp(); },  3000);"/>
+                                    <p:commandButton value="Update" action="#{updateExecutedInvestManagedBean.updateCurrentPortfolio()}" update="@form" oncomplete="setTimeout(function() { $('.ui-messages-info.ui-corner-all').slideUp(); },  3000);"/>
                                 </p:panel>
-                        </c:if>
                 </h:form>
             </div>
 

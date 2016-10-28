@@ -3,13 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package customer.wealth;
+package staff.wealth;
 
 import ejb.session.cms.CustomerProfileSessionBeanLocal;
-import ejb.session.common.LoginSessionBeanLocal;
 import ejb.session.fact.FactSessionBeanLocal;
 import ejb.session.wealth.PortfolioSessionBeanLocal;
+import ejb.session.wealth.WealthManegementSubscriberSessionBeanLocal;
 import entity.customer.Customer;
+import entity.customer.WealthManagementSubscriber;
 import entity.fact.customer.SinglePortfolioFactTable;
 import entity.wealth.Portfolio;
 import java.io.Serializable;
@@ -20,6 +21,7 @@ import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import org.primefaces.model.chart.Axis;
@@ -28,24 +30,24 @@ import org.primefaces.model.chart.DateAxis;
 import org.primefaces.model.chart.LineChartModel;
 import org.primefaces.model.chart.LineChartSeries;
 import org.primefaces.model.chart.PieChartModel;
-import utils.SessionUtils;
 
 /**
  *
- * @author wang
+ * @author VIN-S
  */
-@Named(value = "portfolioManagedBean")
+@Named(value = "customerPortfolioDetailManagedBean")
 @ViewScoped
-public class PortfolioManagedBean implements Serializable {
+public class CustomerPortfolioDetailManagedBean implements Serializable{
     @EJB
-    LoginSessionBeanLocal loginSessionBean;
+    private WealthManegementSubscriberSessionBeanLocal wealthManegementSubscriberSessionBean;
     @EJB
     PortfolioSessionBeanLocal portfolioSessionBean;
     @EJB
     CustomerProfileSessionBeanLocal customerProfileSessionBean;
     @EJB
     FactSessionBeanLocal factSessionBean;
-
+    
+    private WealthManagementSubscriber wms;
     
     private Customer customer;
     private List<Portfolio> portfolios;
@@ -59,7 +61,12 @@ public class PortfolioManagedBean implements Serializable {
     private String selectedPortfolio;
 
     private List<String> portfolioOptions = new ArrayList<>();
-
+    /**
+     * Creates a new instance of CustomerPortfolioDetailManagedBean
+     */
+    public CustomerPortfolioDetailManagedBean() {
+    }
+    
     public void onDropDownChange() {
         
         System.out.println("on drop down changed");
@@ -71,14 +78,14 @@ public class PortfolioManagedBean implements Serializable {
             createLineModels(selectedPortfolioIdString);
         }
     }
-
-    public PortfolioManagedBean() {
-    }
-
+    
     @PostConstruct
     public void init() {
+        String wmsid = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("wmsid");
+        wms = wealthManegementSubscriberSessionBean.getWealthManagementSubscriberById(Long.parseLong(wmsid));
+       
         initDate();
-        customer = customerProfileSessionBean.getCustomerByUserID(SessionUtils.getUserName());
+        customer = wms.getMainAccount().getCustomer();
         portfolios = portfolioSessionBean.getListPortfoliosByCustomerId(customer.getId());
         createPieModels();
         System.out.println("portfolio size: " + portfolios.size());
@@ -90,14 +97,8 @@ public class PortfolioManagedBean implements Serializable {
         } catch (Exception ex) {
             System.out.println(ex);
         }
-        
-        System.out.println("### portfolio testing");
-        System.out.println(customer.getPortfolioPercentageChange());
-        System.out.println(customer.getTotalPortfolioCurrentValue());
-        
-
     }
-
+    
     public LineChartModel getLineModel() {
         return lineModel;
     }
@@ -187,12 +188,12 @@ public class PortfolioManagedBean implements Serializable {
         pieModel.setDiameter(150);
     }
 
-    public List<Portfolio> getPortfolios() {
-        return portfolios;
+    public WealthManagementSubscriber getWms() {
+        return wms;
     }
 
-    public void setPortfolios(List<Portfolio> portfolios) {
-        this.portfolios = portfolios;
+    public void setWms(WealthManagementSubscriber wms) {
+        this.wms = wms;
     }
 
     public Customer getCustomer() {
@@ -201,6 +202,14 @@ public class PortfolioManagedBean implements Serializable {
 
     public void setCustomer(Customer customer) {
         this.customer = customer;
+    }
+
+    public List<Portfolio> getPortfolios() {
+        return portfolios;
+    }
+
+    public void setPortfolios(List<Portfolio> portfolios) {
+        this.portfolios = portfolios;
     }
 
     public String getCurrentDate() {
@@ -242,5 +251,5 @@ public class PortfolioManagedBean implements Serializable {
     public void setPortfolioOptions(List<String> portfolioOptions) {
         this.portfolioOptions = portfolioOptions;
     }
-
+    
 }

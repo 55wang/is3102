@@ -8,6 +8,8 @@ package webservice.restful.creditcard;
 import SMSMessaging.SendTextMessage;
 import ejb.session.card.CardAcctSessionBeanLocal;
 import ejb.session.card.CardTransactionSessionBeanLocal;
+import ejb.session.common.EmailServiceSessionBean;
+import ejb.session.common.EmailServiceSessionBeanLocal;
 import entity.card.account.CreditCardAccount;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -38,19 +40,21 @@ import server.utilities.PincodeGenerationUtils;
  */
 @Path("credit_card_authorization")
 public class CreditCardAuthorizationService {
-
+    
     @Context
     private UriInfo context;
-
+    
     @EJB
     private CardAcctSessionBeanLocal ccBean;
     @EJB
     private CardTransactionSessionBeanLocal cardTransactionSessionBean;
-
+    @EJB
+    private EmailServiceSessionBeanLocal emailServiceSessionBean;
+    
     public CreditCardAuthorizationService() {
         System.out.println("CreditCardService");
     }
-
+    
     private Boolean checkAbnormalAction(String ccAmount) {
         System.out.println(ccAmount);
         Double amount = Double.parseDouble(ccAmount);
@@ -87,7 +91,7 @@ public class CreditCardAuthorizationService {
         c.setTransactionCode(ccTcode);
         boolean validDailyStatus = false;
         boolean validMonthlyStatus = false;
-
+        
         if (!checkAbnormalAction(ccAmount)) {
             System.out.println("Retrieving card: " + ccNumber);
             CreditCardAccount thisAccount = null;
@@ -96,7 +100,7 @@ public class CreditCardAuthorizationService {
             } catch (Exception e) {
                 System.out.println("No account retrieved");
             }
-
+            
             System.out.println(thisAccount);
             if (thisAccount != null) {
                 System.out.println("Validateing daily transaction limit");
@@ -107,6 +111,7 @@ public class CreditCardAuthorizationService {
                 }
             }
             if (validDailyStatus == false) {
+                System.out.println("### valid daily status fail ##");
                 authorized = false;
                 c.setMessage("Exceed daily transaction limit!");
             } else {
@@ -119,11 +124,11 @@ public class CreditCardAuthorizationService {
                     c.setMessage("Exceed monthly transaction limit!");
                 }
             }
-
+            
             if (thisAccount == null) {
                 authorized = false;
             }
-
+            
             if (authorized) {
                 code = PincodeGenerationUtils.generateRandom(true, 8);
                 c.setMessage("Authorized");
@@ -139,23 +144,25 @@ public class CreditCardAuthorizationService {
             System.out.println("######## " + phoneNumber + " #######");
             Calendar currentDate = Calendar.getInstance();
             SimpleDateFormat dateOnly = new SimpleDateFormat("dd/MM/yyyy");
-
+            
             String lastFourDigit = StringUtils.substring(ccNumber, ccNumber.length() - 4);
             System.out.println("print last 4 digit: " + lastFourDigit);
             String msg = "Card Transaction of SGD " + ccAmount + " was performed on your MBS account ending with "
                     + lastFourDigit + " on " + dateOnly.format(currentDate.getTime()) + ". If unauthorised, pls call "
                     + "1800 222 2313.";
-            SendTextMessage.sendText(phoneNumber, msg);
+            emailServiceSessionBean.sendEmailUnauthorised(cca.getMainAccount().getCustomer().getEmail(), msg);
+//            SendNEXONMessage.sendText(phoneNumber, msg);
+//            SendTextMessage.sendText(phoneNumber, msg);
 
         }
-
+        
         System.out.println("Sending back result with single code: " + c.getAuthorizationCode());
-
+        
         String jsonString = new JSONObject(c).toString();
         System.out.println(jsonString);
         return Response.ok(jsonString, MediaType.APPLICATION_JSON).build();
     }
-
+    
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public JsonArray getStringList(@QueryParam("accountNumber") String accountNumber) {
@@ -170,7 +177,7 @@ public class CreditCardAuthorizationService {
         for (String str : strList) {
             arrayBld.add(str);
         }
-
+        
         return arrayBld.build();
     }
 }

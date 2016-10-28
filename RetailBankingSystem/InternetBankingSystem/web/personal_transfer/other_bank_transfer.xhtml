@@ -74,7 +74,8 @@ and open the template in the editor.
                                                 <f:selectItems value="#{interBankTransferManagedBean.purposeOptions}"/>
                                             </p:selectOneMenu>
                                         </h:panelGrid>
-                                    <p:commandButton  value="Next" type="button" onclick="PF('myWizard').next()" />
+                                    
+                                    <p:commandButton  value="Next" actionListener="#{interBankTransferManagedBean.sendOpt()}" update="@form" />
 
                                 </p:tab>
 
@@ -96,6 +97,9 @@ and open the template in the editor.
                                         <h:outputText value="S$ #{interBankTransferManagedBean.amount}"/>
                                         <h:outputText value="Purpose of Transfer: " />
                                         <h:outputText value="#{interBankTransferManagedBean.purpose}" />
+                                        
+                                        <h2>Input Token Number</h2>
+                                        <p:inputText value="#{manageMerlionPayeeManagedBean.inputTokenString}" />
                                         
                                         <p:commandButton  value="Back" type="button" onclick="PF('myWizard').back()" />
                                         <p:commandButton value="Transfer" action="#{interBankTransferManagedBean.transfer}" update="@form"/> 

@@ -35,9 +35,9 @@ import utils.SessionUtils;
 @Named(value = "cardViewCreditApplicationManagedBean")
 @ViewScoped
 public class CardViewCreditApplicationManagedBean implements Serializable {
+
     @EJB
     private MainAccountSessionBeanLocal mainAccountSessionBean;
-
     @EJB
     CardProductSessionBeanLocal cardProductSessionBean;
     @EJB
@@ -47,9 +47,8 @@ public class CardViewCreditApplicationManagedBean implements Serializable {
     @EJB
     private EmailServiceSessionBeanLocal emailServiceSessionBean;
     @EJB
-    private NewCustomerSessionBeanLocal newCustomerSessionBean;
-    @EJB
     private UtilsSessionBeanLocal utilsBean;
+
 
     private List<CreditCardOrder> ccos;
     private String bureauCreditScore;
@@ -85,6 +84,7 @@ public class CardViewCreditApplicationManagedBean implements Serializable {
                     cco.getCreditCardAccount().getCreditCardNum(),
                     cco.getCreditCardAccount().getCvv(),
                     cco.getMainAccount().getUserID()
+
             );
             MessageUtils.displayInfo("Order Approved!");
         } catch (Exception ex) {
@@ -97,6 +97,7 @@ public class CardViewCreditApplicationManagedBean implements Serializable {
         emailServiceSessionBean.sendCreditCardApplicationRejectionToCustomers(cco.getMainAccount().getCustomer().getEmail());
 
         MessageUtils.displayInfo("Order Rejected!");
+
     }
 
     public void calculateCreditScore(CreditCardOrder cco) {
@@ -165,6 +166,7 @@ public class CardViewCreditApplicationManagedBean implements Serializable {
 //            } else if (martialStatus.equals(EnumUtils.MaritalStatus.OTHERS)) {
 //                creditScore += 0;
 //            }
+
             EnumUtils.Education education = cco.getMainAccount().getCustomer().getEducation();
             if (education.equals(EnumUtils.Education.POSTGRAD)) {
                 creditScore += 50;

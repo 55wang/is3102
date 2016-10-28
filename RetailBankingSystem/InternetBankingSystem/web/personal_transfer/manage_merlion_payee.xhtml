@@ -41,7 +41,7 @@ and open the template in the editor.
                                         <h:outputText value="#{manageMerlionPayeeManagedBean.payee.fromName}"/>
                                         <h:outputText value="My Initials: " />
                                         <h:inputText value="#{manageMerlionPayeeManagedBean.payee.myInitial}" required="true" />
-                                        <p:commandButton  value="Next" type="button" onclick="PF('myWizard').next()" />
+                                        <p:commandButton  value="Next" actionListener="#{manageMerlionPayeeManagedBean.sendOpt()}" update="@form" />
                                     </h:panelGrid>
                             </p:tab>
 
@@ -55,6 +55,10 @@ and open the template in the editor.
                                     <h:outputText value="#{manageMerlionPayeeManagedBean.payee.fromName}"/>
                                     <h:outputText value="My Initials: " />
                                     <h:outputText value="#{manageMerlionPayeeManagedBean.payee.myInitial}"/>
+                                    
+                                    <h2>Input Token Number</h2>
+                                    <p:inputText value="#{manageMerlionPayeeManagedBean.inputTokenString}" />
+                                    
                                     <p:commandButton  value="Back" type="button" onclick="PF('myWizard').back()" />
                                     <p:commandButton value="Add Receipiant" action="#{manageMerlionPayeeManagedBean.addPayee}" update="@form"/> 
                                 </h:panelGrid>

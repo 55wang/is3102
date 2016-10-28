@@ -5,9 +5,15 @@
  */
 package entity.customer;
 
+import entity.card.account.CreditCardAccount;
 import entity.crm.CustomerGroup;
+import entity.dams.account.DepositAccount;
+import entity.loan.LoanAccount;
+import entity.wealth.Portfolio;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,12 +23,15 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.OneToOne;
+import static server.utilities.CommonUtils.round;
+import server.utilities.EnumUtils;
 import server.utilities.EnumUtils.Education;
 import server.utilities.EnumUtils.EmploymentStatus;
 import server.utilities.EnumUtils.Gender;
 import server.utilities.EnumUtils.IdentityType;
 import server.utilities.EnumUtils.Income;
 import server.utilities.EnumUtils.Industry;
+import server.utilities.EnumUtils.LoanProductType;
 import server.utilities.EnumUtils.MaritalStatus;
 import server.utilities.EnumUtils.Nationality;
 import server.utilities.EnumUtils.ResidentialStatus;
@@ -61,12 +70,32 @@ public class Customer implements Serializable {
     private EmploymentStatus employmentStatus;
     private Income income;
     private Double actualIncome;
+    private Double savingPerMonth;
     private Gender gender;
 
     // credit
     private Double creditScore;
     private String BureaCreditScore;
-
+    
+    // portfolioInfomation
+    private Double totalMortgageMonthlyInstallment;
+    private Double totalMonthlyInstallment;
+    private Double totalAsset;
+    private Double savingToIncome;
+    private Double debtToIncome;
+    private Double housingCostRatio;
+    private Double debtRatio;
+    private Double netWorth;
+    private BigDecimal totalDepositAmount;
+    private Double totalDebtAmount;
+    private Double totalLoanAmount;
+    private Double totalCreditAmount;
+    private Double totalPortfolioCurrentValue;
+    private Double totalPortfolioBuyingValue;
+    private Double portfolioPercentageChange;
+    private Double financialHealthScore;
+    private String financialHealthScoreLevel;
+    
     // mapping
     @OneToOne(cascade = {CascadeType.MERGE})
     private MainAccount mainAccount;
@@ -165,6 +194,339 @@ public class Customer implements Serializable {
     @Override
     public String toString() {
         return "entity.Customer[ id=" + id + " ]";
+    }
+    
+    public Double getTotalMortgageMonthlyInstallment() {
+        try{
+            List<LoanAccount> las = getMainAccount().getLoanAccounts();
+
+            totalMortgageMonthlyInstallment = 0.0;
+            for (LoanAccount la : las) {
+                if (la.getLoanProduct().getProductType().equals(LoanProductType.LOAN_PRODUCT_TYPE_HDB) || la.getLoanProduct().getProductType().equals(LoanProductType.LOAN_PRODUCT_TYPE_HDB)) {
+                    totalMortgageMonthlyInstallment += la.getMonthlyInstallment();
+                }
+            }
+            return round(totalMortgageMonthlyInstallment, 1);
+        }catch(Exception ex){
+            return 0.0;
+        }
+    }
+
+    public Double getTotalMonthlyInstallment() {
+        try{
+            List<LoanAccount> las = getMainAccount().getLoanAccounts();
+
+            totalMonthlyInstallment = 0.0;
+            for (LoanAccount la : las) {
+                totalMonthlyInstallment += la.getMonthlyInstallment();
+            }
+            return round(totalMonthlyInstallment, 1);
+        }catch(Exception ex){
+            return 0.0;
+        }
+    }
+
+    public Double getTotalAsset() {
+        try{
+            totalAsset = getMainAccount().getWealthManagementSubscriber().getTotalPortfolioValue()
+                    + getTotalDepositAmount().doubleValue()
+                    + getTotalDebtAmount();
+            return totalAsset;
+        }catch(Exception ex){
+            return 0.0;
+        }
+    }
+
+    public Double getSavingToIncome() {
+        try{
+            savingToIncome = getSavingPerMonth() / getIncome().getAvgValue();
+            return savingToIncome;
+        }catch(Exception ex){
+            return 0.0;
+        }
+    }
+
+    public Double getDebtToIncome() {
+        try{
+            debtToIncome = getTotalMonthlyInstallment()/getIncome().getAvgValue();
+            return debtToIncome;
+        }
+        catch(Exception ex){
+            return 0.0;
+        }
+    }
+
+    public Double getHousingCostRatio() {
+        try{
+            housingCostRatio = getTotalMortgageMonthlyInstallment() / getIncome().getAvgValue();
+            return housingCostRatio;
+        }catch(Exception ex){
+            return 0.0;
+        }
+    }
+
+    public Double getDebtRatio() {
+        try{
+            debtRatio = getTotalDebtAmount() / getTotalAsset();
+            return debtRatio;
+        }catch(Exception ex){
+            return 0.0;
+        }
+    }
+
+    public Double getNetWorth() {
+        try{
+            netWorth = getTotalAsset() - getTotalDebtAmount();
+            return netWorth;
+        }catch(Exception ex){
+            return 0.0;
+        }
+    }
+    
+    public BigDecimal getTotalDepositAmount() {
+        try{
+            List<DepositAccount> das = getMainAccount().getBankAcounts();
+            totalDepositAmount = new BigDecimal(0);
+            for (DepositAccount da : das) {
+                totalDepositAmount = totalDepositAmount.add(da.getBalance());
+            }
+            return totalDepositAmount;
+        }catch(Exception ex){
+            return new BigDecimal(0);
+        }
+    }
+
+    public Double getTotalDebtAmount() {
+        try{
+            totalDebtAmount = getTotalLoanAmount() + getTotalCreditAmount();
+            return totalDebtAmount;
+        }catch(Exception ex){
+            return 0.0;
+        }
+    }
+
+    public Double getTotalLoanAmount() {
+        try{
+            List<LoanAccount> las = getMainAccount().getLoanAccounts();
+
+            totalLoanAmount = 0.0;
+            for (LoanAccount la : las) {
+                totalLoanAmount += la.getOutstandingPrincipal();
+            }
+            return totalLoanAmount;
+        }catch(Exception ex){
+            return 0.0;
+        }
+    }
+
+    public Double getTotalCreditAmount() {
+        try{
+            List<CreditCardAccount> ccas = getMainAccount().getCreditCardAccounts();
+
+            totalCreditAmount = 0.0;
+            for (CreditCardAccount cca : ccas) {
+                totalCreditAmount += cca.getOutstandingAmount();
+            }
+            return totalCreditAmount;
+        }catch(Exception ex){
+            return 0.0;
+        }
+    }
+
+    public Double getTotalPortfolioCurrentValue() { //all the portfolio
+        try{
+            List<Portfolio> ps = getMainAccount().getWealthManagementSubscriber().getPortfolios();
+            totalPortfolioCurrentValue = 0.0;
+            for (Portfolio p : ps) {
+                totalPortfolioCurrentValue+= p.getTotalCurrentValue();
+            }
+            
+            System.out.println("getTOtalportfoliovalue: "+totalPortfolioCurrentValue);
+            return totalPortfolioCurrentValue;
+        }catch(Exception ex){
+            System.out.println("getTOtalportfoliovalue: "+ex);
+            return 0.0;
+        }
+    }
+
+    public Double getTotalPortfolioBuyingValue() {
+        try{
+            List<Portfolio> ports = getMainAccount().getWealthManagementSubscriber().getPortfolios();
+            totalPortfolioBuyingValue = 0.0;
+            for (Portfolio port : ports) {
+                totalPortfolioBuyingValue += port.getTotalBuyingValue();
+            }
+            return totalPortfolioBuyingValue;
+        }catch(Exception ex){
+            return 0.0;
+        }
+    }
+
+    public Double getPortfolioPercentageChange() {
+        try{
+            portfolioPercentageChange = getTotalPortfolioCurrentValue() / getTotalPortfolioBuyingValue() * 100;
+            return portfolioPercentageChange;
+        }catch(Exception ex){
+            return 0.0;
+        }
+    }
+
+    public Double getFinancialHealthScore() {
+        try{
+            financialHealthScore = 100.0;
+            if (getSavingToIncome() >= 10 && getSavingToIncome() <= 20) {
+                financialHealthScore += 5;
+            } else if (getSavingToIncome() < 10) {
+                //too little saving
+                financialHealthScore -= 20;
+            } else if (getSavingToIncome() > 20) {
+                //too much saving
+                financialHealthScore -= 5;
+            }
+
+            if (getHousingCostRatio() >= 28) {
+                financialHealthScore -= 20;
+            } else {
+                financialHealthScore += 5;
+            }
+
+            if (getDebtRatio() >= 36) {
+                financialHealthScore -= 20;
+            } else {
+                financialHealthScore += 5;
+            }
+
+            if (getAge() <= 22 && getNetWorth() > 0.0) {
+                financialHealthScore += 5;
+            } else if (getAge() <= 25 && getNetWorth() > 50000.0) {
+                financialHealthScore += 10;
+            } else if (getAge() <= 30 && getNetWorth() > 150000.0) {
+                financialHealthScore += 10;
+            } else if (getAge() <= 35 && getNetWorth() > 250000.0) {
+                financialHealthScore += 10;
+            } else if (getAge() <= 40 && getNetWorth() > 400000.0) {
+                financialHealthScore += 15;
+            } else if (getAge() <= 45 && getNetWorth() > 600000.0) {
+                financialHealthScore += 15;
+            } else if (getAge() <= 50 && getNetWorth() > 850000.0) {
+                financialHealthScore += 15;
+            } else if (getAge() <= 55 && getNetWorth() > 1000000.0) {
+                financialHealthScore += 15;
+            } else if (getAge() <= 60 && getNetWorth() > 1500000.0) {
+                financialHealthScore += 15;
+            } else if (getAge() >= 60 && getNetWorth() > 2000000.0) {
+                financialHealthScore += 15;
+            } else {
+                financialHealthScore -= 20;
+            }
+
+            return financialHealthScore;
+        }catch(Exception ex){
+            return 0.0;
+        }
+        /*
+         http://www.thefrugaltoad.com/personalfinance/personal-financial-ratios-everyone-should-know
+        
+         Savings to Income (S to I) Savings Ratio: Should be between 10% to 20%.
+        
+         Debt to Income (D to I) Consumer Debt Ratio: Should not exceed 20%.
+         Calculated by dividing total monthly loan payments by monthly income.
+        
+         Housing Cost Ratio:  Should not exceed 28% of gross income.  
+         = Total of monthly mortgage payment (principal + interest) / the gross monthly income
+        
+         Total Debt Ratio: Should not exceed 36% of gross income.  
+         = total Debt / Total Asset
+         
+        
+         networth = asset - liabilities
+         http://www.financialsamurai.com/the-average-net-worth-for-the-above-average-person/
+         */
+    }
+
+    public void setTotalMortgageMonthlyInstallment() {
+        this.totalMortgageMonthlyInstallment = getTotalMortgageMonthlyInstallment();
+    }
+
+    public void setTotalMonthlyInstallment() {
+        this.totalMonthlyInstallment = getTotalMonthlyInstallment();
+    }
+
+    public void setTotalAsset() {
+        this.totalAsset = getTotalAsset();
+    }
+
+    public void setSavingToIncome() {
+        this.savingToIncome = getSavingToIncome();
+    }
+
+    public void setDebtToIncome() {
+        this.debtToIncome = getDebtToIncome();
+    }
+
+    public void setHousingCostRatio() {
+        this.housingCostRatio = getHousingCostRatio();
+    }
+
+    public void setDebtRatio() {
+        this.debtRatio = getDebtRatio();
+    }
+
+    public void setNetWorth() {
+        this.netWorth = getNetWorth();
+    }
+
+    public void setTotalDepositAmount() {
+        this.totalDepositAmount = getTotalDepositAmount();
+    }
+
+    public void setTotalDebtAmount() {
+        this.totalDebtAmount = getTotalDebtAmount();
+    }
+
+    public void setTotalLoanAmount() {
+        this.totalLoanAmount = getTotalLoanAmount();
+    }
+
+    public void setTotalCreditAmount() {
+        this.totalCreditAmount = getTotalCreditAmount();
+    }
+
+    public void setTotalPortfolioCurrentValue() {
+        this.totalPortfolioCurrentValue = getTotalPortfolioCurrentValue();
+    }
+
+    public void setTotalPortfolioBuyingValue() {
+        this.totalPortfolioBuyingValue = getTotalPortfolioBuyingValue();
+    }
+
+    public void setPortfolioPercentageChange() {
+        this.portfolioPercentageChange = getPortfolioPercentageChange();
+    }
+
+    public void setFinancialHealthScore() {
+        this.financialHealthScore = getFinancialHealthScore();
+    }
+
+    public void setFinancialHealthScoreLevel() {
+        this.financialHealthScoreLevel = getFinancialHealthScoreLevel();
+    }
+
+    public String getFinancialHealthScoreLevel() {
+        try{
+            if (getFinancialHealthScore() >= 80) {
+                financialHealthScoreLevel = EnumUtils.FinancialHealthLevel.VERYHEALTHY.getValue();
+            } else if (getFinancialHealthScore() >= 60 && getFinancialHealthScore() < 80) {
+                financialHealthScoreLevel = EnumUtils.FinancialHealthLevel.HEALTHY.getValue();
+            } else if (getFinancialHealthScore() >= 40 && getFinancialHealthScore() < 60) {
+                financialHealthScoreLevel = EnumUtils.FinancialHealthLevel.UNHEALTHY.getValue();
+            } else {
+                financialHealthScoreLevel = EnumUtils.FinancialHealthLevel.VERYUNHEALTHY.getValue();
+            }
+            return financialHealthScoreLevel;
+        }catch(Exception ex){
+            return "Not Applicable";
+        }
     }
 
     public MainAccount getMainAccount() {
@@ -346,6 +708,14 @@ public class Customer implements Serializable {
     }
 
     public Customer() {
+    }
+
+    public Double getSavingPerMonth() {
+        return savingPerMonth;
+    }
+
+    public void setSavingPerMonth(Double savingPerMonth) {
+        this.savingPerMonth = savingPerMonth;
     }
 
 }

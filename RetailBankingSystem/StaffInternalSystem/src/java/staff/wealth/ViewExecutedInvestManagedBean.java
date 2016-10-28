@@ -12,6 +12,7 @@ import entity.wealth.Portfolio;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -24,17 +25,18 @@ import utils.RedirectUtils;
  *
  * @author wang
  */
-@Named(value = "viewPortfolioManagedBean")
+@Named(value = "viewExecutedInvestManagedBean")
 @ViewScoped
-public class ViewPortfolioManagedBean extends ViewPortfolioAbstractBean implements Serializable {
+public class ViewExecutedInvestManagedBean extends ViewPortfolioAbstractBean implements Serializable {
 
     @EJB
     PortfolioSessionBeanLocal portfolioSessionBean;
 
     private List<Portfolio> portfolios;
     private String searchText;
+    private String portfolioID;
 
-    public ViewPortfolioManagedBean() {
+    public ViewExecutedInvestManagedBean() {
     }
 
     @PostConstruct
@@ -42,12 +44,22 @@ public class ViewPortfolioManagedBean extends ViewPortfolioAbstractBean implemen
         portfolios = portfolioSessionBean.getListPortfolios();
     }
     
-    public void searchCustomerFullName(String searchText) {
-        portfolios = portfolioSessionBean.getListPortfoliosByCustomerName(searchText);
+    public void retrievePortfolio() {
+        System.out.println("retrievePortfolio()");
+        System.out.println(portfolioID);
+        portfolios = new ArrayList<Portfolio> ();
+        if (portfolioID != null && portfolioID.length() > 0) {
+            Portfolio p = portfolioSessionBean.getPortfolioById(Long.parseLong(portfolioID));
+            portfolios.add(p);
+        }
     }
 
+    public void retrieveAllPortfolio(){
+        portfolios = portfolioSessionBean.getListPortfolios();
+    }
+    
     public void viewPortfolioDetail(Portfolio p) {
-        RedirectUtils.redirect("staff-view-portfolio-detail.xhtml?port=" + p.getId());
+        RedirectUtils.redirect("staff-view-executed-investment-detail.xhtml?port=" + p.getId());
     }
 
     public List<Portfolio> getPortfolios() {
@@ -66,4 +78,11 @@ public class ViewPortfolioManagedBean extends ViewPortfolioAbstractBean implemen
         this.searchText = searchText;
     }
 
+    public String getPortfolioID() {
+        return portfolioID;
+    }
+
+    public void setPortfolioID(String portfolioID) {
+        this.portfolioID = portfolioID;
+    }
 }

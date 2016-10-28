@@ -8,8 +8,12 @@ package init;
 import ejb.session.staff.StaffAccountSessionBeanLocal;
 import entity.card.product.PromoProduct;
 import entity.card.product.RewardCardProduct;
+import entity.customer.MainAccount;
 import entity.dams.account.CustomerDepositAccount;
 import entity.staff.StaffAccount;
+import entity.wealth.FinancialInstrument;
+import entity.wealth.Portfolio;
+import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.ejb.Singleton;
@@ -17,6 +21,7 @@ import javax.ejb.LocalBean;
 import javax.ejb.Startup;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.sound.sampled.Port;
 import server.utilities.ConstantUtils;
 
 /**
@@ -51,13 +56,17 @@ public class EntityBuilderBean {
     private EntityPayLahBuilder entityPayLahBuilder;
     @EJB
     private EntityWealthBuilder entityWealthBuilder;
-
+    @EJB
+    private EntityFactBuilder entityFactBuilder;
+    
     // session beans
     @EJB
     private StaffAccountSessionBeanLocal staffAccountSessionBean;
 
     private RewardCardProduct demoRewardCardProduct;
     private PromoProduct demoPromoProduct;
+    private MainAccount demoMainAccount;
+    private Portfolio demoPortfolio;
 
     @PersistenceContext(unitName = "RetailBankingSystem-ejbPU")
     private EntityManager em;
@@ -80,15 +89,23 @@ public class EntityBuilderBean {
 
     private void buildEntities() {
         entityStaffBuilder.initStaffAndRoles();
-        entityCustomerBuilder.initCustomer();
+        demoMainAccount = entityCustomerBuilder.initCustomer();
         CustomerDepositAccount demoDepositAccount = entityDAMSBuilder.initDAMS();
         entityLoanBuilder.initLoanAccount(demoDepositAccount);
+        
         demoPromoProduct = entityPromoProductBuilder.initPromoProduct(demoPromoProduct);
         demoRewardCardProduct = entityCreditCardProductBuilder.initCreditCardProduct(demoPromoProduct);
+        
         entityCreditCardOrderBuilder.initCreditCardOrder(demoRewardCardProduct, demoPromoProduct);
         entityCaseBuilder.initCase();
         entityBillOrgBuilder.initBillOrganization();
         entityPayLahBuilder.initPayLahDemoData();
-//        entityWealthBuilder.initWealth();
+        
+        List<FinancialInstrument> allFinancialInstruments = entityWealthBuilder.allFinancialInstrument();
+        demoPortfolio = entityWealthBuilder.initWealth(allFinancialInstruments);
+        entityFactBuilder.initSinglePortfolioFact(demoMainAccount, demoPortfolio, "FB");
+        demoPortfolio = entityWealthBuilder.initPortfolioFactTable2(demoMainAccount, allFinancialInstruments);
+        entityFactBuilder.initSinglePortfolioFact(demoMainAccount, demoPortfolio, "AAPL");
+
     }
 }

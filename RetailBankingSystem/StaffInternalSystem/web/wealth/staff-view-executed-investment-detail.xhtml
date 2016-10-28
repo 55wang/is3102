@@ -14,14 +14,14 @@
         </h:head>
         <h:body>
             <em:staffNavBar context="wealth"></em:staffNavBar>
-            <em:staffSideBar top="wealth" side="viewPortfolio"></em:staffSideBar>
+            <em:staffSideBar top="wealth" side="viewInvestList"></em:staffSideBar>
             <f:metadata>
-                <f:viewParam name="port" value="#{updatePortfolioManagedBean.portfolioID}" />
+                <f:viewParam name="port" value="#{updateExecutedInvestManagedBean.portfolioID}" />
             </f:metadata>
             <div class="container">
                 <h:form id="mainForm">
-                    <p:panel header="Portfolio Information">    
-                                <p:dataTable var="fi" value="#{viewPortfolioDetailManagedBean.p.executedInvestmentPlan.suggestedFinancialInstruments}" >
+                    <p:panel header="Executed Investment Plan Information">    
+                                <p:dataTable var="fi" value="#{viewExecutedInvestDetailManagedBean.p.executedInvestmentPlan.suggestedFinancialInstruments}" >
                                         <p:columnGroup type="header">
                                             <p:row>
                                                 <p:column rowspan="3" headerText="Financial Instrument" style="width:320px;"/>
@@ -29,7 +29,7 @@
                                             </p:row>
                                             <p:row>
                                                 <p:column colspan="3" headerText="Total Investment" />
-                                                <p:column colspan="3" headerText="S$#{viewPortfolioDetailManagedBean.p.executedInvestmentPlan.amountOfInvestment}" />
+                                                <p:column colspan="3" headerText="S$#{viewExecutedInvestDetailManagedBean.p.executedInvestmentPlan.amountOfInvestment}" />
                                             </p:row>
                                             <p:row>
                                                 <p:column headerText="Number of Shares" />
@@ -68,29 +68,29 @@
                                             </h:outputText>
                                         </p:column> 
                                          <p:column rendered="#{fi.weight != 0.0}">
-                                             <h:outputText value="#{(fi.currentValuePerShare/fi.buyingValuePerShare *100).shortValue() - 100}%" rendered="#{updatePortfolioManagedBean.p.status == 'BOUGHT'}"/> 
-                                             <h:outputText value="0%" rendered="#{viewPortfolioDetailManagedBean.p.status != 'BOUGHT'}"/> 
+                                             <h:outputText value="#{(fi.currentValuePerShare/fi.buyingValuePerShare *100).shortValue() - 100}%" rendered="#{viewExecutedInvestDetailManagedBean.p.status == 'BOUGHT'}"/> 
+                                             <h:outputText value="0%" rendered="#{viewExecutedInvestDetailManagedBean.p.status != 'BOUGHT'}"/> 
                                         </p:column>                    
 
                                         <p:columnGroup type="footer">
                                             <p:row>
                                                 <p:column colspan="3" style="text-align:right" footerText="Totals:" /> 
 
-                                                <p:column footerText="$#{viewPortfolioDetailManagedBean.p.totalBuyingValue}" />
+                                                <p:column footerText="$#{viewExecutedInvestDetailManagedBean.p.totalBuyingValue}" />
                                                 <p:column />
-                                                <p:column footerText="$#{viewPortfolioDetailManagedBean.p.totalCurrentValue}" />
-                                                <p:column footerText="#{(viewPortfolioDetailManagedBean.p.totalCurrentValue/updatePortfolioManagedBean.p.totalBuyingValue*100).shortValue()-100}%" rendered="#{viewPortfolioDetailManagedBean.p.status == 'BOUGHT'}"/>
-                                                <p:column footerText="0%" rendered="#{viewPortfolioDetailManagedBean.p.status != 'BOUGHT'}"/>
+                                                <p:column footerText="$#{viewExecutedInvestDetailManagedBean.p.totalCurrentValue}" />
+                                                <p:column footerText="#{(viewExecutedInvestDetailManagedBean.p.totalCurrentValue/viewExecutedInvestDetailManagedBean.p.totalBuyingValue*100).shortValue()-100}%" rendered="#{viewExecutedInvestDetailManagedBean.p.status == 'BOUGHT'}"/>
+                                                <p:column footerText="0%" rendered="#{viewExecutedInvestDetailManagedBean.p.status != 'BOUGHT'}"/>
                                             </p:row>
                                         </p:columnGroup>
                                     </p:dataTable>
                                     <br />
-                                    <p:commandButton value="Update Portfolio Value" action="#{viewPortfolioDetailManagedBean.view()}" icon="ui-icon-lightbulb" update="@form" style="float: right"/>
+                                    <p:commandButton value="Update Value" action="#{viewExecutedInvestDetailManagedBean.view()}" icon="ui-icon-lightbulb" update="@form" style="float: right"/>
                                     <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true"/>
                                     
                                 </p:panel>
                         <p:panel header="Original Investment Plan">
-                            <p:dataTable id="requestList" value="#{viewPortfolioDetailManagedBean.p.executedInvestmentPlan}" var="investmentRequest" sortMode="multiple" >
+                            <p:dataTable id="requestList" value="#{viewExecutedInvestDetailManagedBean.p.executedInvestmentPlan}" var="investmentRequest" sortMode="multiple" >
                                 <p:column headerText="ID" sortBy="#{investmentRequest.id}" style="width:15px">
                                     <h:outputText value="#{investmentRequest.id}" />
                                 </p:column>

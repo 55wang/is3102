@@ -83,7 +83,7 @@ and open the template in the editor.
                                                 <f:selectItems value="#{internationalBankTransferManagedBean.purposeOptions}"/>
                                             </p:selectOneMenu>
                                         </h:panelGrid>
-                                    <p:commandButton  value="Next" type="button" onclick="PF('myWizard').next()" />
+                                    <p:commandButton  value="Next" actionListener="#{internationalBankTransferManagedBean.sendOpt()}" update="@form" />
 
                                 </p:tab>
 
@@ -109,6 +109,9 @@ and open the template in the editor.
                                         <h:outputText value="S$ #{internationalBankTransferManagedBean.amount}"/>
                                         <h:outputText value="Purpose of Transfer: " />
                                         <h:outputText value="#{internationalBankTransferManagedBean.purpose}" />
+                                        
+                                        <h2>Input Token Number</h2>
+                                        <p:inputText value="#{internationalBankTransferManagedBean.inputTokenString}" />
 
                                         <p:commandButton  value="Back" type="button" onclick="PF('myWizard').back()" />
                                         <p:commandButton value="Transfer" action="#{internationalBankTransferManagedBean.transfer}" update="@form"/> 

@@ -13,29 +13,28 @@
             <em:cssImport></em:cssImport>
         </h:head>
         <h:body>
-            <em:customerHeader context="personal" userName="#{customerHomeManagedBean.customer.firstname }"></em:customerHeader>
-            <em:customerNavBar context="personal" personalPage="wealth"></em:customerNavBar>
-
-            <div class="customer_main_container">
+            <em:staffNavBar context="wealth"></em:staffNavBar>
+            <em:staffSideBar top="wealth" side="viewCustomerPortfolio"></em:staffSideBar>
+            <div class="container">
                 <h:form id="mainForm">
 
-                    <p:panel header="#{customerHomeManagedBean.customer.fullName}'s Portfolio Detail">
+                    <p:panel header="#{customerPortfolioDetailManagedBean.customer.fullName}'s Portfolio Detail">
                         <h:panelGrid columns="2" columnClasses="left,right" style="width:100%">
                             <p:layoutUnit style="width:100%" position="left">
                                 <h2>General Information</h2>
                                 <p:panelGrid columns="2">
                                     <h:outputText value="Total Deposit Amount: " />
-                                    <h:outputText value="#{portfolioManagedBean.customer.totalDepositAmount}">
+                                    <h:outputText value="#{customerPortfolioDetailManagedBean.customer.totalDepositAmount}">
                                         <f:convertNumber minFractionDigits="2" maxFractionDigits="2"/>
                                     </h:outputText>
 
                                     <h:outputText value="Total Loan Amount: " />
-                                    <h:outputText value="#{portfolioManagedBean.customer.totalLoanAmount}">
+                                    <h:outputText value="#{customerPortfolioDetailManagedBean.customer.totalLoanAmount}">
                                         <f:convertNumber minFractionDigits="2" maxFractionDigits="2"/>
                                     </h:outputText>
 
                                     <h:outputText value="Total Credit Card Outstanding Amount: " />
-                                    <h:outputText value="#{portfolioManagedBean.customer.totalCreditAmount}">
+                                    <h:outputText value="#{customerPortfolioDetailManagedBean.customer.totalCreditAmount}">
                                         <f:convertNumber minFractionDigits="2" maxFractionDigits="2"/>
                                     </h:outputText>
                                 </p:panelGrid>
@@ -43,7 +42,7 @@
                                 <p:separator></p:separator>
 
                                 <h2>Investment Information</h2>
-                                <p:dataTable value="#{portfolioManagedBean.portfolios}" var="p">
+                                <p:dataTable value="#{customerPortfolioDetailManagedBean.portfolios}" var="p">
                                     <p:column headerText="Id">
                                         <h:outputText value="#{p.id}" />
                                     </p:column>
@@ -61,14 +60,14 @@
                                 <br/>
 
                                 <h:outputText value="Overall Total Investment Value: " />
-                                <h:outputText value="#{portfolioManagedBean.customer.totalPortfolioCurrentValue}" />
+                                <h:outputText value="#{customerPortfolioDetailManagedBean.customer.totalPortfolioCurrentValue}" />
                                 <br/><br/>
                                 <h:outputText value="Investment Total Percentage Change: " />
-                                <h:outputText value="#{portfolioManagedBean.customer.portfolioPercentageChange - 100}" />
+                                <h:outputText value="#{customerPortfolioDetailManagedBean.customer.portfolioPercentageChange - 100}" />
 
                             </p:layoutUnit>
                             <p:layoutUnit style="width:50%" position="right">
-                                <p:chart type="pie" model="#{portfolioManagedBean.pieModel}" style="width:400px;height:350px" />
+                                <p:chart type="pie" model="#{customerPortfolioDetailManagedBean.pieModel}" style="width:400px;height:350px" />
                             </p:layoutUnit>
                         </h:panelGrid>
                         <p:separator></p:separator>
@@ -76,30 +75,30 @@
                         <p:layoutUnit style="width:100%" position="left">
                             <h:panelGrid columns="2">
                                 <h:outputText value="Financial Health: " />
-                                <h:outputText value="#{portfolioManagedBean.customer.financialHealthScore}">
+                                <h:outputText value="#{customerPortfolioDetailManagedBean.customer.financialHealthScore}">
                                     <f:convertNumber minFractionDigits="2" maxFractionDigits="2"/>
                                 </h:outputText>
                                 <h:outputText value="Financial Health Level: " />
-                                <h:outputText value="#{portfolioManagedBean.customer.financialHealthScoreLevel}" />
+                                <h:outputText value="#{customerPortfolioDetailManagedBean.customer.financialHealthScoreLevel}" />
 
                                 <h:outputText value="Saving to Income" />
-                                <h:outputText value="#{portfolioManagedBean.customer.savingToIncome}">
+                                <h:outputText value="#{customerPortfolioDetailManagedBean.customer.savingToIncome}">
                                     <f:convertNumber minFractionDigits="2" maxFractionDigits="2"/>
                                 </h:outputText>
                                 <h:outputText value="Debt to Income" />
-                                <h:outputText value="#{portfolioManagedBean.customer.debtToIncome}">
+                                <h:outputText value="#{customerPortfolioDetailManagedBean.customer.debtToIncome}">
                                     <f:convertNumber minFractionDigits="2" maxFractionDigits="2"/>
                                 </h:outputText>
                                 <h:outputText value="HousingCost Ratio" />
-                                <h:outputText value="#{portfolioManagedBean.customer.housingCostRatio}">
+                                <h:outputText value="#{customerPortfolioDetailManagedBean.customer.housingCostRatio}">
                                     <f:convertNumber minFractionDigits="2" maxFractionDigits="2"/>
                                 </h:outputText>
                                 <h:outputText value="Debt Ratio" />
-                                <h:outputText value="#{portfolioManagedBean.customer.debtRatio}">
+                                <h:outputText value="#{customerPortfolioDetailManagedBean.customer.debtRatio}">
                                     <f:convertNumber minFractionDigits="2" maxFractionDigits="2"/>
                                 </h:outputText>
                                 <h:outputText value="Networth" />
-                                <h:outputText value="#{portfolioManagedBean.customer.netWorth}">
+                                <h:outputText value="#{customerPortfolioDetailManagedBean.customer.netWorth}">
                                     <f:convertNumber minFractionDigits="2" maxFractionDigits="2"/>
                                 </h:outputText>
                             </h:panelGrid>
@@ -107,14 +106,14 @@
                         <br />
 
                         <p:outputLabel for="portfolio" value="Investment Plan: " />
-                        <p:selectOneMenu id="portfolio" value="#{portfolioManagedBean.selectedPortfolio}" style="width:200px">
-                            <p:ajax listener="#{portfolioManagedBean.onDropDownChange}" update="@form" />
+                        <p:selectOneMenu id="portfolio" value="#{customerPortfolioDetailManagedBean.selectedPortfolio}" style="width:200px">
+                            <p:ajax listener="#{customerPortfolioDetailManagedBean.onDropDownChange}" update="@form" />
                             <f:selectItem itemLabel="Select Investment Plan" itemValue="None" noSelectionOption="true" />
-                            <f:selectItems value="#{portfolioManagedBean.portfolioOptions}" />
+                            <f:selectItems value="#{customerPortfolioDetailManagedBean.portfolioOptions}" />
                         </p:selectOneMenu>
 
-                        <c:if test="#{portfolioManagedBean.selectedPortfolio != null or portfolioManagedBean.selectedPortfolio != None}">
-                            <p:chart type="line" model="#{portfolioManagedBean.lineModel}" style="height:300px;"/>
+                        <c:if test="#{customerPortfolioDetailManagedBean.selectedPortfolio != null or customerPortfolioDetailManagedBean.selectedPortfolio != None}">
+                            <p:chart type="line" model="#{customerPortfolioDetailManagedBean.lineModel}" style="height:300px;"/>
                         </c:if>
 
 
@@ -122,12 +121,7 @@
                         <p:messages id="messagesStatus" redisplay="false"></p:messages>
                     </p:panel>
                 </h:form>
-
             </div>
-            <em:customerFooter></em:customerFooter>
-        </h:body> 
+        </h:body>
     </f:view>
-
-
 </html>
-

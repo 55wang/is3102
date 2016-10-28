@@ -35,7 +35,7 @@
                                 <c:if test="#{createLoanInterestManagedBean.selectedInterestType == createLoanInterestManagedBean.HDB_LOAN_TYPE || createLoanInterestManagedBean.selectedInterestType == createLoanInterestManagedBean.PP_LOAN_TYPE}" >
                                     <p:outputLabel value="Edit By Clicking cell: " />
                                     <p:dataTable value="#{createLoanInterestManagedBean.collectionDTOs}" var="dto" editable="true" editMode="cell">
-                                        
+
                                         <p:column headerText="Start Month" sortBy="#{dto.startMonth}">
                                             <h:outputText value="#{dto.startMonth}" />
                                         </p:column>
@@ -45,7 +45,9 @@
                                         <p:column headerText="Interet Rate" sortBy="#{dto.interestRate}">
                                             <p:cellEditor>
                                                 <f:facet name="output">
-                                                    <h:outputText value="#{dto.interestRate}" />
+                                                    <h:outputText value="#{dto.interestRate}" >
+                                                        <f:convertNumber type="percent" minFractionDigits="4"/>
+                                                    </h:outputText>
                                                 </f:facet>
                                                 <f:facet name="input">
                                                     <h:inputText value="#{dto.interestRate}">
@@ -77,8 +79,23 @@
                                     <p:inputText value="#{createLoanInterestManagedBean.loanRate}" required="true" >
                                         <f:convertNumber type="percent" minFractionDigits="4"/>
                                     </p:inputText>
+
+
+                                    <p:outputLabel value="Number of Months: " />
+                                    <p:selectOneMenu value="#{createLoanInterestManagedBean.endMonth}" >
+                                        <f:selectItem itemLabel="Please Select..." itemValue="Please Select..." />
+                                        <f:selectItem itemLabel="12" itemValue="12" />
+                                        <f:selectItem itemLabel="24" itemValue="24" />
+                                        <f:selectItem itemLabel="36" itemValue="36" />
+                                        <f:selectItem itemLabel="48" itemValue="48" />
+                                        <f:selectItem itemLabel="60" itemValue="60" />
+                                        <f:selectItem itemLabel="72" itemValue="72" />
+                                        <f:selectItem itemLabel="84" itemValue="84" />
+                                    </p:selectOneMenu>
+
+
                                 </c:if>
-                                
+
                                 <p:commandButton value="Create" icon="ui-icon-plus" update="@form" actionListener="#{createLoanInterestManagedBean.createLoanInterest}" />
                             </h:panelGrid>
                         </p:messages>
@@ -92,7 +109,7 @@
                                 <h:outputText value="#{interest.startMonth}"/>
                             </p:column>
                             <p:column headerText="End Month" sortBy="#{interest.endMonth}">
-                                <h:outputText value="#{interest.endMonth}"/>
+                                <h:outputText value="#{interest.endMonth == -1 ? 'End of Tenure' : interest.endMonth}"/>
                             </p:column>
                             <p:column headerText="Has FHR18" sortBy="#{interest.fhr18}">
                                 <h:outputText value="#{interest.fhr18}"/>

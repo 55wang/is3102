@@ -6,6 +6,7 @@
 package ejb.session.wealth;
 
 import entity.customer.WealthManagementSubscriber;
+import java.util.List;
 import javax.ejb.Local;
 
 /**
@@ -16,5 +17,6 @@ import javax.ejb.Local;
 public interface WealthManegementSubscriberSessionBeanLocal {
     public WealthManagementSubscriber createWealthManagementSubscriber(WealthManagementSubscriber wms);
     public WealthManagementSubscriber getWealthManagementSubscriberById(Long id);
+    public List<WealthManagementSubscriber> getAllWealthManagementSubscribers();
     public WealthManagementSubscriber updateWealthManagementSubscriber(WealthManagementSubscriber wms);
 }

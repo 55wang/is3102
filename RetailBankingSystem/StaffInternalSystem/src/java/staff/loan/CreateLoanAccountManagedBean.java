@@ -22,7 +22,10 @@ import entity.loan.LoanProduct;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
@@ -32,6 +35,7 @@ import server.utilities.DateUtils;
 import server.utilities.EnumUtils;
 import server.utilities.PincodeGenerationUtils;
 import utils.MessageUtils;
+import utils.RedirectUtils;
 import utils.SessionUtils;
 
 /**
@@ -50,14 +54,14 @@ public class CreateLoanAccountManagedBean implements Serializable {
     private LoanPaymentSessionBeanLocal loanPaymentSessionBean;
     @EJB
     private LoginSessionBeanLocal loginBean;
-    @EJB 
-    private MainAccountSessionBeanLocal mainAccountSessionBean;
     @EJB
     private NewCustomerSessionBeanLocal newCustomerBean;
     @EJB
     private DepositProductSessionBeanLocal depositProductBean;
     @EJB
     private CustomerDepositSessionBeanLocal depositAccountBean;
+    @EJB
+    private MainAccountSessionBeanLocal mainAccountBean;
     
     private String applicationId;
 
@@ -105,7 +109,16 @@ public class CreateLoanAccountManagedBean implements Serializable {
         
         LoanAccount result = loanAccountBean.createLoanAccount(la);
         if (result != null) {
+            ma.addLoanAccount(la);
+            mainAccountBean.updateMainAccount(ma);
             MessageUtils.displayInfo("Loan Account Created!");
+            try {
+                TimeUnit.SECONDS.sleep(2);
+            } catch (Exception e) {
+                System.out.println("TimeUnit Exception: creatLoanAccount():");
+            }
+            
+            RedirectUtils.redirect("approve_loan_account.xhtml");
         } else {
             MessageUtils.displayError("Loan Account Not Created!");
         }
@@ -114,7 +127,7 @@ public class CreateLoanAccountManagedBean implements Serializable {
     private void createOhterAccounts(LoanApplication la) {
         MainAccount ma = null;
         try {
-            ma = loginBean.getMainAccountByUserIC(la.getIdNumber());
+            ma = loginBean.getMainAccountByUserID(generateUserID(EnumUtils.IdentityType.NRIC, la.getIdNumber()));
         } catch (Exception e) {
             System.out.println("Main Account not found, creating new..");
         }
@@ -126,12 +139,15 @@ public class CreateLoanAccountManagedBean implements Serializable {
             mainAccount.setUserID(generateUserID(EnumUtils.IdentityType.NRIC, la.getIdNumber()));
             String randomPwd = PincodeGenerationUtils.generatePwd();
             mainAccount.setPassword(randomPwd);
-            mainAccount = mainAccountSessionBean.createMainAccount(mainAccount);
+            mainAccount = mainAccountBean.createMainAccount(mainAccount);
             mainAccountId = mainAccount.getUserID();
 
+            // TODO: Need to check if all information was updated
             Customer customer = new Customer();
             customer.setIncome(EnumUtils.Income.getEnumFromNumber(la.getIncome()));
             customer.setActualIncome(la.getIncome());
+            customer.setEmail(la.getEmail());
+            customer.setFullName(la.getName());
             customer.setMainAccount(mainAccount);
             newCustomerBean.createCustomer(customer);
 
@@ -144,6 +160,9 @@ public class CreateLoanAccountManagedBean implements Serializable {
             la.setMainAccount(mainAccount);
             la.setStatus(EnumUtils.LoanAccountStatus.PENDING);
             loanAccountBean.updateLoanApplication(la);
+            
+            mainAccount.setCustomer(customer);
+            mainAccountBean.updateMainAccount(mainAccount);
         } else {
             mainAccountId = ma.getUserID();
             
@@ -157,6 +176,9 @@ public class CreateLoanAccountManagedBean implements Serializable {
             newCustomerBean.updateCustomer(customer);
             
             depositAccountBean.getDaytoDayAccountByMainAccount(ma);
+            
+            ma.setCustomer(customer);
+            mainAccountBean.updateMainAccount(ma);
         }
     }
     

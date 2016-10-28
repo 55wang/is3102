@@ -54,23 +54,20 @@
                                                 Basic Information
                                             </f:facet>
 
-                                            <h:outputText value="Last Name: " />
-                                            <h:outputText value="#{customer.lastname}" style="width:97%"/>
+                                            <h:outputText value="Full Name: " />
+                                            <h:outputText value="#{cco.mainAccount.customer.fullName}" style="width:97%"/>
 
                                             <h:outputText value="Income: " />
                                             <h:outputText value="#{cco.mainAccount.customer.income}" />
 
                                             <h:outputText value="Employment Status: " />
-                                            <h:outputText value="#{cco.mainAccount.customer.employmentStatus}" />
+                                            <h:outputText value="#{cco.mainAccount.customer.employmentStatus.value}" />
 
                                             <h:outputText value="Education " />
                                             <h:outputText value="#{cco.mainAccount.customer.education}" />
 
                                             <h:outputText value="Industry: " />
                                             <h:outputText value="#{cco.mainAccount.customer.industry}" />
-
-                                            <h:outputText value="Marital Status: " />
-                                            <h:outputText value="#{cco.mainAccount.customer.maritalStatus}" />
 
                                         </p:panelGrid>
 
