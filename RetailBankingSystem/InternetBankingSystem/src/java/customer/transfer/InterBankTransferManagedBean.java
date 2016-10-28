@@ -193,7 +193,7 @@ public class InterBankTransferManagedBean implements Serializable {
     
     private void calculateTransferLimits() {
         BigDecimal todayTransferAmount = transferBean.getTodayBankTransferAmount(ma, EnumUtils.PayeeType.LOCAL);
-        BigDecimal currentTransferLimit = new BigDecimal(ma.getTransferLimits().getDailyInterBankLimit().toString());
+        BigDecimal currentTransferLimit = new BigDecimal(ma.getTransferLimits().getDailyIntraBankLimit().toString());
         transferLimitLeft = currentTransferLimit.subtract(todayTransferAmount).setScale(2).toString();
     }
 
