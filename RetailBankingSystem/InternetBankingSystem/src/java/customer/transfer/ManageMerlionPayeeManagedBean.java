@@ -106,6 +106,7 @@ public class ManageMerlionPayeeManagedBean implements Serializable {
         System.out.println("sendOTP clicked, sending otp to: " + ma.getCustomer().getPhone());
         JSUtils.callJSMethod("PF('myWizard').next()");
         otpBean.generateOTP(ma.getCustomer().getPhone());
+        
     }
     
     private Boolean checkOptAndProceed() {

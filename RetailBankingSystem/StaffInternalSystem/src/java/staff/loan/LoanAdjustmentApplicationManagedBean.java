@@ -19,6 +19,7 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
+import server.utilities.DateUtils;
 import server.utilities.EnumUtils;
 import utils.MessageUtils;
 import utils.SessionUtils;
@@ -55,9 +56,11 @@ public class LoanAdjustmentApplicationManagedBean implements Serializable {
         loanAccountBean.updateLoanAdjustmentApplication(app);
         
         LoanAccount la = app.getLoanAccount();
+        Date newMaturityDate = DateUtils.addYearsToDate(la.getMaturityDate(), app.getTenure() - la.getTenure());
         la.setTenure(app.getTenure());
-        
+        la.setMaturityDate(newMaturityDate);
         la.setMonthlyInstallment(loanPaymentSessionBean.calculateMonthlyInstallment(la));
+        la = loanAccountBean.updateLoanAccount(la);
         
         List<LoanPaymentBreakdown> result = loanPaymentSessionBean.futurePaymentBreakdown(la);
         for (LoanPaymentBreakdown r : result) {
