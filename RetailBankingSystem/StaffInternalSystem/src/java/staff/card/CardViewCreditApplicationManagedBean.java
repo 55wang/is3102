@@ -10,7 +10,6 @@ import ejb.session.card.CardProductSessionBeanLocal;
 import ejb.session.card.CreditCardOrderSessionBeanLocal;
 import ejb.session.common.EmailServiceSessionBeanLocal;
 import ejb.session.common.NewCustomerSessionBeanLocal;
-import ejb.session.mainaccount.MainAccountSessionBean;
 import ejb.session.mainaccount.MainAccountSessionBeanLocal;
 
 import ejb.session.utils.UtilsSessionBeanLocal;
@@ -38,6 +37,8 @@ import utils.SessionUtils;
 public class CardViewCreditApplicationManagedBean implements Serializable {
 
     @EJB
+    private MainAccountSessionBeanLocal mainAccountSessionBean;
+    @EJB
     CardProductSessionBeanLocal cardProductSessionBean;
     @EJB
     CreditCardOrderSessionBeanLocal creditCardOrderSessionBean;
@@ -47,8 +48,7 @@ public class CardViewCreditApplicationManagedBean implements Serializable {
     private EmailServiceSessionBeanLocal emailServiceSessionBean;
     @EJB
     private UtilsSessionBeanLocal utilsBean;
-    @EJB
-    private MainAccountSessionBeanLocal mainAccountSessionBean;
+
 
     private List<CreditCardOrder> ccos;
     private String bureauCreditScore;
@@ -81,7 +81,10 @@ public class CardViewCreditApplicationManagedBean implements Serializable {
             emailServiceSessionBean.sendCreditCardActivationGmailForCustomer(
                     cco.getMainAccount().getCustomer().getEmail(),
                     randomPwd,
-                    cco.getCreditCardAccount().getCreditCardNum()
+                    cco.getCreditCardAccount().getCreditCardNum(),
+                    cco.getCreditCardAccount().getCvv(),
+                    cco.getMainAccount().getUserID()
+
             );
             MessageUtils.displayInfo("Order Approved!");
         } catch (Exception ex) {
@@ -91,14 +94,9 @@ public class CardViewCreditApplicationManagedBean implements Serializable {
 
     public void rejectOrder(CreditCardOrder cco) {
         creditCardOrderSessionBean.updateCreditCardOrderStatus(cco, EnumUtils.ApplicationStatus.REJECT);
+        emailServiceSessionBean.sendCreditCardApplicationRejectionToCustomers(cco.getMainAccount().getCustomer().getEmail());
 
-        try {
-            String msg = "We are sorry that your application is not successful.";
-            emailServiceSessionBean.sendRequireAdditionalInfo(cco.getMainAccount().getCustomer().getEmail(), msg);
-            MessageUtils.displayInfo("Order Rejected!");
-        } catch (Exception ex) {
-            MessageUtils.displayError("Order Rejected! But email send failed");
-        }
+        MessageUtils.displayInfo("Order Rejected!");
 
     }
 

@@ -33,6 +33,7 @@ import utils.SessionUtils;
 @Named(value = "customerCardManagedBean")
 @ViewScoped
 public class CustomerCardManagedBean implements Serializable {
+
     @EJB
     private EmailServiceSessionBeanLocal emailServiceSessionBean;
 
@@ -41,7 +42,6 @@ public class CustomerCardManagedBean implements Serializable {
     private List<CardTransaction> cardTransactions;
     private static CreditCardAccount cca;
     private Date currentDate = new Date();
-
 
     @EJB
     private CardAcctSessionBeanLocal cardAcctSessionBean;
@@ -54,7 +54,7 @@ public class CustomerCardManagedBean implements Serializable {
         String params = RedirectUtils.generateParameters(map);
         RedirectUtils.redirect("credit_card_transactions.xhtml" + params);
     }
-    
+
     public void sendDCTransactionDetail(DebitCardAccount aDca) {
         Map<String, String> map = new HashMap<>();
         map.put("dcaId", aDca.getId().toString());
@@ -62,18 +62,23 @@ public class CustomerCardManagedBean implements Serializable {
         RedirectUtils.redirect("debit_card_transactions.xhtml" + params);
     }
 
-    public void viewTerminatePage(CreditCardAccount aCca) {
+    public void terminateCreditCard(CreditCardAccount aCca) {
         System.out.println("in viewTerminatePage");
-        cardAcctSessionBean.updateCardAccountStatus(cca, CardAccountStatus.CLOSED);
-        RedirectUtils.redirect("/InternetBankingSystem/personal_cards/debit_card_summary.xhtml");
+        if (aCca.getOutstandingAmount() > 0) {
+            MessageUtils.displayError("Card cannot be terminiated due to outstanding balance.");
+        } else {
+            cardAcctSessionBean.updateCardAccountStatus(aCca, CardAccountStatus.CLOSED);
+            RedirectUtils.redirect("/InternetBankingSystem/personal_cards/credit_card_summary.xhtml");
+        }
+
     }
 
-    public void viewTerminateDebitPage(DebitCardAccount dca) {
+    public void terminateDebitCard(DebitCardAccount dca) {
         System.out.println("in viewTerminatePage");
         cardAcctSessionBean.updateDebitAccountStatus(dca, CardAccountStatus.CLOSED);
         RedirectUtils.redirect("/InternetBankingSystem/personal_cards/debit_card_summary.xhtml");
     }
-    
+
     public void viewRedeemPage(CreditCardAccount cca) {
         // Go to Message View
         Map<String, String> map = new HashMap<>();
@@ -89,9 +94,9 @@ public class CustomerCardManagedBean implements Serializable {
 
     public void updateTransactionLimit() {
         CreditCardAccount result = cardAcctSessionBean.updateCreditCardAccount(cca);
-        if (result!=null) {
+        if (result != null) {
             MessageUtils.displayInfo("Transaction limit is updated!");
-            emailServiceSessionBean.sendTransactionLimitChangeNotice(cca.getMainAccount().getCustomer().getEmail());           
+            emailServiceSessionBean.sendTransactionLimitChangeNotice(cca.getMainAccount().getCustomer().getEmail());
         } else {
             MessageUtils.displayError("Change is unsuccessful!");
 

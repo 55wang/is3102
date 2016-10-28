@@ -94,6 +94,10 @@ public class CardTransaction implements Serializable {
         return isCredit;
     }
 
+    public Boolean getIsCredit() {
+        return isCredit;
+    }
+
     public void setIsCredit(Boolean isCredit) {
         this.isCredit = isCredit;
     }
