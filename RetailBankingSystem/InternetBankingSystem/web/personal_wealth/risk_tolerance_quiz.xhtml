@@ -19,7 +19,7 @@
             <div class="customer_main_container">
 
                 <h:form id="riskQuizForm" >
-                    <p:panel header="Risk Tolerance Quiz" rendered="#{riskToleranceQuizManagedBean.wms.riskToleranceScore == null or riskToleranceQuizManagedBean.retakeOrNot}">
+                    <p:panel header="Risk Tolerance Quiz" rendered="#{riskToleranceQuizManagedBean.wms.riskToleranceScore == null or riskToleranceQuizManagedBean.retakeOrNot}" class="red-icon">
                         <p:messages id="messagesStatus" redisplay="false">
                             <h:panelGrid columns="1" cellpadding="5" rendered="#{riskToleranceQuizManagedBean.questionNumber == 1}">
                                 <p:outputLabel for="q1" value="1. In general, how would your best friend describe you as a risk taker? " />

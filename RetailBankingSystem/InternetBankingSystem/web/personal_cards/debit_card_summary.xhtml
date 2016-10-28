@@ -38,7 +38,7 @@
                                                 </p:submenu>
                                             </p:menu>
                                         
-                                            <p:commandButton value="Cancel" action="#{customerCardManagedBean.viewTerminateDebitPage(dca)}" update="@form">
+                                            <p:commandButton value="Cancel" action="#{customerCardManagedBean.terminateDebitCard(dca)}" update="@form">
                                                 <p:confirm header="Confirmation" message="Are you sure you want to close your account?" icon="ui-icon-alert" />
                                                 <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
                                                     <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />

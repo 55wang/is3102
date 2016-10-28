@@ -37,7 +37,7 @@ public class DebitCardAccount implements Serializable {
     private EnumUtils.CardNetwork cardNetwork;
     private EnumUtils.CardAccountStatus CardStatus;
     private String creditCardNum;
-    private Integer cvv; // LY: Use Integer instead of int
+    private String cvv; 
     private String nameOnCard;
     
     private double transactionMonthlyLimit;
@@ -105,11 +105,11 @@ public class DebitCardAccount implements Serializable {
         this.creditCardNum = creditCardNum;
     }
 
-    public Integer getCvv() {
+    public String getCvv() {
         return cvv;
     }
 
-    public void setCvv(Integer cvv) {
+    public void setCvv(String cvv) {
         this.cvv = cvv;
     }
 
