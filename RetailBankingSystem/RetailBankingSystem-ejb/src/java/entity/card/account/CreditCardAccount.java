@@ -60,7 +60,7 @@ public class CreditCardAccount implements Serializable {
     private CardAccountStatus CardStatus = CardAccountStatus.NEW;
     @Column(unique = true)
     private String creditCardNum;
-    private Integer cvv; // LY: Use Integer instead of Integer
+    private String cvv; 
     private String nameOnCard;
 
     private Double transactionMonthlyLimit = 1000.0;
@@ -349,11 +349,11 @@ public class CreditCardAccount implements Serializable {
     /**
      * @return the cvv
      */
-    public Integer getCvv() {
+    public String getCvv() {
         return cvv;
     }
 
-    public void setCvv(Integer cvv) {
+    public void setCvv(String cvv) {
         this.cvv = cvv;
     }
 

@@ -10,6 +10,7 @@ import ejb.session.card.CardProductSessionBeanLocal;
 import ejb.session.card.CreditCardOrderSessionBeanLocal;
 import ejb.session.common.EmailServiceSessionBeanLocal;
 import ejb.session.common.NewCustomerSessionBeanLocal;
+import ejb.session.mainaccount.MainAccountSessionBeanLocal;
 
 import ejb.session.utils.UtilsSessionBeanLocal;
 import entity.card.order.CreditCardOrder;
@@ -34,7 +35,9 @@ import utils.SessionUtils;
 @Named(value = "cardViewCreditApplicationManagedBean")
 @ViewScoped
 public class CardViewCreditApplicationManagedBean implements Serializable {
-    
+    @EJB
+    private MainAccountSessionBeanLocal mainAccountSessionBean;
+
     @EJB
     CardProductSessionBeanLocal cardProductSessionBean;
     @EJB
@@ -47,13 +50,13 @@ public class CardViewCreditApplicationManagedBean implements Serializable {
     private NewCustomerSessionBeanLocal newCustomerSessionBean;
     @EJB
     private UtilsSessionBeanLocal utilsBean;
-    
+
     private List<CreditCardOrder> ccos;
     private String bureauCreditScore;
-    
+
     public CardViewCreditApplicationManagedBean() {
     }
-    
+
     @PostConstruct
     public void init() {
         AuditLog a = new AuditLog();
@@ -64,7 +67,7 @@ public class CardViewCreditApplicationManagedBean implements Serializable {
         utilsBean.persist(a);
         ccos = creditCardOrderSessionBean.getListCreditCardOrdersByApplicationStatus(EnumUtils.ApplicationStatus.NEW);
     }
-    
+
     public void approveOrder(CreditCardOrder cco) {
         creditCardOrderSessionBean.updateCreditCardOrderStatus(cco, EnumUtils.ApplicationStatus.APPROVED);
         // Create Main Account 
@@ -74,23 +77,28 @@ public class CardViewCreditApplicationManagedBean implements Serializable {
         mainAccount.setStatus(EnumUtils.StatusType.PENDING);
         String randomPwd = CommonHelper.generatePwd();
         mainAccount.setPassword(randomPwd);
+        mainAccountSessionBean.updateMainAccount(mainAccount);
         try {
             emailServiceSessionBean.sendCreditCardActivationGmailForCustomer(
-                    cco.getMainAccount().getCustomer().getEmail(), 
-                    randomPwd, 
-                    cco.getCreditCardAccount().getCreditCardNum()
+                    cco.getMainAccount().getCustomer().getEmail(),
+                    randomPwd,
+                    cco.getCreditCardAccount().getCreditCardNum(),
+                    cco.getCreditCardAccount().getCvv(),
+                    cco.getMainAccount().getUserID()
             );
             MessageUtils.displayInfo("Order Approved!");
         } catch (Exception ex) {
             MessageUtils.displayError("Order Approved! But email send failed");
         }
     }
-    
+
     public void rejectOrder(CreditCardOrder cco) {
         creditCardOrderSessionBean.updateCreditCardOrderStatus(cco, EnumUtils.ApplicationStatus.REJECT);
+        emailServiceSessionBean.sendCreditCardApplicationRejectionToCustomers(cco.getMainAccount().getCustomer().getEmail());
+
         MessageUtils.displayInfo("Order Rejected!");
     }
-    
+
     public void calculateCreditScore(CreditCardOrder cco) {
         try {
             cco.getMainAccount().getCustomer().setBureaCreditScore(bureauCreditScore);
@@ -102,7 +110,7 @@ public class CardViewCreditApplicationManagedBean implements Serializable {
             System.out.println("error");
             MessageUtils.displayError("Error! Not updated!");
         }
-        
+
     }
 
     /* D.4.1.1
@@ -113,7 +121,7 @@ public class CardViewCreditApplicationManagedBean implements Serializable {
      */
     public double calculateCreditLvl(CreditCardOrder cco, String creditBureauScore) {
         try {
-            
+
             System.out.println("inside calculateCreditLvl");
             System.out.println(creditBureauScore);
             System.out.println(cco.getApplicationStatus());
@@ -157,7 +165,6 @@ public class CardViewCreditApplicationManagedBean implements Serializable {
 //            } else if (martialStatus.equals(EnumUtils.MaritalStatus.OTHERS)) {
 //                creditScore += 0;
 //            }
-            
             EnumUtils.Education education = cco.getMainAccount().getCustomer().getEducation();
             if (education.equals(EnumUtils.Education.POSTGRAD)) {
                 creditScore += 50;
@@ -201,33 +208,33 @@ public class CardViewCreditApplicationManagedBean implements Serializable {
             System.out.println("error in credit score");
         }
         return 0;
-        
+
     }
-    
+
     public long getAge(Date dateOne, Date dateTwo) {
         long timeOne = dateOne.getTime();
         long timeTwo = dateTwo.getTime();
         long oneDay = 1000 * 60 * 60 * 24;
         long delta = (timeTwo - timeOne) / oneDay;
-        
+
         delta = delta / 365;
         return delta;
     }
-    
+
     public List<CreditCardOrder> getCcos() {
         return ccos;
     }
-    
+
     public void setCcos(List<CreditCardOrder> ccos) {
         this.ccos = ccos;
     }
-    
+
     public String getBureauCreditScore() {
         return bureauCreditScore;
     }
-    
+
     public void setBureauCreditScore(String bureauCreditScore) {
         this.bureauCreditScore = bureauCreditScore;
     }
-    
+
 }

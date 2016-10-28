@@ -123,7 +123,7 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
     }
 
     @Override
-    public Boolean sendCreditCardActivationGmailForCustomer(String recipient, String pwd, String ccNumber) {
+    public Boolean sendCreditCardActivationGmailForCustomer(String recipient, String pwd, String ccNumber, String ccv, String userName) {
         Session session = getSession();
 
         try {
@@ -132,10 +132,39 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
             message.setFrom(new InternetAddress("merlionbanking@gmail.com"));
             message.setRecipients(Message.RecipientType.TO,
                     InternetAddress.parse(recipient));
-            message.setSubject("Welcome to Merlion Banking");
-            message.setText("Dear Customer, Thank you to register merionlion banking.\n"
-                    + "Your Reward Credit Card xxxx-xxxx-xxxx-" + ccNumber.substring(ccNumber.length() - 4, ccNumber.length()) + " is on the way.\n"
+            message.setSubject("Your credit card application is successful");
+            message.setText("Dear Customer, Thank you for applying credit card at merionlion banking.\n"
+                    + "Your Reward Credit Card No.  " + ccNumber + " is on the way.\n"
+                    + "CCV:   " + ccNumber + " is on the way.\n"
+                    + "Your ibanking account is " + userName + " \n"
                     + "Click to activate your member account: https://localhost:8181/InternetBankingSystem/common/customer_activate_account.xhtml?email=" + recipient + "&code=" + pwd);
+
+            Transport.send(message);
+
+            System.out.println("Email send out successfully");
+            return (true);
+
+        } catch (MessagingException e) {
+            System.out.println(e);
+            return (false);
+        }
+
+    }
+
+    @Override
+    public Boolean sendCreditCardApplicationRejectionToCustomers(String recipient) {
+        Session session = getSession();
+
+        try {
+
+            Message message = new MimeMessage(session);
+            message.setFrom(new InternetAddress("merlionbanking@gmail.com"));
+            message.setRecipients(Message.RecipientType.TO,
+                    InternetAddress.parse(recipient));
+            message.setSubject("Your credit card application is rejected.");
+            message.setText("Dear Customer, Thank you for applying credit card in merionlion banking.\n"
+                    + "However, we are sorry to inform that your application is rejected.\n"
+                    + "Please contact service center for information. Thank you.");
 
             Transport.send(message);
 
@@ -505,7 +534,7 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
             return;
         }
     }
-    
+
     @Override
     public void sendLoanApplicationRejectNotice(String recipient) {
         Session session = getSession();
@@ -684,13 +713,13 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
                     InternetAddress.parse("merlionbanking@gmail.com"));
             message.setSubject("Bad Loan Notice");
             message.setText("Hi, please notice that there is a bad loan for this customer:\n"
-                    + "  Name: " + customer.getFullName()+ "\n"
+                    + "  Name: " + customer.getFullName() + "\n"
                     + "  Phone: " + customer.getPhone() + "\n"
-                    + "  Email: " + customer.getEmail()+ "\n"
+                    + "  Email: " + customer.getEmail() + "\n"
                     + "  Loan Account Number: " + loanAccount.getAccountNumber() + "\n"
                     + "  Loan Amount: " + loanAccount.getPrincipal() + "\n"
                     + "Please contact the customer ASAP");
-            
+
             Transport.send(message);
 
             System.out.println("Email send out successfully");
