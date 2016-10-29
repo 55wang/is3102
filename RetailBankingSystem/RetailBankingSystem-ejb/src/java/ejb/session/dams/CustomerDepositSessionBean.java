@@ -404,4 +404,16 @@ public class CustomerDepositSessionBean implements CustomerDepositSessionBeanLoc
         q.setParameter("accountNumber", accountNumber);
         return q.getResultList();
     }
+    
+    @Override
+    public TransactionRecord latestTransactionFromAccountNumber(String accountNumber) {
+        Query q = em.createQuery("SELECT tr FROM TransactionRecord tr WHERE tr.toAccount.accountNumber =:accountNumber OR tr.fromAccount.accountNumber =:accountNumber ORDER BY tr.creationDate DESC");
+        q.setParameter("accountNumber", accountNumber);
+        List<TransactionRecord> result = q.getResultList();
+        if (result.size() > 0) {
+            return result.get(0);
+        } else {
+            return null;
+        }
+    }
 }

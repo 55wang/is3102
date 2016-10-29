@@ -41,4 +41,5 @@ public interface CustomerDepositSessionBeanLocal {
     public DepositAccount investFromAccount(DepositAccount account, BigDecimal investAmount);
     public DepositAccount creditInterestAccount(DepositAccount account);
     public List<TransactionRecord> transactionRecordFromAccountNumber(String accountNumber);
+    public TransactionRecord latestTransactionFromAccountNumber(String accountNumber);
 }
