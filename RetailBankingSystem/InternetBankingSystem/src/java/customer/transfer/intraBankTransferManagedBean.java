@@ -112,6 +112,7 @@ public class intraBankTransferManagedBean implements Serializable {
         DepositAccount toAccount = depositBean.getAccountFromId(getToAccountNo());
         tr.setToAccount(toAccount);
         tr.setType(EnumUtils.PayeeType.MERLION);
+        tr.setActionType(EnumUtils.TransactionType.TRANSFER);
         transferBean.createTransferRecord(tr);
         
         String result = transferBean.transferFromAccountToAccount(getFromAccountNo(), getToAccountNo(), getAmount());

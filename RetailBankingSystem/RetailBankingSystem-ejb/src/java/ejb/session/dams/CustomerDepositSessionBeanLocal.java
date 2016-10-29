@@ -5,8 +5,10 @@
  */
 package ejb.session.dams;
 
+import entity.common.TransactionRecord;
 import entity.customer.MainAccount;
 import entity.dams.account.CustomerDepositAccount;
+import entity.dams.account.CustomerFixedDepositAccount;
 import entity.dams.account.DepositAccount;
 import java.math.BigDecimal;
 import java.util.List;
@@ -26,6 +28,7 @@ public interface CustomerDepositSessionBeanLocal {
     public List<DepositAccount> getAllCustomerAccounts(Long mainAccountId);
     public CustomerDepositAccount getDaytoDayAccountByMainAccount(MainAccount ma);
     public List<CustomerDepositAccount> getAllNonFixedCustomerAccounts(Long mainAccountId);
+    public List<CustomerFixedDepositAccount> getAllFixedCustomerAccounts(Long mainAccountId);
     public String depositIntoAccount(String accountNumber, BigDecimal depositAmount);
     public String withdrawFromAccount(String accountNumber, BigDecimal depositAmount);
     public DepositAccount transferFromAccount(DepositAccount account, BigDecimal amount);
@@ -37,4 +40,5 @@ public interface CustomerDepositSessionBeanLocal {
     public DepositAccount ccSpendingFromAccount(DepositAccount account, BigDecimal spendAmount);
     public DepositAccount investFromAccount(DepositAccount account, BigDecimal investAmount);
     public DepositAccount creditInterestAccount(DepositAccount account);
+    public List<TransactionRecord> transactionRecordFromAccountNumber(String accountNumber);
 }

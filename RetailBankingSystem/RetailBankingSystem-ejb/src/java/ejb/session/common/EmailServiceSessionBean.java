@@ -154,7 +154,7 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
 
     @Asynchronous
     @Override
-    public Boolean sendCreditCardApplicationRejectionToCustomers(String recipient) {
+    public void sendCreditCardApplicationRejectionToCustomers(String recipient) {
         Session session = getSession();
 
         try {
@@ -171,11 +171,9 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
             Transport.send(message);
 
             System.out.println("Email send out successfully");
-            return (true);
 
         } catch (MessagingException e) {
             System.out.println(e);
-            return (false);
         }
 
     }

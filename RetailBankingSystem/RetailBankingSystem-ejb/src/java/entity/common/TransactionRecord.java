@@ -34,8 +34,9 @@ public class TransactionRecord implements Serializable {
     private Date creationDate = new Date();
     
     // info
+    @Column(nullable = false)
     private TransactionType actionType;
-    private Boolean credit;
+    private Boolean credit = true;
     @Column(precision=30, scale=20)
     private BigDecimal amount;
     
