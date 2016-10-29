@@ -6,9 +6,11 @@
 package customer.wealth;
 
 import ejb.session.mainaccount.MainAccountSessionBeanLocal;
+import ejb.session.staff.StaffAccountSessionBeanLocal;
 import ejb.session.wealth.WealthManegementSubscriberSessionBeanLocal;
 import entity.customer.MainAccount;
 import entity.customer.WealthManagementSubscriber;
+import entity.staff.StaffAccount;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +28,8 @@ import utils.SessionUtils;
 @Named(value = "riskToleranceQuizManagedBean")
 @ViewScoped
 public class RiskToleranceQuizManagedBean implements Serializable {
+    @EJB
+    private StaffAccountSessionBeanLocal staffAccountSessionBean;
     @EJB
     private MainAccountSessionBeanLocal mainAccountSessionBean;
     @EJB
@@ -49,10 +53,16 @@ public class RiskToleranceQuizManagedBean implements Serializable {
     @PostConstruct
     public void init() {
         setMainAccount(mainAccountSessionBean.getMainAccountByUserId(SessionUtils.getUserName()));
-        setWms(mainAccount.getWealthManagementSubscriber());
+        WealthManagementSubscriber newwms = mainAccount.getWealthManagementSubscriber();
+        if(newwms == null){
+            wms = new WealthManagementSubscriber();
+        }else{
+            setWms(mainAccount.getWealthManagementSubscriber());
+        }
     }
     
     public void retakeQuiz(){
+        questionNumber = 1;
         setRetakeOrNot(true);   
     }
     
@@ -71,7 +81,7 @@ public class RiskToleranceQuizManagedBean implements Serializable {
     public void submit(){
         System.out.println("submit button pressed: ");
         System.out.println(savingAmount);
-        wms.getMainAccount().getCustomer().setSavingPerMonth(savingAmount);
+        mainAccount.getCustomer().setSavingPerMonth(savingAmount);
         wms.setRiskToleranceScore(totalScore());
         if(totalScore() < 18)
             wms.setRiskToleranceLevel(EnumUtils.RiskToleranceLevel.LOW_RISK_TOLERANCE);
@@ -84,6 +94,14 @@ public class RiskToleranceQuizManagedBean implements Serializable {
         else
             wms.setRiskToleranceLevel(EnumUtils.RiskToleranceLevel.HIGH_RISK_ROLERANCE);
         
+        wms.setMainAccount(mainAccount);
+        StaffAccount rm = new StaffAccount();
+        rm = staffAccountSessionBean.getAccountByUsername("relationship_manager");
+        wms.setRelationshipManager(rm);
+        List<WealthManagementSubscriber> wmsList = rm.getWealthManagementSubscribers();
+        wmsList.add(wms);
+        rm.setWealthManagementSubscribers(wmsList);
+        mainAccount.setWealthManagementSubscriber(wms);
         setWms(wealthManegementSubscriberSessionBean.updateWealthManagementSubscriber(wms));
         
         setRetakeOrNot(false);

@@ -373,7 +373,7 @@ public class Customer implements Serializable {
 
     public Double getFinancialHealthScore() {
         try{
-            financialHealthScore = 100.0;
+            financialHealthScore = 85.0;
             if (getSavingToIncome() >= 10 && getSavingToIncome() <= 20) {
                 financialHealthScore += 5;
             } else if (getSavingToIncome() < 10) {
