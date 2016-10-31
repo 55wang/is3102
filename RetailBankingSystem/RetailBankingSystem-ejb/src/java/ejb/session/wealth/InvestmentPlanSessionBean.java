@@ -7,7 +7,7 @@ package ejb.session.wealth;
 
 import entity.customer.MainAccount;
 import entity.staff.StaffAccount;
-import entity.wealth.PortfolioModel;
+import entity.wealth.FinancialInstrumentAndWeight;
 import entity.wealth.InvestmentPlan;
 import java.util.List;
 import javax.ejb.EJB;

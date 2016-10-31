@@ -5,12 +5,16 @@
  */
 package ejb.session.fact;
 
+import entity.fact.customer.FinancialInstrumentFactTable;
 import entity.fact.customer.SinglePortfolioFactTable;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.persistence.TemporalType;
+import server.utilities.EnumUtils;
 
 /**
  *
@@ -23,8 +27,43 @@ public class FactSessionBean implements FactSessionBeanLocal {
     private EntityManager em;
 
     @Override
+    public Double getFinancialInstrumentValueChangeByCreationDateAndName(Date date, EnumUtils.FinancialInstrumentClass name) {
+        Query q = em.createQuery("SELECT a.instrumentValueChange from FinancialInstrumentFactTable a WHERE a.fi.name =:inName AND a.creationDate=:inDate");
+        q.setParameter("inName", name);
+        q.setParameter("inDate", date);
+        return (Double) q.getSingleResult();
+    }
+    
+    @Override
+    public List<Date> getDistinctDateFromFIFactTable() {
+        Query q = em.createNativeQuery("Select Distinct creationDate from FinancialInstrumentFactTable order by creationDate desc;");
+        return q.getResultList();
+    }
+    
+    @Override
+    public FinancialInstrumentFactTable createFinancialInstrumentFactTable(FinancialInstrumentFactTable fif) {
+        em.persist(fif);
+        return fif;
+    }
+
+    @Override
     public SinglePortfolioFactTable createSinglePortfolioFactTable(SinglePortfolioFactTable spf) {
         em.persist(spf);
+        return spf;
+    }
+
+    @Override
+    public SinglePortfolioFactTable getSinglePortfolioFactTable(Date date, Long custId, Long portId) {
+        Query q = em.createQuery("SELECT p FROM SinglePortfolioFactTable p where p.creationDate=:inDate AND p.customer.id =:inCustomer AND p.portfolio.id =:inPort");
+        q.setParameter("inDate", date, TemporalType.DATE);
+        q.setParameter("inCustomer", custId);
+        q.setParameter("inPort", portId);
+        return (SinglePortfolioFactTable) q.getSingleResult();
+    }
+
+    @Override
+    public SinglePortfolioFactTable updateSinglePortfolioFactTable(SinglePortfolioFactTable spf) {
+        em.merge(spf);
         return spf;
     }
 
