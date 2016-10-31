@@ -310,5 +310,8 @@ public class LoanApplication implements Serializable {
     public void setCreationDate(Date creationDate) {
         this.creationDate = creationDate;
     }
+
+
+    
     
 }

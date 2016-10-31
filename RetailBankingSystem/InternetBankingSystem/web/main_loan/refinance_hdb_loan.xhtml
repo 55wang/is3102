@@ -18,7 +18,7 @@
 
             <em:cssImport></em:cssImport>
             <div class="customer_main_container">
-                <h1> Apply for Private House Loan</h1>
+                <h1> Apply for HDB Loan</h1>
                 <h:form>
                     <p:growl id="growl" sticky="true" showDetail="true"/>
                     <p:messages id="msgs"/>
@@ -30,59 +30,52 @@
                                 <h:panelGrid columns="2" cellpadding="5px" columnClasses="label, value">
 
                                     <h:outputText value="Your name: " />
-                                    <p:inputText value="#{ppLoanApplicationManagedBean.name}" required="true" requiredMessage="Name is required." validatorMessage="Invalid name.">
+                                    <p:inputText value="#{hdbLoanApplicationManagedBean.name}" required="true" requiredMessage="Name is required." validatorMessage="Invalid name.">
                                         <f:validateLength minimum="2" />
                                     </p:inputText>
 
                                     <h:outputText value="ID Number: " />
-                                    <p:inputText value="#{ppLoanApplicationManagedBean.idNumber}" required="true" requiredMessage="ID Number is required." validatorMessage="Invalid identity number.">
-                                        <f:validateRegex
+                                    <p:inputText value="#{hdbLoanApplicationManagedBean.idNumber}" required="true" requiredMessage="ID Number is required." validatorMessage="Invalid identity number.">
+                                         <f:validateRegex
                                             pattern="^[A-Za-z0-9]{9}$" />
                                     </p:inputText>
 
                                     <h:outputText value="Age: " />
-                                    <p:inputText value="#{ppLoanApplicationManagedBean.age}" required="true" requiredMessage="Age is required." />
+                                    <p:inputText value="#{hdbLoanApplicationManagedBean.age}" required="true" requiredMessage="Age is required." />
 
                                     <h:outputText value="Phone Number: " />
-                                    <p:inputText value="#{ppLoanApplicationManagedBean.phoneNumber}" required="true" requiredMessage="Phone number is required." />
+                                    <p:inputText value="#{hdbLoanApplicationManagedBean.phoneNumber}" required="true" requiredMessage="Phone number is required." />
 
                                     <h:outputText value="Email Address: " />
-                                    <p:inputText value="#{ppLoanApplicationManagedBean.email}" required="true" requiredMessage="Email is required." validatorMessage="Invalid email format" >
-                                    <f:validateRegex
+                                    <p:inputText value="#{hdbLoanApplicationManagedBean.email}" required="true" requiredMessage="Email is required." validatorMessage="Invalid email format">
+                                        <f:validateRegex
                                             pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
                                     </p:inputText>
 
                                 </h:panelGrid>
 
                                 <div class="register-form-button">
-                                    <p:commandButton value="Next" actionListener="#{ppLoanApplicationManagedBean.checkAge()}" update="@form:msgs1"/>
+                                    <p:commandButton value="Next" actionListener="#{hdbLoanApplicationManagedBean.checkAge()}" update="@form:msgs1"/>
                                 </div>
                             </p:panel>
                         </p:tab>
 
-                        <p:tab id="f-info" title="Financial Status" >
+                        <p:tab id="f-info" title="Financial status" >
                             <p:panel>
                                 <h:panelGrid columns="2" cellpadding="5px" columnClasses="label, value">
 
                                     <h:outputText value="Monthly income: " />
-                                    <p:inputText value="#{ppLoanApplicationManagedBean.monthlyIncome}" required="true" requiredMessage="Monthly income is required." />
+                                    <p:inputText value="#{hdbLoanApplicationManagedBean.monthlyIncome}" required="true" requiredMessage="Monthly income is required." />
 
                                     <h:outputText value="Other financial commitments (S$): " />
-                                    <p:inputText value="#{ppLoanApplicationManagedBean.otherLoan}" required="true" requiredMessage="Other financial commitment is required." />
+                                    <p:inputText value="#{hdbLoanApplicationManagedBean.otherLoan}" required="true" requiredMessage="Other financial commitment is required." />
 
-                                    <h:outputText value="Number of Other Housing loans: " />
-                                    <p:inputText value="#{ppLoanApplicationManagedBean.numOfHousingLoan}" required="true" requiredMessage="Other financial commitment is required." onchange="submit()" valueChangeListener="#{ppLoanApplicationManagedBean.changeLTV}"/>
-
-                                    <h:outputText value="Maximum Loan-To-Value Ratio: " />
-                                    <h:outputText id="LTV" value="#{ppLoanApplicationManagedBean.LTV}" styleClass="outputLabel">
-                                        <f:convertNumber type="percent" minFractionDigits="4"/>
-                                    </h:outputText>
 
                                 </h:panelGrid>
 
                                 <div class="register-form-button">
                                     <p:commandButton value="Back" type="button" onclick="PF('myWizard').back();" />
-                                    <p:commandButton value="Next" actionListener="#{ppLoanApplicationManagedBean.calculatePP()}" update="@form:msgs"/>
+                                    <p:commandButton value="Next" actionListener="#{hdbLoanApplicationManagedBean.calculateHDB()}" update="@form:msgs"/>
                                 </div>
                             </p:panel>
                         </p:tab>
@@ -92,45 +85,36 @@
                                 <h:panelGrid columns="2" cellpadding="5px" columnClasses="label, value">
 
                                     <h:outputText value="Maximum loan amount (S$): " />
-                                    <h:outputText value="#{ppLoanApplicationManagedBean.maxLoanAmount}" styleClass="outputLabel">
+                                    <h:outputText value="#{hdbLoanApplicationManagedBean.maxLoanAmount}" styleClass="outputLabel">
                                         <f:convertNumber pattern="###00.00"/>
                                     </h:outputText>
 
                                     <h:outputText value="Maximum Monthly instalment (S$):: " />
-                                    <h:outputText value="#{ppLoanApplicationManagedBean.monthlyInstalment}" styleClass="outputLabel">
+                                    <h:outputText value="#{hdbLoanApplicationManagedBean.monthlyInstalment}" styleClass="outputLabel">
                                         <f:convertNumber pattern="###00.00"/>
                                     </h:outputText>
 
                                     <h:outputText value="Maximum Tenure: " />
-                                    <h:outputText value="#{ppLoanApplicationManagedBean.maxHousingTenure}" styleClass="outputLabel"/>
-
-                                    <h:outputText value="Maximum Housing market value: " />
-                                    <h:outputText value="#{ppLoanApplicationManagedBean.maxMarketValue}" styleClass="outputLabel">
-                                        <f:convertNumber pattern="###00.00"/>
-                                    </h:outputText>
-                                    
-                                    <h:outputText value="Loan Amount: " />
-                                    <p:inputText value="#{ppLoanApplicationManagedBean.loanAmount}" required="true" requiredMessage="Loan Amount is required." onchange="submit()" valueChangeListener="#{ppLoanApplicationManagedBean.changeMarketValue}"/>
-                                    
-                                    <h:outputText value="Tenure: " />
-                                    <p:inputText value="#{ppLoanApplicationManagedBean.housingTenure}" required="true" requiredMessage="Tenure is required." />
-                                    
-                                    <h:outputText value="Market Value: " />
-                                    <h:outputText value="#{ppLoanApplicationManagedBean.marketValue}" styleClass="outputLabel">
-                                        <f:convertNumber pattern="###00.00"/>
-                                    </h:outputText>
+                                    <h:outputText value="#{hdbLoanApplicationManagedBean.maxHousingTenure}" styleClass="outputLabel"/>
 
                                     
+                                    <h:outputText value="Refinancing Loan Amount: " />
+                                    <p:inputText value="#{hdbLoanApplicationManagedBean.loanAmount}" required="true" requiredMessage="Loan Amount is required." />
+                                    
+                                    <h:outputText value="Refinancing Tenure: " />
+                                    <p:inputText value="#{hdbLoanApplicationManagedBean.housingTenure}" required="true" requiredMessage="Loan Amount is required." />
+                             
+
                                     <h:outputText value="Choose a loan term: " />
-                                    <p:selectOneMenu value="#{ppLoanApplicationManagedBean.loanProductId}" rendered="true" required="true">
-                                        <f:selectItems value="#{ppLoanApplicationManagedBean.ppLoanProducts}" var="p" itemValue="#{p.id}" itemLabel="#{p.productName} #{p.tenure}" />
+                                    <p:selectOneMenu value="#{hdbLoanApplicationManagedBean.loanProductId}" rendered="true" required="true">
+                                        <f:selectItems value="#{hdbLoanApplicationManagedBean.hdbLoanProducts}" var="p" itemValue="#{p.id}" itemLabel="#{p.productName} #{p.tenure}" />
                                     </p:selectOneMenu>
 
                                 </h:panelGrid>
 
                                 <div class="register-form-button">
                                     <p:commandButton value="Back" type="button" onclick="PF('myWizard').back();" />
-                                    <p:commandButton value="Next" actionListener="#{ppLoanApplicationManagedBean.applyPPLoan()}" update="@form:msgs"/>
+                                    <p:commandButton value="Next" actionListener="#{hdbLoanApplicationManagedBean.applyHDBLoan()}" update="@form:msgs"/>
                                 </div>
                             </p:panel>
                         </p:tab>
@@ -138,7 +122,7 @@
                         <p:tab id="result" title="Confirmation">
                             <p:panel>
                                 <h2>Your application has submitted. Please wait for your staff to approach you.</h2>
-                                <h2>Your application number is #{ppLoanApplicationManagedBean.applicationNumber}.</h2>
+                                <h2>Your application number is #{hdbLoanApplicationManagedBean.applicationNumber}.</h2>
                             </p:panel>
                         </p:tab>
                     </p:wizard>

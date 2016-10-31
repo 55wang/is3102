@@ -112,6 +112,9 @@
                                     <h:outputText value="Loan Amount: " />
                                     <p:inputText value="#{hdbLoanApplicationManagedBean.loanAmount}" required="true" requiredMessage="Loan Amount is required." onchange="submit()" valueChangeListener="#{hdbLoanApplicationManagedBean.changeMarketValue}"/>
                                     
+                                    <h:outputText value="Tenure: " />
+                                    <p:inputText value="#{hdbLoanApplicationManagedBean.housingTenure}" required="true" requiredMessage="Tenure is required." />
+                                    
                                     <h:outputText value="Market Value: " />
                                     <h:outputText value="#{hdbLoanApplicationManagedBean.marketValue}" styleClass="outputLabel">
                                         <f:convertNumber pattern="###00.00"/>
