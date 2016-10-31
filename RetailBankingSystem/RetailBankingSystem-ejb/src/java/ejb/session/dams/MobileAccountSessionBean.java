@@ -5,12 +5,14 @@
  */
 package ejb.session.dams;
 
+import ejb.session.card.CardAcctSessionBeanLocal;
 import entity.common.TransactionRecord;
 import entity.customer.MainAccount;
 import entity.dams.account.DepositAccount;
 import entity.dams.account.MobileAccount;
 import java.math.BigDecimal;
 import java.util.List;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
 import javax.persistence.EntityManager;
@@ -29,6 +31,9 @@ public class MobileAccountSessionBean implements MobileAccountSessionBeanLocal {
 
     @PersistenceContext(unitName = "RetailBankingSystem-ejbPU")
     private EntityManager em;
+    
+    @EJB
+    private CardAcctSessionBeanLocal cardBean;
 
     @Override
     public MobileAccount createMobileAccount(MainAccount ma) {
@@ -84,11 +89,46 @@ public class MobileAccountSessionBean implements MobileAccountSessionBeanLocal {
             return null;
         }
     }
+    
+    @Override
+    public String payCCBillFromMobileAccount(String mobileNumber, String ccNumber, BigDecimal amount) {
+        MobileAccount fromMobileAccount = getMobileAccountByMobileNumber(mobileNumber);
+        if (fromMobileAccount == null) {
+            return "Account not found";
+        } else if (fromMobileAccount.getBalance().compareTo(amount) < 0) {
+            return "Mobile Account Balance not enough. Please Top up first!";
+        } else {
+            cardBean.payCreditCardAccountBillByCardNumber(ccNumber, amount);
+            
+            fromMobileAccount.removeBalance(amount);
+            TransactionRecord t = new TransactionRecord();
+            t.setAmount(amount);
+            t.setCredit(Boolean.TRUE);
+            t.setActionType(EnumUtils.TransactionType.CCSPENDING);
+            t.setFromAccount(fromMobileAccount);
+            t.setReferenceNumber(generateReferenceNumber());
+            fromMobileAccount.addTransaction(t);
+            em.merge(fromMobileAccount);
+            return "SUCCESS";
+        }
+    }
 
     @Override
     public TransactionRecord latestTransactionFromMobileAccount(MobileAccount ma) {
         Query q = em.createQuery("SELECT tr FROM TransactionRecord tr WHERE tr.toAccount =:mobileAccount OR tr.fromAccount =:mobileAccount ORDER BY tr.creationDate DESC");
         q.setParameter("mobileAccount", ma);
+        List<TransactionRecord> result = q.getResultList();
+        if (result.size() > 0) {
+            return result.get(0);
+        } else {
+            return null;
+        }
+    }
+    
+    @Override
+    public TransactionRecord latestTransactionFromMobileNumber(String mobileNumber) {
+        Query q = em.createQuery("SELECT tr FROM TransactionRecord tr WHERE tr.toAccount.accountNumber =:mobileNumber OR tr.fromAccount.accountNumber =:mobileNumber ORDER BY tr.creationDate DESC");
+        q.setParameter("mobileNumber", mobileNumber);
         List<TransactionRecord> result = q.getResultList();
         if (result.size() > 0) {
             return result.get(0);

@@ -33,7 +33,7 @@ public class MobileTransferService {
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-    public Response clearCC(
+    public Response mobileTransfer(
             @FormParam("fromAccount") String fromAccount,
             @FormParam("toAccount") String toAccount,
             @FormParam("amount") String amount

@@ -45,6 +45,7 @@ public interface CardAcctSessionBeanLocal {
     public CreditCardAccount payCreditCardAccountBillByCardNumber(String cardNumber, BigDecimal amount);
     public List<CreditCardAccount> getListCreditCardAccountsByCardStatusAndAppStatus(EnumUtils.CardAccountStatus cardAccountStatus, EnumUtils.ApplicationStatus cardApplicationStatus);
     public List<CreditCardAccount> getListCreditCardAccountsByIdAndNotStatus(Long id, EnumUtils.CardAccountStatus status);
+    public List<CreditCardAccount> getAllActiveCreditCardAccountsByMainId(Long id);
     public List<CreditCardAccount> updateListInterestToOutstandingAmountCcas();
     public List<CreditCardAccount> updateListLatePaymentToOutstandingAmountCcas();
     public List<CreditCardAccount> getListCreditCardAccountsByActiveOrFreezeCardStatus();

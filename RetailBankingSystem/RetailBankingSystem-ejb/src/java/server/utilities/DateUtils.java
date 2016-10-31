@@ -16,6 +16,11 @@ import java.util.GregorianCalendar;
  */
 public class DateUtils {
 
+    public static Date getDateForNextNthYear(Integer n) {
+        Calendar calendar = getCalendarForNextNthYear(n);
+        return calendar.getTime();
+    }
+    
     public static Date getLastNthBeginOfMonth(Integer n) {
         Calendar calendar = getCalendarForLastNthMonth(n);
         calendar.set(Calendar.DAY_OF_MONTH,
@@ -93,6 +98,13 @@ public class DateUtils {
         Calendar calendar = GregorianCalendar.getInstance();
         calendar.setTime(new Date());
         calendar.add(Calendar.MONTH, -n);
+        return calendar;
+    }
+    
+    public static Calendar getCalendarForNextNthYear(Integer n) {
+        Calendar calendar = GregorianCalendar.getInstance();
+        calendar.setTime(new Date());
+        calendar.add(Calendar.YEAR, n);
         return calendar;
     }
 
