@@ -101,11 +101,11 @@ public class EntityBuilderBean {
         entityBillOrgBuilder.initBillOrganization();
         entityPayLahBuilder.initPayLahDemoData();
         
-//        List<FinancialInstrument> allFinancialInstruments = entityWealthBuilder.allFinancialInstrument();
-//        demoPortfolio = entityWealthBuilder.initWealth(allFinancialInstruments);
-//        entityFactBuilder.initSinglePortfolioFact(demoMainAccount, demoPortfolio, "FB");
-//        demoPortfolio = entityWealthBuilder.initPortfolioFactTable2(demoMainAccount, allFinancialInstruments);
-//        entityFactBuilder.initSinglePortfolioFact(demoMainAccount, demoPortfolio, "AAPL");
+        List<FinancialInstrument> allFinancialInstruments = entityWealthBuilder.allFinancialInstrument();
+        demoPortfolio = entityWealthBuilder.initWealth(allFinancialInstruments);
+        entityFactBuilder.initSinglePortfolioFact(demoMainAccount, demoPortfolio);
+        demoPortfolio = entityWealthBuilder.initPortfolioFactTable2(demoMainAccount, allFinancialInstruments);
+        entityFactBuilder.initSinglePortfolioFact(demoMainAccount, demoPortfolio);
 
     }
 }
