@@ -184,6 +184,7 @@ public class InterBankTransferManagedBean implements Serializable {
         tr.setPurpose(EnumUtils.TransferPurpose.getEnum(purpose));
         tr.setFromAccount(da);
         tr.setType(EnumUtils.PayeeType.LOCAL);
+        tr.setActionType(EnumUtils.TransactionType.TRANSFER);
         webserviceBean.transferClearingFAST(tr);
         da.removeBalance(amount);
         depositBean.updateAccount(da);
@@ -193,7 +194,7 @@ public class InterBankTransferManagedBean implements Serializable {
     
     private void calculateTransferLimits() {
         BigDecimal todayTransferAmount = transferBean.getTodayBankTransferAmount(ma, EnumUtils.PayeeType.LOCAL);
-        BigDecimal currentTransferLimit = new BigDecimal(ma.getTransferLimits().getDailyInterBankLimit().toString());
+        BigDecimal currentTransferLimit = new BigDecimal(ma.getTransferLimits().getDailyIntraBankLimit().toString());
         transferLimitLeft = currentTransferLimit.subtract(todayTransferAmount).setScale(2).toString();
     }
 

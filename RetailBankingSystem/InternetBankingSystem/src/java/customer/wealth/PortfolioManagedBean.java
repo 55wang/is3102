@@ -7,18 +7,12 @@ package customer.wealth;
 
 import ejb.session.cms.CustomerProfileSessionBeanLocal;
 import ejb.session.common.LoginSessionBeanLocal;
-import ejb.session.fact.FactSessionBean;
 import ejb.session.fact.FactSessionBeanLocal;
 import ejb.session.wealth.PortfolioSessionBeanLocal;
-import entity.card.account.CreditCardAccount;
 import entity.customer.Customer;
-import entity.customer.MainAccount;
-import entity.dams.account.DepositAccount;
 import entity.fact.customer.SinglePortfolioFactTable;
-import entity.loan.LoanAccount;
 import entity.wealth.Portfolio;
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -28,21 +22,12 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
-import javax.json.JsonArray;
-import javax.json.JsonObject;
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.MediaType;
 import org.primefaces.model.chart.Axis;
 import org.primefaces.model.chart.AxisType;
 import org.primefaces.model.chart.DateAxis;
 import org.primefaces.model.chart.LineChartModel;
 import org.primefaces.model.chart.LineChartSeries;
 import org.primefaces.model.chart.PieChartModel;
-import static server.utilities.CommonUtils.round;
-import server.utilities.EnumUtils;
-import server.utilities.EnumUtils.LoanProductType;
 import utils.SessionUtils;
 
 /**
@@ -52,18 +37,18 @@ import utils.SessionUtils;
 @Named(value = "portfolioManagedBean")
 @ViewScoped
 public class PortfolioManagedBean implements Serializable {
-
-    @EJB
-    PortfolioSessionBeanLocal portfolioSessionBean;
     @EJB
     LoginSessionBeanLocal loginSessionBean;
+    @EJB
+    PortfolioSessionBeanLocal portfolioSessionBean;
     @EJB
     CustomerProfileSessionBeanLocal customerProfileSessionBean;
     @EJB
     FactSessionBeanLocal factSessionBean;
 
-    private List<Portfolio> portfolios;
+    
     private Customer customer;
+    private List<Portfolio> portfolios;
     private PieChartModel pieModel;
     private LineChartModel lineModel;
     private String currentDate;
@@ -105,6 +90,11 @@ public class PortfolioManagedBean implements Serializable {
         } catch (Exception ex) {
             System.out.println(ex);
         }
+        
+        System.out.println("### portfolio testing");
+        System.out.println(customer.getPortfolioPercentageChange());
+        System.out.println(customer.getTotalPortfolioCurrentValue());
+        
 
     }
 

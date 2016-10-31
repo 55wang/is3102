@@ -6,8 +6,12 @@
 package init;
 
 import ejb.session.fact.FactSessionBeanLocal;
+import ejb.session.wealth.FinancialInstrumentSessionBeanLocal;
+import ejb.session.wealth.PortfolioSessionBeanLocal;
 import entity.customer.MainAccount;
 import entity.fact.customer.SinglePortfolioFactTable;
+import entity.wealth.FinancialInstrument;
+import entity.wealth.FinancialInstrumentAndWeight;
 import entity.wealth.Portfolio;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -16,12 +20,7 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
-import javax.json.JsonArray;
-import javax.json.JsonObject;
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.MediaType;
+import server.utilities.EnumUtils;
 
 /**
  *
@@ -33,54 +32,63 @@ public class EntityFactBuilder {
 
     @EJB
     private FactSessionBeanLocal factSessionBean;
+    @EJB
+    private PortfolioSessionBeanLocal portfolioSessionBean;
+    @EJB
+    private FinancialInstrumentSessionBeanLocal financialInstrumentSessionBean;
 
     private String currentDate;
     private String monthStartDate;
     private String monthEndDate;
 
-    public void initSinglePortfolioFact(MainAccount demoMainAccount, Portfolio demoPortfolio, String stockName) {
+    public void initSinglePortfolioFact(MainAccount demoMainAccount, Portfolio demoPortfolio) {
 
-        initDate();
-        String quandl = "https://www.quandl.com/api/v3/datasets/WIKI/"+stockName+".json?column_index=4&start_date=" + monthStartDate + "&transform=diff&api_key=wh4e1aGKQwZyE4RXWP7s";
-        Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(quandl);
+        // select distinct creationdate 
+        List<Date> dates = factSessionBean.getDistinctDateFromFIFactTable();
+        System.out.println("inside initSinglePortfolioFact");
 
-        // This is the response
-        JsonObject jsonString = target.request(MediaType.APPLICATION_JSON).get(JsonObject.class);
-        System.out.println(jsonString);
+        for (Date date : dates) {
 
-        JsonObject dataset = (JsonObject) jsonString.getJsonObject("dataset");
-        JsonArray data = (JsonArray) dataset.getJsonArray("data");
+            List<FinancialInstrumentAndWeight> fiws = demoPortfolio.getExecutedInvestmentPlan().getSuggestedFinancialInstruments();
 
-        for (int i = 0; i < data.size(); i++) {
-            JsonArray innerData = (JsonArray) data.getJsonArray(i);
-            System.out.println(innerData.get(0) + " " + innerData.get(1));
+            Double totalValue = 0.0; //write into spf
+            for (FinancialInstrumentAndWeight fiw : fiws) {
+                
+                EnumUtils.FinancialInstrumentClass fic = fiw.getFi().getName();
+                Double valueChangedPercentage = factSessionBean.getFinancialInstrumentValueChangeByCreationDateAndName(date, fic);
+                Double valueChanged = fiw.getTempValue() * valueChangedPercentage;
+                Double valueResult = fiw.getTempValue() + valueChanged;
+                fiw.setTempValue(valueResult);
+                financialInstrumentSessionBean.updateFinancialInstrumentAndWeight(fiw);
+                totalValue += valueResult;
+            }
 
             SinglePortfolioFactTable spf = new SinglePortfolioFactTable();
-            System.out.println(innerData.get(0).toString());
-            Date date;
-            try {
-                date = new SimpleDateFormat("yyyy-MM-dd").parse(innerData.get(0).toString().substring(1, innerData.get(0).toString().length()-1));
-                System.out.println(date);
-                spf.setCreationDate(date);
-            } catch (Exception ex) {
-                
-                System.out.println(ex);
-            }
-            
-            
+            factSessionBean.createSinglePortfolioFactTable(spf);
+            spf.setCreationDate(date);
             spf.setCustomer(demoMainAccount.getCustomer());
             spf.setPortfolio(demoPortfolio);
-            
-            Double perc = Double.parseDouble(innerData.get(1).toString()) / 100;
-            Double actualChanges = demoPortfolio.getTotalCurrentValue() * perc;
-            
-            spf.setTotalCurrentValue(demoPortfolio.getTotalCurrentValue() + actualChanges);
-            spf.setTotalBuyingValue(demoPortfolio.getTotalBuyingValue());
-            factSessionBean.createSinglePortfolioFactTable(spf);
 
+            spf.setTotalCurrentValue(totalValue);
+            spf.setTotalBuyingValue(demoPortfolio.getTotalBuyingValue());
+            factSessionBean.updateSinglePortfolioFactTable(spf);
+
+            portfolioSessionBean.updatePortfolio(demoPortfolio);
         }
 
+        SinglePortfolioFactTable spf = new SinglePortfolioFactTable();
+        factSessionBean.createSinglePortfolioFactTable(spf);
+        spf.setCreationDate(new Date());
+        spf.setCustomer(demoMainAccount.getCustomer());
+        spf.setPortfolio(demoPortfolio);
+
+        spf.setTotalCurrentValue(demoPortfolio.getTotalCurrentValue());
+        spf.setTotalBuyingValue(demoPortfolio.getTotalBuyingValue());
+        factSessionBean.updateSinglePortfolioFactTable(spf);
+
+        portfolioSessionBean.updatePortfolio(demoPortfolio);
+
+        System.out.println("end initSinglePortfolioFact");
     }
 
     public void initDate() {

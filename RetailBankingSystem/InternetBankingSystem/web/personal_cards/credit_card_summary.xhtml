@@ -16,50 +16,53 @@
             <em:customerHeader context="personal" userName="#{customerHomeManagedBean.customer.firstname }"></em:customerHeader>
             <em:customerNavBar context="personal" personalPage="cards" ></em:customerNavBar>
             <div class="customer_main_container">
+                <p:growl id="growl" sticky="true" showDetail="true"/>
+
                 <h:form id="mainForm">
+
                     <p:panel header="Credit Cards">
-                        <p:messages id="messagesStatus" redisplay="false" >
-                            <h:panelGrid columns="2" cellpadding="5">
-                                <p:dataTable value="#{customerCardManagedBean.ccas}" var="cca" >
 
-                                    <p:column headerText="Credit Card Number">
-                                        <h:outputText value="#{cca.creditCardNum}" />
-                                    </p:column>
+                        <h:panelGrid columns="2" cellpadding="5">
+                            <p:dataTable value="#{customerCardManagedBean.ccas}" var="cca" >
 
-                                    <p:column headerText="Outstanding Balance">
-                                        <h:outputText value="#{cca.outstandingAmount}" />
-                                    </p:column>
+                                <p:column headerText="Credit Card Number">
+                                    <h:outputText value="#{cca.creditCardNum}" />
+                                </p:column>
 
-                                    <p:column headerText="Product">
-                                        <h:outputText value="#{cca.creditCardProduct.productName}" />
-                                    </p:column>
+                                <p:column headerText="Outstanding Balance">
+                                    <h:outputText value="#{cca.outstandingAmount}" />
+                                </p:column>
 
-                                    <p:column headerText="Action">
-                                        <p:menu>
-                                            <p:submenu>
-                                                <p:menuitem value="View transactions" action="#{customerCardManagedBean.sendCCTransactionDetail(cca)}" style="width:100%"/>
-                                            </p:submenu>
-                                        </p:menu>
-                                        <p:commandButton value="Delete" action="#{customerCardManagedBean.viewTerminatePage(cca)}" update="@form" style="width:100%; margin-top:5px; height: 30px ">
-                                            <p:confirm header="Confirmation" message="Are you sure you want to close your account?" icon="ui-icon-alert" />
-                                            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
-                                                <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
-                                                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
-                                            </p:confirmDialog>
-                                        </p:commandButton>
+                                <p:column headerText="Product">
+                                    <h:outputText value="#{cca.creditCardProduct.productName}" />
+                                </p:column>
 
-                                        <p:commandButton value="Change transaction limit" action="#{customerCardManagedBean.redirectToChangeTransactionLimitPage(cca)}" update="@form" style="width:100%; margin-top:5px; height: 70px"/>
-                                    </p:column>
+                                <p:column headerText="Action">
+                                    <p:menu>
+                                        <p:submenu>
+                                            <p:menuitem value="View transactions" action="#{customerCardManagedBean.sendCCTransactionDetail(cca)}" style="width:100%"/>
+                                        </p:submenu>
+                                    </p:menu>
+                                    <p:commandButton value="Delete" action="#{customerCardManagedBean.terminateCreditCard(cca)}" update="growl" style="width:100%; margin-top:5px; height: 30px ">
+                                        <p:confirm header="Confirmation" message="Are you sure you want to close your account?" icon="ui-icon-alert" />
+                                        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                                            <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                                            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                                        </p:confirmDialog>
+                                    </p:commandButton>
 
-                                    <p:column headerText="Promo Rewards">
-                                        <p:commandButton value="Redeem" action="#{customerCardManagedBean.viewRedeemPage(cca)}" ></p:commandButton>
-                                    </p:column>
+                                    <p:commandButton value="Change transaction limit" action="#{customerCardManagedBean.redirectToChangeTransactionLimitPage(cca)}" update="@form" style="width:100%; margin-top:5px; height: 70px"/>
+                                </p:column>
+
+                                <p:column headerText="Promo Rewards">
+                                    <p:commandButton value="Redeem" action="#{customerCardManagedBean.viewRedeemPage(cca)}" ></p:commandButton>
+                                </p:column>
 
 
-                                </p:dataTable>
+                            </p:dataTable>
 
-                            </h:panelGrid>
-                        </p:messages>
+                        </h:panelGrid>
+
                     </p:panel>
                 </h:form>
             </div>

@@ -56,8 +56,8 @@ public class CardActivationManagedBean implements Serializable {
         }
 
     }
-    
-        public void activateDebitCard() {
+
+    public void activateDebitCard() {
 
         if (cardAcctSessionBean.activateDebitCard(identityNumber, birthday, cardNumber, cvv) == null) {
             MessageUtils.displayError("Invalid input. Please check");

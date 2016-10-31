@@ -38,7 +38,7 @@ and open the template in the editor.
                                     <p:selectOneMenu value="#{interAccountTransferManagedBean.toAccountNo}" rendered="true" required="true">
                                         <f:selectItems value="#{interAccountTransferManagedBean.accounts}" var="a" itemValue="#{a.accountNumber}" itemLabel="#{a.product.name} #{a.accountNumber} #{a.balance.setScale(2)}" />
                                     </p:selectOneMenu>
-                                    <p:outputLabel for="amount" value="Amount: " />
+                                    <p:outputLabel for="amount" value="Amount S$: " />
                                     <p:inputText id="amount" value="#{interAccountTransferManagedBean.amount}"/>
                                     <p:commandButton  value="Next" actionListener="#{interAccountTransferManagedBean.sendOpt()}" update="@form" />
                                 </h:panelGrid>
@@ -51,7 +51,7 @@ and open the template in the editor.
                                     <h:outputText value="#{interAccountTransferManagedBean.fromAccountNo}" />
                                     <h:outputText value="To: " />
                                     <h:outputText value="#{interAccountTransferManagedBean.toAccountNo}" />
-                                    <p:outputLabel value="Amount: " />
+                                    <p:outputLabel value="Amount S$: " />
                                     <p:outputLabel value="#{interAccountTransferManagedBean.amount}"/>
                                     
                                     <h2>Input Token Number</h2>
@@ -68,7 +68,7 @@ and open the template in the editor.
                                     <h:outputText value="#{interAccountTransferManagedBean.fromAccountNo}" />
                                     <h:outputText value="To: " />
                                     <h:outputText value="#{interAccountTransferManagedBean.toAccountNo}" />
-                                    <p:outputLabel value="Amount: " />
+                                    <p:outputLabel value="Amount S$: " />
                                     <p:outputLabel value="#{interAccountTransferManagedBean.amount}"/>
                                 </h:panelGrid>
                             </p:tab>

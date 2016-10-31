@@ -56,11 +56,11 @@ public class CreditCardAccount implements Serializable {
 
     // info
     @Temporal(value = TemporalType.DATE)
-    private Date validDate;
+    private Date validDate = DateUtils.getDateForNextNthYear(5);
     private CardAccountStatus CardStatus = CardAccountStatus.NEW;
     @Column(unique = true)
     private String creditCardNum;
-    private Integer cvv; // LY: Use Integer instead of Integer
+    private String cvv; 
     private String nameOnCard;
 
     private Double transactionMonthlyLimit = 1000.0;
@@ -160,6 +160,10 @@ public class CreditCardAccount implements Serializable {
     public Double addAmountToCurrentMonthAmount(Double amount) {
         this.currentMonthAmount += amount;
         return currentMonthAmount;
+    }
+    
+    public void addTransactions(CardTransaction ct) {
+        cardTransactions.add(ct);
     }
 
     public Long getId() {
@@ -349,11 +353,11 @@ public class CreditCardAccount implements Serializable {
     /**
      * @return the cvv
      */
-    public Integer getCvv() {
+    public String getCvv() {
         return cvv;
     }
 
-    public void setCvv(Integer cvv) {
+    public void setCvv(String cvv) {
         this.cvv = cvv;
     }
 

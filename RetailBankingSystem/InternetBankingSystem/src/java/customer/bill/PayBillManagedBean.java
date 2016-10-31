@@ -25,6 +25,7 @@ import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import server.utilities.ConstantUtils;
+import server.utilities.EnumUtils;
 import server.utilities.GenerateAccountAndCCNumber;
 import utils.JSUtils;
 import utils.MessageUtils;
@@ -100,6 +101,7 @@ public class PayBillManagedBean implements Serializable {
         btr.setAmount(amount);
         btr.setShortCode(bo.getOrganization().getShortCode());
         btr.setReferenceNumber(GenerateAccountAndCCNumber.generateReferenceNumber());
+        btr.setActionType(EnumUtils.TransactionType.BILL);
         webserviceBean.billingClearingSACH(btr);
         da.removeBalance(amount);
         depositBean.updateAccount(da);

@@ -19,9 +19,11 @@ import javax.ejb.Local;
  */
 @Local
 public interface EmailServiceSessionBeanLocal {
+    public void sendCreditCardActivationGmailForCustomer(String recipient, String pwd, String ccNumber, String ccv, String userName);
+    public void sendCreditCardApplicationRejectionToCustomers(String recipient);
     public void sendActivationEmailForCustomer(String recipient);
     public void sendActivationGmailForCustomer(String recipient, String pwd);
-    public void sendCreditCardActivationGmailForCustomer(String recipient, String pwd, String ccNumber);
+
     public void sendUpdatePortfolioNotice(String recipient);
     public void sendUserIDforForgottenCustomer(String recipient, MainAccount forgotAccount);
     public void sendResetPwdLinkforForgottenCustomer(String recipient, MainAccount forgotAccount);
@@ -45,4 +47,5 @@ public interface EmailServiceSessionBeanLocal {
     public void sendPaymentReminderEmailToCustomer(String recipient, String loanAccountNumber, Date paymentDate);
     public void sendLatePaymentReminderEmailToCustomer(String recipient, String loanAccountNumber, Date paymentDate);
     public void sendBadLoanNoticeToLoanOfficer(LoanAccount loanAccount);
+    public void sendEmailUnauthorised(String phoneNumber, String msg);
 }

@@ -7,6 +7,7 @@ package ejb.session.card;
 
 import entity.card.account.CardTransaction;
 import entity.card.account.CreditCardAccount;
+import entity.common.TransactionRecord;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -63,6 +64,18 @@ public class CardTransactionSessionBean implements CardTransactionSessionBeanLoc
         Query q = em.createQuery("SELECT ct FROM CardTransaction ct WHERE ct.visaId =:inVisaId");
         q.setParameter("inVisaId", visaId);
         return (CardTransaction) q.getSingleResult();
+    }
+    
+    @Override
+    public CardTransaction getLatestCardTransactionByCcaId(Long ccaId) {
+        Query q = em.createQuery("SELECT ct FROM CardTransaction ct WHERE ct.id =:inCcaId ORDER BY ct.createDate DESC");
+        q.setParameter("inCcaId", ccaId);
+        List<CardTransaction> result = q.getResultList();
+        if (result.size() > 0) {
+            return result.get(0);
+        } else {
+            return null;
+        }
     }
 
     @Override

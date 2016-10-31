@@ -178,6 +178,7 @@ public class InternationalBankTransferManagedBean implements Serializable {
         tr.setPurpose(EnumUtils.TransferPurpose.getEnum(getPurpose()));
         tr.setFromAccount(da);
         tr.setType(EnumUtils.PayeeType.OVERSEAS);
+        tr.setActionType(EnumUtils.TransactionType.TRANSFER);
         webserviceBean.transferSWIFT(tr);
         da.removeBalance(getAmount());
         depositBean.updateAccount(da);
