@@ -231,7 +231,7 @@ getReturnTimeSeries <- function(inputTSData)
   library("TTR")
   library("forecast")
   print("getReturnTimeSeries is called")
-  
+  defineWorkingDirectory()
   print(inputTSData)
 
   inputTSDataSeries <- ts(inputTSData,start=1,frequency=10)
@@ -249,7 +249,7 @@ getReturnTimeSeries <- function(inputTSData)
   print("this is result")
   print(result)
   
-  png("/Users/wang/HoltWinter.png")
+  png("HoltWinter.png")
   plt <- plot(inputTSDataSeriesForecasts, forecasting)
   # plt<-plot.forecast(inputTSDataSeriesForecasts2)
   dev.off()
