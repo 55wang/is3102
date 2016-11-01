@@ -22,5 +22,5 @@ public interface PortfolioSessionBeanLocal {
     public Portfolio updatePortfolio(Portfolio p);
     public List<Portfolio> getListPortfoliosByCustomerId(Long Id);
     public List<Portfolio> getListPortfoliosByCustomerID(Long Id);
-    public void calcMovingAverage(List<SinglePortfolioFactTable> spf);
+    public List<Double> getHoltWinterModel(double[] inputData);
 }

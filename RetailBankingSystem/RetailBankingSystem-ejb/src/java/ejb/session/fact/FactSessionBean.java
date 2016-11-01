@@ -69,7 +69,7 @@ public class FactSessionBean implements FactSessionBeanLocal {
 
     @Override
     public List<SinglePortfolioFactTable> getListPortfoliosFtByCustomerIdPortfolioId(Long custId, Long portId) {
-        Query q = em.createQuery("SELECT p FROM SinglePortfolioFactTable p where p.portfolio.id =:inPortId AND p.customer.id =:inCustId");
+        Query q = em.createQuery("SELECT p FROM SinglePortfolioFactTable p where p.portfolio.id =:inPortId AND p.customer.id =:inCustId ORDER BY p.creationDate asc");
         q.setParameter("inCustId", custId);
         q.setParameter("inPortId", portId);
         return q.getResultList();

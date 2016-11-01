@@ -121,8 +121,8 @@ constructPortfolioModel <- function() {
     
     eff_frontier<-subset(tgt_port,tgt_port$tgt_returns>=minvar_port$tgt_returns)
     eff_frontier[c(1:3,nrow(eff_frontier)),]
-    
-    plot(x=tgt_port$tgt_sdresult,
+    png("/Users/wang/MeanVarianceEfficientFrontier.png")
+    plt <- plot(x=tgt_port$tgt_sdresult,
          y=tgt_port$tgt_returns,
          col="gray40",
          xlab="Portfolio Risk",
@@ -132,7 +132,7 @@ constructPortfolioModel <- function() {
     abline(h=0,lty=1)
     points(x=minvar_port$tgt_sdresult,y=minvar_port$tgt_returns,pch=17,cex=3)
     #points(x=eff_frontier$tgt_sdresult,y=eff.frontier$tgt_returns)
-    
+    dev.off()
     #write.csv(tgt_port, "/Users/wang/result.csv")
  
     con <- dbConnect(MySQL(),
@@ -226,6 +226,39 @@ getReturnRegression <- function(US_STOCKS, FOREIGN_STOCKS, EMERGING_MARKETS, DIV
   return(result)
 }
 
+getReturnTimeSeries <- function(inputTSData)
+{
+  library("TTR")
+  library("forecast")
+  print("getReturnTimeSeries is called")
+  
+  print(inputTSData)
+
+  inputTSDataSeries <- ts(inputTSData,start=c(1))
+  print(inputTSDataSeries)
+  print("step1")
+  inputTSDataSeriesForecasts <- HoltWinters(inputTSDataSeries, gamma=FALSE)
+  print("step2")
+  inputTSDataSeriesForecasts2 <- forecast.HoltWinters(inputTSDataSeriesForecasts, h=15)
+  print("step3")
+  inputTSDataSeriesForecasts2$mean[1:15]
+  print("step4")
+  even <- function(x) x%%3 == 0 
+  result <- inputTSDataSeriesForecasts2$mean[even(1:15)]
+  print(result)
+  
+  png("/Users/wang/HoltWinter.png")
+  plt<-plot.forecast(inputTSDataSeriesForecasts2)
+  dev.off()
+  return(result)
+}
+
+
+
+# testSkirts <- c(608, 617, 625, 636, 657, 691, 728, 784, 816, 876, 949, 997, 1027, 1047, 1049, 1018, 1021, 1012, 1018, 991, 962,   
+#                 921, 871, 829, 822, 820, 802, 821, 819, 791, 746, 726, 661, 620, 588, 568, 542, 551, 541, 557,
+#                 556, 534, 528, 529, 523, 531)
+# getReturnTimeSeries(testSkirts)
 
 # getSdRegression(0.336042761849641, 0.154074988330303, 0.108887881812506, 0.120734303307862, 0.0867255702674858, 0.130036209698718, 0, 0.00819259424706097, 0, 0, 0.0553056904864223)
 # getReturnRegression(0.336042761849641, 0.154074988330303, 0.108887881812506, 0.120734303307862, 0.0867255702674858, 0.130036209698718, 0, 0.00819259424706097, 0, 0, 0.0553056904864223)
