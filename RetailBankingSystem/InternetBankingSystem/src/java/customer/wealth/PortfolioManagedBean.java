@@ -37,6 +37,7 @@ import utils.SessionUtils;
 @Named(value = "portfolioManagedBean")
 @ViewScoped
 public class PortfolioManagedBean implements Serializable {
+
     @EJB
     LoginSessionBeanLocal loginSessionBean;
     @EJB
@@ -46,7 +47,6 @@ public class PortfolioManagedBean implements Serializable {
     @EJB
     FactSessionBeanLocal factSessionBean;
 
-    
     private Customer customer;
     private List<Portfolio> portfolios;
     private PieChartModel pieModel;
@@ -61,7 +61,7 @@ public class PortfolioManagedBean implements Serializable {
     private List<String> portfolioOptions = new ArrayList<>();
 
     public void onDropDownChange() {
-        
+
         System.out.println("on drop down changed");
         System.out.println(selectedPortfolio);
         if (!selectedPortfolio.equals("None")) {
@@ -90,11 +90,10 @@ public class PortfolioManagedBean implements Serializable {
         } catch (Exception ex) {
             System.out.println(ex);
         }
-        
+
         System.out.println("### portfolio testing");
         System.out.println(customer.getPortfolioPercentageChange());
         System.out.println(customer.getTotalPortfolioCurrentValue());
-        
 
     }
 
@@ -141,14 +140,46 @@ public class PortfolioManagedBean implements Serializable {
 //            System.out.println(innerData.get(0) + " " + innerData.get(1));
 //            series1.set(innerData.get(0).toString(), innerData.getInt(1));
 //        }
+        double[] inputData = new double[spf.size()];
+
+        Date lastDate = new Date();
+        Double lastValue = null;
+
         for (int i = 0; i < spf.size(); i++) {
             String dateGraph = simpleformat.format(spf.get(i).getCreationDate());
             System.out.println(spf.get(i).getCreationDate() + " " + simpleformat.format(spf.get(i).getCreationDate()));
             System.out.println(spf.get(i).getTotalCurrentValue());
+
+            inputData[i] = spf.get(i).getTotalCurrentValue();
+
             series1.set(dateGraph, spf.get(i).getTotalCurrentValue());
+
+            if (i == spf.size() - 1) {
+                lastDate = spf.get(i).getCreationDate();
+                lastValue = spf.get(i).getTotalCurrentValue();
+            }
+
         }
 
         model.addSeries(series1);
+
+        //time series
+        List<Double> tsResult = portfolioSessionBean.getHoltWinterModel(inputData);
+        System.out.println("times series managed bean result: ");
+        System.out.println(tsResult.toString());
+
+        LineChartSeries series2 = new LineChartSeries();
+        series2.setLabel("Portfolio Forecast"); //insert id number        
+        Calendar cal = Calendar.getInstance();
+        series2.set(simpleformat.format(lastDate), lastValue);
+        for (int i = 0; i < tsResult.size(); i++) {
+            cal.setTime(lastDate);
+            cal.add(Calendar.DATE, 3);
+            lastDate = cal.getTime();
+            series2.set(simpleformat.format(lastDate), tsResult.get(i));
+        }
+        model.addSeries(series2);
+
         return model;
     }
 

@@ -7,20 +7,16 @@ package entity.wealth;
 
 import entity.customer.WealthManagementSubscriber;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import server.utilities.EnumUtils;
 import server.utilities.EnumUtils.PortfolioStatus;
 
 /**
@@ -40,8 +36,6 @@ public class Portfolio implements Serializable {
 
     @OneToOne(cascade = CascadeType.MERGE, optional = false)
     private InvestmentPlan executedInvestmentPlan;
-    @OneToMany(mappedBy = "portfolio")
-    private List<MovingAverage> movingAverages;
     @ManyToOne(cascade = CascadeType.MERGE)
     private WealthManagementSubscriber wealthManagementSubscriber;
     
@@ -126,14 +120,6 @@ public class Portfolio implements Serializable {
 
     public void setStatus(PortfolioStatus status) {
         this.status = status;
-    }
-
-    public List<MovingAverage> getMovingAverages() {
-        return movingAverages;
-    }
-
-    public void setMovingAverages(List<MovingAverage> movingAverages) {
-        this.movingAverages = movingAverages;
     }
 
 }

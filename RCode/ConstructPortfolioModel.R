@@ -121,8 +121,8 @@ constructPortfolioModel <- function() {
     
     eff_frontier<-subset(tgt_port,tgt_port$tgt_returns>=minvar_port$tgt_returns)
     eff_frontier[c(1:3,nrow(eff_frontier)),]
-    
-    plot(x=tgt_port$tgt_sdresult,
+    png("/Users/wang/MeanVarianceEfficientFrontier.png")
+    plt <- plot(x=tgt_port$tgt_sdresult,
          y=tgt_port$tgt_returns,
          col="gray40",
          xlab="Portfolio Risk",
@@ -132,7 +132,7 @@ constructPortfolioModel <- function() {
     abline(h=0,lty=1)
     points(x=minvar_port$tgt_sdresult,y=minvar_port$tgt_returns,pch=17,cex=3)
     #points(x=eff_frontier$tgt_sdresult,y=eff.frontier$tgt_returns)
-    
+    dev.off()
     #write.csv(tgt_port, "/Users/wang/result.csv")
  
     con <- dbConnect(MySQL(),
@@ -226,6 +226,55 @@ getReturnRegression <- function(US_STOCKS, FOREIGN_STOCKS, EMERGING_MARKETS, DIV
   return(result)
 }
 
+getReturnTimeSeries <- function(inputTSData)
+{
+  library("TTR")
+  library("forecast")
+  print("getReturnTimeSeries is called")
+  
+  print(inputTSData)
+
+  inputTSDataSeries <- ts(inputTSData,start=1,frequency=10)
+  print(inputTSDataSeries)
+  inputTSDataSeriesForecasts <- HoltWinters(inputTSDataSeries)
+  # inputTSDataSeriesForecasts2 <- forecast.HoltWinters(inputTSDataSeriesForecasts, h=25)
+  forecasting <- predict(inputTSDataSeriesForecasts, n.ahead = 25, prediction.interval = T, level = 0.95)
+  # print("this is forecast")
+  # inputTSDataSeriesForecasts2$mean[1:25]
+  result <- forecasting[1:25]
+  even <- function(x) x%%5 == 0 
+  # result <- inputTSDataSeriesForecasts2$mean[even(1:25)]
+  
+  result <- result[even(1:25)]
+  print("this is result")
+  print(result)
+  
+  png("/Users/wang/HoltWinter.png")
+  plt <- plot(inputTSDataSeriesForecasts, forecasting)
+  # plt<-plot.forecast(inputTSDataSeriesForecasts2)
+  dev.off()
+  return(result)
+}
+
+
+# 
+# testSkirts <- c(15043.59, 14896.17, 14504.61, 14570.31, 14790.22, 15759.95, 15235.62, 
+#                 15699.56, 15594.07, 15144.40, 15177.36, 15306.51, 15113.10, 14851.64, 
+#                 14413.04, 14426.94, 14851.23, 14450.49, 14313.37, 14525.75, 14325.73, 14460.51, 14400.20, 14308.66,
+#                 14326.95, 14392.62, 14069.77, 14290.20, 14176.58, 14432.95, 14459.19, 14540.97,
+#                 14096.10, 13967.13, 14164.26, 13967.43, 13507.87, 13621.84, 13983.81, 14165.92,
+#                 14977.32, 14993.00)
+# library("forecast")
+# inputTSDataSeries <- ts(testSkirts,start=1,frequency=10)
+# inputTSDataSeriesForecasts <- HoltWinters(inputTSDataSeries)
+# forecast2 <- predict(inputTSDataSeriesForecasts, n.ahead = 25, prediction.interval = T, level = 0.95)
+# str(forecast2)
+# result <- forecast2[1:25]
+# even <- function(x) x%%5 == 0 
+# result <- result[even(1:25)]
+# 
+# result
+# plot(getReturnTimeSeries(testSkirts))
 
 # getSdRegression(0.336042761849641, 0.154074988330303, 0.108887881812506, 0.120734303307862, 0.0867255702674858, 0.130036209698718, 0, 0.00819259424706097, 0, 0, 0.0553056904864223)
 # getReturnRegression(0.336042761849641, 0.154074988330303, 0.108887881812506, 0.120734303307862, 0.0867255702674858, 0.130036209698718, 0, 0.00819259424706097, 0, 0, 0.0553056904864223)
