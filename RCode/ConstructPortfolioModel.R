@@ -121,7 +121,7 @@ constructPortfolioModel <- function() {
     
     eff_frontier<-subset(tgt_port,tgt_port$tgt_returns>=minvar_port$tgt_returns)
     eff_frontier[c(1:3,nrow(eff_frontier)),]
-    png("/Users/wang/MeanVarianceEfficientFrontier.png")
+    png("MeanVarianceEfficientFrontier.png")
     plt <- plot(x=tgt_port$tgt_sdresult,
          y=tgt_port$tgt_returns,
          col="gray40",
