@@ -248,8 +248,6 @@ getReturnTimeSeries <- function(inputTSData)
   result <- result[even(1:25)]
   print("this is result")
   print(result)
-
-  plot(inputTSDataSeriesForecasts, forecasting)
   
   png("/Users/wang/HoltWinter.png")
   plt <- plot(inputTSDataSeriesForecasts, forecasting)
