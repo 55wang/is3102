@@ -19,6 +19,9 @@ import javax.faces.view.ViewScoped;
 import server.utilities.EnumUtils;
 import server.utilities.EnumUtils.Income;
 import server.utilities.CommonUtils;
+import server.utilities.ConstantUtils;
+import server.utilities.DateUtils;
+import utils.JSUtils;
 import utils.MessageUtils;
 import utils.RedirectUtils;
 import utils.SessionUtils;
@@ -46,7 +49,7 @@ public class CustomerProfileManagedBean implements Serializable {
     private List<String> incomeOptions = CommonUtils.getEnumList(EnumUtils.Income.class);
     private String selectedOccupation;
     private String selectedIncome;
-
+    private Integer age;
     /**
      * Creates a new instance of CustomerInformationManagedBean
      */
@@ -93,6 +96,7 @@ public class CustomerProfileManagedBean implements Serializable {
         this.customer = customerProfileSessionBean.getCustomerByUserID(SessionUtils.getUserName());
         this.auditLogs = auditSessionBean.getAuditLogByCustomerID(SessionUtils.getUserName());
         selectedIncome = customer.getIncome().toString();
+        age=DateUtils.calculateAge(customer.getBirthDay());
     }
 
     /**
@@ -187,4 +191,21 @@ public class CustomerProfileManagedBean implements Serializable {
         this.incomeOptions = incomeOptions;
     }
 
+    public Integer getAge() {
+        return age;
+    }
+
+    public void setAge(Integer age) {
+        this.age = age;
+    }
+    
+    //for loan
+    public void checkAge(){
+        if (getAge() < 21) {
+            MessageUtils.displayError(ConstantUtils.NOT_ENOUGH_AGE);
+        } else {
+            JSUtils.callJSMethod("PF('myWizard').next();");
+        }  
+    }
+    
 }
