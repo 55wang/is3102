@@ -24,6 +24,11 @@
                         </p:outputPanel>
                         <p:separator />
                         
+                    <p:outputLabel value="Current Monthly Advisor Fee: "/>
+                    <h:outputText id="fee" value="#{viewInvestmentPlanManagedBean.chargeFee}" style="font-size: 30px">
+                        <f:convertNumber type="currency" currencySymbol="S$" />
+                    </h:outputText>
+                    <br/><br/>
                     <p:dataTable id="requestList" value="#{viewInvestmentPlanManagedBean.investmentPlans}" var="investmentRequest" sortMode="multiple" >
                             <p:column headerText="ID" sortBy="#{investmentRequest.id}" style="width:15px">
                                 <h:outputText value="#{investmentRequest.id}" />
@@ -36,7 +41,9 @@
                             </p:column>
 
                             <p:column headerText="Amount" sortBy="#{investmentRequest.amountOfInvestment}">
-                                <h:outputText value="#{investmentRequest.amountOfInvestment}" />
+                                <h:outputText value="#{investmentRequest.amountOfInvestment}" >
+                                    <f:convertNumber type="currency" currencySymbol="S$" />
+                                </h:outputText>
                             </p:column>
                         
                             <p:column headerText="Prefered Instruments" style="width:180px">

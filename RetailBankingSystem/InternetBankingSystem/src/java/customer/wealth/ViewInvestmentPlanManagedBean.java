@@ -34,8 +34,10 @@ public class ViewInvestmentPlanManagedBean implements Serializable{
     private MainAccountSessionBeanLocal mainAccountSessionBean;
     
     private String searchText;
+
     private List<InvestmentPlan> investmentPlans = new ArrayList<InvestmentPlan>();
     private MainAccount mainAccount;
+    private Double chargeFee;
 
     /**
      * Creates a new instance of ViewInvestmentPlanManagedBean
@@ -48,6 +50,7 @@ public class ViewInvestmentPlanManagedBean implements Serializable{
     public void init() {
         setMainAccount(mainAccountSessionBean.getMainAccountByUserId(SessionUtils.getUserName()));
         setInvestmentPlans(investmentPlanSessionBean.getListInvestmentPlansByMainAccount(mainAccount));
+        setChargeFee(mainAccount.getWealthManagementSubscriber().getMonthlyAdvisoryFee());
     }
     
     public void search() {
@@ -97,5 +100,13 @@ public class ViewInvestmentPlanManagedBean implements Serializable{
 
     public void setMainAccount(MainAccount mainAccount) {
         this.mainAccount = mainAccount;
+    }
+    
+    public Double getChargeFee() {
+        return chargeFee;
+    }
+
+    public void setChargeFee(Double chargeFee) {
+        this.chargeFee = chargeFee;
     }
 }

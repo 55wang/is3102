@@ -650,6 +650,16 @@ and open the template in the editor.
     box-shadow: none !important;
     border:1px solid #ccc !important;
 }
+
+.requestPlanForm .ui-slider{
+    background-color: #ccc;
+}
+
+.requestPlanForm .ui-slider-handle{
+    background-color: #c00 !important;
+    box-shadow: none !important;
+    border:1px solid #ccc !important;
+}
 /* end of wealth */
 
 .viewInvestmentPlanDetailLayout{

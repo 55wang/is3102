@@ -217,7 +217,9 @@ public class EntityWealthBuilder {
         List<Portfolio> ps = wms.getPortfolios();
         ps.add(p);
         wms.setPortfolios(ps);
+        
         wealthManegementSubscriberSessionBean.updateWealthManagementSubscriber(wms);
+        
 
         return p;
     }
@@ -342,6 +344,9 @@ public class EntityWealthBuilder {
         List<Portfolio> ps = ma.getWealthManagementSubscriber().getPortfolios();
         ps.add(p3);
         ma.getWealthManagementSubscriber().setPortfolios(ps);
+        
+        ma.getWealthManagementSubscriber().setMonthlyAdvisoryFee(49.32);
+        
         wealthManegementSubscriberSessionBean.updateWealthManagementSubscriber(ma.getWealthManagementSubscriber());
 
         return p3;
@@ -483,7 +488,7 @@ public class EntityWealthBuilder {
         cEnd.set(Calendar.DAY_OF_MONTH, cEnd.getActualMaximum(Calendar.DAY_OF_MONTH));
         setMonthEndDate(new SimpleDateFormat("yyyy-MM-dd").format(cEnd.getTime()));
     }
-
+    
     public String getCurrentDate() {
         return currentDate;
     }

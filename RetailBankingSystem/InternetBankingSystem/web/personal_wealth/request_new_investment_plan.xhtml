@@ -17,19 +17,29 @@
             <em:customerHeader context="personal" userName="#{customerHomeManagedBean.customer.firstname }"></em:customerHeader>
             <em:customerNavBar context="personal" personalPage="wealth"></em:customerNavBar>
             <div class="customer_main_container">
-                <h:form id="requestPlanForm" >
-                    <p:panel header="Request for Investment Plan">
+                <h:form id="requestPlanForm" class="requestPlanForm">
+                    <p:panel header="Request for New Investment Plan">
                         <p:messages id="messagesStatus" redisplay="false">
                             <h:panelGrid columns="2" cellpadding="5" rendered="#{requestInvestmentPlanManagedBean.wms.riskToleranceScore == null}">
                                 <h:outputLabel for="redirect" value="Your haven't take the risk tolerance quiz yet.  " />
                                 <p:link outcome='risk_tolerance_quiz' value='Take the quiz now!'/>
                             </h:panelGrid>
+                            <h:panelGrid columns="3" cellpadding="5" rendered="#{requestInvestmentPlanManagedBean.wms.riskToleranceScore != null}">
+                                <p:outputLabel value="Investment Amount(S$)"/>
+                                <h:inputText id="outputamount" value="#{requestInvestmentPlanManagedBean.investAmount}">   
+                                    <f:convertNumber type="currency" currencySymbol="S$" />    
+                                </h:inputText>
+                                
+                                
+                                <p:commandButton value="Calculate Current Monthly Charge" actionListener="#{requestInvestmentPlanManagedBean.calculateCharge()}" update="fee"/>
+                            
+                                <p:outputLabel value="Monthly Advisor Fee"/>
+                                <h:outputText id="fee" value="#{requestInvestmentPlanManagedBean.chargeFee}" style="font-size: 24px">
+                                    <f:convertNumber type="currency" currencySymbol="S$" />
+                                </h:outputText>
+                            </h:panelGrid>   
+                            <p:separator/>
                             <h:panelGrid columns="2" cellpadding="5" rendered="#{requestInvestmentPlanManagedBean.wms.riskToleranceScore != null}">
-                                
-                                <h:outputLabel for="amount" value="Investment Amount(SGD)  " />
-                                <h:inputText id="amount" value="#{requestInvestmentPlanManagedBean.newInvestmenPlan.amountOfInvestment}"/>
-                                
-                                
                                 <p:overlayPanel id="introPanel" for="introBtn" hideEffect="fade" at="">
                                     <p:dataTable id="intro" value="#{requestInvestmentPlanManagedBean.allFinancialInstruments}" var="fi">
                                         <p:column id="name" headerText="Name" style="width:400px">

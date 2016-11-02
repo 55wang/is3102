@@ -54,6 +54,7 @@ public class PortfolioManagedBean implements Serializable {
     private String currentDate;
     private String monthStartDate;
     private String monthEndDate;
+    private Double chargeFee;
 
     //dropdown menu
     private String selectedPortfolio;
@@ -80,6 +81,7 @@ public class PortfolioManagedBean implements Serializable {
         initDate();
         customer = customerProfileSessionBean.getCustomerByUserID(SessionUtils.getUserName());
         portfolios = portfolioSessionBean.getListPortfoliosByCustomerId(customer.getId());
+        chargeFee = customer.getMainAccount().getWealthManagementSubscriber().getMonthlyAdvisoryFee();
         createPieModels();
         System.out.println("portfolio size: " + portfolios.size());
         try {
@@ -274,4 +276,11 @@ public class PortfolioManagedBean implements Serializable {
         this.portfolioOptions = portfolioOptions;
     }
 
+    public Double getChargeFee() {
+        return chargeFee;
+    }
+
+    public void setChargeFee(Double chargeFee) {
+        this.chargeFee = chargeFee;
+    }
 }
