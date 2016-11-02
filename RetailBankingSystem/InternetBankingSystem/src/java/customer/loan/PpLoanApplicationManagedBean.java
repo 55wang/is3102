@@ -119,6 +119,11 @@ public class PpLoanApplicationManagedBean implements Serializable {
             return;
         }
         
+        if(housingTenure>maxHousingTenure){
+            MessageUtils.displayError(ConstantUtils.EXCEED_MAX_PP_TENURE);
+            return;
+        }
+        
         LoanApplication newApplication = new LoanApplication();
         newApplication.setAge(age);
         newApplication.setIdNumber(idNumber);
@@ -131,6 +136,7 @@ public class PpLoanApplicationManagedBean implements Serializable {
         newApplication.setProductType(EnumUtils.LoanProductType.LOAN_PRODUCT_TYPE_PRIVATE_HOUSE);
         newApplication.setRequestedAmount(loanAmount);
         newApplication.setMarketValue(marketValue);
+        newApplication.setTenure(housingTenure);
         newApplication.setLoanProduct(loanProductBean.getLoanProductById(loanProductId));
         newApplication.setLoanOfficer(staffAccountSessionBean.getAccountByUsername(ConstantUtils.LOAN_OFFICIER_USERNAME));
         // ejb save and update

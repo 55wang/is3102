@@ -77,6 +77,10 @@ public class ConstantUtils {
     public static final String NOT_ENOUGH_INCOME_1500 = "Your monthly income must be above $1500 to apply this loan.";
     public static final String NOT_ENOUGH_LOAN_LIMIT = "Your loan request amount has exceed maximum loan amount.";
     public static final String LoanToValue_NOT_RIGHT="Your Loan-To-Value ratio is exceeded. Please reduce loan amount or increase housing value.";
+    public static final String EXCEED_MAX_HDB_TENURE="The max tenure is 25 years";
+    public static final String EXCEED_MAX_PP_TENURE="The max tenure is 30 years";
+    public static final String EXCEED_MAX_TENURE="Exceed max tenure!";
+    
     // Password
     public static final String OLD_PASSWORD_NOTMTACH = "You have entered a wrong password! ";
     public static final String PASSWORD_CHANGE_SUCCESS = "Successful! You have reset your password. ";

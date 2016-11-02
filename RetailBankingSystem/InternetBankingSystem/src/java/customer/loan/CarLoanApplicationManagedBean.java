@@ -14,6 +14,7 @@ import entity.loan.LoanApplication;
 import entity.loan.LoanProduct;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -67,6 +68,7 @@ public class CarLoanApplicationManagedBean implements Serializable {
     private Integer carMaxTenure;
     private Long carTenureProductId;
     private Double LTV;
+    private Date birthDay;
     
     /**
      * Creates a new instance of CarLoanApplicationManagedBean
@@ -421,6 +423,14 @@ public class CarLoanApplicationManagedBean implements Serializable {
     public void setCarMaxTenure(Integer carMaxTenure) {
         this.carMaxTenure = carMaxTenure;
     }
+
+    public Date getBirthDay() {
+        return birthDay;
+    }
+
+    public void setBirthDay(Date birthDay) {
+        this.birthDay = birthDay;
+    }
     
-    
+  
 }

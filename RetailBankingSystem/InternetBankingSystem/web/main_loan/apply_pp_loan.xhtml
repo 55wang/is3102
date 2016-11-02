@@ -109,12 +109,12 @@
                                         <f:convertNumber pattern="###00.00"/>
                                     </h:outputText>
                                     
-                                    <h:outputText value="Loan Amount: " />
-                                    <p:inputText value="#{ppLoanApplicationManagedBean.loanAmount}" required="true" requiredMessage="Loan Amount is required." onchange="submit()" valueChangeListener="#{ppLoanApplicationManagedBean.changeMarketValue}"/>
-                                    
                                     <h:outputText value="Tenure: " />
                                     <p:inputText value="#{ppLoanApplicationManagedBean.housingTenure}" required="true" requiredMessage="Tenure is required." />
                                     
+                                    <h:outputText value="Loan Amount: " />
+                                    <p:inputText value="#{ppLoanApplicationManagedBean.loanAmount}" required="true" requiredMessage="Loan Amount is required." onchange="submit()" valueChangeListener="#{ppLoanApplicationManagedBean.changeMarketValue}"/>
+             
                                     <h:outputText value="Market Value: " />
                                     <h:outputText value="#{ppLoanApplicationManagedBean.marketValue}" styleClass="outputLabel">
                                         <f:convertNumber pattern="###00.00"/>
