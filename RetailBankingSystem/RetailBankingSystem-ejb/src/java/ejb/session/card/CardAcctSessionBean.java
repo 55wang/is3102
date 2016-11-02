@@ -182,6 +182,14 @@ public class CardAcctSessionBean implements CardAcctSessionBeanLocal {
         q.setParameter("inStatusTwo", CardAccountStatus.FREEZE);
         return q.getResultList();
     }
+    
+    @Override
+    public List<CreditCardAccount> getAllActiveCreditCardAccountsByMainId(Long id) {
+        Query q = em.createQuery("SELECT cca FROM CreditCardAccount cca WHERE cca.CardStatus =:inStatus AND cca.mainAccount.id =:mainAccountId");
+        q.setParameter("inStatus", CardAccountStatus.ACTIVE);
+        q.setParameter("mainAccountId", id);
+        return q.getResultList();
+    }
 
     @Override
     public CreditCardAccount updateCreditCardAccount(CreditCardAccount cca) {
@@ -231,16 +239,17 @@ public class CardAcctSessionBean implements CardAcctSessionBeanLocal {
     @Override
     public CreditCardAccount payCreditCardAccountBillByCardNumber(String cardNumber, BigDecimal amount) {
         CreditCardAccount ccAccount = getCreditCardAccountByCardNumber(cardNumber);
-        ccAccount.payOutstandingAmount(amount);
-        em.merge(ccAccount);
-
+        
         CardTransaction t = new CardTransaction();
         t.setAmount(amount.doubleValue());
         t.setCardTransactionStatus(EnumUtils.CardTransactionStatus.SETTLEDTRANSACTION);
         t.setCreditCardAccount(ccAccount);
         t.setIsCredit(Boolean.TRUE);
-
         em.persist(t);
+        
+        ccAccount.payOutstandingAmount(amount);
+        ccAccount.addTransactions(t);
+        em.merge(ccAccount);
 
         return ccAccount;
     }

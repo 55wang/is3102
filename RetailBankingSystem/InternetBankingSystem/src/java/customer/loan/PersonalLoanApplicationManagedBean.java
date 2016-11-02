@@ -10,6 +10,8 @@ import ejb.session.loan.LoanAccountSessionBeanLocal;
 import ejb.session.loan.LoanCalculationSessionBeanLocal;
 import ejb.session.loan.LoanProductSessionBeanLocal;
 import ejb.session.staff.StaffAccountSessionBeanLocal;
+import entity.customer.Customer;
+import entity.customer.MainAccount;
 import entity.loan.LoanApplication;
 import entity.loan.LoanProduct;
 import java.io.Serializable;
@@ -63,6 +65,7 @@ public class PersonalLoanApplicationManagedBean implements Serializable {
     private Double personalLoanAmt = 0.0;
     private Double personalLoanMonthlyInstalment;
     private String upperLimit;
+    LoanApplication existingApplication = new LoanApplication();
     /**
      * Creates a new instance of PersonalLoanApplicationManagedBean
      */
@@ -86,7 +89,7 @@ public class PersonalLoanApplicationManagedBean implements Serializable {
             JSUtils.callJSMethod("PF('myWizard').next();");
         }  
     }
-    
+     
      public void changeLoanUpperLimit(ValueChangeEvent e){
         if((Double)e.getNewValue()>=10000.0)
             setUpperLimit("10x monthly income");
@@ -143,6 +146,32 @@ public class PersonalLoanApplicationManagedBean implements Serializable {
         }
         setPersonalTenure(lp.getTenure());
         loanProductId = getPersonalTenureProductId();
+    }
+    
+    public void save(Customer thisCustomer){
+        
+        existingApplication.setAge(thisCustomer.getAge());
+        existingApplication.setIdNumber(thisCustomer.getIdentityNumber());
+        existingApplication.setEmail(thisCustomer.getEmail());
+        existingApplication.setName(thisCustomer.getLastname()+thisCustomer.getFirstname());
+        JSUtils.callJSMethod("PF('myWizard').next()");
+    }
+    
+    public void existingApplyPersonalLoan(){
+        existingApplication.setOtherCommitment(otherLoan);
+        existingApplication.setPhone(phoneNumber);
+        existingApplication.setProductType(EnumUtils.LoanProductType.LOAN_PRODUCT_TYPE_PERSONAL);
+        existingApplication.setRequestedAmount(loanAmount);
+        existingApplication.setLoanProduct(loanProductBean.getLoanProductById(loanProductId));
+        existingApplication.setLoanOfficer(staffAccountSessionBean.getAccountByUsername(ConstantUtils.LOAN_OFFICIER_USERNAME));
+        // ejb save and update
+        LoanApplication result = loanAccountBean.createLoanApplication(existingApplication);
+        if (result != null) {
+            setApplicationNumber(result.getId());
+            emailServiceSessionBean.sendLoanApplicationNoticeToStaff(result);
+            emailServiceSessionBean.sendLoanApplicationNoticeToCustomer(result.getEmail());
+            JSUtils.callJSMethod("PF('myWizard').next()");
+    }
     }
 
     /**
@@ -369,6 +398,15 @@ public class PersonalLoanApplicationManagedBean implements Serializable {
     public void setUpperLimit(String upperLimit) {
         this.upperLimit = upperLimit;
     }
+
+    public LoanApplication getExistingApplication() {
+        return existingApplication;
+    }
+
+    public void setExistingApplication(LoanApplication existingApplication) {
+        this.existingApplication = existingApplication;
+    }
+    
     
     
 }

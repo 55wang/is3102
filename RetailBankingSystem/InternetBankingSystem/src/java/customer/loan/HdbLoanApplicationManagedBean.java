@@ -65,6 +65,7 @@ public class HdbLoanApplicationManagedBean implements Serializable {
     private Double maxMarketValue;
     private Double marketValue=0.0;
     private Double LTV;
+    private Integer tenure;
     
     /**
      * Creates a new instance of HdbLoanApplicationManagedBean
@@ -118,6 +119,10 @@ public class HdbLoanApplicationManagedBean implements Serializable {
             return;
         }
         
+        if(tenure>maxHousingTenure){
+            MessageUtils.displayError(ConstantUtils.EXCEED_MAX_HDB_TENURE);
+            return;
+        }
         
         LoanApplication newApplication = new LoanApplication();
         newApplication.setAge(age);
@@ -132,6 +137,7 @@ public class HdbLoanApplicationManagedBean implements Serializable {
         newApplication.setRequestedAmount(loanAmount);
         newApplication.setMarketValue(marketValue);
         newApplication.setLoanProduct(loanProductBean.getLoanProductById(loanProductId));
+        newApplication.setTenure(tenure);
         newApplication.setLoanOfficer(staffAccountSessionBean.getAccountByUsername(ConstantUtils.LOAN_OFFICIER_USERNAME));
         // ejb save and update
         LoanApplication result = loanAccountBean.createLoanApplication(newApplication);
@@ -403,5 +409,15 @@ public class HdbLoanApplicationManagedBean implements Serializable {
     public void setLTV(Double LTV) {
         this.LTV = LTV;
     }
+
+    public Integer getTenure() {
+        return tenure;
+    }
+
+    public void setTenure(Integer tenure) {
+        this.tenure = tenure;
+    }
+    
+    
     
 }

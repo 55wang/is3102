@@ -38,8 +38,7 @@ public class InvestmentPlan implements Serializable {
     
     @Temporal(value = TemporalType.TIMESTAMP)
     private final Date creationDate = new Date();
-    private Integer amountOfInvestment;  
-    private Double customerExpectedReturn; //for the entire plan
+    private Integer amountOfInvestment; 
     private Double systemPredictReturn;
     private Integer systemPredictRisk;
     private InvestmentRiskLevel riskLevel;
@@ -94,14 +93,6 @@ public class InvestmentPlan implements Serializable {
 
     public void setAmountOfInvestment(Integer amountOfInvestment) {
         this.amountOfInvestment = amountOfInvestment;
-    }
-
-    public Double getCustomerExpectedReturn() {
-        return customerExpectedReturn;
-    }
-
-    public void setCustomerExpectedReturn(Double customerExpectedReturn) {
-        this.customerExpectedReturn = customerExpectedReturn;
     }
 
     public Double getSystemPredictReturn() {

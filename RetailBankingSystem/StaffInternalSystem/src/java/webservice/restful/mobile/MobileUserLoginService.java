@@ -9,7 +9,6 @@ import ejb.session.common.LoginSessionBeanLocal;
 import ejb.session.common.OTPSessionBeanLocal;
 import ejb.session.dams.MobileAccountSessionBeanLocal;
 import ejb.session.utils.UtilsSessionBeanLocal;
-import entity.common.OneTimePassword;
 import entity.customer.MainAccount;
 import entity.dams.account.MobileAccount;
 import javax.ejb.EJB;
@@ -26,7 +25,6 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 import org.primefaces.json.JSONObject;
 import server.utilities.HashPwdUtils;
-import server.utilities.PincodeGenerationUtils;
 
 /**
  *
@@ -40,8 +38,6 @@ public class MobileUserLoginService {
 
     @EJB
     private LoginSessionBeanLocal loginBean;
-    @EJB
-    private UtilsSessionBeanLocal utilBean;
     @EJB
     private OTPSessionBeanLocal otpBean;
     @EJB
@@ -71,9 +67,18 @@ public class MobileUserLoginService {
         System.out.println("Received username:" + username);
         System.out.println("Received POST http");
         String jsonString = null;
+        MainAccount ma = null;
         try {
-            MainAccount ma = loginBean.loginAccount(username, HashPwdUtils.hashPwd(password));
-            if (ma != null) {
+            ma = loginBean.loginAccount(username, HashPwdUtils.hashPwd(password));
+        } catch (Exception e) {
+            ErrorDTO err = new ErrorDTO();
+            err.setCode(-1);
+            err.setError("No user");
+            jsonString = new JSONObject(err).toString();
+            return Response.ok(jsonString, MediaType.APPLICATION_JSON).build();
+        }
+        
+        if (ma != null) {
                 MobileAccount mobileAccount = mobileBean.getMobileAccountByUserId(ma.getUserID());
                 // request to set up mobile password
                 UserLoginDTO user = new UserLoginDTO();
@@ -98,13 +103,6 @@ public class MobileUserLoginService {
                 jsonString = new JSONObject(err).toString();
                 return Response.ok(jsonString, MediaType.APPLICATION_JSON).build();
             }
-        } catch (Exception e) {
-            ErrorDTO err = new ErrorDTO();
-            err.setCode(-1);
-            err.setError("No user");
-            jsonString = new JSONObject(err).toString();
-            return Response.ok(jsonString, MediaType.APPLICATION_JSON).build();
-        }
     }
     
     

@@ -14,8 +14,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.UniqueConstraint;
 import server.utilities.EnumUtils;
 
 /**
@@ -40,10 +42,10 @@ public class SinglePortfolioFactTable implements Serializable {
     //ManyToOne map to other dimension table
     //customertable
     //portfoliotable
-    @ManyToOne
-    private Customer customer = new Customer();
-    @ManyToOne
-    private Portfolio portfolio = new Portfolio();
+    @ManyToOne(optional = false)
+    private Customer customer;
+    @ManyToOne(optional = false)
+    private Portfolio portfolio;
     
     //select all portfolio table to populate this fact table
     //facts

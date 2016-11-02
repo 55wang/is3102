@@ -8,6 +8,7 @@ package ejb.session.dams;
 import entity.dams.account.CustomerDepositAccount;
 import entity.common.TransactionRecord;
 import entity.customer.MainAccount;
+import entity.dams.account.CustomerFixedDepositAccount;
 import entity.dams.account.DepositAccount;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -148,6 +149,13 @@ public class CustomerDepositSessionBean implements CustomerDepositSessionBeanLoc
     @Override
     public List<CustomerDepositAccount> getAllNonFixedCustomerAccounts(Long mainAccountId) {
         Query q = em.createQuery("SELECT ba FROM CustomerDepositAccount ba WHERE ba.mainAccount.id =:mainAccountId");
+        q.setParameter("mainAccountId", mainAccountId);
+        return q.getResultList();
+    }
+    
+    @Override
+    public List<CustomerFixedDepositAccount> getAllFixedCustomerAccounts(Long mainAccountId) {
+        Query q = em.createQuery("SELECT ba FROM CustomerFixedDepositAccount ba WHERE ba.mainAccount.id =:mainAccountId");
         q.setParameter("mainAccountId", mainAccountId);
         return q.getResultList();
     }
@@ -387,6 +395,25 @@ public class CustomerDepositSessionBean implements CustomerDepositSessionBeanLoc
             em.merge(account);
             em.flush();
             return account;
+        }
+    }
+    
+    @Override
+    public List<TransactionRecord> transactionRecordFromAccountNumber(String accountNumber) {
+        Query q = em.createQuery("SELECT tr FROM TransactionRecord tr WHERE tr.toAccount.accountNumber =:accountNumber OR tr.fromAccount.accountNumber =:accountNumber ORDER BY tr.creationDate DESC");
+        q.setParameter("accountNumber", accountNumber);
+        return q.getResultList();
+    }
+    
+    @Override
+    public TransactionRecord latestTransactionFromAccountNumber(String accountNumber) {
+        Query q = em.createQuery("SELECT tr FROM TransactionRecord tr WHERE tr.toAccount.accountNumber =:accountNumber OR tr.fromAccount.accountNumber =:accountNumber ORDER BY tr.creationDate DESC");
+        q.setParameter("accountNumber", accountNumber);
+        List<TransactionRecord> result = q.getResultList();
+        if (result.size() > 0) {
+            return result.get(0);
+        } else {
+            return null;
         }
     }
 }

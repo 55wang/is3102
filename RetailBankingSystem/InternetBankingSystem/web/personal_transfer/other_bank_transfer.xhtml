@@ -41,23 +41,23 @@ and open the template in the editor.
                                             </p:selectOneMenu>
 
                                             <c:if test="#{interBankTransferManagedBean.payeeId == 'New Receipiant'}">
-                                                <h:outputText value="Recipient's Name: " />
+                                                <h:outputText value="Payee's Name: " />
                                                 <p:inputText value="#{interBankTransferManagedBean.payee.name}" required="true" />
-                                                <h:outputText value="Recipient's Bank: " />
+                                                <h:outputText value="Payee's Bank: " />
                                                 <p:selectOneMenu value="#{interBankTransferManagedBean.bankId}" rendered="true" required="true">
                                                     <f:selectItems value="#{interBankTransferManagedBean.bankList}" var="b" itemValue="#{b.id.toString()}" itemLabel="#{b.name}" />
                                                 </p:selectOneMenu>
-                                                <h:outputText value="Recipient's Account: " />
+                                                <h:outputText value="Payee's Account: " />
                                                 <p:inputText value="#{interBankTransferManagedBean.payee.accountNumber}" required="true" />
                                                 <h:outputText value="My Initials: " />
                                                 <p:inputText value="#{interBankTransferManagedBean.payee.myInitial}" required="true" />
                                             </c:if>
                                             <c:if test="#{interBankTransferManagedBean.payeeId != 'New Receipiant'}">
-                                                <p:outputLabel value="Recipient's Name: " />
+                                                <p:outputLabel value="Payee's Name: " />
                                                 <p:outputLabel value="#{interBankTransferManagedBean.payee.name}"/>
-                                                <p:outputLabel value="Recipient's Bank: " />
+                                                <p:outputLabel value="Payee's Bank: " />
                                                 <p:outputLabel value="#{interBankTransferManagedBean.getBankName(interBankTransferManagedBean.payee.bankCode)}"/>
-                                                <p:outputLabel value="Recipient's Account: " />
+                                                <p:outputLabel value="Payee's Account: " />
                                                 <p:outputLabel value="#{interBankTransferManagedBean.payee.accountNumber}"/>
                                             </c:if>
                                         </h:panelGrid>
@@ -82,11 +82,11 @@ and open the template in the editor.
                                 <p:tab id="verify_details" title="2.Verify Details">
                                     <h:panelGrid columns="2" cellpadding="5">
 
-                                        <h:outputText value="Recipient's Name: " />
+                                        <h:outputText value="Payee's Name: " />
                                         <h:outputText value="#{interBankTransferManagedBean.payee.name}" />
-                                        <h:outputText value="Recipient's Bank: " />
+                                        <h:outputText value="Payee's Bank: " />
                                         <h:outputText value="#{interBankTransferManagedBean.getBankName(interBankTransferManagedBean.payee.bankCode)}" />
-                                        <h:outputText value="Recipient's Account: " />
+                                        <h:outputText value="Payee's Account: " />
                                         <h:outputText value="#{interBankTransferManagedBean.payee.accountNumber}" />
                                         <h:outputText value="My Initials: " />
                                         <h:outputText value="#{interBankTransferManagedBean.payee.myInitial}" />
@@ -99,7 +99,7 @@ and open the template in the editor.
                                         <h:outputText value="#{interBankTransferManagedBean.purpose}" />
                                         
                                         <h2>Input Token Number</h2>
-                                        <p:inputText value="#{manageMerlionPayeeManagedBean.inputTokenString}" />
+                                        <p:inputText value="#{interBankTransferManagedBean.inputTokenString}" />
                                         
                                         <p:commandButton  value="Back" type="button" onclick="PF('myWizard').back()" />
                                         <p:commandButton value="Transfer" action="#{interBankTransferManagedBean.transfer}" update="@form"/> 

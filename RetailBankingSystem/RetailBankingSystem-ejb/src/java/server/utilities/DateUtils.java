@@ -16,6 +16,11 @@ import java.util.GregorianCalendar;
  */
 public class DateUtils {
 
+    public static Date getDateForNextNthYear(Integer n) {
+        Calendar calendar = getCalendarForNextNthYear(n);
+        return calendar.getTime();
+    }
+    
     public static Date getLastNthBeginOfMonth(Integer n) {
         Calendar calendar = getCalendarForLastNthMonth(n);
         calendar.set(Calendar.DAY_OF_MONTH,
@@ -93,6 +98,13 @@ public class DateUtils {
         Calendar calendar = GregorianCalendar.getInstance();
         calendar.setTime(new Date());
         calendar.add(Calendar.MONTH, -n);
+        return calendar;
+    }
+    
+    public static Calendar getCalendarForNextNthYear(Integer n) {
+        Calendar calendar = GregorianCalendar.getInstance();
+        calendar.setTime(new Date());
+        calendar.add(Calendar.YEAR, n);
         return calendar;
     }
 
@@ -175,6 +187,27 @@ public class DateUtils {
             }
             return extraDays - dayTwo.get(Calendar.DAY_OF_YEAR) + dayOneOriginalYearDays;
         }
+    }
+    
+    public static int calculateAge(Date birthday){
+        int ageDiff = yearDifference(birthday, new Date());
+        Calendar cal = Calendar.getInstance();
+        Calendar now = Calendar.getInstance();
+        cal.setTime(birthday);
+        int month = cal.get(Calendar.MONTH);
+        int day = cal.get(Calendar.DATE);
+        if (month < now.get(Calendar.MONTH)) {
+            return ageDiff;
+        } else if (month == now.get(Calendar.MONTH)) {
+            if (day <= now.get(Calendar.DATE)) {
+                return ageDiff;
+            } else {
+                return ageDiff - 1;
+            }
+        }
+        return ageDiff - 1;
+        
+            
     }
 
     //date2-date1

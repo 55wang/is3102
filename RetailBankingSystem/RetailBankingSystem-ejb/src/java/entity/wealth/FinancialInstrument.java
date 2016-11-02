@@ -5,10 +5,14 @@
  */
 package entity.wealth;
 
+import entity.fact.customer.FinancialInstrumentFactTable;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import static server.utilities.CommonUtils.round;
 import server.utilities.EnumUtils.FinancialInstrumentClass;
 
@@ -26,6 +30,9 @@ public class FinancialInstrument implements Serializable {
     private String description;
     private Double standardDeviation;
     private Double expectedReturn;
+    
+    @OneToMany(mappedBy = "fi")
+    private List<FinancialInstrumentFactTable> fif = new ArrayList<>();
 
     @Override
     public int hashCode() {
@@ -79,6 +86,14 @@ public class FinancialInstrument implements Serializable {
 
     public void setExpectedReturn(Double expectedReturn) {
         this.expectedReturn = expectedReturn;
+    }
+
+    public List<FinancialInstrumentFactTable> getFif() {
+        return fif;
+    }
+
+    public void setFif(List<FinancialInstrumentFactTable> fif) {
+        this.fif = fif;
     }
 
 }

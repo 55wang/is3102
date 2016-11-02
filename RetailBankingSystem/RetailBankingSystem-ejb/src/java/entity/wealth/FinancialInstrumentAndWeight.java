@@ -22,13 +22,15 @@ import static server.utilities.CommonUtils.round;
 public class FinancialInstrumentAndWeight implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private FinancialInstrument fi;
     private Double weight;
     private Double currentValuePerShare = 0.0;
     private Double buyingValuePerShare = 0.0;
     private Integer buyingNumberOfShare = 0;
+    
+    private Double tempValue;
 
     public Long getId() {
         return id;
@@ -101,5 +103,20 @@ public class FinancialInstrumentAndWeight implements Serializable {
 
     public void setBuyingNumberOfShare(Integer buyingNumberOfShare) {
         this.buyingNumberOfShare = buyingNumberOfShare;
+    }
+    
+    public Double getCurrentValue() {
+        return currentValuePerShare * buyingNumberOfShare;
+    }
+
+    public Double getTempValue() {
+        if (tempValue==null) {
+            setTempValue(getCurrentValue());
+        }
+        return tempValue;
+    }
+
+    public void setTempValue(Double tempValue) {
+        this.tempValue = tempValue;
     }
 }

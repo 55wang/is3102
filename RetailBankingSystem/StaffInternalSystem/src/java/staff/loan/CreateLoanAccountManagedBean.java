@@ -101,7 +101,7 @@ public class CreateLoanAccountManagedBean implements Serializable {
         la.setPaymentStartDate(getPaymentStartDate());
         la.setPaymentDate(DateUtils.getDayNumber(getPaymentStartDate()));
         la.setMaturityDate(DateUtils.addYearsToDate(getPaymentStartDate(), la.getLoanProduct().getTenure()));
-        la.setTenure(la.getLoanProduct().getTenure());
+        la.setTenure(currentApplication.getTenure());
         la.setPrincipal(getPrincipalAmount());
         la.setOutstandingPrincipal(principalAmount);
         la.setMonthlyInstallment(loanPaymentSessionBean.calculateMonthlyInstallment(la));

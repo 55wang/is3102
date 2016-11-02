@@ -37,7 +37,13 @@ public class BankAccountBuilder {
     }
 
     private Boolean needInit() {
-        return mepsBean.find("000") == null;
+        SettlementAccount result = null;
+        try {
+            result = mepsBean.find("000");
+        } catch (Exception e) {
+            return true;
+        }
+        return result == null;
     }
 
     private void buildEntities() {

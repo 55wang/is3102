@@ -43,6 +43,7 @@ public class LoanApplication implements Serializable {
     private Double requestedAmount;
     private Double marketValue;
     private Integer otherHousingLoan;
+    private Integer tenure;
     private EnumUtils.LoanProductType productType;
     private EnumUtils.LoanAccountStatus status = EnumUtils.LoanAccountStatus.NEW;
     
@@ -310,5 +311,16 @@ public class LoanApplication implements Serializable {
     public void setCreationDate(Date creationDate) {
         this.creationDate = creationDate;
     }
+
+    public Integer getTenure() {
+        return tenure;
+    }
+
+    public void setTenure(Integer tenure) {
+        this.tenure = tenure;
+    }
+
+    
+    
     
 }

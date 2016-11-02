@@ -171,11 +171,10 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
             Transport.send(message);
 
             System.out.println("Email send out successfully");
-            return ;
 
         } catch (MessagingException e) {
             System.out.println(e);
-            return ;
+
         }
 
     }

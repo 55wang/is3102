@@ -33,13 +33,13 @@
                                         <h:outputText value="Age: " />
                                         <p:inputText value="#{loanCalculatorManagedBean.age}" required="true" requiredMessage="Age is required." />
 
-                                        <h:outputText value="Monthly income: " />
+                                        <h:outputText value="Monthly income (S$): " />
                                         <p:inputText value="#{loanCalculatorManagedBean.monthlyIncome}" required="true" requiredMessage="Monthly income is required." />
 
                                         <h:outputText value="Other financial commitments (S$): " />
                                         <p:inputText value="#{loanCalculatorManagedBean.otherLoan}" required="true" requiredMessage="Other financial commitment is required." />
 
-                                        <h:outputText value="Nubmer Other Housing Loans: " />
+                                        <h:outputText value="Number Other Housing Loans: " />
                                         <p:inputText value="#{loanCalculatorManagedBean.numOfHousingLoan}" required="true" requiredMessage="Other financial commitment is required." />
 
                                     </h:panelGrid>
@@ -56,20 +56,20 @@
                                
                                     <p:scrollPanel style="height:238px">
                                         <h:panelGrid columns="2" columnClasses="label, value">
-                                            <h:outputText value="Maximum Tenure: " />
+                                            <h:outputText value="Maximum Tenure (years): " />
                                             <h:outputText value="#{loanCalculatorManagedBean.tenure}" styleClass="outputLabel"/>
 
-                                            <h:outputText value="Monthly instalment: " />
+                                            <h:outputText value="Maximum Monthly instalment (S$): " />
                                             <h:outputText value="#{loanCalculatorManagedBean.monthlyInstalment}" styleClass="outputLabel">
                                                 <f:convertNumber pattern="###00.00"/>
                                             </h:outputText>
 
-                                            <h:outputText value="Maximum loan amount: " />
+                                            <h:outputText value="Maximum loan amount (S$): " />
                                             <h:outputText value="#{loanCalculatorManagedBean.loanAmt}" styleClass="outputLabel">
                                                 <f:convertNumber pattern="###00.00"/>
                                             </h:outputText>
 
-                                            <h:outputText value="Housing market value: " />
+                                            <h:outputText value="Housing market value (S$): " />
                                             <h:outputText value="#{loanCalculatorManagedBean.value}" styleClass="outputLabel">
                                                 <f:convertNumber pattern="###00.00"/>
                                             </h:outputText>

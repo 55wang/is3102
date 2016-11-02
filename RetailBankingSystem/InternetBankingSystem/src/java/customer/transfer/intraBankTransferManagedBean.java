@@ -89,8 +89,6 @@ public class intraBankTransferManagedBean implements Serializable {
             return;
         }
         
-        Payee payee = transferBean.getPayeeById(Long.parseLong(getPayeeId()));
-        
         try {
             DepositAccount da = depositBean.getAccountFromId(getToAccountNo());
             if (da == null) {
@@ -114,6 +112,7 @@ public class intraBankTransferManagedBean implements Serializable {
         DepositAccount toAccount = depositBean.getAccountFromId(getToAccountNo());
         tr.setToAccount(toAccount);
         tr.setType(EnumUtils.PayeeType.MERLION);
+        tr.setActionType(EnumUtils.TransactionType.TRANSFER);
         transferBean.createTransferRecord(tr);
         
         String result = transferBean.transferFromAccountToAccount(getFromAccountNo(), getToAccountNo(), getAmount());
@@ -190,6 +189,8 @@ public class intraBankTransferManagedBean implements Serializable {
         System.out.println("sendOTP clicked, sending otp to: " + ma.getCustomer().getPhone());
         JSUtils.callJSMethod("PF('myWizard').next()");
         otpBean.generateOTP(ma.getCustomer().getPhone());
+        Payee payee = transferBean.getPayeeById(Long.parseLong(getPayeeId()));
+        toAccountNo = payee.getAccountNumber();
     }
     
     private void calculateTransferLimits() {

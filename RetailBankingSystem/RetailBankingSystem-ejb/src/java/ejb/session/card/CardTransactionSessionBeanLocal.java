@@ -24,6 +24,7 @@ public interface CardTransactionSessionBeanLocal {
      public List<CardTransaction> getListCardTransactionsByStatus(EnumUtils.CardTransactionStatus status);
      public CardTransaction getCardTransactionByCcaId(Long ccaId);
      public CardTransaction getCardTransactionByVisaId(String visaId);
+     public CardTransaction getLatestCardTransactionByCcaId(Long ccaId);
      public CardTransaction createCardAccountTransaction(CreditCardAccount cca, CardTransaction ct);
      public List<CardTransaction> getListDailyTransactionsByCreditCardAccount(CreditCardAccount cca);
      public List<CardTransaction> getListMonthlyTransactionsByCreditCardAccount(CreditCardAccount cca);

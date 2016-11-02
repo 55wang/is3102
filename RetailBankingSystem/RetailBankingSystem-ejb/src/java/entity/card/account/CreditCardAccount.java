@@ -56,7 +56,7 @@ public class CreditCardAccount implements Serializable {
 
     // info
     @Temporal(value = TemporalType.DATE)
-    private Date validDate;
+    private Date validDate = DateUtils.getDateForNextNthYear(5);
     private CardAccountStatus CardStatus = CardAccountStatus.NEW;
     @Column(unique = true)
     private String creditCardNum;
@@ -160,6 +160,10 @@ public class CreditCardAccount implements Serializable {
     public Double addAmountToCurrentMonthAmount(Double amount) {
         this.currentMonthAmount += amount;
         return currentMonthAmount;
+    }
+    
+    public void addTransactions(CardTransaction ct) {
+        cardTransactions.add(ct);
     }
 
     public Long getId() {

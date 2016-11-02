@@ -5,10 +5,9 @@
  */
 package ejb.session.wealth;
 
-import entity.fact.customer.SinglePortfolioFactTable;
-import entity.wealth.MovingAverage;
 import entity.wealth.Portfolio;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
@@ -16,6 +15,11 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import org.rosuda.REngine.REXPMismatchException;
+import org.rosuda.REngine.Rserve.RConnection;
+import org.rosuda.REngine.Rserve.RserveException;
+import server.utilities.CommonUtils;
+import server.utilities.ConstantUtils;
 
 /**
  *
@@ -27,69 +31,35 @@ public class PortfolioSessionBean implements PortfolioSessionBeanLocal {
     @PersistenceContext(unitName = "RetailBankingSystem-ejbPU")
     private EntityManager em;
 
-    public static void main(String[] args) {
-        Queue<Double> q = new LinkedList();
-        
-    }
-    
-    public List<Double> calcMovingAverageValue(Queue<Double> q, int windowSize) {
-//        int n = 4;
-        List<Double> result = new ArrayList<>();
-        Double[] a = new Double[windowSize];
-        for (int i=0; i<windowSize; i++) {
-            a[i] = 0.0;
-        }
-        
-        Double sum = 0.0;
-        for (int i = 1; !q.isEmpty(); i++) {
-            sum -= a[i % windowSize];
-            a[i % windowSize] = q.poll();
-            sum += a[i % windowSize];
-            if (i >= windowSize) {
-                result.add(sum/windowSize);
-            }
-        }
-        return result;
-    }
-    
-    //must be sorted the input spf, with ascending date order
+    //call R times series holt winters model
     @Override
-    public void calcMovingAverage(List<SinglePortfolioFactTable> spf) {
-        //cut the input
-        //calculate the value
-        
-        //finally store as hashmap
-        List<Double> q = new ArrayList<>();
-        for (int i = 0; i < spf.size(); i++) {
-            Double value = spf.get(i).getTotalCurrentValue();
+    public List<Double> getHoltWinterModel(double[] inputData) {
+        System.out.println("getHotWinterModel called " + inputData.toString());
+        RConnection connection = null;
+        double[] result = new double[5];
+        try {
+            connection = new RConnection(ConstantUtils.ipAddress, 6311);
 
-            if (q.size() == 4) {
-                q.remove(0);
-                q.add(value);
+            String prependingPath = CommonUtils.getPrependFolderName();
+            connection.assign("inputTSData", inputData);
+            connection.eval("source('" + prependingPath + "ConstructPortfolioModel.R')");
+            result = connection.eval("getReturnTimeSeries(inputTSData)").asDoubles();
+            System.out.println("result: " + Arrays.toString(result));
 
-                Double total = 0.0;
-                for (int j = 0; j < q.size(); j++) {
-                    total += q.get(j);
-                }
-
-                Double avg = total / 4;
-                System.out.println("Average: " + avg);
-                //persist movingAverage
-                MovingAverage movingAvg;
-                try {
-                    movingAvg = em.find(MovingAverage.class, spf.get(i).getCreationDate());
-                } catch (Exception ex) {
-                    movingAvg = new MovingAverage();
-                    em.persist(movingAvg);
-                }
-
-                movingAvg.setCreationDate(spf.get(i).getCreationDate());
-                movingAvg.setAvgValue(avg);
-                movingAvg.setPortfolio(spf.get(i).getPortfolio());
-                em.merge(movingAvg);
-
-            }
+        } catch (RserveException | REXPMismatchException ex) {
+            System.out.println(ex);
+        } catch (Exception ex) {
+            System.out.println(ex);
+        } finally {
+            connection.close();
         }
+
+        List<Double> resultList = new ArrayList<>();
+        for (int i = 0; i < result.length; i++) {
+            resultList.add(result[i]);
+        }
+        System.out.println(resultList.toString());
+        return resultList;
     }
 
     @Override
