@@ -25,8 +25,6 @@
                                 <p:link outcome='risk_tolerance_quiz' value='Take the quiz now!'/>
                             </h:panelGrid>
                             <h:panelGrid columns="2" cellpadding="5" rendered="#{requestInvestmentPlanManagedBean.wms.riskToleranceScore != null}">
-                                <h:outputLabel for="expectReturn" value="Expected return(0-1)  " />
-                                <h:inputText id="expectReturn" value="#{requestInvestmentPlanManagedBean.newInvestmenPlan.customerExpectedReturn}"/>
                                 
                                 <h:outputLabel for="amount" value="Investment Amount(SGD)  " />
                                 <h:inputText id="amount" value="#{requestInvestmentPlanManagedBean.newInvestmenPlan.amountOfInvestment}"/>

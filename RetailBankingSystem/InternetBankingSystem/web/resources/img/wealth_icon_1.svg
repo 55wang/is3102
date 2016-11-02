@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="100px" height="100px" viewBox="0 0 100 100" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 39.1 (31720) - http://www.bohemiancoding.com/sketch -->
+    <title>Group 3 Copy 4</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <path d="M24.0533049,17.8486141 C24.0533049,17.8486141 9.35343656,-7.5546289 1.45274058,2.91177485 C-6.4479554,13.3781786 24.0533049,17.8486141 24.0533049,17.8486141 Z" id="path-1"></path>
+        <mask id="mask-2" maskContentUnits="userSpaceOnUse" maskUnits="objectBoundingBox" x="0" y="0" width="23.9075104" height="17.4658913" fill="white">
+            <use xlink:href="#path-1"></use>
+        </mask>
+        <path d="M38.6508471,17.8486141 C38.6508471,17.8486141 24.2147684,-7.45321053 16.0502828,2.91177485 C7.8857971,13.2767602 38.6508471,17.8486141 38.6508471,17.8486141 Z" id="path-3"></path>
+        <mask id="mask-4" maskContentUnits="userSpaceOnUse" maskUnits="objectBoundingBox" x="0" y="0" width="23.9792053" height="17.4302082" fill="white">
+            <use xlink:href="#path-3"></use>
+        </mask>
+    </defs>
+    <g id="Page-1-Copy" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="3_lowfees" transform="translate(-238.000000, -1130.000000)">
+            <g id="Group-7" transform="translate(52.000000, 0.000000)">
+                <g id="Group-14" transform="translate(23.000000, 1012.000000)">
+                    <g id="Group-3-Copy-4" transform="translate(163.000000, 118.000000)">
+                        <ellipse id="Oval-1-Copy-3" fill="#FFFFFF" opacity="0.200000003" cx="50" cy="50" rx="50" ry="50"></ellipse>
+                        <g id="Group-4-Copy-4" transform="translate(24.880597, 21.895522)">
+                            <rect id="Rectangle-594" fill="#61C66C" x="3.47761194" y="25.8656716" width="44.7761194" height="25.3731343"></rect>
+                            <g id="Group-5" transform="translate(0.279318, 0.000000)">
+                                <g id="Group-11" transform="translate(5.477612, 0.000000)" stroke="#3B537C" stroke-width="5.97014925" stroke-linecap="round" stroke-linejoin="round">
+                                    <use id="Path-1179" mask="url(#mask-2)" xlink:href="#path-1"></use>
+                                    <use id="Path-1179-Copy" mask="url(#mask-4)" transform="translate(26.661244, 9.133510) scale(-1, 1) translate(-26.661244, -9.133510) " xlink:href="#path-3"></use>
+                                </g>
+                                <rect id="Rectangle-961" fill="#FFFFFF" x="0.213219616" y="15.4179104" width="50.7462687" height="11.9402985"></rect>
+                            </g>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

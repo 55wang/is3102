@@ -91,7 +91,6 @@ public class EntityWealthBuilder {
 
         InvestmentPlan investmentPlan = new InvestmentPlan();
         investmentPlan.setAmountOfInvestment(10000);
-        investmentPlan.setCustomerExpectedReturn(0.13);
         List<FinancialInstrument> preferedInstruments = new ArrayList<FinancialInstrument>();
 //        List<FinancialInstrument> allFinancialInstruments = financialInstrumentSessionBean.getAllFinancialInstruments();
         preferedInstruments.add(allFinancialInstruments.get(0));
@@ -106,7 +105,6 @@ public class EntityWealthBuilder {
 
         InvestmentPlan executedInvestmentPlan = new InvestmentPlan();
         executedInvestmentPlan.setAmountOfInvestment(100000);
-        executedInvestmentPlan.setCustomerExpectedReturn(0.13);
         List<FinancialInstrument> preferedInstruments2 = new ArrayList<FinancialInstrument>();
         preferedInstruments2.add(allFinancialInstruments.get(0));
         preferedInstruments2.add(allFinancialInstruments.get(2));
@@ -229,7 +227,6 @@ public class EntityWealthBuilder {
         //2nd portfolio
         InvestmentPlan executedInvestmentPlan = new InvestmentPlan();
         executedInvestmentPlan.setAmountOfInvestment(150000);
-        executedInvestmentPlan.setCustomerExpectedReturn(0.13);
         List<FinancialInstrument> preferedInstruments = new ArrayList<FinancialInstrument>();
 //        List<FinancialInstrument> allFinancialInstruments = financialInstrumentSessionBean.getAllFinancialInstruments();
         preferedInstruments.add(allFinancialInstruments.get(0));
