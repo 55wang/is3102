@@ -32,14 +32,14 @@
                                         <h:outputText value="Age: " />
                                         <p:inputText value="#{loanCalculatorManagedBean.age}" required="true" requiredMessage="Age is required." />
 
-                                        <h:outputText value="Monthly income: " />
+                                        <h:outputText value="Monthly income (S$): " />
                                         <p:inputText value="#{loanCalculatorManagedBean.monthlyIncome}" required="true" requiredMessage="Monthly income is required." />
 
-                                        <h:outputText value="Open market value of car: " />
-                                        <p:inputText value="#{loanCalculatorManagedBean.carOpenMarketValue}" required="true" requiredMessage="Open market value is required." />
+                                        <h:outputText value="Other loans (S$): " />
+                                        <p:inputText value="#{loanCalculatorManagedBean.otherLoan}" required="true" requiredMessage="Other loan is required." />
 
-                                        <h:outputText value="Tenure: " />
-                                        <h:selectOneMenu value="#{loanCalculatorManagedBean.carTenure}" required="true" requiredMessage="Tenure is required.">
+                                        <h:outputText value="Tenure (years): " />
+                                        <h:selectOneMenu value="#{loanCalculatorManagedBean.tenure}" required="true" requiredMessage="Tenure is required.">
                                             <f:selectItem itemValue="1"/>
                                             <f:selectItem itemValue="2"/>
                                             <f:selectItem itemValue="3"/>
@@ -64,15 +64,22 @@
                                 
                                     <p:scrollPanel style="height:238px">
                                         <h:panelGrid columns="2" columnClasses="label, value">
-                                            <h:outputText value="Maximum loan amount: " />
+                                            
+                                            <h:outputText value="Maximum monthly instalment (S$): " />
+                                            <h:outputText value="S$ #{loanCalculatorManagedBean.carMaxMonthlyInstalment}" styleClass="outputLabel">
+                                                <f:convertNumber pattern="###00.00"/>
+                                            </h:outputText>
+                                            
+                                            <h:outputText value="Maximum loan amount (S$): " />
                                             <h:outputText value="S$ #{loanCalculatorManagedBean.carLoanAmt}" styleClass="outputLabel">
                                                 <f:convertNumber pattern="###00.00"/>
                                             </h:outputText>
-
-                                            <h:outputText value="Monthly instalment: " />
-                                            <h:outputText value="S$ #{loanCalculatorManagedBean.carLoanMonthlyInstalment}" styleClass="outputLabel">
+                                            
+                                            <h:outputText value="Maximum car purchasing price (S$): "/>
+                                            <h:outputText value="S$ #{loanCalculatorManagedBean.carOpenMarketValue}" styleClass="outputLabel">
                                                 <f:convertNumber pattern="###00.00"/>
                                             </h:outputText>
+
 
 
                                         </h:panelGrid>

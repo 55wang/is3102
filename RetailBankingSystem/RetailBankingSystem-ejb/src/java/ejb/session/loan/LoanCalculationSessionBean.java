@@ -178,14 +178,18 @@ public class LoanCalculationSessionBean implements LoanCalculationSessionBeanLoc
     }
 
     @Override
-    public Double calculateMaxCarLoanAmt(Double openMarketValue) {
+    public Double calculateMaxCarLoanAmt(Double monthlyInstalment, Integer tenureYear) {
         Double maxCarLoanAmt = 0.0;
-        if (openMarketValue > 20000.0) {
-            maxCarLoanAmt = 0.6 * openMarketValue;
-        } else if (openMarketValue <= 20000.0) {
-            maxCarLoanAmt = 0.7 * openMarketValue;
-        }
+        maxCarLoanAmt=12.0*tenureYear*monthlyInstalment;
         return maxCarLoanAmt;
+    }
+    
+    @Override
+    public Double calculateMaxCarPrice(Double loanAmt){
+        Double carPrice=0.0;
+        if(loanAmt<=14000.0) carPrice=loanAmt/0.7;
+        else if (loanAmt>14000.0) carPrice=loanAmt/0.6;
+        return carPrice;
     }
 
     @Override

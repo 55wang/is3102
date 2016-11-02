@@ -25,7 +25,8 @@ public interface LoanCalculationSessionBeanLocal {
     public Double calculateMaxPPMonthlyInstalment(Double monthlyIncome, Double otherLoan);
     public Double calculateMaxHomeLoanAmt(Double monthlyInstalment, Integer tenure);
     public Double homeMarketValue(Double loanAmt, Integer numberOfHousingLoan);
-    public Double calculateMaxCarLoanAmt(Double openMarketValue);
+    public Double calculateMaxCarLoanAmt(Double monthlyInstalment, Integer tenureYear);
+    public Double calculateMaxCarPrice(Double loanAmt);
     public Double calculateCarMonthlyInstalment(Double annualInterest,Integer tenure,Double loanAmt);
     public Double calculateMaxPersonalLoanAmt(Double monthlyIncome, Double otherMonthlyCommitment);
     public Double calculatePersonalMonthlyInstalment(Double annualInterest, Integer tenure, Double loanAmt);
