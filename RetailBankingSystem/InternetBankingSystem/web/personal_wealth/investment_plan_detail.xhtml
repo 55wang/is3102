@@ -69,10 +69,6 @@
                                 </h:outputText>
                             </p:column>
 
-                            <p:column headerText="Expected Return" sortBy="#{investmentRequest.customerExpectedReturn}">
-                                <h:outputText value="#{investmentRequest.customerExpectedReturn}" />
-                            </p:column>
-
                             <p:column headerText="Amount" sortBy="#{investmentRequest.amountOfInvestment}">
                                 <h:outputText value="#{investmentRequest.amountOfInvestment}SGD" />
                             </p:column>
@@ -172,10 +168,6 @@
                                             <h:outputText value="#{investmentRequest.creationDate}">
                                                 <f:convertDateTime pattern="MM/dd/yy" />
                                             </h:outputText>
-                                        </p:column>
-
-                                        <p:column headerText="Expected Return" sortBy="#{investmentRequest.customerExpectedReturn}">
-                                            <h:outputText value="#{investmentRequest.customerExpectedReturn*100}%" />
                                         </p:column>
 
                                         <p:column headerText="Amount" sortBy="#{investmentRequest.amountOfInvestment}">

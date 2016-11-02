@@ -121,7 +121,7 @@ constructPortfolioModel <- function() {
     
     eff_frontier<-subset(tgt_port,tgt_port$tgt_returns>=minvar_port$tgt_returns)
     eff_frontier[c(1:3,nrow(eff_frontier)),]
-    png("/Users/wang/MeanVarianceEfficientFrontier.png")
+    png("MeanVarianceEfficientFrontier.png")
     plt <- plot(x=tgt_port$tgt_sdresult,
          y=tgt_port$tgt_returns,
          col="gray40",
@@ -231,7 +231,7 @@ getReturnTimeSeries <- function(inputTSData)
   library("TTR")
   library("forecast")
   print("getReturnTimeSeries is called")
-  
+  defineWorkingDirectory()
   print(inputTSData)
 
   inputTSDataSeries <- ts(inputTSData,start=1,frequency=10)
@@ -249,7 +249,7 @@ getReturnTimeSeries <- function(inputTSData)
   print("this is result")
   print(result)
   
-  png("/Users/wang/HoltWinter.png")
+  png("HoltWinter.png")
   plt <- plot(inputTSDataSeriesForecasts, forecasting)
   # plt<-plot.forecast(inputTSDataSeriesForecasts2)
   dev.off()

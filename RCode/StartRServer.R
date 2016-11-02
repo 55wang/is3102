@@ -18,6 +18,7 @@ installPackages <- function() {
   install.packages("quantmod")
   install.packages("quadprog")
   install.packages("RMySQL")
+  install.packages("forecast")
 }
 
 
