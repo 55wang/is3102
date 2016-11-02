@@ -76,11 +76,9 @@
                                         <f:convertNumber type="percent" minFractionDigits="4"/>
                                     </h:outputText>
                                     
-                                    <h:outputText value="Tenure: " />
-                                    <h:selectOneMenu value="#{carLoanApplicationManagedBean.carTenureProductId}" required="true" requiredMessage="Tenure is required.">
-                                        <f:selectItems value="#{carLoanApplicationManagedBean.carLoanProducts}" var="p" itemValue="#{p.tenure}" itemLabel="#{p.tenure} years" />
-                                        <p:ajax event="change" update="annual_interest_rate" listener="#{carLoanApplicationManagedBean.handleSelectTenure}" />
-                                    </h:selectOneMenu>
+                                    <h:outputText value="Loan Tenure (years): " />
+                                    <p:inputText value="#{carLoanApplicationManagedBean.carTenure}" required="true" requiredMessage="Loan tenure is required."/>
+
 
                                     <h:outputText value="Annual Interest Rate: " />
                                     <h:outputText id="annual_interest_rate" value="#{carLoanApplicationManagedBean.carLoanAnnualInterestRate}" styleClass="outputLabel">
@@ -100,6 +98,12 @@
                             <p:panel>
                                 <h:panelGrid columns="2" cellpadding="5px" columnClasses="label, value">
                                     
+                                    <h:outputText value="Car Loan Product: " />
+                                    <h:selectOneMenu value="#{carLoanApplicationManagedBean.loanProductId}" required="true" requiredMessage="Tenure is required.">
+                                        <f:selectItems value="#{carLoanApplicationManagedBean.carLoanProducts}" var="p" itemValue="#{p.id}" itemLabel="#{p.productName}" />
+                                        
+                                    </h:selectOneMenu>
+                                    
                                     <h:outputText value="Maximum loan amount (S$):: " />
                                     <h:outputText value="#{carLoanApplicationManagedBean.maxCarLoanAmt}" styleClass="outputLabel">
                                         <f:convertNumber pattern="###00.00"/>
@@ -110,13 +114,9 @@
                                         <f:convertNumber pattern="###00.00"/>
                                     </h:outputText>
 
-                                    <h:outputText value="Loan Amount: " />
+                                    <h:outputText value="Loan Amount (S$): " />
                                     <p:inputText value="#{carLoanApplicationManagedBean.loanAmount}" required="true" requiredMessage="Loan Amount is required." onchange="submit()" valueChangeListener="#{carLoanApplicationManagedBean.changeLoanAmt}"/>
-
-                                    <h:outputText value="Choose a loan term: " />
-                                    <p:selectOneMenu value="#{carLoanApplicationManagedBean.loanProductId}" rendered="true" required="true">
-                                        <f:selectItems value="#{carLoanApplicationManagedBean.carLoanProducts}" var="p" itemValue="#{p.id}" itemLabel="#{p.productName} #{p.tenure}" />
-                                    </p:selectOneMenu>
+                                  
                                     
                                     <h:outputText value="Estimated Monthly instalment (S$):: " />
                                     <h:outputText value="#{carLoanApplicationManagedBean.carLoanMonthlyInstalment}" styleClass="outputLabel">
