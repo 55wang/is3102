@@ -5,7 +5,7 @@
  */
 package customer.wealth;
 
-import ejb.session.fact.FactSessionBeanLocal;
+import ejb.session.fact.PortfolioFactSessionBeanLocal;
 import ejb.session.mainaccount.MainAccountSessionBeanLocal;
 import ejb.session.wealth.FinancialInstrumentSessionBeanLocal;
 import ejb.session.wealth.InvestmentPlanSessionBeanLocal;
@@ -44,7 +44,8 @@ import utils.SessionUtils;
 @ViewScoped
 public class RequestInvestmentPlanManagedBean implements Serializable {
     @EJB
-    private FactSessionBeanLocal factSessionBean;
+    private PortfolioFactSessionBeanLocal portfolioFactSessionBean;
+
     @EJB
     private WealthManegementSubscriberSessionBeanLocal wealthManegementSubscriberSessionBean;
     @EJB
@@ -174,7 +175,7 @@ public class RequestInvestmentPlanManagedBean implements Serializable {
 //        JsonArray data = (JsonArray) dataset.getJsonArray("data");
 
         //sql 
-        List<FinancialInstrumentFactTable> fif = factSessionBean.getListFinancialInstrumentFactTableByETFName(selectedETF);
+        List<FinancialInstrumentFactTable> fif = portfolioFactSessionBean.getListFinancialInstrumentFactTableByETFName(selectedETF);
         System.out.println("fif: " + fif.size());
         SimpleDateFormat simpleformat = new SimpleDateFormat("yyyy-MM-dd");
         LineChartModel model = new LineChartModel();
@@ -227,7 +228,7 @@ public class RequestInvestmentPlanManagedBean implements Serializable {
     }
     
     private LineChartModel initLinearModel() {
-        List<FinancialInstrumentFactTable> fif = factSessionBean.getListFinancialInstrumentFactTableByETFName("Vanguard VTI ETF");
+        List<FinancialInstrumentFactTable> fif = portfolioFactSessionBean.getListFinancialInstrumentFactTableByETFName("Vanguard VTI ETF");
         System.out.println("fif: " + fif.size());
         SimpleDateFormat simpleformat = new SimpleDateFormat("yyyy-MM-dd");
         LineChartModel model = new LineChartModel();

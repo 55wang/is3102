@@ -5,7 +5,7 @@
  */
 package customer.wealth;
 
-import ejb.session.fact.FactSessionBeanLocal;
+import ejb.session.fact.PortfolioFactSessionBeanLocal;
 import ejb.session.wealth.DesignInvestmentPlanSessionBeanLocal;
 import ejb.session.wealth.FinancialInstrumentSessionBeanLocal;
 import ejb.session.wealth.InvestmentPlanSessionBeanLocal;
@@ -33,7 +33,6 @@ import org.primefaces.model.chart.ChartSeries;
 import org.primefaces.model.chart.DateAxis;
 import org.primefaces.model.chart.LineChartModel;
 import org.primefaces.model.chart.LineChartSeries;
-import server.utilities.EnumUtils;
 import server.utilities.EnumUtils.InvestmentPlanStatus;
 import utils.RedirectUtils;
 
@@ -45,7 +44,8 @@ import utils.RedirectUtils;
 @ViewScoped
 public class InvestmentPlanDetailManagedBean implements Serializable{
     @EJB
-    private FactSessionBeanLocal factSessionBean;
+    private PortfolioFactSessionBeanLocal portfolioFactSessionBean;
+
     @EJB
     private FinancialInstrumentSessionBeanLocal financialInstrumentSessionBean;
     @EJB
@@ -172,7 +172,7 @@ public class InvestmentPlanDetailManagedBean implements Serializable{
 //        JsonArray data = (JsonArray) dataset.getJsonArray("data");
 
         //sql 
-        List<FinancialInstrumentFactTable> fif = factSessionBean.getListFinancialInstrumentFactTableByETFName(selectedETF);
+        List<FinancialInstrumentFactTable> fif = portfolioFactSessionBean.getListFinancialInstrumentFactTableByETFName(selectedETF);
         System.out.println("fif: " + fif.size());
         SimpleDateFormat simpleformat = new SimpleDateFormat("yyyy-MM-dd");
         LineChartModel model = new LineChartModel();
@@ -225,7 +225,7 @@ public class InvestmentPlanDetailManagedBean implements Serializable{
     }
     
     private LineChartModel initLinearModel() {
-        List<FinancialInstrumentFactTable> fif = factSessionBean.getListFinancialInstrumentFactTableByETFName("Vanguard VTI ETF");
+        List<FinancialInstrumentFactTable> fif = portfolioFactSessionBean.getListFinancialInstrumentFactTableByETFName("Vanguard VTI ETF");
         System.out.println("fif: " + fif.size());
         SimpleDateFormat simpleformat = new SimpleDateFormat("yyyy-MM-dd");
         LineChartModel model = new LineChartModel();
