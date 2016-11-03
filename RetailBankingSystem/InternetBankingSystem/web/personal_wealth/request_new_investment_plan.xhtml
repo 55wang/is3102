@@ -58,17 +58,34 @@
                                         <p:column headerText="Description" style="width:480px">
                                             <h:outputText value="#{fi.description}" />
                                         </p:column>
+                                        
+                                        <p:column headerText="Chosen ETF" style="width:150px">
+                                            <h:outputText value="#{fi.ETFName}" />
+                                        </p:column>
                                     </p:dataTable>
                                 </p:overlayPanel>
                                 <p:commandButton id="introBtn" value="Read more about financial instruments" type="button" style="width: 100%"/>
                                 
-                                <h:outputLabel for="fi" value="Prefered Financial Instruments  " />
+                                <h:outputLabel for="fi" value="Prefered Asset Class  " />
                                 <p:pickList id="fi" value="#{requestInvestmentPlanManagedBean.financialInstruments}" var="financialInstrument" itemLabel="#{financialInstrument.name}" itemValue="#{financialInstrument.name}" style="width:200px"/>
+                              </h:panelGrid>  
+                                <div style="width: fit-content;margin: 0 auto;padding-bottom: 10px;padding-top: 20px;">
+                                    <p:outputLabel for="etf" value="ETF Performance: " />
+                                    <p:selectOneMenu id="etf" value="#{requestInvestmentPlanManagedBean.selectedETF}" style="width:200px">
+                                        <p:ajax listener="#{requestInvestmentPlanManagedBean.onDropDownChange()}" update="line" />
+                                        <f:selectItems value="#{requestInvestmentPlanManagedBean.ETFoptions}" />
+                                    </p:selectOneMenu>
+                                </div>
+                                <p:layoutUnit id="line" position="">
+
+                                    <p:chart type="line" model="#{requestInvestmentPlanManagedBean.lineModel}" style="height:300px;"/>
+
+                                </p:layoutUnit>
                                 
                                 <h:outputLabel for="remarks" value="Remarks  " />
                                 <h:inputTextarea id="remarks" value="#{requestInvestmentPlanManagedBean.newInvestmenPlan.remarks}"/>
-                                
-                            </h:panelGrid>
+                                <br /><br/>
+                            
                             
                             <p:commandButton value="submit" actionListener="#{requestInvestmentPlanManagedBean.submit}"/>
                         </p:messages>

@@ -40,6 +40,11 @@
                             <p:column headerText="Level" sortBy="#{wms.mainAccount.customer.financialHealthScoreLevel}">
                                 <h:outputText value="#{wms.mainAccount.customer.financialHealthScoreLevel}" />
                             </p:column>
+                            <p:column headerText="Monthly Charge Fee" sortBy="#{wms.monthlyAdvisoryFee}">
+                                <h:outputText id="fee" value="#{wms.monthlyAdvisoryFee}">
+                                    <f:convertNumber type="currency" currencySymbol="S$" />
+                                </h:outputText>
+                            </p:column>
                             <p:column headerText="Level" sortBy="#{wms.mainAccount.customer.financialHealthScoreLevel}">
                                 <p:commandButton value="View Details" icon="ui-icon-lightbulb" actionListener="#{customerPortfolioManagedBean.viewDetail(wms)}" update="@form" />
                             </p:column>

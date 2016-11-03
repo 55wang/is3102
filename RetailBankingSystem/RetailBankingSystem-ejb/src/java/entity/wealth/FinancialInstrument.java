@@ -30,6 +30,8 @@ public class FinancialInstrument implements Serializable {
     private String description;
     private Double standardDeviation;
     private Double expectedReturn;
+    private String ETFName;
+    private String ETFLink;
     
     @OneToMany(mappedBy = "fi")
     private List<FinancialInstrumentFactTable> fif = new ArrayList<>();
@@ -94,6 +96,22 @@ public class FinancialInstrument implements Serializable {
 
     public void setFif(List<FinancialInstrumentFactTable> fif) {
         this.fif = fif;
+    }
+
+    public String getETFName() {
+        return ETFName;
+    }
+
+    public void setETFName(String ETFName) {
+        this.ETFName = ETFName;
+    }
+
+    public String getETFLink() {
+        return ETFLink;
+    }
+
+    public void setETFLink(String ETFLink) {
+        this.ETFLink = ETFLink;
     }
 
 }

@@ -87,4 +87,11 @@ public class FactSessionBean implements FactSessionBeanLocal {
         //to be continued
         return null;
     }
+    
+    @Override
+    public List<FinancialInstrumentFactTable> getListFinancialInstrumentFactTableByETFName(String etf){
+        Query q = em.createQuery("SELECT p FROM FinancialInstrumentFactTable p where p.fi.ETFName =:etf ORDER BY p.creationDate asc");
+        q.setParameter("etf", etf);
+        return q.getResultList();
+    }
 }

@@ -102,9 +102,13 @@ public class EntityWealthBuilder {
         investmentPlan.setStatus(EnumUtils.InvestmentPlanStatus.PENDING);
         investmentPlan.setWealthManagementSubscriber(wms);
         investmentPlanSessionBean.createInvestmentPlan(investmentPlan);
+        List<InvestmentPlan> ips = wms.getInvestmentPlans();
+        ips.add(investmentPlan);
+        wms.setInvestmentPlans(ips);
+        wealthManegementSubscriberSessionBean.updateWealthManagementSubscriber(wms);
 
         InvestmentPlan executedInvestmentPlan = new InvestmentPlan();
-        executedInvestmentPlan.setAmountOfInvestment(100000);
+        executedInvestmentPlan.setAmountOfInvestment(5000);
         List<FinancialInstrument> preferedInstruments2 = new ArrayList<FinancialInstrument>();
         preferedInstruments2.add(allFinancialInstruments.get(0));
         preferedInstruments2.add(allFinancialInstruments.get(2));
@@ -115,6 +119,10 @@ public class EntityWealthBuilder {
         executedInvestmentPlan.setStatus(EnumUtils.InvestmentPlanStatus.EXECUTED);
         executedInvestmentPlan.setWealthManagementSubscriber(wms);
         investmentPlanSessionBean.createInvestmentPlan(executedInvestmentPlan);
+        List<InvestmentPlan> ips2 = wms.getInvestmentPlans();
+        ips2.add(executedInvestmentPlan);
+        wms.setInvestmentPlans(ips2);
+        wealthManegementSubscriberSessionBean.updateWealthManagementSubscriber(wms);
 
         List<FinancialInstrumentAndWeight> suggestedFinancialInstruments = new ArrayList<FinancialInstrumentAndWeight>();
 
@@ -228,7 +236,7 @@ public class EntityWealthBuilder {
 
         //2nd portfolio
         InvestmentPlan executedInvestmentPlan = new InvestmentPlan();
-        executedInvestmentPlan.setAmountOfInvestment(150000);
+        executedInvestmentPlan.setAmountOfInvestment(15000);
         List<FinancialInstrument> preferedInstruments = new ArrayList<FinancialInstrument>();
 //        List<FinancialInstrument> allFinancialInstruments = financialInstrumentSessionBean.getAllFinancialInstruments();
         preferedInstruments.add(allFinancialInstruments.get(0));
@@ -240,6 +248,11 @@ public class EntityWealthBuilder {
         executedInvestmentPlan.setStatus(EnumUtils.InvestmentPlanStatus.EXECUTED);
         executedInvestmentPlan.setWealthManagementSubscriber(ma.getWealthManagementSubscriber());
         investmentPlanSessionBean.createInvestmentPlan(executedInvestmentPlan);
+        List<InvestmentPlan> ips3 = ma.getWealthManagementSubscriber().getInvestmentPlans();
+        ips3.add(executedInvestmentPlan);
+        ma.getWealthManagementSubscriber().setInvestmentPlans(ips3);
+        wealthManegementSubscriberSessionBean.updateWealthManagementSubscriber(ma.getWealthManagementSubscriber());
+        
 
         List<FinancialInstrumentAndWeight> suggestedFinancialInstruments = new ArrayList<FinancialInstrumentAndWeight>();
 
@@ -345,7 +358,7 @@ public class EntityWealthBuilder {
         ps.add(p3);
         ma.getWealthManagementSubscriber().setPortfolios(ps);
         
-        ma.getWealthManagementSubscriber().setMonthlyAdvisoryFee(49.32);
+        ma.getWealthManagementSubscriber().setMonthlyAdvisoryFee(2.05);
         
         wealthManegementSubscriberSessionBean.updateWealthManagementSubscriber(ma.getWealthManagementSubscriber());
 
@@ -386,37 +399,37 @@ public class EntityWealthBuilder {
 
         initDate();
 
-        FinancialInstrument financialInstrument1 = buildFinancialInstrument(EnumUtils.FinancialInstrumentClass.CORPORATE_BONDS, "Income, low historical volatility, diversification", 0.05, -0.002);
+        FinancialInstrument financialInstrument1 = buildFinancialInstrument(EnumUtils.FinancialInstrumentClass.CORPORATE_BONDS, "Income, low historical volatility, diversification", 0.05, -0.002, "iShares LQD ETF", "https://www.ishares.com/us/products/239566/ishares-iboxx-investment-grade-corporate-bond-etf?fundSearch=true&qt=LQD");
         buildFinFactTable("FB", financialInstrument1);
 
-        FinancialInstrument financialInstrument2 = buildFinancialInstrument(EnumUtils.FinancialInstrumentClass.DIVIDEND_GROWTH_STOCKS, "Capital growth, income, long-run inflation protection, tax efficiency", 0.14, 0.037);
+        FinancialInstrument financialInstrument2 = buildFinancialInstrument(EnumUtils.FinancialInstrumentClass.DIVIDEND_GROWTH_STOCKS, "Capital growth, income, long-run inflation protection, tax efficiency", 0.14, 0.037, "Vanguard VIG ETF", "https://personal.vanguard.com/us/funds/snapshot?FundId=0920&FundIntExt=INT");
         buildFinFactTable("AAPL", financialInstrument2);
 
-        FinancialInstrument financialInstrument3 = buildFinancialInstrument(EnumUtils.FinancialInstrumentClass.EMERGING_MARKET_BONDS, "Income, diversification", 0.07, 0.01);
+        FinancialInstrument financialInstrument3 = buildFinancialInstrument(EnumUtils.FinancialInstrumentClass.EMERGING_MARKET_BONDS, "Income, diversification", 0.07, 0.01, "iShares EMB ETF", "https://www.ishares.com/us/products/239572/ishares-jp-morgan-usd-emerging-markets-bond-etf?fundSearch=true&qt=EMB");
         buildFinFactTable("IBM", financialInstrument3);
 
-        FinancialInstrument financialInstrument4 = buildFinancialInstrument(EnumUtils.FinancialInstrumentClass.EMERGING_MARKET_STOCKS, "Capital growth, long-run inflation protection, tax efficiency", 0.24, 0.081);
+        FinancialInstrument financialInstrument4 = buildFinancialInstrument(EnumUtils.FinancialInstrumentClass.EMERGING_MARKET_STOCKS, "Capital growth, long-run inflation protection, tax efficiency", 0.24, 0.081, "Vanguard VWO ETF", "https://personal.vanguard.com/us/FundsSnapshot?FundId=0964&FundIntExt=INT");
         buildFinFactTable("AMZN", financialInstrument4);
 
-        FinancialInstrument financialInstrument5 = buildFinancialInstrument(EnumUtils.FinancialInstrumentClass.FOREIGN_DEVELOPED_STOCKS, "Capital growth, long-run inflation protection, tax efficiency", 0.18, 0.062);
+        FinancialInstrument financialInstrument5 = buildFinancialInstrument(EnumUtils.FinancialInstrumentClass.FOREIGN_DEVELOPED_STOCKS, "Capital growth, long-run inflation protection, tax efficiency", 0.18, 0.062, "Vanguard VEA ETF", "https://personal.vanguard.com/us/funds/snapshot?FundId=0936&FundIntExt=INT");
         buildFinFactTable("GOOG", financialInstrument5);
 
-        FinancialInstrument financialInstrument6 = buildFinancialInstrument(EnumUtils.FinancialInstrumentClass.MUNICIPAL_BONDS, "Income, low historical volatility, diversification, tax efficiency", 0.05, -0.08);
+        FinancialInstrument financialInstrument6 = buildFinancialInstrument(EnumUtils.FinancialInstrumentClass.MUNICIPAL_BONDS, "Income, low historical volatility, diversification, tax efficiency", 0.05, -0.08, "iShares MUB ETF", "https://www.ishares.com/us/products/239766/ishares-national-amtfree-muni-bond-etf");
         buildFinFactTable("NFLX", financialInstrument6);
 
-        FinancialInstrument financialInstrument7 = buildFinancialInstrument(EnumUtils.FinancialInstrumentClass.NATURAL_RESOURCES, "Diversification, inflation protection, tax efficiency", 0.22, 0.062);
+        FinancialInstrument financialInstrument7 = buildFinancialInstrument(EnumUtils.FinancialInstrumentClass.NATURAL_RESOURCES, "Diversification, inflation protection, tax efficiency", 0.22, 0.062, "State Street XLE ETF", "https://www.spdrs.com/product/fund.seam?ticker=XLE");
         buildFinFactTable("C", financialInstrument7);
 
-        FinancialInstrument financialInstrument8 = buildFinancialInstrument(EnumUtils.FinancialInstrumentClass.REAL_ESTATE, "Income, diversification, inflation protection", 0.18, 0.05);
+        FinancialInstrument financialInstrument8 = buildFinancialInstrument(EnumUtils.FinancialInstrumentClass.REAL_ESTATE, "Income, diversification, inflation protection", 0.18, 0.05, "Vanguard VNQ ETF", "https://personal.vanguard.com/us/FundsSnapshot?FundId=0986&FundIntExt=INT");
         buildFinFactTable("CAG", financialInstrument8);
 
-        FinancialInstrument financialInstrument9 = buildFinancialInstrument(EnumUtils.FinancialInstrumentClass.TREASURY_INFLATION_PROTECTED_SECURITIES, "Income, low historical volatility, diversification, inflation protection", 0.05, -0.005);
+        FinancialInstrument financialInstrument9 = buildFinancialInstrument(EnumUtils.FinancialInstrumentClass.TREASURY_INFLATION_PROTECTED_SECURITIES, "Income, low historical volatility, diversification, inflation protection", 0.05, -0.005, "Schwab SCHP ETF", "https://www.csimfunds.com/public/csim/home/products/exchange_traded_funds/summary.html?symbol=SCHP");
         buildFinFactTable("JPM", financialInstrument9);
 
-        FinancialInstrument financialInstrument10 = buildFinancialInstrument(EnumUtils.FinancialInstrumentClass.US_GOVERNMENT_BONDS, "Income, low historical volatility, diversification", 0.05, -0.008);
+        FinancialInstrument financialInstrument10 = buildFinancialInstrument(EnumUtils.FinancialInstrumentClass.US_GOVERNMENT_BONDS, "Income, low historical volatility, diversification", 0.05, -0.008, "Vanguard BND ETF", "https://personal.vanguard.com/us/funds/snapshot?FundIntExt=INT&FundId=0928");
         buildFinFactTable("TDC", financialInstrument10);
 
-        FinancialInstrument financialInstrument11 = buildFinancialInstrument(EnumUtils.FinancialInstrumentClass.US_STOCKS, "Capital growth, long-run inflation protection, tax efficiency", 0.16, 0.053);
+        FinancialInstrument financialInstrument11 = buildFinancialInstrument(EnumUtils.FinancialInstrumentClass.US_STOCKS, "Capital growth, long-run inflation protection, tax efficiency", 0.16, 0.053, "Vanguard VTI ETF", "https://personal.vanguard.com/us/FundsSnapshot?FundId=0970&FundIntExt=INT");
         buildFinFactTable("VRSK", financialInstrument11);
 
         List<FinancialInstrument> allFinancialInstruments = financialInstrumentSessionBean.getAllFinancialInstruments();
@@ -465,12 +478,14 @@ public class EntityWealthBuilder {
         financialInstrumentSessionBean.updateFinancialInstrument(financialInstrument);
     }
 
-    public FinancialInstrument buildFinancialInstrument(EnumUtils.FinancialInstrumentClass name, String desc, Double sd, Double er) {
+    public FinancialInstrument buildFinancialInstrument(EnumUtils.FinancialInstrumentClass name, String desc, Double sd, Double er, String ETFName, String ETFLink) {
         FinancialInstrument financialInstrument1 = new FinancialInstrument();
         financialInstrument1.setName(name);
         financialInstrument1.setDescription(desc);
         financialInstrument1.setStandardDeviation(sd);
         financialInstrument1.setExpectedReturn(er);
+        financialInstrument1.setETFName(ETFName);
+        financialInstrument1.setETFLink(ETFLink);
         financialInstrumentSessionBean.createFinancialInstrument(financialInstrument1);
         return financialInstrument1;
     }
