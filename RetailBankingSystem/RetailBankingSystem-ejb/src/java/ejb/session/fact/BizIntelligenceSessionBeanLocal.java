@@ -3,8 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ejb.session.bi;
+package ejb.session.fact;
 
+import java.math.BigDecimal;
+import java.util.List;
 import javax.ejb.Local;
 
 /**
@@ -13,5 +15,5 @@ import javax.ejb.Local;
  */
 @Local
 public interface BizIntelligenceSessionBeanLocal {
-    
+    public List<BigDecimal> getBankTotalDepositAmount();
 }

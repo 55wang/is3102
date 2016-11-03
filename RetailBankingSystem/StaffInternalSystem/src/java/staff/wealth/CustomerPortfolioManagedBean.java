@@ -6,7 +6,7 @@
 package staff.wealth;
 
 import ejb.session.cms.CustomerProfileSessionBeanLocal;
-import ejb.session.fact.FactSessionBeanLocal;
+import ejb.session.fact.PortfolioFactSessionBeanLocal;
 import ejb.session.wealth.PortfolioSessionBeanLocal;
 import ejb.session.wealth.WealthManegementSubscriberSessionBeanLocal;
 import entity.customer.WealthManagementSubscriber;
@@ -34,7 +34,7 @@ public class CustomerPortfolioManagedBean implements Serializable {
     @EJB
     CustomerProfileSessionBeanLocal customerProfileSessionBean;
     @EJB
-    FactSessionBeanLocal factSessionBean;
+    PortfolioFactSessionBeanLocal portfolioFactSessionBean;
     
     private String searchText;
     private List<WealthManagementSubscriber> wmsLists = new ArrayList<WealthManagementSubscriber>();

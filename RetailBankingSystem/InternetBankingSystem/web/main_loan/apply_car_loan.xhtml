@@ -39,7 +39,7 @@
                                         <f:validateRegex
                                             pattern="^[A-Za-z0-9]{9}$" />
                                     </p:inputText>
-
+                                   
                                     <h:outputText value="Age: " />
                                     <p:inputText value="#{carLoanApplicationManagedBean.age}" required="true" requiredMessage="Age is required." />
 
@@ -76,7 +76,7 @@
                                         <f:convertNumber type="percent" minFractionDigits="4"/>
                                     </h:outputText>
                                     
-                                    <h:outputText value="Loan Tenure (years): " />
+                                    <h:outputText value="Loan Tenure (up tp 7 years): " />
                                     <p:inputText value="#{carLoanApplicationManagedBean.carTenure}" required="true" requiredMessage="Loan tenure is required."/>
 
 

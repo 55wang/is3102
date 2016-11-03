@@ -1,0 +1,53 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:em="http://xmlns.jcp.org/jsf/composite/emcomp"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <!--shift + ctrl + F, format-->
+    <f:view>
+        <h:head>
+            <title>Merlion Internal</title>
+            <em:cssImport></em:cssImport>
+        </h:head>
+        <h:body>
+            <em:staffNavBar context="bi"></em:staffNavBar>
+            <em:staffSideBar top="bi" side="viewCard"></em:staffSideBar>
+            <div class="container">
+                <h:form id="mainForm">
+                    <p:panel header="Card Service Statistics">
+                        <p:messages id="messagesStatus" redisplay="false" >
+                            <p:panelGrid columns="5">
+                                <h:outputText style="background-color: darkorange" value="Total Card Accounts" />
+                                <h:outputText style="background-color: darkorange" value="Active Card Accounts" />
+                                <h:outputText style="background-color: darkorange" value="New Card Accounts" />
+                                <h:outputText style="background-color: darkorange" value="Total Current Amount" />
+                                <h:outputText style="background-color: darkorange" value="Total Outstanding Amount" />
+
+                                <h:outputText value="1" />
+                                <h:outputText value="2" />
+                                <h:outputText value="3" />
+                                <h:outputText value="3" />
+                                <h:outputText value="4" />
+
+                            </p:panelGrid>
+
+                            <br />
+
+                            <p:chart type="line" model="#{viewBIManagedBean.depositLoanAmtLineModel}" style="height:300px;"/>
+                            <br />
+                            <p:chart type="pie" model="#{viewBIManagedBean.badLoanPiePieModel}" style="width:400px;height:300px" />
+                        </p:messages>
+                    </p:panel>
+
+                </h:form>
+            </div>
+
+        </h:body> 
+    </f:view>
+
+
+</html>
+

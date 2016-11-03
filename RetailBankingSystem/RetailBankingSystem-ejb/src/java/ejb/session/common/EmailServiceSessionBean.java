@@ -174,10 +174,12 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
 
         } catch (MessagingException e) {
             System.out.println(e);
+
         }
 
     }
-
+    
+    @Asynchronous
     @Override
     public void sendchargeBackGmailForSuccessfulCustomer(String recipient, Long ID) {
 

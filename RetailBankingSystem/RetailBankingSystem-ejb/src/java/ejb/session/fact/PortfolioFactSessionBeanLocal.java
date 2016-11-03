@@ -20,7 +20,7 @@ import server.utilities.EnumUtils;
  * @author wang
  */
 @Local
-public interface FactSessionBeanLocal {
+public interface PortfolioFactSessionBeanLocal {
 
     public FinancialInstrumentFactTable createFinancialInstrumentFactTable(FinancialInstrumentFactTable fif);
     public List<SinglePortfolioFactTable> getListPortfoliosFtByCustomerIdPortfolioId(Long custId, Long portId);

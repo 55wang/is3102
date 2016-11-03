@@ -7,7 +7,7 @@ package customer.wealth;
 
 import ejb.session.cms.CustomerProfileSessionBeanLocal;
 import ejb.session.common.LoginSessionBeanLocal;
-import ejb.session.fact.FactSessionBeanLocal;
+import ejb.session.fact.PortfolioFactSessionBeanLocal;
 import ejb.session.wealth.PortfolioSessionBeanLocal;
 import entity.customer.Customer;
 import entity.fact.customer.SinglePortfolioFactTable;
@@ -45,7 +45,7 @@ public class PortfolioManagedBean implements Serializable {
     @EJB
     CustomerProfileSessionBeanLocal customerProfileSessionBean;
     @EJB
-    FactSessionBeanLocal factSessionBean;
+    PortfolioFactSessionBeanLocal portfolioFactSessionBean;
 
     private Customer customer;
     private List<Portfolio> portfolios;
@@ -129,7 +129,7 @@ public class PortfolioManagedBean implements Serializable {
 //        JsonArray data = (JsonArray) dataset.getJsonArray("data");
 
         //sql 
-        List<SinglePortfolioFactTable> spf = factSessionBean.getListPortfoliosFtByCustomerIdPortfolioId(customer.getId(), selectedPortfolioIdString);
+        List<SinglePortfolioFactTable> spf = portfolioFactSessionBean.getListPortfoliosFtByCustomerIdPortfolioId(customer.getId(), selectedPortfolioIdString);
         System.out.println("spf: " + spf.size());
         SimpleDateFormat simpleformat = new SimpleDateFormat("yyyy-MM-dd");
         LineChartModel model = new LineChartModel();
