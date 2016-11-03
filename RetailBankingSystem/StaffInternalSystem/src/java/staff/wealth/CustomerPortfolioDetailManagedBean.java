@@ -6,7 +6,7 @@
 package staff.wealth;
 
 import ejb.session.cms.CustomerProfileSessionBeanLocal;
-import ejb.session.fact.FactSessionBeanLocal;
+import ejb.session.fact.PortfolioFactSessionBeanLocal;
 import ejb.session.wealth.PortfolioSessionBeanLocal;
 import ejb.session.wealth.WealthManegementSubscriberSessionBeanLocal;
 import entity.customer.Customer;
@@ -29,6 +29,7 @@ import org.primefaces.model.chart.AxisType;
 import org.primefaces.model.chart.DateAxis;
 import org.primefaces.model.chart.LineChartModel;
 import org.primefaces.model.chart.LineChartSeries;
+import org.primefaces.model.chart.MeterGaugeChartModel;
 import org.primefaces.model.chart.PieChartModel;
 
 /**
@@ -42,11 +43,11 @@ public class CustomerPortfolioDetailManagedBean implements Serializable {
     @EJB
     private WealthManegementSubscriberSessionBeanLocal wealthManegementSubscriberSessionBean;
     @EJB
-    PortfolioSessionBeanLocal portfolioSessionBean;
+    private PortfolioSessionBeanLocal portfolioSessionBean;
     @EJB
-    CustomerProfileSessionBeanLocal customerProfileSessionBean;
+    private CustomerProfileSessionBeanLocal customerProfileSessionBean;
     @EJB
-    FactSessionBeanLocal factSessionBean;
+    private PortfolioFactSessionBeanLocal portfolioFactSessionBean;
 
     private WealthManagementSubscriber wms;
 
@@ -62,6 +63,7 @@ public class CustomerPortfolioDetailManagedBean implements Serializable {
     private String selectedPortfolio;
 
     private List<String> portfolioOptions = new ArrayList<>();
+    private MeterGaugeChartModel meterGaugeModel2;
 
     /**
      * Creates a new instance of CustomerPortfolioDetailManagedBean
@@ -99,21 +101,47 @@ public class CustomerPortfolioDetailManagedBean implements Serializable {
         } catch (Exception ex) {
             System.out.println(ex);
         }
+        createMeterGaugeModels();
     }
 
     public LineChartModel getLineModel() {
         return lineModel;
     }
 
+    public MeterGaugeChartModel getMeterGaugeModel2() {
+        return meterGaugeModel2;
+    }
+    
+        private MeterGaugeChartModel initMeterGaugeModel() {
+        List<Number> intervals = new ArrayList<Number>(){{
+            add(40);
+            add(60);
+            add(80);
+            add(110);
+        }};
+         
+        return new MeterGaugeChartModel(customer.getFinancialHealthScore(), intervals);
+    }
+ 
+    private void createMeterGaugeModels() {
+        meterGaugeModel2 = initMeterGaugeModel();
+        meterGaugeModel2.setTitle("Financial Health Level");
+        meterGaugeModel2.setSeriesColors("66cc66,93b75f,E7E658,cc6666");
+        meterGaugeModel2.setGaugeLabelPosition("bottom");
+        meterGaugeModel2.setLabelHeightAdjust(110);
+        meterGaugeModel2.setIntervalOuterRadius(100);
+    }
+    
     private LineChartModel createLineModels(String selectedPortfolioIdString) {
         lineModel = initLinearModel(Long.parseLong(selectedPortfolioIdString));
         lineModel.setTitle("Investment Plan " + selectedPortfolioIdString);
+        lineModel.setAnimate(true);
 //        lineModel.setLegendPosition("e");
         Axis yAxis = lineModel.getAxis(AxisType.Y);
 
         DateAxis axis = new DateAxis("Dates");
         axis.setTickAngle(-50);
-        axis.setTickFormat("%Y-%m-%d");
+        axis.setTickFormat("%b %#d, %y");
         lineModel.getAxes().put(AxisType.X, axis);
         return lineModel;
     }
@@ -131,7 +159,7 @@ public class CustomerPortfolioDetailManagedBean implements Serializable {
 //        JsonArray data = (JsonArray) dataset.getJsonArray("data");
 
         //sql 
-        List<SinglePortfolioFactTable> spf = factSessionBean.getListPortfoliosFtByCustomerIdPortfolioId(customer.getId(), selectedPortfolioIdString);
+        List<SinglePortfolioFactTable> spf = portfolioFactSessionBean.getListPortfoliosFtByCustomerIdPortfolioId(customer.getId(), selectedPortfolioIdString);
         System.out.println("spf: " + spf.size());
         SimpleDateFormat simpleformat = new SimpleDateFormat("yyyy-MM-dd");
         LineChartModel model = new LineChartModel();

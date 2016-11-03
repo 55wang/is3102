@@ -21,7 +21,7 @@ import server.utilities.EnumUtils;
  * @author wang
  */
 @Stateless
-public class FactSessionBean implements FactSessionBeanLocal {
+public class PortfolioFactSessionBean implements PortfolioFactSessionBeanLocal {
 
     @PersistenceContext(unitName = "RetailBankingSystem-ejbPU")
     private EntityManager em;

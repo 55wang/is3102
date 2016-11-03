@@ -6,7 +6,7 @@
 package staff.wealth;
 
 import ejb.session.common.EmailServiceSessionBeanLocal;
-import ejb.session.fact.FactSessionBeanLocal;
+import ejb.session.fact.PortfolioFactSessionBeanLocal;
 import ejb.session.mainaccount.MainAccountSessionBeanLocal;
 import ejb.session.wealth.InvestmentPlanSessionBeanLocal;
 import ejb.session.wealth.PortfolioSessionBeanLocal;
@@ -45,7 +45,7 @@ public class UpdateExecutedInvestManagedBean implements Serializable {
     @EJB
     InvestmentPlanSessionBeanLocal investmentPlanSessionBean;
     @EJB
-    FactSessionBeanLocal factSessionBean;
+    PortfolioFactSessionBeanLocal portfolioFactSessionBean;
     @EJB
     EntityFactBuilder entityFactBuilder;
 
@@ -101,19 +101,19 @@ public class UpdateExecutedInvestManagedBean implements Serializable {
 //
 //            SinglePortfolioFactTable spf;
 //            try {
-//                spf = factSessionBean.getSinglePortfolioFactTable(today.getTime(), p.getWealthManagementSubscriber().getMainAccount().getCustomer().getId(), p.getId());
+//                spf = portfolioFactSessionBean.getSinglePortfolioFactTable(today.getTime(), p.getWealthManagementSubscriber().getMainAccount().getCustomer().getId(), p.getId());
 //            } catch (Exception ex) {
 ////                System.out.println(ex);
 //                System.out.println("create new single portfolio fact table");
 //                spf = new SinglePortfolioFactTable();
-//                factSessionBean.createSinglePortfolioFactTable(spf);
+//                portfolioFactSessionBean.createSinglePortfolioFactTable(spf);
 //            }
 //            spf.setCustomer(p.getWealthManagementSubscriber().getMainAccount().getCustomer());
 //            spf.setPortfolio(p);
 //            spf.setTotalBuyingValue(totalBuyingValue);
 //            spf.setTotalCurrentValue(totalCurrentValue);
 //            spf.setCreationDate(today.getTime());
-//            factSessionBean.updateSinglePortfolioFactTable(spf);
+//            portfolioFactSessionBean.updateSinglePortfolioFactTable(spf);
 
             entityFactBuilder.initSinglePortfolioFact(p.getWealthManagementSubscriber().getMainAccount(), p);
             
@@ -144,19 +144,19 @@ public class UpdateExecutedInvestManagedBean implements Serializable {
 
             SinglePortfolioFactTable spf;
             try {
-                spf = factSessionBean.getSinglePortfolioFactTable(today.getTime(), p.getWealthManagementSubscriber().getMainAccount().getCustomer().getId(), p.getId());
+                spf = portfolioFactSessionBean.getSinglePortfolioFactTable(today.getTime(), p.getWealthManagementSubscriber().getMainAccount().getCustomer().getId(), p.getId());
             } catch (Exception ex) {
 //                System.out.println(ex);
                 System.out.println("create new single portfolio fact table");
                 spf = new SinglePortfolioFactTable();
-                factSessionBean.createSinglePortfolioFactTable(spf);
+                portfolioFactSessionBean.createSinglePortfolioFactTable(spf);
             }
             spf.setCustomer(p.getWealthManagementSubscriber().getMainAccount().getCustomer());
             spf.setPortfolio(p);
             spf.setTotalBuyingValue(totalBuyingValue);
             spf.setTotalCurrentValue(totalCurrentValue);
             spf.setCreationDate(today.getTime());
-            factSessionBean.updateSinglePortfolioFactTable(spf);
+            portfolioFactSessionBean.updateSinglePortfolioFactTable(spf);
 
             String email = p.getWealthManagementSubscriber().getMainAccount().getCustomer().getEmail();
             sendEmailNotification(email);

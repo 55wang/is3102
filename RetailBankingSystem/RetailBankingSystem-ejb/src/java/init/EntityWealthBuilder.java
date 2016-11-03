@@ -6,7 +6,7 @@
 package init;
 
 import ejb.session.common.LoginSessionBeanLocal;
-import ejb.session.fact.FactSessionBeanLocal;
+import ejb.session.fact.PortfolioFactSessionBeanLocal;
 import ejb.session.mainaccount.MainAccountSessionBeanLocal;
 import ejb.session.staff.StaffAccountSessionBeanLocal;
 import ejb.session.wealth.DesignInvestmentPlanSessionBeanLocal;
@@ -67,7 +67,7 @@ public class EntityWealthBuilder {
     @EJB
     private MainAccountSessionBeanLocal mainAccountSessionBean;
     @EJB
-    private FactSessionBeanLocal factSessionBean;
+    private PortfolioFactSessionBeanLocal factSessionBean;
 
     private String currentDate;
     private String monthStartDate;

@@ -5,7 +5,7 @@
  */
 package init;
 
-import ejb.session.fact.FactSessionBeanLocal;
+import ejb.session.fact.PortfolioFactSessionBeanLocal;
 import ejb.session.wealth.FinancialInstrumentSessionBeanLocal;
 import ejb.session.wealth.PortfolioSessionBeanLocal;
 import entity.customer.MainAccount;
@@ -31,7 +31,7 @@ import server.utilities.EnumUtils;
 public class EntityFactBuilder {
 
     @EJB
-    private FactSessionBeanLocal factSessionBean;
+    private PortfolioFactSessionBeanLocal factSessionBean;
     @EJB
     private PortfolioSessionBeanLocal portfolioSessionBean;
     @EJB
