@@ -22,6 +22,7 @@ import org.primefaces.model.chart.Axis;
 import org.primefaces.model.chart.AxisType;
 import org.primefaces.model.chart.BarChartModel;
 import org.primefaces.model.chart.ChartSeries;
+import server.utilities.ColorUtils;
 import server.utilities.EnumUtils.InvestmentPlanStatus;
 import server.utilities.EnumUtils.InvestmentRiskLevel;
 import utils.MessageUtils;
@@ -83,6 +84,7 @@ public class DeisgnInvestmentPlanManagedBean implements Serializable{
      
     private BarChartModel initBarModel() {
         BarChartModel model = new BarChartModel();
+        String barColors = "";
     
         for(int i=0;i<suggestedFinancialInstruments.size();i++){
             if(!suggestedFinancialInstruments.get(i).getWeight().equals(0.0)){
@@ -90,9 +92,14 @@ public class DeisgnInvestmentPlanManagedBean implements Serializable{
                 suggestedinstrument.setLabel(suggestedFinancialInstruments.get(i).getFi().getName().toString());
                 suggestedinstrument.set("Suggested Investment Plan", suggestedFinancialInstruments.get(i).getWeight()*100);
                 model.addSeries(suggestedinstrument);
+                
+                barColors = barColors + ColorUtils.getFlatUIColors(i)+",";
             }
         } 
- 
+        
+        barColors = barColors.substring(0, barColors.length());
+        model.setSeriesColors(barColors);
+
         return model;
     }
     

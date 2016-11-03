@@ -31,6 +31,7 @@ import org.primefaces.model.chart.LineChartModel;
 import org.primefaces.model.chart.LineChartSeries;
 import org.primefaces.model.chart.MeterGaugeChartModel;
 import org.primefaces.model.chart.PieChartModel;
+import server.utilities.ColorUtils;
 
 /**
  *
@@ -250,6 +251,8 @@ public class CustomerPortfolioDetailManagedBean implements Serializable {
         pieModel.setLegendPosition("e");
         pieModel.setShowDataLabels(true);
         pieModel.setDiameter(150);
+        
+        pieModel.setSeriesColors(ColorUtils.getFlatUIColors(7)+","+ColorUtils.getFlatUIColors(9)+","+ColorUtils.getFlatUIColors(11)+","+ColorUtils.getFlatUIColors(15));
     }
 
     public WealthManagementSubscriber getWms() {

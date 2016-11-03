@@ -58,9 +58,9 @@ public class StaffLoginManagedBean implements Serializable {
         a.setFunctionInput("Getting all customer information");
         a.setStaffAccount(SessionUtils.getStaff());
         utilsBean.persist(a);
-        StaffAccount sa = staffBean.loginAccount("adminadmin", HashPwdUtils.hashPwd("password"));
+        StaffAccount sa = staffBean.loginAccount("relationship_manager", HashPwdUtils.hashPwd("password"));
         SessionUtils.setStaffAccount(sa);
-        RedirectUtils.redirect(SessionUtils.getContextPath() + "/bi/view_deposit_loan.xhtml");
+        RedirectUtils.redirect(SessionUtils.getContextPath() + "/wealth/staff-view-investment-request.xhtml");
     }
 
     public void loginStaff(ActionEvent event) {

@@ -14,7 +14,7 @@
         </h:head>
         <h:body>
             <em:staffNavBar context="wealth"></em:staffNavBar>
-            <em:staffSideBar top="wealth" side="updatePortfolio"></em:staffSideBar>
+            <em:staffSideBar top="wealth" side="viewInvestList"></em:staffSideBar>
             <f:metadata>
                 <f:viewParam name="port" value="#{updateExecutedInvestManagedBean.portfolioID}" />
             </f:metadata>
@@ -32,7 +32,8 @@
                             <p:dataTable var="fi" value="#{updateExecutedInvestManagedBean.p.executedInvestmentPlan.suggestedFinancialInstruments}">
                                         <p:columnGroup type="header">
                                             <p:row>
-                                                <p:column rowspan="3" headerText="Financial Instrument" style="width:320px;"/>
+                                                <p:column rowspan="3" headerText="Asset Class" style="width:250px;"/>
+                                                <p:column rowspan="3" headerText="Investment" style="width:150px;"/>
                                                 <p:column colspan="4" headerText="Buying Information" />
                                             </p:row>
                                             <p:row>
@@ -49,6 +50,9 @@
                                         
                                         <p:column rendered="#{fi.weight != 0.0}">
                                             <h:outputText value="#{fi.fi.name}"/> 
+                                        </p:column>
+                                        <p:column rendered="#{fi.weight != 0.0}">
+                                            <h:outputText value="#{fi.fi.ETFName}"/> 
                                         </p:column>
                                         <p:column rendered="#{fi.weight != 0.0}">
                                             <h:outputText id="numberofshare" value="#{fi.buyingNumberOfShare}" /> 
@@ -75,7 +79,7 @@
 
                                         <p:columnGroup type="footer">
                                             <p:row>
-                                                <p:column colspan="3" style="text-align:right" footerText="Totals:" />
+                                                <p:column colspan="4" style="text-align:right" footerText="Totals:" />
                                                 <p:column footerText="100%" />
 
                                                 <p:column footerText="$#{updateExecutedInvestManagedBean.p.totalBuyingValue}" />
@@ -93,7 +97,8 @@
                                 <p:dataTable var="fi" value="#{updateExecutedInvestManagedBean.p.executedInvestmentPlan.suggestedFinancialInstruments}" >
                                         <p:columnGroup type="header">
                                             <p:row>
-                                                <p:column rowspan="3" headerText="Financial Instrument" style="width:320px;"/>
+                                                <p:column rowspan="3" headerText="Asset Class" style="width:250px;"/>
+                                                <p:column rowspan="3" headerText="Investment" style="width:150px;"/>
                                                 <p:column colspan="6" headerText="Buying Information" />
                                             </p:row>
                                             <p:row>
@@ -112,6 +117,9 @@
                                         
                                         <p:column rendered="#{fi.weight != 0.0}">
                                             <h:outputText value="#{fi.fi.name}"/> 
+                                        </p:column>
+                                        <p:column rendered="#{fi.weight != 0.0}">
+                                            <h:outputText value="#{fi.fi.ETFName}"/> 
                                         </p:column>
                                         <p:column rendered="#{fi.weight != 0.0}">
                                             <h:outputText id="numberofshare" value="#{fi.buyingNumberOfShare}" /> 
@@ -144,7 +152,7 @@
 
                                         <p:columnGroup type="footer">
                                             <p:row>
-                                                <p:column colspan="3" style="text-align:right" footerText="Totals:" /> 
+                                                <p:column colspan="4" style="text-align:right" footerText="Totals:" /> 
 
                                                 <p:column footerText="$#{updateExecutedInvestManagedBean.p.totalBuyingValue}" />
                                                 <p:column />
