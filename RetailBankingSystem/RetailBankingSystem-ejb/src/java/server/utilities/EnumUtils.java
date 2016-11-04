@@ -12,6 +12,47 @@ package server.utilities;
 // REMARK: To get the list of enum values, just use e.g. CreditType.values()
 public class EnumUtils {
 
+    public enum Month {
+
+        JANUARY("JANUARY"),
+        FEBRUARY("FEBRUARY"),
+        MARCH("MARCH"),
+        APRIL("APRIL"),
+        MAY("MAY"),
+        JUNE("JUNE"),
+        JULY("JULY"),
+        AUGUST("AUGUST"),
+        SEPTEMBER("SEPTEMBER"),
+        OCTOBER("OCTOBER"),
+        NOVEMBER("NOVEMBER"),
+        DECEMBER("DECEMBER");
+        
+
+        private String value;
+
+        Month(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        @Override
+        public String toString() {
+            return this.getValue();
+        }
+
+        public static Month getEnum(String value) {
+            for (Month v : values()) {
+                if (v.getValue().equalsIgnoreCase(value)) {
+                    return v;
+                }
+            }
+            throw new IllegalArgumentException();
+        }
+    }
+
     public enum FinancialHealthLevel {
 
         VERYUNHEALTHY("VERY UNHEALTHY"),
@@ -734,7 +775,7 @@ public class EnumUtils {
         public String getValue() {
             return value;
         }
-        
+
         public static Income getEnumFromNumber(Double income) {
             if (income < 2000) {
                 return Income.BELOW_2000;
@@ -1744,7 +1785,7 @@ public class EnumUtils {
         REJECTED("REJECTED"),
         CLOSED("CLOSED"),
         SUSPENDED("SUSPENDED");
-        
+
         private String value;
 
         LoanAccountStatus(String value) {
@@ -1835,7 +1876,7 @@ public class EnumUtils {
             throw new IllegalArgumentException();
         }
     }
-    
+
     public enum PortfolioStatus {
 
         PENDING("PENDING"),

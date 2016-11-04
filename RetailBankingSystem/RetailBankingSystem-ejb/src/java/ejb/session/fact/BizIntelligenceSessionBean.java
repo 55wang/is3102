@@ -22,6 +22,8 @@ public class BizIntelligenceSessionBean implements BizIntelligenceSessionBeanLoc
     @PersistenceContext(unitName = "RetailBankingSystem-ejbPU")
     private EntityManager em;
 
+    
+    //for live result BI sessionbean
     @Override
     public List<BigDecimal> getBankTotalDepositAmount() {
         //to be continued

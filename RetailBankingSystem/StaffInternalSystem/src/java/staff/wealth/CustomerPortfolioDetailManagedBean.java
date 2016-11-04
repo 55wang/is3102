@@ -129,7 +129,7 @@ public class CustomerPortfolioDetailManagedBean implements Serializable {
     private void createMeterGaugeModels() {
         meterGaugeModel2 = initMeterGaugeModel();
         meterGaugeModel2.setTitle("Financial Health Level");
-        meterGaugeModel2.setSeriesColors("66cc66,93b75f,E7E658,cc6666");
+        meterGaugeModel2.setSeriesColors("cc6666,E7E658,93b75f,66cc66");
         meterGaugeModel2.setGaugeLabelPosition("bottom");
         meterGaugeModel2.setLabelHeightAdjust(110);
         meterGaugeModel2.setIntervalOuterRadius(100);
