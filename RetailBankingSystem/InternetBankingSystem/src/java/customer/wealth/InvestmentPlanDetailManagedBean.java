@@ -31,6 +31,7 @@ import org.primefaces.model.chart.AxisType;
 import org.primefaces.model.chart.BarChartModel;
 import org.primefaces.model.chart.ChartSeries;
 import org.primefaces.model.chart.DateAxis;
+import org.primefaces.model.chart.HorizontalBarChartModel;
 import org.primefaces.model.chart.LineChartModel;
 import org.primefaces.model.chart.LineChartSeries;
 import server.utilities.ColorUtils;
@@ -71,6 +72,9 @@ public class InvestmentPlanDetailManagedBean implements Serializable{
     private String selectedETF;
 
     private List<String> ETFoptions = new ArrayList<>();
+    
+    //terminated plan detail
+    private HorizontalBarChartModel horizontalBarModel;
     /**
      * Creates a new instance of InvestmentPlanDetailManagedBean
      */
@@ -89,6 +93,8 @@ public class InvestmentPlanDetailManagedBean implements Serializable{
         wms = investmentPlan.getWealthManagementSubscriber();   
         createAnimatedModel();
         initLineModels();
+        if(investmentPlan.getStatus() == InvestmentPlanStatus.TERMINATED)
+            createBarModels();
     }
     
     private void createAnimatedModel() { 
@@ -284,6 +290,36 @@ public class InvestmentPlanDetailManagedBean implements Serializable{
         setMonthEndDate(new SimpleDateFormat("yyyy-MM-dd").format(cEnd.getTime()));
     }
     
+    private void createBarModels() {
+        createHorizontalBarModel();
+    }
+    
+    private void createHorizontalBarModel() {
+        horizontalBarModel = new HorizontalBarChartModel();
+ 
+        ChartSeries buyingvalue = new ChartSeries();
+        buyingvalue.setLabel("Total Value");
+        buyingvalue.set(new SimpleDateFormat("yyyy-MM-dd").format(investmentPlan.getSoldDate()), investmentPlan.getPortfolio().getTotalCurrentValue());
+         buyingvalue.set(new SimpleDateFormat("yyyy-MM-dd").format(investmentPlan.getExecutionDate()), investmentPlan.getPortfolio().getTotalBuyingValue());
+ 
+        horizontalBarModel.addSeries(buyingvalue);
+         
+        horizontalBarModel.setTitle("Investment Plan");
+        horizontalBarModel.setLegendPosition("e");
+         
+        Axis xAxis = horizontalBarModel.getAxis(AxisType.X);
+        xAxis.setLabel("Value");
+        xAxis.setMin(0);
+        xAxis.setMax(investmentPlan.getAmountOfInvestment()*1.5);
+         
+        Axis yAxis = horizontalBarModel.getAxis(AxisType.Y);
+        yAxis.setLabel("Date");   
+        
+        horizontalBarModel.setSeriesColors(ColorUtils.getFlatUIColors(7)+","+ColorUtils.getFlatUIColors(8));
+        horizontalBarModel.setExtender("chartExtender");
+        horizontalBarModel.setAnimate(true);
+    }
+    
     public String getPlanID() {
         return planID;
     }
@@ -362,5 +398,13 @@ public class InvestmentPlanDetailManagedBean implements Serializable{
 
     public void setMonthEndDate(String monthEndDate) {
         this.monthEndDate = monthEndDate;
+    }
+
+    public HorizontalBarChartModel getHorizontalBarModel() {
+        return horizontalBarModel;
+    }
+
+    public void setHorizontalBarModel(HorizontalBarChartModel horizontalBarModel) {
+        this.horizontalBarModel = horizontalBarModel;
     }
 }

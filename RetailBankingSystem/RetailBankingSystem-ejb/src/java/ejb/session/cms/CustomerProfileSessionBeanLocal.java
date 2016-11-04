@@ -20,8 +20,8 @@ import util.exception.CustomerNotExistException;
 @Local
 public interface CustomerProfileSessionBeanLocal {
 
-    public Customer getCustomerByUserID (String userID) throws CustomerNotExistException;
-//    public Customer getCustomerByUserID (String userID);
+//    public Customer getCustomerByUserID (String userID) throws CustomerNotExistException;
+    public Customer getCustomerByUserID (String userID);
     public Customer saveProfile(Customer customer);
     public List<Customer> retrieveActivatedCustomers();   
     public Customer searchCustomerByIdentityNumber(String id);     
