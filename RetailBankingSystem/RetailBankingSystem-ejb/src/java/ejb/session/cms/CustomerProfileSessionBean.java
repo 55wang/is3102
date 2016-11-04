@@ -31,18 +31,18 @@ public class CustomerProfileSessionBean implements CustomerProfileSessionBeanLoc
     private EntityManager em;
 
     @Override
-    public Customer getCustomerByUserID(String userID) throws CustomerNotExistException{
-//    public Customer getCustomerByUserID(String userID) {
-        try
-        {
+//    public Customer getCustomerByUserID(String userID) throws CustomerNotExistException{
+    public Customer getCustomerByUserID(String userID) {
+//        try
+//        {
             Query q = em.createQuery("SELECT c FROM Customer c WHERE c.mainAccount.userID = :inUserID");
             q.setParameter("inUserID", userID);
             return (Customer) q.getSingleResult();
-        }
-        catch(NoResultException ex)
-        {
-            throw new CustomerNotExistException(ex.getMessage());
-        }
+//        }
+//        catch(NoResultException ex)
+//        {
+//            throw new CustomerNotExistException(ex.getMessage());
+//        }
     }
 
     @Override

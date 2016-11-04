@@ -68,15 +68,15 @@
                                 <h:outputText value="#{investmentRequest.wealthManagementSubscriber.mainAccount.customer.firstname}" />
                             </p:column>
                             
-                            <p:column headerText="Action" style="width:150px" rendered="#{investmentRequest.status != 'WAITING' and investmentRequest.status != 'EXECUTED'}">
+                            <p:column headerText="Action" style="width:150px" rendered="#{investmentRequest.status != 'WAITING' and investmentRequest.status != 'EXECUTED' and investmentRequest.status != 'TERMINATED'}">
                                 <p:commandButton value="Cancel" action="#{viewInvestmentPlanManagedBean.cancel(investmentRequest)}" update="@form" icon="ui-icon-disk" />  
                             </p:column>
-                            <p:column headerText="Action" style="width:150px" rendered="#{investmentRequest.status == 'WAITING' and investmentRequest.status != 'EXECUTED'}">
+                            <p:column headerText="Action" style="width:150px" rendered="#{investmentRequest.status == 'WAITING' and investmentRequest.status != 'EXECUTED' and investmentRequest.status != 'TERMINATED'}">
                                 <p:splitButton value="Details" action="#{viewInvestmentPlanManagedBean.viewDetail(investmentRequest)}" update="@form" icon="ui-icon-disk">
                                     <p:menuitem value="Cancel" action="#{viewInvestmentPlanManagedBean.cancel(investmentRequest)}" update="@form" icon="ui-icon-arrowrefresh-1-w" /> 
                                 </p:splitButton>
                             </p:column>
-                            <p:column headerText="Action" style="width:150px" rendered="#{investmentRequest.status == 'EXECUTED' and investmentRequest.status != 'WAITING'}">
+                            <p:column headerText="Action" style="width:150px" rendered="#{(investmentRequest.status == 'EXECUTED' or investmentRequest.status == 'TERMINATED' )and investmentRequest.status != 'WAITING'}">
                                 <p:commandButton value="Details" action="#{viewInvestmentPlanManagedBean.viewDetail(investmentRequest)}" update="@form" icon="ui-icon-disk" />  
                             </p:column>
                         </p:dataTable>
