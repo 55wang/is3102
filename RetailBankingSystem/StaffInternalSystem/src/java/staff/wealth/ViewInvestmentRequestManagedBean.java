@@ -15,11 +15,14 @@ import entity.wealth.InvestmentPlan;
 import entity.wealth.Portfolio;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
+import static server.utilities.CommonUtils.getDateDiff;
 import server.utilities.EnumUtils;
 import utils.MessageUtils;
 import utils.RedirectUtils;
@@ -87,7 +90,9 @@ public class ViewInvestmentRequestManagedBean implements Serializable {
         //change to execute status
         //create portfolio 
         WealthManagementSubscriber wms = ip.getWealthManagementSubscriber();
-        wms.setMonthlyAdvisoryFee(calculateCharge(ip));
+        wms.setMonthlyAdvisoryFee(calculateAccumulatedAdvisoryFee(wms));
+        wms.setAdvisoryFeeClearDate(new Date());
+        wms.setAccumulatedAdvisoryFee(Double.NaN);
         Portfolio p = new Portfolio();
         p.setExecutedInvestmentPlan(ip);
         p.setWealthManagementSubscriber(wms);
@@ -113,6 +118,12 @@ public class ViewInvestmentRequestManagedBean implements Serializable {
             }
         }
         return (totalInvest + ip.getAmountOfInvestment() -10000)*0.0025*30/365;
+    }
+    
+    private Double calculateAccumulatedAdvisoryFee(WealthManagementSubscriber wms){
+        Double accumulatedCharge = wms.getAccumulatedAdvisoryFee();
+        accumulatedCharge += wms.getMonthlyAdvisoryFee() * getDateDiff(wms.getAdvisoryFeeClearDate(), new Date(), TimeUnit.DAYS)/30;
+        return accumulatedCharge;
     }
 
     public void view(InvestmentPlan ip) {

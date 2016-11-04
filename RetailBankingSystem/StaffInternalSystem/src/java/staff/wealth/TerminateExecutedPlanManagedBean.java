@@ -27,6 +27,7 @@ import org.primefaces.model.chart.AxisType;
 import org.primefaces.model.chart.ChartSeries;
 import org.primefaces.model.chart.HorizontalBarChartModel;
 import server.utilities.ColorUtils;
+import static server.utilities.CommonUtils.getDateDiff;
 import server.utilities.EnumUtils;
 import utils.RedirectUtils;
 
@@ -82,9 +83,10 @@ public class TerminateExecutedPlanManagedBean implements Serializable{
         ip = investmentPlanSessionBean.updateInvestmentPlan(ip);
         
         Double accumulatedCharge = wms.getAccumulatedAdvisoryFee();
-        accumulatedCharge += wms.getMonthlyAdvisoryFee() * dayDuration/30;
+        accumulatedCharge += wms.getMonthlyAdvisoryFee() * getDateDiff(wms.getAdvisoryFeeClearDate(), new Date(), TimeUnit.DAYS)/30;
         System.out.println("SoldCurrentPortfolio.accumulatedCharge: " + accumulatedCharge);
         wms.setAccumulatedAdvisoryFee(accumulatedCharge);
+        wms.setAdvisoryFeeClearDate(new Date());
         
         System.out.println("SoldCurrentPortfolio.newAdvisoryFee: " + calculateNewAdvisoryCharge(wms));
         wms.setMonthlyAdvisoryFee(calculateNewAdvisoryCharge(wms));
@@ -114,10 +116,7 @@ public class TerminateExecutedPlanManagedBean implements Serializable{
         return ip.getPortfolio().getTotalBuyingValue() * 0.0012*diffInDays/365;
     }
     
-    public static long getDateDiff(Date date1, Date date2, TimeUnit timeUnit) {
-        long diffInMillies = date2.getTime() - date1.getTime();
-        return timeUnit.convert(diffInMillies,TimeUnit.MILLISECONDS);
-    }
+
     
     private void createBarModels() {
         createHorizontalBarModel();
