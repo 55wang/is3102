@@ -1508,7 +1508,8 @@ public class EnumUtils {
         ONGOING("ONGOING"),
         WAITING("WAITING APPROVAL"),
         APPROVAL("APPROVAL"),
-        EXECUTED("EXECUTED");
+        EXECUTED("EXECUTED"),
+        TERMINATED("TERMINATED");;
 
         private String value;
 
@@ -1838,7 +1839,8 @@ public class EnumUtils {
     public enum PortfolioStatus {
 
         PENDING("PENDING"),
-        BOUGHT("BOUGHT");
+        BOUGHT("BOUGHT"),
+        SOLD("SOLD");
 
         private String value;
 

@@ -11,6 +11,7 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import server.utilities.EnumUtils.StatusType;
@@ -30,11 +31,18 @@ public class CustomerProfileSessionBean implements CustomerProfileSessionBeanLoc
     private EntityManager em;
 
     @Override
-//    public Customer getCustomerByUserID(String userID) throws CustomerNotExistException{
-    public Customer getCustomerByUserID(String userID){
-        Query q = em.createQuery("SELECT c FROM Customer c WHERE c.mainAccount.userID = :inUserID");
-        q.setParameter("inUserID", userID);
-        return (Customer) q.getSingleResult();
+    public Customer getCustomerByUserID(String userID) throws CustomerNotExistException{
+//    public Customer getCustomerByUserID(String userID) {
+        try
+        {
+            Query q = em.createQuery("SELECT c FROM Customer c WHERE c.mainAccount.userID = :inUserID");
+            q.setParameter("inUserID", userID);
+            return (Customer) q.getSingleResult();
+        }
+        catch(NoResultException ex)
+        {
+            throw new CustomerNotExistException(ex.getMessage());
+        }
     }
 
     @Override

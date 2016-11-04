@@ -34,15 +34,9 @@ public class WealthManagementSubscriber implements Serializable {
     
     private Integer riskToleranceScore = null;
     private RiskToleranceLevel riskToleranceLevel = null;
-
-    public Double getMonthlyAdvisoryFee() {
-        return monthlyAdvisoryFee;
-    }
-
-    public void setMonthlyAdvisoryFee(Double monthlyAdvisoryFee) {
-        this.monthlyAdvisoryFee = monthlyAdvisoryFee;
-    }
+    
     private Double monthlyAdvisoryFee = 0.0;
+    private Double accumulatedAdvisoryFee = 0.0;
    
     @OneToOne(cascade = CascadeType.MERGE)
     private MainAccount mainAccount;
@@ -141,5 +135,21 @@ public class WealthManagementSubscriber implements Serializable {
 
     public void setPortfolios(List<Portfolio> portfolios) {
         this.portfolios = portfolios;
+    }
+    
+    public Double getMonthlyAdvisoryFee() {
+        return monthlyAdvisoryFee;
+    }
+
+    public void setMonthlyAdvisoryFee(Double monthlyAdvisoryFee) {
+        this.monthlyAdvisoryFee = monthlyAdvisoryFee;
+    }
+
+    public Double getAccumulatedAdvisoryFee() {
+        return accumulatedAdvisoryFee;
+    }
+
+    public void setAccumulatedAdvisoryFee(Double accumulatedAdvisoryFee) {
+        this.accumulatedAdvisoryFee = accumulatedAdvisoryFee;
     }
 }

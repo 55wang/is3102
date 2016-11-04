@@ -118,6 +118,10 @@ public class EntityWealthBuilder {
         executedInvestmentPlan.setRemarks("test executed plan");
         executedInvestmentPlan.setStatus(EnumUtils.InvestmentPlanStatus.EXECUTED);
         executedInvestmentPlan.setWealthManagementSubscriber(wms);
+        Calendar cal = Calendar.getInstance();
+        Calendar xdate = (Calendar)cal.clone();
+        xdate.set(Calendar.DAY_OF_YEAR,cal.getTime().getDate() - 20 );   
+        executedInvestmentPlan.setExecutionDate(xdate.getTime());
         investmentPlanSessionBean.createInvestmentPlan(executedInvestmentPlan);
         List<InvestmentPlan> ips2 = wms.getInvestmentPlans();
         ips2.add(executedInvestmentPlan);
@@ -134,9 +138,9 @@ public class EntityWealthBuilder {
                 suggestedFinancialInstruments.add(fiaw);
             } else if (allFinancialInstruments.get(i).getName().equals(EnumUtils.FinancialInstrumentClass.DIVIDEND_GROWTH_STOCKS)) {
                 FinancialInstrumentAndWeight fiaw = new FinancialInstrumentAndWeight();
-                fiaw.setBuyingNumberOfShare(1700);
+                fiaw.setBuyingNumberOfShare(1800);
                 fiaw.setBuyingValuePerShare(1.0);
-                fiaw.setCurrentValuePerShare(1.0);
+                fiaw.setCurrentValuePerShare(1.1);
                 fiaw.setFi(allFinancialInstruments.get(i));
                 fiaw.setWeight(0.34);
                 suggestedFinancialInstruments.add(fiaw);
@@ -165,7 +169,7 @@ public class EntityWealthBuilder {
                 FinancialInstrumentAndWeight fiaw = new FinancialInstrumentAndWeight();
                 fiaw.setBuyingNumberOfShare(25);
                 fiaw.setBuyingValuePerShare(2.0);
-                fiaw.setCurrentValuePerShare(2.0);
+                fiaw.setCurrentValuePerShare(2.1);
                 fiaw.setFi(allFinancialInstruments.get(i));
                 fiaw.setWeight(0.01);
                 suggestedFinancialInstruments.add(fiaw);
@@ -173,7 +177,7 @@ public class EntityWealthBuilder {
                 FinancialInstrumentAndWeight fiaw = new FinancialInstrumentAndWeight();
                 fiaw.setBuyingNumberOfShare(200);
                 fiaw.setBuyingValuePerShare(3.0);
-                fiaw.setCurrentValuePerShare(3.0);
+                fiaw.setCurrentValuePerShare(2.9);
                 fiaw.setFi(allFinancialInstruments.get(i));
                 fiaw.setWeight(0.12);
                 suggestedFinancialInstruments.add(fiaw);
@@ -181,7 +185,7 @@ public class EntityWealthBuilder {
                 FinancialInstrumentAndWeight fiaw = new FinancialInstrumentAndWeight();
                 fiaw.setBuyingNumberOfShare(30);
                 fiaw.setBuyingValuePerShare(5.0);
-                fiaw.setCurrentValuePerShare(5.0);
+                fiaw.setCurrentValuePerShare(4.8);
                 fiaw.setFi(allFinancialInstruments.get(i));
                 fiaw.setWeight(0.12);
                 suggestedFinancialInstruments.add(fiaw);
@@ -194,7 +198,7 @@ public class EntityWealthBuilder {
                 FinancialInstrumentAndWeight fiaw = new FinancialInstrumentAndWeight();
                 fiaw.setBuyingNumberOfShare(400);
                 fiaw.setBuyingValuePerShare(1.0);
-                fiaw.setCurrentValuePerShare(1.0);
+                fiaw.setCurrentValuePerShare(1.2);
                 fiaw.setFi(allFinancialInstruments.get(i));
                 fiaw.setWeight(0.08);
                 suggestedFinancialInstruments.add(fiaw);
@@ -202,7 +206,7 @@ public class EntityWealthBuilder {
                 FinancialInstrumentAndWeight fiaw = new FinancialInstrumentAndWeight();
                 fiaw.setBuyingNumberOfShare(550);
                 fiaw.setBuyingValuePerShare(3.0);
-                fiaw.setCurrentValuePerShare(3.0);
+                fiaw.setCurrentValuePerShare(3.5);
                 fiaw.setFi(allFinancialInstruments.get(i));
                 fiaw.setWeight(0.33);
                 suggestedFinancialInstruments.add(fiaw);
@@ -247,6 +251,10 @@ public class EntityWealthBuilder {
         executedInvestmentPlan.setRemarks("test executed plan 3");
         executedInvestmentPlan.setStatus(EnumUtils.InvestmentPlanStatus.EXECUTED);
         executedInvestmentPlan.setWealthManagementSubscriber(ma.getWealthManagementSubscriber());
+        Calendar cal = Calendar.getInstance();
+        Calendar xdate = (Calendar)cal.clone();
+        xdate.set(Calendar.DAY_OF_YEAR,cal.getTime().getDay() - 50 );   
+        executedInvestmentPlan.setExecutionDate(xdate.getTime());
         investmentPlanSessionBean.createInvestmentPlan(executedInvestmentPlan);
         List<InvestmentPlan> ips3 = ma.getWealthManagementSubscriber().getInvestmentPlans();
         ips3.add(executedInvestmentPlan);
@@ -264,9 +272,9 @@ public class EntityWealthBuilder {
                 suggestedFinancialInstruments.add(fiaw);
             } else if (allFinancialInstruments.get(i).getName().equals(EnumUtils.FinancialInstrumentClass.DIVIDEND_GROWTH_STOCKS)) {
                 FinancialInstrumentAndWeight fiaw = new FinancialInstrumentAndWeight();
-                fiaw.setBuyingNumberOfShare(257);
+                fiaw.setBuyingNumberOfShare(258);
                 fiaw.setBuyingValuePerShare(7.0);
-                fiaw.setCurrentValuePerShare(7.0);
+                fiaw.setCurrentValuePerShare(6.9);
                 fiaw.setFi(allFinancialInstruments.get(i));
                 fiaw.setWeight(0.12);
                 suggestedFinancialInstruments.add(fiaw);
@@ -279,7 +287,7 @@ public class EntityWealthBuilder {
                 FinancialInstrumentAndWeight fiaw = new FinancialInstrumentAndWeight();
                 fiaw.setBuyingNumberOfShare(275);
                 fiaw.setBuyingValuePerShare(6.0);
-                fiaw.setCurrentValuePerShare(6.0);
+                fiaw.setCurrentValuePerShare(6.7);
                 fiaw.setFi(allFinancialInstruments.get(i));
                 fiaw.setWeight(0.11);
                 suggestedFinancialInstruments.add(fiaw);
@@ -287,7 +295,7 @@ public class EntityWealthBuilder {
                 FinancialInstrumentAndWeight fiaw = new FinancialInstrumentAndWeight();
                 fiaw.setBuyingNumberOfShare(1125);
                 fiaw.setBuyingValuePerShare(2.0);
-                fiaw.setCurrentValuePerShare(2.0);
+                fiaw.setCurrentValuePerShare(2.3);
                 fiaw.setFi(allFinancialInstruments.get(i));
                 fiaw.setWeight(0.15);
                 suggestedFinancialInstruments.add(fiaw);
@@ -295,7 +303,7 @@ public class EntityWealthBuilder {
                 FinancialInstrumentAndWeight fiaw = new FinancialInstrumentAndWeight();
                 fiaw.setBuyingNumberOfShare(50);
                 fiaw.setBuyingValuePerShare(3.0);
-                fiaw.setCurrentValuePerShare(3.0);
+                fiaw.setCurrentValuePerShare(2.9);
                 fiaw.setFi(allFinancialInstruments.get(i));
                 fiaw.setWeight(0.01);
                 suggestedFinancialInstruments.add(fiaw);
@@ -303,7 +311,7 @@ public class EntityWealthBuilder {
                 FinancialInstrumentAndWeight fiaw = new FinancialInstrumentAndWeight();
                 fiaw.setBuyingNumberOfShare(243);
                 fiaw.setBuyingValuePerShare(8.0);
-                fiaw.setCurrentValuePerShare(8.0);
+                fiaw.setCurrentValuePerShare(8.4);
                 fiaw.setFi(allFinancialInstruments.get(i));
                 fiaw.setWeight(0.13);
                 suggestedFinancialInstruments.add(fiaw);
@@ -324,7 +332,7 @@ public class EntityWealthBuilder {
                 FinancialInstrumentAndWeight fiaw = new FinancialInstrumentAndWeight();
                 fiaw.setBuyingNumberOfShare(225);
                 fiaw.setBuyingValuePerShare(4.0);
-                fiaw.setCurrentValuePerShare(4.0);
+                fiaw.setCurrentValuePerShare(5.0);
                 fiaw.setFi(allFinancialInstruments.get(i));
                 fiaw.setWeight(0.06);
                 suggestedFinancialInstruments.add(fiaw);
@@ -359,6 +367,7 @@ public class EntityWealthBuilder {
         ma.getWealthManagementSubscriber().setPortfolios(ps);
         
         ma.getWealthManagementSubscriber().setMonthlyAdvisoryFee(2.05);
+        ma.getWealthManagementSubscriber().setAccumulatedAdvisoryFee(0.99);
         
         wealthManegementSubscriberSessionBean.updateWealthManagementSubscriber(ma.getWealthManagementSubscriber());
 

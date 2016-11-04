@@ -14,9 +14,7 @@ import entity.fact.customer.SinglePortfolioFactTable;
 import entity.wealth.Portfolio;
 import init.EntityFactBuilder;
 import java.io.Serializable;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.context.FacesContext;
@@ -208,6 +206,10 @@ public class UpdateExecutedInvestManagedBean implements Serializable {
 
     public void sendEmailNotification(String email) {
         EmailServiceSessionBean.sendUpdatePortfolioNotice(email);
+    }
+    
+    public void terminate(){
+        RedirectUtils.redirect("staff-terminate-investment-plan.xhtml?plan="+p.getId());
     }
 
     public Portfolio getP() {
