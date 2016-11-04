@@ -92,6 +92,7 @@
                                     <p:commandButton value="Reset" action="#{updateExecutedInvestManagedBean.reset()}" update="@form" oncomplete="setTimeout(function() { $('.ui-messages-info.ui-corner-all').slideUp(); },  3000);"/>
                                     <p:commandButton value="Calculate" action="#{updateExecutedInvestManagedBean.calculate()}" update="@form" oncomplete="setTimeout(function() { $('.ui-messages-info.ui-corner-all').slideUp(); },  3000);"/>
                                     <p:commandButton value="Update" action="#{updateExecutedInvestManagedBean.submitUpdateBuyingPortfolio()}" update="@form" oncomplete="setTimeout(function() { $('.ui-messages-info.ui-corner-all').slideUp(); },  3000);"/>
+                                    <p:commandButton value="Terminate" action="#{updateExecutedInvestManagedBean.terminate()}" oncomplete="setTimeout(function() { $('.ui-messages-info.ui-corner-all').slideUp(); },  3000);" rendered="#{updateExecutedInvestManagedBean.p.status == 'BOUGHT'}"/>
                                 </p:panel>
                                 <p:panel header="Update Current Value" rendered="#{updateExecutedInvestManagedBean.updateType == updateExecutedInvestManagedBean.updateCurrent}">    
                                 <p:dataTable var="fi" value="#{updateExecutedInvestManagedBean.p.executedInvestmentPlan.suggestedFinancialInstruments}" >
@@ -167,6 +168,7 @@
                                     
                                     <p:commandButton value="Reset" action="#{updateExecutedInvestManagedBean.resetCurrentValue()}" update="@form" oncomplete="setTimeout(function() { $('.ui-messages-info.ui-corner-all').slideUp(); },  3000);"/>
                                     <p:commandButton value="Update" action="#{updateExecutedInvestManagedBean.updateCurrentPortfolio()}" update="@form" oncomplete="setTimeout(function() { $('.ui-messages-info.ui-corner-all').slideUp(); },  3000);"/>
+                                    <p:commandButton value="Terminate" action="#{updateExecutedInvestManagedBean.terminate()}" oncomplete="setTimeout(function() { $('.ui-messages-info.ui-corner-all').slideUp(); },  3000);" rendered="#{updateExecutedInvestManagedBean.p.status == 'BOUGHT'}"/>
                                 </p:panel>
                 </h:form>
             </div>

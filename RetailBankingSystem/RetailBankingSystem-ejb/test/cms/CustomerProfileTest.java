@@ -56,7 +56,7 @@ import util.exception.CustomerNotExistException;
     public void tearDown() {
     }
     
-    @Test(expected=CustomerNotExistException.class)
+    @Test()
     public void test01getCustomerByUserID() throws CustomerNotExistException{
         System.out.println("CustomerProfileTest.test01getCustomerByID");   
         Customer result = customerProfileSessionBean.getCustomerByUserID("c1234567");

@@ -1,0 +1,59 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:em="http://xmlns.jcp.org/jsf/composite/emcomp"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <!--shift + ctrl + F, format-->
+    <f:view>
+        <h:head>
+            <title>Merlion Internal</title>
+            <em:cssImport></em:cssImport>
+            <h:outputScript>
+                function chartExtender() {     
+                    this.cfg.seriesDefaults.rendererOptions.varyBarColor = true;
+                }
+            </h:outputScript>
+        </h:head>
+        <h:body>
+            <em:staffNavBar context="wealth"></em:staffNavBar>
+            <em:staffSideBar top="wealth" side="viewInvestList"></em:staffSideBar>
+            <f:metadata>
+                <f:viewParam name="port" value="#{terminateExecutedPlanManagedBean.portfolioID}" />
+            </f:metadata>
+            <div class="container">
+                <h:form id="mainForm">
+                    <p:panel header="Confirm Page">
+                        <p:chart type="bar" model="#{terminateExecutedPlanManagedBean.horizontalBarModel}" style="height:200px"/>
+                        <p:panelGrid columns="2" style="width:40%; margin: 0 auto; margin-top: 20px">
+                            <p:outputLabel value="Return"/>
+                            <h:outputText value="#{(terminateExecutedPlanManagedBean.p.totalCurrentValue/terminateExecutedPlanManagedBean.p.totalBuyingValue*100).shortValue()-100}%"/>
+
+                            <p:outputLabel value="Duration"/>
+                            <h:outputText value="#{terminateExecutedPlanManagedBean.dayDuration}"/>
+                                
+                            <p:outputLabel value="Total ETF Operation Fee"/>
+                            <h:outputText value="#{terminateExecutedPlanManagedBean.p.executedInvestmentPlan.totalETFfee}">
+                                <f:convertNumber minFractionDigits="2" maxFractionDigits="2" type="currency" currencySymbol="S$"/>
+                            </h:outputText>
+                            
+                            <p:outputLabel value="Net Gain"/>
+                            <h:outputText value="#{terminateExecutedPlanManagedBean.p.totalCurrentValue - terminateExecutedPlanManagedBean.p.executedInvestmentPlan.totalETFfee}">
+                                <f:convertNumber minFractionDigits="2" maxFractionDigits="2" type="currency" currencySymbol="S$"/>
+                            </h:outputText>
+                        </p:panelGrid>
+                        <div style="width:10%; margin: 0 auto; padding-top:20px">
+                            <p:commandButton value="Confirm" action="#{terminateExecutedPlanManagedBean.confirmTerminate()}" update="@form" oncomplete="setTimeout(function() { $('.ui-messages-info.ui-corner-all').slideUp(); },  3000);"/>
+                        </div>
+                    </p:panel>
+                </h:form>
+            </div>
+
+        </h:body> 
+    </f:view>
+
+
+</html>
+
