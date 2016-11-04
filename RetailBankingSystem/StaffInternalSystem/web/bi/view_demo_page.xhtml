@@ -19,7 +19,9 @@
                 <h:form id="mainForm">
                     <p:panel header="Demo Inserting Historical Data Page">
                         <p:messages id="messagesStatus" redisplay="false" >
-
+                            <br /> 
+                            <p:commandButton value="Aggregate November's data" action="#{demoPageManagedBean.insertBankFactTable()}">
+                            </p:commandButton>
 
                         </p:messages>
                     </p:panel>
