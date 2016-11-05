@@ -8,6 +8,7 @@ package entity.dams.account;
 import entity.common.TransactionRecord;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import server.utilities.PincodeGenerationUtils;
 
 /**
  *
@@ -20,8 +21,10 @@ public class MobileAccount extends DepositAccount {
     @Column(unique = true, nullable = false)
     private String phoneNumber;
     private String password;
+    @Column(unique = true, nullable = false)
+    private String referralCode = PincodeGenerationUtils.generateRandom(false, 6);
     
-    // function
+    // REMARK: Depreciated, use ejb to get, easier and more accurate
     public TransactionRecord getLatestTransaction() {
         System.out.println("Current Account number of transactions: " + this.getTransactions().size());
         TransactionRecord transaction = this.getTransactions().size() > 0 ? this.getTransactions().get(0) : null;
@@ -59,5 +62,19 @@ public class MobileAccount extends DepositAccount {
      */
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    /**
+     * @return the referralCode
+     */
+    public String getReferralCode() {
+        return referralCode;
+    }
+
+    /**
+     * @param referralCode the referralCode to set
+     */
+    public void setReferralCode(String referralCode) {
+        this.referralCode = referralCode;
     }
 }

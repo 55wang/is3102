@@ -99,7 +99,6 @@ public class intraBankTransferManagedBean implements Serializable {
             MessageUtils.displayError(ConstantUtils.TRANSFER_ACCOUNT_NOT_FOUND);
             return;
         }
-        //TODO: need another authentication
         TransferRecord tr = new TransferRecord();
         
         tr.setAccountNumber(getToAccountNo());

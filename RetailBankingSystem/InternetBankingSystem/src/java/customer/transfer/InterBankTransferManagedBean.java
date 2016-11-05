@@ -186,9 +186,7 @@ public class InterBankTransferManagedBean implements Serializable {
         tr.setType(EnumUtils.PayeeType.LOCAL);
         tr.setActionType(EnumUtils.TransactionType.TRANSFER);
         webserviceBean.transferClearingFAST(tr);
-        da.removeBalance(amount);
-        depositBean.updateAccount(da);
-        transferBean.createTransferRecord(tr);
+        depositBean.transferFromAccount(da, amount);
         calculateTransferLimits();
     }
     

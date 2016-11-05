@@ -89,7 +89,7 @@ public class ReportGenerationBean implements ReportGenerationBeanLocal  {
             dto.setFromAccount(t.getFromAccount().getAccountNumber());
             dto.setAction(t.getActionType().toString());
             dto.setAmount(t.getAmount().setScale(2, RoundingMode.UP).toString());
-            dto.setCreateDate(t.getCreationDate().toString());
+            dto.setCreateDate(DateUtils.readableDate(t.getCreationDate()));
             dto.setType(t.getCredit() ? "Credit" : "Debit");
             transactionList.add(dto);
         }

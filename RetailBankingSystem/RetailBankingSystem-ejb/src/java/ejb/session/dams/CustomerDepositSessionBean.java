@@ -5,11 +5,13 @@
  */
 package ejb.session.dams;
 
+import ejb.session.card.CardAcctSessionBeanLocal;
 import entity.dams.account.CustomerDepositAccount;
 import entity.common.TransactionRecord;
 import entity.customer.MainAccount;
 import entity.dams.account.CustomerFixedDepositAccount;
 import entity.dams.account.DepositAccount;
+import entity.dams.account.MobileAccount;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.List;
@@ -35,6 +37,8 @@ public class CustomerDepositSessionBean implements CustomerDepositSessionBeanLoc
     
     @EJB
     private DepositProductSessionBeanLocal depositProductBean;
+    @EJB
+    private CardAcctSessionBeanLocal cardBean;
 
     @Override
     public long showNumberOfAccounts() {
@@ -414,6 +418,22 @@ public class CustomerDepositSessionBean implements CustomerDepositSessionBeanLoc
             return result.get(0);
         } else {
             return null;
+        }
+    }
+    
+    @Override
+    public String payCCBillFromAccount(String accountNumber, String ccNumber, BigDecimal amount) {
+        DepositAccount fromAccount = getAccountFromId(accountNumber);
+        if (fromAccount == null) {
+            return "Account not found";
+        } else if (fromAccount.getBalance().compareTo(amount) < 0) {
+            return "Mobile Account Balance not enough. Please Top up first!";
+        } else {
+            
+            cardBean.payCreditCardAccountBillByCardNumber(ccNumber, amount);
+            ccSpendingFromAccount(fromAccount, amount);
+            
+            return "SUCCESS";
         }
     }
 }
