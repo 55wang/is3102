@@ -14,31 +14,24 @@
         </h:head>
         <h:body>
             <em:staffNavBar context="crm"></em:staffNavBar>
-            <em:staffSideBar top="crm" side="viewCustomer"></em:staffSideBar>
+            <em:staffSideBar top="crm" side="viewMarketingCampaigns"></em:staffSideBar>
             <div class="container">
                 <h:form id="mainForm">
-                    <p:panel header="Customer Overview Dashboard">
+                    <p:panel header="Marketing Campaign Detail">
                         <p:messages id="messagesStatus" redisplay="false" >
-                            <p:panelGrid columns="5">
+                            <p:panelGrid columns="2">
                                 <h:outputText style="background-color: darkorange" value="Churn Rate" />
-                                <h:outputText style="background-color: darkorange" value="First Response Time" />
-                                <h:outputText style="background-color: darkorange" value="New Card Accounts" />
-                                <h:outputText style="background-color: darkorange" value="Total Current Amount" />
-                                <h:outputText style="background-color: darkorange" value="Total Outstanding Amount" />
-
+                                <h:outputText style="background-color: darkorange" value="Case Response Time" />
+                                
                                 <h:outputText value="1" />
                                 <h:outputText value="2" />
-                                <h:outputText value="3" />
-                                <h:outputText value="3" />
-                                <h:outputText value="4" />
 
                             </p:panelGrid>
 
                             <br />
 
-                            <p:chart type="bar" model="#{viewCardManagedBean.cardTransactionBarModel}" style="height:300px;"/>
-                            <br />
-                            <p:chart type="line" model="#{viewCardManagedBean.cardLatePaymentLineModel}" />
+                            <p:chart type="bar" model="#{viewCustomerOverviewManagedBean.customerAcctBarModel}" style="height:300px;"/>
+
                         </p:messages>
                     </p:panel>
 

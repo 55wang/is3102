@@ -27,7 +27,7 @@ public class BizIntelligenceSessionBean implements BizIntelligenceSessionBeanLoc
         System.out.println(startDate.toString());
         System.out.println(endDate.toString());
         Query q = em.createNativeQuery("SELECT count(*) FROM DepositAccount");
-        return 0L;
+        return (Long) q.getSingleResult();
     }
     
     @Override

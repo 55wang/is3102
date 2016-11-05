@@ -90,4 +90,11 @@ public class CustomerProfileSessionBean implements CustomerProfileSessionBeanLoc
     public Customer getCustomerByID(Long ID) {
         return (Customer) em.find(Customer.class, ID);
     }
+    
+    @Override
+    public List<Customer> getListCustomers() {
+        Query q = em.createQuery("SELECT c from Customer c");
+        return q.getResultList();
+    }
+    
 }

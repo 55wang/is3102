@@ -68,6 +68,11 @@ public class ConstantUtils {
     public static final String STAFF_CMS_STAFF_TRANSFER_CASE = "/StaffInternalSystem/cms/staff_transfer_case.xhtml";
     public static final String STAFF_CMS_STAFF_EDIT_CUSTOMER = "/StaffInternalSystem/cms/staff_edit_customer.xhtml";
     
+    // staff marketing campaign
+    public static final String STAFF_MC_VIEW_MARKETING_CAMPAIGNS = "/StaffInternalSystem/crm/view_marketing_campaigns.xhtml";
+    public static final String STAFF_MC_CREATE_MARKETING_CAMPAIGNS = "/StaffInternalSystem/crm/create_marketing_campaign.xhtml";
+    
+    
     // Error Message
     // General
     public static final String SOMETHING_WENT_WRONG = "Something went wrong.";

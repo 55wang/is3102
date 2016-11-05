@@ -19,6 +19,16 @@
                 <h:form id="mainForm">
                     <p:panel header="Deposit/Loan Service Statistics">
                         <p:messages id="messagesStatus" redisplay="false" >
+                            <p:outputLabel for="startDate" value="Start Date: " />
+                            <p:inputText id="startDate" value="#{viewDepositLoanManagedBean.startDate}">
+                                <f:convertDateTime pattern="yyyy-MM-dd" />
+                            </p:inputText>
+                            <p:outputLabel for="endDate" value="End Date: " />
+                            <p:inputText id="endDate" value="#{viewDepositLoanManagedBean.endDate}">
+                                <f:convertDateTime pattern="yyyy-MM-dd" />
+                            </p:inputText>      
+                            <p:commandButton value="View" action="#{viewDepositLoanManagedBean.viewDataTable()}" update="@form">
+                            </p:commandButton>
                             <p:panelGrid columns="5">
                                 <h:outputText style="background-color: darkorange" value="Total Deposit Accounts" />
                                 <h:outputText style="background-color: darkorange" value="Active Deposit Accounts" />
@@ -55,6 +65,16 @@
                             <p:chart type="pie" model="#{viewDepositLoanManagedBean.badLoanPieModel}" style="width:400px;height:300px" />
                         </p:messages>
                     </p:panel>
+
+                    <p:dialog modal="true" resizable="false" header="Values" widgetVar="dlg" showEffect="fold">
+                        <p:panelGrid id="display" columns="2" columnClasses="label,value">
+
+                            <h:outputText value="Popup:" />
+                            <h:outputText value="#{viewDepositLoanManagedBean.startDate}">
+                                <f:convertDateTime pattern="yyyy-MM-dd" />
+                            </h:outputText>
+                        </p:panelGrid>
+                    </p:dialog>
 
                 </h:form>
             </div>

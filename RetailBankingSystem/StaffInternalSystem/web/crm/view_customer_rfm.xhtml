@@ -1,0 +1,83 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:em="http://xmlns.jcp.org/jsf/composite/emcomp"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <!--shift + ctrl + F, format-->
+    <f:view>
+        <h:head>
+            <title>Merlion Internal</title>
+            <em:cssImport></em:cssImport>
+        </h:head>
+        <h:body>
+            <em:staffNavBar context="crm"></em:staffNavBar>
+            <em:staffSideBar top="crm" side="viewCustomerRFM"></em:staffSideBar>
+            <div class="container">
+                <h:form id="mainForm">
+                    <p:panel header="Deposit RFM Dashboard">
+                        <p:dataTable value="#{customerRFMManagedBean.customers}" var="customer" >
+
+                            <p:column headerText="Customer ID">
+                                <h:outputText value="#{customer.id}" />
+                            </p:column>
+
+                            <p:column headerText="Recency">
+                                <h:outputText value="#{customer.depositRecency}" />
+                            </p:column>
+
+                            <p:column headerText="Frequency">
+                                <h:outputText value="#{customer.depositFrequency}" />
+                            </p:column>
+
+                            <p:column headerText="Monetary">
+                                <h:outputText value="#{customer.depositMonetary}" />
+                            </p:column>
+
+                            <p:column headerText="RFM Score">
+                                <h:outputText value="#{customer.depositRFMScore}" />
+                            </p:column>
+                            
+                        </p:dataTable>
+
+                    </p:panel>
+
+                    <p:panel header="Card RFM Dashboard">
+                        <p:dataTable value="#{customerRFMManagedBean.customers}" var="customer" >
+
+                            <p:column headerText="Customer ID">
+                                <h:outputText value="#{customer.id}" />
+                            </p:column>
+
+                            <p:column headerText="Recency">
+                                <h:outputText value="#{customer.cardRecency}" />
+                            </p:column>
+
+                            <p:column headerText="Frequency">
+                                <h:outputText value="#{customer.cardFrequency}" />
+                            </p:column>
+
+                            <p:column headerText="Monetary">
+                                <h:outputText value="#{customer.cardMonetary}" />
+                            </p:column>
+
+                            <p:column headerText="RFM Score">
+                                <h:outputText value="#{customer.cardRFMScore}" />
+                            </p:column>
+                        </p:dataTable>
+                    </p:panel>
+                    <p:commandButton value="Refresh Customer RFM" action="#{customerRFMManagedBean.refreshCustomerRFM()}">
+                    </p:commandButton>
+                    <p:messages id="messagesStatus" redisplay="false" >
+                    </p:messages>
+                </h:form>
+            </div>
+
+        </h:body> 
+    </f:view>
+
+
+</html>
+
