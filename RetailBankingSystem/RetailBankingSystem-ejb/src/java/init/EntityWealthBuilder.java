@@ -368,6 +368,7 @@ public class EntityWealthBuilder {
         
         ma.getWealthManagementSubscriber().setMonthlyAdvisoryFee(2.05);
         ma.getWealthManagementSubscriber().setAccumulatedAdvisoryFee(0.99);
+        ma.getWealthManagementSubscriber().setAdvisoryFeeClearDate(p3.getExecutedInvestmentPlan().getExecutionDate());
         
         wealthManegementSubscriberSessionBean.updateWealthManagementSubscriber(ma.getWealthManagementSubscriber());
 
