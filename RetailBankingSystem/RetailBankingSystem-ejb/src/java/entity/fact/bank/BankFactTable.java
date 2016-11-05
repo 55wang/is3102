@@ -57,6 +57,9 @@ public class BankFactTable implements Serializable {
     private Long newExecutedPortfolio;
     private Double totalPortfolioAmount;
     private Double totalPortfolioProfitAmount;
+    
+    private Double churnRate;
+    private Double CaseResponseTime;
 
     //    private Double totalCardTransactionAmount;
     
@@ -291,6 +294,22 @@ public class BankFactTable implements Serializable {
 
     public void setNewExecutedPortfolio(Long newExecutedPortfolio) {
         this.newExecutedPortfolio = newExecutedPortfolio;
+    }
+
+    public Double getChurnRate() {
+        return churnRate;
+    }
+
+    public void setChurnRate(Double churnRate) {
+        this.churnRate = churnRate;
+    }
+
+    public Double getCaseResponseTime() {
+        return CaseResponseTime;
+    }
+
+    public void setCaseResponseTime(Double CaseResponseTime) {
+        this.CaseResponseTime = CaseResponseTime;
     }
 
 }

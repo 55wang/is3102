@@ -9,12 +9,17 @@ import ejb.session.bi.BizIntelligenceSessionBeanLocal;
 import ejb.session.fact.BankFactTableSessionBeanLocal;
 import entity.fact.bank.BankFactTable;
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
+import org.primefaces.context.RequestContext;
+import org.primefaces.event.SelectEvent;
 import org.primefaces.model.chart.Axis;
 import org.primefaces.model.chart.AxisType;
 import org.primefaces.model.chart.BarChartModel;
@@ -39,6 +44,7 @@ public class ViewDepositLoanManagedBean implements Serializable {
     private BarChartModel depositLoanIntBarModel;
     private PieChartModel badLoanPieModel;
 
+    private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
     private Date startDate = DateUtils.getBeginOfMonth();
     private Date endDate = DateUtils.getEndOfMonth();
 
@@ -59,8 +65,24 @@ public class ViewDepositLoanManagedBean implements Serializable {
     public ViewDepositLoanManagedBean() {
     }
 
+    public void onDateSelect(SelectEvent event) {
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Date Selected", format.format(event.getObject())));
+    }
+
+    public void click() {
+        RequestContext requestContext = RequestContext.getCurrentInstance();
+
+        requestContext.update("form:display");
+        requestContext.execute("PF('dlg').show()");
+    }
+
     @PostConstruct
     public void init() {
+
+        System.out.println(startDate);
+        System.out.println(endDate);
 
         bankTotalDepositAcct = bizIntelligenceSessionBean.getBankTotalDepositAcct(startDate, endDate);
         bankTotalActiveDepositAcct = bizIntelligenceSessionBean.getBankTotalActiveDepositAcct(startDate, endDate);
@@ -78,6 +100,23 @@ public class ViewDepositLoanManagedBean implements Serializable {
         createDepositLoanAmtBarModel();
         createDepositLoanIntBarModel();
         createBadLoanPieModels();
+    }
+
+    public void viewDataTable() {
+        System.out.println(sdf.format(startDate));
+        System.out.println(sdf.format(endDate));
+        bankTotalDepositAcct = bizIntelligenceSessionBean.getBankTotalDepositAcct(startDate, endDate);
+        bankTotalActiveDepositAcct = bizIntelligenceSessionBean.getBankTotalActiveDepositAcct(startDate, endDate);
+        bankTotalNewDepositAcct = bizIntelligenceSessionBean.getBankTotalNewDepositAcct(startDate, endDate);
+        bankTotalDepositAmount = bizIntelligenceSessionBean.getBankTotalDepositAmount(startDate, endDate);
+        bankDepositInterestAmount = bizIntelligenceSessionBean.getBankTotalDepositInterestAmount(startDate, endDate);
+
+        bankTotalLoanAcct = bizIntelligenceSessionBean.getBankTotalLoanAcct(startDate, endDate);
+        bankTotalNewLoanAcct = bizIntelligenceSessionBean.getBankTotalNewLoanAcct(startDate, endDate);
+        bankTotalLoanAmount = bizIntelligenceSessionBean.getBankTotalLoanAmount(startDate, endDate);
+        bankLoanInterestEarned = bizIntelligenceSessionBean.getBankLoanInterestEarned(startDate, endDate);
+        bankLoanInterestUnearned = bizIntelligenceSessionBean.getBankLoanInterestUnearned(startDate, endDate);
+        bankTotalDefaultLoanAcct = bizIntelligenceSessionBean.getBankTotalDefaultLoanAcct(startDate, endDate);
     }
 
     public PieChartModel getBadLoanPieModel() {

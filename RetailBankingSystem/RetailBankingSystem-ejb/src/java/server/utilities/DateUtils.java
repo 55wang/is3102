@@ -111,7 +111,7 @@ public class DateUtils {
     public static void setTimeToBeginningOfDay(Calendar calendar) {
         calendar.set(Calendar.HOUR_OF_DAY, 0);
         calendar.set(Calendar.MINUTE, 0);
-        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.SECOND, 1);
         calendar.set(Calendar.MILLISECOND, 0);
     }
 
@@ -119,7 +119,7 @@ public class DateUtils {
         Calendar calendar = dateToCalender(day);
         calendar.set(Calendar.HOUR_OF_DAY, 0);
         calendar.set(Calendar.MINUTE, 0);
-        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.SECOND, 1);
         calendar.set(Calendar.MILLISECOND, 0);
         return calendar.getTime();
     }

@@ -26,5 +26,6 @@ public interface CustomerProfileSessionBeanLocal {
     public List<Customer> retrieveActivatedCustomers();   
     public Customer searchCustomerByIdentityNumber(String id);     
     public Customer getCustomerByID(Long ID);
+    public List<Customer> getListCustomers();
 }
 
