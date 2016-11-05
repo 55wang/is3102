@@ -53,6 +53,8 @@ public class CardTransaction implements Serializable {
     // Mapping
     @ManyToOne(cascade = {CascadeType.MERGE})
     private CreditCardAccount creditCardAccount;
+    @ManyToOne(cascade = {CascadeType.MERGE})
+    private DebitCardAccount debitCardAccount;
 
     public Long getId() {
         return id;
@@ -168,4 +170,11 @@ public class CardTransaction implements Serializable {
         this.visaId = visaId;
     }
 
+    public DebitCardAccount getDebitCardAccount() {
+        return debitCardAccount;
+    }
+
+    public void setDebitCardAccount(DebitCardAccount debitCardAccount) {
+        this.debitCardAccount = debitCardAccount;
+    }
 }

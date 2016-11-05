@@ -14,21 +14,21 @@
         </h:head>
         <h:body>
             <em:staffNavBar context="bi"></em:staffNavBar>
-            <em:staffSideBar top="bi" side="viewPortfolio"></em:staffSideBar>
+            <em:staffSideBar top="bi" side="viewInvestment"></em:staffSideBar>
             <div class="container">
                 <h:form id="mainForm">
-                    <p:panel header="Portfolio Service Statistics">
+                    <p:panel header="Investment Service Statistics">
                         <p:messages id="messagesStatus" redisplay="false" >
                             <p:panelGrid columns="4">
-                                <h:outputText style="background-color: darkorange" value="Total Executed Portfolio" />
-                                <h:outputText style="background-color: darkorange" value="New Executed Portfolio" />
+                                <h:outputText style="background-color: darkorange" value="Total Executed Investment Plan" />
+                                <h:outputText style="background-color: darkorange" value="New Executed Investment Plan" />
                                 <h:outputText style="background-color: darkorange" value="Total Investment Amount" />
                                 <h:outputText style="background-color: darkorange" value="Total Profit Amount" />
 
-                                <h:outputText value="1" />
-                                <h:outputText value="2" />
-                                <h:outputText value="3" />
-                                <h:outputText value="4" />
+                                <h:outputText value="#{viewPortfolioManagedBean.bankTotalExecutedPortfolio}" />
+                                <h:outputText value="#{viewPortfolioManagedBean.bankNewExecutedPortfolio}" />
+                                <h:outputText value="#{viewPortfolioManagedBean.bankTotalInvestmentAmount}" />
+                                <h:outputText value="#{viewPortfolioManagedBean.bankTotalProfitAmount}" />
 
                             </p:panelGrid>
 

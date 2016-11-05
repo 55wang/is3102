@@ -26,11 +26,11 @@
                                 <h:outputText style="background-color: darkorange" value="Total Current Amount" />
                                 <h:outputText style="background-color: darkorange" value="Total Outstanding Amount" />
 
-                                <h:outputText value="1" />
-                                <h:outputText value="2" />
-                                <h:outputText value="3" />
-                                <h:outputText value="3" />
-                                <h:outputText value="4" />
+                                <h:outputText value="#{viewCardManagedBean.bankTotalCardAcct}" />
+                                <h:outputText value="#{viewCardManagedBean.bankTotalActiveCardAcct}" />
+                                <h:outputText value="#{viewCardManagedBean.bankTotalNewCardAcct}" />
+                                <h:outputText value="#{viewCardManagedBean.bankTotalCardCurrentAmount}" />
+                                <h:outputText value="#{viewCardManagedBean.bankTotalCardOutstandingAmount}" />
 
                             </p:panelGrid>
 
