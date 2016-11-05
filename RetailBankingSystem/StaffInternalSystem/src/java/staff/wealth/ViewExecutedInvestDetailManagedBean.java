@@ -6,7 +6,7 @@
 package staff.wealth;
 
 import ejb.session.cms.CustomerProfileSessionBeanLocal;
-import ejb.session.fact.FactSessionBeanLocal;
+import ejb.session.fact.PortfolioFactSessionBeanLocal;
 import ejb.session.wealth.PortfolioSessionBeanLocal;
 import entity.fact.customer.SinglePortfolioFactTable;
 import entity.wealth.Portfolio;
@@ -28,7 +28,7 @@ import utils.RedirectUtils;
 public class ViewExecutedInvestDetailManagedBean extends ViewPortfolioAbstractBean implements Serializable {
 
     @EJB
-    FactSessionBeanLocal factSessionBean;
+    PortfolioFactSessionBeanLocal portfolioFactSessionBean;
     @EJB
     PortfolioSessionBeanLocal portfolioSessionBean;
     @EJB
@@ -50,8 +50,8 @@ public class ViewExecutedInvestDetailManagedBean extends ViewPortfolioAbstractBe
             p = portfolioSessionBean.getPortfolioById(Long.parseLong(portfolioID));
         }
         
-        //portfolioFt = factSessionBean.getLatestPortfolioFtByCustomerIdPortfolioId(1L, 2L);
-        //portfolioFtLineGraph = factSessionBean.getListPortfoliosFtByCustomerIdPortfolioId(1L, 2L);
+        //portfolioFt = portfolioFactSessionBean.getLatestPortfolioFtByCustomerIdPortfolioId(1L, 2L);
+        //portfolioFtLineGraph = portfolioFactSessionBean.getListPortfoliosFtByCustomerIdPortfolioId(1L, 2L);
     }
     
     public void view(){

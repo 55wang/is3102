@@ -34,6 +34,7 @@ import server.utilities.EnumUtils.Industry;
 import server.utilities.EnumUtils.LoanProductType;
 import server.utilities.EnumUtils.MaritalStatus;
 import server.utilities.EnumUtils.Nationality;
+import server.utilities.EnumUtils.PortfolioStatus;
 import server.utilities.EnumUtils.ResidentialStatus;
 import server.utilities.EnumUtils.ResidentialType;
 
@@ -95,6 +96,18 @@ public class Customer implements Serializable {
     private Double portfolioPercentageChange;
     private Double financialHealthScore;
     private String financialHealthScoreLevel;
+    
+    private Long depositRecency = 0L;
+    private Long depositFrequency = 0L;
+    private Long depositMonetary = 0L;
+    private Double depositRFMScore = 0.0;
+    
+    private Long cardRecency = 0L;
+    private Long cardFrequency = 0L;
+    private Long cardMonetary = 0L;
+    private Double cardRFMScore = 0.0;
+    
+    private Double overallRFMScore = 0.0;
     
     // mapping
     @OneToOne(cascade = {CascadeType.MERGE})
@@ -338,7 +351,8 @@ public class Customer implements Serializable {
             List<Portfolio> ps = getMainAccount().getWealthManagementSubscriber().getPortfolios();
             totalPortfolioCurrentValue = 0.0;
             for (Portfolio p : ps) {
-                totalPortfolioCurrentValue+= p.getTotalCurrentValue();
+                if(p.getStatus() == PortfolioStatus.BOUGHT)
+                    totalPortfolioCurrentValue+= p.getTotalCurrentValue();
             }
             
             System.out.println("getTOtalportfoliovalue: "+totalPortfolioCurrentValue);
@@ -354,7 +368,8 @@ public class Customer implements Serializable {
             List<Portfolio> ports = getMainAccount().getWealthManagementSubscriber().getPortfolios();
             totalPortfolioBuyingValue = 0.0;
             for (Portfolio port : ports) {
-                totalPortfolioBuyingValue += port.getTotalBuyingValue();
+                if(port.getStatus() == PortfolioStatus.BOUGHT)
+                    totalPortfolioBuyingValue += port.getTotalBuyingValue();
             }
             return totalPortfolioBuyingValue;
         }catch(Exception ex){
@@ -716,6 +731,78 @@ public class Customer implements Serializable {
 
     public void setSavingPerMonth(Double savingPerMonth) {
         this.savingPerMonth = savingPerMonth;
+    }
+
+    public Long getDepositRecency() {
+        return depositRecency;
+    }
+
+    public void setDepositRecency(Long depositRecency) {
+        this.depositRecency = depositRecency;
+    }
+
+    public Long getDepositFrequency() {
+        return depositFrequency;
+    }
+
+    public void setDepositFrequency(Long depositFrequency) {
+        this.depositFrequency = depositFrequency;
+    }
+
+    public Long getDepositMonetary() {
+        return depositMonetary;
+    }
+
+    public void setDepositMonetary(Long depositMonetary) {
+        this.depositMonetary = depositMonetary;
+    }
+
+    public Long getCardRecency() {
+        return cardRecency;
+    }
+
+    public void setCardRecency(Long cardRecency) {
+        this.cardRecency = cardRecency;
+    }
+
+    public Long getCardFrequency() {
+        return cardFrequency;
+    }
+
+    public void setCardFrequency(Long cardFrequency) {
+        this.cardFrequency = cardFrequency;
+    }
+
+    public Long getCardMonetary() {
+        return cardMonetary;
+    }
+
+    public void setCardMonetary(Long cardMonetary) {
+        this.cardMonetary = cardMonetary;
+    }
+
+    public Double getDepositRFMScore() {
+        return depositRFMScore;
+    }
+
+    public void setDepositRFMScore(Double depositRFMScore) {
+        this.depositRFMScore = depositRFMScore;
+    }
+
+    public Double getCardRFMScore() {
+        return cardRFMScore;
+    }
+
+    public void setCardRFMScore(Double cardRFMScore) {
+        this.cardRFMScore = cardRFMScore;
+    }
+
+    public Double getOverallRFMScore() {
+        return overallRFMScore;
+    }
+
+    public void setOverallRFMScore(Double overallRFMScore) {
+        this.overallRFMScore = overallRFMScore;
     }
 
 }

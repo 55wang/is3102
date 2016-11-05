@@ -124,7 +124,7 @@ public class EntityCreditCardOrderBuilder {
         cca3.setCreditCardProduct(demoRewardCardProduct);
         cca3.setNameOnCard(demoMainAccount.getCustomer().getFullName());
         cca3.setCreditCardNum("5556336827217675");
-        cca3.setOutstandingAmount(900.0);
+        cca3.setOutstandingAmount(10000.0);
         cca3.setMerlionPoints(8000.0);
         cca3.setCardStatus(EnumUtils.CardAccountStatus.ACTIVE);
         cca3.setMainAccount(demoMainAccount);

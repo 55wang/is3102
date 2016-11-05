@@ -6,11 +6,14 @@
 package entity.fact.bank;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
+import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import server.utilities.EnumUtils;
 
 /**
  *
@@ -18,18 +21,48 @@ import javax.persistence.Id;
  */
 @Entity
 public class BankFactTable implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
-    private BigDecimal totalDepositAmount;
-    private Double totalCreditCardAmount; 
-    private Double totalLoanAmount;
-    private Double allPortfolioAmount;
-    private Double totalCardTransactionAmount;
-    
 
+    @Temporal(value = TemporalType.DATE)
+    private Date creationDate;
+    private EnumUtils.Month monthOfDate;
+    private Integer yearOfDate;
+
+    private Long totalDepositAcct;
+    private Long totalActiveDepositAcct;
+    private Long newDepositAcct; //for this month
+    private Double totalDepositAmount;
+    private Double totalDepositInterestAmount;
+
+    private Long totalLoanAcct;
+    private Long totalActiveLoanAcct;
+    private Long newLoanAcct;
+    private Double totalLoanAmount;
+    private Double totalLoanInterestEarned;
+    private Double totalLoanInterestUnearned;
+    private Long numOfDefaultLoanAccount;
+
+    private Long totalCardAcct; //only for credit card
+    private Long totalActiveCardAcct;
+    private Long newCardAcct;
+    private Double totalCardAmount;
+    private Double totalOutstandingAmount;
+    private Long numOfBadCardAccount;
+
+    private Long totalExecutedPortfolio;
+    private Long newExecutedPortfolio;
+    private Double totalPortfolioAmount;
+    private Double totalPortfolioProfitAmount;
+    
+    private Double churnRate;
+    private Double CaseResponseTime;
+
+    //    private Double totalCardTransactionAmount;
+    
     public Long getId() {
         return id;
     }
@@ -63,8 +96,20 @@ public class BankFactTable implements Serializable {
         return "entity.fact.DebtFacttable[ id=" + id + " ]";
     }
 
-    public Double getTotalDebtAmount() {
-        return totalCreditCardAmount + totalLoanAmount;
+    public EnumUtils.Month getMonthOfDate() {
+        return monthOfDate;
+    }
+
+    public void setMonthOfDate(EnumUtils.Month monthOfDate) {
+        this.monthOfDate = monthOfDate;
+    }
+
+    public Integer getYearOfDate() {
+        return yearOfDate;
+    }
+
+    public void setYearOfDate(Integer yearOfDate) {
+        this.yearOfDate = yearOfDate;
     }
 
     public Double getTotalLoanAmount() {
@@ -75,36 +120,196 @@ public class BankFactTable implements Serializable {
         this.totalLoanAmount = totalLoanAmount;
     }
 
-    public Double getTotalCreditCardAmount() {
-        return totalCreditCardAmount;
+    public Double getTotalCardAmount() {
+        return totalCardAmount;
     }
 
-    public void setTotalCreditCardAmount(Double totalCreditCardAmount) {
-        this.totalCreditCardAmount = totalCreditCardAmount;
+    public void setTotalCardAmount(Double totalCardAmount) {
+        this.totalCardAmount = totalCardAmount;
     }
 
-    public BigDecimal getTotalDepositAmount() {
+    public Double getTotalOutstandingAmount() {
+        return totalOutstandingAmount;
+    }
+
+    public void setTotalOutstandingAmount(Double totalOutstandingAmount) {
+        this.totalOutstandingAmount = totalOutstandingAmount;
+    }
+
+    public Double getTotalPortfolioAmount() {
+        return totalPortfolioAmount;
+    }
+
+    public void setTotalPortfolioAmount(Double totalPortfolioAmount) {
+        this.totalPortfolioAmount = totalPortfolioAmount;
+    }
+
+    public Date getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(Date creationDate) {
+        this.creationDate = creationDate;
+    }
+
+    public Double getTotalPortfolioProfitAmount() {
+        return totalPortfolioProfitAmount;
+    }
+
+    public void setTotalPortfolioProfitAmount(Double totalPortfolioProfitAmount) {
+        this.totalPortfolioProfitAmount = totalPortfolioProfitAmount;
+    }
+
+    public Double getTotalDepositInterestAmount() {
+        return totalDepositInterestAmount;
+    }
+
+    public void setTotalDepositInterestAmount(Double totalDepositInterestAmount) {
+        this.totalDepositInterestAmount = totalDepositInterestAmount;
+    }
+
+    public Long getTotalDepositAcct() {
+        return totalDepositAcct;
+    }
+
+    public void setTotalDepositAcct(Long totalDepositAcct) {
+        this.totalDepositAcct = totalDepositAcct;
+    }
+
+    public Long getTotalActiveDepositAcct() {
+        return totalActiveDepositAcct;
+    }
+
+    public void setTotalActiveDepositAcct(Long totalActiveDepositAcct) {
+        this.totalActiveDepositAcct = totalActiveDepositAcct;
+    }
+
+    public Long getNewDepositAcct() {
+        return newDepositAcct;
+    }
+
+    public void setNewDepositAcct(Long newDepositAcct) {
+        this.newDepositAcct = newDepositAcct;
+    }
+
+    public Double getTotalDepositAmount() {
         return totalDepositAmount;
     }
 
-    public void setTotalDepositAmount(BigDecimal totalDepositAmount) {
+    public void setTotalDepositAmount(Double totalDepositAmount) {
         this.totalDepositAmount = totalDepositAmount;
     }
 
-    public Double getAllPortfolioAmount() {
-        return allPortfolioAmount;
+    public Long getTotalLoanAcct() {
+        return totalLoanAcct;
     }
 
-    public void setAllPortfolioAmount(Double allPortfolioAmount) {
-        this.allPortfolioAmount = allPortfolioAmount;
+    public void setTotalLoanAcct(Long totalLoanAcct) {
+        this.totalLoanAcct = totalLoanAcct;
     }
 
-    public Double getTotalCardTransactionAmount() {
-        return totalCardTransactionAmount;
+    public Long getTotalActiveLoanAcct() {
+        return totalActiveLoanAcct;
     }
 
-    public void setTotalCardTransactionAmount(Double totalCardTransactionAmount) {
-        this.totalCardTransactionAmount = totalCardTransactionAmount;
+    public void setTotalActiveLoanAcct(Long totalActiveLoanAcct) {
+        this.totalActiveLoanAcct = totalActiveLoanAcct;
     }
-    
+
+    public Long getNewLoanAcct() {
+        return newLoanAcct;
+    }
+
+    public void setNewLoanAcct(Long newLoanAcct) {
+        this.newLoanAcct = newLoanAcct;
+    }
+
+    public Double getTotalLoanInterestEarned() {
+        return totalLoanInterestEarned;
+    }
+
+    public void setTotalLoanInterestEarned(Double totalLoanInterestEarned) {
+        this.totalLoanInterestEarned = totalLoanInterestEarned;
+    }
+
+    public Double getTotalLoanInterestUnearned() {
+        return totalLoanInterestUnearned;
+    }
+
+    public void setTotalLoanInterestUnearned(Double totalLoanInterestUnearned) {
+        this.totalLoanInterestUnearned = totalLoanInterestUnearned;
+    }
+
+    public Long getNumOfDefaultLoanAccount() {
+        return numOfDefaultLoanAccount;
+    }
+
+    public void setNumOfDefaultLoanAccount(Long numOfDefaultLoanAccount) {
+        this.numOfDefaultLoanAccount = numOfDefaultLoanAccount;
+    }
+
+    public Long getTotalCardAcct() {
+        return totalCardAcct;
+    }
+
+    public void setTotalCardAcct(Long totalCardAcct) {
+        this.totalCardAcct = totalCardAcct;
+    }
+
+    public Long getTotalActiveCardAcct() {
+        return totalActiveCardAcct;
+    }
+
+    public void setTotalActiveCardAcct(Long totalActiveCardAcct) {
+        this.totalActiveCardAcct = totalActiveCardAcct;
+    }
+
+    public Long getNewCardAcct() {
+        return newCardAcct;
+    }
+
+    public void setNewCardAcct(Long newCardAcct) {
+        this.newCardAcct = newCardAcct;
+    }
+
+    public Long getNumOfBadCardAccount() {
+        return numOfBadCardAccount;
+    }
+
+    public void setNumOfBadCardAccount(Long numOfBadCardAccount) {
+        this.numOfBadCardAccount = numOfBadCardAccount;
+    }
+
+    public Long getTotalExecutedPortfolio() {
+        return totalExecutedPortfolio;
+    }
+
+    public void setTotalExecutedPortfolio(Long totalExecutedPortfolio) {
+        this.totalExecutedPortfolio = totalExecutedPortfolio;
+    }
+
+    public Long getNewExecutedPortfolio() {
+        return newExecutedPortfolio;
+    }
+
+    public void setNewExecutedPortfolio(Long newExecutedPortfolio) {
+        this.newExecutedPortfolio = newExecutedPortfolio;
+    }
+
+    public Double getChurnRate() {
+        return churnRate;
+    }
+
+    public void setChurnRate(Double churnRate) {
+        this.churnRate = churnRate;
+    }
+
+    public Double getCaseResponseTime() {
+        return CaseResponseTime;
+    }
+
+    public void setCaseResponseTime(Double CaseResponseTime) {
+        this.CaseResponseTime = CaseResponseTime;
+    }
+
 }

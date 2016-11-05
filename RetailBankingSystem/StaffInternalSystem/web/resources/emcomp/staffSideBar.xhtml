@@ -172,6 +172,61 @@
                             <h:link outcome="staff-view-customer-portfolio" value="Customer Portfolio Details" />
                         </li>
                     </c:if>
+
+                    <c:if test="#{cc.attrs.top == 'bi'}">
+                        <li class="side-menu-item #{cc.attrs.side == 'viewDepositLoan' ? 'active' : ''}">
+                            <h:link outcome="view_deposit_loan" value="Deposit/Loan Service" />
+                        </li>
+                    </c:if>
+
+                    <c:if test="#{cc.attrs.top == 'bi'}">
+                        <li class="side-menu-item #{cc.attrs.side == 'viewCard' ? 'active' : ''}">
+                            <h:link outcome="view_card" value="Card Service" />
+                        </li>
+                    </c:if>
+
+                    <c:if test="#{cc.attrs.top == 'bi'}">
+                        <li class="side-menu-item #{cc.attrs.side == 'viewPortfolio' ? 'active' : ''}">
+                            <h:link outcome="view_portfolio" value="Portfolio Service" />
+                        </li>
+                    </c:if>
+
+                    <c:if test="#{cc.attrs.top == 'bi'}">
+                        <li class="side-menu-item #{cc.attrs.side == 'viewDemoPage' ? 'active' : ''}">
+                            <h:link outcome="view_demo_page" value="Demo Page" />
+                        </li>
+                    </c:if>
+
+                    <c:if test="#{cc.attrs.top == 'crm'}">
+                        <li class="side-menu-item #{cc.attrs.side == 'viewCustomerOverview' ? 'active' : ''}">
+                            <h:link outcome="view_customer_overview" value="Customer Overview" />
+                        </li>
+                    </c:if>
+
+                    <c:if test="#{cc.attrs.top == 'crm'}">
+                        <li class="side-menu-item #{cc.attrs.side == 'viewCustomerRFM' ? 'active' : ''}">
+                            <h:link outcome="view_customer_rfm" value="Customer RFM" />
+                        </li>
+                    </c:if>
+
+                    <c:if test="#{cc.attrs.top == 'crm'}">
+                        <li class="side-menu-item #{cc.attrs.side == 'marketBasketAnalysis' ? 'active' : ''}">
+                            <h:link outcome="market_basket_analysis" value="Market Basket Analysis" />
+                        </li>
+                    </c:if>
+                    
+                    <c:if test="#{cc.attrs.top == 'crm'}">
+                        <li class="side-menu-item #{cc.attrs.side == 'viewMarketingCampaigns' ? 'active' : ''}">
+                            <h:link outcome="view_marketing_campaigns" value="View Marketing Campaigns" />
+                        </li>
+                    </c:if>
+                    
+                    <c:if test="#{cc.attrs.top == 'crm'}">
+                        <li class="side-menu-item #{cc.attrs.side == 'createMarketingCampaign' ? 'active' : ''}">
+                            <h:link outcome="create_marketing_campaign" value="Create Marketing Campaign" />
+                        </li>
+                    </c:if>
+
                 </ul>
             </div>
             <!--TODO: Fillin all the sub menus here -->

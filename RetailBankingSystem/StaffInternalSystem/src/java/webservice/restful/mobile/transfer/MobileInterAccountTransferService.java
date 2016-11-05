@@ -6,14 +6,10 @@
 package webservice.restful.mobile.transfer;
 
 import ejb.session.bill.TransferSessionBeanLocal;
-import ejb.session.common.LoginSessionBeanLocal;
 import ejb.session.dams.CustomerDepositSessionBeanLocal;
-import ejb.session.dams.MobileAccountSessionBeanLocal;
 import entity.common.TransactionRecord;
 import entity.customer.MainAccount;
-import entity.dams.account.CustomerDepositAccount;
 import java.math.BigDecimal;
-import java.util.List;
 import javax.ejb.EJB;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
@@ -25,6 +21,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 import org.primefaces.json.JSONObject;
+import server.utilities.EnumUtils;
 import webservice.restful.mobile.ErrorDTO;
 
 /**

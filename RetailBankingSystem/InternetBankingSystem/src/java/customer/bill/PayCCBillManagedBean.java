@@ -104,9 +104,7 @@ public class PayCCBillManagedBean implements Serializable {
         btr.setActionType(EnumUtils.TransactionType.CCSPENDING);
         webserviceBean.billingClearingSACH(btr);
         da.removeBalance(amount);
-        depositBean.updateAccount(da);
-        transferBean.createBillTransferRecord(btr);
-        
+        depositBean.updateAccount(da);        
     }
     
     public String getBillName(String id) {

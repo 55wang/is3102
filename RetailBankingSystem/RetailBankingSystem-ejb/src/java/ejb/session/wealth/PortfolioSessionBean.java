@@ -20,6 +20,8 @@ import org.rosuda.REngine.Rserve.RConnection;
 import org.rosuda.REngine.Rserve.RserveException;
 import server.utilities.CommonUtils;
 import server.utilities.ConstantUtils;
+import server.utilities.EnumUtils;
+import server.utilities.EnumUtils.PortfolioStatus;
 
 /**
  *
@@ -70,15 +72,9 @@ public class PortfolioSessionBean implements PortfolioSessionBeanLocal {
 
     @Override
     public List<Portfolio> getListPortfoliosByCustomerId(Long Id) {
-        Query q = em.createQuery("Select p from Portfolio p where p.wealthManagementSubscriber.mainAccount.customer.id=:inId");
+        Query q = em.createQuery("Select p from Portfolio p where p.wealthManagementSubscriber.mainAccount.customer.id=:inId AND p.status =:status");
         q.setParameter("inId", Id);
-        return q.getResultList();
-    }
-
-    @Override
-    public List<Portfolio> getListPortfoliosByCustomerID(Long Id) {
-        Query q = em.createQuery("Select p from Portfolio p where p.wealthManagementSubscriber.mainAccount.customer.id =:id");
-        q.setParameter("id", Id);
+        q.setParameter("status", PortfolioStatus.BOUGHT);
         return q.getResultList();
     }
 

@@ -12,6 +12,7 @@ import entity.customer.WealthManagementSubscriber;
 import entity.embedded.StaffInfo;
 import entity.loan.LoanAccount;
 import entity.loan.LoanApplication;
+import entity.wealth.InvestplanCommunication;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -52,6 +53,8 @@ public class StaffAccount implements Serializable {
     private List<Conversation> senderConversation = new ArrayList<>();
     @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "receiver")
     private List<Conversation> receiverConversation = new ArrayList<>();
+    @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "rm")
+    private List<InvestplanCommunication> investplanCommunications = new ArrayList<>();
     @OneToMany(mappedBy = "staffAccount")
     private List<CustomerCase> cases = new ArrayList<>();
     @OneToMany(cascade = {CascadeType.MERGE}, mappedBy = "relationshipManager")
@@ -286,5 +289,13 @@ public class StaffAccount implements Serializable {
      */
     public void setLoanApplications(List<LoanApplication> loanApplications) {
         this.loanApplications = loanApplications;
+    }
+
+    public List<InvestplanCommunication> getInvestplanCommunications() {
+        return investplanCommunications;
+    }
+
+    public void setInvestplanCommunications(List<InvestplanCommunication> investplanCommunications) {
+        this.investplanCommunications = investplanCommunications;
     }
 }

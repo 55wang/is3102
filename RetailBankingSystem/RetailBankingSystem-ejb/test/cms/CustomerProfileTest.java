@@ -5,7 +5,7 @@
  */
 package cms;
 
-//import ejb.session.cms.CustomerProfileSessionBeanRemote;
+import ejb.session.cms.CustomerProfileSessionBeanRemote;
 import entity.customer.Customer;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -23,6 +23,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import org.junit.FixMethodOrder;
 import org.junit.runners.MethodSorters;
+import util.exception.CustomerNotExistException;
 
 /**
  *
@@ -30,8 +31,9 @@ import org.junit.runners.MethodSorters;
  */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 
-public class CustomerProfileTest implements Serializable{
-//    CustomerProfileSessionBeanRemote customerProfileSessionBean = lookupCustomerProfileSessionBeanRemote();
+    public class CustomerProfileTest implements Serializable{
+    CustomerProfileSessionBeanRemote customerProfileSessionBean = lookupCustomerProfileSessionBeanRemote();
+    
     
     private static String revertInfo;
     
@@ -54,33 +56,40 @@ public class CustomerProfileTest implements Serializable{
     public void tearDown() {
     }
     
-    @Test
-    public void test01getCustomerByUserID() {
+    @Test()
+    public void test01getCustomerByUserID() throws CustomerNotExistException{
         System.out.println("CustomerProfileTest.test01getCustomerByID");   
-//        Customer result = customerProfileSessionBean.getCustomerByUserID("c1234567");
-//        assertNotNull(result);        
-    }
-    /*
-    @Test
-    public void test02saveProfile() {
-        System.out.println("CustomerProfileTest.test02saveProfile");
-        Customer tester = customerProfileSessionBean.getCustomerByUserID("c1234567");
-        revertInfo=tester.getLastname();
-        System.out.println("!!!"+revertInfo);
-        tester.setLastname("test");
-        Customer result = customerProfileSessionBean.saveProfile(tester);  
-        assertEquals(result, tester);
+        Customer result = customerProfileSessionBean.getCustomerByUserID("c1234567");
+        assertNotNull(result);        
     }
     
-    @Test
-    public void test03revertSaveProfile() {
-        System.out.println("CustomerProfileTest.test03revertSaveProfile");
-        Customer tester = customerProfileSessionBean.getCustomerByUserID("c1234567");
-        System.out.println("!!!2"+revertInfo);
-        tester.setLastname(revertInfo);
-        Customer result = customerProfileSessionBean.saveProfile(tester);  
-        assertNotNull(result);
+    @Test(expected=CustomerNotExistException.class)
+    public void test01getCustomerByUserIDException() throws CustomerNotExistException{
+        System.out.println("CustomerProfileTest.test01getCustomerByID");   
+        Customer result = customerProfileSessionBean.getCustomerByUserID("c1234568");
+        assertNotNull(result);        
     }
+    
+//    @Test
+//    public void test02saveProfile() {
+//        System.out.println("CustomerProfileTest.test02saveProfile");
+//        Customer tester = customerProfileSessionBean.getCustomerByUserID("c1234567");
+//        revertInfo=tester.getLastname();
+//        System.out.println("!!!"+revertInfo);
+//        tester.setLastname("test");
+//        Customer result = customerProfileSessionBean.saveProfile(tester);  
+//        assertEquals(result, tester);
+//    }
+//    
+//    @Test
+//    public void test03revertSaveProfile() {
+//        System.out.println("CustomerProfileTest.test03revertSaveProfile");
+//        Customer tester = customerProfileSessionBean.getCustomerByUserID("c1234567");
+//        System.out.println("!!!2"+revertInfo);
+//        tester.setLastname(revertInfo);
+//        Customer result = customerProfileSessionBean.saveProfile(tester);  
+//        assertNotNull(result);
+//    }
     
     @Test
     public void test04retrieveActivatedCustomers() {
@@ -118,5 +127,6 @@ public class CustomerProfileTest implements Serializable{
             throw new RuntimeException(ne);
         }
     }
-    */
+
+
 }

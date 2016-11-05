@@ -6,24 +6,23 @@
 package ejb.session.cms;
 
 import ejb.session.common.EmailServiceSessionBeanLocal;
-import entity.card.account.CreditCardAccount;
 import entity.customer.Customer;
-import entity.dams.account.DepositAccount;
-import entity.wealth.Portfolio;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import server.utilities.EnumUtils.StatusType;
+import util.exception.CustomerNotExistException;
 
 /**
  *
  * @author qiuxiaqing
  */
 @Stateless
-public class CustomerProfileSessionBean implements CustomerProfileSessionBeanLocal {
+public class CustomerProfileSessionBean implements CustomerProfileSessionBeanLocal, CustomerProfileSessionBeanRemote {
 
     @EJB
     private EmailServiceSessionBeanLocal emailServiceSessionBean;
@@ -32,10 +31,18 @@ public class CustomerProfileSessionBean implements CustomerProfileSessionBeanLoc
     private EntityManager em;
 
     @Override
+//    public Customer getCustomerByUserID(String userID) throws CustomerNotExistException{
     public Customer getCustomerByUserID(String userID) {
-        Query q = em.createQuery("SELECT c FROM Customer c WHERE c.mainAccount.userID = :inUserID");
-        q.setParameter("inUserID", userID);
-        return (Customer) q.getSingleResult();
+//        try
+//        {
+            Query q = em.createQuery("SELECT c FROM Customer c WHERE c.mainAccount.userID = :inUserID");
+            q.setParameter("inUserID", userID);
+            return (Customer) q.getSingleResult();
+//        }
+//        catch(NoResultException ex)
+//        {
+//            throw new CustomerNotExistException(ex.getMessage());
+//        }
     }
 
     @Override
@@ -83,4 +90,11 @@ public class CustomerProfileSessionBean implements CustomerProfileSessionBeanLoc
     public Customer getCustomerByID(Long ID) {
         return (Customer) em.find(Customer.class, ID);
     }
+    
+    @Override
+    public List<Customer> getListCustomers() {
+        Query q = em.createQuery("SELECT c from Customer c");
+        return q.getResultList();
+    }
+    
 }

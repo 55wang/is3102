@@ -8,19 +8,21 @@ package ejb.session.cms;
 import entity.customer.Customer;
 import java.util.List;
 import javax.ejb.Remote;
+import util.exception.CustomerNotExistException;
 
 /**
  *
  * @author qiuxiaqing
  */
-/*
+
 @Remote
 public interface CustomerProfileSessionBeanRemote {
 
+//    public Customer getCustomerByUserID(String userID) throws CustomerNotExistException;
     public Customer getCustomerByUserID(String userID);
     public Customer saveProfile(Customer customer);
     public List<Customer> retrieveActivatedCustomers();   
     public Customer searchCustomerByIdentityNumber(String id);     
     public Customer getCustomerByID(Long ID);
 }
-*/
+

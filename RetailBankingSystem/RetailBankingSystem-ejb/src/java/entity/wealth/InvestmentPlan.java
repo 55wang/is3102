@@ -38,6 +38,10 @@ public class InvestmentPlan implements Serializable {
     
     @Temporal(value = TemporalType.TIMESTAMP)
     private final Date creationDate = new Date();
+    @Temporal(value = TemporalType.TIMESTAMP)
+    private Date executionDate;
+    @Temporal(value = TemporalType.TIMESTAMP)
+    private Date soldDate;
     private Integer amountOfInvestment; 
     private Double systemPredictReturn;
     private Integer systemPredictRisk;
@@ -45,7 +49,9 @@ public class InvestmentPlan implements Serializable {
     private List<FinancialInstrument> preferedFinancialInstrument = new ArrayList<>();
     private String remarks = "";
     private InvestmentPlanStatus status;
-    private InvestmentPlanSatisfactionLevel satisfactionLevel;
+    private InvestmentPlanSatisfactionLevel satisfactionLevel;  
+    private Double montylyETFfee = 0.0;
+    private Double totalETFfee = 0.0;
 
     @OneToOne(cascade = CascadeType.MERGE, mappedBy = "executedInvestmentPlan")
     private Portfolio portfolio;
@@ -53,6 +59,8 @@ public class InvestmentPlan implements Serializable {
     private WealthManagementSubscriber wealthManagementSubscriber;
     @OneToMany(cascade = CascadeType.MERGE)
     private List<FinancialInstrumentAndWeight> suggestedFinancialInstruments;
+    @OneToOne(cascade = CascadeType.MERGE, mappedBy = "ip")
+    private InvestplanCommunication ic;
 
     public Long getId() {
         return id;
@@ -179,4 +187,43 @@ public class InvestmentPlan implements Serializable {
         this.portfolio = portfolio;
     }
 
+    public Double getMontylyETFfee() {
+        return montylyETFfee;
+    }
+
+    public void setMontylyETFfee(Double montylyETFfee) {
+        this.montylyETFfee = montylyETFfee;
+    }
+
+    public Double getTotalETFfee() {
+        return totalETFfee;
+    }
+
+    public void setTotalETFfee(Double totalETFfee) {
+        this.totalETFfee = totalETFfee;
+    }
+
+    public Date getExecutionDate() {
+        return executionDate;
+    }
+
+    public void setExecutionDate(Date executionDate) {
+        this.executionDate = executionDate;
+    }
+
+    public Date getSoldDate() {
+        return soldDate;
+    }
+
+    public void setSoldDate(Date soldDate) {
+        this.soldDate = soldDate;
+    }
+
+    public InvestplanCommunication getIc() {
+        return ic;
+    }
+
+    public void setIc(InvestplanCommunication ic) {
+        this.ic = ic;
+    }
 }

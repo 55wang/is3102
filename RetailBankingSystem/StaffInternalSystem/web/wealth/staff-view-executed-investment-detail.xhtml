@@ -24,7 +24,8 @@
                                 <p:dataTable var="fi" value="#{viewExecutedInvestDetailManagedBean.p.executedInvestmentPlan.suggestedFinancialInstruments}" >
                                         <p:columnGroup type="header">
                                             <p:row>
-                                                <p:column rowspan="3" headerText="Financial Instrument" style="width:320px;"/>
+                                                <p:column rowspan="3" headerText="Asset Class" style="width:250px;"/>
+                                                <p:column rowspan="3" headerText="Investment" style="width:150px;"/>
                                                 <p:column colspan="6" headerText="Buying Information" />
                                             </p:row>
                                             <p:row>
@@ -43,6 +44,9 @@
                                         
                                         <p:column rendered="#{fi.weight != 0.0}">
                                             <h:outputText value="#{fi.fi.name}"/> 
+                                        </p:column>
+                                        <p:column rendered="#{fi.weight != 0.0}">
+                                            <h:outputText value="#{fi.fi.ETFName}"/> 
                                         </p:column>
                                         <p:column rendered="#{fi.weight != 0.0}">
                                             <h:outputText id="numberofshare" value="#{fi.buyingNumberOfShare}" /> 
@@ -68,24 +72,24 @@
                                             </h:outputText>
                                         </p:column> 
                                          <p:column rendered="#{fi.weight != 0.0}">
-                                             <h:outputText value="#{(fi.currentValuePerShare/fi.buyingValuePerShare *100).shortValue() - 100}%" rendered="#{viewExecutedInvestDetailManagedBean.p.status == 'BOUGHT'}"/> 
-                                             <h:outputText value="0%" rendered="#{viewExecutedInvestDetailManagedBean.p.status != 'BOUGHT'}"/> 
+                                             <h:outputText value="#{(fi.currentValuePerShare/fi.buyingValuePerShare *100).shortValue() - 100}%" rendered="#{viewExecutedInvestDetailManagedBean.p.status == 'BOUGHT' or viewExecutedInvestDetailManagedBean.p.status == 'SOLD'}"/> 
+                                             <h:outputText value="0%" rendered="#{viewExecutedInvestDetailManagedBean.p.status != 'BOUGHT' and viewExecutedInvestDetailManagedBean.p.status != 'SOLD'}"/> 
                                         </p:column>                    
 
                                         <p:columnGroup type="footer">
                                             <p:row>
-                                                <p:column colspan="3" style="text-align:right" footerText="Totals:" /> 
+                                                <p:column colspan="4" style="text-align:right" footerText="Totals:" /> 
 
                                                 <p:column footerText="$#{viewExecutedInvestDetailManagedBean.p.totalBuyingValue}" />
                                                 <p:column />
                                                 <p:column footerText="$#{viewExecutedInvestDetailManagedBean.p.totalCurrentValue}" />
-                                                <p:column footerText="#{(viewExecutedInvestDetailManagedBean.p.totalCurrentValue/viewExecutedInvestDetailManagedBean.p.totalBuyingValue*100).shortValue()-100}%" rendered="#{viewExecutedInvestDetailManagedBean.p.status == 'BOUGHT'}"/>
-                                                <p:column footerText="0%" rendered="#{viewExecutedInvestDetailManagedBean.p.status != 'BOUGHT'}"/>
+                                                <p:column footerText="#{(viewExecutedInvestDetailManagedBean.p.totalCurrentValue/viewExecutedInvestDetailManagedBean.p.totalBuyingValue*100).shortValue()-100}%" rendered="#{viewExecutedInvestDetailManagedBean.p.status == 'BOUGHT' or viewExecutedInvestDetailManagedBean.p.status == 'SOLD'}"/>
+                                                <p:column footerText="0%" rendered="#{viewExecutedInvestDetailManagedBean.p.status != 'BOUGHT' and viewExecutedInvestDetailManagedBean.p.status != 'SOLD'}"/>
                                             </p:row>
                                         </p:columnGroup>
                                     </p:dataTable>
                                     <br />
-                                    <p:commandButton value="Update Value" action="#{viewExecutedInvestDetailManagedBean.view()}" icon="ui-icon-lightbulb" update="@form" style="float: right"/>
+                                    <p:commandButton value="Update Value" action="#{viewExecutedInvestDetailManagedBean.view()}" icon="ui-icon-lightbulb" update="@form" style="float: right" rendered="#{viewExecutedInvestDetailManagedBean.p.status == 'BOUGHT'}"/>
                                     <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true"/>
                                     
                                 </p:panel>

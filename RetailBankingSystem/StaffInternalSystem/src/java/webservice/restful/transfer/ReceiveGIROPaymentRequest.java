@@ -90,8 +90,7 @@ public class ReceiveGIROPaymentRequest {
             
             serviceBean.billingClearingSACH(btr);
             DepositAccount da = ga.getDepositAccount();
-            da.removeBalance(new BigDecimal(amount));
-            depositBean.updateAccount(da);
+            depositBean.payBillFromAccount(da, new BigDecimal(amount));
             
             ErrorDTO err = new ErrorDTO();
             err.setCode(0);

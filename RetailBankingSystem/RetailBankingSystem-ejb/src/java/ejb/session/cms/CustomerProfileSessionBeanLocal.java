@@ -11,6 +11,7 @@ import entity.dams.account.DepositAccount;
 import entity.wealth.Portfolio;
 import java.util.List;
 import javax.ejb.Local;
+import util.exception.CustomerNotExistException;
 
 /**
  *
@@ -19,10 +20,12 @@ import javax.ejb.Local;
 @Local
 public interface CustomerProfileSessionBeanLocal {
 
-    public Customer getCustomerByUserID(String userID);
+//    public Customer getCustomerByUserID (String userID) throws CustomerNotExistException;
+    public Customer getCustomerByUserID (String userID);
     public Customer saveProfile(Customer customer);
     public List<Customer> retrieveActivatedCustomers();   
     public Customer searchCustomerByIdentityNumber(String id);     
     public Customer getCustomerByID(Long ID);
+    public List<Customer> getListCustomers();
 }
 

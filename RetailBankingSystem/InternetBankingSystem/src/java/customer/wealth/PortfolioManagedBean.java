@@ -7,7 +7,7 @@ package customer.wealth;
 
 import ejb.session.cms.CustomerProfileSessionBeanLocal;
 import ejb.session.common.LoginSessionBeanLocal;
-import ejb.session.fact.FactSessionBeanLocal;
+import ejb.session.fact.PortfolioFactSessionBeanLocal;
 import ejb.session.wealth.PortfolioSessionBeanLocal;
 import entity.customer.Customer;
 import entity.fact.customer.SinglePortfolioFactTable;
@@ -28,6 +28,7 @@ import org.primefaces.model.chart.DateAxis;
 import org.primefaces.model.chart.LineChartModel;
 import org.primefaces.model.chart.LineChartSeries;
 import org.primefaces.model.chart.PieChartModel;
+import server.utilities.ColorUtils;
 import utils.SessionUtils;
 
 /**
@@ -45,7 +46,7 @@ public class PortfolioManagedBean implements Serializable {
     @EJB
     CustomerProfileSessionBeanLocal customerProfileSessionBean;
     @EJB
-    FactSessionBeanLocal factSessionBean;
+    PortfolioFactSessionBeanLocal portfolioFactSessionBean;
 
     private Customer customer;
     private List<Portfolio> portfolios;
@@ -129,7 +130,7 @@ public class PortfolioManagedBean implements Serializable {
 //        JsonArray data = (JsonArray) dataset.getJsonArray("data");
 
         //sql 
-        List<SinglePortfolioFactTable> spf = factSessionBean.getListPortfoliosFtByCustomerIdPortfolioId(customer.getId(), selectedPortfolioIdString);
+        List<SinglePortfolioFactTable> spf = portfolioFactSessionBean.getListPortfoliosFtByCustomerIdPortfolioId(customer.getId(), selectedPortfolioIdString);
         System.out.println("spf: " + spf.size());
         SimpleDateFormat simpleformat = new SimpleDateFormat("yyyy-MM-dd");
         LineChartModel model = new LineChartModel();
@@ -218,6 +219,8 @@ public class PortfolioManagedBean implements Serializable {
         pieModel.setLegendPosition("e");
         pieModel.setShowDataLabels(true);
         pieModel.setDiameter(150);
+        
+        pieModel.setSeriesColors(ColorUtils.getFlatUIColors(7)+","+ColorUtils.getFlatUIColors(9)+","+ColorUtils.getFlatUIColors(11)+","+ColorUtils.getFlatUIColors(15));
     }
 
     public List<Portfolio> getPortfolios() {

@@ -105,7 +105,6 @@ public class PayBillManagedBean implements Serializable {
         webserviceBean.billingClearingSACH(btr);
         da.removeBalance(amount);
         depositBean.updateAccount(da);
-        transferBean.createBillTransferRecord(btr);
 
     }
 
