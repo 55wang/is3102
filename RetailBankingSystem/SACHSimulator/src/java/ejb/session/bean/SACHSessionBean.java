@@ -28,6 +28,7 @@ import javax.ws.rs.core.MediaType;
 @Stateless
 public class SACHSessionBean {
     
+    // all the urls put here
     private final String MEPS_SETTLEMENT = "https://localhost:8181/MEPSSimulator/meps/meps_settlement";
     private final String MBS_NET_SETTLEMENT_PATH = "https://localhost:8181/StaffInternalSystem/rest/net_settlement";
     private final String MBS_TRANSFER_PAYMENT = "https://localhost:8181/StaffInternalSystem/rest/mbs_receive_transfer_payment";
@@ -210,23 +211,30 @@ public class SACHSessionBean {
     public void sendMBSGiroRequest(BillTransfer bt) {
         
         // send to mbs
+        // REMARK: Form key must match FormParam in the receiver side
+        // REMARK: Form sample code
         Form form = new Form(); //bank info
         form.param("referenceNumber", bt.getReferenceNumber());
         form.param("amount", bt.getAmount().toString());
         form.param("shortCode", bt.getShortCode());
         form.param("billReferenceNumber", bt.getBillReferenceNumber());
 
+        // REMARK: Copy this, and change client.target("TO BE CHANGED");
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(MBS_GIRO_REQUEST);
 
         // This is the response
+        // REMARK: Copy this, and do not change anything
         JsonObject jsonString = target.request(MediaType.APPLICATION_JSON).post(Entity.entity(form, MediaType.APPLICATION_FORM_URLENCODED), JsonObject.class);
         System.out.println(jsonString);
         
+        // REMARK: Copy this, and change client.target("TO BE CHANGED");
         if (jsonString != null && jsonString.getString("error").equals("SUCCESS")) {
             System.out.println("Request received");
+            // REMARK: Do necessary action if it succeed
             em.persist(bt);
         } else {
+            // REMARK: Do necesary action if it failed
             System.out.println("FAIL");
         }
     }

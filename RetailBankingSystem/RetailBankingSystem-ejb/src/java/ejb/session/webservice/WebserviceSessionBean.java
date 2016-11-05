@@ -149,8 +149,8 @@ public class WebserviceSessionBean implements WebserviceSessionBeanLocal {
     @Asynchronous
     @Override
     public void transferClearingFAST(TransferRecord tr) {
-        
-        System.out.println("Generating transfer");
+        System.out.println("[MBS]:");
+        System.out.println("Generating FAST transfer...");
         Form form = new Form(); //bank info
         form.param("referenceNumber", tr.getReferenceNumber());
         form.param("amount", tr.getAmount().toString());
@@ -163,8 +163,10 @@ public class WebserviceSessionBean implements WebserviceSessionBeanLocal {
         form.param("myInitial", tr.getMyInitial());
         form.param("FAST", "false");
         
+        
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(FAST_TRANSFER_CLEARING);
+        System.out.println("Sending FAST transfer...");
 
         // This is the response
         JsonObject jsonString = target.request(MediaType.APPLICATION_JSON).post(Entity.entity(form, MediaType.APPLICATION_FORM_URLENCODED), JsonObject.class);

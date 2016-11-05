@@ -37,20 +37,28 @@ public class EntityCustomerBuilder {
         Customer c = new Customer();
         c.setAddress("10 Punggol, 08-08"); //make it a bit more real
         try {
-        c.setBirthDay(new SimpleDateFormat("dd-MM-yyyy").parse("04-02-1993"));
+            c.setBirthDay(new SimpleDateFormat("dd-MM-yyyy").parse("01-01-1990"));
         } catch (Exception ex) {
         }
         c.setEmail("wangzhe.lynx@gmail.com");
         c.setFirstname("Yifan");
+        c.setLastname("Chen");
+        c.setFullName("Chen Yifan");
         c.setGender(EnumUtils.Gender.MALE); // pls modify gender to enum type
         c.setIdentityType(EnumUtils.IdentityType.NRIC);
         c.setIdentityNumber("S1234567Z");
         c.setIncome(EnumUtils.Income.FROM_2000_TO_4000);
         c.setEducation(EnumUtils.Education.DIPLOMA);
-        c.setLastname("Chen");
         c.setNationality(EnumUtils.Nationality.CHINA); //enum type if possible
         c.setPhone("81567758"); //must use real phone number as we need sms code
         c.setPostalCode("654321");
+        c.setIndustry(EnumUtils.Industry.BANKING_FINANCE);
+        c.setNationality(EnumUtils.Nationality.SINGAPORE);
+        c.setMaritalStatus(EnumUtils.MaritalStatus.MARRIED);
+        c.setEducation(EnumUtils.Education.POSTGRAD);
+        c.setIncome(EnumUtils.Income.FROM_4000_TO_6000);
+        c.setActualIncome(5000.0);
+        c.setEmploymentStatus(EnumUtils.EmploymentStatus.EMPLOYEE);
 
         MainAccount ma = new MainAccount();
         ma.setUserID(ConstantUtils.DEMO_MAIN_ACCOUNT_USER_ID);
@@ -293,7 +301,7 @@ public class EntityCustomerBuilder {
         ma9.setCustomer(c9);
         c9.setMainAccount(ma9);
         newCustomerSessionBean.updateCustomer(c9);
-        
+
         return ma;
     }
 

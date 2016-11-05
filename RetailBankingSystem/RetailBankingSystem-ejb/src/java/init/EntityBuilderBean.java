@@ -100,13 +100,15 @@ public class EntityBuilderBean {
         entityCaseBuilder.initCase();
         entityBillOrgBuilder.initBillOrganization();
         entityPayLahBuilder.initPayLahDemoData();
-        //wealth
-        List<FinancialInstrument> allFinancialInstruments = entityWealthBuilder.allFinancialInstrument();
-        demoPortfolio = entityWealthBuilder.initWealth(allFinancialInstruments);
-        entityFactBuilder.initSinglePortfolioFact(demoMainAccount, demoPortfolio);
-        demoPortfolio = entityWealthBuilder.initPortfolioFactTable2(demoMainAccount, allFinancialInstruments);
-        entityFactBuilder.initSinglePortfolioFact(demoMainAccount, demoPortfolio);
 
-        entityFactBuilder.initBankFact();
+        //wealth
+//        List<FinancialInstrument> allFinancialInstruments = entityWealthBuilder.allFinancialInstrument();
+//        demoPortfolio = entityWealthBuilder.initWealth(allFinancialInstruments);
+//        entityFactBuilder.initSinglePortfolioFact(demoMainAccount, demoPortfolio);
+//        demoPortfolio = entityWealthBuilder.initPortfolioFactTable2(demoMainAccount, allFinancialInstruments);
+//        entityFactBuilder.initSinglePortfolioFact(demoMainAccount, demoPortfolio);
+//
+//        entityFactBuilder.initBankFact();
+
     }
 }

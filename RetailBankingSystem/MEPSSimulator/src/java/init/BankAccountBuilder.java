@@ -63,8 +63,9 @@ public class BankAccountBuilder {
         SettlementAccount mbs = new SettlementAccount();
         mbs.setBankCode("001");
         mbs.setAmount(new BigDecimal(50000000));//initial 50m
-        mbs.setName("Merlion Bank Singapore");
+        mbs.setName("Merlion Bank Singapore");//001
         mepsBean.persist(mbs);
+
 
         initBankEntities();
     }
@@ -75,7 +76,7 @@ public class BankAccountBuilder {
             "BANK OF CHINA LIMITED",
             "BNP PARIBAS",
             "CIMB BANK BERHAD",
-            "CITIBANK NA",
+            "CITIBANK",//005
             "DEUTSCHE BANK AG",
             "FAR EASTERN BANK LTD",
             "HL BANK",
@@ -83,7 +84,7 @@ public class BankAccountBuilder {
             "HSBC (Personal)",
             "MALAYAN BANKING BHD",
             "MIZUHO BANK LIMITED",
-            "OVERSEA-CHINESE BANKING CORPN LTD",
+            "OVERSEA-CHINESE BANKING CORPN LTD",//013
             "RHB BANK BERHAD",
             "STANDARD CHARTERED BANK",
             "SUMITOMO MITSUI BANKING CORPORATION",
