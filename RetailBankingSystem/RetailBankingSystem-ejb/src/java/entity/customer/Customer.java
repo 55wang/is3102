@@ -34,6 +34,7 @@ import server.utilities.EnumUtils.Industry;
 import server.utilities.EnumUtils.LoanProductType;
 import server.utilities.EnumUtils.MaritalStatus;
 import server.utilities.EnumUtils.Nationality;
+import server.utilities.EnumUtils.PortfolioStatus;
 import server.utilities.EnumUtils.ResidentialStatus;
 import server.utilities.EnumUtils.ResidentialType;
 
@@ -338,7 +339,8 @@ public class Customer implements Serializable {
             List<Portfolio> ps = getMainAccount().getWealthManagementSubscriber().getPortfolios();
             totalPortfolioCurrentValue = 0.0;
             for (Portfolio p : ps) {
-                totalPortfolioCurrentValue+= p.getTotalCurrentValue();
+                if(p.getStatus() == PortfolioStatus.BOUGHT)
+                    totalPortfolioCurrentValue+= p.getTotalCurrentValue();
             }
             
             System.out.println("getTOtalportfoliovalue: "+totalPortfolioCurrentValue);
@@ -354,7 +356,8 @@ public class Customer implements Serializable {
             List<Portfolio> ports = getMainAccount().getWealthManagementSubscriber().getPortfolios();
             totalPortfolioBuyingValue = 0.0;
             for (Portfolio port : ports) {
-                totalPortfolioBuyingValue += port.getTotalBuyingValue();
+                if(port.getStatus() == PortfolioStatus.BOUGHT)
+                    totalPortfolioBuyingValue += port.getTotalBuyingValue();
             }
             return totalPortfolioBuyingValue;
         }catch(Exception ex){

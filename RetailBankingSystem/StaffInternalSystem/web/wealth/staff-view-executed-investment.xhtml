@@ -48,8 +48,8 @@
                                         </h:outputText>
                                     </p:column>
                                     <p:column headerText="Current Return">
-                                        <h:outputText value="#{(p.totalCurrentValue/p.totalBuyingValue*100).shortValue()-100}%" rendered="#{p.status == 'BOUGHT'}" />
-                                        <h:outputText value="NaN" rendered="#{p.status != 'BOUGHT'}" />
+                                        <h:outputText value="#{(p.totalCurrentValue/p.totalBuyingValue*100).shortValue()-100}%" rendered="#{p.status == 'BOUGHT' or p.status == 'SOLD'}" />
+                                        <h:outputText value="NaN" rendered="#{p.status != 'BOUGHT' and p.status != 'SOLD'}" />
                                     </p:column>
                                     <p:column headerText="Status">
                                         <h:outputText value="#{p.status}" />

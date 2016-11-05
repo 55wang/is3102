@@ -600,6 +600,68 @@ and open the template in the editor.
     padding-left: 10px;
 }
 /*end of footer*/
+/* wealth */
+.marketing-first{
+    background: url("../resources/img/wealth_bg.jpg");
+    background-size: cover;
+    height:300px;
+}
+
+.marketing-first .content{
+    width:80%;
+    color:#eee;
+    margin: 0 auto;
+    padding-top: 100px;
+    text-align: center;
+}
+
+.marketing-second{
+    text-align: center;
+    height:300px;
+    background-color: #81cdcc;
+}
+
+.marketing-second .second-content{
+    padding-top: 50px;
+    background-color: #81cdcc;  
+}
+
+.marketing-second .second-content .ui-grid-row{
+    background-color: #81cdcc;
+    color: white;
+}
+.marketing-third{
+    height:400px;
+}
+
+.marketing-third .content{
+    width:80%;
+    margin: 0 auto;
+    padding-top: 50px;
+    text-align: center;
+}
+.marketing-third .ui-slider{
+    width: 500px;
+    background-color: #ccc;
+    margin: 0 auto;
+}
+.marketing-third .ui-slider-handle{
+    background-color: #81cdcc !important;
+    box-shadow: none !important;
+    border:1px solid #ccc !important;
+}
+
+.requestPlanForm .ui-slider{
+    background-color: #ccc;
+}
+
+.requestPlanForm .ui-slider-handle{
+    background-color: #c00 !important;
+    box-shadow: none !important;
+    border:1px solid #ccc !important;
+}
+/* end of wealth */
+
 .viewInvestmentPlanDetailLayout{
     font-size: 12px !important;
 }

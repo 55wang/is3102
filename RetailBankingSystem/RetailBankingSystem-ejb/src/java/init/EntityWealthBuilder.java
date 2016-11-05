@@ -6,7 +6,7 @@
 package init;
 
 import ejb.session.common.LoginSessionBeanLocal;
-import ejb.session.fact.FactSessionBeanLocal;
+import ejb.session.fact.PortfolioFactSessionBeanLocal;
 import ejb.session.mainaccount.MainAccountSessionBeanLocal;
 import ejb.session.staff.StaffAccountSessionBeanLocal;
 import ejb.session.wealth.DesignInvestmentPlanSessionBeanLocal;
@@ -67,7 +67,7 @@ public class EntityWealthBuilder {
     @EJB
     private MainAccountSessionBeanLocal mainAccountSessionBean;
     @EJB
-    private FactSessionBeanLocal factSessionBean;
+    private PortfolioFactSessionBeanLocal factSessionBean;
 
     private String currentDate;
     private String monthStartDate;
@@ -91,7 +91,6 @@ public class EntityWealthBuilder {
 
         InvestmentPlan investmentPlan = new InvestmentPlan();
         investmentPlan.setAmountOfInvestment(10000);
-        investmentPlan.setCustomerExpectedReturn(0.13);
         List<FinancialInstrument> preferedInstruments = new ArrayList<FinancialInstrument>();
 //        List<FinancialInstrument> allFinancialInstruments = financialInstrumentSessionBean.getAllFinancialInstruments();
         preferedInstruments.add(allFinancialInstruments.get(0));
@@ -103,10 +102,13 @@ public class EntityWealthBuilder {
         investmentPlan.setStatus(EnumUtils.InvestmentPlanStatus.PENDING);
         investmentPlan.setWealthManagementSubscriber(wms);
         investmentPlanSessionBean.createInvestmentPlan(investmentPlan);
+        List<InvestmentPlan> ips = wms.getInvestmentPlans();
+        ips.add(investmentPlan);
+        wms.setInvestmentPlans(ips);
+        wealthManegementSubscriberSessionBean.updateWealthManagementSubscriber(wms);
 
         InvestmentPlan executedInvestmentPlan = new InvestmentPlan();
-        executedInvestmentPlan.setAmountOfInvestment(100000);
-        executedInvestmentPlan.setCustomerExpectedReturn(0.13);
+        executedInvestmentPlan.setAmountOfInvestment(5000);
         List<FinancialInstrument> preferedInstruments2 = new ArrayList<FinancialInstrument>();
         preferedInstruments2.add(allFinancialInstruments.get(0));
         preferedInstruments2.add(allFinancialInstruments.get(2));
@@ -116,7 +118,15 @@ public class EntityWealthBuilder {
         executedInvestmentPlan.setRemarks("test executed plan");
         executedInvestmentPlan.setStatus(EnumUtils.InvestmentPlanStatus.EXECUTED);
         executedInvestmentPlan.setWealthManagementSubscriber(wms);
+        Calendar cal = Calendar.getInstance();
+        Calendar xdate = (Calendar)cal.clone();
+        xdate.set(Calendar.DAY_OF_YEAR,cal.getTime().getDate() - 20 );   
+        executedInvestmentPlan.setExecutionDate(xdate.getTime());
         investmentPlanSessionBean.createInvestmentPlan(executedInvestmentPlan);
+        List<InvestmentPlan> ips2 = wms.getInvestmentPlans();
+        ips2.add(executedInvestmentPlan);
+        wms.setInvestmentPlans(ips2);
+        wealthManegementSubscriberSessionBean.updateWealthManagementSubscriber(wms);
 
         List<FinancialInstrumentAndWeight> suggestedFinancialInstruments = new ArrayList<FinancialInstrumentAndWeight>();
 
@@ -128,9 +138,9 @@ public class EntityWealthBuilder {
                 suggestedFinancialInstruments.add(fiaw);
             } else if (allFinancialInstruments.get(i).getName().equals(EnumUtils.FinancialInstrumentClass.DIVIDEND_GROWTH_STOCKS)) {
                 FinancialInstrumentAndWeight fiaw = new FinancialInstrumentAndWeight();
-                fiaw.setBuyingNumberOfShare(1700);
+                fiaw.setBuyingNumberOfShare(1800);
                 fiaw.setBuyingValuePerShare(1.0);
-                fiaw.setCurrentValuePerShare(1.0);
+                fiaw.setCurrentValuePerShare(1.1);
                 fiaw.setFi(allFinancialInstruments.get(i));
                 fiaw.setWeight(0.34);
                 suggestedFinancialInstruments.add(fiaw);
@@ -159,7 +169,7 @@ public class EntityWealthBuilder {
                 FinancialInstrumentAndWeight fiaw = new FinancialInstrumentAndWeight();
                 fiaw.setBuyingNumberOfShare(25);
                 fiaw.setBuyingValuePerShare(2.0);
-                fiaw.setCurrentValuePerShare(2.0);
+                fiaw.setCurrentValuePerShare(2.1);
                 fiaw.setFi(allFinancialInstruments.get(i));
                 fiaw.setWeight(0.01);
                 suggestedFinancialInstruments.add(fiaw);
@@ -167,7 +177,7 @@ public class EntityWealthBuilder {
                 FinancialInstrumentAndWeight fiaw = new FinancialInstrumentAndWeight();
                 fiaw.setBuyingNumberOfShare(200);
                 fiaw.setBuyingValuePerShare(3.0);
-                fiaw.setCurrentValuePerShare(3.0);
+                fiaw.setCurrentValuePerShare(2.9);
                 fiaw.setFi(allFinancialInstruments.get(i));
                 fiaw.setWeight(0.12);
                 suggestedFinancialInstruments.add(fiaw);
@@ -175,7 +185,7 @@ public class EntityWealthBuilder {
                 FinancialInstrumentAndWeight fiaw = new FinancialInstrumentAndWeight();
                 fiaw.setBuyingNumberOfShare(30);
                 fiaw.setBuyingValuePerShare(5.0);
-                fiaw.setCurrentValuePerShare(5.0);
+                fiaw.setCurrentValuePerShare(4.8);
                 fiaw.setFi(allFinancialInstruments.get(i));
                 fiaw.setWeight(0.12);
                 suggestedFinancialInstruments.add(fiaw);
@@ -188,7 +198,7 @@ public class EntityWealthBuilder {
                 FinancialInstrumentAndWeight fiaw = new FinancialInstrumentAndWeight();
                 fiaw.setBuyingNumberOfShare(400);
                 fiaw.setBuyingValuePerShare(1.0);
-                fiaw.setCurrentValuePerShare(1.0);
+                fiaw.setCurrentValuePerShare(1.2);
                 fiaw.setFi(allFinancialInstruments.get(i));
                 fiaw.setWeight(0.08);
                 suggestedFinancialInstruments.add(fiaw);
@@ -196,7 +206,7 @@ public class EntityWealthBuilder {
                 FinancialInstrumentAndWeight fiaw = new FinancialInstrumentAndWeight();
                 fiaw.setBuyingNumberOfShare(550);
                 fiaw.setBuyingValuePerShare(3.0);
-                fiaw.setCurrentValuePerShare(3.0);
+                fiaw.setCurrentValuePerShare(3.5);
                 fiaw.setFi(allFinancialInstruments.get(i));
                 fiaw.setWeight(0.33);
                 suggestedFinancialInstruments.add(fiaw);
@@ -219,7 +229,9 @@ public class EntityWealthBuilder {
         List<Portfolio> ps = wms.getPortfolios();
         ps.add(p);
         wms.setPortfolios(ps);
+        
         wealthManegementSubscriberSessionBean.updateWealthManagementSubscriber(wms);
+        
 
         return p;
     }
@@ -228,8 +240,7 @@ public class EntityWealthBuilder {
 
         //2nd portfolio
         InvestmentPlan executedInvestmentPlan = new InvestmentPlan();
-        executedInvestmentPlan.setAmountOfInvestment(150000);
-        executedInvestmentPlan.setCustomerExpectedReturn(0.13);
+        executedInvestmentPlan.setAmountOfInvestment(15000);
         List<FinancialInstrument> preferedInstruments = new ArrayList<FinancialInstrument>();
 //        List<FinancialInstrument> allFinancialInstruments = financialInstrumentSessionBean.getAllFinancialInstruments();
         preferedInstruments.add(allFinancialInstruments.get(0));
@@ -240,7 +251,16 @@ public class EntityWealthBuilder {
         executedInvestmentPlan.setRemarks("test executed plan 3");
         executedInvestmentPlan.setStatus(EnumUtils.InvestmentPlanStatus.EXECUTED);
         executedInvestmentPlan.setWealthManagementSubscriber(ma.getWealthManagementSubscriber());
+        Calendar cal = Calendar.getInstance();
+        Calendar xdate = (Calendar)cal.clone();
+        xdate.set(Calendar.DAY_OF_YEAR,cal.getTime().getDay() - 50 );   
+        executedInvestmentPlan.setExecutionDate(xdate.getTime());
         investmentPlanSessionBean.createInvestmentPlan(executedInvestmentPlan);
+        List<InvestmentPlan> ips3 = ma.getWealthManagementSubscriber().getInvestmentPlans();
+        ips3.add(executedInvestmentPlan);
+        ma.getWealthManagementSubscriber().setInvestmentPlans(ips3);
+        wealthManegementSubscriberSessionBean.updateWealthManagementSubscriber(ma.getWealthManagementSubscriber());
+        
 
         List<FinancialInstrumentAndWeight> suggestedFinancialInstruments = new ArrayList<FinancialInstrumentAndWeight>();
 
@@ -252,9 +272,9 @@ public class EntityWealthBuilder {
                 suggestedFinancialInstruments.add(fiaw);
             } else if (allFinancialInstruments.get(i).getName().equals(EnumUtils.FinancialInstrumentClass.DIVIDEND_GROWTH_STOCKS)) {
                 FinancialInstrumentAndWeight fiaw = new FinancialInstrumentAndWeight();
-                fiaw.setBuyingNumberOfShare(257);
+                fiaw.setBuyingNumberOfShare(258);
                 fiaw.setBuyingValuePerShare(7.0);
-                fiaw.setCurrentValuePerShare(7.0);
+                fiaw.setCurrentValuePerShare(6.9);
                 fiaw.setFi(allFinancialInstruments.get(i));
                 fiaw.setWeight(0.12);
                 suggestedFinancialInstruments.add(fiaw);
@@ -267,7 +287,7 @@ public class EntityWealthBuilder {
                 FinancialInstrumentAndWeight fiaw = new FinancialInstrumentAndWeight();
                 fiaw.setBuyingNumberOfShare(275);
                 fiaw.setBuyingValuePerShare(6.0);
-                fiaw.setCurrentValuePerShare(6.0);
+                fiaw.setCurrentValuePerShare(6.7);
                 fiaw.setFi(allFinancialInstruments.get(i));
                 fiaw.setWeight(0.11);
                 suggestedFinancialInstruments.add(fiaw);
@@ -275,7 +295,7 @@ public class EntityWealthBuilder {
                 FinancialInstrumentAndWeight fiaw = new FinancialInstrumentAndWeight();
                 fiaw.setBuyingNumberOfShare(1125);
                 fiaw.setBuyingValuePerShare(2.0);
-                fiaw.setCurrentValuePerShare(2.0);
+                fiaw.setCurrentValuePerShare(2.3);
                 fiaw.setFi(allFinancialInstruments.get(i));
                 fiaw.setWeight(0.15);
                 suggestedFinancialInstruments.add(fiaw);
@@ -283,7 +303,7 @@ public class EntityWealthBuilder {
                 FinancialInstrumentAndWeight fiaw = new FinancialInstrumentAndWeight();
                 fiaw.setBuyingNumberOfShare(50);
                 fiaw.setBuyingValuePerShare(3.0);
-                fiaw.setCurrentValuePerShare(3.0);
+                fiaw.setCurrentValuePerShare(2.9);
                 fiaw.setFi(allFinancialInstruments.get(i));
                 fiaw.setWeight(0.01);
                 suggestedFinancialInstruments.add(fiaw);
@@ -291,7 +311,7 @@ public class EntityWealthBuilder {
                 FinancialInstrumentAndWeight fiaw = new FinancialInstrumentAndWeight();
                 fiaw.setBuyingNumberOfShare(243);
                 fiaw.setBuyingValuePerShare(8.0);
-                fiaw.setCurrentValuePerShare(8.0);
+                fiaw.setCurrentValuePerShare(8.4);
                 fiaw.setFi(allFinancialInstruments.get(i));
                 fiaw.setWeight(0.13);
                 suggestedFinancialInstruments.add(fiaw);
@@ -312,7 +332,7 @@ public class EntityWealthBuilder {
                 FinancialInstrumentAndWeight fiaw = new FinancialInstrumentAndWeight();
                 fiaw.setBuyingNumberOfShare(225);
                 fiaw.setBuyingValuePerShare(4.0);
-                fiaw.setCurrentValuePerShare(4.0);
+                fiaw.setCurrentValuePerShare(5.0);
                 fiaw.setFi(allFinancialInstruments.get(i));
                 fiaw.setWeight(0.06);
                 suggestedFinancialInstruments.add(fiaw);
@@ -345,6 +365,11 @@ public class EntityWealthBuilder {
         List<Portfolio> ps = ma.getWealthManagementSubscriber().getPortfolios();
         ps.add(p3);
         ma.getWealthManagementSubscriber().setPortfolios(ps);
+        
+        ma.getWealthManagementSubscriber().setMonthlyAdvisoryFee(2.05);
+        ma.getWealthManagementSubscriber().setAccumulatedAdvisoryFee(0.99);
+        ma.getWealthManagementSubscriber().setAdvisoryFeeClearDate(p3.getExecutedInvestmentPlan().getExecutionDate());
+        
         wealthManegementSubscriberSessionBean.updateWealthManagementSubscriber(ma.getWealthManagementSubscriber());
 
         return p3;
@@ -384,37 +409,37 @@ public class EntityWealthBuilder {
 
         initDate();
 
-        FinancialInstrument financialInstrument1 = buildFinancialInstrument(EnumUtils.FinancialInstrumentClass.CORPORATE_BONDS, "Income, low historical volatility, diversification", 0.05, -0.002);
+        FinancialInstrument financialInstrument1 = buildFinancialInstrument(EnumUtils.FinancialInstrumentClass.CORPORATE_BONDS, "Income, low historical volatility, diversification", 0.05, -0.002, "iShares LQD ETF", "https://www.ishares.com/us/products/239566/ishares-iboxx-investment-grade-corporate-bond-etf?fundSearch=true&qt=LQD");
         buildFinFactTable("FB", financialInstrument1);
 
-        FinancialInstrument financialInstrument2 = buildFinancialInstrument(EnumUtils.FinancialInstrumentClass.DIVIDEND_GROWTH_STOCKS, "Capital growth, income, long-run inflation protection, tax efficiency", 0.14, 0.037);
+        FinancialInstrument financialInstrument2 = buildFinancialInstrument(EnumUtils.FinancialInstrumentClass.DIVIDEND_GROWTH_STOCKS, "Capital growth, income, long-run inflation protection, tax efficiency", 0.14, 0.037, "Vanguard VIG ETF", "https://personal.vanguard.com/us/funds/snapshot?FundId=0920&FundIntExt=INT");
         buildFinFactTable("AAPL", financialInstrument2);
 
-        FinancialInstrument financialInstrument3 = buildFinancialInstrument(EnumUtils.FinancialInstrumentClass.EMERGING_MARKET_BONDS, "Income, diversification", 0.07, 0.01);
+        FinancialInstrument financialInstrument3 = buildFinancialInstrument(EnumUtils.FinancialInstrumentClass.EMERGING_MARKET_BONDS, "Income, diversification", 0.07, 0.01, "iShares EMB ETF", "https://www.ishares.com/us/products/239572/ishares-jp-morgan-usd-emerging-markets-bond-etf?fundSearch=true&qt=EMB");
         buildFinFactTable("IBM", financialInstrument3);
 
-        FinancialInstrument financialInstrument4 = buildFinancialInstrument(EnumUtils.FinancialInstrumentClass.EMERGING_MARKET_STOCKS, "Capital growth, long-run inflation protection, tax efficiency", 0.24, 0.081);
+        FinancialInstrument financialInstrument4 = buildFinancialInstrument(EnumUtils.FinancialInstrumentClass.EMERGING_MARKET_STOCKS, "Capital growth, long-run inflation protection, tax efficiency", 0.24, 0.081, "Vanguard VWO ETF", "https://personal.vanguard.com/us/FundsSnapshot?FundId=0964&FundIntExt=INT");
         buildFinFactTable("AMZN", financialInstrument4);
 
-        FinancialInstrument financialInstrument5 = buildFinancialInstrument(EnumUtils.FinancialInstrumentClass.FOREIGN_DEVELOPED_STOCKS, "Capital growth, long-run inflation protection, tax efficiency", 0.18, 0.062);
+        FinancialInstrument financialInstrument5 = buildFinancialInstrument(EnumUtils.FinancialInstrumentClass.FOREIGN_DEVELOPED_STOCKS, "Capital growth, long-run inflation protection, tax efficiency", 0.18, 0.062, "Vanguard VEA ETF", "https://personal.vanguard.com/us/funds/snapshot?FundId=0936&FundIntExt=INT");
         buildFinFactTable("GOOG", financialInstrument5);
 
-        FinancialInstrument financialInstrument6 = buildFinancialInstrument(EnumUtils.FinancialInstrumentClass.MUNICIPAL_BONDS, "Income, low historical volatility, diversification, tax efficiency", 0.05, -0.08);
+        FinancialInstrument financialInstrument6 = buildFinancialInstrument(EnumUtils.FinancialInstrumentClass.MUNICIPAL_BONDS, "Income, low historical volatility, diversification, tax efficiency", 0.05, -0.08, "iShares MUB ETF", "https://www.ishares.com/us/products/239766/ishares-national-amtfree-muni-bond-etf");
         buildFinFactTable("NFLX", financialInstrument6);
 
-        FinancialInstrument financialInstrument7 = buildFinancialInstrument(EnumUtils.FinancialInstrumentClass.NATURAL_RESOURCES, "Diversification, inflation protection, tax efficiency", 0.22, 0.062);
+        FinancialInstrument financialInstrument7 = buildFinancialInstrument(EnumUtils.FinancialInstrumentClass.NATURAL_RESOURCES, "Diversification, inflation protection, tax efficiency", 0.22, 0.062, "State Street XLE ETF", "https://www.spdrs.com/product/fund.seam?ticker=XLE");
         buildFinFactTable("C", financialInstrument7);
 
-        FinancialInstrument financialInstrument8 = buildFinancialInstrument(EnumUtils.FinancialInstrumentClass.REAL_ESTATE, "Income, diversification, inflation protection", 0.18, 0.05);
+        FinancialInstrument financialInstrument8 = buildFinancialInstrument(EnumUtils.FinancialInstrumentClass.REAL_ESTATE, "Income, diversification, inflation protection", 0.18, 0.05, "Vanguard VNQ ETF", "https://personal.vanguard.com/us/FundsSnapshot?FundId=0986&FundIntExt=INT");
         buildFinFactTable("CAG", financialInstrument8);
 
-        FinancialInstrument financialInstrument9 = buildFinancialInstrument(EnumUtils.FinancialInstrumentClass.TREASURY_INFLATION_PROTECTED_SECURITIES, "Income, low historical volatility, diversification, inflation protection", 0.05, -0.005);
+        FinancialInstrument financialInstrument9 = buildFinancialInstrument(EnumUtils.FinancialInstrumentClass.TREASURY_INFLATION_PROTECTED_SECURITIES, "Income, low historical volatility, diversification, inflation protection", 0.05, -0.005, "Schwab SCHP ETF", "https://www.csimfunds.com/public/csim/home/products/exchange_traded_funds/summary.html?symbol=SCHP");
         buildFinFactTable("JPM", financialInstrument9);
 
-        FinancialInstrument financialInstrument10 = buildFinancialInstrument(EnumUtils.FinancialInstrumentClass.US_GOVERNMENT_BONDS, "Income, low historical volatility, diversification", 0.05, -0.008);
+        FinancialInstrument financialInstrument10 = buildFinancialInstrument(EnumUtils.FinancialInstrumentClass.US_GOVERNMENT_BONDS, "Income, low historical volatility, diversification", 0.05, -0.008, "Vanguard BND ETF", "https://personal.vanguard.com/us/funds/snapshot?FundIntExt=INT&FundId=0928");
         buildFinFactTable("TDC", financialInstrument10);
 
-        FinancialInstrument financialInstrument11 = buildFinancialInstrument(EnumUtils.FinancialInstrumentClass.US_STOCKS, "Capital growth, long-run inflation protection, tax efficiency", 0.16, 0.053);
+        FinancialInstrument financialInstrument11 = buildFinancialInstrument(EnumUtils.FinancialInstrumentClass.US_STOCKS, "Capital growth, long-run inflation protection, tax efficiency", 0.16, 0.053, "Vanguard VTI ETF", "https://personal.vanguard.com/us/FundsSnapshot?FundId=0970&FundIntExt=INT");
         buildFinFactTable("VRSK", financialInstrument11);
 
         List<FinancialInstrument> allFinancialInstruments = financialInstrumentSessionBean.getAllFinancialInstruments();
@@ -463,12 +488,14 @@ public class EntityWealthBuilder {
         financialInstrumentSessionBean.updateFinancialInstrument(financialInstrument);
     }
 
-    public FinancialInstrument buildFinancialInstrument(EnumUtils.FinancialInstrumentClass name, String desc, Double sd, Double er) {
+    public FinancialInstrument buildFinancialInstrument(EnumUtils.FinancialInstrumentClass name, String desc, Double sd, Double er, String ETFName, String ETFLink) {
         FinancialInstrument financialInstrument1 = new FinancialInstrument();
         financialInstrument1.setName(name);
         financialInstrument1.setDescription(desc);
         financialInstrument1.setStandardDeviation(sd);
         financialInstrument1.setExpectedReturn(er);
+        financialInstrument1.setETFName(ETFName);
+        financialInstrument1.setETFLink(ETFLink);
         financialInstrumentSessionBean.createFinancialInstrument(financialInstrument1);
         return financialInstrument1;
     }
@@ -486,7 +513,7 @@ public class EntityWealthBuilder {
         cEnd.set(Calendar.DAY_OF_MONTH, cEnd.getActualMaximum(Calendar.DAY_OF_MONTH));
         setMonthEndDate(new SimpleDateFormat("yyyy-MM-dd").format(cEnd.getTime()));
     }
-
+    
     public String getCurrentDate() {
         return currentDate;
     }

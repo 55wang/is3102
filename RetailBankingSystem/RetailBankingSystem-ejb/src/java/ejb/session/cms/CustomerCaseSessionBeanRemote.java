@@ -15,7 +15,7 @@ import javax.ejb.Remote;
  *
  * @author VIN-S
  */
-/*
+
 @Remote
 public interface CustomerCaseSessionBeanRemote {
     public Boolean saveCase(CustomerCase customerCase);
@@ -26,4 +26,3 @@ public interface CustomerCaseSessionBeanRemote {
     public List<CustomerCase> getAllCase();
     public List<CustomerCase> getAllCaseUnderCertainStaff(StaffAccount staffAccount);
 }
-*/

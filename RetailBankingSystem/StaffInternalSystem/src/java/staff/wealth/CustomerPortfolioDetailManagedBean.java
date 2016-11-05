@@ -6,7 +6,7 @@
 package staff.wealth;
 
 import ejb.session.cms.CustomerProfileSessionBeanLocal;
-import ejb.session.fact.FactSessionBeanLocal;
+import ejb.session.fact.PortfolioFactSessionBeanLocal;
 import ejb.session.wealth.PortfolioSessionBeanLocal;
 import ejb.session.wealth.WealthManegementSubscriberSessionBeanLocal;
 import entity.customer.Customer;
@@ -29,7 +29,9 @@ import org.primefaces.model.chart.AxisType;
 import org.primefaces.model.chart.DateAxis;
 import org.primefaces.model.chart.LineChartModel;
 import org.primefaces.model.chart.LineChartSeries;
+import org.primefaces.model.chart.MeterGaugeChartModel;
 import org.primefaces.model.chart.PieChartModel;
+import server.utilities.ColorUtils;
 
 /**
  *
@@ -37,18 +39,19 @@ import org.primefaces.model.chart.PieChartModel;
  */
 @Named(value = "customerPortfolioDetailManagedBean")
 @ViewScoped
-public class CustomerPortfolioDetailManagedBean implements Serializable{
+public class CustomerPortfolioDetailManagedBean implements Serializable {
+
     @EJB
     private WealthManegementSubscriberSessionBeanLocal wealthManegementSubscriberSessionBean;
     @EJB
-    PortfolioSessionBeanLocal portfolioSessionBean;
+    private PortfolioSessionBeanLocal portfolioSessionBean;
     @EJB
-    CustomerProfileSessionBeanLocal customerProfileSessionBean;
+    private CustomerProfileSessionBeanLocal customerProfileSessionBean;
     @EJB
-    FactSessionBeanLocal factSessionBean;
-    
+    private PortfolioFactSessionBeanLocal portfolioFactSessionBean;
+
     private WealthManagementSubscriber wms;
-    
+
     private Customer customer;
     private List<Portfolio> portfolios;
     private PieChartModel pieModel;
@@ -56,19 +59,22 @@ public class CustomerPortfolioDetailManagedBean implements Serializable{
     private String currentDate;
     private String monthStartDate;
     private String monthEndDate;
+    private Double chargeFee;
 
     //dropdown menu
     private String selectedPortfolio;
 
     private List<String> portfolioOptions = new ArrayList<>();
+    private MeterGaugeChartModel meterGaugeModel2;
+
     /**
      * Creates a new instance of CustomerPortfolioDetailManagedBean
      */
     public CustomerPortfolioDetailManagedBean() {
     }
-    
+
     public void onDropDownChange() {
-        
+
         System.out.println("on drop down changed");
         System.out.println(selectedPortfolio);
         if (!selectedPortfolio.equals("None")) {
@@ -78,14 +84,15 @@ public class CustomerPortfolioDetailManagedBean implements Serializable{
             createLineModels(selectedPortfolioIdString);
         }
     }
-    
+
     @PostConstruct
     public void init() {
         String wmsid = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("wmsid");
         wms = wealthManegementSubscriberSessionBean.getWealthManagementSubscriberById(Long.parseLong(wmsid));
-       
+
         initDate();
         customer = wms.getMainAccount().getCustomer();
+        chargeFee = wms.getMonthlyAdvisoryFee();
         portfolios = portfolioSessionBean.getListPortfoliosByCustomerId(customer.getId());
         createPieModels();
         System.out.println("portfolio size: " + portfolios.size());
@@ -97,21 +104,47 @@ public class CustomerPortfolioDetailManagedBean implements Serializable{
         } catch (Exception ex) {
             System.out.println(ex);
         }
+        createMeterGaugeModels();
     }
-    
+
     public LineChartModel getLineModel() {
         return lineModel;
     }
 
+    public MeterGaugeChartModel getMeterGaugeModel2() {
+        return meterGaugeModel2;
+    }
+    
+        private MeterGaugeChartModel initMeterGaugeModel() {
+        List<Number> intervals = new ArrayList<Number>(){{
+            add(40);
+            add(60);
+            add(80);
+            add(110);
+        }};
+         
+        return new MeterGaugeChartModel(customer.getFinancialHealthScore(), intervals);
+    }
+ 
+    private void createMeterGaugeModels() {
+        meterGaugeModel2 = initMeterGaugeModel();
+        meterGaugeModel2.setTitle("Financial Health Level");
+        meterGaugeModel2.setSeriesColors("cc6666,E7E658,93b75f,66cc66");
+        meterGaugeModel2.setGaugeLabelPosition("bottom");
+        meterGaugeModel2.setLabelHeightAdjust(110);
+        meterGaugeModel2.setIntervalOuterRadius(100);
+    }
+    
     private LineChartModel createLineModels(String selectedPortfolioIdString) {
         lineModel = initLinearModel(Long.parseLong(selectedPortfolioIdString));
         lineModel.setTitle("Investment Plan " + selectedPortfolioIdString);
+        lineModel.setAnimate(true);
 //        lineModel.setLegendPosition("e");
         Axis yAxis = lineModel.getAxis(AxisType.Y);
 
         DateAxis axis = new DateAxis("Dates");
         axis.setTickAngle(-50);
-        axis.setTickFormat("%Y-%m-%d");
+        axis.setTickFormat("%b %#d, %y");
         lineModel.getAxes().put(AxisType.X, axis);
         return lineModel;
     }
@@ -129,7 +162,7 @@ public class CustomerPortfolioDetailManagedBean implements Serializable{
 //        JsonArray data = (JsonArray) dataset.getJsonArray("data");
 
         //sql 
-        List<SinglePortfolioFactTable> spf = factSessionBean.getListPortfoliosFtByCustomerIdPortfolioId(customer.getId(), selectedPortfolioIdString);
+        List<SinglePortfolioFactTable> spf = portfolioFactSessionBean.getListPortfoliosFtByCustomerIdPortfolioId(customer.getId(), selectedPortfolioIdString);
         System.out.println("spf: " + spf.size());
         SimpleDateFormat simpleformat = new SimpleDateFormat("yyyy-MM-dd");
         LineChartModel model = new LineChartModel();
@@ -142,14 +175,46 @@ public class CustomerPortfolioDetailManagedBean implements Serializable{
 //            System.out.println(innerData.get(0) + " " + innerData.get(1));
 //            series1.set(innerData.get(0).toString(), innerData.getInt(1));
 //        }
+        double[] inputData = new double[spf.size()];
+
+        Date lastDate = new Date();
+        Double lastValue = null;
+
         for (int i = 0; i < spf.size(); i++) {
             String dateGraph = simpleformat.format(spf.get(i).getCreationDate());
             System.out.println(spf.get(i).getCreationDate() + " " + simpleformat.format(spf.get(i).getCreationDate()));
             System.out.println(spf.get(i).getTotalCurrentValue());
+
+            inputData[i] = spf.get(i).getTotalCurrentValue();
+
             series1.set(dateGraph, spf.get(i).getTotalCurrentValue());
+
+            if (i == spf.size() - 1) {
+                lastDate = spf.get(i).getCreationDate();
+                lastValue = spf.get(i).getTotalCurrentValue();
+            }
+
         }
 
         model.addSeries(series1);
+
+        //time series
+        List<Double> tsResult = portfolioSessionBean.getHoltWinterModel(inputData);
+        System.out.println("times series managed bean result: ");
+        System.out.println(tsResult.toString());
+
+        LineChartSeries series2 = new LineChartSeries();
+        series2.setLabel("Portfolio Forecast"); //insert id number        
+        Calendar cal = Calendar.getInstance();
+        series2.set(simpleformat.format(lastDate), lastValue);
+        for (int i = 0; i < tsResult.size(); i++) {
+            cal.setTime(lastDate);
+            cal.add(Calendar.DATE, 3);
+            lastDate = cal.getTime();
+            series2.set(simpleformat.format(lastDate), tsResult.get(i));
+        }
+        model.addSeries(series2);
+
         return model;
     }
 
@@ -186,6 +251,8 @@ public class CustomerPortfolioDetailManagedBean implements Serializable{
         pieModel.setLegendPosition("e");
         pieModel.setShowDataLabels(true);
         pieModel.setDiameter(150);
+        
+        pieModel.setSeriesColors(ColorUtils.getFlatUIColors(7)+","+ColorUtils.getFlatUIColors(9)+","+ColorUtils.getFlatUIColors(11)+","+ColorUtils.getFlatUIColors(15));
     }
 
     public WealthManagementSubscriber getWms() {
@@ -251,5 +318,13 @@ public class CustomerPortfolioDetailManagedBean implements Serializable{
     public void setPortfolioOptions(List<String> portfolioOptions) {
         this.portfolioOptions = portfolioOptions;
     }
-    
+
+    public Double getChargeFee() {
+        return chargeFee;
+    }
+
+    public void setChargeFee(Double chargeFee) {
+        this.chargeFee = chargeFee;
+    }
+
 }

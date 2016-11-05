@@ -10,6 +10,7 @@ import entity.wealth.InvestmentPlan;
 import entity.wealth.Portfolio;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -19,6 +20,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import server.utilities.EnumUtils.RiskToleranceLevel;
 
 /**
@@ -34,6 +37,12 @@ public class WealthManagementSubscriber implements Serializable {
     
     private Integer riskToleranceScore = null;
     private RiskToleranceLevel riskToleranceLevel = null;
+    
+    private Double monthlyAdvisoryFee = 0.0;
+    private Double accumulatedAdvisoryFee = 0.0;
+    
+    @Temporal(value = TemporalType.TIMESTAMP)
+    private Date advisoryFeeClearDate;
    
     @OneToOne(cascade = CascadeType.MERGE)
     private MainAccount mainAccount;
@@ -132,5 +141,29 @@ public class WealthManagementSubscriber implements Serializable {
 
     public void setPortfolios(List<Portfolio> portfolios) {
         this.portfolios = portfolios;
+    }
+    
+    public Double getMonthlyAdvisoryFee() {
+        return monthlyAdvisoryFee;
+    }
+
+    public void setMonthlyAdvisoryFee(Double monthlyAdvisoryFee) {
+        this.monthlyAdvisoryFee = monthlyAdvisoryFee;
+    }
+
+    public Double getAccumulatedAdvisoryFee() {
+        return accumulatedAdvisoryFee;
+    }
+
+    public void setAccumulatedAdvisoryFee(Double accumulatedAdvisoryFee) {
+        this.accumulatedAdvisoryFee = accumulatedAdvisoryFee;
+    }
+
+    public Date getAdvisoryFeeClearDate() {
+        return advisoryFeeClearDate;
+    }
+
+    public void setAdvisoryFeeClearDate(Date advisoryFeeClearDate) {
+        this.advisoryFeeClearDate = advisoryFeeClearDate;
     }
 }

@@ -5,14 +5,16 @@
  */
 package init;
 
-import ejb.session.fact.FactSessionBeanLocal;
+import ejb.session.fact.BankFactTableSessionBeanLocal;
+import ejb.session.fact.PortfolioFactSessionBeanLocal;
 import ejb.session.wealth.FinancialInstrumentSessionBeanLocal;
 import ejb.session.wealth.PortfolioSessionBeanLocal;
 import entity.customer.MainAccount;
+import entity.fact.bank.BankFactTable;
 import entity.fact.customer.SinglePortfolioFactTable;
-import entity.wealth.FinancialInstrument;
 import entity.wealth.FinancialInstrumentAndWeight;
 import entity.wealth.Portfolio;
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -20,6 +22,7 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
+import server.utilities.DateUtils;
 import server.utilities.EnumUtils;
 
 /**
@@ -31,15 +34,87 @@ import server.utilities.EnumUtils;
 public class EntityFactBuilder {
 
     @EJB
-    private FactSessionBeanLocal factSessionBean;
+    private PortfolioFactSessionBeanLocal factSessionBean;
     @EJB
     private PortfolioSessionBeanLocal portfolioSessionBean;
     @EJB
     private FinancialInstrumentSessionBeanLocal financialInstrumentSessionBean;
+    @EJB
+    private BankFactTableSessionBeanLocal bankFactTableSessionBean;
 
     private String currentDate;
     private String monthStartDate;
     private String monthEndDate;
+
+    public void initBankFact() {
+        //hardcode some historical data
+        //1
+        BankFactTable bft = new BankFactTable();
+        Date predefined = DateUtils.getLastNthEndOfMonth(2);
+        bft.setCreationDate(predefined);
+        bft.setMonthOfDate(EnumUtils.Month.SEPTEMBER);
+        bft.setYearOfDate(2016);
+        bft.setTotalDepositAcct(100L);
+        bft.setTotalActiveDepositAcct(70L);
+        bft.setNewDepositAcct(20L);
+        bft.setTotalDepositAmount(10000.0);
+        bft.setTotalDepositInterestAmount(800.0);
+
+        bft.setTotalLoanAcct(50L);
+        bft.setTotalActiveLoanAcct(20L);
+        bft.setNewLoanAcct(5L);
+        bft.setTotalLoanAmount(100000.0);
+        bft.setTotalLoanInterestEarned(7.0);
+        bft.setTotalLoanInterestUnearned(7000.0);
+        bft.setNumOfDefaultLoanAccount(3L);
+
+        bft.setTotalCardAcct(99L);
+        bft.setTotalActiveCardAcct(22L);
+        bft.setNewCardAcct(11L);
+        bft.setTotalCardAmount(1200000.0);
+        bft.setTotalOutstandingAmount(3000000.0);
+        bft.setNumOfBadCardAccount(33L);
+
+        bft.setTotalExecutedPortfolio(55L);
+        bft.setNewExecutedPortfolio(9L);
+        bft.setTotalPortfolioAmount(3000000000.0);
+        bft.setTotalPortfolioProfitAmount(33333.3);
+        bankFactTableSessionBean.createBankFactTable(bft);
+        
+        //2
+        bft = new BankFactTable();
+        predefined = DateUtils.getLastNthEndOfMonth(1);
+        bft.setCreationDate(predefined);
+        bft.setMonthOfDate(EnumUtils.Month.OCTOBER);
+        bft.setYearOfDate(2016);
+        bft.setTotalDepositAcct(120L);
+        bft.setTotalActiveDepositAcct(74L);
+        bft.setNewDepositAcct(24L);
+        bft.setTotalDepositAmount(12000.0);
+        bft.setTotalDepositInterestAmount(1100.0);
+        
+        bft.setTotalLoanAcct(55L);
+        bft.setTotalActiveLoanAcct(23L);
+        bft.setNewLoanAcct(8L);
+        bft.setTotalLoanAmount(110000.0);
+        bft.setTotalLoanInterestEarned(7.0);
+        bft.setTotalLoanInterestUnearned(7000.0);
+        bft.setNumOfDefaultLoanAccount(10L);
+
+        bft.setTotalCardAcct(109L);
+        bft.setTotalActiveCardAcct(29L);
+        bft.setNewCardAcct(15L);
+        bft.setTotalCardAmount(1300000.0);
+        bft.setTotalOutstandingAmount(4000000.0);
+        bft.setNumOfBadCardAccount(43L);
+
+        bft.setTotalExecutedPortfolio(75L);
+        bft.setNewExecutedPortfolio(15L);
+        bft.setTotalPortfolioAmount(3200000000.0);
+        bft.setTotalPortfolioProfitAmount(43333.3);
+        bankFactTableSessionBean.createBankFactTable(bft);
+        
+    }
 
     public void initSinglePortfolioFact(MainAccount demoMainAccount, Portfolio demoPortfolio) {
 
@@ -53,7 +128,7 @@ public class EntityFactBuilder {
 
             Double totalValue = 0.0; //write into spf
             for (FinancialInstrumentAndWeight fiw : fiws) {
-                
+
                 EnumUtils.FinancialInstrumentClass fic = fiw.getFi().getName();
                 Double valueChangedPercentage = factSessionBean.getFinancialInstrumentValueChangeByCreationDateAndName(date, fic);
                 Double valueChanged = fiw.getTempValue() * valueChangedPercentage;

@@ -26,17 +26,17 @@
                                 <p:panelGrid columns="2">
                                     <h:outputText value="Total Deposit Amount: " />
                                     <h:outputText value="#{portfolioManagedBean.customer.totalDepositAmount}">
-                                        <f:convertNumber minFractionDigits="2" maxFractionDigits="2"/>
+                                        <f:convertNumber minFractionDigits="2" maxFractionDigits="2" type="currency" currencySymbol="S$" />
                                     </h:outputText>
 
                                     <h:outputText value="Total Loan Amount: " />
                                     <h:outputText value="#{portfolioManagedBean.customer.totalLoanAmount}">
-                                        <f:convertNumber minFractionDigits="2" maxFractionDigits="2"/>
+                                        <f:convertNumber minFractionDigits="2" maxFractionDigits="2" type="currency" currencySymbol="S$" />
                                     </h:outputText>
 
                                     <h:outputText value="Total Credit Card Outstanding Amount: " />
                                     <h:outputText value="#{portfolioManagedBean.customer.totalCreditAmount}">
-                                        <f:convertNumber minFractionDigits="2" maxFractionDigits="2"/>
+                                        <f:convertNumber minFractionDigits="2" maxFractionDigits="2" type="currency" currencySymbol="S$" />
                                     </h:outputText>
                                 </p:panelGrid>
 
@@ -47,19 +47,33 @@
                                     <p:column headerText="Id">
                                         <h:outputText value="#{p.id}" />
                                     </p:column>
-                                    <p:column headerText="Investment Value">
+                                    <p:column headerText="Investment Amount">
+                                        <h:outputText value="#{p.executedInvestmentPlan.amountOfInvestment}">
+                                            <f:convertNumber minFractionDigits="2" maxFractionDigits="2" type="currency" currencySymbol="S$" />
+                                        </h:outputText>
+                                    </p:column>
+                                    <p:column headerText="Buying Value">
+                                        <h:outputText value="#{p.totalBuyingValue}">
+                                            <f:convertNumber minFractionDigits="2" maxFractionDigits="2" type="currency" currencySymbol="S$" />
+                                        </h:outputText>
+                                    </p:column>
+                                    <p:column headerText="Current Value">
                                         <h:outputText value="#{p.totalCurrentValue}">
-                                            <f:convertNumber minFractionDigits="2" maxFractionDigits="2"/>
+                                            <f:convertNumber minFractionDigits="2" maxFractionDigits="2" type="currency" currencySymbol="S$" />
                                         </h:outputText>
                                     </p:column>
                                     <p:column headerText="% Change">
                                         <h:outputText value="#{p.percentageChange - 100}%">
-                                            <f:convertNumber minFractionDigits="2" maxFractionDigits="2"/>
+                                            <f:convertNumber minFractionDigits="2" maxFractionDigits="2" type="currency" currencySymbol="S$" />
                                         </h:outputText>
                                     </p:column>
                                 </p:dataTable>
                                 <br/>
-
+                                <p:outputLabel value="Current Monthly Advisor Fee: "/>
+                                <h:outputText id="fee" value="#{portfolioManagedBean.chargeFee}">
+                                    <f:convertNumber type="currency" currencySymbol="S$" />
+                                </h:outputText>
+                                <br/><br/>
                                 <h:outputText value="Overall Total Investment Value: " />
                                 <h:outputText value="#{portfolioManagedBean.customer.totalPortfolioCurrentValue}" />
                                 <br/><br/>

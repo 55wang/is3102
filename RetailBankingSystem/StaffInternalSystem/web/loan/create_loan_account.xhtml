@@ -74,9 +74,12 @@
 
                                 <p:outputLabel value="Start Date:" />
                                 <p:calendar value="#{createLoanAccountManagedBean.paymentStartDate}" mode="inline" required="true" />
-
+                                
                                 <p:outputLabel value="Principal Amount: " />
                                 <p:inputText value="#{createLoanAccountManagedBean.principalAmount}" required="true" />
+
+                                <h:outputText value="Tenure: " />
+                                <h:outputText value="#{createLoanAccountManagedBean.currentApplication.tenure}" />
 
                                 <p:outputLabel value="Select Loan Product: " />
                                 <p:selectOneMenu value="#{createLoanAccountManagedBean.selectedLoanProductId}" rendered="true" required="true">

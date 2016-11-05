@@ -14,6 +14,7 @@ import entity.loan.LoanApplication;
 import entity.loan.LoanProduct;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -64,8 +65,10 @@ public class CarLoanApplicationManagedBean implements Serializable {
     private Double carLoanMonthlyInstalment=0.0;
     private Double carOpenMarketValue;
     private Integer carTenure;
+    private Integer carMaxTenure;
     private Long carTenureProductId;
     private Double LTV;
+    private Date birthDay;
     
     /**
      * Creates a new instance of CarLoanApplicationManagedBean
@@ -78,7 +81,7 @@ public class CarLoanApplicationManagedBean implements Serializable {
         carLoanProducts = loanProductBean.getAllCarLoanProduct();
         if (carLoanProducts.size() > 0 && carLoanProducts.get(0).getLoanInterestCollection().getLoanInterests().size() > 0) {
             carLoanAnnualInterestRate = carLoanProducts.get(0).getLoanInterestCollection().getLoanInterests().get(0).getInterestRate();
-            setCarTenure(carLoanProducts.get(0).getTenure());
+            setCarMaxTenure(carLoanProducts.get(0).getTenure());
         }
     }
     
@@ -111,8 +114,8 @@ public class CarLoanApplicationManagedBean implements Serializable {
             return;
         }
         
-        setMaxCarLoanAmt(calculator.calculateMaxCarLoanAmt(getCarOpenMarketValue()));
-        setMaxCarLoanMonthlyInstalment(calculator.calculateCarMonthlyInstalment(getCarLoanAnnualInterestRate(), getCarTenure(), getMaxCarLoanAmt()));   
+        setMaxCarLoanMonthlyInstalment(calculator.calculateMaxPPMonthlyInstalment(monthlyIncome, otherLoan));   
+        setMaxCarLoanAmt(calculator.calculateMaxCarLoanAmt(maxCarLoanMonthlyInstalment, carTenure));
         
         JSUtils.callJSMethod("PF('myWizard').next()");
     }
@@ -134,6 +137,7 @@ public class CarLoanApplicationManagedBean implements Serializable {
         newApplication.setProductType(EnumUtils.LoanProductType.LOAN_PRODUCT_TYPE_CAR);
         newApplication.setRequestedAmount(loanAmount);
         newApplication.setMarketValue(carOpenMarketValue);
+        newApplication.setTenure(carTenure);
         newApplication.setLoanProduct(loanProductBean.getLoanProductById(loanProductId));
         newApplication.setLoanOfficer(staffAccountSessionBean.getAccountByUsername(ConstantUtils.LOAN_OFFICIER_USERNAME));
         // ejb save and update
@@ -411,6 +415,22 @@ public class CarLoanApplicationManagedBean implements Serializable {
     public void setLTV(Double LTV) {
         this.LTV = LTV;
     }
+
+    public Integer getCarMaxTenure() {
+        return carMaxTenure;
+    }
+
+    public void setCarMaxTenure(Integer carMaxTenure) {
+        this.carMaxTenure = carMaxTenure;
+    }
+
+    public Date getBirthDay() {
+        return birthDay;
+    }
+
+    public void setBirthDay(Date birthDay) {
+        this.birthDay = birthDay;
+    }
     
-    
+  
 }

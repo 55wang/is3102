@@ -38,15 +38,20 @@ public class InvestmentPlan implements Serializable {
     
     @Temporal(value = TemporalType.TIMESTAMP)
     private final Date creationDate = new Date();
-    private Integer amountOfInvestment;  
-    private Double customerExpectedReturn; //for the entire plan
+    @Temporal(value = TemporalType.TIMESTAMP)
+    private Date executionDate;
+    @Temporal(value = TemporalType.TIMESTAMP)
+    private Date soldDate;
+    private Integer amountOfInvestment; 
     private Double systemPredictReturn;
     private Integer systemPredictRisk;
     private InvestmentRiskLevel riskLevel;
     private List<FinancialInstrument> preferedFinancialInstrument = new ArrayList<>();
     private String remarks = "";
     private InvestmentPlanStatus status;
-    private InvestmentPlanSatisfactionLevel satisfactionLevel;
+    private InvestmentPlanSatisfactionLevel satisfactionLevel;  
+    private Double montylyETFfee = 0.0;
+    private Double totalETFfee = 0.0;
 
     @OneToOne(cascade = CascadeType.MERGE, mappedBy = "executedInvestmentPlan")
     private Portfolio portfolio;
@@ -94,14 +99,6 @@ public class InvestmentPlan implements Serializable {
 
     public void setAmountOfInvestment(Integer amountOfInvestment) {
         this.amountOfInvestment = amountOfInvestment;
-    }
-
-    public Double getCustomerExpectedReturn() {
-        return customerExpectedReturn;
-    }
-
-    public void setCustomerExpectedReturn(Double customerExpectedReturn) {
-        this.customerExpectedReturn = customerExpectedReturn;
     }
 
     public Double getSystemPredictReturn() {
@@ -188,4 +185,35 @@ public class InvestmentPlan implements Serializable {
         this.portfolio = portfolio;
     }
 
+    public Double getMontylyETFfee() {
+        return montylyETFfee;
+    }
+
+    public void setMontylyETFfee(Double montylyETFfee) {
+        this.montylyETFfee = montylyETFfee;
+    }
+
+    public Double getTotalETFfee() {
+        return totalETFfee;
+    }
+
+    public void setTotalETFfee(Double totalETFfee) {
+        this.totalETFfee = totalETFfee;
+    }
+
+    public Date getExecutionDate() {
+        return executionDate;
+    }
+
+    public void setExecutionDate(Date executionDate) {
+        this.executionDate = executionDate;
+    }
+
+    public Date getSoldDate() {
+        return soldDate;
+    }
+
+    public void setSoldDate(Date soldDate) {
+        this.soldDate = soldDate;
+    }
 }

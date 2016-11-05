@@ -20,7 +20,7 @@ import server.utilities.EnumUtils;
  * @author wang
  */
 @Local
-public interface FactSessionBeanLocal {
+public interface PortfolioFactSessionBeanLocal {
 
     public FinancialInstrumentFactTable createFinancialInstrumentFactTable(FinancialInstrumentFactTable fif);
     public List<SinglePortfolioFactTable> getListPortfoliosFtByCustomerIdPortfolioId(Long custId, Long portId);
@@ -29,6 +29,7 @@ public interface FactSessionBeanLocal {
     public List<SinglePortfolioFactTable> getListPortfoliosFtByCustomerId(Long custId);
     public SinglePortfolioFactTable updateSinglePortfolioFactTable(SinglePortfolioFactTable spf);
     public SinglePortfolioFactTable getSinglePortfolioFactTable(Date date, Long custId, Long portId);
+    public List<FinancialInstrumentFactTable> getListFinancialInstrumentFactTableByETFName(String etf);
     public List<Date> getDistinctDateFromFIFactTable();
     public Double getFinancialInstrumentValueChangeByCreationDateAndName(Date date, EnumUtils.FinancialInstrumentClass name);
 }

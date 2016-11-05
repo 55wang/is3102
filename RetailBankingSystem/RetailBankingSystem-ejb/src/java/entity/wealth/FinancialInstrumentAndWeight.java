@@ -29,6 +29,7 @@ public class FinancialInstrumentAndWeight implements Serializable {
     private Double currentValuePerShare = 0.0;
     private Double buyingValuePerShare = 0.0;
     private Integer buyingNumberOfShare = 0;
+    private Double soldValuePerShare = 0.0;
     
     private Double tempValue;
 
@@ -118,5 +119,13 @@ public class FinancialInstrumentAndWeight implements Serializable {
 
     public void setTempValue(Double tempValue) {
         this.tempValue = tempValue;
+    }
+
+    public Double getSoldValuePerShare() {
+        return soldValuePerShare;
+    }
+
+    public void setSoldValuePerShare(Double soldValuePerShare) {
+        this.soldValuePerShare = soldValuePerShare;
     }
 }

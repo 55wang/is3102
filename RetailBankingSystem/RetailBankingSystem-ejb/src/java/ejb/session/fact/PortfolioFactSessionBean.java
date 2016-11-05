@@ -21,7 +21,7 @@ import server.utilities.EnumUtils;
  * @author wang
  */
 @Stateless
-public class FactSessionBean implements FactSessionBeanLocal {
+public class PortfolioFactSessionBean implements PortfolioFactSessionBeanLocal {
 
     @PersistenceContext(unitName = "RetailBankingSystem-ejbPU")
     private EntityManager em;
@@ -69,7 +69,7 @@ public class FactSessionBean implements FactSessionBeanLocal {
 
     @Override
     public List<SinglePortfolioFactTable> getListPortfoliosFtByCustomerIdPortfolioId(Long custId, Long portId) {
-        Query q = em.createQuery("SELECT p FROM SinglePortfolioFactTable p where p.portfolio.id =:inPortId AND p.customer.id =:inCustId");
+        Query q = em.createQuery("SELECT p FROM SinglePortfolioFactTable p where p.portfolio.id =:inPortId AND p.customer.id =:inCustId ORDER BY p.creationDate asc");
         q.setParameter("inCustId", custId);
         q.setParameter("inPortId", portId);
         return q.getResultList();
@@ -86,5 +86,12 @@ public class FactSessionBean implements FactSessionBeanLocal {
     public SinglePortfolioFactTable getLatestPortfolioFtByCustomerIdPortfolioId(Long custId, Long portId) {
         //to be continued
         return null;
+    }
+    
+    @Override
+    public List<FinancialInstrumentFactTable> getListFinancialInstrumentFactTableByETFName(String etf){
+        Query q = em.createQuery("SELECT p FROM FinancialInstrumentFactTable p where p.fi.ETFName =:etf ORDER BY p.creationDate asc");
+        q.setParameter("etf", etf);
+        return q.getResultList();
     }
 }
