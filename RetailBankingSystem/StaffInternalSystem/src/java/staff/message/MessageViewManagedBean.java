@@ -93,7 +93,7 @@ public class MessageViewManagedBean implements Serializable {
 
     public String getMessageLabel(Message m) {
         if (currentConversation.getReceiver().getUsername().equals(SessionUtils.getStaffUsername())) {
-            return isReceiver(m) ? currentConversation.getSender().getNameLabel() : currentConversation.getReceiver().getNameLabel();
+            return isReceiver(m) ? currentConversation.getSender().getNameLabel(): currentConversation.getReceiver().getNameLabel();
         } else {
             return isReceiver(m) ? currentConversation.getReceiver().getNameLabel() : currentConversation.getSender().getNameLabel();
         }
