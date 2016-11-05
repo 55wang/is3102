@@ -22,9 +22,11 @@ import entity.dams.rules.ConditionInterest;
 import entity.dams.rules.Interest;
 import entity.dams.rules.RangeInterest;
 import entity.dams.rules.TimeRangeInterest;
+import entity.embedded.CumulatedInterest;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
@@ -793,6 +795,7 @@ public class EntityDAMSBuilder {
         dp = customerDepositSessionBean.createAccount(customAccount);
         initTransactions(dp);
         initCheques(dp);
+        initInterestTransaction(dp);
         cardAcctSessionBean.createDebitAccount(customAccount);
 
         savingAccount = new CustomerDepositAccount();
@@ -876,5 +879,16 @@ public class EntityDAMSBuilder {
                 chequeBean.createCheque(c);
             }
         }
+    }
+    
+    private void initInterestTransaction(DepositAccount account){
+        for(int i = 0; i < 10; i++){
+            Random ran = new Random();
+            Double randomInterest = ran.nextDouble() + 5.0;
+            CumulatedInterest ci = new CumulatedInterest();
+            ci.setCummulativeAmount(BigDecimal.valueOf(randomInterest));
+            account.setCumulatedInterest(ci);
+            customerDepositSessionBean.creditInterestAccount(account);
+        }      
     }
 }

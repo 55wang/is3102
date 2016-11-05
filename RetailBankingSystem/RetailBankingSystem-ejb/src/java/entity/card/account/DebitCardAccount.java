@@ -7,12 +7,16 @@ package entity.card.account;
 
 import entity.dams.account.CustomerDepositAccount;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import server.utilities.EnumUtils;
@@ -43,6 +47,8 @@ public class DebitCardAccount implements Serializable {
     private double transactionMonthlyLimit;
     private double transactionDailyLimit;
     
+    @OneToMany(cascade = {CascadeType.MERGE}, mappedBy = "debitCardAccount")
+    private List<CardTransaction> cardTransactions = new ArrayList<>();
     
     // mappings
     @ManyToOne()
@@ -161,4 +167,11 @@ public class DebitCardAccount implements Serializable {
         this.customerDepositAccount = customerDepositAccount;
     }
 
+    public List<CardTransaction> getCardTransactions() {
+        return cardTransactions;
+    }
+
+    public void setCardTransactions(List<CardTransaction> cardTransactions) {
+        this.cardTransactions = cardTransactions;
+    }
 }
