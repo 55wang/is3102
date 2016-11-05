@@ -27,6 +27,7 @@ public class BizIntelligenceSessionBean implements BizIntelligenceSessionBeanLoc
     public Long getBankTotalDepositAcct(Date startDate, Date endDate) {
         System.out.println(startDate.toString());
         System.out.println(endDate.toString());
+
         Query q = em.createQuery("SELECT count(d.accountNumber) FROM DepositAccount d "
                 + "WHERE d.status=:activeStatus "
                 + "AND d.creationDate BETWEEN :startDate AND :endDate");
