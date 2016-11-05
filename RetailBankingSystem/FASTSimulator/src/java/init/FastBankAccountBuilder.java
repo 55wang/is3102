@@ -50,13 +50,13 @@ public class FastBankAccountBuilder {
         FastSettlement mbs = new FastSettlement();
         mbs.setBankCode("001");
         mbs.setAmount(BigDecimal.ZERO);
-        mbs.setName("MBS Singapore");
+        mbs.setName("Merlion Bank Singapore");
         fastBean.persistSettlement(mbs);
 
         FastSettlement citi = new FastSettlement();
         citi.setBankCode("005");
         citi.setAmount(BigDecimal.ZERO);
-        citi.setName("CITIBANK");
+        citi.setName("CITIBANK NA");
         fastBean.persistSettlement(citi);
 
         FastSettlement ocbc = new FastSettlement();

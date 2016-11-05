@@ -7,6 +7,7 @@ package ejb.session.bean;
 
 import entity.FastSettlement;
 import entity.PaymentTransfer;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Asynchronous;
 import javax.ejb.Stateless;
@@ -62,27 +63,27 @@ public class FASTSessionBean {
         // send to MEPS+
         Form form = new Form(); //bank info
         form.param("mbsCode", settlements.get(0).getBankCode());
-        form.param("mbsSettlementAmount", settlements.get(0).getAmount().toString());
+        form.param("mbsSettlementAmount", settlements.get(0).getAmount().setScale(4).toString());
         form.param("mbsName", settlements.get(0).getName());
         form.param("citiCode", settlements.get(1).getBankCode());
-        form.param("citiSettlementAmount", settlements.get(1).getAmount().toString());
+        form.param("citiSettlementAmount", settlements.get(1).getAmount().setScale(4).toString());
         form.param("citiName", settlements.get(1).getName());
         form.param("ocbcCode", settlements.get(2).getBankCode());
-        form.param("ocbcSettlementAmount", settlements.get(2).getAmount().toString());
+        form.param("ocbcSettlementAmount", settlements.get(2).getAmount().setScale(4).toString());
         form.param("ocbcName", settlements.get(2).getName());
-        
-        System.out.println();
-        System.out.println("Sending Net Settlement Amount to MEPs…");
+
+        System.out.println(".");
+        System.out.println("[SACH]:");
+        System.out.println("Sending Net Settlement Amount to MEPS...");
         
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(MEPS_SETTLEMENT);
 
         // This is the response
         JsonObject jsonString = target.request(MediaType.APPLICATION_JSON).post(Entity.entity(form, MediaType.APPLICATION_FORM_URLENCODED), JsonObject.class);
-        System.out.println(jsonString);
 
         if (jsonString.getString("message").equals("SUCCESS")) {
-            System.out.println("FAST Transfer to other bank B with details");
+            System.out.println("[SACH]");
 //            PaymentTransfer pt = findPaymentTransferByReferenceNumber(referenceNumber);
 //            pt.setSettled(Boolean.TRUE);
 //            merge(pt);
@@ -93,7 +94,8 @@ public class FASTSessionBean {
 
     private List<FastSettlement> getSettlements(PaymentTransfer tr) {
         Query q = em.createQuery("SELECT fs FROM FastSettlement fs");
-        List<FastSettlement> settlements = q.getResultList();
+        List<FastSettlement> settlements = new ArrayList<FastSettlement>();
+        settlements = q.getResultList();
         if (settlements.isEmpty()) {
             System.out.println("Entity builder failed");
         }

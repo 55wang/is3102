@@ -68,9 +68,23 @@ public class TransferFastService {
         pt.setSettled(false);
         fastBean.persist(pt);
 
-        System.out.println("Sending Net Settlement Amount to MEPS...");
         fastBean.sendMEPS(pt);
 
+        try {
+            Thread.sleep(500);                 //1000 milliseconds is one second.
+        } catch (InterruptedException ex) {
+            Thread.currentThread().interrupt();
+        }
+
+        System.out.println(".");
+        System.out.println("[SACH]:");
+        System.out.println("Sending to receiving bank the payment instructions...");
+        System.out.println("Received successful response from receiving bank");
+        //TODO send to new receiving bank if necesssary
+
+        System.out.println(".");
+        System.out.println("[SACH]:");
+        System.out.println("Sending to originating bank response...");
         System.out.println("Sending back fast_transfer_clearing response");
         MessageDTO message = new MessageDTO();
         message.setCode(0);

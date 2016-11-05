@@ -53,7 +53,7 @@ public class InterBankTransferManagedBean implements Serializable {
     private WebserviceSessionBeanLocal webserviceBean;
     @EJB
     private OTPSessionBeanLocal otpBean;
-    
+
     private String payeeId;
     private String bankId;
     private String fromAccountNo;
@@ -66,13 +66,12 @@ public class InterBankTransferManagedBean implements Serializable {
     private List<BankEntity> bankList = new ArrayList<>();
     private List<CustomerDepositAccount> accounts = new ArrayList<>();
     private List<String> purposeOptions = CommonUtils.getEnumList(EnumUtils.TransferPurpose.class);
-    
+
     private String inputTokenString;
-    
+
     public InterBankTransferManagedBean() {
     }
-    
-    
+
     @PostConstruct
     public void init() {
         ma = loginBean.getMainAccountByUserID(SessionUtils.getUserName());
@@ -82,7 +81,7 @@ public class InterBankTransferManagedBean implements Serializable {
         payeeId = "New Receipiant";
         calculateTransferLimits();
     }
-    
+
     public void changePayee() {
         if (getPayeeId().equals("New Receipiant")) {
             setPayee(new Payee());
@@ -90,20 +89,20 @@ public class InterBankTransferManagedBean implements Serializable {
             setPayee(transferBean.getPayeeById(Long.parseLong(getPayeeId())));
         }
     }
-    
+
     public void transfer() {
-        
+
         if (!checkOptAndProceed()) {
             return;
         }
-        
+
         DepositAccount fromAccount = depositBean.getAccountFromId(fromAccountNo);
         if (fromAccount != null && fromAccount.getBalance().compareTo(amount) < 0) {
             JSUtils.callJSMethod("PF('myWizard').back()");
             MessageUtils.displayError(ConstantUtils.NOT_ENOUGH_BALANCE);
             return;
         }
-        
+
         BigDecimal currentTransferLimit = new BigDecimal(transferLimitLeft);
         System.out.println(currentTransferLimit);
         System.out.println(amount);
@@ -113,7 +112,7 @@ public class InterBankTransferManagedBean implements Serializable {
             MessageUtils.displayError(ConstantUtils.EXCEED_TRANSFER_LIMIT);
             return;
         }
-        
+
         if (getPayeeId().equals("New Receipiant")) {
             BankEntity bank = billBean.getBankEntityById(Long.parseLong(bankId));
             payee.setBankCode(bank.getBankCode());
@@ -135,7 +134,7 @@ public class InterBankTransferManagedBean implements Serializable {
             MessageUtils.displayInfo(ConstantUtils.TRANSFER_SUCCESS);
         }
     }
-    
+
     public String getBankName(String bankCode) {
         System.out.println(bankCode);
         if (bankCode == null || bankCode.equals("")) {
@@ -144,13 +143,13 @@ public class InterBankTransferManagedBean implements Serializable {
         BankEntity b = billBean.getBankEntityByCode(bankCode);
         return b.getName();
     }
-    
+
     public void sendOpt() {
         System.out.println("sendOTP clicked, sending otp to: " + ma.getCustomer().getPhone());
         JSUtils.callJSMethod("PF('myWizard').next()");
         otpBean.generateOTP(ma.getCustomer().getPhone());
     }
-    
+
     private Boolean checkOptAndProceed() {
         if (inputTokenString == null || inputTokenString.isEmpty()) {
             MessageUtils.displayError("Please enter one time password!");
@@ -168,7 +167,7 @@ public class InterBankTransferManagedBean implements Serializable {
             return false;
         }
     }
-    
+
     private void transferClearing() {
         DepositAccount da = depositBean.getAccountFromId(fromAccountNo);
         System.out.println("----------------FAST transfer clearing----------------");
@@ -189,7 +188,7 @@ public class InterBankTransferManagedBean implements Serializable {
         depositBean.transferFromAccount(da, amount);
         calculateTransferLimits();
     }
-    
+
     private void calculateTransferLimits() {
         BigDecimal todayTransferAmount = transferBean.getTodayBankTransferAmount(ma, EnumUtils.PayeeType.LOCAL);
         BigDecimal currentTransferLimit = new BigDecimal(ma.getTransferLimits().getDailyIntraBankLimit().toString());
@@ -349,7 +348,7 @@ public class InterBankTransferManagedBean implements Serializable {
     public void setAccounts(List<CustomerDepositAccount> accounts) {
         this.accounts = accounts;
     }
-    
+
     /**
      * @return the inputTokenString
      */

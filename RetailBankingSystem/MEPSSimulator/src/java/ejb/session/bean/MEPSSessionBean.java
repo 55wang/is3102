@@ -6,11 +6,14 @@
 package ejb.session.bean;
 
 import entity.SettlementAccount;
+import java.math.BigDecimal;
+import java.util.List;
 import javax.ejb.Asynchronous;
 import javax.ejb.Stateless;
 import javax.json.JsonObject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
@@ -24,13 +27,13 @@ import javax.ws.rs.core.MediaType;
  */
 @Stateless
 public class MEPSSessionBean {
-    
+
     private final String SACH_INFORM_NET_SETTLEMENT = "https://localhost:8181/SACHSimulator/sach/sach_inform_settlement";
     private final String FAST_INFORM_NET_SETTLEMENT = "https://localhost:8181/FASTSimulator/fast/fast_inform_settlement";
-    
+
     @PersistenceContext(unitName = "MEPSSimulatorPU")
     private EntityManager em;
-    
+
     public SettlementAccount find(String bankCode) {
         return em.find(SettlementAccount.class, bankCode);
     }
@@ -39,15 +42,15 @@ public class MEPSSessionBean {
         em.persist(object);
         return object;
     }
-    
+
     public SettlementAccount merge(SettlementAccount object) {
         em.merge(object);
         return object;
     }
-    
+
     @Asynchronous
     public void informSACHSettlement(String fromBankCode, String toBankCode, String netSettlementAmount) {
-        
+
         // send to mbs
         Form form = new Form(); //bank info
         form.param("netSettlementAmount", netSettlementAmount);
@@ -60,17 +63,17 @@ public class MEPSSessionBean {
         // This is the response
         JsonObject jsonString = target.request(MediaType.APPLICATION_JSON).post(Entity.entity(form, MediaType.APPLICATION_FORM_URLENCODED), JsonObject.class);
         System.out.println(jsonString);
-        
+
         if (jsonString.getString("message").equals("SUCCESS")) {
             System.out.println("Request received");
         } else {
             System.out.println("FAIL");
         }
     }
-    
+
     @Asynchronous
     public void informFASTSettlement(String fromBankCode, String toBankCode, String netSettlementAmount, String referenceNumber) {
-        
+
         // send to mbs
         Form form = new Form(); //bank info
         form.param("netSettlementAmount", netSettlementAmount);
@@ -84,11 +87,36 @@ public class MEPSSessionBean {
         // This is the response
         JsonObject jsonString = target.request(MediaType.APPLICATION_JSON).post(Entity.entity(form, MediaType.APPLICATION_FORM_URLENCODED), JsonObject.class);
         System.out.println(jsonString);
-        
+
         if (jsonString.getString("message").equals("SUCCESS")) {
             System.out.println("Request received");
         } else {
             System.out.println("FAIL");
         }
+    }
+
+    public List<SettlementAccount> updateSettlementAccountsBalance(String mbsCode, String mbsSettlementAmount,
+            String citiCode, String citiSettlementAmount, String ocbcCode, String ocbcSettlementAmount) {
+        List<SettlementAccount> accounts = retrieveThreeSettlementAccounts(mbsCode, citiCode, ocbcCode);
+        for (SettlementAccount sa : accounts) {
+            if (sa.getBankCode().equals(mbsCode)) {
+                sa.setAmount(sa.getAmount().add(new BigDecimal(mbsSettlementAmount)));
+            } else if (sa.getBankCode().equals(citiCode)) {
+                sa.setAmount(sa.getAmount().add(new BigDecimal(citiSettlementAmount)));
+            } else if (sa.getBankCode().equals(ocbcCode)) {
+                sa.setAmount(sa.getAmount().add(new BigDecimal(ocbcSettlementAmount)));
+            } else {
+            }
+        }
+        return accounts;
+    }
+
+    public List<SettlementAccount> retrieveThreeSettlementAccounts(String mbsCode, String citiCode, String ocbcCode) {
+        Query q = em.createQuery("SELECT sa FROM SettlementAccount sa WHERE sa.bankCode = :bc1 OR sa.bankCode = :bc2 OR sa.bankCode = :bc3 ");
+        q.setParameter("bc1", mbsCode);
+        q.setParameter("bc2", citiCode);
+        q.setParameter("bc3", ocbcCode);
+
+        return q.getResultList();
     }
 }
