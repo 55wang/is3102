@@ -43,7 +43,7 @@ public class InformSettlementService {
         
         // makes payment to other bank
         System.out.println("Paying Settlement to other bank" + toBankCode);
-        fastBean.sendMEPS(netSettlementAmount, toBankCode, referenceNumber);
+//        fastBean.sendMEPS(netSettlementAmount, toBankCode, referenceNumber);
         
         System.out.println("Sending back fast_inform_settlement response");
         MessageDTO err = new MessageDTO();

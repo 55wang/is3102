@@ -171,7 +171,7 @@ public class InterBankTransferManagedBean implements Serializable {
     
     private void transferClearing() {
         DepositAccount da = depositBean.getAccountFromId(fromAccountNo);
-        System.out.println("FAST transfer clearing");
+        System.out.println("----------------FAST transfer clearing----------------");
         TransferRecord tr = new TransferRecord();
         tr.setAccountNumber(payee.getAccountNumber());
         tr.setReferenceNumber(GenerateAccountAndCCNumber.generateReferenceNumber());

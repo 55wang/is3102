@@ -24,38 +24,37 @@ import org.primefaces.json.JSONObject;
  */
 @Path("meps_settlement")
 public class MEPSSettlementService {
-    
+
     @EJB
     private MEPSSessionBean mepsBean;
-    
+
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     public Response netSettlement(
-            @FormParam("fromBankCode") String fromBankCode,
-            @FormParam("toBankCode") String toBankCode,
-            @FormParam("netSettlementAmount") String netSettlementAmount
+            @FormParam("mbsCode") String mbsCode,
+            @FormParam("mbsSettlementAmount") String mbsSettlementAmount,
+            @FormParam("mbsName") String mbsName,
+            @FormParam("citiCode") String citiCode,
+            @FormParam("citiSettlementAmount") String citiSettlementAmount,
+            @FormParam("cititName") String citiName,
+            @FormParam("ocbcCode") String ocbcCode,
+            @FormParam("ocbcSettlementAmount") String ocbcSettlementAmount,
+            @FormParam("ocbcName") String ocbcName
     ) {
-        System.out.println("Received fromBankCode:" + fromBankCode);
-        System.out.println("Received toBankCode:" + toBankCode);
-        System.out.println("Received netSettlementAmount:" + netSettlementAmount);
+        System.out.println("[MEPS] Received Net Settlement from SACH:");
+        System.out.println("       " + mbsCode + " " + mbsName + ": " + mbsSettlementAmount);
+        System.out.println("       " + citiCode + " " + citiName + ": " + citiSettlementAmount);
+        System.out.println("       " + ocbcCode + " " + ocbcName + ": " + ocbcSettlementAmount);
         System.out.println("Received POST http meps_settlement");
 
-        SettlementAccount fromAccount = mepsBean.find(fromBankCode);
-        SettlementAccount toAccount = mepsBean.find(toBankCode);
-        
-        fromAccount.removeBalance(new BigDecimal(netSettlementAmount));
-        toAccount.addBalance(new BigDecimal(netSettlementAmount));
-        
-        mepsBean.merge(fromAccount);
-        mepsBean.merge(toAccount);
-        
+
+
         System.out.println("Sending back meps_settlement response");
         MessageDTO err = new MessageDTO();
         err.setCode(0);
         err.setMessage("SUCCESS");
         return Response.ok(new JSONObject(err).toString(), MediaType.APPLICATION_JSON).build();
     }
-    
-    
+
 }

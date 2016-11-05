@@ -138,7 +138,7 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
             message.setSubject("Your credit card application is successful");
             message.setText("Dear Customer, Thank you for applying credit card at merionlion banking.\n"
                     + "Your Reward Credit Card No.  " + ccNumber + " is on the way.\n"
-                    + "CCV:   " + ccNumber + " is on the way.\n"
+                    + "CCV:   " + ccv + " is on the way.\n"
                     + "Your ibanking account is " + userName + " \n"
                     + "Click to activate your member account: https://localhost:8181/InternetBankingSystem/common/customer_activate_account.xhtml?email=" + recipient + "&code=" + pwd);
 

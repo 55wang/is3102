@@ -65,6 +65,8 @@ public class TransferClearingService {
         pt.setMyInitial(myInitial);
         pt.setSettled(false);
         sachBean.persist(pt);
+        
+        
 
         System.out.println("At 4:30, SACH tells MBS how much to pay via MEPS");
         System.out.println("By 5:30, MBS must pay");
