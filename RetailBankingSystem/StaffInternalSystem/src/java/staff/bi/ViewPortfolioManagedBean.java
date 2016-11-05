@@ -5,9 +5,11 @@
  */
 package staff.bi;
 
+import ejb.session.bi.BizIntelligenceSessionBeanLocal;
 import ejb.session.fact.BankFactTableSessionBeanLocal;
 import entity.fact.bank.BankFactTable;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -17,6 +19,7 @@ import org.primefaces.model.chart.Axis;
 import org.primefaces.model.chart.AxisType;
 import org.primefaces.model.chart.BarChartModel;
 import org.primefaces.model.chart.ChartSeries;
+import server.utilities.DateUtils;
 
 /**
  *
@@ -28,14 +31,30 @@ public class ViewPortfolioManagedBean implements Serializable {
 
     @EJB
     BankFactTableSessionBeanLocal bankFactTableSessionBean;
+    @EJB
+    BizIntelligenceSessionBeanLocal bizIntelligenceSessionBean;
 
     private BarChartModel portfolioAmtBarModel;
+
+    //portfolio service
+    private Long bankTotalExecutedPortfolio;
+    private Long bankNewExecutedPortfolio;
+    private Double bankTotalInvestmentAmount;
+    private Double bankTotalProfitAmount;
+
+    private Date startDate = DateUtils.getBeginOfMonth();
+    private Date endDate = DateUtils.getEndOfMonth();
 
     public ViewPortfolioManagedBean() {
     }
 
     @PostConstruct
     public void init() {
+        bankTotalExecutedPortfolio = bizIntelligenceSessionBean.getBankTotalExecutedPortfolio(startDate, endDate);
+        bankNewExecutedPortfolio = bizIntelligenceSessionBean.getBankNewExecutedPortfolio(startDate, endDate);
+        bankTotalInvestmentAmount = bizIntelligenceSessionBean.getBankTotalInvestmentAmount(startDate, endDate);
+        bankTotalProfitAmount = bizIntelligenceSessionBean.getBankTotalProfitAmount(startDate, endDate);
+
         createCardTransactionBarModel();
     }
 
@@ -73,6 +92,54 @@ public class ViewPortfolioManagedBean implements Serializable {
 
     public void setPortfolioAmtBarModel(BarChartModel portfolioAmtBarModel) {
         this.portfolioAmtBarModel = portfolioAmtBarModel;
+    }
+
+    public Double getBankTotalInvestmentAmount() {
+        return bankTotalInvestmentAmount;
+    }
+
+    public void setBankTotalInvestmentAmount(Double bankTotalInvestmentAmount) {
+        this.bankTotalInvestmentAmount = bankTotalInvestmentAmount;
+    }
+
+    public Double getBankTotalProfitAmount() {
+        return bankTotalProfitAmount;
+    }
+
+    public void setBankTotalProfitAmount(Double bankTotalProfitAmount) {
+        this.bankTotalProfitAmount = bankTotalProfitAmount;
+    }
+
+    public Long getBankTotalExecutedPortfolio() {
+        return bankTotalExecutedPortfolio;
+    }
+
+    public void setBankTotalExecutedPortfolio(Long bankTotalExecutedPortfolio) {
+        this.bankTotalExecutedPortfolio = bankTotalExecutedPortfolio;
+    }
+
+    public Long getBankNewExecutedPortfolio() {
+        return bankNewExecutedPortfolio;
+    }
+
+    public void setBankNewExecutedPortfolio(Long bankNewExecutedPortfolio) {
+        this.bankNewExecutedPortfolio = bankNewExecutedPortfolio;
+    }
+
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
     }
 
 }

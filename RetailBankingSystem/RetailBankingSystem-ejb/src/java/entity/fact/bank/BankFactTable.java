@@ -6,7 +6,6 @@
 package entity.fact.bank;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -33,30 +32,29 @@ public class BankFactTable implements Serializable {
     private EnumUtils.Month monthOfDate;
     private Integer yearOfDate;
 
-    private Integer totalDepositAcct;
-    private Integer totalActiveDepositAcct;
-    private Integer newDepositAcct; //for this month
-    private BigDecimal totalDepositAmount;
-    private Double avgDepositInterestRate;
+    private Long totalDepositAcct;
+    private Long totalActiveDepositAcct;
+    private Long newDepositAcct; //for this month
+    private Double totalDepositAmount;
     private Double totalDepositInterestAmount;
 
-    private Integer totalLoanAcct;
-    private Integer totalActiveLoanAcct;
-    private Integer newLoanAcct;
+    private Long totalLoanAcct;
+    private Long totalActiveLoanAcct;
+    private Long newLoanAcct;
     private Double totalLoanAmount;
-    private Double avgLoanInterestRate;
-    private Double totalLoanInterestAmount;
-    private Integer numOfDefaultLoanAccount;
+    private Double totalLoanInterestEarned;
+    private Double totalLoanInterestUnearned;
+    private Long numOfDefaultLoanAccount;
 
-    private Integer totalCardAcct; //only for credit card
-    private Integer totalActiveCardAcct;
-    private Integer newCardAcct;
+    private Long totalCardAcct; //only for credit card
+    private Long totalActiveCardAcct;
+    private Long newCardAcct;
     private Double totalCardAmount;
     private Double totalOutstandingAmount;
-    private Integer numOfBadCardAccount;
+    private Long numOfBadCardAccount;
 
-    private Integer totalExecutedPortfolio;
-    private Integer newExecutedPortfolio;
+    private Long totalExecutedPortfolio;
+    private Long newExecutedPortfolio;
     private Double totalPortfolioAmount;
     private Double totalPortfolioProfitAmount;
 
@@ -111,100 +109,12 @@ public class BankFactTable implements Serializable {
         this.yearOfDate = yearOfDate;
     }
 
-    public Integer getTotalDepositAcct() {
-        return totalDepositAcct;
-    }
-
-    public void setTotalDepositAcct(Integer totalDepositAcct) {
-        this.totalDepositAcct = totalDepositAcct;
-    }
-
-    public Integer getTotalActiveDepositAcct() {
-        return totalActiveDepositAcct;
-    }
-
-    public void setTotalActiveDepositAcct(Integer totalActiveDepositAcct) {
-        this.totalActiveDepositAcct = totalActiveDepositAcct;
-    }
-
-    public Integer getNewDepositAcct() {
-        return newDepositAcct;
-    }
-
-    public void setNewDepositAcct(Integer newDepositAcct) {
-        this.newDepositAcct = newDepositAcct;
-    }
-
-    public BigDecimal getTotalDepositAmount() {
-        return totalDepositAmount;
-    }
-
-    public void setTotalDepositAmount(BigDecimal totalDepositAmount) {
-        this.totalDepositAmount = totalDepositAmount;
-    }
-
-    public Integer getTotalLoanAcct() {
-        return totalLoanAcct;
-    }
-
-    public void setTotalLoanAcct(Integer totalLoanAcct) {
-        this.totalLoanAcct = totalLoanAcct;
-    }
-
-    public Integer getTotalActiveLoanAcct() {
-        return totalActiveLoanAcct;
-    }
-
-    public void setTotalActiveLoanAcct(Integer totalActiveLoanAcct) {
-        this.totalActiveLoanAcct = totalActiveLoanAcct;
-    }
-
-    public Integer getNewLoanAcct() {
-        return newLoanAcct;
-    }
-
-    public void setNewLoanAcct(Integer newLoanAcct) {
-        this.newLoanAcct = newLoanAcct;
-    }
-
     public Double getTotalLoanAmount() {
         return totalLoanAmount;
     }
 
     public void setTotalLoanAmount(Double totalLoanAmount) {
         this.totalLoanAmount = totalLoanAmount;
-    }
-
-    public Integer getNumOfDefaultLoanAccount() {
-        return numOfDefaultLoanAccount;
-    }
-
-    public void setNumOfDefaultLoanAccount(Integer numOfDefaultLoanAccount) {
-        this.numOfDefaultLoanAccount = numOfDefaultLoanAccount;
-    }
-
-    public Integer getTotalCardAcct() {
-        return totalCardAcct;
-    }
-
-    public void setTotalCardAcct(Integer totalCardAcct) {
-        this.totalCardAcct = totalCardAcct;
-    }
-
-    public Integer getTotalActiveCardAcct() {
-        return totalActiveCardAcct;
-    }
-
-    public void setTotalActiveCardAcct(Integer totalActiveCardAcct) {
-        this.totalActiveCardAcct = totalActiveCardAcct;
-    }
-
-    public Integer getNewCardAcct() {
-        return newCardAcct;
-    }
-
-    public void setNewCardAcct(Integer newCardAcct) {
-        this.newCardAcct = newCardAcct;
     }
 
     public Double getTotalCardAmount() {
@@ -221,30 +131,6 @@ public class BankFactTable implements Serializable {
 
     public void setTotalOutstandingAmount(Double totalOutstandingAmount) {
         this.totalOutstandingAmount = totalOutstandingAmount;
-    }
-
-    public Integer getNumOfBadCardAccount() {
-        return numOfBadCardAccount;
-    }
-
-    public void setNumOfBadCardAccount(Integer numOfBadCardAccount) {
-        this.numOfBadCardAccount = numOfBadCardAccount;
-    }
-
-    public Integer getTotalExecutedPortfolio() {
-        return totalExecutedPortfolio;
-    }
-
-    public void setTotalExecutedPortfolio(Integer totalExecutedPortfolio) {
-        this.totalExecutedPortfolio = totalExecutedPortfolio;
-    }
-
-    public Integer getNewExecutedPortfolio() {
-        return newExecutedPortfolio;
-    }
-
-    public void setNewExecutedPortfolio(Integer newExecutedPortfolio) {
-        this.newExecutedPortfolio = newExecutedPortfolio;
     }
 
     public Double getTotalPortfolioAmount() {
@@ -271,14 +157,6 @@ public class BankFactTable implements Serializable {
         this.totalPortfolioProfitAmount = totalPortfolioProfitAmount;
     }
 
-    public Double getAvgDepositInterestRate() {
-        return avgDepositInterestRate;
-    }
-
-    public void setAvgDepositInterestRate(Double avgDepositInterestRate) {
-        this.avgDepositInterestRate = avgDepositInterestRate;
-    }
-
     public Double getTotalDepositInterestAmount() {
         return totalDepositInterestAmount;
     }
@@ -287,20 +165,132 @@ public class BankFactTable implements Serializable {
         this.totalDepositInterestAmount = totalDepositInterestAmount;
     }
 
-    public Double getAvgLoanInterestRate() {
-        return avgLoanInterestRate;
+    public Long getTotalDepositAcct() {
+        return totalDepositAcct;
     }
 
-    public void setAvgLoanInterestRate(Double avgLoanInterestRate) {
-        this.avgLoanInterestRate = avgLoanInterestRate;
+    public void setTotalDepositAcct(Long totalDepositAcct) {
+        this.totalDepositAcct = totalDepositAcct;
     }
 
-    public Double getTotalLoanInterestAmount() {
-        return totalLoanInterestAmount;
+    public Long getTotalActiveDepositAcct() {
+        return totalActiveDepositAcct;
     }
 
-    public void setTotalLoanInterestAmount(Double totalLoanInterestAmount) {
-        this.totalLoanInterestAmount = totalLoanInterestAmount;
+    public void setTotalActiveDepositAcct(Long totalActiveDepositAcct) {
+        this.totalActiveDepositAcct = totalActiveDepositAcct;
+    }
+
+    public Long getNewDepositAcct() {
+        return newDepositAcct;
+    }
+
+    public void setNewDepositAcct(Long newDepositAcct) {
+        this.newDepositAcct = newDepositAcct;
+    }
+
+    public Double getTotalDepositAmount() {
+        return totalDepositAmount;
+    }
+
+    public void setTotalDepositAmount(Double totalDepositAmount) {
+        this.totalDepositAmount = totalDepositAmount;
+    }
+
+    public Long getTotalLoanAcct() {
+        return totalLoanAcct;
+    }
+
+    public void setTotalLoanAcct(Long totalLoanAcct) {
+        this.totalLoanAcct = totalLoanAcct;
+    }
+
+    public Long getTotalActiveLoanAcct() {
+        return totalActiveLoanAcct;
+    }
+
+    public void setTotalActiveLoanAcct(Long totalActiveLoanAcct) {
+        this.totalActiveLoanAcct = totalActiveLoanAcct;
+    }
+
+    public Long getNewLoanAcct() {
+        return newLoanAcct;
+    }
+
+    public void setNewLoanAcct(Long newLoanAcct) {
+        this.newLoanAcct = newLoanAcct;
+    }
+
+    public Double getTotalLoanInterestEarned() {
+        return totalLoanInterestEarned;
+    }
+
+    public void setTotalLoanInterestEarned(Double totalLoanInterestEarned) {
+        this.totalLoanInterestEarned = totalLoanInterestEarned;
+    }
+
+    public Double getTotalLoanInterestUnearned() {
+        return totalLoanInterestUnearned;
+    }
+
+    public void setTotalLoanInterestUnearned(Double totalLoanInterestUnearned) {
+        this.totalLoanInterestUnearned = totalLoanInterestUnearned;
+    }
+
+    public Long getNumOfDefaultLoanAccount() {
+        return numOfDefaultLoanAccount;
+    }
+
+    public void setNumOfDefaultLoanAccount(Long numOfDefaultLoanAccount) {
+        this.numOfDefaultLoanAccount = numOfDefaultLoanAccount;
+    }
+
+    public Long getTotalCardAcct() {
+        return totalCardAcct;
+    }
+
+    public void setTotalCardAcct(Long totalCardAcct) {
+        this.totalCardAcct = totalCardAcct;
+    }
+
+    public Long getTotalActiveCardAcct() {
+        return totalActiveCardAcct;
+    }
+
+    public void setTotalActiveCardAcct(Long totalActiveCardAcct) {
+        this.totalActiveCardAcct = totalActiveCardAcct;
+    }
+
+    public Long getNewCardAcct() {
+        return newCardAcct;
+    }
+
+    public void setNewCardAcct(Long newCardAcct) {
+        this.newCardAcct = newCardAcct;
+    }
+
+    public Long getNumOfBadCardAccount() {
+        return numOfBadCardAccount;
+    }
+
+    public void setNumOfBadCardAccount(Long numOfBadCardAccount) {
+        this.numOfBadCardAccount = numOfBadCardAccount;
+    }
+
+    public Long getTotalExecutedPortfolio() {
+        return totalExecutedPortfolio;
+    }
+
+    public void setTotalExecutedPortfolio(Long totalExecutedPortfolio) {
+        this.totalExecutedPortfolio = totalExecutedPortfolio;
+    }
+
+    public Long getNewExecutedPortfolio() {
+        return newExecutedPortfolio;
+    }
+
+    public void setNewExecutedPortfolio(Long newExecutedPortfolio) {
+        this.newExecutedPortfolio = newExecutedPortfolio;
     }
 
 }
