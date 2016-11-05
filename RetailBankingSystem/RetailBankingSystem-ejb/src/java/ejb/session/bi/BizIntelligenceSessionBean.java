@@ -10,6 +10,7 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import server.utilities.EnumUtils.StatusType;
 
 /**
  *
@@ -26,13 +27,24 @@ public class BizIntelligenceSessionBean implements BizIntelligenceSessionBeanLoc
     public Long getBankTotalDepositAcct(Date startDate, Date endDate) {
         System.out.println(startDate.toString());
         System.out.println(endDate.toString());
-        Query q = em.createNativeQuery("SELECT count(*) FROM DepositAccount");
-        return 0L;
+        Query q = em.createQuery("SELECT count(d.accountNumber) FROM DepositAccount d "
+                + "WHERE d.status=:activeStatus "
+                + "AND d.creationDate BETWEEN :startDate AND :endDate");
+        q.setParameter("activeStatus", StatusType.ACTIVE);
+        q.setParameter("startDate", startDate);
+        q.setParameter("endDate", endDate);
+        return (Long) q.getSingleResult();
     }
     
     @Override
     public Long getBankTotalActiveDepositAcct(Date startDate, Date endDate) {
-        return 0L;
+        System.out.println(startDate.toString());
+        System.out.println(endDate.toString());
+        Query q = em.createQuery("SELECT count(d.accountNumber) FROM DepositAccount d, TransactionRecord t1, TransactionRecord t2 WHERE d.status=:activeStatus AND ((t1.creationDate BETWEEN :startDate AND :endDate AND t1.fromAccount.accountNumber=d.accountNumber)  OR (t2.creationDate BETWEEN :startDate AND :endDate AND t2.toAccount.accountNumber=d.accountNumber))");
+        q.setParameter("activeStatus", StatusType.ACTIVE);
+        q.setParameter("startDate", startDate);
+        q.setParameter("endDate", endDate);
+        return (Long) q.getSingleResult();
     }
     
     @Override
