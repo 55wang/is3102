@@ -16,6 +16,7 @@
                     this.cfg.seriesDefaults.rendererOptions.varyBarColor = true;
                 }
             </h:outputScript>
+            <link type="text/css" rel="stylesheet" href="chat.css"/>
         </h:head>
         <h:body>
             <em:customerHeader context="personal" userName="#{customerHomeManagedBean.customer.firstname }"></em:customerHeader>
@@ -75,7 +76,47 @@
                             <p:commandButton value="Cancel" actionListener="#{investmentPlanDetailManagedBean.cancel()}" update="@form"></p:commandButton>
                         </div>
                         <p:overlayPanel id="feedbackPanel" for="feedbackBtn" hideEffect="fade" >
-                            
+                            <!--Add socket here maybe just one channel for self-->
+                            <input id="receiver-color" class="hidden" value="#{investmentPlanDetailManagedBean.receiverColor}" />
+                            <input id="sender-color" class="hidden" value="#{investmentPlanDetailManagedBean.senderColor}" />
+                                <div id="messages-container">
+                                    <div id="messages">
+
+                                        <c:forEach items="#{investmentPlanDetailManagedBean.investplanCommunication.messages}" var="message">
+                                            <div class="message #{investmentPlanDetailManagedBean.isReceiverWms(message) ? 'float-right' : 'float-left'}">
+                                                <div class="#{investmentPlanDetailManagedBean.isReceiverWms(message) ? 'right-profile-pic' : 'left-profile-pic'}">
+                                                    <div class="user-icon" style="background-color:#{investmentPlanDetailManagedBean.isReceiverWms(message) ? investmentPlanDetailManagedBean.receiverColor : investmentPlanDetailManagedBean.senderColor};">
+                                                        <div class="icon-text">
+                                                            #{investmentPlanDetailManagedBean.getMessageLabel(message)}
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="panel panel-quote panel-quote-flush no-margin #{investmentPlanDetailManagedBean.isReceiverWms(message) ?  'panel-quote-right' : ''}" >
+                                                    <div class="panel-body">
+                                                        <div class="message-text">
+                                                            <p>#{message.message}</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="time-container">
+                                                    <span>
+                                                        #{message.createDate}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </c:forEach>
+                                    </div>
+
+                                    <div id="outbox">
+
+                                        <p:inputTextarea id="newmessage" class="width-80" value="#{investmentPlanDetailManagedBean.newMessage.message}"/>
+                                        <br></br>
+                                        <p:commandButton value="Send" update="@form" actionListener="#{investmentPlanDetailManagedBean.sendMessage}" />
+
+                                    </div>
+                                </div>
                         </p:overlayPanel>
                        
                         
@@ -316,6 +357,9 @@
                 </h:form>
             </div>
             <em:customerFooter></em:customerFooter>
+            <!--To use jquery with javascript here-->
+            <h:outputScript library="primefaces" name="jquery/jquery.js" />
+            <script type="text/javascript" src="message.js"></script>
         </h:body> 
     </f:view>
 

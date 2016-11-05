@@ -7,6 +7,7 @@ package entity.customer;
 
 import entity.staff.StaffAccount;
 import entity.wealth.InvestmentPlan;
+import entity.wealth.InvestplanCommunication;
 import entity.wealth.Portfolio;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -52,6 +53,8 @@ public class WealthManagementSubscriber implements Serializable {
     private List<InvestmentPlan> investmentPlans = new ArrayList<>();
     @OneToMany(cascade = CascadeType.MERGE, mappedBy = "wealthManagementSubscriber")
     private List<Portfolio> portfolios = new ArrayList<>();
+    @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "wms")
+    private List<InvestplanCommunication> investplanCommunications = new ArrayList<>();
     
     public Double getTotalPortfolioValue() {
         Double totalBalance = 0.0;

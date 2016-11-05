@@ -57,7 +57,7 @@ public class ManageMerlionPayeeManagedBean implements Serializable {
     @PostConstruct
     public void init() {
         ma = loginBean.getMainAccountByUserID(SessionUtils.getUserName());
-        setPayees(ma.getPayees());
+        payees = transferBean.getPayeeFromUserIdWithType(ma.getId(), EnumUtils.PayeeType.MERLION);
         setPayee(new Payee());
         getPayee().setFromName(ma.getCustomer().getFullName());
         payee.setMainAccount(ma);

@@ -5,12 +5,17 @@
  */
 package staff.wealth;
 
+import ejb.session.staff.StaffAccountSessionBeanLocal;
 import ejb.session.wealth.DesignInvestmentPlanSessionBeanLocal;
 import ejb.session.wealth.InvestmentPlanSessionBeanLocal;
+import ejb.session.wealth.InvestplanCommunicationSessionBeanLocal;
 import entity.customer.WealthManagementSubscriber;
 import entity.wealth.InvestmentPlan;
 import entity.wealth.FinancialInstrumentAndWeight;
+import entity.wealth.InvestplanCommunication;
+import entity.wealth.InvestplanMessage;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -39,6 +44,10 @@ public class DeisgnInvestmentPlanManagedBean implements Serializable{
     private DesignInvestmentPlanSessionBeanLocal designInvestmentPlanSessionBean;
     @EJB
     private InvestmentPlanSessionBeanLocal investmentPlanSessionBean;
+    @EJB
+    private StaffAccountSessionBeanLocal staffAccountSessionBean;
+    @EJB
+    private InvestplanCommunicationSessionBeanLocal investplanCommunicationSessionBean;
     
     
     @ManagedProperty(value="#{param.plan}")
@@ -50,6 +59,12 @@ public class DeisgnInvestmentPlanManagedBean implements Serializable{
     private List<Double> suggestedPercentages;
     private Integer toleranceScore;
     private InvestmentRiskLevel riskLevel;
+    
+    //communication module
+    private String senderColor = randColor();
+    private String receiverColor = randColor();
+    private InvestplanCommunication investplanCommunication;
+    private InvestplanMessage newMessage = new InvestplanMessage();
 
     /**
      * Creates a new instance of DeisgnInvestmentPlanManagedBean
@@ -66,6 +81,7 @@ public class DeisgnInvestmentPlanManagedBean implements Serializable{
         toleranceScore = wms.getRiskToleranceScore();
         updateRiskLevel();
         createAnimatedModel();
+        checkConversation();
     }
     
     private void createAnimatedModel() { 
@@ -178,6 +194,50 @@ public class DeisgnInvestmentPlanManagedBean implements Serializable{
         
         return true;
     }
+    
+    public Boolean isReceiverWms(InvestplanMessage m) {
+        return wms.getMainAccount().getCustomer().getFullName().equals(m.getReceiver());
+    }
+    
+    public String getMessageLabel(InvestplanMessage m) {
+        return isReceiverWms(m) ? investplanCommunication.getRm().getNameLabel() : wms.getMainAccount().getCustomer().getFullName();
+    }
+    
+    public String randColor() {
+        return ColorUtils.randomColor();
+    }
+    
+    public void sendMessage() {
+        System.out.println("Message going to be sent ");
+        newMessage.setSender("relationship_manager");
+        newMessage.setReceiver(wms.getMainAccount().getCustomer().getFullName());
+        investplanCommunicationSessionBean.addMessage(investplanCommunication, newMessage);
+        investplanCommunication.addMessage(newMessage);
+        newMessage = new InvestplanMessage();
+    }
+    
+    public void checkConversation(){
+        String communicationID = investplanCommunicationSessionBean.checkIfConversationExists(requestPlan);
+        
+        if (communicationID.equals("NOT_FOUND") || communicationID.equals("EXCEPTION")) {
+            InvestplanCommunication conversation = new InvestplanCommunication();
+            conversation.setWms(wms);
+            conversation.setRm(staffAccountSessionBean.getAccountByUsername("relationship_manager"));
+            conversation.setIp(requestPlan);
+            conversation.setCreateDate(new Date());
+            conversation = investplanCommunicationSessionBean.createCommunication(conversation);
+            System.out.println("Message going to be sent ");
+            InvestplanMessage im = new InvestplanMessage();
+            im.setReceiver(wms.getMainAccount().getCustomer().getFullName());
+            im.setSender("relationship_manager");
+            im.setMessage("Hello! What can I do to help you?");
+            investplanCommunicationSessionBean.addMessage(conversation, im);
+            setInvestplanCommunication(conversation);
+        }else{
+            System.out.println("Existed conversation!");
+            setInvestplanCommunication(investplanCommunicationSessionBean.getCommunicationById(Long.parseLong(communicationID)));
+        }
+    }
 
     public String getRequestPlanID() {
         return requestPlanID;
@@ -241,5 +301,37 @@ public class DeisgnInvestmentPlanManagedBean implements Serializable{
 
     public void setRiskLevel(InvestmentRiskLevel riskLevel) {
         this.riskLevel = riskLevel;
+    }
+
+    public String getSenderColor() {
+        return senderColor;
+    }
+
+    public void setSenderColor(String senderColor) {
+        this.senderColor = senderColor;
+    }
+
+    public String getReceiverColor() {
+        return receiverColor;
+    }
+
+    public void setReceiverColor(String receiverColor) {
+        this.receiverColor = receiverColor;
+    }
+
+    public InvestplanCommunication getInvestplanCommunication() {
+        return investplanCommunication;
+    }
+
+    public void setInvestplanCommunication(InvestplanCommunication investplanCommunication) {
+        this.investplanCommunication = investplanCommunication;
+    }
+
+    public InvestplanMessage getNewMessage() {
+        return newMessage;
+    }
+
+    public void setNewMessage(InvestplanMessage newMessage) {
+        this.newMessage = newMessage;
     }
 }

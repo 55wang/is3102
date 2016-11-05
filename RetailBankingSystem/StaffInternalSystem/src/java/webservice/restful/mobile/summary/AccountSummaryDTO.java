@@ -5,8 +5,11 @@
  */
 package webservice.restful.mobile.summary;
 
+import webservice.restful.mobile.transfer.PayeeDTO;
 import java.util.ArrayList;
 import java.util.List;
+import webservice.restful.mobile.card.CardDTO;
+import webservice.restful.mobile.transfer.BillOrgDTO;
 
 /**
  *
@@ -17,6 +20,11 @@ public class AccountSummaryDTO {
     private List<AccountDTO> depositAccounts = new ArrayList<>();
     private List<AccountDTO> fixedDepositAccounts = new ArrayList<>();
     private List<AccountDTO> loanAccounts = new ArrayList<>();
+    private List<PayeeDTO> merlionPayee = new ArrayList<>();
+    private List<PayeeDTO> otherBankPayee = new ArrayList<>();
+    private List<CardDTO> merlionCCBill = new ArrayList<>();
+    private List<BillOrgDTO> otherCCBill = new ArrayList<>();
+    private List<BillOrgDTO> otherBill = new ArrayList<>();
     private AccountDTO mobileAccount;
 
     /**
@@ -73,5 +81,75 @@ public class AccountSummaryDTO {
      */
     public void setFixedDepositAccounts(List<AccountDTO> fixedDepositAccounts) {
         this.fixedDepositAccounts = fixedDepositAccounts;
+    }
+
+    /**
+     * @return the merlionPayee
+     */
+    public List<PayeeDTO> getMerlionPayee() {
+        return merlionPayee;
+    }
+
+    /**
+     * @param merlionPayee the merlionPayee to set
+     */
+    public void setMerlionPayee(List<PayeeDTO> merlionPayee) {
+        this.merlionPayee = merlionPayee;
+    }
+
+    /**
+     * @return the otherBankPayee
+     */
+    public List<PayeeDTO> getOtherBankPayee() {
+        return otherBankPayee;
+    }
+
+    /**
+     * @param otherBankPayee the otherBankPayee to set
+     */
+    public void setOtherBankPayee(List<PayeeDTO> otherBankPayee) {
+        this.otherBankPayee = otherBankPayee;
+    }
+
+    /**
+     * @return the merlionCCBill
+     */
+    public List<CardDTO> getMerlionCCBill() {
+        return merlionCCBill;
+    }
+
+    /**
+     * @param merlionCCBill the merlionCCBill to set
+     */
+    public void setMerlionCCBill(List<CardDTO> merlionCCBill) {
+        this.merlionCCBill = merlionCCBill;
+    }
+
+    /**
+     * @return the otherCCBill
+     */
+    public List<BillOrgDTO> getOtherCCBill() {
+        return otherCCBill;
+    }
+
+    /**
+     * @param otherCCBill the otherCCBill to set
+     */
+    public void setOtherCCBill(List<BillOrgDTO> otherCCBill) {
+        this.otherCCBill = otherCCBill;
+    }
+
+    /**
+     * @return the otherBill
+     */
+    public List<BillOrgDTO> getOtherBill() {
+        return otherBill;
+    }
+
+    /**
+     * @param otherBill the otherBill to set
+     */
+    public void setOtherBill(List<BillOrgDTO> otherBill) {
+        this.otherBill = otherBill;
     }
 }
