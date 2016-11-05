@@ -5,10 +5,9 @@
  */
 package webservice.restful.mobile.transfer;
 
-import ejb.session.bill.TransferSessionBeanLocal;
 import ejb.session.dams.CustomerDepositSessionBeanLocal;
+import ejb.session.dams.MobileAccountSessionBeanLocal;
 import entity.common.TransactionRecord;
-import entity.customer.MainAccount;
 import java.math.BigDecimal;
 import javax.ejb.EJB;
 import javax.ws.rs.Consumes;
@@ -16,56 +15,54 @@ import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.core.UriInfo;
 import org.primefaces.json.JSONObject;
-import server.utilities.EnumUtils;
+import server.utilities.DateUtils;
 import webservice.restful.mobile.ErrorDTO;
+import webservice.restful.mobile.TransferDTO;
 
 /**
  *
  * @author leiyang
  */
-@Path("mobile_inter_account_transfer")
-public class MobileInterAccountTransferService {
-
-    @Context
-    private UriInfo context;
-
-    @EJB
-    private TransferSessionBeanLocal transferBean;
+@Path("mobile_pay_own_cc_normal")
+public class MobilePayOwnCCNormalService {
+    
     @EJB
     private CustomerDepositSessionBeanLocal depositBean;
 
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-    public Response interAccountTransfer(
+    public Response payOwnCreditCard(
             @FormParam("fromAccountNumber") String fromAccountNumber,
-            @FormParam("toAccountNumber") String toAccountNumber,
-            @FormParam("transferAmount") String transferAmount
+            @FormParam("ccNumber") String ccNumber,
+            @FormParam("amount") String amount
     ) {
         System.out.println("Received fromAccountNumber:" + fromAccountNumber);
-        System.out.println("Received toAccountNumber:" + toAccountNumber);
-        System.out.println("Received transferAmount:" + transferAmount);
-        System.out.println("Received POST http with url: /mobile_inter_account_transfer");
-        
-        String jsonString;
-        String result = transferBean.transferFromAccountToAccount(fromAccountNumber, toAccountNumber, new BigDecimal(transferAmount));
+        System.out.println("Received ccNumber:" + ccNumber);
+        System.out.println("Received amount:" + amount);
+        System.out.println("Received POST http mobile_pay_own_cc_normal");
+        String jsonString = null;
+        String result = depositBean.payCCBillFromAccount(fromAccountNumber, ccNumber, new BigDecimal(amount));
         if (result.equals("SUCCESS")) {
-            JSONObject jo = new JSONObject();
-            TransactionRecord tr = depositBean.latestTransactionFromAccountNumber(fromAccountNumber);
-            jo.put("referenceNumber", tr.getReferenceNumber());
-            jsonString = jo.toString();
+            TransactionRecord record = depositBean.latestTransactionFromAccountNumber(fromAccountNumber);
+            TransferDTO t = new TransferDTO();
+            t.setTransferAmount(record.getAmount().setScale(2).toString());
+            t.setReferenceNumber(record.getReferenceNumber());
+            t.setTransferType(record.getActionType().toString());
+            t.setTransferDate(DateUtils.readableDate(record.getCreationDate()));
+            t.setTransferAccount("CC Ending: " + ccNumber.substring(ccNumber.length() - 4, ccNumber.length()));
+            jsonString = new JSONObject(t).toString();
             return Response.ok(jsonString, MediaType.APPLICATION_JSON).build();
         } else {
             ErrorDTO err = new ErrorDTO();
             err.setCode(-1);
-            err.setError("Transfer Failed!");
+            err.setError(result);
             jsonString = new JSONObject(err).toString();
             return Response.ok(jsonString, MediaType.APPLICATION_JSON).build();
         }
     }
+    
 }

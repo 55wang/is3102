@@ -182,7 +182,6 @@ public class InternationalBankTransferManagedBean implements Serializable {
         webserviceBean.transferSWIFT(tr);
         da.removeBalance(getAmount());
         depositBean.updateAccount(da);
-        transferBean.createTransferRecord(tr);
         calculateTransferLimits();
     }
     

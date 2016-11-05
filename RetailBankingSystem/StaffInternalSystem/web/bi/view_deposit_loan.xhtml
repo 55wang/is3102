@@ -24,25 +24,25 @@
                                 <h:outputText style="background-color: darkorange" value="Active Deposit Accounts" />
                                 <h:outputText style="background-color: darkorange" value="New Deposit Accounts" />
                                 <h:outputText style="background-color: darkorange" value="Total Deposit Amount" />
-                                <h:outputText style="background-color: darkorange" value="Avg Deposit Interest Rate" />
+                                <h:outputText style="background-color: darkorange" value="Total Deposit Interest Amount" />
 
-                                <h:outputText value="1" />
-                                <h:outputText value="2" />
-                                <h:outputText value="2" />
-                                <h:outputText value="3" />
-                                <h:outputText value="4" />
+                                <h:outputText value="#{viewDepositLoanManagedBean.bankTotalDepositAcct}" />
+                                <h:outputText value="#{viewDepositLoanManagedBean.bankTotalActiveDepositAcct}" />
+                                <h:outputText value="#{viewDepositLoanManagedBean.bankTotalNewDepositAcct}" />
+                                <h:outputText value="#{viewDepositLoanManagedBean.bankTotalDepositAmount}" />
+                                <h:outputText value="#{viewDepositLoanManagedBean.bankDepositInterestAmount}" />
 
                                 <h:outputText style="background-color: yellow" value="Total Loan Accounts" />
-                                <h:outputText style="background-color: yellow" value="Active Loan Accounts" />
                                 <h:outputText style="background-color: yellow" value="New Loan Accounts" />
                                 <h:outputText style="background-color: yellow" value="Total Loan Amount" />
-                                <h:outputText style="background-color: yellow" value="Avg Loan Interest Rate" />
+                                <h:outputText style="background-color: yellow" value="Total Loan Interest Earned" />
+                                <h:outputText style="background-color: yellow" value="Total Loan Interest Unearned" />
 
-                                <h:outputText value="1" />
-                                <h:outputText value="2" />
-                                <h:outputText value="2" />
-                                <h:outputText value="3" />
-                                <h:outputText value="4" />
+                                <h:outputText value="#{viewDepositLoanManagedBean.bankTotalLoanAcct}" />
+                                <h:outputText value="#{viewDepositLoanManagedBean.bankTotalNewLoanAcct}" />
+                                <h:outputText value="#{viewDepositLoanManagedBean.bankTotalLoanAmount}" />
+                                <h:outputText value="#{viewDepositLoanManagedBean.bankLoanInterestEarned}" />
+                                <h:outputText value="#{viewDepositLoanManagedBean.bankLoanInterestUnearned}" />
 
                             </p:panelGrid>
 

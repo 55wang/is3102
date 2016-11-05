@@ -781,6 +781,56 @@ public class EntityDAMSBuilder {
         fixedAccount.setInterestRules(interestSessionBean.getFixedDepositAccountDefaultInterests());
         customerDepositSessionBean.createAccount(fixedAccount);
         
+        MainAccount secondMain = loginBean.getMainAccountByUserID(ConstantUtils.DEMO_MAIN_ACCOUNT_USER_ID_2);
+        
+        customAccount = new CustomerDepositAccount();
+        customAccount.setType(EnumUtils.DepositAccountType.CUSTOM);
+        customAccount.setStatus(EnumUtils.StatusType.ACTIVE);
+        customAccount.setProduct(depositProductSessionBean.getDepositProductByName(ConstantUtils.DEMO_CUSTOM_DEPOSIT_PRODUCT_NAME));
+        customAccount.setBalance(new BigDecimal(1000));
+        customAccount.setMainAccount(secondMain);
+
+        dp = customerDepositSessionBean.createAccount(customAccount);
+        initTransactions(dp);
+        initCheques(dp);
+        cardAcctSessionBean.createDebitAccount(customAccount);
+
+        savingAccount = new CustomerDepositAccount();
+        savingAccount.setType(EnumUtils.DepositAccountType.SAVING);
+        savingAccount.setStatus(EnumUtils.StatusType.ACTIVE);
+        savingAccount.setProduct(depositProductSessionBean.getDepositProductByName(ConstantUtils.DEMO_SAVING1_DEPOSIT_PRODUCT_NAME));
+        savingAccount.setBalance(new BigDecimal(0));
+        savingAccount.setMainAccount(secondMain);
+        customerDepositSessionBean.createAccount(savingAccount);
+        cardAcctSessionBean.createDebitAccount(savingAccount);
+
+        savingAccount2 = new CustomerDepositAccount();
+        savingAccount2.setType(EnumUtils.DepositAccountType.SAVING);
+        savingAccount2.setStatus(EnumUtils.StatusType.ACTIVE);
+        savingAccount2.setProduct(depositProductSessionBean.getDepositProductByName(ConstantUtils.DEMO_SAVING2_DEPOSIT_PRODUCT_NAME));
+        savingAccount2.setBalance(new BigDecimal(1000));
+        savingAccount2.setMainAccount(secondMain);
+        customerDepositSessionBean.createAccount(savingAccount2);
+        cardAcctSessionBean.createDebitAccount(savingAccount2);
+
+        currentAccount = new CustomerDepositAccount();
+        currentAccount.setType(EnumUtils.DepositAccountType.SAVING);
+        currentAccount.setStatus(EnumUtils.StatusType.ACTIVE);
+        currentAccount.setProduct(depositProductSessionBean.getDepositProductByName(ConstantUtils.DEMO_CURRENT_DEPOSIT_PRODUCT_NAME));
+        currentAccount.setBalance(new BigDecimal(1000));
+        currentAccount.setMainAccount(secondMain);
+        customerDepositSessionBean.createAccount(currentAccount);
+        cardAcctSessionBean.createDebitAccount(currentAccount);
+
+        fixedAccount = new CustomerFixedDepositAccount();
+        fixedAccount.setType(EnumUtils.DepositAccountType.FIXED);
+        fixedAccount.setStatus(EnumUtils.StatusType.ACTIVE);
+        fixedAccount.setProduct(depositProductSessionBean.getDepositProductByName(ConstantUtils.DEMO_FIXED_DEPOSIT_PRODUCT_NAME));
+        fixedAccount.setBalance(new BigDecimal(750000));
+        fixedAccount.setMainAccount(secondMain);
+        fixedAccount.setInterestRules(interestSessionBean.getFixedDepositAccountDefaultInterests());
+        customerDepositSessionBean.createAccount(fixedAccount);
+        
         return (CustomerDepositAccount) dp;
     }
 

@@ -196,6 +196,12 @@
                             <h:link outcome="view_demo_page" value="Demo Page" />
                         </li>
                     </c:if>
+                    
+                    <c:if test="#{cc.attrs.top == 'crm'}">
+                        <li class="side-menu-item #{cc.attrs.side == 'viewCustomer' ? 'active' : ''}">
+                            <h:link outcome="view_customer" value="Customer Overview" />
+                        </li>
+                    </c:if>
 
                 </ul>
             </div>
