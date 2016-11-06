@@ -21,7 +21,6 @@ public final class MessageEncoder implements Encoder<MessageDTO, String> {
  
     @Override
     public String encode(MessageDTO m) {
-        LoggingUtils.StaffMessageLog(MessageViewManagedBean.class, "MessageDTO Encoding with message: " + new JSONObject(m).toString());
         return new JSONObject(m).toString();
     }
 }
