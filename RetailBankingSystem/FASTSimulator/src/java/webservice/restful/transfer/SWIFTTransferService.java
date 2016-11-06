@@ -8,6 +8,7 @@ package webservice.restful.transfer;
 import ejb.session.bean.FASTSessionBean;
 import entity.PaymentTransfer;
 import java.math.BigDecimal;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
@@ -20,10 +21,10 @@ import org.primefaces.json.JSONObject;
 
 /**
  *
- * @author leiyang
+ * @author qiuxiaqing
  */
-@Path("fast_transfer_clearing")
-public class TransferFastService {
+@Path("sach_swift_transfer")
+public class SWIFTTransferService {
 
     @EJB
     private FASTSessionBean fastBean;
@@ -31,44 +32,42 @@ public class TransferFastService {
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-    public Response transferClearing(
+    public Response receiveSettlement(
             @FormParam("referenceNumber") String referenceNumber,
             @FormParam("amount") String amount,
-            @FormParam("toBankCode") String toBankCode,
-            @FormParam("fromBankCode") String fromBankCode,
-            @FormParam("toBranchCode") String toBranchCode,
-            @FormParam("accountNumber") String accountNumber,
+            @FormParam("delegatingBank") String delegatingBank,
             @FormParam("toName") String toName,
+            @FormParam("fromBankCode") String fromBankCode,
             @FormParam("fromName") String fromName,
-            @FormParam("myInitial") String myInitial
+            @FormParam("myInitial") String myInitial,
+            @FormParam("swiftMessage") String swiftMessage
     ) {
         System.out.println(".");
         System.out.println("[SACH]");
-        System.out.println("Received Payment Instruction from MBS:");
+        System.out.println("Received  SWIFT Transfer Request from MBS:");
         System.out.println(".      Transaction Number:" + referenceNumber);
         System.out.println(".      Payment Amount: $" + amount);
-        System.out.println(".      To Bank Code:" + toBankCode);
-        System.out.println(".      To Branch Code:" + toBranchCode);
-        System.out.println(".      To Bank Account:" + accountNumber);
+        System.out.println(".      To Delegating Bank Code:" + delegatingBank);
         System.out.println(".      Receiver's Name:" + toName);
         System.out.println(".      From Bank Code:" + fromBankCode);
         System.out.println(".      Sender's Name:" + fromName);
         System.out.println(".      Sender's Initial:" + myInitial);
-        System.out.println("Received POST http fast_transfer_clearing");
-        // at this point, Clear and save all to db before give a end of day settlement amount
+        System.out.println(".      " + swiftMessage);
+
+        // makes payment to other bank
+        // TODO: if needed, use a MAP to check net settlement to other banks
         PaymentTransfer pt = new PaymentTransfer();
         pt.setReferenceNumber(referenceNumber);
         pt.setAmount(new BigDecimal(amount));
         pt.setFromBankCode(fromBankCode);
-        pt.setToBankCode(toBankCode);
-        pt.setToBranchCode(toBranchCode);
-        pt.setAccountNumber(accountNumber);
-        pt.setToName(toName);
+        pt.setToBankCode(delegatingBank);
         pt.setFromName(fromName);
         pt.setMyInitial(myInitial);
         pt.setSettled(false);
-        fastBean.persist(pt);
 
+        System.out.println(".");
+        System.out.println("[SACH]");
+        System.out.println("Sending fund transfer to delegating bank through MEPS: " + delegatingBank);
         fastBean.sendMEPS(pt);
 
         try {
@@ -76,20 +75,16 @@ public class TransferFastService {
         } catch (InterruptedException ex) {
             Thread.currentThread().interrupt();
         }
-
+        
         System.out.println(".");
-        System.out.println("[SACH]:");
-        System.out.println("Sending to receiving bank the payment instructions...");
-        System.out.println("Received successful response from receiving bank");
-        //TODO send to new receiving bank if necesssary
+        System.out.println("[SACH]");
+        System.out.println("Sending SWIFT code to delegating bank..:" + delegatingBank);
+        System.out.println(swiftMessage);
 
-        System.out.println(".");
-        System.out.println("[SACH]:");
-        System.out.println("Sending to originating bank response...");
-        System.out.println("Sending back fast_transfer_clearing response");
-        MessageDTO message = new MessageDTO();
-        message.setCode(0);
-        message.setMessage("SUCCESS");
-        return Response.ok(new JSONObject(message).toString(), MediaType.APPLICATION_JSON).build();
+        //TODO send to delegating bank swift code if necessary 
+        MessageDTO err = new MessageDTO();
+        err.setCode(0);
+        err.setMessage("SUCCESS");
+        return Response.ok(new JSONObject(err).toString(), MediaType.APPLICATION_JSON).build();
     }
 }

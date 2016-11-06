@@ -20,11 +20,17 @@
                     <p:panel header="Customer Overview Dashboard">
                         <p:messages id="messagesStatus" redisplay="false" >
                             <p:panelGrid columns="3">
-                                <h:outputText style="background-color: darkorange" value="# of Churn Customer" />
+                                <h:outputText style="background-color: darkorange" value="Deposit Churn Customer" />
+                                <h:outputText style="background-color: darkorange" value="Card Churn Customer" />
+                                <h:outputText style="background-color: darkorange" value="Loan Churn Customer" />
+                                <h:outputText style="background-color: darkorange" value="Wealth Churn Customer" />
                                 <h:outputText style="background-color: darkorange" value="Avg Customer Deposit Saving Amount" />
                                 <h:outputText style="background-color: darkorange" value="Avg Customer Loan Amount" />
 
-                                <h:outputText value="#{viewCustomerOverviewManagedBean.churnCustomer}" />
+                                <h:outputText value="#{viewCustomerOverviewManagedBean.depositChurnCustomer}" />
+                                <h:outputText value="#{viewCustomerOverviewManagedBean.cardChurnCustomer}" />
+                                <h:outputText value="#{viewCustomerOverviewManagedBean.loanChurnCustomer}" />
+                                <h:outputText value="#{viewCustomerOverviewManagedBean.wealthChurnCustomer}" />
                                 <h:outputText value="#{viewCustomerOverviewManagedBean.avgCustomerDepositSavingAmount}" />
                                 <h:outputText value="#{viewCustomerOverviewManagedBean.avgCustomerLoanAmount}" />
                             </p:panelGrid>

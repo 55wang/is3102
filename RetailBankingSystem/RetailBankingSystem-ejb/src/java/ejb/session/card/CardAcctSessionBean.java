@@ -193,6 +193,8 @@ public class CardAcctSessionBean implements CardAcctSessionBeanLocal {
 
     @Override
     public CreditCardAccount updateCreditCardAccount(CreditCardAccount cca) {
+        if(cca.getCardStatus() == CardAccountStatus.CLOSED)
+            cca.setCloseDate(new Date());
         em.merge(cca);
         return cca;
     }

@@ -36,7 +36,10 @@ public class ViewCustomerOverviewManagedBean implements Serializable {
     @EJB
     CrmIntelligenceSessionBeanLocal crmIntelligenceSessionBean;
 
-    private Long churnCustomer;
+    private Long depositChurnCustomer;
+    private Long cardChurnCustomer;
+    private Long loanChurnCustomer;
+    private Long wealthChurnCustomer;
     private Double avgCustomerLifeTimeValue;
     private Double avgCustomerAge;
     private Double avgCustomerDepositSavingAmount;
@@ -82,9 +85,12 @@ public class ViewCustomerOverviewManagedBean implements Serializable {
 
     @PostConstruct
     public void init() {
-        churnCustomer = crmIntelligenceSessionBean.getCustomerChurnCustomer(startDate, endDate);
-        avgCustomerDepositSavingAmount = crmIntelligenceSessionBean.getCustomerAvgDepositSavingAmount(startDate, endDate);
-        avgCustomerLoanAmount = crmIntelligenceSessionBean.getCustomerAvgLoanAmount(startDate, endDate);
+        depositChurnCustomer = crmIntelligenceSessionBean.getDepositChurnCustomer(startDate, endDate);
+        cardChurnCustomer = crmIntelligenceSessionBean.getCardChurnCustomer(startDate, endDate);
+        loanChurnCustomer = crmIntelligenceSessionBean.getLoanChurnCustomer(startDate, endDate);
+        wealthChurnCustomer = crmIntelligenceSessionBean.getWealthChurnCustomer(startDate, endDate);
+        avgCustomerDepositSavingAmount = crmIntelligenceSessionBean.getCustomerAvgDepositSavingAmount(endDate);
+        avgCustomerLoanAmount = crmIntelligenceSessionBean.getCustomerAvgLoanAmount(endDate);
         createCustomerAcctBarModel();
         createCustomerAgeBarModel();
     }
@@ -128,13 +134,13 @@ public class ViewCustomerOverviewManagedBean implements Serializable {
         numAGE_60_70 = crmIntelligenceSessionBean.getTotalCustomerAgeGroup(60, 70);
         numAGE_70_100 = crmIntelligenceSessionBean.getTotalCustomerAgeGroup(70, 100);
 
-        numNewAGE_0_20 = crmIntelligenceSessionBean.getNewCustomerAgeGroup(0, 20);
-        numNewAGE_20_30 = crmIntelligenceSessionBean.getNewCustomerAgeGroup(20, 30);
-        numNewAGE_30_40 = crmIntelligenceSessionBean.getNewCustomerAgeGroup(30, 40);
-        numNewAGE_40_50 = crmIntelligenceSessionBean.getNewCustomerAgeGroup(40, 50);
-        numNewAGE_50_60 = crmIntelligenceSessionBean.getNewCustomerAgeGroup(50, 60);
-        numNewAGE_60_70 = crmIntelligenceSessionBean.getNewCustomerAgeGroup(60, 70);
-        numNewAGE_70_100 = crmIntelligenceSessionBean.getNewCustomerAgeGroup(70, 100);
+        numNewAGE_0_20 = crmIntelligenceSessionBean.getNewCustomerAgeGroup(0, 20, startDate, endDate);
+        numNewAGE_20_30 = crmIntelligenceSessionBean.getNewCustomerAgeGroup(20, 30, startDate, endDate);
+        numNewAGE_30_40 = crmIntelligenceSessionBean.getNewCustomerAgeGroup(30, 40, startDate, endDate);
+        numNewAGE_40_50 = crmIntelligenceSessionBean.getNewCustomerAgeGroup(40, 50, startDate, endDate);
+        numNewAGE_50_60 = crmIntelligenceSessionBean.getNewCustomerAgeGroup(50, 60, startDate, endDate);
+        numNewAGE_60_70 = crmIntelligenceSessionBean.getNewCustomerAgeGroup(60, 70, startDate, endDate);
+        numNewAGE_70_100 = crmIntelligenceSessionBean.getNewCustomerAgeGroup(70, 100, startDate, endDate);
 
         series1.set(AGE_0_20, numAGE_0_20);
         series1.set(AGE_20_30, numAGE_20_30);
@@ -303,12 +309,36 @@ public class ViewCustomerOverviewManagedBean implements Serializable {
         return AGE_70_100;
     }
 
-    public Long getChurnCustomer() {
-        return churnCustomer;
+    public Long getDepositChurnCustomer() {
+        return depositChurnCustomer;
     }
 
-    public void setChurnCustomer(Long churnCustomer) {
-        this.churnCustomer = churnCustomer;
+    public void setDepositChurnCustomer(Long depositChurnCustomer) {
+        this.depositChurnCustomer = depositChurnCustomer;
+    }
+
+    public Long getCardChurnCustomer() {
+        return cardChurnCustomer;
+    }
+
+    public void setCardChurnCustomer(Long cardChurnCustomer) {
+        this.cardChurnCustomer = cardChurnCustomer;
+    }
+
+    public Long getLoanChurnCustomer() {
+        return loanChurnCustomer;
+    }
+
+    public void setLoanChurnCustomer(Long loanChurnCustomer) {
+        this.loanChurnCustomer = loanChurnCustomer;
+    }
+
+    public Long getWealthChurnCustomer() {
+        return wealthChurnCustomer;
+    }
+
+    public void setWealthChurnCustomer(Long wealthChurnCustomer) {
+        this.wealthChurnCustomer = wealthChurnCustomer;
     }
 
     public Long getNumAGE_0_20() {

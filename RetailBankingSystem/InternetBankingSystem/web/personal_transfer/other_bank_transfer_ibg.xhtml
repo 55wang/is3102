@@ -24,57 +24,58 @@ and open the template in the editor.
             <div class="customer_main_container">
                 <h:form>
                     <!--TODO: payee-->
-                    <p:panel header="Transfer to other Bank Account(FAST)">
+                    <p:panel header="Transfer to other Bank Account">
                         <h2>Daily transfer limit left: #{interBankTransferManagedBean.transferLimitLeft}</h2>
+                        <p>Funds will be available after 2-3 working days.</p>
                         <p:messages id="message" redisplay="false" >
                             <p:wizard widgetVar="myWizard" showNavBar="false">
                                 <p:tab id="input_detail" title="1.Input Details">
                                     <h1>To</h1>
-                                        <h:panelGrid columns="2" cellpadding="5">
-                                            <h:outputText value="Paying To: " />
-                                            <p:selectOneMenu value="#{interBankTransferManagedBean.payeeId}" rendered="true" required="true">
-                                                <f:selectItem itemValue="New Receipiant" itemLabel="New Receipiant" />
-                                                <c:if test="#{interBankTransferManagedBean.payees.size() > 0 }">
-                                                    <f:selectItems value="#{interBankTransferManagedBean.payees}" var="p" itemValue="#{p.id.toString()}" itemLabel="#{p.name} - #{interBankTransferManagedBean.getBankName(p.bankCode)} #{p.accountNumber}" />
-                                                </c:if>
-                                                <f:ajax render="@form" listener="#{interBankTransferManagedBean.changePayee}" />
-                                            </p:selectOneMenu>
+                                    <h:panelGrid columns="2" cellpadding="5">
+                                        <h:outputText value="Paying To: " />
+                                        <p:selectOneMenu value="#{interBankTransferManagedBean.payeeId}" rendered="true" required="true">
+                                            <f:selectItem itemValue="New Receipiant" itemLabel="New Receipiant" />
+                                            <c:if test="#{interBankTransferManagedBean.payees.size() > 0 }">
+                                                <f:selectItems value="#{interBankTransferManagedBean.payees}" var="p" itemValue="#{p.id.toString()}" itemLabel="#{p.name} - #{interBankTransferManagedBean.getBankName(p.bankCode)} #{p.accountNumber}" />
+                                            </c:if>
+                                            <f:ajax render="@form" listener="#{interBankTransferManagedBean.changePayee}" />
+                                        </p:selectOneMenu>
 
-                                            <c:if test="#{interBankTransferManagedBean.payeeId == 'New Receipiant'}">
-                                                <h:outputText value="Payee's Name: " />
-                                                <p:inputText value="#{interBankTransferManagedBean.payee.name}" required="true" />
-                                                <h:outputText value="Payee's Bank: " />
-                                                <p:selectOneMenu value="#{interBankTransferManagedBean.bankId}" rendered="true" required="true">
-                                                    <f:selectItems value="#{interBankTransferManagedBean.bankList}" var="b" itemValue="#{b.id.toString()}" itemLabel="#{b.name}" />
-                                                </p:selectOneMenu>
-                                                <h:outputText value="Payee's Account: " />
-                                                <p:inputText value="#{interBankTransferManagedBean.payee.accountNumber}" required="true" />
-                                                <h:outputText value="My Initials: " />
-                                                <p:inputText value="#{interBankTransferManagedBean.payee.myInitial}" required="true" />
-                                            </c:if>
-                                            <c:if test="#{interBankTransferManagedBean.payeeId != 'New Receipiant'}">
-                                                <p:outputLabel value="Payee's Name: " />
-                                                <p:outputLabel value="#{interBankTransferManagedBean.payee.name}"/>
-                                                <p:outputLabel value="Payee's Bank: " />
-                                                <p:outputLabel value="#{interBankTransferManagedBean.getBankName(interBankTransferManagedBean.payee.bankCode)}"/>
-                                                <p:outputLabel value="Payee's Account: " />
-                                                <p:outputLabel value="#{interBankTransferManagedBean.payee.accountNumber}"/>
-                                            </c:if>
-                                        </h:panelGrid>
+                                        <c:if test="#{interBankTransferManagedBean.payeeId == 'New Receipiant'}">
+                                            <h:outputText value="Payee's Name: " />
+                                            <p:inputText value="#{interBankTransferManagedBean.payee.name}" required="true" />
+                                            <h:outputText value="Payee's Bank: " />
+                                            <p:selectOneMenu value="#{interBankTransferManagedBean.bankId}" rendered="true" required="true">
+                                                <f:selectItems value="#{interBankTransferManagedBean.bankList}" var="b" itemValue="#{b.id.toString()}" itemLabel="#{b.name}" />
+                                            </p:selectOneMenu>
+                                            <h:outputText value="Payee's Account: " />
+                                            <p:inputText value="#{interBankTransferManagedBean.payee.accountNumber}" required="true" />
+                                            <h:outputText value="My Initials: " />
+                                            <p:inputText value="#{interBankTransferManagedBean.payee.myInitial}" required="true" />
+                                        </c:if>
+                                        <c:if test="#{interBankTransferManagedBean.payeeId != 'New Receipiant'}">
+                                            <p:outputLabel value="Payee's Name: " />
+                                            <p:outputLabel value="#{interBankTransferManagedBean.payee.name}"/>
+                                            <p:outputLabel value="Payee's Bank: " />
+                                            <p:outputLabel value="#{interBankTransferManagedBean.getBankName(interBankTransferManagedBean.payee.bankCode)}"/>
+                                            <p:outputLabel value="Payee's Account: " />
+                                            <p:outputLabel value="#{interBankTransferManagedBean.payee.accountNumber}"/>
+                                        </c:if>
+                                    </h:panelGrid>
                                     <h1>From</h1>
-                                        <h:panelGrid columns="2" cellpadding="5">
-                                            <h:outputText value="Choose Your Account to transfer from: " />
-                                            <p:selectOneMenu value="#{interBankTransferManagedBean.fromAccountNo}" rendered="true" required="true">
-                                                <f:selectItems value="#{interBankTransferManagedBean.accounts}" var="a" itemValue="#{a.accountNumber}" itemLabel="#{a.product.name} #{a.accountNumber} #{a.balance.setScale(2)}" />
-                                            </p:selectOneMenu>
-                                            <p:outputLabel value="Transfer Amount: " />
-                                            <p:inputText value="#{interBankTransferManagedBean.amount}"/>
-                                            <h:outputText value="Purpose of Transfer: " />
-                                            <p:selectOneMenu value="#{interBankTransferManagedBean.purpose}" rendered="true" required="true">
-                                                <f:selectItems value="#{interBankTransferManagedBean.purposeOptions}"/>
-                                            </p:selectOneMenu>
-                                        </h:panelGrid>
-                                    
+                                    <h:panelGrid columns="2" cellpadding="5">
+                                        <h:outputText value="Choose Your Account to transfer from: " />
+                                        <p:selectOneMenu value="#{interBankTransferManagedBean.fromAccountNo}" rendered="true" required="true">
+                                            <f:selectItems value="#{interBankTransferManagedBean.accounts}" var="a" itemValue="#{a.accountNumber}" itemLabel="#{a.product.name} #{a.accountNumber} #{a.balance.setScale(2)}" />
+                                        </p:selectOneMenu>
+                                        <p:outputLabel value="Transfer Amount: " />
+                                        <p:inputText value="#{interBankTransferManagedBean.amount}"/>
+                                        <h:outputText value="Purpose of Transfer: " />
+                                        <p:selectOneMenu value="#{interBankTransferManagedBean.purpose}" rendered="true" required="true">
+                                            <f:selectItems value="#{interBankTransferManagedBean.purposeOptions}"/>
+                                        </p:selectOneMenu>
+                                    </h:panelGrid>
+
                                     <p:commandButton  value="Next" actionListener="#{interBankTransferManagedBean.sendOpt()}" update="@form" />
 
                                 </p:tab>
@@ -97,12 +98,12 @@ and open the template in the editor.
                                         <h:outputText value="S$ #{interBankTransferManagedBean.amount}"/>
                                         <h:outputText value="Purpose of Transfer: " />
                                         <h:outputText value="#{interBankTransferManagedBean.purpose}" />
-                                        
+
                                         <h2>Input Token Number</h2>
                                         <p:inputText value="#{interBankTransferManagedBean.inputTokenString}" />
-                                        
+
                                         <p:commandButton  value="Back" type="button" onclick="PF('myWizard').back()" />
-                                        <p:commandButton value="Transfer" action="#{interBankTransferManagedBean.transferFAST}" update="@form"/> 
+                                        <p:commandButton value="Transfer" action="#{interBankTransferManagedBean.transferIBG}" update="@form"/> 
                                     </h:panelGrid>
                                 </p:tab>
 
@@ -124,7 +125,7 @@ and open the template in the editor.
                                         <h:outputText value="S$ #{interBankTransferManagedBean.amount}"/>
                                         <h:outputText value="Purpose of Transfer: " />
                                         <h:outputText value="#{interBankTransferManagedBean.purpose}" />
-                                        
+
                                     </h:panelGrid>
                                 </p:tab>
                             </p:wizard>

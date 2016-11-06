@@ -22,6 +22,7 @@ public class RFMSessionBean implements RFMSessionBeanLocal {
     @Override
     public Long getDepositRecencyByCustomerId(Long Id) {
         Long score = 10L;
+        //from past 12 months
 //        Recency = 10 - the number of months that have passed since the customer last purchased
         //to be continued
 //        Query q = em.createNativeQuery("");
@@ -33,6 +34,7 @@ public class RFMSessionBean implements RFMSessionBeanLocal {
     @Override
     public Long getDepositFrequencyByCustomerId(Long Id) {
         Long score = 10L;
+        //from past 12 months
 //        Frequency = number of purchases in the last 12 months (maximum of 10)
         //to be continued
 //        Query q = em.createNativeQuery("");
@@ -45,6 +47,7 @@ public class RFMSessionBean implements RFMSessionBeanLocal {
     public Long getDepositMonetaryByCustomerId(Long Id) {
         Long score = 10L;
 //        Monetary = value of the highest order from a given customer (benchmarked against $10k)
+        //from past 12 months
         //to be continued
 //        Query q = em.createNativeQuery("");
 //        Long numOfMonth = score - (Long) q.getSingleResult();
@@ -82,36 +85,6 @@ public class RFMSessionBean implements RFMSessionBeanLocal {
 //        Query q = em.createNativeQuery("");
 //        Long numOfMonth = score - (Long) q.getSingleResult();
 //        return numOfMonth;
-        return 10L;
-    }
-
-    @Override
-    public Long updateDepositRecencyByCustomerId(Long Id) {
-        return 10L;
-    }
-
-    @Override
-    public Long updateDepositFrequencyByCustomerId(Long Id) {
-        return 10L;
-    }
-
-    @Override
-    public Long updateDepositMonetaryByCustomerId(Long Id) {
-        return 10L;
-    }
-
-    @Override
-    public Long updateCardRecencyByCustomerId(Long Id) {
-        return 10L;
-    }
-
-    @Override
-    public Long updateCardFrequencyByCustomerId(Long Id) {
-        return 10L;
-    }
-
-    @Override
-    public Long updateCardMonetaryByCustomerId(Long Id) {
         return 10L;
     }
 }
