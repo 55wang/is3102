@@ -13,12 +13,14 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
  * @author leiyang
  */
 @Entity
+@XmlRootElement
 public class BillTransfer implements Serializable {
     @Id
     private String referenceNumber;
@@ -28,6 +30,7 @@ public class BillTransfer implements Serializable {
     @Column(precision=30, scale=20)
     private BigDecimal amount;
     private String partnerBankCode;
+    private String partnerBankAccount;
     private String fromBankCode;
     private String shortCode;
     private String organizationName;
@@ -164,4 +167,21 @@ public class BillTransfer implements Serializable {
     public void setFromBankCode(String fromBankCode) {
         this.fromBankCode = fromBankCode;
     }
+
+    /**
+     * @return the partnerBankAccount
+     */
+    public String getPartnerBankAccount() {
+        return partnerBankAccount;
+    }
+
+    /**
+     * @param partnerBankAccount the partnerBankAccount to set
+     */
+    public void setPartnerBankAccount(String partnerBankAccount) {
+        this.partnerBankAccount = partnerBankAccount;
+    }
+
+
+    
 }

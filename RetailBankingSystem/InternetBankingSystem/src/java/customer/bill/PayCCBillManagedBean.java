@@ -84,7 +84,7 @@ public class PayCCBillManagedBean implements Serializable {
         }
         transferClearing();
         JSUtils.callJSMethod("PF('myWizard').next()");
-        MessageUtils.displayError(ConstantUtils.TRANSFER_SUCCESS);
+        MessageUtils.displayInfo(ConstantUtils.TRANSFER_SUCCESS);
     }
     
     
@@ -92,12 +92,14 @@ public class PayCCBillManagedBean implements Serializable {
         DepositAccount da = depositBean.getAccountFromId(fromAccountNo);
         BillingOrg bo = billBean.getBillingOrganizationById(Long.parseLong(ccBillOrgId));
         
-        System.out.println("Bill Payment clearing");
+        System.out.println("----------------Bill Payment clearing----------------");
         BillTransferRecord btr = new BillTransferRecord();
         btr.setBillReferenceNumber(bo.getBillReference());// it will be credit card number
         btr.setOrganizationName(bo.getOrganization().getName());
         btr.setAmount(amount);
         btr.setPartnerBankCode(bo.getOrganization().getPartnerBankCode());
+        btr.setPartnerBankAccount(bo.getOrganization().getPartnerBankAccount());
+        btr.setFromAccount(da);
         btr.setSettled(false);
         btr.setShortCode(bo.getOrganization().getShortCode());
         btr.setReferenceNumber(GenerateAccountAndCCNumber.generateReferenceNumber());

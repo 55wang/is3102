@@ -202,6 +202,25 @@ public class SACHSessionBean {
         }
     }
 
+    public void updateNetSettlementAddBill(BillTransfer br) {
+        List<SachSettlement> settlements = getSettlements();
+
+        if (settlements.isEmpty()) {
+            System.out.println("Entity builder failed");
+        }
+        for (SachSettlement s : settlements) {
+
+            if (br.getFromBankCode().equals(s.getBankCode())) {
+                s.setAmount(s.getAmount().subtract(br.getAmount()));
+                em.merge(s);
+            }
+            if (br.getPartnerBankCode().equals(s.getBankCode())) {
+                s.setAmount(s.getAmount().add(br.getAmount()));
+                em.merge(s);
+            }
+        }
+    }
+
     @Asynchronous
     public void sendMBSNetSettlement(String netSettlementAmount) {
 

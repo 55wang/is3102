@@ -124,25 +124,29 @@ public class WebserviceSessionBean implements WebserviceSessionBeanLocal {
     @Asynchronous
     @Override
     public void billingClearingSACH(BillTransferRecord btr) {
-        System.out.println("Clearing transfer");
+        System.out.println("[MBS]:");
+        System.out.println("Generating payment instruction...");
         Form form = new Form(); //bank info
         form.param("referenceNumber", btr.getReferenceNumber());
         form.param("amount", btr.getAmount().toString());
         form.param("partnerBankCode", btr.getPartnerBankCode()); // other bank
+        form.param("partnerBankAccount", btr.getPartnerBankAccount()); 
         form.param("shortCode", btr.getShortCode());
         form.param("fromBankCode", "001");
         form.param("organizationName", btr.getOrganizationName());
         form.param("billReferenceNumber", btr.getBillReferenceNumber());
-
+        
+        System.out.println("Sending payment instruction...");
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(SACH_BILLING_CLEARING);
 
         // This is the response
         JsonObject jsonString = target.request(MediaType.APPLICATION_JSON).post(Entity.entity(form, MediaType.APPLICATION_FORM_URLENCODED), JsonObject.class);
-        System.out.println(jsonString);
 
         if (jsonString.getString("message").equals("SUCCESS")) {
-            System.out.println("Request received");
+            System.out.println(".");
+            System.out.println("[MBS]:");
+            System.out.println("Received response from SACH...");   
             em.persist(btr);
         } else {
             System.out.println("FAIL");
