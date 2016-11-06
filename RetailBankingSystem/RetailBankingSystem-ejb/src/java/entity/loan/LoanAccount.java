@@ -38,6 +38,8 @@ public class LoanAccount implements Serializable {
     private String accountNumber;
     @Temporal(value = TemporalType.TIMESTAMP)
     private Date creationDate = new Date();
+    @Temporal(value = TemporalType.TIMESTAMP)
+    private Date closeDate = new Date();
     
     // info
     @Temporal(value = TemporalType.TIMESTAMP)
@@ -303,6 +305,14 @@ public class LoanAccount implements Serializable {
      */
     public void setLoanAdjustmentApplication(LoanAdjustmentApplication loanAdjustmentApplication) {
         this.loanAdjustmentApplication = loanAdjustmentApplication;
+    }
+
+    public Date getCloseDate() {
+        return closeDate;
+    }
+
+    public void setCloseDate(Date closeDate) {
+        this.closeDate = closeDate;
     }
 
 }

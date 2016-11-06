@@ -42,6 +42,8 @@ public class LoanAccountSessionBean implements LoanAccountSessionBeanLocal {
     
     @Override
     public LoanAccount updateLoanAccount(LoanAccount loanAccount) {
+        if(loanAccount.getLoanAccountStatus() == LoanAccountStatus.CLOSED)
+            loanAccount.setCloseDate(new Date());
         em.merge(loanAccount);
         return loanAccount;
     }

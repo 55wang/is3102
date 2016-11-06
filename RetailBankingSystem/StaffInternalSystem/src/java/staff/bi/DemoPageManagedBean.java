@@ -15,7 +15,6 @@ import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import server.utilities.DateUtils;
-import server.utilities.EnumUtils;
 
 /**
  *
@@ -43,6 +42,18 @@ public class DemoPageManagedBean implements Serializable {
     private Double bankLoanInterestUnearned;
     private Long bankTotalDefaultLoanAcct;
 
+    private Long bankTotalCardAcct;
+    private Long bankTotalActiveCardAcct;
+    private Long bankTotalNewCardAcct;
+    private Double bankTotalCardCurrentAmount;
+    private Double bankTotalCardOutstandingAmount;
+
+    private Long bankTotalWealthManagementSubscriber;
+    private Long bankTotalExecutedPortfolio;
+    private Long bankNewExecutedPortfolio;
+    private Double bankTotalInvestmentAmount;
+    private Double bankTotalProfitAmount;
+
     public DemoPageManagedBean() {
     }
 
@@ -51,38 +62,73 @@ public class DemoPageManagedBean implements Serializable {
         Calendar cal = Calendar.getInstance();
         Date predefined = cal.getTime();
         bft.setCreationDate(predefined);
-        bft.setMonthOfDate(EnumUtils.Month.NOVEMBER); //might need change
+        bft.setMonthOfDate(DateUtils.getStringMonth(cal.get(Calendar.MONTH))); //might need change
         bft.setYearOfDate(cal.get(Calendar.YEAR));
 
-        //hardcode, need to continue to retrieve live data
         Date startDate = DateUtils.getBeginOfMonth();
         Date endDate = DateUtils.getEndOfMonth();
         bankTotalDepositAcct = bizIntelligenceSessionBean.getBankTotalDepositAcct(endDate);
         bft.setTotalDepositAcct(bankTotalDepositAcct);
-        bft.setTotalActiveDepositAcct(70L);
-        bft.setNewDepositAcct(20L);
-        bft.setTotalDepositAmount(10888.0);
-        bft.setTotalDepositInterestAmount(800.0);
 
-        bft.setTotalLoanAcct(50L);
-        bft.setTotalActiveLoanAcct(20L);
-        bft.setNewLoanAcct(5L);
-        bft.setTotalLoanAmount(100000.0);
-        bft.setTotalLoanInterestEarned(7.0);
-        bft.setTotalLoanInterestUnearned(7000.0);
-        bft.setNumOfDefaultLoanAccount(3L);
+        bankTotalActiveDepositAcct = bizIntelligenceSessionBean.getBankTotalActiveDepositAcct(startDate, endDate);
+        bft.setTotalActiveDepositAcct(bankTotalActiveDepositAcct);
 
-        bft.setTotalCardAcct(99L);
-        bft.setTotalActiveCardAcct(22L);
-        bft.setNewCardAcct(11L);
-        bft.setTotalCardAmount(1200000.0);
-        bft.setTotalOutstandingAmount(3000000.0);
-        bft.setNumOfBadCardAccount(33L);
+        bankTotalNewDepositAcct = bizIntelligenceSessionBean.getBankTotalNewDepositAcct(startDate, endDate);
+        bft.setNewDepositAcct(bankTotalNewDepositAcct);
 
-        bft.setTotalExecutedPortfolio(55L);
-        bft.setNewExecutedPortfolio(9L);
-        bft.setTotalPortfolioAmount(3000000000.0);
-        bft.setTotalPortfolioProfitAmount(33333.3);
+        bankTotalDepositAmount = bizIntelligenceSessionBean.getBankTotalDepositAmount(endDate);
+        bft.setTotalDepositAmount(bankTotalDepositAmount);
+
+        bankDepositInterestAmount = bizIntelligenceSessionBean.getBankTotalDepositInterestAmount(endDate);
+        bft.setTotalDepositInterestAmount(bankDepositInterestAmount);
+
+        bankTotalLoanAcct = bizIntelligenceSessionBean.getBankTotalLoanAcct(endDate);
+        bft.setTotalLoanAcct(bankTotalLoanAcct);
+
+        bankTotalNewLoanAcct = bizIntelligenceSessionBean.getBankTotalNewLoanAcct(startDate, endDate);
+        bft.setNewLoanAcct(bankTotalNewLoanAcct);
+
+        bankTotalLoanAmount = bizIntelligenceSessionBean.getBankTotalLoanAmount(endDate);
+        bft.setTotalLoanAmount(bankTotalLoanAmount);
+
+        bankLoanInterestEarned = bizIntelligenceSessionBean.getBankLoanInterestEarned(endDate);
+        bft.setTotalLoanInterestEarned(bankLoanInterestEarned);
+
+        bankLoanInterestUnearned = bizIntelligenceSessionBean.getBankLoanInterestUnearned(endDate);
+        bft.setTotalLoanInterestUnearned(bankLoanInterestUnearned);
+
+        bankTotalDefaultLoanAcct = bizIntelligenceSessionBean.getBankTotalDefaultLoanAcct(endDate);
+        bft.setNumOfDefaultLoanAccount(bankTotalDefaultLoanAcct);
+
+        bankTotalCardAcct = bizIntelligenceSessionBean.getBankTotalCardAcct(endDate);
+        bft.setTotalCardAcct(bankTotalCardAcct);
+
+        bankTotalActiveCardAcct = bizIntelligenceSessionBean.getBankTotalActiveCardAcct(startDate, endDate);
+        bft.setTotalActiveCardAcct(bankTotalActiveCardAcct);
+
+        bankTotalNewCardAcct = bizIntelligenceSessionBean.getBankTotalNewCardAcct(startDate, endDate);
+        bft.setNewCardAcct(bankTotalNewCardAcct);
+
+        bankTotalCardCurrentAmount = bizIntelligenceSessionBean.getBankTotalCardCurrentAmount(endDate);
+        bft.setTotalCardCurrentAmount(bankTotalCardCurrentAmount);
+
+        bankTotalCardOutstandingAmount = bizIntelligenceSessionBean.getBankTotalCardOutstandingAmount(endDate);
+        bft.setTotalOutstandingAmount(bankTotalCardOutstandingAmount);
+
+        bankTotalWealthManagementSubscriber = bizIntelligenceSessionBean.getBankTotalWealthManagementSubsciber();
+        bft.setTotalWealthManagementSubscriber(bankTotalWealthManagementSubscriber);
+        
+        bankTotalExecutedPortfolio = bizIntelligenceSessionBean.getBankTotalExecutedPortfolio(endDate);
+        bft.setTotalExecutedPortfolio(bankTotalExecutedPortfolio);
+        
+        bankNewExecutedPortfolio = bizIntelligenceSessionBean.getBankNewExecutedPortfolio(startDate, endDate);
+        bft.setNewExecutedPortfolio(bankNewExecutedPortfolio);
+        
+        bankTotalInvestmentAmount = bizIntelligenceSessionBean.getBankTotalInvestmentAmount(endDate);
+        bft.setTotalPortfolioAmount(bankTotalInvestmentAmount);
+        
+        bankTotalProfitAmount = bizIntelligenceSessionBean.getBankTotalProfitAmount(endDate);
+        bft.setTotalPortfolioProfitAmount(bankTotalProfitAmount);
         bankFactTableSessionBean.createBankFactTable(bft);
     }
 

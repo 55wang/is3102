@@ -53,6 +53,8 @@ public class CreditCardAccount implements Serializable {
     private Long id;
     @Temporal(value = TemporalType.TIMESTAMP)
     private Date creationDate = new Date();
+    @Temporal(value = TemporalType.TIMESTAMP)
+    private Date closeDate = new Date();
 
     // info
     @Temporal(value = TemporalType.DATE)
@@ -65,7 +67,7 @@ public class CreditCardAccount implements Serializable {
 
     private Double transactionMonthlyLimit = 1000.0;
     private Double transactionDailyLimit = 500.0;
-    private Double creditLimit = 1000.0;
+    private Double creditLimit = 0.0;
 
     private Double annualInterestRate = 0.24; //24% annual Integererest rate
 
@@ -441,6 +443,14 @@ public class CreditCardAccount implements Serializable {
 
     public void setMinPayDue(Double minPayDue) {
         this.minPayDue = minPayDue;
+    }
+
+    public Date getCloseDate() {
+        return closeDate;
+    }
+
+    public void setCloseDate(Date closeDate) {
+        this.closeDate = closeDate;
     }
 
 }

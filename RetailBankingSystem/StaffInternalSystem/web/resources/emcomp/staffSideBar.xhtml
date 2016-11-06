@@ -210,17 +210,23 @@
                     </c:if>
 
                     <c:if test="#{cc.attrs.top == 'crm'}">
+                        <li class="side-menu-item #{cc.attrs.side == 'createCustomerSegmentation' ? 'active' : ''}">
+                            <h:link outcome="create_customer_segmentation" value="Customer Segmentation" />
+                        </li>
+                    </c:if>
+
+                    <c:if test="#{cc.attrs.top == 'crm'}">
                         <li class="side-menu-item #{cc.attrs.side == 'marketBasketAnalysis' ? 'active' : ''}">
                             <h:link outcome="market_basket_analysis" value="Market Basket Analysis" />
                         </li>
                     </c:if>
-                    
+
                     <c:if test="#{cc.attrs.top == 'crm'}">
                         <li class="side-menu-item #{cc.attrs.side == 'viewMarketingCampaigns' ? 'active' : ''}">
                             <h:link outcome="view_marketing_campaigns" value="View Marketing Campaigns" />
                         </li>
                     </c:if>
-                    
+
                     <c:if test="#{cc.attrs.top == 'crm'}">
                         <li class="side-menu-item #{cc.attrs.side == 'createMarketingCampaign' ? 'active' : ''}">
                             <h:link outcome="create_marketing_campaign" value="Create Marketing Campaign" />

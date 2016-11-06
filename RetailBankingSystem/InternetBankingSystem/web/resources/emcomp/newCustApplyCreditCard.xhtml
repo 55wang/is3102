@@ -150,6 +150,10 @@
                                         <f:selectItems value="#{newCardManagedBean.employmentStatusOptions}" />
                                     </p:selectOneMenu>
 
+                                    <h:outputText value="Income: " />
+                                    <p:inputText id="income" value="#{newCardManagedBean.customer.actualIncome}" rendered="true" required="true">
+                                    </p:inputText>
+
                                     <h:outputText value="Industry: " />
                                     <p:selectOneMenu value="#{newCardManagedBean.selectedIndustry}" style="width:187px; height: 30px; line-height: 21px; top:10px" rendered="true" required="true">
                                         <f:selectItems value="#{newCardManagedBean.industryOptions}" />

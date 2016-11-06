@@ -14,9 +14,12 @@ import javax.ejb.Local;
  */
 @Local
 public interface CrmIntelligenceSessionBeanLocal {
-    public Long getCustomerChurnCustomer(Date startDate, Date endDate);
-    public Double getCustomerAvgDepositSavingAmount(Date startDate, Date endDate);
-    public Double getCustomerAvgLoanAmount(Date startDate, Date endDate);
+    public Long getDepositChurnCustomer(Date startDate, Date endDate);
+    public Long getCardChurnCustomer(Date startDate, Date endDate);
+    public Long getLoanChurnCustomer(Date startDate, Date endDate);
+    public Long getWealthChurnCustomer(Date startDate, Date endDate);
+    public Double getCustomerAvgDepositSavingAmount(Date endDate);
+    public Double getCustomerAvgLoanAmount(Date endDate);
     public Long getTotalCustomerAgeGroup(Integer startAge, Integer endAge);
-    public Long getNewCustomerAgeGroup(Integer startAge, Integer endAge);
+    public Long getNewCustomerAgeGroup(Integer startAge, Integer endAge, Date startDate, Date endDate);
 }

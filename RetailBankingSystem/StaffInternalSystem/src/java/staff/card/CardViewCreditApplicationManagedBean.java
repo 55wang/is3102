@@ -39,16 +39,15 @@ public class CardViewCreditApplicationManagedBean implements Serializable {
     @EJB
     private MainAccountSessionBeanLocal mainAccountSessionBean;
     @EJB
-    CardProductSessionBeanLocal cardProductSessionBean;
+    private CardProductSessionBeanLocal cardProductSessionBean;
     @EJB
-    CreditCardOrderSessionBeanLocal creditCardOrderSessionBean;
+    private CreditCardOrderSessionBeanLocal creditCardOrderSessionBean;
     @EJB
-    CardAcctSessionBeanLocal cardAcctSessionBean;
+    private CardAcctSessionBeanLocal cardAcctSessionBean;
     @EJB
     private EmailServiceSessionBeanLocal emailServiceSessionBean;
     @EJB
     private UtilsSessionBeanLocal utilsBean;
-
 
     private List<CreditCardOrder> ccos;
     private String bureauCreditScore;
@@ -68,10 +67,30 @@ public class CardViewCreditApplicationManagedBean implements Serializable {
     }
 
     public void approveOrder(CreditCardOrder cco) {
-        creditCardOrderSessionBean.updateCreditCardOrderStatus(cco, EnumUtils.ApplicationStatus.APPROVED);
+        
         // Create Main Account 
         // Create Customer
         // 
+        //http://www.mas.gov.sg/moneysense/understanding-financial-products/credit-and-loans/types-of-loans/credit-cards.aspx
+        //update credit limit
+        Double customerMonthlyIncome = cco.getMainAccount().getCustomer().getActualIncome();
+        Integer customerAge = cco.getMainAccount().getCustomer().getAge();
+        
+        if (customerMonthlyIncome >= 30000.0/12) {
+            cco.getCreditCardAccount().setCreditLimit(4 * customerMonthlyIncome);
+        } else if (customerMonthlyIncome >= 15000.0/12 && customerAge >= 55) {
+            if (customerMonthlyIncome <= 30000.0/12 ) {
+                cco.getCreditCardAccount().setCreditLimit(2 * customerMonthlyIncome);
+            } else if (customerMonthlyIncome >= 30000.0/12) {
+                cco.getCreditCardAccount().setCreditLimit(4 * customerMonthlyIncome);
+            }
+        } else if (customerMonthlyIncome <= 2000) {
+            cco.getCreditCardAccount().setCreditLimit(500.0);
+        } else if (customerMonthlyIncome >= 120000.0/12) {
+            cco.getCreditCardAccount().setCreditLimit(10 * customerMonthlyIncome);
+        }
+        creditCardOrderSessionBean.updateCreditCardOrderStatus(cco, EnumUtils.ApplicationStatus.APPROVED);
+        
         MainAccount mainAccount = cco.getMainAccount();
         mainAccount.setStatus(EnumUtils.StatusType.PENDING);
         String randomPwd = CommonHelper.generatePwd();
