@@ -50,6 +50,8 @@ public class SACHManagedBean implements Serializable {
     
     public void sendMBSNetSettlement() {
         // REMARK: MBS only transfer to SACH, dont care about other things
+        
+        System.out.println("----------------Settlement Processing----------------");
         BigDecimal netSettlementAmount = BigDecimal.ZERO;
         List<PaymentTransfer> paymentTransfers = sachBean.findAllPaymentTransferFromBankCode("001");
         for (PaymentTransfer pt : paymentTransfers) {

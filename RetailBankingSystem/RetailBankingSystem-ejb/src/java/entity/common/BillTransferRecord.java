@@ -15,6 +15,7 @@ import javax.persistence.Entity;
 public class BillTransferRecord extends TransactionRecord {
     
     private String partnerBankCode;
+    private String partnerBankAccount;
     private String shortCode;
     private String organizationName;
     private String billReferenceNumber;
@@ -89,4 +90,14 @@ public class BillTransferRecord extends TransactionRecord {
     public void setSettled(Boolean settled) {
         this.settled = settled;
     }
+
+    public String getPartnerBankAccount() {
+        return partnerBankAccount;
+    }
+
+    public void setPartnerBankAccount(String partnerBankAccount) {
+        this.partnerBankAccount = partnerBankAccount;
+    }
+    
+    
 }

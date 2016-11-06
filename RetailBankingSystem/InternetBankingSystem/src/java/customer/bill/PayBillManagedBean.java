@@ -58,7 +58,7 @@ public class PayBillManagedBean implements Serializable {
     private MainAccount ma;
     private List<BillingOrg> ccBillList = new ArrayList<>();
     private List<CustomerDepositAccount> accounts = new ArrayList<>();
-    
+
     private String inputTokenString;
 
     public PayBillManagedBean() {
@@ -72,7 +72,7 @@ public class PayBillManagedBean implements Serializable {
     }
 
     public void transfer() {
-        
+
         if (!checkOptAndProceed()) {
             return;
         }
@@ -85,18 +85,19 @@ public class PayBillManagedBean implements Serializable {
         }
         transferClearing();
         JSUtils.callJSMethod("PF('myWizard').next()");
-        MessageUtils.displayError(ConstantUtils.TRANSFER_SUCCESS);
+        MessageUtils.displayInfo(ConstantUtils.TRANSFER_SUCCESS);
     }
 
     private void transferClearing() {
         DepositAccount da = depositBean.getAccountFromId(fromAccountNo);
         BillingOrg bo = billBean.getBillingOrganizationById(Long.parseLong(ccBillOrgId));
 
-        System.out.println("Bill Payment clearing");
+        System.out.println("----------------Bill Payment clearing----------------");
         BillTransferRecord btr = new BillTransferRecord();
         btr.setBillReferenceNumber(bo.getBillReference());// it will be credit card number
         btr.setOrganizationName(bo.getOrganization().getName());
         btr.setPartnerBankCode(bo.getOrganization().getPartnerBankCode());
+        btr.setPartnerBankAccount(bo.getOrganization().getPartnerBankAccount());
         btr.setSettled(false);
         btr.setAmount(amount);
         btr.setShortCode(bo.getOrganization().getShortCode());
@@ -112,13 +113,13 @@ public class PayBillManagedBean implements Serializable {
         BillingOrg bo = billBean.getBillingOrganizationById(Long.parseLong(ccBillOrgId));
         return bo.getOrganization().getName() + " - " + bo.getBillReference();
     }
-    
+
     public void sendOpt() {
         System.out.println("sendOTP clicked, sending otp to: " + ma.getCustomer().getPhone());
         JSUtils.callJSMethod("PF('myWizard').next()");
         otpBean.generateOTP(ma.getCustomer().getPhone());
     }
-    
+
     private Boolean checkOptAndProceed() {
         if (inputTokenString == null || inputTokenString.isEmpty()) {
             MessageUtils.displayError("Please enter one time password!");
