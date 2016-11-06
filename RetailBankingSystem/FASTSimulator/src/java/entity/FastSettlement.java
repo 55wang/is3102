@@ -11,26 +11,26 @@ import java.util.Date;
 import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
  * @author qiuxiaqing
  */
 @Entity
+@XmlRootElement
 public class FastSettlement implements Serializable {
 
     @Id
     private String bankCode;
-    private String name;
-    @Column(precision = 30, scale = 20)
-    private BigDecimal amount;
     @Temporal(value = TemporalType.TIMESTAMP)
     private Date creationDate = new Date();
+    @Column(precision = 19, scale = 4)
+    private BigDecimal amount;
+    private String name;
 
     @Override
     public int hashCode() {
@@ -82,6 +82,5 @@ public class FastSettlement implements Serializable {
     public void setAmount(BigDecimal amount) {
         this.amount = amount;
     }
-
 
 }

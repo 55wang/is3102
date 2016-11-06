@@ -76,7 +76,7 @@ public class BankAccountBuilder {
             "BANK OF CHINA LIMITED",
             "BNP PARIBAS",
             "CIMB BANK BERHAD",
-            "CITIBANK",//005
+            "CITIBANK NA",//005
             "DEUTSCHE BANK AG",
             "FAR EASTERN BANK LTD",
             "HL BANK",

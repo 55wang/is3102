@@ -27,10 +27,10 @@ import protocal.swift.SwiftMessage;
  */
 @Stateless
 public class WebserviceSessionBean implements WebserviceSessionBeanLocal {
-    
+
     @PersistenceContext(unitName = "RetailBankingSystem-ejbPU")
     private EntityManager em;
-    
+
     private final String MEPS_SETTLEMENT_AGENCY = "https://localhost:8181/MEPSSimulator/meps/meps_settlement_agency";
     private final String SACH_TRANSFER_CLEARING = "https://localhost:8181/SACHSimulator/sach/sach_transfer_clearing";
     private final String SACH_BILLING_CLEARING = "https://localhost:8181/SACHSimulator/sach/sach_billing_clearing";
@@ -43,7 +43,7 @@ public class WebserviceSessionBean implements WebserviceSessionBeanLocal {
         // send to MEPS+
         Form form = new Form(); //bank info
         form.param("fromBankCode", fromBankCode);// MBS is 001
-        form.param("toBankCode", toBankCode); 
+        form.param("toBankCode", toBankCode);
         form.param("agencyCode", agencyCode); // SACH is 000
         form.param("netSettlementAmount", netSettlementAmount);
         form.param("referenceNumber", "");
@@ -54,14 +54,14 @@ public class WebserviceSessionBean implements WebserviceSessionBeanLocal {
         // This is the response
         JsonObject jsonString = target.request(MediaType.APPLICATION_JSON).post(Entity.entity(form, MediaType.APPLICATION_FORM_URLENCODED), JsonObject.class);
         System.out.println(jsonString);
-        
+
         if (jsonString.getString("message").equals("SUCCESS")) {
             System.out.println("Request received");
         } else {
             System.out.println("FAIL");
         }
     }
-    
+
     @Asynchronous
     @Override
     public void payFASTSettlement(String netSettlementAmount, String fromBankCode, String toBankCode, String agencyCode, String referenceNumber) {
@@ -69,7 +69,7 @@ public class WebserviceSessionBean implements WebserviceSessionBeanLocal {
         // send to MEPS+
         Form form = new Form(); //bank info
         form.param("fromBankCode", fromBankCode);// MBS is 001
-        form.param("toBankCode", toBankCode); 
+        form.param("toBankCode", toBankCode);
         form.param("agencyCode", agencyCode); // FAST is 111
         form.param("netSettlementAmount", netSettlementAmount);
         form.param("referenceNumber", referenceNumber);
@@ -80,14 +80,14 @@ public class WebserviceSessionBean implements WebserviceSessionBeanLocal {
         // This is the response
         JsonObject jsonString = target.request(MediaType.APPLICATION_JSON).post(Entity.entity(form, MediaType.APPLICATION_FORM_URLENCODED), JsonObject.class);
         System.out.println(jsonString);
-        
+
         if (jsonString.getString("message").equals("SUCCESS")) {
             System.out.println("Request received");
         } else {
             System.out.println("FAIL");
         }
     }
-    
+
     @Asynchronous
     @Override
     public void transferClearingSACH(TransferRecord tr) {
@@ -102,14 +102,14 @@ public class WebserviceSessionBean implements WebserviceSessionBeanLocal {
         form.param("toName", tr.getName());
         form.param("fromName", tr.getFromName());
         form.param("myInitial", tr.getMyInitial());
-        
+
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(SACH_TRANSFER_CLEARING);
 
         // This is the response
         JsonObject jsonString = target.request(MediaType.APPLICATION_JSON).post(Entity.entity(form, MediaType.APPLICATION_FORM_URLENCODED), JsonObject.class);
         System.out.println(jsonString);
-        
+
         if (jsonString.getString("message").equals("SUCCESS")) {
             System.out.println("Request received");
             em.persist(tr);
@@ -117,7 +117,7 @@ public class WebserviceSessionBean implements WebserviceSessionBeanLocal {
             System.out.println("FAIL");
         }
     }
-    
+
     @Asynchronous
     @Override
     public void billingClearingSACH(BillTransferRecord btr) {
@@ -137,7 +137,7 @@ public class WebserviceSessionBean implements WebserviceSessionBeanLocal {
         // This is the response
         JsonObject jsonString = target.request(MediaType.APPLICATION_JSON).post(Entity.entity(form, MediaType.APPLICATION_FORM_URLENCODED), JsonObject.class);
         System.out.println(jsonString);
-        
+
         if (jsonString.getString("message").equals("SUCCESS")) {
             System.out.println("Request received");
             em.persist(btr);
@@ -145,7 +145,7 @@ public class WebserviceSessionBean implements WebserviceSessionBeanLocal {
             System.out.println("FAIL");
         }
     }
-    
+
     @Asynchronous
     @Override
     public void transferClearingFAST(TransferRecord tr) {
@@ -162,24 +162,31 @@ public class WebserviceSessionBean implements WebserviceSessionBeanLocal {
         form.param("fromName", tr.getFromName());
         form.param("myInitial", tr.getMyInitial());
         form.param("FAST", "false");
-        
-        
+     
+        System.out.println("Sending FAST transfer...");
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(FAST_TRANSFER_CLEARING);
-        System.out.println("Sending FAST transfer...");
 
         // This is the response
         JsonObject jsonString = target.request(MediaType.APPLICATION_JSON).post(Entity.entity(form, MediaType.APPLICATION_FORM_URLENCODED), JsonObject.class);
-        System.out.println(jsonString);
         
+        try {
+            Thread.sleep(1000);                 //1000 milliseconds is one second.
+        } catch (InterruptedException ex) {
+            Thread.currentThread().interrupt();
+        }
+
+
         if (jsonString.getString("message").equals("SUCCESS")) {
-            System.out.println("Request received");
+            System.out.println(".");
+            System.out.println("[MBS]:");
+            System.out.println("Received response from SACH...");
             em.persist(tr);
         } else {
             System.out.println("FAIL");
         }
     }
-    
+
     @Override
     public void transferSWIFT(TransferRecord tr) {
         MT103 message = new MT103();
