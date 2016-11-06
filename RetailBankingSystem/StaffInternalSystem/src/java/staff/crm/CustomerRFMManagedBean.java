@@ -6,6 +6,7 @@
 package staff.crm;
 
 import ejb.session.cms.CustomerProfileSessionBeanLocal;
+import ejb.session.common.NewCustomerSessionBeanLocal;
 import ejb.session.crm.RFMSessionBeanLocal;
 import entity.customer.Customer;
 import java.io.Serializable;
@@ -27,6 +28,8 @@ public class CustomerRFMManagedBean implements Serializable {
     RFMSessionBeanLocal rFMSessionBean;
     @EJB
     CustomerProfileSessionBeanLocal customerProfileSessionBean;
+    @EJB
+    NewCustomerSessionBeanLocal customerSessionBean;
 
     private List<Customer> customers;
 
@@ -39,7 +42,27 @@ public class CustomerRFMManagedBean implements Serializable {
     }
 
     public void refreshCustomerRFM() {
-        //to be continued
+        for (Customer c : customers) {
+            Long depositRecency = rFMSessionBean.getDepositRecencyByCustomerId(c.getId());
+            Long depositFrequency = rFMSessionBean.getDepositFrequencyByCustomerId(c.getId());
+            Long depositMonetary = rFMSessionBean.getDepositMonetaryByCustomerId(c.getId());
+            c.setDepositRecency(depositRecency);
+            c.setDepositFrequency(depositFrequency);
+            c.setDepositMonetary(depositMonetary);
+            c.setDepositRFMScore((double) (depositRecency + depositFrequency + depositMonetary));
+
+            Long cardRecency = rFMSessionBean.getCardRecencyByCustomerId(c.getId());
+            Long cardFrequency = rFMSessionBean.getCardFrequencyByCustomerId(c.getId());
+            Long cardMonetary = rFMSessionBean.getCardMonetaryByCustomerId(c.getId());
+
+            c.setCardRecency(cardRecency);
+            c.setCardFrequency(cardFrequency);
+            c.setCardMonetary(cardMonetary);
+            c.setCardRFMScore((double) (cardRecency + cardFrequency + cardMonetary));
+
+            c.setOverallRFMScore( (c.getDepositRFMScore() + c.getCardRFMScore()) / 2 );
+            customerSessionBean.updateCustomer(c);
+        }
     }
 
     public List<Customer> getCustomers() {

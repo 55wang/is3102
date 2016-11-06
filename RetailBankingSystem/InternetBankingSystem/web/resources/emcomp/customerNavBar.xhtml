@@ -17,98 +17,99 @@
 
     <cc:implementation>
         <f:view>          
-                    <c:if test="#{cc.attrs.context == 'main'}">
-                         <div id="customer-index-navbar">
-                            <ul class="header-navigation">
-                                <li id="header-overview" class="#{cc.attrs.mainPage == 'index' ? 'active' : ''}" value="Home">
-                                    <a href="https://localhost:8181/InternetBankingSystem/index.xhtml">Home</a>
-                                </li>
-                                <li id="header-overview" class="#{cc.attrs.mainPage == 'mainDeposit' ? 'active' : ''}" value="Deposit">
-                                    <a href="https://localhost:8181/InternetBankingSystem/main_deposit/default.xhtml">Deposit</a>
-                                </li>
-                                <li id="header-overview" class="#{cc.attrs.mainPage == 'mainCards' ? 'active' : ''}" value="Card">
-                                    <a href="https://localhost:8181/InternetBankingSystem/main_cards/default.xhtml">Cards</a>
-                                </li>
-                                <li id="header-overview" class="#{cc.attrs.mainPage == 'mainLoans' ? 'active' : ''}" value="Loan">
-                                    <a href="https://localhost:8181/InternetBankingSystem/main_loan/default_loan.xhtml">Loans</a>
-                                </li>
-                                <li id="header-overview" class="#{cc.attrs.mainPage == 'mainInvest' ? 'active' : ''}" value="Invest">
-                                    <a href="#">Invest</a>
-                                </li>
-                                <li id="header-overview" class="#{cc.attrs.mainPage == 'mainPromotion' ? 'active' : ''}" value="Promotions">
-                                    <a href="#">Promotions</a>
-                                </li>
-                                <li id="header-overview" class="#{cc.attrs.mainPage == 'mainWwalth' ? 'active' : ''}" value="Wealth">
-                                    <a href="#">Wealth</a>
-                                </li>
-                             </ul>
-                        </div>
-                    </c:if>
-                
-                <c:if test="#{cc.attrs.context == 'personal'}">
-                    <div id="customer-personal-navbar">
-                        <h:form>  
-                            <p:growl id="messages"/>
+            <c:if test="#{cc.attrs.context == 'main'}">
+                <div id="customer-index-navbar">
+                    <ul class="header-navigation">
+                        <li id="header-overview" class="#{cc.attrs.mainPage == 'index' ? 'active' : ''}" value="Home">
+                            <a href="https://localhost:8181/InternetBankingSystem/index.xhtml">Home</a>
+                        </li>
+                        <li id="header-overview" class="#{cc.attrs.mainPage == 'mainDeposit' ? 'active' : ''}" value="Deposit">
+                            <a href="https://localhost:8181/InternetBankingSystem/main_deposit/default.xhtml">Deposit</a>
+                        </li>
+                        <li id="header-overview" class="#{cc.attrs.mainPage == 'mainCards' ? 'active' : ''}" value="Card">
+                            <a href="https://localhost:8181/InternetBankingSystem/main_cards/default.xhtml">Cards</a>
+                        </li>
+                        <li id="header-overview" class="#{cc.attrs.mainPage == 'mainLoans' ? 'active' : ''}" value="Loan">
+                            <a href="https://localhost:8181/InternetBankingSystem/main_loan/default_loan.xhtml">Loans</a>
+                        </li>
+                        <li id="header-overview" class="#{cc.attrs.mainPage == 'mainInvest' ? 'active' : ''}" value="Invest">
+                            <a href="#">Invest</a>
+                        </li>
+                        <li id="header-overview" class="#{cc.attrs.mainPage == 'mainPromotion' ? 'active' : ''}" value="Promotions">
+                            <a href="#">Promotions</a>
+                        </li>
+                        <li id="header-overview" class="#{cc.attrs.mainPage == 'mainWwalth' ? 'active' : ''}" value="Wealth">
+                            <a href="#">Wealth</a>
+                        </li>
+                    </ul>
+                </div>
+            </c:if>
 
-                            <p:menubar>
-                                <p:submenu label="My Accounts"  class="navbar-submenu #{cc.attrs.personalPage == 'home' ? 'active' : ''}">
-                                    <p:menuitem value="Home" outcome="/personal_home/customer_home" />
-                                    <p:menuitem value="Deposits" outcome="/personal_deposit/deposit_account_summary" />
-                                    <p:menuitem value="Loans" outcome="/personal_loan/loan_account_summary" />
-                                    <p:menuitem value="eStatement" outcome="/personal_request/request_statement" />
-                                </p:submenu>
+            <c:if test="#{cc.attrs.context == 'personal'}">
+                <div id="customer-personal-navbar">
+                    <h:form>  
+                        <p:growl id="messages"/>
 
-                                <p:submenu label="Transfer" class="navbar-submenu #{cc.attrs.personalPage == 'transfer' ? 'active' : ''}">
-                                    <p:menuitem value="To my Accounts" outcome="/personal_transfer/inter_account_transfer" />
-                                    <p:menuitem value="Ad hoc Transfer to other Merlion Bank Account" outcome="/personal_transfer/ad_hoc_intra_bank_transfer" />
-                                    <p:menuitem value="To other Merlion Bank Account" outcome="/personal_transfer/intra_bank_transfer" />
-                                    <p:menuitem value="To other local Bank Account(FAST)" outcome="/personal_transfer/other_bank_transfer" />
-                                    <p:menuitem value="Overseas Bank Transfer" outcome="/personal_transfer/overseas_bank_transfer" />
-                                    <p:menuitem value="Manage Transfer Limits" outcome="/personal_transfer/change_transfer_limits" />
-                                    <p:menuitem value="Manage Merlion Bank Payee" outcome="/personal_transfer/manage_merlion_payee" />
-                                </p:submenu>
-                                
-                                <p:submenu label="Pay" class="navbar-submenu #{cc.attrs.personalPage == 'pay' ? 'active' : ''}">
-                                    <p:menuitem value="Pay Merlion Credit Card" outcome="/personal_bill/pay_merlion_cc_bill" />
-                                    <p:menuitem value="Pay Other Credit Card" outcome="/personal_bill/pay_other_cc_bill" />
-                                    <p:menuitem value="Pay Bills" outcome="/personal_bill/pay_prearranged_bill" />
-                                    <p:menuitem value="Pay Loans" outcome="/personal_bill/loan_repayment" />
-                                    <p:menuitem value="Manage Billing Orgs" outcome="/personal_bill/manage_bill_orgs" />
-                                    <p:menuitem value="Manage Credit Card bill list" outcome="/personal_bill/manage_cc_bill_orgs" />
-                                    <p:menuitem value="Manage GIRO Arrangement" outcome="/personal_bill/manage_giro_arrangement" />
-                                </p:submenu>
+                        <p:menubar>
+                            <p:submenu label="My Accounts"  class="navbar-submenu #{cc.attrs.personalPage == 'home' ? 'active' : ''}">
+                                <p:menuitem value="Home" outcome="/personal_home/customer_home" />
+                                <p:menuitem value="Deposits" outcome="/personal_deposit/deposit_account_summary" />
+                                <p:menuitem value="Loans" outcome="/personal_loan/loan_account_summary" />
+                                <p:menuitem value="eStatement" outcome="/personal_request/request_statement" />
+                            </p:submenu>
 
-                                <p:submenu label="Cards" class="navbar-submenu #{cc.attrs.personalPage == 'cards' ? 'active' : ''}">
-                                    <p:menuitem value="Debit Card Summary" outcome="/personal_cards/debit_card_summary" />
-                                    <p:menuitem value="Credit Card Summary" outcome="/personal_cards/credit_card_summary" />
-                                    <p:menuitem value="Activate Debit Card" outcome="/personal_cards/activate_debit_card" />
-                                    <p:menuitem value="Activate Credit Card" outcome="/personal_cards/activate_credit_card" />
-                                </p:submenu>
+                            <p:submenu label="Transfer" class="navbar-submenu #{cc.attrs.personalPage == 'transfer' ? 'active' : ''}">
+                                <p:menuitem value="To my Accounts" outcome="/personal_transfer/inter_account_transfer" />
+                                <p:menuitem value="Ad hoc Transfer to other Merlion Bank Account" outcome="/personal_transfer/ad_hoc_intra_bank_transfer" />
+                                <p:menuitem value="To other Merlion Bank Account" outcome="/personal_transfer/intra_bank_transfer" />
+                                <p:menuitem value="To other local Bank Account(FAST)" outcome="/personal_transfer/other_bank_transfer" />
+                                <p:menuitem value="To other local Bank Account" outcome="/personal_transfer/other_bank_transfer_ibg" />
+                                <p:menuitem value="Overseas Bank Transfer" outcome="/personal_transfer/overseas_bank_transfer" />
+                                <p:menuitem value="Manage Transfer Limits" outcome="/personal_transfer/change_transfer_limits" />
+                                <p:menuitem value="Manage Merlion Bank Payee" outcome="/personal_transfer/manage_merlion_payee" />
+                            </p:submenu>
 
-                                <p:submenu label="Wealth" class="navbar-submenu #{cc.attrs.personalPage == 'wealth' ? 'active' : ''}">
-                                    <p:menuitem value="Risk Tolerance Quiz" url="../personal_wealth/risk_tolerance_quiz.xhtml" />
-                                    <p:menuitem value="New Investment Requests" url="../personal_wealth/wealthAdvertisment.xhtml" />
-                                    <p:menuitem value="View Invetment Requests" url="../personal_wealth/view_investment_plan.xhtml" />
-                                    <p:menuitem value="Portfolio" url="../personal_wealth/portfolio.xhtml" />
-                                </p:submenu>
+                            <p:submenu label="Pay" class="navbar-submenu #{cc.attrs.personalPage == 'pay' ? 'active' : ''}">
+                                <p:menuitem value="Pay Merlion Credit Card" outcome="/personal_bill/pay_merlion_cc_bill" />
+                                <p:menuitem value="Pay Other Credit Card" outcome="/personal_bill/pay_other_cc_bill" />
+                                <p:menuitem value="Pay Bills" outcome="/personal_bill/pay_prearranged_bill" />
+                                <p:menuitem value="Pay Loans" outcome="/personal_bill/loan_repayment" />
+                                <p:menuitem value="Manage Billing Orgs" outcome="/personal_bill/manage_bill_orgs" />
+                                <p:menuitem value="Manage Credit Card bill list" outcome="/personal_bill/manage_cc_bill_orgs" />
+                                <p:menuitem value="Manage GIRO Arrangement" outcome="/personal_bill/manage_giro_arrangement" />
+                            </p:submenu>
 
-                                <p:submenu label="Apply" class="navbar-submenu #{cc.attrs.personalPage == 'apply' ? 'active' : ''}">
-                                    <p:menuitem value="Deposit Accounts" outcome="/personal_apply/existing_apply_deposit" />
-                                    <p:menuitem value="Debit Cards" outcome="/personal_apply/existing_apply_debit_card" />
-                                    <p:menuitem value="Credit Cards" outcome="/personal_apply/existing_apply_credit_card" />
-                                    <p:menuitem value="Credit Card Application Status" outcome="/personal_apply/view_credit_card_application" />
-                                    <p:menuitem value="Personal Loan" outcome="/personal_loan/apply_personal_loan" />
-                                </p:submenu>
-                                
-                                <p:submenu label="Request" class="navbar-submenu #{cc.attrs.personalPage == 'request' ? 'active' : ''}">
-                                    <p:menuitem value="Cheque Status" outcome="/personal_request/current_account_cheque_status" />
-                                </p:submenu>
-                            </p:menubar>
-                        </h:form>
-                    </div>
-                </c:if>
-               
-            
+                            <p:submenu label="Cards" class="navbar-submenu #{cc.attrs.personalPage == 'cards' ? 'active' : ''}">
+                                <p:menuitem value="Debit Card Summary" outcome="/personal_cards/debit_card_summary" />
+                                <p:menuitem value="Credit Card Summary" outcome="/personal_cards/credit_card_summary" />
+                                <p:menuitem value="Activate Debit Card" outcome="/personal_cards/activate_debit_card" />
+                                <p:menuitem value="Activate Credit Card" outcome="/personal_cards/activate_credit_card" />
+                            </p:submenu>
+
+                            <p:submenu label="Wealth" class="navbar-submenu #{cc.attrs.personalPage == 'wealth' ? 'active' : ''}">
+                                <p:menuitem value="Risk Tolerance Quiz" url="../personal_wealth/risk_tolerance_quiz.xhtml" />
+                                <p:menuitem value="New Investment Requests" url="../personal_wealth/wealthAdvertisment.xhtml" />
+                                <p:menuitem value="View Invetment Requests" url="../personal_wealth/view_investment_plan.xhtml" />
+                                <p:menuitem value="Portfolio" url="../personal_wealth/portfolio.xhtml" />
+                            </p:submenu>
+
+                            <p:submenu label="Apply" class="navbar-submenu #{cc.attrs.personalPage == 'apply' ? 'active' : ''}">
+                                <p:menuitem value="Deposit Accounts" outcome="/personal_apply/existing_apply_deposit" />
+                                <p:menuitem value="Debit Cards" outcome="/personal_apply/existing_apply_debit_card" />
+                                <p:menuitem value="Credit Cards" outcome="/personal_apply/existing_apply_credit_card" />
+                                <p:menuitem value="Credit Card Application Status" outcome="/personal_apply/view_credit_card_application" />
+                                <p:menuitem value="Personal Loan" outcome="/personal_loan/apply_personal_loan" />
+                            </p:submenu>
+
+                            <p:submenu label="Request" class="navbar-submenu #{cc.attrs.personalPage == 'request' ? 'active' : ''}">
+                                <p:menuitem value="Cheque Status" outcome="/personal_request/current_account_cheque_status" />
+                            </p:submenu>
+                        </p:menubar>
+                    </h:form>
+                </div>
+            </c:if>
+
+
             <p:socket onMessage="handleAnnouncement" channel="/customer_notify"/>
             <p:socket onMessage="handleAnnouncement" channel="/single_notification/#{customerInfoManagedBean.userId}"/>
             <script type="text/javascript">

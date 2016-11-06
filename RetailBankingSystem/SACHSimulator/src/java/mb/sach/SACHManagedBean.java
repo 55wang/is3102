@@ -76,6 +76,11 @@ public class SACHManagedBean implements Serializable {
         }
     }
     
+    public void sendMEPSNetSettlement(){
+        sachBean.sendMEPSNetSettlement();
+    }
+   
+    
     public void sendMBSTransfer() {
         
         PaymentTransfer pt = new PaymentTransfer();
