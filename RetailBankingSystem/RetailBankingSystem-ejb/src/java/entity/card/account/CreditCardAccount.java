@@ -67,7 +67,7 @@ public class CreditCardAccount implements Serializable {
 
     private Double transactionMonthlyLimit = 1000.0;
     private Double transactionDailyLimit = 500.0;
-    private Double creditLimit = 1000.0;
+    private Double creditLimit = 0.0;
 
     private Double annualInterestRate = 0.24; //24% annual Integererest rate
 
