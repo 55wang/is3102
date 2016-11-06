@@ -23,6 +23,7 @@ public class NewCustomerSessionBean implements NewCustomerSessionBeanLocal {
     @Override
     public Customer createCustomer(Customer customer) {
         customer.setFullName(customer.getFirstname() + " " + customer.getLastname());
+        customer.setAge(customer.calcAge().intValue());
         em.persist(customer);
         return customer;
     }
@@ -30,6 +31,7 @@ public class NewCustomerSessionBean implements NewCustomerSessionBeanLocal {
     @Override
     public Customer updateCustomer(Customer customer) {
         customer.setFullName(customer.getFirstname() + " " + customer.getLastname());
+        customer.setAge(customer.calcAge().intValue());
         em.merge(customer);
         return customer;
     }

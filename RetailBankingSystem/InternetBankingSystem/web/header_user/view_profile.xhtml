@@ -54,6 +54,9 @@
                                     <h:outputLabel for="birthday" value="DOB: "/> 
                                     <h:outputText id="birthday" value="#{customerProfileManagedBean.customer.birthDay}">  <f:convertDateTime pattern="dd/MM/yyyy" />    </h:outputText>
 
+                                    <h:outputLabel for="age" value="Age: "/> 
+                                    <h:outputText id="age" value="#{customerProfileManagedBean.customer.age}" />
+
                                     <h:outputLabel for="income" value="Income: " />
                                     <h:outputText id="income" value="#{customerProfileManagedBean.selectedIncome}"/>
                                 </h:panelGrid>

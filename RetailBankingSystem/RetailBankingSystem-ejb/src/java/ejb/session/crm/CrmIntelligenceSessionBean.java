@@ -23,18 +23,8 @@ public class CrmIntelligenceSessionBean implements CrmIntelligenceSessionBeanLoc
     private EntityManager em;
 
     @Override
-    public Double getCustomerChurnRate(Date startDate, Date endDate) {
-        return 0.0;
-    }
-
-    @Override
-    public Double getCustomerAvgCLV(Date startDate, Date endDate) {
-        return 0.0;
-    }
-
-    @Override
-    public Double getCustomerAvgAge(Date startDate, Date endDate) {
-        return 0.0;
+    public Long getCustomerChurnCustomer(Date startDate, Date endDate) {
+        return 0L;
     }
 
     @Override
@@ -46,4 +36,19 @@ public class CrmIntelligenceSessionBean implements CrmIntelligenceSessionBeanLoc
     public Double getCustomerAvgLoanAmount(Date startDate, Date endDate) {
         return 0.0;
     }
+
+    @Override
+    public Long getTotalCustomerAgeGroup(Integer startAge, Integer endAge) {
+        Query q = em.createQuery("SELECT COUNT(c) FROM Customer c WHERE c.age BETWEEN :inStartAge AND :inEndAge");
+        q.setParameter("inStartAge", startAge);
+        q.setParameter("inEndAge", endAge);
+        return (Long) q.getSingleResult();
+    }
+
+    @Override
+    public Long getNewCustomerAgeGroup(Integer startAge, Integer endAge) {
+        
+        return 0L;
+    }
+
 }
