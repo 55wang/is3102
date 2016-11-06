@@ -382,6 +382,21 @@ and open the template in the editor.
     background: #efefef;
 }
 
+.bi-deposit-loan .bi-header-holder{
+    text-align: center;
+    padding: 5px;
+    min-height: 30px;
+    background: #2087d8;
+    -webkit-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
+}
+
+.bi-deposit-loan .bi-header-holder .header-content{
+    position: relative;
+    top:5px;
+    font-size: 20px;
+    color: white;  
+}
+
 .bi-deposit-loan .date-holder{
     padding: 10px;
     min-height: 80px;

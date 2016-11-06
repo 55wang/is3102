@@ -81,18 +81,28 @@ public class ViewDepositLoanManagedBean implements Serializable {
         System.out.println(startDate);
         System.out.println(endDate);
 
-        bankTotalDepositAcct = bizIntelligenceSessionBean.getBankTotalDepositAcct(startDate, endDate);
+        bankTotalDepositAcct = bizIntelligenceSessionBean.getBankTotalDepositAcct(endDate);
         bankTotalActiveDepositAcct = bizIntelligenceSessionBean.getBankTotalActiveDepositAcct(startDate, endDate);
         bankTotalNewDepositAcct = bizIntelligenceSessionBean.getBankTotalNewDepositAcct(startDate, endDate);
-        bankTotalDepositAmount = bizIntelligenceSessionBean.getBankTotalDepositAmount(startDate, endDate);
-        bankDepositInterestAmount = bizIntelligenceSessionBean.getBankTotalDepositInterestAmount(startDate, endDate);
+        bankTotalDepositAmount = bizIntelligenceSessionBean.getBankTotalDepositAmount(endDate);
+        bankDepositInterestAmount = bizIntelligenceSessionBean.getBankTotalDepositInterestAmount(endDate);
 
-        bankTotalLoanAcct = bizIntelligenceSessionBean.getBankTotalLoanAcct(startDate, endDate);
+        bankTotalLoanAcct = bizIntelligenceSessionBean.getBankTotalLoanAcct(endDate);
         bankTotalNewLoanAcct = bizIntelligenceSessionBean.getBankTotalNewLoanAcct(startDate, endDate);
-        bankTotalLoanAmount = bizIntelligenceSessionBean.getBankTotalLoanAmount(startDate, endDate);
-        bankLoanInterestEarned = bizIntelligenceSessionBean.getBankLoanInterestEarned(startDate, endDate);
-        bankLoanInterestUnearned = bizIntelligenceSessionBean.getBankLoanInterestUnearned(startDate, endDate);
-        bankTotalDefaultLoanAcct = bizIntelligenceSessionBean.getBankTotalDefaultLoanAcct(startDate, endDate);
+        bankTotalLoanAmount = bizIntelligenceSessionBean.getBankTotalLoanAmount(endDate);
+        bankLoanInterestEarned = bizIntelligenceSessionBean.getBankLoanInterestEarned(endDate);
+        bankLoanInterestUnearned = bizIntelligenceSessionBean.getBankLoanInterestUnearned(endDate);
+        bankTotalDefaultLoanAcct = bizIntelligenceSessionBean.getBankTotalDefaultLoanAcct(endDate);
+        
+        if(bankTotalLoanAmount == null){
+            bankTotalLoanAmount = 0.0;
+        }
+        if(bankLoanInterestEarned == null){
+            bankLoanInterestEarned = 0.0;
+        }
+        if(bankLoanInterestUnearned == null){
+            bankLoanInterestUnearned = 0.0;
+        }
 
         createDepositLoanAmtBarModel();
         createDepositLoanIntBarModel();
@@ -114,18 +124,32 @@ public class ViewDepositLoanManagedBean implements Serializable {
     public void viewDataTable() {
         System.out.println(sdf.format(startDate));
         System.out.println(sdf.format(endDate));
-        bankTotalDepositAcct = bizIntelligenceSessionBean.getBankTotalDepositAcct(startDate, endDate);
+        bankTotalDepositAcct = bizIntelligenceSessionBean.getBankTotalDepositAcct(endDate);
         bankTotalActiveDepositAcct = bizIntelligenceSessionBean.getBankTotalActiveDepositAcct(startDate, endDate);
         bankTotalNewDepositAcct = bizIntelligenceSessionBean.getBankTotalNewDepositAcct(startDate, endDate);
-        bankTotalDepositAmount = bizIntelligenceSessionBean.getBankTotalDepositAmount(startDate, endDate);
-        bankDepositInterestAmount = bizIntelligenceSessionBean.getBankTotalDepositInterestAmount(startDate, endDate);
+        bankTotalDepositAmount = bizIntelligenceSessionBean.getBankTotalDepositAmount(endDate);
+        bankDepositInterestAmount = bizIntelligenceSessionBean.getBankTotalDepositInterestAmount(endDate);
 
-        bankTotalLoanAcct = bizIntelligenceSessionBean.getBankTotalLoanAcct(startDate, endDate);
+        bankTotalLoanAcct = bizIntelligenceSessionBean.getBankTotalLoanAcct(endDate);
         bankTotalNewLoanAcct = bizIntelligenceSessionBean.getBankTotalNewLoanAcct(startDate, endDate);
-        bankTotalLoanAmount = bizIntelligenceSessionBean.getBankTotalLoanAmount(startDate, endDate);
-        bankLoanInterestEarned = bizIntelligenceSessionBean.getBankLoanInterestEarned(startDate, endDate);
-        bankLoanInterestUnearned = bizIntelligenceSessionBean.getBankLoanInterestUnearned(startDate, endDate);
-        bankTotalDefaultLoanAcct = bizIntelligenceSessionBean.getBankTotalDefaultLoanAcct(startDate, endDate);
+        bankTotalLoanAmount = bizIntelligenceSessionBean.getBankTotalLoanAmount(endDate);
+        bankLoanInterestEarned = bizIntelligenceSessionBean.getBankLoanInterestEarned(endDate);
+        bankLoanInterestUnearned = bizIntelligenceSessionBean.getBankLoanInterestUnearned(endDate);
+        bankTotalDefaultLoanAcct = bizIntelligenceSessionBean.getBankTotalDefaultLoanAcct(endDate);
+        
+        if(bankTotalLoanAmount == null){
+            bankTotalLoanAmount = 0.0;
+        }
+        if(bankLoanInterestEarned == null){
+            bankLoanInterestEarned = 0.0;
+        }
+        if(bankLoanInterestUnearned == null){
+            bankLoanInterestUnearned = 0.0;
+        }
+        
+        createDepositLoanAmtBarModel();
+        createDepositLoanIntBarModel();
+        createBadLoanPieModels();
     }
 
     public PieChartModel getBadLoanPieModel() {
@@ -210,8 +234,8 @@ public class ViewDepositLoanManagedBean implements Serializable {
     private void createBadLoanPieModel() {
         badLoanPieModel = new PieChartModel();
 
-        badLoanPieModel.set("Default Loan", 325);
-        badLoanPieModel.set("Non-Default Loan", 900);
+        badLoanPieModel.set("Default Loan", bankTotalDefaultLoanAcct);
+        badLoanPieModel.set("Non-Default Loan", bankTotalLoanAcct-bankTotalDefaultLoanAcct);
 
         badLoanPieModel.setTitle("Default Rate");
         badLoanPieModel.setLegendPosition("e");
