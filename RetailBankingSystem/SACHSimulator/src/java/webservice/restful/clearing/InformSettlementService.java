@@ -43,7 +43,7 @@ public class InformSettlementService {
         // makes payment to other bank
         // TODO: if needed, use a MAP to check net settlement to other banks
         System.out.println("Paying Settlement to other bank" + toBankCode);
-        sachBean.sendMEPS(netSettlementAmount, toBankCode);
+//        sachBean.sendMEPS(netSettlementAmount, toBankCode);
         
         System.out.println("Sending back sach_inform_settlement response");
         List<PaymentTransfer> paymentTransfers = sachBean.findAllPaymentTransferForBankCode("001");

@@ -163,7 +163,7 @@ public class InternationalBankTransferManagedBean implements Serializable {
     
     private void transferClearing() {
         DepositAccount da = depositBean.getAccountFromId(getFromAccountNo());
-        System.out.println("SWIFT transfer messaging");
+        System.out.println("----------------SWIFT transfer messaging----------------");
         TransferRecord tr = new TransferRecord();
         tr.setAccountNumber(getPayee().getAccountNumber());
         tr.setReferenceNumber(GenerateAccountAndCCNumber.generateReferenceNumber());

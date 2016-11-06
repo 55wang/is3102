@@ -68,23 +68,23 @@ public class SwiftMessage {
     private String checksum = "123456789ABC";
 
     public String getBasicHeaderBlock() {
-        return "{1:" + getApplicationId() + getServiceId() + getSelfBIC() + getSelfLogicalTerminalCode() + getSelfBranchCode() + getSessionNumber() + getSequenceNumber() + "}";
+        return "Basic Header Block: {" + getApplicationId() + getServiceId() + getSelfBIC() + getSelfLogicalTerminalCode() + getSelfBranchCode() + getSessionNumber() + getSequenceNumber() + "}";
     }
 
     public String getApplicationHeaderBlock() {
-        return "{2:" + getMode() + getMessageType() + getOtherBIC() + getOtherLogicalTerminalCode() + getOtherBranchCode() + getMessagePriority() + getDeliveryMonitoring() + getNonDeliveryNotificationPeriod() + "}";
+        return "Application Header Block: {" + getMode() + getMessageType() + getOtherBIC() + getOtherLogicalTerminalCode() + getOtherBranchCode() + getMessagePriority() + getDeliveryMonitoring() + getNonDeliveryNotificationPeriod() + "}";
     }
 
     public String getUserHeaderBlock() {
-        return "{3:" + getBankPriorityCode() + getMessageUserReference() + "}";
+        return "User Header Block: {" + getBankPriorityCode() + getMessageUserReference() + "}";
     }
 
     public String getTextBlock() {
-        return "{4:" + getMessage() + "-}";
+        return "Message Content: {" + getMessage() + "_}";
     }
     
     public String getTrailerBlock() {
-        return "{5:" + 
+        return "TrailerBlock: {" + 
                 "{MAC:" + getMessageAuthenticationCode() + "}" +
                 "{CHK:" + getChecksum() + "}" +
                 "}";
@@ -92,7 +92,7 @@ public class SwiftMessage {
     
     @Override
     public String toString() {
-        return getBasicHeaderBlock() + "\n" + getApplicationHeaderBlock() + "\n" + getUserHeaderBlock() + "\n" + getTextBlock() + "\n" + getTrailerBlock();
+        return "SWIFT message:\n"+ getBasicHeaderBlock() + "\n" + getApplicationHeaderBlock() + "\n" + getUserHeaderBlock() + "\n" + getTextBlock() + "\n" + getTrailerBlock();
     }
 
     // Getter and Setters
