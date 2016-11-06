@@ -6,8 +6,10 @@
 package staff.crm;
 
 import ejb.session.bi.BizIntelligenceSessionBeanLocal;
+import ejb.session.crm.CrmIntelligenceSessionBeanLocal;
 import ejb.session.fact.BankFactTableSessionBeanLocal;
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -17,6 +19,7 @@ import org.primefaces.model.chart.Axis;
 import org.primefaces.model.chart.AxisType;
 import org.primefaces.model.chart.BarChartModel;
 import org.primefaces.model.chart.ChartSeries;
+import server.utilities.DateUtils;
 
 /**
  *
@@ -30,6 +33,14 @@ public class ViewCustomerOverviewManagedBean implements Serializable {
     BankFactTableSessionBeanLocal bankFactTableSessionBean;
     @EJB
     BizIntelligenceSessionBeanLocal bizIntelligenceSessionBean;
+    @EJB
+    CrmIntelligenceSessionBeanLocal crmIntelligenceSessionBean;
+
+    private Double churnRate;
+    private Double avgCustomerLifeTimeValue;
+    private Double avgCustomerAge;
+    private Double avgCustomerDepositSavingAmount;
+    private Double avgCustomerLoanAmount;
 
     private Long bankTotalDepositAcct;
     private Long bankTotalLoanAcct;
@@ -37,20 +48,26 @@ public class ViewCustomerOverviewManagedBean implements Serializable {
     private Long bankTotalExecutedPortfolio;
 
     private BarChartModel customerAcctBarModel;
-    private Date startDate;
-    private Date endDate;
-    
+    private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+    private Date startDate = DateUtils.getBeginOfMonth();
+    private Date endDate = DateUtils.getEndOfMonth();
+
     public ViewCustomerOverviewManagedBean() {
     }
 
     @PostConstruct
     public void init() {
+        churnRate = crmIntelligenceSessionBean.getCustomerChurnRate(startDate, endDate);
+        avgCustomerLifeTimeValue = crmIntelligenceSessionBean.getCustomerAvgCLV(startDate, endDate);
+        avgCustomerAge = crmIntelligenceSessionBean.getCustomerAvgAge(startDate, endDate);
+        avgCustomerDepositSavingAmount = crmIntelligenceSessionBean.getCustomerAvgDepositSavingAmount(startDate, endDate);
+        avgCustomerLoanAmount = crmIntelligenceSessionBean.getCustomerAvgLoanAmount(startDate, endDate);
         createCustomerAcctBarModel();
     }
 
     private BarChartModel createCustomerAcctBarModel() {
         customerAcctBarModel = initCustomerAcctBarModel();
-        customerAcctBarModel.setTitle("Customer Banking Service");
+        customerAcctBarModel.setTitle("New Customer Banking Service");
         customerAcctBarModel.setLegendPosition("ne");
 
         Axis xAxis = customerAcctBarModel.getAxis(AxisType.X);
@@ -74,7 +91,7 @@ public class ViewCustomerOverviewManagedBean implements Serializable {
         series1.set("Card Service", bankTotalCardAcct);
         series1.set("Loan Service", bankTotalLoanAcct);
         series1.set("Portfolio Service", bankTotalExecutedPortfolio);
-        
+
         model.addSeries(series1);
 
         return model;
@@ -134,6 +151,46 @@ public class ViewCustomerOverviewManagedBean implements Serializable {
 
     public void setBankTotalExecutedPortfolio(Long bankTotalExecutedPortfolio) {
         this.bankTotalExecutedPortfolio = bankTotalExecutedPortfolio;
+    }
+
+    public Double getChurnRate() {
+        return churnRate;
+    }
+
+    public void setChurnRate(Double churnRate) {
+        this.churnRate = churnRate;
+    }
+
+    public Double getAvgCustomerLifeTimeValue() {
+        return avgCustomerLifeTimeValue;
+    }
+
+    public void setAvgCustomerLifeTimeValue(Double avgCustomerLifeTimeValue) {
+        this.avgCustomerLifeTimeValue = avgCustomerLifeTimeValue;
+    }
+
+    public Double getAvgCustomerAge() {
+        return avgCustomerAge;
+    }
+
+    public void setAvgCustomerAge(Double avgCustomerAge) {
+        this.avgCustomerAge = avgCustomerAge;
+    }
+
+    public Double getAvgCustomerDepositSavingAmount() {
+        return avgCustomerDepositSavingAmount;
+    }
+
+    public void setAvgCustomerDepositSavingAmount(Double avgCustomerDepositSavingAmount) {
+        this.avgCustomerDepositSavingAmount = avgCustomerDepositSavingAmount;
+    }
+
+    public Double getAvgCustomerLoanAmount() {
+        return avgCustomerLoanAmount;
+    }
+
+    public void setAvgCustomerLoanAmount(Double avgCustomerLoanAmount) {
+        this.avgCustomerLoanAmount = avgCustomerLoanAmount;
     }
 
 }

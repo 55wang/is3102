@@ -19,19 +19,16 @@
                 <h:form id="mainForm">
                     <p:panel header="Customer Overview Dashboard">
                         <p:messages id="messagesStatus" redisplay="false" >
-                            <p:panelGrid columns="5">
+                            <p:panelGrid columns="4">
                                 <h:outputText style="background-color: darkorange" value="Churn Rate" />
-                                <h:outputText style="background-color: darkorange" value="Avg Customer Life Time Value" />
                                 <h:outputText style="background-color: darkorange" value="Avg Customer Age" />
-                                <h:outputText style="background-color: darkorange" value="Avg Customer Deposit Savings" />
+                                <h:outputText style="background-color: darkorange" value="Avg Customer Deposit Saving Amount" />
                                 <h:outputText style="background-color: darkorange" value="Avg Customer Loan Amount" />
 
-                                <h:outputText value="1" />
-                                <h:outputText value="2" />
-                                <h:outputText value="1" />
-                                <h:outputText value="2" />
-                                <h:outputText value="1" />
-
+                                <h:outputText value="#{viewCustomerOverviewManagedBean.churnRate}" />
+                                <h:outputText value="#{viewCustomerOverviewManagedBean.avgCustomerAge}" />
+                                <h:outputText value="#{viewCustomerOverviewManagedBean.avgCustomerDepositSavingAmount}" />
+                                <h:outputText value="#{viewCustomerOverviewManagedBean.avgCustomerLoanAmount}" />
                             </p:panelGrid>
 
                             <br />

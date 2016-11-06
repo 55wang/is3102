@@ -46,6 +46,9 @@
                                     <p:inputText id="adsBannerCampaignDesc" value="#{createMarketingCampaignManagedBean.adsMarketingCampaign.description}" />
                                     <p:outputLabel for="adsBannerCampaignLandingUrl" value="Landing Url: " />
                                     <p:inputText id="adsBannerCampaignLandingUrl" value="#{createMarketingCampaignManagedBean.adsMarketingCampaign.landingPageUrl}" />
+                                    <p:outputLabel for="adsBannerCampaignCardFrequencyLevel" value="Card Frequency Level: " />
+                                    <p:inputText id="adsBannerCampaignCardFrequencyLevel" value="#{createMarketingCampaignManagedBean.adsMarketingCampaign.cardFrequencyLevel}" />
+                                    
                                     <p:commandButton value="Confirm" action="#{createMarketingCampaignManagedBean.addNewAdsBannerMarketingCampaign()}" update="@form">
                                     </p:commandButton>
                                 </h:panelGrid>
