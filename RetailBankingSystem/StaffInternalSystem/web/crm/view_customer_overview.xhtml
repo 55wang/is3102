@@ -19,25 +19,20 @@
                 <h:form id="mainForm">
                     <p:panel header="Customer Overview Dashboard">
                         <p:messages id="messagesStatus" redisplay="false" >
-                            <p:panelGrid columns="5">
-                                <h:outputText style="background-color: darkorange" value="Churn Rate" />
-                                <h:outputText style="background-color: darkorange" value="Avg Customer Life Time Value" />
-                                <h:outputText style="background-color: darkorange" value="Avg Customer Age" />
-                                <h:outputText style="background-color: darkorange" value="Avg Customer Deposit Savings" />
+                            <p:panelGrid columns="3">
+                                <h:outputText style="background-color: darkorange" value="# of Churn Customer" />
+                                <h:outputText style="background-color: darkorange" value="Avg Customer Deposit Saving Amount" />
                                 <h:outputText style="background-color: darkorange" value="Avg Customer Loan Amount" />
 
-                                <h:outputText value="1" />
-                                <h:outputText value="2" />
-                                <h:outputText value="1" />
-                                <h:outputText value="2" />
-                                <h:outputText value="1" />
-
+                                <h:outputText value="#{viewCustomerOverviewManagedBean.churnCustomer}" />
+                                <h:outputText value="#{viewCustomerOverviewManagedBean.avgCustomerDepositSavingAmount}" />
+                                <h:outputText value="#{viewCustomerOverviewManagedBean.avgCustomerLoanAmount}" />
                             </p:panelGrid>
 
                             <br />
-
                             <p:chart type="bar" model="#{viewCustomerOverviewManagedBean.customerAcctBarModel}" style="height:300px;"/>
-
+                            <br />
+                            <p:chart type="bar" model="#{viewCustomerOverviewManagedBean.customerAgeBarModel}" style="height:300px;"/>
                         </p:messages>
                     </p:panel>
 

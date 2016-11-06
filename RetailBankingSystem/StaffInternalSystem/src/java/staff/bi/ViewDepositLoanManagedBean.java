@@ -10,6 +10,7 @@ import ejb.session.fact.BankFactTableSessionBeanLocal;
 import entity.fact.bank.BankFactTable;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -20,11 +21,15 @@ import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.SelectEvent;
+import org.primefaces.model.DefaultScheduleEvent;
+import org.primefaces.model.LazyScheduleModel;
+import org.primefaces.model.ScheduleModel;
 import org.primefaces.model.chart.Axis;
 import org.primefaces.model.chart.AxisType;
 import org.primefaces.model.chart.BarChartModel;
 import org.primefaces.model.chart.ChartSeries;
 import org.primefaces.model.chart.PieChartModel;
+import server.utilities.ColorUtils;
 import server.utilities.DateUtils;
 
 /**
@@ -45,8 +50,8 @@ public class ViewDepositLoanManagedBean implements Serializable {
     private PieChartModel badLoanPieModel;
 
     private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-    private Date startDate = DateUtils.getBeginOfMonth();
-    private Date endDate = DateUtils.getEndOfMonth();
+    private Date startDate; 
+    private Date endDate;
 
     //deposit and loan service
     private Long bankTotalDepositAcct;
@@ -61,62 +66,90 @@ public class ViewDepositLoanManagedBean implements Serializable {
     private Double bankLoanInterestEarned;
     private Double bankLoanInterestUnearned;
     private Long bankTotalDefaultLoanAcct;
+    
+    private ScheduleModel lazyEventModel;
 
     public ViewDepositLoanManagedBean() {
     }
 
-    public void onDateSelect(SelectEvent event) {
-        FacesContext facesContext = FacesContext.getCurrentInstance();
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Date Selected", format.format(event.getObject())));
-    }
-
-    public void click() {
-        RequestContext requestContext = RequestContext.getCurrentInstance();
-
-        requestContext.update("form:display");
-        requestContext.execute("PF('dlg').show()");
-    }
-
     @PostConstruct
     public void init() {
-
+        
+        startDate = DateUtils.getBeginOfMonth();
+        endDate = DateUtils.getEndOfMonth();
+        
         System.out.println(startDate);
         System.out.println(endDate);
 
-        bankTotalDepositAcct = bizIntelligenceSessionBean.getBankTotalDepositAcct(startDate, endDate);
+        bankTotalDepositAcct = bizIntelligenceSessionBean.getBankTotalDepositAcct(endDate);
         bankTotalActiveDepositAcct = bizIntelligenceSessionBean.getBankTotalActiveDepositAcct(startDate, endDate);
         bankTotalNewDepositAcct = bizIntelligenceSessionBean.getBankTotalNewDepositAcct(startDate, endDate);
-        bankTotalDepositAmount = bizIntelligenceSessionBean.getBankTotalDepositAmount(startDate, endDate);
-        bankDepositInterestAmount = bizIntelligenceSessionBean.getBankTotalDepositInterestAmount(startDate, endDate);
+        bankTotalDepositAmount = bizIntelligenceSessionBean.getBankTotalDepositAmount(endDate);
+        bankDepositInterestAmount = bizIntelligenceSessionBean.getBankTotalDepositInterestAmount(endDate);
 
-        bankTotalLoanAcct = bizIntelligenceSessionBean.getBankTotalLoanAcct(startDate, endDate);
+        bankTotalLoanAcct = bizIntelligenceSessionBean.getBankTotalLoanAcct(endDate);
         bankTotalNewLoanAcct = bizIntelligenceSessionBean.getBankTotalNewLoanAcct(startDate, endDate);
-        bankTotalLoanAmount = bizIntelligenceSessionBean.getBankTotalLoanAmount(startDate, endDate);
-        bankLoanInterestEarned = bizIntelligenceSessionBean.getBankLoanInterestEarned(startDate, endDate);
-        bankLoanInterestUnearned = bizIntelligenceSessionBean.getBankLoanInterestUnearned(startDate, endDate);
-        bankTotalDefaultLoanAcct = bizIntelligenceSessionBean.getBankTotalDefaultLoanAcct(startDate, endDate);
+        bankTotalLoanAmount = bizIntelligenceSessionBean.getBankTotalLoanAmount(endDate);
+        bankLoanInterestEarned = bizIntelligenceSessionBean.getBankLoanInterestEarned(endDate);
+        bankLoanInterestUnearned = bizIntelligenceSessionBean.getBankLoanInterestUnearned(endDate);
+        bankTotalDefaultLoanAcct = bizIntelligenceSessionBean.getBankTotalDefaultLoanAcct(endDate);
+        
+        if(bankTotalLoanAmount == null){
+            bankTotalLoanAmount = 0.0;
+        }
+        if(bankLoanInterestEarned == null){
+            bankLoanInterestEarned = 0.0;
+        }
+        if(bankLoanInterestUnearned == null){
+            bankLoanInterestUnearned = 0.0;
+        }
 
         createDepositLoanAmtBarModel();
         createDepositLoanIntBarModel();
         createBadLoanPieModels();
+        
+        lazyEventModel = new LazyScheduleModel() {
+             
+            @Override
+            public void loadEvents(Date startDate, Date endDate) {
+                Date random = getRandomDate(startDate);
+                addEvent(new DefaultScheduleEvent("Report", random, random));
+                 
+                random = getRandomDate(startDate);
+                addEvent(new DefaultScheduleEvent("Meeting", random, random));
+            }   
+        };
     }
 
     public void viewDataTable() {
         System.out.println(sdf.format(startDate));
         System.out.println(sdf.format(endDate));
-        bankTotalDepositAcct = bizIntelligenceSessionBean.getBankTotalDepositAcct(startDate, endDate);
+        bankTotalDepositAcct = bizIntelligenceSessionBean.getBankTotalDepositAcct(endDate);
         bankTotalActiveDepositAcct = bizIntelligenceSessionBean.getBankTotalActiveDepositAcct(startDate, endDate);
         bankTotalNewDepositAcct = bizIntelligenceSessionBean.getBankTotalNewDepositAcct(startDate, endDate);
-        bankTotalDepositAmount = bizIntelligenceSessionBean.getBankTotalDepositAmount(startDate, endDate);
-        bankDepositInterestAmount = bizIntelligenceSessionBean.getBankTotalDepositInterestAmount(startDate, endDate);
+        bankTotalDepositAmount = bizIntelligenceSessionBean.getBankTotalDepositAmount(endDate);
+        bankDepositInterestAmount = bizIntelligenceSessionBean.getBankTotalDepositInterestAmount(endDate);
 
-        bankTotalLoanAcct = bizIntelligenceSessionBean.getBankTotalLoanAcct(startDate, endDate);
+        bankTotalLoanAcct = bizIntelligenceSessionBean.getBankTotalLoanAcct(endDate);
         bankTotalNewLoanAcct = bizIntelligenceSessionBean.getBankTotalNewLoanAcct(startDate, endDate);
-        bankTotalLoanAmount = bizIntelligenceSessionBean.getBankTotalLoanAmount(startDate, endDate);
-        bankLoanInterestEarned = bizIntelligenceSessionBean.getBankLoanInterestEarned(startDate, endDate);
-        bankLoanInterestUnearned = bizIntelligenceSessionBean.getBankLoanInterestUnearned(startDate, endDate);
-        bankTotalDefaultLoanAcct = bizIntelligenceSessionBean.getBankTotalDefaultLoanAcct(startDate, endDate);
+        bankTotalLoanAmount = bizIntelligenceSessionBean.getBankTotalLoanAmount(endDate);
+        bankLoanInterestEarned = bizIntelligenceSessionBean.getBankLoanInterestEarned(endDate);
+        bankLoanInterestUnearned = bizIntelligenceSessionBean.getBankLoanInterestUnearned(endDate);
+        bankTotalDefaultLoanAcct = bizIntelligenceSessionBean.getBankTotalDefaultLoanAcct(endDate);
+        
+        if(bankTotalLoanAmount == null){
+            bankTotalLoanAmount = 0.0;
+        }
+        if(bankLoanInterestEarned == null){
+            bankLoanInterestEarned = 0.0;
+        }
+        if(bankLoanInterestUnearned == null){
+            bankLoanInterestUnearned = 0.0;
+        }
+        
+        createDepositLoanAmtBarModel();
+        createDepositLoanIntBarModel();
+        createBadLoanPieModels();
     }
 
     public PieChartModel getBadLoanPieModel() {
@@ -170,7 +203,8 @@ public class ViewDepositLoanManagedBean implements Serializable {
 
         model.addSeries(series1);
         model.addSeries(series2);
-
+        model.setSeriesColors(ColorUtils.getFlatUIColors(12)+","+ColorUtils.getFlatUIColors(15));
+        model.setExtender("customExtender");
         return model;
     }
 
@@ -191,6 +225,8 @@ public class ViewDepositLoanManagedBean implements Serializable {
 
         model.addSeries(series1);
         model.addSeries(series2);
+        model.setSeriesColors(ColorUtils.getFlatUIColors(6)+","+ColorUtils.getFlatUIColors(0));
+        model.setExtender("customExtender");
 
         return model;
     }
@@ -198,14 +234,25 @@ public class ViewDepositLoanManagedBean implements Serializable {
     private void createBadLoanPieModel() {
         badLoanPieModel = new PieChartModel();
 
-        badLoanPieModel.set("Default Loan", 325);
-        badLoanPieModel.set("Non-Default Loan", 900);
+        badLoanPieModel.set("Default Loan", bankTotalDefaultLoanAcct);
+        badLoanPieModel.set("Non-Default Loan", bankTotalLoanAcct-bankTotalDefaultLoanAcct);
 
         badLoanPieModel.setTitle("Default Rate");
         badLoanPieModel.setLegendPosition("e");
         badLoanPieModel.setFill(true);
         badLoanPieModel.setShowDataLabels(true);
         badLoanPieModel.setDiameter(150);
+        
+        badLoanPieModel.setSeriesColors(ColorUtils.getFlatUIColors(6)+","+ColorUtils.getFlatUIColors(9));
+        badLoanPieModel.setExtender("customExtender");
+    }
+    
+    public Date getRandomDate(Date base) {
+        Calendar date = Calendar.getInstance();
+        date.setTime(base);
+        date.add(Calendar.DATE, ((int) (Math.random()*30)) + 1);    //set random day of month
+         
+        return date.getTime();
     }
 
     public BarChartModel getDepositLoanAmtBarModel() {
@@ -314,6 +361,14 @@ public class ViewDepositLoanManagedBean implements Serializable {
 
     public void setBankLoanInterestUnearned(Double bankLoanInterestUnearned) {
         this.bankLoanInterestUnearned = bankLoanInterestUnearned;
+    }
+
+    public ScheduleModel getLazyEventModel() {
+        return lazyEventModel;
+    }
+
+    public void setLazyEventModel(ScheduleModel lazyEventModel) {
+        this.lazyEventModel = lazyEventModel;
     }
 
 }

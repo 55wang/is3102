@@ -33,8 +33,6 @@ public class ProductBundle implements Serializable {
     // private LoanProduct lp;
     
     
-    
-    
     public Long getId() {
         return id;
     }

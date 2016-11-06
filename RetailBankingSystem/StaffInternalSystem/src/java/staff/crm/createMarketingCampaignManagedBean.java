@@ -53,6 +53,8 @@ public class createMarketingCampaignManagedBean implements Serializable {
             AdsMarketingCampaign.setDescription(AdsMarketingCampaign.getDescription());
             AdsMarketingCampaign.setLandingPageUrl(AdsMarketingCampaign.getLandingPageUrl());
             AdsMarketingCampaign.setStaffAccount(sa);
+            
+            AdsMarketingCampaign.setCardFrequencyLevel(AdsMarketingCampaign.getCardFrequencyLevel());
 
             marketingCampaignSessionBean.createMarketingCampaign(AdsMarketingCampaign);
             sa.getMarketingCampaign().add(AdsMarketingCampaign);
@@ -75,6 +77,8 @@ public class createMarketingCampaignManagedBean implements Serializable {
             emailMarketingCampaign.setDescription(emailMarketingCampaign.getDescription());
             emailMarketingCampaign.setLandingPageUrl(emailMarketingCampaign.getLandingPageUrl());
             emailMarketingCampaign.setStaffAccount(sa);
+            
+            AdsMarketingCampaign.setCardFrequencyLevel(AdsMarketingCampaign.getCardFrequencyLevel());
 
             marketingCampaignSessionBean.createMarketingCampaign(emailMarketingCampaign);
             sa.getMarketingCampaign().add(emailMarketingCampaign);

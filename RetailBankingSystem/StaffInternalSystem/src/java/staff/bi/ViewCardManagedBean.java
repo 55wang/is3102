@@ -9,6 +9,7 @@ import ejb.session.bi.BizIntelligenceSessionBeanLocal;
 import ejb.session.fact.BankFactTableSessionBeanLocal;
 import entity.fact.bank.BankFactTable;
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -21,6 +22,7 @@ import org.primefaces.model.chart.BarChartModel;
 import org.primefaces.model.chart.CategoryAxis;
 import org.primefaces.model.chart.ChartSeries;
 import org.primefaces.model.chart.LineChartModel;
+import server.utilities.ColorUtils;
 import server.utilities.DateUtils;
 
 /**
@@ -38,6 +40,8 @@ public class ViewCardManagedBean implements Serializable {
 
     private BarChartModel cardTransactionBarModel;
     private LineChartModel cardLatePaymentLineModel;
+    
+    private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
     //card service
     private Long bankTotalCardAcct;
@@ -46,20 +50,50 @@ public class ViewCardManagedBean implements Serializable {
     private Double bankTotalCardCurrentAmount;
     private Double bankTotalCardOutstandingAmount;
 
-    private Date startDate = DateUtils.getBeginOfMonth();
-    private Date endDate = DateUtils.getEndOfMonth();
+    private Date startDate;
+    private Date endDate;
 
     public ViewCardManagedBean() {
     }
 
     @PostConstruct
     public void init() {
-        bankTotalCardAcct = bizIntelligenceSessionBean.getBankTotalCardAcct(startDate, endDate);
+        startDate = DateUtils.getBeginOfMonth();
+        endDate = DateUtils.getEndOfMonth();
+        
+        System.out.println(startDate);
+        System.out.println(endDate);
+        
+        bankTotalCardAcct = bizIntelligenceSessionBean.getBankTotalCardAcct(endDate);
         bankTotalActiveCardAcct = bizIntelligenceSessionBean.getBankTotalActiveCardAcct(startDate, endDate);
         bankTotalNewCardAcct = bizIntelligenceSessionBean.getBankTotalNewCardAcct(startDate, endDate);
-        bankTotalCardCurrentAmount = bizIntelligenceSessionBean.getBankTotalCardCurrentAmount(startDate, endDate);
-        bankTotalCardOutstandingAmount = bizIntelligenceSessionBean.getBankTotalCardOutstandingAmount(startDate, endDate);
+        bankTotalCardCurrentAmount = bizIntelligenceSessionBean.getBankTotalCardCurrentAmount(endDate);
+        bankTotalCardOutstandingAmount = bizIntelligenceSessionBean.getBankTotalCardOutstandingAmount(endDate);
 
+        if(bankTotalCardCurrentAmount == null)
+            bankTotalCardCurrentAmount = 0.0;
+        if(bankTotalCardOutstandingAmount == null)
+            bankTotalCardOutstandingAmount = 0.0;
+        
+        createCardTransactionBarModel();
+        createLatePaymentLineModels();
+    }
+    
+    public void viewDataTable() {
+        System.out.println(sdf.format(startDate));
+        System.out.println(sdf.format(endDate));
+        
+        bankTotalCardAcct = bizIntelligenceSessionBean.getBankTotalCardAcct(endDate);
+        bankTotalActiveCardAcct = bizIntelligenceSessionBean.getBankTotalActiveCardAcct(startDate, endDate);
+        bankTotalNewCardAcct = bizIntelligenceSessionBean.getBankTotalNewCardAcct(startDate, endDate);
+        bankTotalCardCurrentAmount = bizIntelligenceSessionBean.getBankTotalCardCurrentAmount(endDate);
+        bankTotalCardOutstandingAmount = bizIntelligenceSessionBean.getBankTotalCardOutstandingAmount(endDate);
+        
+        if(bankTotalCardCurrentAmount == null)
+            bankTotalCardCurrentAmount = 0.0;
+        if(bankTotalCardOutstandingAmount == null)
+            bankTotalCardOutstandingAmount = 0.0;
+        
         createCardTransactionBarModel();
         createLatePaymentLineModels();
     }
@@ -86,6 +120,8 @@ public class ViewCardManagedBean implements Serializable {
         }
 
         cardLatePaymentLineModel.addSeries(series1);
+        cardLatePaymentLineModel.setSeriesColors(ColorUtils.getFlatUIColors(6));
+        cardLatePaymentLineModel.setExtender("customExtender");
 
         return cardLatePaymentLineModel;
     }
@@ -114,6 +150,8 @@ public class ViewCardManagedBean implements Serializable {
         }
 
         model.addSeries(series1);
+        model.setSeriesColors(ColorUtils.getFlatUIColors(0));
+        model.setExtender("customExtender");
 
         return model;
     }

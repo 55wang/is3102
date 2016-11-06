@@ -12,6 +12,37 @@ package server.utilities;
 // REMARK: To get the list of enum values, just use e.g. CreditType.values()
 public class EnumUtils {
 
+    public enum RFMLevel {
+
+        LOW("LOW"),
+        MEDIUM("MEDIUM"),
+        HIGH("HIGH");
+
+        private String value;
+
+        RFMLevel(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        @Override
+        public String toString() {
+            return this.getValue();
+        }
+
+        public static RFMLevel getEnum(String value) {
+            for (RFMLevel v : values()) {
+                if (v.getValue().equalsIgnoreCase(value)) {
+                    return v;
+                }
+            }
+            throw new IllegalArgumentException();
+        }
+    }
+    
     public enum Month {
 
         JANUARY("JANUARY"),

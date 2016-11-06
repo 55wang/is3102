@@ -52,6 +52,7 @@ public class Customer implements Serializable {
     private String identityNumber;
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date birthDay;
+    private Integer age;
     private String firstname;
     private String lastname;
     private String fullName;
@@ -115,9 +116,8 @@ public class Customer implements Serializable {
     @ManyToOne
     private CustomerGroup customerGroup;
 
-    public Integer getAge() {
-        Integer age = (int) (System.currentTimeMillis() - getBirthDay().getTime()) / (24 * 60 * 60 * 1000);
-        return age;
+    public Long calcAge() {
+        return ((new Date().getTime() - getBirthDay().getTime()) / (24 * 60 * 60 * 1000))/365;
     }
 
     public Long getId() {
@@ -803,6 +803,16 @@ public class Customer implements Serializable {
 
     public void setOverallRFMScore(Double overallRFMScore) {
         this.overallRFMScore = overallRFMScore;
+    }
+
+    public Integer getAge() {
+        System.out.println("age: " +age);
+        System.out.println(calcAge());
+        return age;
+    }
+
+    public void setAge(Integer age) {
+        this.age = age;
     }
 
 }
