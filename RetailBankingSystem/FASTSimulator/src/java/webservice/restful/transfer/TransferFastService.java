@@ -42,6 +42,7 @@ public class TransferFastService {
             @FormParam("fromName") String fromName,
             @FormParam("myInitial") String myInitial
     ) {
+                    System.out.println(".");
         System.out.println("[SACH]");
         System.out.println("Received Payment Instruction from MBS:");
         System.out.println(".      Transaction Number:" + referenceNumber);

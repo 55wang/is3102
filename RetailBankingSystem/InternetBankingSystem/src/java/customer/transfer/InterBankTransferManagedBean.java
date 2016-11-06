@@ -136,7 +136,6 @@ public class InterBankTransferManagedBean implements Serializable {
     }
 
     public String getBankName(String bankCode) {
-        System.out.println(bankCode);
         if (bankCode == null || bankCode.equals("")) {
             return "No bank selected";
         }

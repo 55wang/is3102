@@ -178,7 +178,7 @@ public class WebserviceSessionBean implements WebserviceSessionBeanLocal {
 
 
         if (jsonString.getString("message").equals("SUCCESS")) {
-            System.out.println();
+            System.out.println(".");
             System.out.println("[MBS]:");
             System.out.println("Received response from SACH...");
             em.persist(tr);
