@@ -1,0 +1,96 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:em="http://xmlns.jcp.org/jsf/composite/emcomp"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <!--shift + ctrl + F, format-->
+    <f:view>
+        <h:head>
+            <title>Merlion Internal</title>
+            <em:cssImport></em:cssImport>
+        </h:head>
+        <h:body>
+            <em:staffNavBar context="customer"></em:staffNavBar>
+            <em:staffSideBar top="customer" side="createChargebackCase"></em:staffSideBar>
+            <div class="container">
+                <h:form id="mainForm">
+                    <p:panel header="Create Case">
+                        <p:messages id="messagesStatus" redisplay="false" >
+                            <h:panelGrid columns="2" cellpadding="5">
+                                <p:outputLabel for="caseTitle" value="Case Title: " />
+                                <p:inputText id="caseTitle" value="#{staffCreateCustomerCaseCounterManagedBean.newCase.title}"/> 
+                                
+                                <p:outputLabel for="issueField" value="Issue Field: " />
+                                <p:selectOneButton id="issueField" value="#{staffCreateCustomerCaseCounterManagedBean.issueField}">
+                                    <f:selectItem itemLabel="Charge back issue" itemValue="#{staffCreateCustomerCaseCounterManagedBean.selectChargeBack}" />
+                                    <f:ajax render="@form" />
+                                </p:selectOneButton>
+                                
+                                <p:outputLabel for="issueTitle" value="Issue Title: " />
+                                <p:inputText id="issueTitle" value="#{staffCreateCustomerCaseCounterManagedBean.newIssue.title}"/>
+                                
+                                <p:outputLabel for="issueDetail" value="Issue Detail " />
+                                <p:inputTextarea id="issueDetail" value="#{staffCreateCustomerCaseCounterManagedBean.newIssue.details}"/>
+                                
+                                <p:outputLabel for="transaction" value="Chargeback Transaction ID " />
+                                <p:inputText id="transaction" value="#{staffCreateCustomerCaseCounterManagedBean.chargebackTransactionID}"/>
+                            </h:panelGrid>
+                            
+                            
+                    <p:panel header="Issue List">      
+                            <p:dataTable id="issueList" value="#{staffCreateCustomerCaseCounterManagedBean.issues}" var="issue" editable="true" editMode="cell">
+                                    <p:column headerText="Issue Title">
+                                        <p:cellEditor>
+                                            <f:facet name="output">
+                                                <h:outputText value="#{issue.title}" />
+                                            </f:facet>
+                                            <f:facet name="input">
+                                                <h:inputText value="#{issue.title}"/>
+                                            </f:facet>
+                                        </p:cellEditor>
+                                    </p:column>
+                                    
+                                    <p:column headerText="Issue Field">
+                                        <h:outputText value="#{issue.field}" />
+                                    </p:column>
+                                    
+                                    <p:column headerText="Issue Detail">
+                                        <p:cellEditor>
+                                            <f:facet name="output">
+                                                <h:outputText value="#{issue.details}" />
+                                            </f:facet>
+                                            <f:facet name="input">
+                                                <h:inputText value="#{issue.details}" />
+                                            </f:facet>
+                                        </p:cellEditor>
+                                    </p:column>
+                                    
+                                    <p:column headerText="Charge back transaction ID">
+                                        <p:cellEditor>
+                                            <f:facet name="output">
+                                                <h:outputText value="#{staffCreateCustomerCaseCounterManagedBean.chargebackTransactionID}"/>
+                                            </f:facet>
+                                            <f:facet name="input">
+                                                <h:inputText value="#{staffCreateCustomerCaseCounterManagedBean.chargebackTransactionID}"/>
+                                            </f:facet>
+                                        </p:cellEditor>
+                                    </p:column>
+                                    
+                                </p:dataTable>
+                        </p:panel> 
+                            
+                        <p:commandButton value="Add more issues" action="#{staffCreateCustomerCaseCounterManagedBean.addIssue}" update="@form"/>
+                        <p:commandButton value="Create Case" action="#{staffCreateCustomerCaseCounterManagedBean.createCase}" update="@form" />
+                        </p:messages>
+                    </p:panel>
+                </h:form>
+            </div>
+        </h:body> 
+    </f:view>
+
+
+</html>
+

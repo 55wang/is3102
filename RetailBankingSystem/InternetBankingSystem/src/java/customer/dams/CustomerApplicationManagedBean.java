@@ -14,7 +14,10 @@ import ejb.session.utils.UtilsSessionBeanLocal;
 import entity.customer.Customer;
 import entity.customer.MainAccount;
 import entity.dams.account.CustomerDepositAccount;
+import entity.dams.account.DepositProduct;
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -61,7 +64,7 @@ public class CustomerApplicationManagedBean implements Serializable {
     private DepositProductSessionBeanLocal depositProductBean;
 
     private Customer customer = new Customer();
-    @NotNull(message = "Deposit account may not be null")
+    @NotNull(message = "Deposit Product may not be null")
     private String initialDepositAccount;
 
     private List<String> identityTypeOptions = CommonUtils.getEnumList(EnumUtils.IdentityType.class);
@@ -78,6 +81,8 @@ public class CustomerApplicationManagedBean implements Serializable {
     private String selectedOccupation;
     private String selectedIncome;
     private Date currentDate = new Date();
+    
+    private final DepositAccountType FIXED_DEPOSIT_PRODUCT = DepositAccountType.FIXED;
 
     /**
      * Creates a new instance of customerApplicationManagedBean
@@ -347,6 +352,13 @@ public class CustomerApplicationManagedBean implements Serializable {
      */
     public void setIncomeOptions(List<String> incomeOptions) {
         this.incomeOptions = incomeOptions;
+    }
+
+    /**
+     * @return the FIXED_DEPOSIT_PRODUCT
+     */
+    public DepositAccountType getFIXED_DEPOSIT_PRODUCT() {
+        return FIXED_DEPOSIT_PRODUCT;
     }
 
 }

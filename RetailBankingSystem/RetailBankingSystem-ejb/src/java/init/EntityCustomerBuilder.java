@@ -47,6 +47,7 @@ public class EntityCustomerBuilder {
         c.setIdentityNumber("S1234567Z");
         c.setIncome(EnumUtils.Income.FROM_2000_TO_4000);
         c.setEducation(EnumUtils.Education.DIPLOMA);
+        c.setEmploymentStatus(EnumUtils.EmploymentStatus.EMPLOYEE);
         c.setLastname("Chen");
         c.setNationality(EnumUtils.Nationality.CHINA); //enum type if possible
         c.setPhone("81567758"); //must use real phone number as we need sms code
@@ -76,6 +77,7 @@ public class EntityCustomerBuilder {
         c2.setIdentityNumber("S1234223Z");
         c2.setIncome(EnumUtils.Income.FROM_4000_TO_6000);
         c2.setEducation(EnumUtils.Education.POSTGRAD);
+        c2.setEmploymentStatus(EnumUtils.EmploymentStatus.EMPLOYEE);
         c2.setLastname("Wang");
         c2.setNationality(EnumUtils.Nationality.CHINA_HONG_KONG); //enum type if possible
         c2.setPhone("81567712"); //must use real phone number as we need sms code
@@ -105,6 +107,7 @@ public class EntityCustomerBuilder {
         c3.setIdentityNumber("S7654321Z");
         c3.setIncome(EnumUtils.Income.FROM_6000_TO_8000);
         c3.setEducation(EnumUtils.Education.SECONDARY);
+        c3.setEmploymentStatus(EnumUtils.EmploymentStatus.EMPLOYEE);
         c3.setLastname("Lei");
         c3.setNationality(EnumUtils.Nationality.GERMANY); //enum type if possible
         c3.setPhone("94761895"); //must use real phone number as we need sms code
@@ -130,10 +133,11 @@ public class EntityCustomerBuilder {
         c4.setEmail("sunyuxuan123@gmail.com");
         c4.setFirstname("Yuxuan");
         c4.setGender(EnumUtils.Gender.MALE); // pls modify gender to enum type
-        c3.setIdentityType(EnumUtils.IdentityType.NRIC);
+        c4.setIdentityType(EnumUtils.IdentityType.NRIC);
         c4.setIdentityNumber("S1243267Z");
         c4.setIncome(EnumUtils.Income.FROM_8000_TO_10000);
         c4.setEducation(EnumUtils.Education.TECHNICAL);
+        c4.setEmploymentStatus(EnumUtils.EmploymentStatus.EMPLOYEE);
         c4.setLastname("Sun");
         c4.setNationality(EnumUtils.Nationality.INDONESIA); //enum type if possible
         c4.setPhone("81123558"); //must use real phone number as we need sms code
@@ -163,6 +167,7 @@ public class EntityCustomerBuilder {
         c5.setIdentityNumber("S1289812Z");
         c5.setIncome(EnumUtils.Income.FROM_2000_TO_4000);
         c5.setEducation(EnumUtils.Education.OTHERS);
+        c5.setEmploymentStatus(EnumUtils.EmploymentStatus.EMPLOYEE);
         c5.setLastname("Chen");
         c5.setNationality(EnumUtils.Nationality.JAPAN); //enum type if possible
         c5.setPhone("90028125");//must use real phone number as we need sms code
@@ -193,6 +198,7 @@ public class EntityCustomerBuilder {
         c6.setIncome(EnumUtils.Income.FROM_2000_TO_4000);
         c6.setEducation(EnumUtils.Education.UNIVERSITY);
         c6.setLastname("Qiu");
+        c6.setEmploymentStatus(EnumUtils.EmploymentStatus.EMPLOYEE);
         c6.setNationality(EnumUtils.Nationality.INDONESIA); //enum type if possible
         c6.setPhone("81509281"); //must use real phone number as we need sms code
         c6.setPostalCode("118921");
@@ -221,6 +227,7 @@ public class EntityCustomerBuilder {
         c7.setIdentityNumber("S1290528Z");
         c7.setIncome(EnumUtils.Income.FROM_2000_TO_4000);
         c7.setEducation(EnumUtils.Education.POSTGRAD);
+        c7.setEmploymentStatus(EnumUtils.EmploymentStatus.EMPLOYEE);
         c7.setLastname("Koo");
         c7.setNationality(EnumUtils.Nationality.INDONESIA); //enum type if possible
         c7.setPhone("91027903"); //must use real phone number as we need sms code
@@ -250,6 +257,7 @@ public class EntityCustomerBuilder {
         c8.setIdentityNumber("S1209123Z");
         c8.setIncome(EnumUtils.Income.FROM_6000_TO_8000);
         c8.setEducation(EnumUtils.Education.UNIVERSITY);
+        c8.setEmploymentStatus(EnumUtils.EmploymentStatus.EMPLOYEE);
         c8.setLastname("Lee");
         c8.setNationality(EnumUtils.Nationality.SINGAPORE); //enum type if possible
         c8.setPhone("99910888"); //must use real phone number as we need sms code
@@ -278,6 +286,7 @@ public class EntityCustomerBuilder {
         c9.setIdentityNumber("S3334567Z");
         c9.setIncome(EnumUtils.Income.FROM_6000_TO_8000);
         c9.setEducation(EnumUtils.Education.DIPLOMA);
+        c9.setEmploymentStatus(EnumUtils.EmploymentStatus.EMPLOYEE);
         c9.setLastname("Choi");
         c9.setNationality(EnumUtils.Nationality.UNITED_STATES); //enum type if possible
         c9.setPhone("80031182"); //must use real phone number as we need sms code

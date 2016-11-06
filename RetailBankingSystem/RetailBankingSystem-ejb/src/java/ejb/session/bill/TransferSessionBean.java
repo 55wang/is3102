@@ -8,7 +8,6 @@ package ejb.session.bill;
 import ejb.session.card.CardAcctSessionBeanLocal;
 import ejb.session.dams.CustomerDepositSessionBeanLocal;
 import entity.bill.Payee;
-import entity.card.account.CreditCardAccount;
 import entity.common.BillTransferRecord;
 import entity.common.TransactionRecord;
 import entity.common.TransferRecord;

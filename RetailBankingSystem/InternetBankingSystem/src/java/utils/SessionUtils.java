@@ -31,6 +31,11 @@ public class SessionUtils {
         return (HttpServletRequest) FacesContext.getCurrentInstance()
                 .getExternalContext().getRequest();
     }
+    
+    public static void setUserId(Long userID) {
+        HttpSession session = getSession();
+        session.setAttribute("userid", userID);
+    }
 
     public static String getUserName() {
         HttpSession session = (HttpSession) FacesContext.getCurrentInstance()

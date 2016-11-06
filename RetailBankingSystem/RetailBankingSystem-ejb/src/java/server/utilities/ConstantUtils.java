@@ -67,6 +67,9 @@ public class ConstantUtils {
     public static final String STAFF_CMS_STAFF_VIEW_CASE = "/StaffInternalSystem/cms/staff_view_case.xhtml";
     public static final String STAFF_CMS_STAFF_TRANSFER_CASE = "/StaffInternalSystem/cms/staff_transfer_case.xhtml";
     public static final String STAFF_CMS_STAFF_EDIT_CUSTOMER = "/StaffInternalSystem/cms/staff_edit_customer.xhtml";
+    // counter cms
+    public static final String COUNTER_CMS_STAFF_VIEW_CASE = "/TellerCounterSystem/cms/staff_view_case.xhtml";
+    public static final String COUNTER_CMS_STAFF_EDIT_CUSTOMER = "/TellerCounterSystem/cms/staff_edit_customer.xhtml";
     
     // Error Message
     // General

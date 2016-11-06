@@ -1,0 +1,54 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:em="http://xmlns.jcp.org/jsf/composite/emcomp"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <!--shift + ctrl + F, format-->
+    <f:view>
+        <h:head>
+            <title>Facelet Title</title>
+            <em:cssImport></em:cssImport>
+        </h:head>
+        <h:body>
+            <em:staffNavBar context="account"></em:staffNavBar>
+            <em:staffSideBar top="account" side="accountDeposit"></em:staffSideBar>
+            <div class="container">
+                <h:form id="mainForm">
+                    <p:panel header="Deposit Current Account">
+                        <p:messages id="messagesStatus" redisplay="false" >
+                            
+                            <h:panelGrid columns="2" cellpadding="5">
+                                <h:outputLabel value="Customer IC: " />
+                                <h:inputText value="#{accountDepositCounterManagedBean.customerIC}"/>
+                                <p:commandButton value="Retrieve" action="#{accountDepositCounterManagedBean.retrieveMainAccount}" update="@form"/>
+                            </h:panelGrid>
+
+                            <h:panelGrid columns="2" cellpadding="5">
+                                <p:outputLabel value="Account Number: " />
+                                <c:if test="#{accountDepositCounterManagedBean.mainAccount == null}">
+                                    <p:inputText value="#{accountDepositCounterManagedBean.accountNumber}"/>
+                                </c:if>
+                                <c:if test="#{accountDepositCounterManagedBean.mainAccount != null}">
+                                    <p:selectOneMenu value="#{accountDepositCounterManagedBean.accountNumber}" style="width:187px; height: 31px; line-height: 21px; top:8px" rendered="true" >
+                                        <f:selectItems value="#{accountDepositCounterManagedBean.depositAccounts}" var="a" itemValue="#{a.accountNumber}" itemLabel="#{a.product.name} - #{a.accountNumber}" />
+                                    </p:selectOneMenu>
+                                </c:if>
+                                
+                                <p:outputLabel for="depositAmount" value="Deposit Amount: " />
+                                <p:inputText id="depositAmount" value="#{accountDepositCounterManagedBean.depositAmount}"/>
+
+                                <p:commandButton value="Deposit" icon="ui-icon-plus" update="@form" actionListener="#{accountDepositCounterManagedBean.depositIntoAccount}" />
+                            </h:panelGrid>
+                        </p:messages>
+                    </p:panel>
+                </h:form>
+            </div>
+        </h:body>
+    </f:view>
+
+
+</html>
+

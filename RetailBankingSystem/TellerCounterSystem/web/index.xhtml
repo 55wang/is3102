@@ -1,12 +1,40 @@
-<?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
-    <h:head>
-        <title>Facelet Title</title>
-    </h:head>
-    <h:body>
-        Hello from Facelets
-    </h:body>
-</html>
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:em="http://xmlns.jcp.org/jsf/composite/emcomp">
 
+    <f:view>
+        <h:head>
+            <title>MBS Counter</title>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+            <em:cssImport></em:cssImport>
+        </h:head>
+        <h:body class="staff-login-body">
+            <h:graphicImage library="img" name="merlionLogo.png" class="h-center" style="top:18%; width:200px"/>
+            <p:layout class="h-center staff-login-layout">
+                <p:layoutUnit position="center" class="staff-login-panel-layoutUnit">
+                    <h:form id="staff-login-form" >
+                        <p:messages id="messagesStatus" redisplay="false">
+                            <h:panelGrid columns="1" id="staff-login-panel" cellpadding="5" class="h-center" style="top:40%">                   
+                                <p:inputText value="#{staffCounterLoginManagedBean.currentCash}" styleClass="staff-login-input" placeholder="Current Cash" required="true" />
+                                <p:inputText value="#{staffCounterLoginManagedBean.counterId}" styleClass="staff-login-input" placeholder="Counter ID" required="true" />
+                                <p:inputText value="#{staffCounterLoginManagedBean.username}" styleClass="staff-login-input" placeholder="User ID" required="true" />
+                                <p:password value="#{staffCounterLoginManagedBean.password}" styleClass="staff-login-input" placeholder="Password" required="true" />
+                            </h:panelGrid>
+                            <p:commandButton id="submit" value="Login" actionListener="#{staffCounterLoginManagedBean.loginStaff}" class="h-center" style="margin-top:55%" update="@form"/>
+                        </p:messages>
+                    </h:form>
+                </p:layoutUnit>
+            </p:layout>
+            <em:staffFooter></em:staffFooter>
+        </h:body>
+    </f:view>
+</html>
