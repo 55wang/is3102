@@ -78,7 +78,7 @@ public class Customer implements Serializable {
     // credit
     private Double creditScore;
     private String BureaCreditScore;
-    
+
     // portfolioInfomation
     private Double totalMortgageMonthlyInstallment;
     private Double totalMonthlyInstallment;
@@ -97,19 +97,15 @@ public class Customer implements Serializable {
     private Double portfolioPercentageChange;
     private Double financialHealthScore;
     private String financialHealthScoreLevel;
-    
+
     private Long depositRecency = 0L;
     private Long depositFrequency = 0L;
     private Long depositMonetary = 0L;
-    private Double depositRFMScore = 0.0;
-    
+
     private Long cardRecency = 0L;
     private Long cardFrequency = 0L;
     private Long cardMonetary = 0L;
-    private Double cardRFMScore = 0.0;
-    
-    private Double overallRFMScore = 0.0;
-    
+
     // mapping
     @OneToOne(cascade = {CascadeType.MERGE})
     private MainAccount mainAccount;
@@ -117,7 +113,7 @@ public class Customer implements Serializable {
     private CustomerGroup customerGroup;
 
     public Long calcAge() {
-        return ((new Date().getTime() - getBirthDay().getTime()) / (24 * 60 * 60 * 1000))/365;
+        return ((new Date().getTime() - getBirthDay().getTime()) / (24 * 60 * 60 * 1000)) / 365;
     }
 
     public Long getId() {
@@ -208,9 +204,9 @@ public class Customer implements Serializable {
     public String toString() {
         return "entity.Customer[ id=" + id + " ]";
     }
-    
+
     public Double getTotalMortgageMonthlyInstallment() {
-        try{
+        try {
             List<LoanAccount> las = getMainAccount().getLoanAccounts();
 
             totalMortgageMonthlyInstallment = 0.0;
@@ -220,13 +216,13 @@ public class Customer implements Serializable {
                 }
             }
             return round(totalMortgageMonthlyInstallment, 1);
-        }catch(Exception ex){
+        } catch (Exception ex) {
             return 0.0;
         }
     }
 
     public Double getTotalMonthlyInstallment() {
-        try{
+        try {
             List<LoanAccount> las = getMainAccount().getLoanAccounts();
 
             totalMonthlyInstallment = 0.0;
@@ -234,92 +230,91 @@ public class Customer implements Serializable {
                 totalMonthlyInstallment += la.getMonthlyInstallment();
             }
             return round(totalMonthlyInstallment, 1);
-        }catch(Exception ex){
+        } catch (Exception ex) {
             return 0.0;
         }
     }
 
     public Double getTotalAsset() {
-        try{
+        try {
             totalAsset = getMainAccount().getWealthManagementSubscriber().getTotalPortfolioValue()
                     + getTotalDepositAmount().doubleValue()
                     + getTotalDebtAmount();
             return totalAsset;
-        }catch(Exception ex){
+        } catch (Exception ex) {
             return 0.0;
         }
     }
 
     public Double getSavingToIncome() {
-        try{
+        try {
             savingToIncome = getSavingPerMonth() / getIncome().getAvgValue();
             return savingToIncome;
-        }catch(Exception ex){
+        } catch (Exception ex) {
             return 0.0;
         }
     }
 
     public Double getDebtToIncome() {
-        try{
-            debtToIncome = getTotalMonthlyInstallment()/getIncome().getAvgValue();
+        try {
+            debtToIncome = getTotalMonthlyInstallment() / getIncome().getAvgValue();
             return debtToIncome;
-        }
-        catch(Exception ex){
+        } catch (Exception ex) {
             return 0.0;
         }
     }
 
     public Double getHousingCostRatio() {
-        try{
+        try {
             housingCostRatio = getTotalMortgageMonthlyInstallment() / getIncome().getAvgValue();
             return housingCostRatio;
-        }catch(Exception ex){
+        } catch (Exception ex) {
             return 0.0;
         }
     }
 
     public Double getDebtRatio() {
-        try{
+        try {
             debtRatio = getTotalDebtAmount() / getTotalAsset();
             return debtRatio;
-        }catch(Exception ex){
+        } catch (Exception ex) {
             return 0.0;
         }
     }
 
     public Double getNetWorth() {
-        try{
+        try {
             netWorth = getTotalAsset() - getTotalDebtAmount();
             return netWorth;
-        }catch(Exception ex){
+        } catch (Exception ex) {
             return 0.0;
         }
     }
-    
+
     public BigDecimal getTotalDepositAmount() {
-        try{
+        try {
             List<DepositAccount> das = getMainAccount().getBankAcounts();
             totalDepositAmount = new BigDecimal(0);
             for (DepositAccount da : das) {
                 totalDepositAmount = totalDepositAmount.add(da.getBalance());
             }
             return totalDepositAmount;
-        }catch(Exception ex){
+        } catch (Exception ex) {
             return new BigDecimal(0);
         }
     }
 
     public Double getTotalDebtAmount() {
-        try{
+        try {
             totalDebtAmount = getTotalLoanAmount() + getTotalCreditAmount();
             return totalDebtAmount;
-        }catch(Exception ex){
+        } catch (Exception ex) {
             return 0.0;
         }
     }
 
     public Double getTotalLoanAmount() {
-        try{
+        try {
             List<LoanAccount> las = getMainAccount().getLoanAccounts();
 
             totalLoanAmount = 0.0;
@@ -327,13 +322,13 @@ public class Customer implements Serializable {
                 totalLoanAmount += la.getOutstandingPrincipal();
             }
             return totalLoanAmount;
-        }catch(Exception ex){
+        } catch (Exception ex) {
             return 0.0;
         }
     }
 
     public Double getTotalCreditAmount() {
-        try{
+        try {
             List<CreditCardAccount> ccas = getMainAccount().getCreditCardAccounts();
 
             totalCreditAmount = 0.0;
@@ -341,53 +336,55 @@ public class Customer implements Serializable {
                 totalCreditAmount += cca.getOutstandingAmount();
             }
             return totalCreditAmount;
-        }catch(Exception ex){
+        } catch (Exception ex) {
             return 0.0;
         }
     }
 
     public Double getTotalPortfolioCurrentValue() { //all the portfolio
-        try{
+        try {
             List<Portfolio> ps = getMainAccount().getWealthManagementSubscriber().getPortfolios();
             totalPortfolioCurrentValue = 0.0;
             for (Portfolio p : ps) {
-                if(p.getStatus() == PortfolioStatus.BOUGHT)
-                    totalPortfolioCurrentValue+= p.getTotalCurrentValue();
+                if (p.getStatus() == PortfolioStatus.BOUGHT) {
+                    totalPortfolioCurrentValue += p.getTotalCurrentValue();
+                }
             }
-            
-            System.out.println("getTOtalportfoliovalue: "+totalPortfolioCurrentValue);
+
+            System.out.println("getTOtalportfoliovalue: " + totalPortfolioCurrentValue);
             return totalPortfolioCurrentValue;
-        }catch(Exception ex){
-            System.out.println("getTOtalportfoliovalue: "+ex);
+        } catch (Exception ex) {
+            System.out.println("getTOtalportfoliovalue: " + ex);
             return 0.0;
         }
     }
 
     public Double getTotalPortfolioBuyingValue() {
-        try{
+        try {
             List<Portfolio> ports = getMainAccount().getWealthManagementSubscriber().getPortfolios();
             totalPortfolioBuyingValue = 0.0;
             for (Portfolio port : ports) {
-                if(port.getStatus() == PortfolioStatus.BOUGHT)
+                if (port.getStatus() == PortfolioStatus.BOUGHT) {
                     totalPortfolioBuyingValue += port.getTotalBuyingValue();
+                }
             }
             return totalPortfolioBuyingValue;
-        }catch(Exception ex){
+        } catch (Exception ex) {
             return 0.0;
         }
     }
 
     public Double getPortfolioPercentageChange() {
-        try{
+        try {
             portfolioPercentageChange = getTotalPortfolioCurrentValue() / getTotalPortfolioBuyingValue() * 100;
             return portfolioPercentageChange;
-        }catch(Exception ex){
+        } catch (Exception ex) {
             return 0.0;
         }
     }
 
     public Double getFinancialHealthScore() {
-        try{
+        try {
             financialHealthScore = 85.0;
             if (getSavingToIncome() >= 10 && getSavingToIncome() <= 20) {
                 financialHealthScore += 5;
@@ -436,7 +433,7 @@ public class Customer implements Serializable {
             }
 
             return financialHealthScore;
-        }catch(Exception ex){
+        } catch (Exception ex) {
             return 0.0;
         }
         /*
@@ -528,7 +525,7 @@ public class Customer implements Serializable {
     }
 
     public String getFinancialHealthScoreLevel() {
-        try{
+        try {
             if (getFinancialHealthScore() >= 80) {
                 financialHealthScoreLevel = EnumUtils.FinancialHealthLevel.VERYHEALTHY.getValue();
             } else if (getFinancialHealthScore() >= 60 && getFinancialHealthScore() < 80) {
@@ -539,7 +536,7 @@ public class Customer implements Serializable {
                 financialHealthScoreLevel = EnumUtils.FinancialHealthLevel.VERYUNHEALTHY.getValue();
             }
             return financialHealthScoreLevel;
-        }catch(Exception ex){
+        } catch (Exception ex) {
             return "Not Applicable";
         }
     }
@@ -713,7 +710,7 @@ public class Customer implements Serializable {
     public void setActualIncome(Double actualIncome) {
         this.actualIncome = actualIncome;
     }
-    
+
     public String getFullName() {
         return fullName;
     }
@@ -780,33 +777,93 @@ public class Customer implements Serializable {
     public void setCardMonetary(Long cardMonetary) {
         this.cardMonetary = cardMonetary;
     }
-
-    public Double getDepositRFMScore() {
-        return depositRFMScore;
+    //1
+    public Long getDepositRFMScore() {
+        Long recency = depositRecency * 100;
+        Long frequency = depositFrequency * 10;
+        Long monetary = depositMonetary * 1;
+        return recency + frequency + monetary;
     }
-
-    public void setDepositRFMScore(Double depositRFMScore) {
-        this.depositRFMScore = depositRFMScore;
+    //2
+    public Long getCardRFMScore() {
+        Long recency = cardRecency * 100;
+        Long frequency = cardFrequency * 10;
+        Long monetary = cardMonetary * 1;
+        return recency + frequency + monetary;
     }
-
-    public Double getCardRFMScore() {
-        return cardRFMScore;
+    //3
+    public Long getDepositRMFScore() {
+        Long recency = depositRecency * 100;
+        Long frequency = depositFrequency * 1;
+        Long monetary = depositMonetary * 10;
+        return recency + frequency + monetary;
     }
-
-    public void setCardRFMScore(Double cardRFMScore) {
-        this.cardRFMScore = cardRFMScore;
+    //4
+    public Long getCardRMFScore() {
+        Long recency = cardRecency * 100;
+        Long frequency = cardFrequency * 1;
+        Long monetary = cardMonetary * 10;
+        return recency + frequency + monetary;
     }
-
-    public Double getOverallRFMScore() {
-        return overallRFMScore;
+    //5
+    public Long getDepositFRMScore() {
+        Long recency = depositRecency * 10;
+        Long frequency = depositFrequency * 100;
+        Long monetary = depositMonetary * 1;
+        return recency + frequency + monetary;
     }
-
-    public void setOverallRFMScore(Double overallRFMScore) {
-        this.overallRFMScore = overallRFMScore;
+    //6
+    public Long getCardFRMScore() {
+        Long recency = cardRecency * 10;
+        Long frequency = cardFrequency * 100;
+        Long monetary = cardMonetary * 1;
+        return recency + frequency + monetary;
+    }
+    //7
+    public Long getDepositFMRScore() {
+        Long recency = depositRecency * 1;
+        Long frequency = depositFrequency * 100;
+        Long monetary = depositMonetary * 10;
+        return recency + frequency + monetary;
+    }
+    //8
+    public Long getCardFMRScore() {
+        Long recency = depositRecency * 1;
+        Long frequency = depositFrequency * 100;
+        Long monetary = depositMonetary * 10;
+        return recency + frequency + monetary;
+    }
+    //9
+    public Long getDepositMRFScore() {
+        Long recency = depositRecency * 10;
+        Long frequency = depositFrequency * 1;
+        Long monetary = depositMonetary * 100;
+        return recency + frequency + monetary;
+    }
+    //10
+    public Long getCardMRFScore() {
+        Long recency = depositRecency * 10;
+        Long frequency = depositFrequency * 1;
+        Long monetary = depositMonetary * 100;
+        return recency + frequency + monetary;
+    }
+    //11
+    public Long getDepositMFRScore() {
+        Long recency = depositRecency * 1;
+        Long frequency = depositFrequency * 10;
+        Long monetary = depositMonetary * 100;
+        return recency + frequency + monetary;
+    }
+    //12
+    public Long getCardMFRScore() {
+        Long recency = depositRecency * 1;
+        Long frequency = depositFrequency * 10;
+        Long monetary = depositMonetary * 100;
+        return recency + frequency + monetary;
     }
 
     public Integer getAge() {
-        System.out.println("age: " +age);
+        System.out.println("age: " + age);
         System.out.println(calcAge());
         return age;
     }

@@ -49,7 +49,6 @@ public class CustomerRFMManagedBean implements Serializable {
             c.setDepositRecency(depositRecency);
             c.setDepositFrequency(depositFrequency);
             c.setDepositMonetary(depositMonetary);
-            c.setDepositRFMScore((double) (depositRecency + depositFrequency + depositMonetary));
 
             Long cardRecency = rFMSessionBean.getCardRecencyByCustomerId(c.getId());
             Long cardFrequency = rFMSessionBean.getCardFrequencyByCustomerId(c.getId());
@@ -58,9 +57,7 @@ public class CustomerRFMManagedBean implements Serializable {
             c.setCardRecency(cardRecency);
             c.setCardFrequency(cardFrequency);
             c.setCardMonetary(cardMonetary);
-            c.setCardRFMScore((double) (cardRecency + cardFrequency + cardMonetary));
 
-            c.setOverallRFMScore( (c.getDepositRFMScore() + c.getCardRFMScore()) / 2 );
             customerSessionBean.updateCustomer(c);
         }
     }

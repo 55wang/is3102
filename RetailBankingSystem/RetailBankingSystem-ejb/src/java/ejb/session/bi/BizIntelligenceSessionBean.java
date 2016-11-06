@@ -193,6 +193,16 @@ public class BizIntelligenceSessionBean implements BizIntelligenceSessionBeanLoc
         }
     }
     
+    @Override
+    public Double getBankSettledTransactionAmount(Date startDate, Date endDate) {
+        return 0.0;
+    }
+    
+    @Override
+    public Long getBankNumOfBadCardAccount(Date startDate, Date endDate){
+        return 0L;
+    }
+    
     //portfolio service
     @Override
     public Long getBankTotalWealthManagementSubsciber(){

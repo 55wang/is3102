@@ -38,6 +38,8 @@ public interface BizIntelligenceSessionBeanLocal {
     public Long getBankTotalNewCardAcct(Date startDate, Date endDate);
     public Double getBankTotalCardCurrentAmount(Date endDate);
     public Double getBankTotalCardOutstandingAmount(Date endDate);
+    public Long getBankNumOfBadCardAccount(Date startDate, Date endDate);
+    public Double getBankSettledTransactionAmount(Date startDate, Date endDate);
     
     //portfolio service
     public Long getBankTotalWealthManagementSubsciber();

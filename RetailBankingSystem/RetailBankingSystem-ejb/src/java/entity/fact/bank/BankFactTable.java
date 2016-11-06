@@ -39,7 +39,6 @@ public class BankFactTable implements Serializable {
     private Double totalDepositInterestAmount;
 
     private Long totalLoanAcct;
-    private Long totalActiveLoanAcct;
     private Long newLoanAcct;
     private Double totalLoanAmount;
     private Double totalLoanInterestEarned;
@@ -49,10 +48,11 @@ public class BankFactTable implements Serializable {
     private Long totalCardAcct; //only for credit card
     private Long totalActiveCardAcct;
     private Long newCardAcct;
-    private Double totalCardAmount;
+    private Double totalCardCurrentAmount;
     private Double totalOutstandingAmount;
     private Long numOfBadCardAccount;
 
+    private Long totalWealthManagementSubscriber;
     private Long totalExecutedPortfolio;
     private Long newExecutedPortfolio;
     private Double totalPortfolioAmount;
@@ -118,14 +118,6 @@ public class BankFactTable implements Serializable {
 
     public void setTotalLoanAmount(Double totalLoanAmount) {
         this.totalLoanAmount = totalLoanAmount;
-    }
-
-    public Double getTotalCardAmount() {
-        return totalCardAmount;
-    }
-
-    public void setTotalCardAmount(Double totalCardAmount) {
-        this.totalCardAmount = totalCardAmount;
     }
 
     public Double getTotalOutstandingAmount() {
@@ -206,14 +198,6 @@ public class BankFactTable implements Serializable {
 
     public void setTotalLoanAcct(Long totalLoanAcct) {
         this.totalLoanAcct = totalLoanAcct;
-    }
-
-    public Long getTotalActiveLoanAcct() {
-        return totalActiveLoanAcct;
-    }
-
-    public void setTotalActiveLoanAcct(Long totalActiveLoanAcct) {
-        this.totalActiveLoanAcct = totalActiveLoanAcct;
     }
 
     public Long getNewLoanAcct() {
@@ -310,6 +294,22 @@ public class BankFactTable implements Serializable {
 
     public void setCaseResponseTime(Double CaseResponseTime) {
         this.CaseResponseTime = CaseResponseTime;
+    }
+
+    public Long getTotalWealthManagementSubscriber() {
+        return totalWealthManagementSubscriber;
+    }
+
+    public void setTotalWealthManagementSubscriber(Long totalWealthManagementSubscriber) {
+        this.totalWealthManagementSubscriber = totalWealthManagementSubscriber;
+    }
+
+    public Double getTotalCardCurrentAmount() {
+        return totalCardCurrentAmount;
+    }
+
+    public void setTotalCardCurrentAmount(Double totalCardCurrentAmount) {
+        this.totalCardCurrentAmount = totalCardCurrentAmount;
     }
 
 }

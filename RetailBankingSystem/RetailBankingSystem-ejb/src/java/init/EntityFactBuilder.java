@@ -61,7 +61,6 @@ public class EntityFactBuilder {
         bft.setTotalDepositInterestAmount(800.0);
 
         bft.setTotalLoanAcct(50L);
-        bft.setTotalActiveLoanAcct(20L);
         bft.setNewLoanAcct(5L);
         bft.setTotalLoanAmount(100000.0);
         bft.setTotalLoanInterestEarned(7.0);
@@ -71,7 +70,7 @@ public class EntityFactBuilder {
         bft.setTotalCardAcct(99L);
         bft.setTotalActiveCardAcct(22L);
         bft.setNewCardAcct(11L);
-        bft.setTotalCardAmount(1200000.0);
+        bft.setTotalCardCurrentAmount(1200000.0);
         bft.setTotalOutstandingAmount(3000000.0);
         bft.setNumOfBadCardAccount(33L);
 
@@ -94,7 +93,6 @@ public class EntityFactBuilder {
         bft.setTotalDepositInterestAmount(1100.0);
         
         bft.setTotalLoanAcct(55L);
-        bft.setTotalActiveLoanAcct(23L);
         bft.setNewLoanAcct(8L);
         bft.setTotalLoanAmount(110000.0);
         bft.setTotalLoanInterestEarned(7.0);
@@ -104,7 +102,7 @@ public class EntityFactBuilder {
         bft.setTotalCardAcct(109L);
         bft.setTotalActiveCardAcct(29L);
         bft.setNewCardAcct(15L);
-        bft.setTotalCardAmount(1300000.0);
+        bft.setTotalCardCurrentAmount(1300000.0);
         bft.setTotalOutstandingAmount(4000000.0);
         bft.setNumOfBadCardAccount(43L);
 
