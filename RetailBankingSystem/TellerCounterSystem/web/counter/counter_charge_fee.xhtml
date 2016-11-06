@@ -1,0 +1,58 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:em="http://xmlns.jcp.org/jsf/composite/emcomp">
+    <!--shift + ctrl + F, format-->
+    <f:view>
+        <h:head>
+            <title>MBS Counter</title>
+            <em:cssImport></em:cssImport>
+        </h:head>
+        <h:body>
+            <em:staffNavBar context="counter"></em:staffNavBar>
+            <em:staffSideBar top="counter" side="counterChargeFee"></em:staffSideBar>
+            <div class="container">
+                <h:form id="mainForm">
+
+                    <p:panel header="Charge Customer Service Fee">
+                        <p:messages id="messagesStatus" redisplay="false" >
+
+                            <h:panelGrid columns="2" cellpadding="5">
+                                <p:outputLabel value="Customer IC Number: " />
+                                <p:inputText value="#{counterChargeFeeManagedBean.customerICNumber}" required="true" />
+
+                                <p:outputLabel value="Service Charge: " />
+                                <p:selectOneMenu value="#{counterChargeFeeManagedBean.selectedService}" rendered="true" required="true">
+                                        <f:selectItems value="#{counterChargeFeeManagedBean.charges}" var="sc" itemValue="#{sc.name}" itemLabel="#{sc.name} #{a.charges.setScale(2)}" />
+                                    </p:selectOneMenu>
+
+                                <p:commandButton value="Charge" icon="ui-icon-plus" update="@form" actionListener="#{counterChargeFeeManagedBean.chargeFee}" />
+                            </h:panelGrid>
+
+                        </p:messages>
+                    </p:panel>
+
+                    <p:panel header="Service Charge List">
+                        <p:dataTable id="addedRoles" value="#{counterChargeFeeManagedBean.charges}" var="sc" >
+
+                            <p:column headerText="Name" sortBy="#{sc.name}">
+                                <h:outputText value="#{sc.name}"></h:outputText>
+                            </p:column>
+                            <p:column headerText="Charge Amount(S$)" sortBy="#{sc.charges}">
+                                <h:outputText value="#{sc.charges.setScale(2)}" />
+                            </p:column>
+
+                        </p:dataTable>
+                    </p:panel>
+
+                </h:form>
+            </div>
+        </h:body>
+    </f:view>
+
+
+</html>
+

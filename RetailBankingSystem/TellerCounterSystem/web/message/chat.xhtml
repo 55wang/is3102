@@ -1,0 +1,87 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:em="http://xmlns.jcp.org/jsf/composite/emcomp"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <!--shift + ctrl + F, format-->
+    <f:view>
+        <h:head>
+            <title>MBS Counter</title>
+            <em:cssImport></em:cssImport>
+            <link type="text/css" rel="stylesheet" href="chat.css"/>
+        </h:head>
+        <h:body>
+            <em:staffNavBar context="message"></em:staffNavBar>
+            <em:staffSideBar top="message" side="chat"></em:staffSideBar>
+            <div class="container">
+                <p:growl id="growl" showDetail="true" />
+                <!-- Write My Own Logic -->
+
+                <!--receive event from channel-->
+                <!--onMessage="handleMessage" This calls a js function-->
+                <!--Add socket here maybe just one channel for self-->
+                <div id="conversations-container">
+                    <div id="new-conversation">
+                        <div class="v-center text-center full-width font-20">
+                            Add new Conversation
+                        </div>
+                    </div>
+                    <div id="old-conversations">
+                        <c:forEach items="#{chatViewCounterManagedBean.conversations}" var="conversation">
+                            <!-- Can be modeled by jQuery -->
+                            <div class="conversation" id="#{conversation.id}" onclick="redirect(#{conversation.id})">
+                                <div class="user-icon" style="background-color:#{chatViewCounterManagedBean.randColor()}">
+                                    <div class="icon-text">
+                                        #{chatViewCounterManagedBean.isReceiver(conversation) ? conversation.sender.nameLabel : conversation.receiver.nameLabel}
+                                    </div>
+                                </div>
+                                <div class="conversation-text">
+                                    <div class="conversation-username">
+                                        <b>#{chatViewCounterManagedBean.isReceiver(conversation) ? conversation.sender.fullName : conversation.receiver.fullName}</b>
+                                    </div>
+                                    <div class="conversation-preview">
+                                        #{conversation.messages[0].message}
+                                    </div>
+                                </div>
+                            </div>
+                        </c:forEach>
+                    </div>
+                </div>
+                <div id="staff-list-container">
+                    <h:form class="padding-20">
+                        <p:inputText value="#{chatViewCounterManagedBean.searchText}" required="true" />
+                        <p:commandButton value="Search" update="staff-table" actionListener="#{chatViewCounterManagedBean.search}"/>
+                        <p:commandButton value="Show All" update="staff-table" actionListener="#{chatViewCounterManagedBean.showall}"/>
+                    </h:form>
+                    <p:panel header="Staffs">
+                        <h:form id="staff-table">
+                            <p:dataTable id="staff-list" value="#{chatViewCounterManagedBean.staffs}" var="staff">
+                                <p:column headerText="ID" sortBy="#{staff.username}">
+                                    <h:outputText value="#{staff.username}"></h:outputText>
+                                </p:column>
+                                <p:column headerText="Name" sortBy="#{staff.fullName}">
+                                    <h:outputText value="#{staff.fullName}"></h:outputText>
+                                </p:column>
+                                <p:column headerText="Role" sortBy="#{staff.roles.get(0)}">
+                                    <h:outputText value="#{staff.roles.get(0)}"></h:outputText>
+                                </p:column>
+                                <p:column headerText="" sortBy="#{staff.username}">
+                                    <p:commandButton value="New Message" actionListener="#{chatViewCounterManagedBean.newConversation(staff)}"/>
+                                </p:column>
+                            </p:dataTable>
+                        </h:form>
+                    </p:panel>
+                </div>
+            </div>
+            <div id="output"></div>
+
+            <!--To use jquery with javascript here-->
+            <h:outputScript library="primefaces" name="jquery/jquery.js" />
+            <script type="text/javascript" src="chat.js"></script>
+        </h:body>
+    </f:view>
+</html>
+

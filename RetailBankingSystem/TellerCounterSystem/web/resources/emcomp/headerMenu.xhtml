@@ -1,0 +1,38 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:em="http://xmlns.jcp.org/jsf/composite/emcomp">
+
+    <cc:interface>
+        <cc:attribute name="context" required="true"/>
+        <cc:attribute name="userName" required="true"/>
+    </cc:interface>
+
+    <cc:implementation>
+        <f:view>
+            <em:cssImport></em:cssImport>
+            <div id="customer-header-nav">
+                <c:if test="#{cc.attrs.context == 'staff_home'}">
+                    <ul>
+                        <h:form>
+                        <li>    
+                            <p:outputLabel id="header-nav-profile" value="#{cc.attrs.userName}"/>
+                            <p:menu overlay="true" trigger="header-nav-profile" my="left top" at="left bottom" style="display:none">
+                                <p:submenu label="Navigations">
+                                    <p:menuitem value="Logout" onclick="PF('logout').show()" />
+                                </p:submenu>
+                            </p:menu>
+                            <em:confirmDialog clientName="logout" message="Do you want to log out?" action="#{staffLogoutCounterManagedBean.logout}"></em:confirmDialog>
+                        </li>
+                        </h:form>
+                    </ul> 
+                </c:if>       
+            </div>
+        </f:view>   
+    </cc:implementation>
+</html>
