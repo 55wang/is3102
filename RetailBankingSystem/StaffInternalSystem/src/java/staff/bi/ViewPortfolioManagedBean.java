@@ -9,6 +9,7 @@ import ejb.session.bi.BizIntelligenceSessionBeanLocal;
 import ejb.session.fact.BankFactTableSessionBeanLocal;
 import entity.fact.bank.BankFactTable;
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -19,6 +20,7 @@ import org.primefaces.model.chart.Axis;
 import org.primefaces.model.chart.AxisType;
 import org.primefaces.model.chart.BarChartModel;
 import org.primefaces.model.chart.ChartSeries;
+import server.utilities.ColorUtils;
 import server.utilities.DateUtils;
 
 /**
@@ -35,25 +37,54 @@ public class ViewPortfolioManagedBean implements Serializable {
     BizIntelligenceSessionBeanLocal bizIntelligenceSessionBean;
 
     private BarChartModel portfolioAmtBarModel;
+    
+    private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
     //portfolio service
+    private Long bankTotalWealthManagementSubscriber;
     private Long bankTotalExecutedPortfolio;
     private Long bankNewExecutedPortfolio;
     private Double bankTotalInvestmentAmount;
     private Double bankTotalProfitAmount;
 
-    private Date startDate = DateUtils.getBeginOfMonth();
-    private Date endDate = DateUtils.getEndOfMonth();
+    private Date startDate;
+    private Date endDate;
 
     public ViewPortfolioManagedBean() {
     }
 
     @PostConstruct
     public void init() {
-        bankTotalExecutedPortfolio = bizIntelligenceSessionBean.getBankTotalExecutedPortfolio(startDate, endDate);
+        startDate = DateUtils.getBeginOfMonth();
+        endDate = DateUtils.getEndOfMonth();
+        
+        System.out.println(startDate);
+        System.out.println(endDate);
+        
+        bankTotalWealthManagementSubscriber = bizIntelligenceSessionBean.getBankTotalWealthManagementSubsciber();
+        bankTotalExecutedPortfolio = bizIntelligenceSessionBean.getBankTotalExecutedPortfolio(endDate);
         bankNewExecutedPortfolio = bizIntelligenceSessionBean.getBankNewExecutedPortfolio(startDate, endDate);
-        bankTotalInvestmentAmount = bizIntelligenceSessionBean.getBankTotalInvestmentAmount(startDate, endDate);
-        bankTotalProfitAmount = bizIntelligenceSessionBean.getBankTotalProfitAmount(startDate, endDate);
+        bankTotalInvestmentAmount = bizIntelligenceSessionBean.getBankTotalInvestmentAmount(endDate);
+        bankTotalProfitAmount = bizIntelligenceSessionBean.getBankTotalProfitAmount(endDate);
+        
+        if(bankTotalProfitAmount == null)
+            bankTotalProfitAmount = 0.0;
+
+        createCardTransactionBarModel();
+    }
+    
+    public void viewDataTable() {
+        System.out.println(sdf.format(startDate));
+        System.out.println(sdf.format(endDate));
+        
+        bankTotalWealthManagementSubscriber = bizIntelligenceSessionBean.getBankTotalWealthManagementSubsciber();
+        bankTotalExecutedPortfolio = bizIntelligenceSessionBean.getBankTotalExecutedPortfolio(endDate);
+        bankNewExecutedPortfolio = bizIntelligenceSessionBean.getBankNewExecutedPortfolio(startDate, endDate);
+        bankTotalInvestmentAmount = bizIntelligenceSessionBean.getBankTotalInvestmentAmount(endDate);
+        bankTotalProfitAmount = bizIntelligenceSessionBean.getBankTotalProfitAmount(endDate);
+        
+        if(bankTotalProfitAmount == null)
+            bankTotalProfitAmount = 0.0;
 
         createCardTransactionBarModel();
     }
@@ -82,6 +113,8 @@ public class ViewPortfolioManagedBean implements Serializable {
         }
 
         model.addSeries(series1);
+        model.setSeriesColors(ColorUtils.getFlatUIColors(6));
+        model.setExtender("customExtender");
 
         return model;
     }
@@ -142,4 +175,11 @@ public class ViewPortfolioManagedBean implements Serializable {
         this.endDate = endDate;
     }
 
+    public Long getBankTotalWealthManagementSubscriber() {
+        return bankTotalWealthManagementSubscriber;
+    }
+
+    public void setBankTotalWealthManagementSubscriber(Long bankTotalWealthManagementSubscriber) {
+        this.bankTotalWealthManagementSubscriber = bankTotalWealthManagementSubscriber;
+    }
 }

@@ -57,7 +57,7 @@ public class DemoPageManagedBean implements Serializable {
         //hardcode, need to continue to retrieve live data
         Date startDate = DateUtils.getBeginOfMonth();
         Date endDate = DateUtils.getEndOfMonth();
-        bankTotalDepositAcct = bizIntelligenceSessionBean.getBankTotalDepositAcct(startDate, endDate);
+        bankTotalDepositAcct = bizIntelligenceSessionBean.getBankTotalDepositAcct(endDate);
         bft.setTotalDepositAcct(bankTotalDepositAcct);
         bft.setTotalActiveDepositAcct(70L);
         bft.setNewDepositAcct(20L);

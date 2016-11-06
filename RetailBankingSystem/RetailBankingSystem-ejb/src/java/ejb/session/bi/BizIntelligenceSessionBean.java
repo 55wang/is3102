@@ -29,10 +29,10 @@ public class BizIntelligenceSessionBean implements BizIntelligenceSessionBeanLoc
 
     //deposit and loan service
     @Override
-    public Long getBankTotalDepositAcct(Date startDate, Date endDate) {
-        Query q = em.createQuery("SELECT COUNT(d.accountNumber) FROM DepositAccount d "
-                + "WHERE d.status=:activeStatus");
+    public Long getBankTotalDepositAcct(Date endDate) {
+        Query q = em.createQuery("SELECT COUNT(d.accountNumber) FROM DepositAccount d WHERE d.status=:activeStatus AND d.creationDate <= :endDate");
         q.setParameter("activeStatus", StatusType.ACTIVE);
+        q.setParameter("endDate", endDate);
         return (Long) q.getSingleResult();
     }
     
@@ -61,27 +61,37 @@ public class BizIntelligenceSessionBean implements BizIntelligenceSessionBeanLoc
     }
     
     @Override
-    public Double getBankTotalDepositAmount(Date startDate, Date endDate) {
-        Query q = em.createQuery("SELECT SUM(d.balance) FROM DepositAccount d WHERE d.status=:activeStatus");
-        q.setParameter("activeStatus", StatusType.ACTIVE);
-        BigDecimal totalDepositAmount = (BigDecimal) q.getSingleResult();
-        return totalDepositAmount.doubleValue();
+    public Double getBankTotalDepositAmount(Date endDate) {
+        try{
+            Query q = em.createQuery("SELECT SUM(d.balance) FROM DepositAccount d WHERE d.status=:activeStatus AND d.creationDate <= :endDate");
+            q.setParameter("activeStatus", StatusType.ACTIVE);
+            q.setParameter("endDate", endDate);
+            BigDecimal totalDepositAmount = (BigDecimal) q.getSingleResult();
+            return totalDepositAmount.doubleValue();
+        }catch(Exception ex){
+            return 0.0;
+        }
     }
     
     @Override
-    public Double getBankTotalDepositInterestAmount(Date startDate, Date endDate) {
-        Query q = em.createQuery("SELECT SUM(t.amount) FROM TransactionRecord t WHERE t.actionType=:intrestTransaction");
-        q.setParameter("intrestTransaction", TransactionType.INTEREST);
-        BigDecimal totalInterestAmount = (BigDecimal) q.getSingleResult();
-        return totalInterestAmount.doubleValue();
+    public Double getBankTotalDepositInterestAmount(Date endDate) {
+        try{
+            Query q = em.createQuery("SELECT SUM(t.amount) FROM TransactionRecord t WHERE t.actionType=:intrestTransaction AND t.creationDate <= :endDate");
+            q.setParameter("intrestTransaction", TransactionType.INTEREST);
+            q.setParameter("endDate", endDate);
+            BigDecimal totalInterestAmount = (BigDecimal) q.getSingleResult();
+            return totalInterestAmount.doubleValue();
+        }catch(Exception ex){
+            return 0.0;
+        }
     }
     
     // bad loan
     @Override
-    public Long getBankTotalLoanAcct(Date startDate, Date endDate) {
-        Query q = em.createQuery("SELECT COUNT(l.accountNumber) FROM LoanAccount l "
-                + "WHERE l.loanAccountStatus=:approveStatus");
+    public Long getBankTotalLoanAcct(Date endDate) {
+        Query q = em.createQuery("SELECT COUNT(l.accountNumber) FROM LoanAccount l WHERE l.loanAccountStatus=:approveStatus AND l.creationDate <= :endDate");
         q.setParameter("approveStatus", LoanAccountStatus.APPROVED);
+        q.setParameter("endDate", endDate);
         return (Long) q.getSingleResult();
     }
     @Override
@@ -97,36 +107,51 @@ public class BizIntelligenceSessionBean implements BizIntelligenceSessionBeanLoc
         return (Long) q.getSingleResult();
     }
     @Override
-    public Double getBankTotalLoanAmount(Date startDate, Date endDate) {
-        Query q = em.createQuery("SELECT SUM(l.principal) FROM LoanAccount l WHERE l.loanAccountStatus=:approveStatus" );
+    public Double getBankTotalLoanAmount(Date endDate) {
+        try{
+            Query q = em.createQuery("SELECT SUM(l.principal) FROM LoanAccount l WHERE l.loanAccountStatus=:approveStatus AND l.creationDate <= :endDate" );
+            q.setParameter("approveStatus", LoanAccountStatus.APPROVED);
+            q.setParameter("endDate", endDate);
+            return (Double) q.getSingleResult();
+        }catch(Exception ex){
+            return 0.0;
+        }
+    }
+    @Override
+    public Double getBankLoanInterestEarned(Date endDate) {
+        try{
+            Query q = em.createQuery("SELECT SUM(l.interestAccrued) FROM LoanRepaymentRecord l WHERE l.transactionDate <= :endDate" );
+            q.setParameter("endDate", endDate);
+            return (Double) q.getSingleResult();
+        }catch(Exception ex){
+            return 0.0;
+        }
+    }
+    @Override
+    public Double getBankLoanInterestUnearned(Date endDate) {
+        try{
+            Query q = em.createQuery("SELECT SUM(l.interestPayment) FROM LoanPaymentBreakdown l WHERE l.schedulePaymentDate <= :endDate" );
+            q.setParameter("endDate", endDate);
+            return (Double) q.getSingleResult();
+        }catch(Exception ex){
+            return 0.0;
+        }
+    }
+    @Override
+    public Long getBankTotalDefaultLoanAcct(Date endDate) {
+        Query q = em.createQuery("SELECT COUNT(l.accountNumber) FROM LoanAccount l WHERE l.overduePayment >= l.monthlyInstallment*3 AND l.loanAccountStatus=:approveStatus AND l.creationDate <= :endDate" );
         q.setParameter("approveStatus", LoanAccountStatus.APPROVED);
-        return (Double) q.getSingleResult();
-    }
-    @Override
-    public Double getBankLoanInterestEarned(Date startDate, Date endDate) {
-        Query q = em.createQuery("SELECT SUM(l.interestAccrued) FROM LoanRepaymentRecord l" );
-        return (Double) q.getSingleResult();
-    }
-    @Override
-    public Double getBankLoanInterestUnearned(Date startDate, Date endDate) {
-        Query q = em.createQuery("SELECT SUM(l.interestPayment) FROM LoanPaymentBreakdown l" );
-        return (Double) q.getSingleResult();
-    }
-    @Override
-    public Long getBankTotalDefaultLoanAcct(Date startDate, Date endDate) {
-        Query q = em.createQuery("SELECT COUNT(l.accountNumber) FROM LoanAccount l WHERE l.overduePayment >= l.monthlyInstallment*3 AND l.loanAccountStatus=:approveStatus" );
-        q.setParameter("approveStatus", LoanAccountStatus.APPROVED);
+        q.setParameter("endDate", endDate);
         return (Long) q.getSingleResult();
     }
     
-    //card service
+    //credit card service
     @Override
-    public Long getBankTotalCardAcct(Date startDate, Date endDate) {
-        Query q1 = em.createQuery("SELECT COUNT(cc.id) FROM CreditCardAccount cc WHERE cc.CardStatus=:activeStatus");
+    public Long getBankTotalCardAcct(Date endDate) {
+        Query q1 = em.createQuery("SELECT COUNT(cc.id) FROM CreditCardAccount cc WHERE cc.CardStatus=:activeStatus AND cc.creationDate <= :endDate");
         q1.setParameter("activeStatus", EnumUtils.CardAccountStatus.ACTIVE);
-        Query q2 = em.createQuery("SELECT COUNT(dc.id) FROM DebitCardAccount dc WHERE dc.CardStatus=:activeStatus");
-        q2.setParameter("activeStatus", EnumUtils.CardAccountStatus.ACTIVE);
-        return (Long) q1.getSingleResult() + (Long) q2.getSingleResult();
+        q1.setParameter("endDate", endDate);
+        return (Long) q1.getSingleResult();
     }
     
     @Override
@@ -135,11 +160,7 @@ public class BizIntelligenceSessionBean implements BizIntelligenceSessionBeanLoc
         q1.setParameter("activeStatus", EnumUtils.CardAccountStatus.ACTIVE);
         q1.setParameter("startDate", startDate);
         q1.setParameter("endDate", endDate);
-        Query q2 = em.createQuery("SELECT COUNT(DISTINCT(dc.id)) FROM DebitCardAccount dc, CardTransaction ct WHERE dc.CardStatus=:activeStatus AND (dc.creationDate BETWEEN :startDate AND :endDate AND ct.debitCardAccount.id=dc.id)");
-        q2.setParameter("activeStatus", EnumUtils.CardAccountStatus.ACTIVE);
-        q2.setParameter("startDate", startDate);
-        q2.setParameter("endDate", endDate);
-        return (Long) q1.getSingleResult() + (Long) q2.getSingleResult();
+        return (Long) q1.getSingleResult();
     }
     @Override
     public Long getBankTotalNewCardAcct(Date startDate, Date endDate) {
@@ -147,47 +168,74 @@ public class BizIntelligenceSessionBean implements BizIntelligenceSessionBeanLoc
         q1.setParameter("activeStatus", EnumUtils.CardAccountStatus.ACTIVE);
         q1.setParameter("startDate", startDate);
         q1.setParameter("endDate", endDate);
-        Query q2 = em.createQuery("SELECT COUNT(dc.id) FROM DebitCardAccount dc WHERE dc.CardStatus=:activeStatus AND dc.creationDate BETWEEN :startDate AND :endDate");
-        q2.setParameter("activeStatus", EnumUtils.CardAccountStatus.ACTIVE);
-        q2.setParameter("startDate", startDate);
-        q2.setParameter("endDate", endDate);
-        return (Long) q1.getSingleResult() + (Long) q2.getSingleResult();
+        return (Long) q1.getSingleResult();
     }
     @Override
-    public Double getBankTotalCardCurrentAmount(Date startDate, Date endDate) {
-        return 0.0;
+    public Double getBankTotalCardCurrentAmount(Date endDate) {
+        try{
+            Query q1 = em.createQuery("SELECT SUM(cc.currentMonthAmount) FROM CreditCardAccount cc WHERE cc.CardStatus=:activeStatus AND cc.creationDate <= :endDate");
+            q1.setParameter("activeStatus", EnumUtils.CardAccountStatus.ACTIVE);
+            q1.setParameter("endDate", endDate);
+            return (Double) q1.getSingleResult();
+        }catch(Exception ex){
+            return 0.0;
+        }
     }
     @Override
-    public Double getBankTotalCardOutstandingAmount(Date startDate, Date endDate) {
-        return 0.0;
+    public Double getBankTotalCardOutstandingAmount(Date endDate) {
+        try{
+            Query q1 = em.createQuery("SELECT SUM(cc.outstandingAmount) FROM CreditCardAccount cc WHERE cc.CardStatus=:activeStatus AND cc.creationDate <= :endDate");
+            q1.setParameter("activeStatus", EnumUtils.CardAccountStatus.ACTIVE);
+            q1.setParameter("endDate", endDate);
+            return (Double) q1.getSingleResult();
+        }catch(Exception ex){
+            return 0.0;
+        }
     }
     
     //portfolio service
     @Override
-    public Long getBankTotalExecutedPortfolio(Date startDate, Date endDate) {
-        Query q = em.createQuery("SELECT COUNT(ip.id) FROM InvestmentPlan ip WHERE ip.status=:executedStatus" );
+    public Long getBankTotalWealthManagementSubsciber(){
+        Query q = em.createQuery("SELECT COUNT(wms.id) FROM WealthManagementSubscriber wms" );
+        return (Long) q.getSingleResult();
+    }
+    
+    @Override
+    public Long getBankTotalExecutedPortfolio(Date endDate) {
+        Query q = em.createQuery("SELECT COUNT(ip.id) FROM InvestmentPlan ip WHERE ip.status=:executedStatus AND ip.executionDate <= :endDate" );
         q.setParameter("executedStatus", InvestmentPlanStatus.EXECUTED);
+        q.setParameter("endDate", endDate);
         return (Long) q.getSingleResult();
     }
     @Override
     public Long getBankNewExecutedPortfolio(Date startDate, Date endDate) {
-        Query q = em.createQuery("SELECT COUNT(ip.id) FROM InvestmentPlan ip WHERE ip.status=:executedStatus AND ip.creationDate BETWEEN :startDate AND :endDate" );
+        Query q = em.createQuery("SELECT COUNT(ip.id) FROM InvestmentPlan ip WHERE ip.status=:executedStatus AND ip.executionDate BETWEEN :startDate AND :endDate" );
         q.setParameter("executedStatus", InvestmentPlanStatus.EXECUTED);
         q.setParameter("startDate", startDate);
         q.setParameter("endDate", endDate);
         return (Long) q.getSingleResult();
     }
     @Override
-    public Double getBankTotalInvestmentAmount(Date startDate, Date endDate) {
-        Query q = em.createQuery("SELECT SUM(ip.amountOfInvestment) FROM InvestmentPlan ip WHERE ip.status=:executedStatus" );
-        q.setParameter("executedStatus", InvestmentPlanStatus.EXECUTED);
-        Long totalInvestAmount = (Long) q.getSingleResult();
-        return totalInvestAmount.doubleValue();
+    public Double getBankTotalInvestmentAmount(Date endDate) {
+        try{
+            Query q = em.createQuery("SELECT SUM(ip.amountOfInvestment) FROM InvestmentPlan ip WHERE ip.status=:executedStatus AND ip.executionDate <= :endDate" );
+            q.setParameter("executedStatus", InvestmentPlanStatus.EXECUTED);
+            q.setParameter("endDate", endDate);
+            Long totalInvestAmount = (Long) q.getSingleResult();      
+            return totalInvestAmount.doubleValue();
+        }catch(Exception ex){
+            return 0.0;
+        }
     }
     @Override
-    public Double getBankTotalProfitAmount(Date startDate, Date endDate) {
-        Query q = em.createQuery("SELECT SUM(ip.wealthManagementSubscriber.accumulatedAdvisoryFee) FROM InvestmentPlan ip WHERE ip.status=:executedStatus" );
-        q.setParameter("executedStatus", InvestmentPlanStatus.EXECUTED);
-        return (Double) q.getSingleResult();
+    public Double getBankTotalProfitAmount(Date endDate) {
+        try{
+            Query q = em.createQuery("SELECT SUM(ip.wealthManagementSubscriber.accumulatedAdvisoryFee) FROM InvestmentPlan ip WHERE ip.status=:executedStatus AND ip.executionDate <= :endDate" );
+            q.setParameter("executedStatus", InvestmentPlanStatus.EXECUTED);
+            q.setParameter("endDate", endDate);
+            return (Double) q.getSingleResult();
+        }catch(Exception ex){
+            return 0.0;
+        }
     }
 }

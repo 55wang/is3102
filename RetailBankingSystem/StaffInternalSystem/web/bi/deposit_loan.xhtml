@@ -25,6 +25,13 @@
             <div class="container bi-deposit-loan">
                 <h:form id="mainForm">
                     <p:messages id="messagesStatus" redisplay="false" >
+                        <div class="ui-g-12 ui-md-12">
+                            <div class="bi-header-holder">
+                                <span class="header-content">
+                                    Deposit and Loan Service Dashboard
+                                </span>
+                            </div>
+                        </div>
                         <div class="ui-g-12 ui-md-5">
                             <div class="date-holder">
                                 <div class="ui-g-12 ui-md-4 ui-lg-8">
@@ -199,7 +206,7 @@
                                             Default Loan Account
                                         </span>
                                         <span class="amount-1">
-                                            <h:outputText value="325" />
+                                            <h:outputText value="#{viewDepositLoanManagedBean.bankTotalDefaultLoanAcct}" />
                                         </span>
                                     </div>
                                 </div>
@@ -209,7 +216,7 @@
                                             Non-Default Loan Account
                                         </span>
                                          <span class="amount-2">
-                                            <h:outputText value="900" />
+                                             <h:outputText value="#{viewDepositLoanManagedBean.bankTotalLoanAcct - viewDepositLoanManagedBean.bankTotalDefaultLoanAcct }" />
                                         </span>
                                     </div>
                                 </div>

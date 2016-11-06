@@ -18,32 +18,33 @@ import javax.ejb.Local;
 public interface BizIntelligenceSessionBeanLocal {
     
     //deposit and loan service
-    public Long getBankTotalDepositAcct(Date startDate, Date endDate);
+    public Long getBankTotalDepositAcct(Date endDate);
     public Long getBankTotalActiveDepositAcct(Date startDate, Date endDate);
     public Long getBankTotalNewDepositAcct(Date startDate, Date endDate);
-    public Double getBankTotalDepositAmount(Date startDate, Date endDate);
-    public Double getBankTotalDepositInterestAmount(Date startDate, Date endDate);
+    public Double getBankTotalDepositAmount(Date endDate);
+    public Double getBankTotalDepositInterestAmount(Date endDate);
     
     // bad loan
-    public Long getBankTotalLoanAcct(Date startDate, Date endDate);
+    public Long getBankTotalLoanAcct(Date endDate);
     public Long getBankTotalNewLoanAcct(Date startDate, Date endDate);
-    public Double getBankTotalLoanAmount(Date startDate, Date endDate);
-    public Double getBankLoanInterestEarned(Date startDate, Date endDate);
-    public Double getBankLoanInterestUnearned(Date startDate, Date endDate);
-    public Long getBankTotalDefaultLoanAcct(Date startDate, Date endDate);
+    public Double getBankTotalLoanAmount(Date endDate);
+    public Double getBankLoanInterestEarned(Date endDate);
+    public Double getBankLoanInterestUnearned(Date endDate);
+    public Long getBankTotalDefaultLoanAcct(Date endDate);
     
     //card service
-    public Long getBankTotalCardAcct(Date startDate, Date endDate);
+    public Long getBankTotalCardAcct(Date endDate);
     public Long getBankTotalActiveCardAcct(Date startDate, Date endDate);
     public Long getBankTotalNewCardAcct(Date startDate, Date endDate);
-    public Double getBankTotalCardCurrentAmount(Date startDate, Date endDate);
-    public Double getBankTotalCardOutstandingAmount(Date startDate, Date endDate);
+    public Double getBankTotalCardCurrentAmount(Date endDate);
+    public Double getBankTotalCardOutstandingAmount(Date endDate);
     
     //portfolio service
-    public Long getBankTotalExecutedPortfolio(Date startDate, Date endDate);
+    public Long getBankTotalWealthManagementSubsciber();
+    public Long getBankTotalExecutedPortfolio(Date endDate);
     public Long getBankNewExecutedPortfolio(Date startDate, Date endDate);
-    public Double getBankTotalInvestmentAmount(Date startDate, Date endDate);
-    public Double getBankTotalProfitAmount(Date startDate, Date endDate);
+    public Double getBankTotalInvestmentAmount(Date endDate);
+    public Double getBankTotalProfitAmount(Date endDate);
     
     // TODO:
     //    - 360/Merlion Deposit Account
