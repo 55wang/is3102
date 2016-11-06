@@ -1,0 +1,164 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Sep 7, 2016, 1:33:18 PM
+    Author     : leiyang
+*/
+
+/*css overwrite*/
+.ui-icon
+{
+    background-image: url("https://download.jqueryui.com/themeroller/images/ui-icons_ffffff_256x240.png") !important;
+}
+ 
+.ui-widget{
+    font-size: 15px;
+}
+ 
+.ui-menu{
+    background:none;
+    background-color: white;
+}
+.ui-menu li:hover{
+    background:none;
+}
+.ui-menu li a:hover{
+    background:none;
+    background-color: white;
+}
+.ui-menu .ui-widget-header{
+    display:none;
+}
+
+.ui-menu{
+    width:180px !important;
+    padding: 0 !important;
+    border-radius: 0 !important;
+}
+
+.ui-menu .ui-menu-list .ui-menuitem {
+    border-bottom: 1px solid #ccc !important;
+    border-radius: 0 !important;
+    margin: 0 !important;
+    padding: 8px 0 8px 0 !important;
+}
+
+.ui-menu .ui-menuitem-link{
+    padding: 5px 0 5px 15px !important;
+}
+
+.ui-panel .ui-panel-title {
+    margin: .1em 16px .2em 0;
+    background: #c00;
+    padding: 5px 8px 5px 8px;
+    color: white;
+    border-radius: 1px;
+    border: 1px black solid;
+}
+.ui-panel .ui-panel-titlebar {
+    padding: 6px 0px !important;
+    border-bottom: 1px black solid;
+    border-radius: 0;
+    font-size: 20px;
+}
+.ui-widget-header {
+    border: none;
+    background:none;
+    color: #333;
+    font-weight: 100;
+    text-shadow: none;
+}
+.ui-widget-content {
+    border:none;
+    background: #fff;
+    color: #4f4f4f;
+}
+.ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default {
+    border: 1px solid #a8a8a8;
+    background: none;
+    text-shadow: none;
+}
+.ui-state-active, .ui-widget-content .ui-state-active, .ui-widget-header .ui-state-active {
+    background: white;
+    border: 1px solid #c00;
+    text-shadow: none;
+}
+.ui-state-hover, .ui-widget-content .ui-state-hover{
+    border:1px solid rgba(244,0,0,0.5);
+    text-shadow: none;
+    font-weight: bold;
+    background: none;
+    box-shadow: 0 0 5px rgba(244,0,0,1);
+}
+
+.ui-inputfield.ui-state-focus, .ui-widget-content .ui-inputfield.ui-state-focus{
+    -webkit-box-shadow: none;
+    box-shadow: 0 0 10px rgba(244,0,0,1);
+    border: 1px solid rgba(244,0,0,0.5);
+}
+
+.ui-state-focus, .ui-widget-content .ui-state-focus{
+    border:1px solid rgba(244,0,0,0.5);
+    text-shadow: none;
+    background: none;
+    box-shadow: 0 0 8px rgba(244,0,0,1);
+    z-index: 999;
+}
+
+.ui-datepicker, .ui-carousel{
+    border: 1px solid #aaa;
+}
+
+.ui-state-highlight, .ui-widget-content .ui-state-highlight, .ui-widget-header .ui-state-highlight {
+    background: #c00 -webkit-gradient(linear,left top,left bottom,from(rgba(244,0,0,0.25)),to(rgba(0,0,0,0)));
+    color: #fff;
+    text-shadow: 1px 1px 1px #333;
+}
+
+.ui-growl-item-container{
+    background: #999;
+}
+
+.ui-scrollpanel .ui-scrollpanel-drag{
+    background: #333;
+}
+
+.ui-menu ul li a:hover{
+    box-shadow: none;
+    width: 120px;
+}
+
+.ui-button {
+    position: relative;
+    cursor: pointer;
+    text-align: center;
+    border-radius: 0;
+    background-color: #c00 !important;
+    color: white !important;
+    border: none !important;
+    border-bottom: 2px solid #7f0000 !important;
+}
+
+.ui-selectonebutton .ui-button{
+    background-color: white !important;
+    color: black !important;
+    border: none !important;
+}
+
+.ui-selectonebutton .ui-state-hover{
+    text-shadow: none !important;
+    box-shadow: none !important;
+    border: 1px solid #c00 !important;
+}
+
+.ui-selectonebutton .ui-state-active{
+    border: 1px solid #c00 !important;
+}
+
+.ui-selectonemenu .ui-selectonemenu-trigger{
+    background: #c00 !important;
+}
+/*end of css overwrite*/

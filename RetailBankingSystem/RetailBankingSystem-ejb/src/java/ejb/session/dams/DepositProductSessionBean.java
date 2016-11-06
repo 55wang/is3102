@@ -74,6 +74,7 @@ public class DepositProductSessionBean implements DepositProductSessionBeanLocal
         Query q = em.createQuery("SELECT dp FROM DepositProduct dp WHERE dp.isHistory = false");
         return q.getResultList();
     }
+    
     @Override
     public List<DepositAccountProduct> getAllPresentCurrentDepositProducts() {
         Query q = em.createQuery("SELECT dp FROM DepositProduct dp WHERE dp.isHistory = false AND dp.type =:type");

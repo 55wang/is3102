@@ -58,6 +58,8 @@ public class EntityBuilderBean {
     private EntityWealthBuilder entityWealthBuilder;
     @EJB
     private EntityFactBuilder entityFactBuilder;
+    @EJB
+    private EntityTellerCounterBuilder entityTellerCounterBuilder;
     
     // session beans
     @EJB
@@ -110,5 +112,7 @@ public class EntityBuilderBean {
 
         entityFactBuilder.initBankFact();
 
+        entityFactBuilder.initBankFact();
+        entityTellerCounterBuilder.init();
     }
 }

@@ -188,7 +188,7 @@ public class CustomerDepositSessionBean implements CustomerDepositSessionBeanLoc
             ba.addTransaction(t);
             ba.addBalance(depositAmount);
             em.merge(ba);
-            return "Deposit Success!";
+            return "SUCCESS";
         }
     }
 
@@ -218,9 +218,8 @@ public class CustomerDepositSessionBean implements CustomerDepositSessionBeanLoc
         if (ba == null) {
             return "Account Not Found";
         } else {
-            int res = ba.getBalance().compareTo(withdrawAmount);
-            if (res == -1) {
-                return "Withdraw Failed! Balance not enough!";
+            if (ba.getBalance().compareTo(withdrawAmount) < 0) {
+                return "Withdraw Failed! Balance not enough! Current balance is:" + ba.getBalance();
             } else {
                 TransactionRecord t = new TransactionRecord();
                 t.setActionType(EnumUtils.TransactionType.WITHDRAW);
@@ -231,7 +230,7 @@ public class CustomerDepositSessionBean implements CustomerDepositSessionBeanLoc
                 ba.addTransaction(t);
                 ba.removeBalance(withdrawAmount);
                 em.merge(ba);
-                return "Withdraw Success!";
+                return "SUCCESS";
             }
         }
     }
@@ -278,8 +277,7 @@ public class CustomerDepositSessionBean implements CustomerDepositSessionBeanLoc
         if (account == null || withdrawAmount == null) {
             return null;
         } else {
-            int res = account.getBalance().compareTo(withdrawAmount);
-            if (res == -1) {
+            if (account.getBalance().compareTo(withdrawAmount) < 0) {
                 return null;
             } else {
                 TransactionRecord t = new TransactionRecord();

@@ -22,8 +22,8 @@ public class ServiceCharge implements Serializable {
     private String name;
     
     // info
-    @Column(precision=12, scale=2)
-    private BigDecimal charges = new BigDecimal(0);
+    @Column(precision=19, scale=4)
+    private BigDecimal charges = BigDecimal.ZERO;
 
     /**
      * @return the name
