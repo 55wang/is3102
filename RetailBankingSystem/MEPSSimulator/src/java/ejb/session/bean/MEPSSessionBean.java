@@ -7,6 +7,7 @@ package ejb.session.bean;
 
 import entity.SettlementAccount;
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.Asynchronous;
 import javax.ejb.Stateless;
@@ -30,6 +31,7 @@ public class MEPSSessionBean {
 
     private final String SACH_INFORM_NET_SETTLEMENT = "https://localhost:8181/SACHSimulator/sach/sach_inform_settlement";
     private final String FAST_INFORM_NET_SETTLEMENT = "https://localhost:8181/FASTSimulator/fast/fast_inform_settlement";
+    private final String MBS_NET_SETTLEMENT_PATH = "https://localhost:8181/StaffInternalSystem/rest/net_settlement";
 
     @PersistenceContext(unitName = "MEPSSimulatorPU")
     private EntityManager em;
@@ -118,5 +120,29 @@ public class MEPSSessionBean {
         q.setParameter("bc3", ocbcCode);
 
         return q.getResultList();
+    }
+
+    public void sendMBSNetSettlement(String netSettlementAmount) {
+
+        // send to mbs
+        Form form = new Form(); //bank info
+        form.param("netSettlementAmount", netSettlementAmount);
+        form.param("date", (new Date()).toString());
+        form.param("agencyCode", "000");
+
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(MBS_NET_SETTLEMENT_PATH);
+
+        // This is the response
+        JsonObject jsonString = target.request(MediaType.APPLICATION_JSON).post(Entity.entity(form, MediaType.APPLICATION_FORM_URLENCODED), JsonObject.class);
+
+        if (jsonString != null && jsonString.getString("error").equals("SUCCESS")) {
+
+            System.out.println(".");
+            System.out.println("[MEPS]");
+            System.out.println("Received response from MBS..");
+        } else {
+            System.out.println("FAIL");
+        }
     }
 }

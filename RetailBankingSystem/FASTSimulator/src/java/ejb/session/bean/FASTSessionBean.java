@@ -7,6 +7,7 @@ package ejb.session.bean;
 
 import entity.FastSettlement;
 import entity.PaymentTransfer;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Asynchronous;
@@ -29,7 +30,6 @@ import javax.ws.rs.core.MediaType;
 @Stateless
 public class FASTSessionBean {
 
-    private final String MBS_NET_SETTLEMENT_PATH = "https://localhost:8181/StaffInternalSystem/rest/net_settlement";
     private final String MEPS_SETTLEMENT = "https://localhost:8181/MEPSSimulator/meps/meps_settlement";
 
     @PersistenceContext(unitName = "FASTSimulatorPU")
@@ -83,7 +83,7 @@ public class FASTSessionBean {
         JsonObject jsonString = target.request(MediaType.APPLICATION_JSON).post(Entity.entity(form, MediaType.APPLICATION_FORM_URLENCODED), JsonObject.class);
 
         if (jsonString.getString("message").equals("SUCCESS")) {
-            System.out.println("[SACH]");
+            System.out.println("");
 //            PaymentTransfer pt = findPaymentTransferByReferenceNumber(referenceNumber);
 //            pt.setSettled(Boolean.TRUE);
 //            merge(pt);
@@ -100,6 +100,7 @@ public class FASTSessionBean {
             System.out.println("Entity builder failed");
         }
         for (FastSettlement s : settlements) {
+            s.setAmount(BigDecimal.ZERO);
             if (tr.getFromBankCode().equals(s.getBankCode())) {
                 s.setAmount(tr.getAmount().negate());
             }
@@ -110,29 +111,6 @@ public class FASTSessionBean {
         return settlements;
     }
 
-    @Asynchronous
-    public void sendMBSNetSettlement(String netSettlementAmount, String fromBankCode, String toBankCode, String referenceNumber) {
 
-        // send to mbs
-        Form form = new Form(); //bank info
-        form.param("netSettlementAmount", netSettlementAmount);
-        form.param("fromBankCode", fromBankCode);
-        form.param("toBankCode", toBankCode);
-        form.param("agencyCode", "111");
-        form.param("referenceNumber", referenceNumber);
-
-        Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(MBS_NET_SETTLEMENT_PATH);
-
-        // This is the response
-        JsonObject jsonString = target.request(MediaType.APPLICATION_JSON).post(Entity.entity(form, MediaType.APPLICATION_FORM_URLENCODED), JsonObject.class);
-        System.out.println(jsonString);
-
-        if (jsonString != null && jsonString.getString("error").equals("SUCCESS")) {
-            System.out.println("Request received");
-        } else {
-            System.out.println("FAIL");
-        }
-    }
 
 }

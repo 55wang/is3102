@@ -23,7 +23,7 @@ import webservice.restful.mobile.ErrorDTO;
  */
 @Path("net_settlement")
 public class NetSettlementService {
-    
+
     @EJB
     private WebserviceSessionBeanLocal webserviceBean;
 
@@ -32,29 +32,30 @@ public class NetSettlementService {
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     public Response netSettlement(
             @FormParam("netSettlementAmount") String netSettlementAmount,
-            @FormParam("fromBankCode") String fromBankCode,
-            @FormParam("toBankCode") String toBankCode,
-            @FormParam("agencyCode") String agencyCode,
-            @FormParam("referenceNumber") String referenceNumber
+            @FormParam("date") String date,
+            @FormParam("agencyCode") String agencyCode
     ) {
-        System.out.println("Received netSettlementAmount:" + netSettlementAmount);
+        System.out.println(".");
+        System.out.println("[MBS]");
+        System.out.println("Received Net Settlement Broadcast from MEPS:");
+        System.out.println("Net Settlement Amount: " + netSettlementAmount);
+        System.out.println("Date: " + date);
         System.out.println("Received POST http net_settlement");
 
         // requesting to MEPS
         // only one case, when it is true
         // TODO: Failed cases
-        if (!referenceNumber.equals("")) {
-            webserviceBean.payFASTSettlement(netSettlementAmount, fromBankCode, toBankCode, agencyCode, referenceNumber);
-        } else {
-            webserviceBean.paySACHSettlement(netSettlementAmount, fromBankCode, toBankCode, agencyCode);
-        }
-        
-        System.out.println("Sending back net_settlement response");
+//        if (!referenceNumber.equals("")) {
+//            webserviceBean.payFASTSettlement(netSettlementAmount, fromBankCode, toBankCode, agencyCode, referenceNumber);
+//        } else {
+//            webserviceBean.paySACHSettlement(netSettlementAmount, fromBankCode, toBankCode, agencyCode);
+//        }
+        System.out.println(".");
+        System.out.println("Sending back net_settlement response...");
         ErrorDTO err = new ErrorDTO();
         err.setCode(0);
         err.setError("SUCCESS");
         return Response.ok(new JSONObject(err).toString(), MediaType.APPLICATION_JSON).build();
     }
-    
-    
+
 }
