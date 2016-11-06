@@ -131,7 +131,6 @@ public class TransferSessionBean implements TransferSessionBeanLocal {
                 } else {
                     queryString += " OR t.fromAccount.accountNumber = " + dps.get(i).getAccountNumber();
                 }
-                System.out.println("Getting transfer record from: " + dps.get(i).getAccountNumber());
             }
             queryString += ")";
             Query q = em.createQuery(queryString + " AND t.type =:inType  AND t.creationDate BETWEEN :startDate AND :endDate");
@@ -142,9 +141,7 @@ public class TransferSessionBean implements TransferSessionBeanLocal {
             q.setParameter("inType", inType);
             List<TransferRecord> records = q.getResultList();
             BigDecimal totalAmount = BigDecimal.ZERO;
-            System.out.println("Totoal records found:" + records.size());
             for (TransferRecord t : records) {
-                System.out.println("TransferRecord Found:" + t.getAmount());
                 totalAmount = totalAmount.add(t.getAmount());
             }
             return totalAmount;

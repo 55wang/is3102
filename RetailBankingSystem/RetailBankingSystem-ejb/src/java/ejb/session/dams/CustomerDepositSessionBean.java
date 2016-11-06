@@ -14,6 +14,7 @@ import entity.dams.account.DepositAccount;
 import entity.dams.account.MobileAccount;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -107,6 +108,8 @@ public class CustomerDepositSessionBean implements CustomerDepositSessionBeanLoc
     @Override
     public DepositAccount updateAccount(DepositAccount account) {
         try {
+            if(account.getStatus() == EnumUtils.StatusType.CLOSED)
+                account.setCloseDate(new Date());
             em.merge(account);
             return account;
         } catch (EntityExistsException e) {

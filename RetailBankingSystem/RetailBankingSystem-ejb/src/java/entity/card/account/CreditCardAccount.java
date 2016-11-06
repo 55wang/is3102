@@ -53,6 +53,8 @@ public class CreditCardAccount implements Serializable {
     private Long id;
     @Temporal(value = TemporalType.TIMESTAMP)
     private Date creationDate = new Date();
+    @Temporal(value = TemporalType.TIMESTAMP)
+    private Date closeDate = new Date();
 
     // info
     @Temporal(value = TemporalType.DATE)
@@ -60,12 +62,12 @@ public class CreditCardAccount implements Serializable {
     private CardAccountStatus CardStatus = CardAccountStatus.NEW;
     @Column(unique = true)
     private String creditCardNum;
-    private String cvv; 
+    private String cvv;
     private String nameOnCard;
 
     private Double transactionMonthlyLimit = 1000.0;
     private Double transactionDailyLimit = 500.0;
-    private Double creditLimit = 1000.0;
+    private Double creditLimit = 0.0;
 
     private Double annualInterestRate = 0.24; //24% annual Integererest rate
 
@@ -83,6 +85,8 @@ public class CreditCardAccount implements Serializable {
     private Integer numOf_30_59_LatePayment = 0; //count of 30-59 days overdue
     private Integer numOf_60_89_LatePayment = 0; //count of 60-89 days overdue
     private Integer numOf_90_LatePayment = 0; //count of >= 90 days overdue
+    @Temporal(value = TemporalType.DATE)
+    private Date lastLatePaymentDate;
 
     @Temporal(value = TemporalType.DATE)
     private Date cutOffDate; //set date when cut off
@@ -102,6 +106,10 @@ public class CreditCardAccount implements Serializable {
     private List<CardTransaction> cardTransactions = new ArrayList<>();
     @OneToOne(cascade = {CascadeType.MERGE})
     private CreditCardOrder creditCardOrder;
+
+    public Double getRemainingCreditLimit() {
+        return getCreditLimit() - getCurrentMonthAmount();
+    }
 
     public Double calculateMinPayDue() {
         Double minPay = 50.0;
@@ -135,7 +143,7 @@ public class CreditCardAccount implements Serializable {
             return 0;
         }
     }
-    
+
     public void payOutstandingAmount(BigDecimal amount) {
         outstandingAmount = outstandingAmount - amount.doubleValue();
     }
@@ -161,7 +169,7 @@ public class CreditCardAccount implements Serializable {
         this.currentMonthAmount += amount;
         return currentMonthAmount;
     }
-    
+
     public void addTransactions(CardTransaction ct) {
         cardTransactions.add(ct);
     }
@@ -441,6 +449,22 @@ public class CreditCardAccount implements Serializable {
 
     public void setMinPayDue(Double minPayDue) {
         this.minPayDue = minPayDue;
+    }
+
+    public Date getCloseDate() {
+        return closeDate;
+    }
+
+    public void setCloseDate(Date closeDate) {
+        this.closeDate = closeDate;
+    }
+
+    public Date getLastLatePaymentDate() {
+        return lastLatePaymentDate;
+    }
+
+    public void setLastLatePaymentDate(Date lastLatePaymentDate) {
+        this.lastLatePaymentDate = lastLatePaymentDate;
     }
 
 }

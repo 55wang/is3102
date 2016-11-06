@@ -42,17 +42,19 @@ public class TransferFastService {
             @FormParam("fromName") String fromName,
             @FormParam("myInitial") String myInitial
     ) {
-        System.out.println("Received referenceNumber:" + referenceNumber);
-        System.out.println("Received amount:" + amount);
-        System.out.println("Received toBankCode:" + toBankCode);
-        System.out.println("Received fromBankCode:" + fromBankCode);
-        System.out.println("Received toBranchCode:" + toBranchCode);
-        System.out.println("Received accountNumber:" + accountNumber);
-        System.out.println("Received toName:" + toName);
-        System.out.println("Received fromName:" + fromName);
-        System.out.println("Received myInitial:" + myInitial);
+        System.out.println(".");
+        System.out.println("[SACH]");
+        System.out.println("Received Payment Instruction from MBS:");
+        System.out.println(".      Transaction Number:" + referenceNumber);
+        System.out.println(".      Payment Amount: $" + amount);
+        System.out.println(".      To Bank Code:" + toBankCode);
+        System.out.println(".      To Branch Code:" + toBranchCode);
+        System.out.println(".      To Bank Account:" + accountNumber);
+        System.out.println(".      Receiver's Name:" + toName);
+        System.out.println(".      From Bank Code:" + fromBankCode);
+        System.out.println(".      Sender's Name:" + fromName);
+        System.out.println(".      Sender's Initial:" + myInitial);
         System.out.println("Received POST http fast_transfer_clearing");
-        System.out.println("FAST Verifies credit limits, adjusts accounts internally");
         // at this point, Clear and save all to db before give a end of day settlement amount
         PaymentTransfer pt = new PaymentTransfer();
         pt.setReferenceNumber(referenceNumber);
@@ -66,9 +68,24 @@ public class TransferFastService {
         pt.setMyInitial(myInitial);
         pt.setSettled(false);
         fastBean.persist(pt);
-        // save
-        // ask for settlement
-        fastBean.sendMBSNetSettlement(amount, fromBankCode, toBankCode, referenceNumber);
+
+        fastBean.sendMEPS(pt);
+
+        try {
+            Thread.sleep(500);                 //1000 milliseconds is one second.
+        } catch (InterruptedException ex) {
+            Thread.currentThread().interrupt();
+        }
+
+        System.out.println(".");
+        System.out.println("[SACH]:");
+        System.out.println("Sending to receiving bank the payment instructions...");
+        System.out.println("Received successful response from receiving bank");
+        //TODO send to new receiving bank if necesssary
+
+        System.out.println(".");
+        System.out.println("[SACH]:");
+        System.out.println("Sending to originating bank response...");
         System.out.println("Sending back fast_transfer_clearing response");
         MessageDTO message = new MessageDTO();
         message.setCode(0);

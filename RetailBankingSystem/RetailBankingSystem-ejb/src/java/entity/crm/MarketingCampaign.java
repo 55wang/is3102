@@ -5,6 +5,7 @@
  */
 package entity.crm;
 
+import entity.customer.Customer;
 import entity.staff.StaffAccount;
 import java.io.Serializable;
 import javax.persistence.Entity;
@@ -14,6 +15,8 @@ import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
+import server.utilities.EnumUtils;
 import server.utilities.EnumUtils.TypeMarketingCampaign;
 
 /**
@@ -35,9 +38,21 @@ public abstract class MarketingCampaign implements Serializable {
     private String landingPageUrl;
     private Integer numOfResponse;
     private Integer numOfTargetResponse;
-
+    
+    private EnumUtils.RFMLevel depositRecencyLevel;
+    private EnumUtils.RFMLevel depositFrequencyLevel;
+    private EnumUtils.RFMLevel depositMonetaryLevel;
+    private EnumUtils.RFMLevel depositOverallRFMLevel;
+    
+    private EnumUtils.RFMLevel cardRecencyLevel;
+    private EnumUtils.RFMLevel cardFrequencyLevel;
+    private EnumUtils.RFMLevel cardMonetaryLevel;
+    private EnumUtils.RFMLevel cardOverallRFMLevel;
+    
     @ManyToOne
     private StaffAccount staffAccount;
+    @OneToOne
+    private CustomerGroup customerGroup;
 
     public Long getId() {
         return id;
@@ -126,6 +141,78 @@ public abstract class MarketingCampaign implements Serializable {
 
     public void setStaffAccount(StaffAccount staffAccount) {
         this.staffAccount = staffAccount;
+    }
+
+    public EnumUtils.RFMLevel getDepositRecencyLevel() {
+        return depositRecencyLevel;
+    }
+
+    public void setDepositRecencyLevel(EnumUtils.RFMLevel depositRecencyLevel) {
+        this.depositRecencyLevel = depositRecencyLevel;
+    }
+
+    public EnumUtils.RFMLevel getDepositFrequencyLevel() {
+        return depositFrequencyLevel;
+    }
+
+    public void setDepositFrequencyLevel(EnumUtils.RFMLevel depositFrequencyLevel) {
+        this.depositFrequencyLevel = depositFrequencyLevel;
+    }
+
+    public EnumUtils.RFMLevel getDepositMonetaryLevel() {
+        return depositMonetaryLevel;
+    }
+
+    public void setDepositMonetaryLevel(EnumUtils.RFMLevel depositMonetaryLevel) {
+        this.depositMonetaryLevel = depositMonetaryLevel;
+    }
+
+    public EnumUtils.RFMLevel getDepositOverallRFMLevel() {
+        return depositOverallRFMLevel;
+    }
+
+    public void setDepositOverallRFMLevel(EnumUtils.RFMLevel depositOverallRFMLevel) {
+        this.depositOverallRFMLevel = depositOverallRFMLevel;
+    }
+
+    public EnumUtils.RFMLevel getCardRecencyLevel() {
+        return cardRecencyLevel;
+    }
+
+    public void setCardRecencyLevel(EnumUtils.RFMLevel cardRecencyLevel) {
+        this.cardRecencyLevel = cardRecencyLevel;
+    }
+
+    public EnumUtils.RFMLevel getCardFrequencyLevel() {
+        return cardFrequencyLevel;
+    }
+
+    public void setCardFrequencyLevel(EnumUtils.RFMLevel cardFrequencyLevel) {
+        this.cardFrequencyLevel = cardFrequencyLevel;
+    }
+
+    public EnumUtils.RFMLevel getCardMonetaryLevel() {
+        return cardMonetaryLevel;
+    }
+
+    public void setCardMonetaryLevel(EnumUtils.RFMLevel cardMonetaryLevel) {
+        this.cardMonetaryLevel = cardMonetaryLevel;
+    }
+
+    public EnumUtils.RFMLevel getCardOverallRFMLevel() {
+        return cardOverallRFMLevel;
+    }
+
+    public void setCardOverallRFMLevel(EnumUtils.RFMLevel cardOverallRFMLevel) {
+        this.cardOverallRFMLevel = cardOverallRFMLevel;
+    }
+
+    public CustomerGroup getCustomerGroup() {
+        return customerGroup;
+    }
+
+    public void setCustomerGroup(CustomerGroup customerGroup) {
+        this.customerGroup = customerGroup;
     }
 
 }

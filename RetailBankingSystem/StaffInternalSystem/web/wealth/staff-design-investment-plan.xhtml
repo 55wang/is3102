@@ -11,6 +11,7 @@
         <h:head>
             <title>Merlion Internal</title>
             <em:cssImport></em:cssImport>
+            <link type="text/css" rel="stylesheet" href="chat.css"/>
         </h:head>
         <h:body>
             <em:staffNavBar context="wealth"></em:staffNavBar>
@@ -53,11 +54,54 @@
                             
                             <p:separator></p:separator>
                             
-                         
+                            <p:commandButton id="feedbackBtn" value="Customer Feedback"></p:commandButton>
                             <p:commandButton value="Reset" update="@form" actionListener="#{deisgnInvestmentPlanManagedBean.reset}"/>
                             <p:commandButton value="Update" update="@form" actionListener="#{deisgnInvestmentPlanManagedBean.update}"/>
                             <p:commandButton value="Submit" update="@form" actionListener="#{deisgnInvestmentPlanManagedBean.submit}"/>
                          
+                            <p:overlayPanel id="feedbackPanel" for="feedbackBtn" hideEffect="fade" >
+                            <!--Add socket here maybe just one channel for self-->
+                            <input id="receiver-color" class="hidden" value="#{deisgnInvestmentPlanManagedBean.receiverColor}" />
+                            <input id="sender-color" class="hidden" value="#{deisgnInvestmentPlanManagedBean.senderColor}" />
+                                <div id="messages-container">
+                                    <div id="messages">
+
+                                        <c:forEach items="#{deisgnInvestmentPlanManagedBean.investplanCommunication.messages}" var="message">
+                                            <div class="message #{deisgnInvestmentPlanManagedBean.isReceiverWms(message) ? 'float-left' : 'float-right'}">
+                                                <div class="#{deisgnInvestmentPlanManagedBean.isReceiverWms(message) ? 'left-profile-pic' : 'right-profile-pic'}">
+                                                    <div class="user-icon" style="background-color:#{deisgnInvestmentPlanManagedBean.isReceiverWms(message) ? deisgnInvestmentPlanManagedBean.receiverColor : deisgnInvestmentPlanManagedBean.senderColor};">
+                                                        <div class="icon-text">
+                                                            #{deisgnInvestmentPlanManagedBean.getMessageLabel(message)}
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="panel panel-quote panel-quote-flush no-margin #{deisgnInvestmentPlanManagedBean.isReceiverWms(message) ? '' : 'panel-quote-right'}" >
+                                                    <div class="panel-body">
+                                                        <div class="message-text">
+                                                            <p>#{message.message}</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="time-container">
+                                                    <span>
+                                                        #{message.createDate}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </c:forEach>
+                                    </div>
+
+                                    <div id="outbox">
+
+                                        <p:inputTextarea id="newmessage" class="width-80" value="#{deisgnInvestmentPlanManagedBean.newMessage.message}"/>
+                                        <br></br>
+                                        <p:commandButton value="Send" update="@form" actionListener="#{deisgnInvestmentPlanManagedBean.sendMessage}" />
+
+                                    </div>
+                                </div>
+                            </p:overlayPanel>
                         </p:panel>
                     </h:panelGrid>
                         </p:panel>
@@ -101,7 +145,9 @@
                                 </p:column>
                             </p:dataTable>
             </div>
-
+            <!--To use jquery with javascript here-->
+            <h:outputScript library="primefaces" name="jquery/jquery.js" />
+            <script type="text/javascript" src="message.js"></script>
         </h:body> 
     </f:view>
 

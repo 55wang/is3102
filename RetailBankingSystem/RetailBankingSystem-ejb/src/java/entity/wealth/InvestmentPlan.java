@@ -59,6 +59,8 @@ public class InvestmentPlan implements Serializable {
     private WealthManagementSubscriber wealthManagementSubscriber;
     @OneToMany(cascade = CascadeType.MERGE)
     private List<FinancialInstrumentAndWeight> suggestedFinancialInstruments;
+    @OneToOne(cascade = CascadeType.MERGE, mappedBy = "ip")
+    private InvestplanCommunication ic;
 
     public Long getId() {
         return id;
@@ -215,5 +217,13 @@ public class InvestmentPlan implements Serializable {
 
     public void setSoldDate(Date soldDate) {
         this.soldDate = soldDate;
+    }
+
+    public InvestplanCommunication getIc() {
+        return ic;
+    }
+
+    public void setIc(InvestplanCommunication ic) {
+        this.ic = ic;
     }
 }

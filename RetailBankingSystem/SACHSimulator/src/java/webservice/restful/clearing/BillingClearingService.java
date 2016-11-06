@@ -7,7 +7,9 @@ package webservice.restful.clearing;
 
 import ejb.session.bean.SACHSessionBean;
 import entity.BillTransfer;
+import entity.SachSettlement;
 import java.math.BigDecimal;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
@@ -24,7 +26,7 @@ import org.primefaces.json.JSONObject;
  */
 @Path("sach_billing_clearing")
 public class BillingClearingService {
-    
+
     @EJB
     private SACHSessionBean sachBean;
 
@@ -35,18 +37,24 @@ public class BillingClearingService {
             @FormParam("referenceNumber") String referenceNumber,
             @FormParam("amount") String amount,
             @FormParam("partnerBankCode") String partnerBankCode,
+            @FormParam("partnerBankAccount") String partnerBankAccount,
             @FormParam("shortCode") String shortCode,
+            @FormParam("fromBankCode") String fromBankCode,
             @FormParam("organizationName") String organizationName,
             @FormParam("billReferenceNumber") String billReferenceNumber
     ) {
-        System.out.println("Received referenceNumber:" + referenceNumber);
-        System.out.println("Received amount:" + amount);
-        System.out.println("Received partnerBankCode:" + partnerBankCode);
-        System.out.println("Received shortCode:" + shortCode);
-        System.out.println("Received organizationName:" + organizationName);
-        System.out.println("Received billReferenceNumber:" + billReferenceNumber);
-        System.out.println("Received POST http SACH_billing_clearing");
-        System.out.println("SACH Verifies credit limits, adjusts accounts internally");
+        System.out.println(".");
+        System.out.println("[SACH]");
+        System.out.println("Received payment instruction from MBS:");
+        System.out.println(".      Received referenceNumber:" + referenceNumber);
+        System.out.println(".      Received amount:" + amount);
+        System.out.println(".      Received partnerBankCode:" + partnerBankCode);
+        System.out.println(".      Received partnerBankAccount:" + partnerBankAccount);
+        System.out.println(".      Received shortCode:" + shortCode);
+        System.out.println(".      Received fromBankCode:" + fromBankCode);
+        System.out.println(".      Received organizationName:" + organizationName);
+        System.out.println(".      Received billReferenceNumber:" + billReferenceNumber);
+        System.out.println(".      Received POST http SACH_billing_clearing");
         // at this point, Clear and save all to db before give a end of day settlement amount
         BillTransfer bt = new BillTransfer();
         Boolean hasPrevious = false;
@@ -56,15 +64,17 @@ public class BillingClearingService {
         } catch (Exception e) {
             System.out.println("No Previous BillTransfer found");
         }
-        
+
         if (bt == null) {
             bt = new BillTransfer();
         }
-        
+
         bt.setReferenceNumber(referenceNumber);
         bt.setAmount(new BigDecimal(amount));
         bt.setPartnerBankCode(partnerBankCode);
+        bt.setPartnerBankAccount(partnerBankAccount);
         bt.setShortCode(shortCode);
+        bt.setFromBankCode(fromBankCode);
         bt.setOrganizationName(organizationName);
         bt.setBillReferenceNumber(billReferenceNumber);
         bt.setSettled(false);
@@ -73,16 +83,26 @@ public class BillingClearingService {
         } else {
             sachBean.persist(bt);
         }
-        
 
-        System.out.println("At 4:30, SACH tells MBS how much to pay via MEPS");
-        System.out.println("By 5:30, MBS must pay");
-        System.out.println("MEPS Moves $$ into SACH Account");
-        System.out.println("By 5.45, SACH Makes payment to other bank");
-        System.out.println("MEPS debits SACH account, credit other bank account");
-        System.out.println("SACH advises other bank account of credit amount");
+        List<SachSettlement> bankAccounts = sachBean.getSettlements();
+
+        System.out.println("Current net settlement:");
+        for (SachSettlement s : bankAccounts) {
+            System.out.println(".       " + s.getBankCode() + " " + s.getName() + ": " + s.getAmount().setScale(4).toString());
+        }
+
+        System.out.println("Updating net settlement...");
+        sachBean.updateNetSettlementAddBill(bt);
+
+        List<SachSettlement> updatedbankAccounts = sachBean.getSettlements();
+
+        System.out.println("Updated net settlement:");
+        for (SachSettlement s : updatedbankAccounts) {
+            System.out.println(".       " + s.getBankCode() + " " + s.getName() + ": " + s.getAmount().setScale(4).toString());
+        }
+
         System.out.println("Sending back SACH_transfer_clearing response");
-        
+
         MessageDTO message = new MessageDTO();
         message.setCode(0);
         message.setMessage("SUCCESS");

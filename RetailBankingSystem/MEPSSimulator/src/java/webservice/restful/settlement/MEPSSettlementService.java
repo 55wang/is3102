@@ -8,6 +8,8 @@ package webservice.restful.settlement;
 import ejb.session.bean.MEPSSessionBean;
 import entity.SettlementAccount;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
@@ -24,31 +26,50 @@ import org.primefaces.json.JSONObject;
  */
 @Path("meps_settlement")
 public class MEPSSettlementService {
-    
+
     @EJB
     private MEPSSessionBean mepsBean;
-    
+
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     public Response netSettlement(
-            @FormParam("fromBankCode") String fromBankCode,
-            @FormParam("toBankCode") String toBankCode,
-            @FormParam("netSettlementAmount") String netSettlementAmount
+            @FormParam("mbsCode") String mbsCode,
+            @FormParam("mbsSettlementAmount") String mbsSettlementAmount,
+            @FormParam("mbsName") String mbsName,
+            @FormParam("citiCode") String citiCode,
+            @FormParam("citiSettlementAmount") String citiSettlementAmount,
+            @FormParam("citiName") String citiName,
+            @FormParam("ocbcCode") String ocbcCode,
+            @FormParam("ocbcSettlementAmount") String ocbcSettlementAmount,
+            @FormParam("ocbcName") String ocbcName
     ) {
-        System.out.println("Received fromBankCode:" + fromBankCode);
-        System.out.println("Received toBankCode:" + toBankCode);
-        System.out.println("Received netSettlementAmount:" + netSettlementAmount);
+        System.out.println(".");
+        System.out.println("[MEPS]:");
+        System.out.println("Received Net Settlement from SACH:");
+        System.out.println(".       " + mbsCode + " " + mbsName + ": " + mbsSettlementAmount);
+        System.out.println(".       " + citiCode + " " + citiName + ": " + citiSettlementAmount);
+        System.out.println(".       " + ocbcCode + " " + ocbcName + ": " + ocbcSettlementAmount);
         System.out.println("Received POST http meps_settlement");
 
-        SettlementAccount fromAccount = mepsBean.find(fromBankCode);
-        SettlementAccount toAccount = mepsBean.find(toBankCode);
-        
-        fromAccount.removeBalance(new BigDecimal(netSettlementAmount));
-        toAccount.addBalance(new BigDecimal(netSettlementAmount));
-        
-        mepsBean.merge(fromAccount);
-        mepsBean.merge(toAccount);
+        List<SettlementAccount> bankAccounts = mepsBean.retrieveThreeSettlementAccounts(mbsCode, citiCode, ocbcCode);
+        System.out.println("Current Bank Account Balance:");
+        for (SettlementAccount s : bankAccounts) {
+            System.out.println(".       " + s.getBankCode() + " " + s.getName() + ": " + s.getAmount().setScale(4).toString());
+        }
+
+        System.out.println(".");
+        System.out.println("Broadcasting net settlement ...");
+        mepsBean.sendMBSNetSettlement(mbsSettlementAmount);
+
+        System.out.println(".");
+        System.out.println("Updating Bank Accounts ...");
+        List<SettlementAccount> updatedankAccounts = mepsBean.updateSettlementAccountsBalance(mbsCode, mbsSettlementAmount, citiCode, citiSettlementAmount, ocbcCode, ocbcSettlementAmount);
+
+        System.out.println("Bank Accounts Balance Updated:");
+        for (SettlementAccount s : updatedankAccounts) {
+            System.out.println(".       " + s.getBankCode() + " " + s.getName() + ": " + s.getAmount().setScale(4).toString());
+        }
         
         System.out.println("Sending back meps_settlement response");
         MessageDTO err = new MessageDTO();
@@ -56,6 +77,5 @@ public class MEPSSettlementService {
         err.setMessage("SUCCESS");
         return Response.ok(new JSONObject(err).toString(), MediaType.APPLICATION_JSON).build();
     }
-    
-    
+
 }

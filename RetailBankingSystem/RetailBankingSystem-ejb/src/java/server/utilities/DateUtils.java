@@ -289,4 +289,35 @@ public class DateUtils {
         SimpleDateFormat dt1 = new SimpleDateFormat("dd/MM/yyyy");
         return dt1.format(date);
     }
+    
+    public static EnumUtils.Month getStringMonth(Integer month) {
+        if (month == 0) {
+            return EnumUtils.Month.JANUARY;
+        } else if (month == 1) {
+            return EnumUtils.Month.FEBRUARY;
+        } else if (month == 2) {
+            return EnumUtils.Month.MARCH;
+        } else if (month == 3) {
+            return EnumUtils.Month.APRIL;
+        } else if (month == 4) {
+            return EnumUtils.Month.MAY;
+        } else if (month == 5) {
+            return EnumUtils.Month.JUNE;
+        } else if (month == 6) {
+            return EnumUtils.Month.JULY;
+        } else if (month == 7) {
+            return EnumUtils.Month.AUGUST;
+        } else if (month == 8) {
+            return EnumUtils.Month.SEPTEMBER;
+        } else if (month == 9) {
+            return EnumUtils.Month.OCTOBER;
+        } else if (month == 10) {
+            return EnumUtils.Month.NOVEMBER;
+        } else if (month == 11) {
+            return EnumUtils.Month.DECEMBER;
+        } else {
+            return null;
+        }
+    }
+    
 }

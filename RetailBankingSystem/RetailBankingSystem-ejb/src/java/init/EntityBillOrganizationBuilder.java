@@ -23,9 +23,9 @@ public class EntityBillOrganizationBuilder {
 
     @EJB
     private BillSessionBeanLocal billBean;
-    
+
     public void initBillOrganization() {
-        
+
         String[] clubsName = {
             "Singapore Swimming Club",
             "Singapore Island Country Club",
@@ -34,15 +34,16 @@ public class EntityBillOrganizationBuilder {
             "Warren Golf & Country Club"
         };
         String[] clubsCode = {"C01", "C02", "C03", "C04", "C05"};
-        for (int i = 0; i < clubsName.length; i++ ){
+        for (int i = 0; i < clubsName.length; i++) {
             Organization o = new Organization();
             o.setType(EnumUtils.BillType.CLUBS);
             o.setName(clubsName[i]);
             o.setShortCode(clubsCode[i]);
             o.setPartnerBankCode("002");
+            o.setPartnerBankAccount("1000001" + i);
             billBean.createOrganization(o);
         }
-        
+
         String[] eduName = {
             "Raffles Institution",
             "Singapore American School Limited",
@@ -51,42 +52,45 @@ public class EntityBillOrganizationBuilder {
             "Nanyang Polytechnic"
         };
         String[] eduCode = {"E01", "E02", "E03", "E04", "E05"};
-        for (int i = 0; i < eduName.length; i++ ){
+        for (int i = 0; i < eduName.length; i++) {
             Organization o = new Organization();
             o.setType(EnumUtils.BillType.EDU);
             o.setName(eduName[i]);
             o.setShortCode(eduCode[i]);
             o.setPartnerBankCode("002");
+            o.setPartnerBankAccount("2000001" + i);
             billBean.createOrganization(o);
         }
-        
+
         String[] councilsName = {
             "Marine Parade Town Council"
         };
         String[] councilsCode = {"T01"};
-        for (int i = 0; i < councilsName.length; i++ ){
+        for (int i = 0; i < councilsName.length; i++) {
             Organization o = new Organization();
             o.setType(EnumUtils.BillType.COUNCILS);
             o.setName(councilsName[i]);
             o.setShortCode(councilsCode[i]);
             o.setPartnerBankCode("002");
+            o.setPartnerBankAccount("3000001" + i);
             billBean.createOrganization(o);
         }
-        
+
         String[] cardName = {
             "DBS/POSB Credit Card (Including DBS Amex Card)",
             "American Express Card"
         };
         String[] cardCode = {"CC01", "CC02"};
-        for (int i = 0; i < cardName.length; i++ ){
+        for (int i = 0; i < cardName.length; i++) {
             Organization o = new Organization();
             o.setType(EnumUtils.BillType.CARD);
             o.setName(cardName[i]);
             o.setShortCode(cardCode[i]);
             o.setPartnerBankCode("002");
+            o.setPartnerBankAccount("4000001" + i);
             billBean.createOrganization(o);
         }
-        
+
         String[] utilsName = {
             "M1 Limited",
             "MyRepublic Pte Ltd",
@@ -95,45 +99,48 @@ public class EntityBillOrganizationBuilder {
             "StarHub Ltd"
         };
         String[] utilsCode = {"U01", "U02", "U03", "U04", "U05"};
-        for (int i = 0; i < utilsName.length; i++ ){
+        for (int i = 0; i < utilsName.length; i++) {
             Organization o = new Organization();
             o.setType(EnumUtils.BillType.UTIL);
             o.setName(utilsName[i]);
             o.setShortCode(utilsCode[i]);
             o.setPartnerBankCode("002");
+            o.setPartnerBankAccount("5000001" + i);
             billBean.createOrganization(o);
         }
-        
+
         String[] gaName = {
             "Agri-Food & Veterinary Authority (AVA)",
             "IRAS - Income Tax",
             "IRAS - Property Tax"
         };
         String[] gaCode = {"G01", "G02", "G03"};
-        for (int i = 0; i < gaName.length; i++ ){
+        for (int i = 0; i < gaName.length; i++) {
             Organization o = new Organization();
             o.setType(EnumUtils.BillType.GOV_AGEN);
             o.setName(gaName[i]);
             o.setShortCode(gaCode[i]);
             o.setPartnerBankCode("002");
+            o.setPartnerBankAccount("6000001" + i);
             billBean.createOrganization(o);
         }
-        
+
         String[] ngaName = {
             "NETS - NETS Cheque",
             "NKF",
             "NTUC Membership"
         };
         String[] ngaCode = {"N01", "N02", "N03"};
-        for (int i = 0; i < ngaName.length; i++ ){
+        for (int i = 0; i < ngaName.length; i++) {
             Organization o = new Organization();
             o.setType(EnumUtils.BillType.NON_GOV_AGEN);
             o.setName(ngaName[i]);
             o.setShortCode(ngaCode[i]);
             o.setPartnerBankCode("002");
+            o.setPartnerBankAccount("7000001" + i);
             billBean.createOrganization(o);
         }
-        
+
         String[] insurName = {
             "AIA",
             "Aviva Health",
@@ -145,31 +152,33 @@ public class EntityBillOrganizationBuilder {
             "Prudential Assurance"
         };
         String[] insurCode = {"I01", "I02", "I03", "I04", "I05", "I06", "I07", "I08"};
-        for (int i = 0; i < insurName.length; i++ ){
+        for (int i = 0; i < insurName.length; i++) {
             Organization o = new Organization();
             o.setType(EnumUtils.BillType.INSUR);
             o.setName(insurName[i]);
             o.setShortCode(insurCode[i]);
             o.setPartnerBankCode("002");
+            o.setPartnerBankAccount("8000001" + i);
             billBean.createOrganization(o);
         }
-        
+
         String[] securName = {
             "DBS Vickers Securities (Singapore) Pte Ltd"
         };
         String[] securCode = {"S01"};
-        for (int i = 0; i < securName.length; i++ ){
+        for (int i = 0; i < securName.length; i++) {
             Organization o = new Organization();
             o.setType(EnumUtils.BillType.SECUR);
             o.setName(securName[i]);
             o.setShortCode(securCode[i]);
             o.setPartnerBankCode("002");
+            o.setPartnerBankAccount("9000001" + i);
             billBean.createOrganization(o);
         }
-        
+
         initBankEntities();
     }
-    
+
     private void initBankEntities() {
         String[] bankNames = {
             "AUSTRALIA & NEW ZEALAND BANKING GROUP",
@@ -193,9 +202,8 @@ public class EntityBillOrganizationBuilder {
             "UNITED OVERSEAS BANK LTD"
         };
         String[] bankCodes = {
-            "020","002","003","004","005","006","007","008","009","010","011","012","013","014","015","016","017","018","019",
-        };
-        
+            "020", "002", "003", "004", "005", "006", "007", "008", "009", "010", "011", "012", "013", "014", "015", "016", "017", "018", "019",};
+
         for (int i = 0; i < bankNames.length; i++) {
             BankEntity b = new BankEntity();
             b.setBankCode(bankCodes[i]);
@@ -203,7 +211,7 @@ public class EntityBillOrganizationBuilder {
             b.setName(bankNames[i]);
             b.setStatus(EnumUtils.StatusType.ACTIVE);
             billBean.createBankEntity(b);
-            
+
             Organization o = new Organization();
             o.setType(EnumUtils.BillType.CARD);
             o.setShortCode("O" + bankCodes[i]);

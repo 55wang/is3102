@@ -32,7 +32,6 @@ public class Payee implements Serializable {
     
     // international messaging code
     private String swiftCode;
-    private String clearCode;
     // local
     private String bankCode;
     private String branchCode;
@@ -181,20 +180,6 @@ public class Payee implements Serializable {
      */
     public void setMyInitial(String myInitial) {
         this.myInitial = myInitial;
-    }
-
-    /**
-     * @return the clearCode
-     */
-    public String getClearCode() {
-        return clearCode;
-    }
-
-    /**
-     * @param clearCode the clearCode to set
-     */
-    public void setClearCode(String clearCode) {
-        this.clearCode = clearCode;
     }
 
     /**

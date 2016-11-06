@@ -40,6 +40,8 @@ public abstract class DepositAccount implements Serializable {
     private String accountNumber;
     @Temporal(value = TemporalType.TIMESTAMP)
     private final Date creationDate = new Date();
+    @Temporal(value = TemporalType.TIMESTAMP)
+    private Date closeDate = new Date();
     
     // info
     private DepositAccountType type;
@@ -214,5 +216,13 @@ public abstract class DepositAccount implements Serializable {
      */
     public void setAccountNumber(String accountNumber) {
         this.accountNumber = accountNumber;
+    }
+
+    public Date getCloseDate() {
+        return closeDate;
+    }
+
+    public void setCloseDate(Date closeDate) {
+        this.closeDate = closeDate;
     }
 }

@@ -36,6 +36,7 @@ public class Organization implements Serializable {
     @Column(nullable = false, unique = true)
     private String shortCode;
     private String partnerBankCode;
+    private String partnerBankAccount;
     private StatusType status = StatusType.ACTIVE;
     private BillType type;// if bill type is credit card, then this is credit card bill
     // mapping
@@ -167,4 +168,14 @@ public class Organization implements Serializable {
     public void setPartnerBankCode(String partnerBankCode) {
         this.partnerBankCode = partnerBankCode;
     }
+
+    public String getPartnerBankAccount() {
+        return partnerBankAccount;
+    }
+
+    public void setPartnerBankAccount(String partnerBankAccount) {
+        this.partnerBankAccount = partnerBankAccount;
+    }
+    
+    
 }

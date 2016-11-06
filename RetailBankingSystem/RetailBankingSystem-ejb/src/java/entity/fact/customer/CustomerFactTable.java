@@ -52,7 +52,6 @@ public class CustomerFactTable implements Serializable {
     private Double totalCreditCardAmount;  //creditcardamount
     
     //transaction fact table of customer
-    
 
     public Long getId() {
         return id;

@@ -1,0 +1,144 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:em="http://xmlns.jcp.org/jsf/composite/emcomp"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <!--shift + ctrl + F, format-->
+    <f:view>
+        <h:head>
+            <title>Merlion Internal</title>
+            <em:cssImport></em:cssImport>
+            <script>
+                function customExtender () {
+                   this.cfg.grid = {
+                      background: '#FFF' //Set background to white
+                   };
+                 }
+            </script>
+        </h:head>
+        <h:body class="bi-deposit-loan-body">
+            <em:staffNavBar context="bi"></em:staffNavBar>
+            <em:staffSideBar top="bi" side="viewCard"></em:staffSideBar>
+                <div class="container bi-deposit-loan">
+                    <h:form id="mainForm">
+                        <p:messages id="messagesStatus" redisplay="false" >
+                            <div class="ui-g-12 ui-md-12">
+                                <div class="bi-header-holder">
+                                    <span class="header-content">
+                                        Credit Card Service Dashboard
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="ui-g-12 ui-md-5">
+                                <div class="date-holder">
+                                    <div class="ui-g-12 ui-md-4 ui-lg-8">
+                                        <div class="date-label">
+                                            <div>Start Date</div>
+                                        </div>
+                                        <div class="date-picker">
+                                            <p:calendar id="startDate" value="#{viewCardManagedBean.startDate}" pattern="yyyy-MM-dd" />
+                                        </div>
+                                    </div>
+                                    <div class="ui-g-12 ui-md-4 ui-lg-4">
+                                        <div class="date-icon">
+                                            <img src="../resources/img/calendar-icon.png"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ui-g-12 ui-md-5">
+                                <div class="date-holder">
+                                    <div class="ui-g-12 ui-md-4 ui-lg-8">
+                                        <div class="date-label">
+                                            <div>End Date</div>
+                                        </div>
+                                        <div class="date-picker">
+                                            <p:calendar id="endDate" value="#{viewCardManagedBean.endDate}" pattern="yyyy-MM-dd"/>
+                                        </div>
+                                    </div>
+                                    <div class="ui-g-12 ui-md-4 ui-lg-4">
+                                        <div class="date-icon">
+                                            <img src="../resources/img/calendar-icon.png"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ui-g-12 ui-md-2">
+                                <div class="button-holder">
+                                    <p:commandButton value="VIEW" action="#{viewCardManagedBean.viewDataTable()}" update="@form">
+                                    </p:commandButton>
+                                </div>
+                            </div>
+                            <div class="ui-g-12 ui-md-6">
+                                <div class="dashboard-hightlight-holder">
+                                    <span class="highlight-label">Total Current Amount</span>
+                                    <h:outputText value="#{viewCardManagedBean.bankTotalCardCurrentAmount}" class="highlight-amount" style="min-height: 100px">
+                                        <f:convertNumber maxFractionDigits="2" type="currency" currencySymbol="S$"/>
+                                    </h:outputText>
+                                    <img src="../resources/img/highlight-icon-2.svg.svg"/>
+                                </div>
+                            </div>
+                            <div class="ui-g-12 ui-md-6">
+                                <div class="dashboard-hightlight-holder">
+                                    <span class="highlight-label">Total Outstanding Amount</span>
+                                    <h:outputText value="#{viewCardManagedBean.bankTotalCardOutstandingAmount}" class="highlight-amount" style="min-height: 100px">
+                                        <f:convertNumber maxFractionDigits="2" type="currency" currencySymbol="S$"/>
+                                    </h:outputText>
+                                    <img src="../resources/img/highlight-icon-1.svg.svg"/>
+                                </div>
+                            </div>
+                            <div class="ui-g-12 ui-md-4">
+                                <div class="dashboard-info-holder color-1">
+                                    <div class="dashboard-info-label">
+                                        <span class="label">
+                                            Total Credit Card Account
+                                        </span>
+                                    </div>
+                                    <div class="dashboard-info-amount">
+                                        <h:outputText value="#{viewCardManagedBean.bankTotalCardAcct}" class="info-amount"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ui-g-12 ui-md-4">
+                                <div class="dashboard-info-holder color-3">
+                                    <div class="dashboard-info-label">
+                                        <span class="label">
+                                            Active Credit Card Account
+                                        </span>
+                                    </div>
+                                    <div class="dashboard-info-amount">
+                                        <h:outputText value="#{viewCardManagedBean.bankTotalActiveCardAcct}" class="info-amount"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ui-g-12 ui-md-4">
+                                <div class="dashboard-info-holder color-4">
+                                    <div class="dashboard-info-label">
+                                        <span class="label">
+                                            New Credit Card Account
+                                        </span>
+                                    </div>
+                                    <div class="dashboard-info-amount">
+                                        <h:outputText value="#{viewCardManagedBean.bankTotalNewCardAcct}" class="info-amount"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ui-g-12 ui-md-6">
+                                <div class="chart-holder">
+                                    <p:chart type="bar" model="#{viewCardManagedBean.cardTransactionBarModel}" />
+                                </div>
+                            </div>
+                            <div class="ui-g-12 ui-md-6">
+                                <div class="chart-holder">
+                                    <p:chart type="line" model="#{viewCardManagedBean.cardLatePaymentLineModel}" />
+                                </div>
+                            </div>
+                        </p:messages>
+                    </h:form>
+                </div>
+        </h:body> 
+    </f:view>
+</html>

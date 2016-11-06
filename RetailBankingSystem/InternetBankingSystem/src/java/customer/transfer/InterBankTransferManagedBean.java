@@ -40,7 +40,7 @@ import utils.SessionUtils;
 @Named(value = "interBankTransferManagedBean")
 @ViewScoped
 public class InterBankTransferManagedBean implements Serializable {
-
+    
     @EJB
     private LoginSessionBeanLocal loginBean;
     @EJB
@@ -66,12 +66,12 @@ public class InterBankTransferManagedBean implements Serializable {
     private List<BankEntity> bankList = new ArrayList<>();
     private List<CustomerDepositAccount> accounts = new ArrayList<>();
     private List<String> purposeOptions = CommonUtils.getEnumList(EnumUtils.TransferPurpose.class);
+    private String transferMethod;
     
     private String inputTokenString;
     
     public InterBankTransferManagedBean() {
     }
-    
     
     @PostConstruct
     public void init() {
@@ -136,8 +136,17 @@ public class InterBankTransferManagedBean implements Serializable {
         }
     }
     
+    public void transferIBG() {
+        transferMethod = "IBG";
+        transfer();
+    }
+    
+    public void transferFAST() {
+        transferMethod = "FAST";
+        transfer();
+    }
+    
     public String getBankName(String bankCode) {
-        System.out.println(bankCode);
         if (bankCode == null || bankCode.equals("")) {
             return "No bank selected";
         }
@@ -171,7 +180,7 @@ public class InterBankTransferManagedBean implements Serializable {
     
     private void transferClearing() {
         DepositAccount da = depositBean.getAccountFromId(fromAccountNo);
-        System.out.println("FAST transfer clearing");
+        System.out.println("----------------FAST transfer clearing----------------");
         TransferRecord tr = new TransferRecord();
         tr.setAccountNumber(payee.getAccountNumber());
         tr.setReferenceNumber(GenerateAccountAndCCNumber.generateReferenceNumber());
@@ -185,7 +194,11 @@ public class InterBankTransferManagedBean implements Serializable {
         tr.setFromAccount(da);
         tr.setType(EnumUtils.PayeeType.LOCAL);
         tr.setActionType(EnumUtils.TransactionType.TRANSFER);
-        webserviceBean.transferClearingFAST(tr);
+        if (transferMethod.equals("FAST")) {
+            webserviceBean.transferClearingFAST(tr);
+        } else {
+            webserviceBean.transferClearingSACH(tr);
+        }
         depositBean.transferFromAccount(da, amount);
         calculateTransferLimits();
     }
@@ -349,7 +362,7 @@ public class InterBankTransferManagedBean implements Serializable {
     public void setAccounts(List<CustomerDepositAccount> accounts) {
         this.accounts = accounts;
     }
-    
+
     /**
      * @return the inputTokenString
      */
@@ -363,4 +376,14 @@ public class InterBankTransferManagedBean implements Serializable {
     public void setInputTokenString(String inputTokenString) {
         this.inputTokenString = inputTokenString;
     }
+
+    public String getTransferMethod() {
+        return transferMethod;
+    }
+
+    public void setTransferMethod(String transferMethod) {
+        this.transferMethod = transferMethod;
+    }
+    
+    
 }
