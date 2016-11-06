@@ -377,6 +377,190 @@ and open the template in the editor.
     font-size:13px;
 }
 /*End of Investment Plan*/
+/*BI*/
+.bi-deposit-loan-body{
+    background: #efefef;
+}
+
+.bi-deposit-loan .date-holder{
+    padding: 10px;
+    min-height: 80px;
+    background: white;
+    -webkit-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
+}
+.bi-deposit-loan .date-holder .date-label{
+    font-size: 24px;
+}
+
+.bi-deposit-loan .date-holder .date-picker{
+    margin-top: 15px;
+}
+
+.bi-deposit-loan .date-holder .date-picker .ui-inputfield{
+    width:100%;
+}
+
+.bi-deposit-loan .date-holder .date-icon{
+    width:100%;
+    height:100%;
+}
+
+.bi-deposit-loan .date-holder .date-icon img{
+    padding-left: 25%;
+    width:63%;
+    height:63%;
+}
+
+.bi-deposit-loan .button-holder{
+    width:70%;
+    margin: 0 auto;
+    min-height: 80px;
+    background: white;
+    -webkit-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
+}
+
+.bi-deposit-loan .button-holder .ui-button{
+    width:100%;
+    height:100px;
+}
+
+.bi-deposit-loan .button-holder .ui-button-text-only .ui-button-text{
+    font-size: 30px;
+    padding:0;
+}
+
+.bi-deposit-loan .dashboard-hightlight-holder{
+    position: relative;
+    padding-top: 10px;
+    min-height: 100px;
+    background: white;
+    -webkit-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
+}
+
+.bi-deposit-loan .dashboard-hightlight-holder .highlight-label{
+    padding: 10px;
+    font-size: 13px;
+    color:#757575;
+}
+
+.bi-deposit-loan .dashboard-hightlight-holder .highlight-amount{
+    padding: 10px;
+    font-size: 26px;
+    display:block;
+}
+
+.bi-deposit-loan .dashboard-hightlight-holder img{
+    position:absolute;
+    bottom: 0;
+    width: 100%;
+    display: block;
+}
+
+.bi-deposit-loan .dashboard-info-holder{
+    min-height: 100px;
+    background: white;
+    -webkit-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
+}
+
+.bi-deposit-loan .dashboard-info-holder .dashboard-info-label{
+    height: 20px;
+    display: block;
+    padding: 5px;
+    text-align: center;
+}
+
+.bi-deposit-loan .dashboard-info-holder .dashboard-info-label .label{
+    font-size: 12px;
+    color: white;
+}
+
+.bi-deposit-loan .dashboard-info-holder .dashboard-info-amount{
+    position: relative;
+    width: 100%;
+    font-size: 40px;
+    height: 70px;
+    color: white;
+    display: block;
+    text-align: center;
+}
+
+.bi-deposit-loan .dashboard-info-holder .dashboard-info-amount .info-amount{
+    position: relative;
+    top: 15px;
+}
+
+.bi-deposit-loan .chart-holder{
+    padding: 30px;
+    min-height: 120px;
+    background: white;
+    -webkit-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
+}
+
+.bi-deposit-loan .chart-holder .pie-chart-content{
+    height: 60px;
+    display:block;
+}
+
+.bi-deposit-loan .chart-holder .pie-chart-content .amount-1{
+    color:#2196F3;
+    float:right;
+    font-size: 36px;
+}
+
+.bi-deposit-loan .chart-holder .pie-chart-content .amount-2{
+    color:#009688;
+    float:right;
+    font-size: 36px;
+}
+
+.bi-deposit-loan .color-1 .dashboard-info-label{
+    background: #c9392f;
+}
+
+.bi-deposit-loan .color-1 .dashboard-info-amount{
+    background: #F44336;
+}
+
+.bi-deposit-loan .color-2 .dashboard-info-label{
+    background: #492b80;
+}
+
+.bi-deposit-loan .color-2 .dashboard-info-amount{
+    background: #673AB7;
+}
+
+.bi-deposit-loan .color-3 .dashboard-info-label{
+    background: #1e649b;
+}
+
+.bi-deposit-loan .color-3 .dashboard-info-amount{
+    background: #2196F3;
+}
+
+.bi-deposit-loan .color-4 .dashboard-info-label{
+    background: #146961;
+}
+
+.bi-deposit-loan .color-4 .dashboard-info-amount{
+    background: #009688;
+}
+
+.bi-deposit-loan .color-5 .dashboard-info-label{
+    background: #c8ba43;
+}
+
+.bi-deposit-loan .color-5 .dashboard-info-amount{
+    background: #FFEB3B;
+}
+
+.bi-deposit-loan .color-6 .dashboard-info-label{
+    background: #ca3e12;
+}
+
+.bi-deposit-loan .color-6 .dashboard-info-amount{
+    background: #FF5722;
+}
+/*End of BI*/
 /* general */
 .container {
     padding-top: 100px;
