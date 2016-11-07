@@ -48,7 +48,6 @@ public class DemoPageManagedBean implements Serializable {
     private Long bankNumOfBadCardAccount;
     private Double bankTotalCardCurrentAmount;
     private Double bankTotalCardOutstandingAmount;
-    private Long bankNumOfBadCardAccount;
 
     private Long bankTotalWealthManagementSubscriber;
     private Long bankTotalExecutedPortfolio;
@@ -64,12 +63,7 @@ public class DemoPageManagedBean implements Serializable {
         Calendar cal = Calendar.getInstance();
         Date predefined = cal.getTime();
         BankFactTable bft;
-        try {
-            bft = bankFactTableSessionBean.getBankFactTableByCreationDate(predefined);
-            
-        } catch (Exception ex) {
-            bft = new BankFactTable();
-        }
+        bft = bankFactTableSessionBean.getBankFactTableByCreationDate(predefined);
         
         bft.setCreationDate(predefined);
         bft.setMonthOfDate(DateUtils.getStringMonth(cal.get(Calendar.MONTH))); //might need change

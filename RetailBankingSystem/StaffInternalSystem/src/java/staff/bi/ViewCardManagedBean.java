@@ -145,6 +145,8 @@ public class ViewCardManagedBean implements Serializable {
 
         List<BankFactTable> bfts = bankFactTableSessionBean.getListBankFactTables();
         for (BankFactTable bft : bfts) {
+            System.out.println("total card current: "+bft.getTotalCardCurrentAmount());
+            System.out.println("total card outstanding: "+bft.getTotalOutstandingAmount());
             series1.set(bft.getMonthOfDate().toString(), bft.getTotalCardCurrentAmount()+bft.getTotalOutstandingAmount());
         }
 
