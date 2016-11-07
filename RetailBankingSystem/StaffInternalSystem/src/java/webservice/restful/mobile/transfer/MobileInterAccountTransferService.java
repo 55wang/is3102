@@ -7,8 +7,10 @@ package webservice.restful.mobile.transfer;
 
 import ejb.session.bill.TransferSessionBeanLocal;
 import ejb.session.dams.CustomerDepositSessionBeanLocal;
+import ejb.session.dams.MobileAccountSessionBeanLocal;
 import entity.common.TransactionRecord;
 import entity.customer.MainAccount;
+import entity.dams.account.MobileAccount;
 import java.math.BigDecimal;
 import javax.ejb.EJB;
 import javax.ws.rs.Consumes;
@@ -38,6 +40,8 @@ public class MobileInterAccountTransferService {
     private TransferSessionBeanLocal transferBean;
     @EJB
     private CustomerDepositSessionBeanLocal depositBean;
+    @EJB
+    private MobileAccountSessionBeanLocal mobileBean;
 
     @POST
     @Produces(MediaType.APPLICATION_JSON)
@@ -51,9 +55,26 @@ public class MobileInterAccountTransferService {
         System.out.println("Received toAccountNumber:" + toAccountNumber);
         System.out.println("Received transferAmount:" + transferAmount);
         System.out.println("Received POST http with url: /mobile_inter_account_transfer");
-        
+
         String jsonString;
-        String result = transferBean.transferFromAccountToAccount(fromAccountNumber, toAccountNumber, new BigDecimal(transferAmount));
+        BigDecimal amount = new BigDecimal(transferAmount);
+
+        if (toAccountNumber.length() == 8) {
+            System.out.println("Received mobile account with number:" + toAccountNumber);
+            MobileAccount ma = mobileBean.getMobileAccountByMobileNumber(toAccountNumber);
+
+            BigDecimal resultAmount = amount.add(ma.getBalance());
+            if (resultAmount.compareTo(new BigDecimal(999)) > 0) {
+                ErrorDTO err = new ErrorDTO();
+                err.setCode(-2);
+                err.setError("Transfer Failed! Exceed Wallet Limit!");
+                jsonString = new JSONObject(err).toString();
+                return Response.ok(jsonString, MediaType.APPLICATION_JSON).build();
+            }
+        }
+
+        
+        String result = transferBean.transferFromAccountToAccount(fromAccountNumber, toAccountNumber, amount);
         if (result.equals("SUCCESS")) {
             JSONObject jo = new JSONObject();
             TransactionRecord tr = depositBean.latestTransactionFromAccountNumber(fromAccountNumber);

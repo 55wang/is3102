@@ -5,11 +5,13 @@
  */
 package ejb.session.dams;
 
+import entity.common.PayMeRequest;
 import entity.common.TransactionRecord;
 import entity.customer.MainAccount;
 import entity.dams.account.DepositAccount;
 import entity.dams.account.MobileAccount;
 import java.math.BigDecimal;
+import java.util.List;
 import javax.ejb.Local;
 
 /**
@@ -27,4 +29,15 @@ public interface MobileAccountSessionBeanLocal {
     public TransactionRecord latestTransactionFromMobileAccount(MobileAccount ma);
     public TransactionRecord latestTransactionFromMobileNumber(String mobileNumber);
     public String transferFromAccountToAccount(String from, String to, BigDecimal amount);
+    
+    public BigDecimal dailyTransferLimitLeft(String mobileNumber);
+    
+    // Pay me request
+    public PayMeRequest createPayMeRequest(PayMeRequest pmr);
+    public PayMeRequest updatePayMeRequest(PayMeRequest pmr);
+    public PayMeRequest getPayMeRequestById(Long id);
+    public List<PayMeRequest> getTotalUnpaidRequestReceivedByMobileNumber(String mobileNumber);
+    public List<PayMeRequest> getTotalUnpaidRequestSentByMobileNumber(String mobileNumber);
+    public List<PayMeRequest> getTotalRequestReceivedByMobileNumber(String mobileNumber);
+    public List<PayMeRequest> getTotalRequestSentByMobileNumber(String mobileNumber);
 }

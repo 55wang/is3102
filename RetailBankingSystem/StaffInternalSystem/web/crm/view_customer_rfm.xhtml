@@ -12,55 +12,60 @@
             <title>Merlion Internal</title>
             <em:cssImport></em:cssImport>
         </h:head>
-        <h:body>
+        <h:body style="background: #efefef;">
             <em:staffNavBar context="crm"></em:staffNavBar>
             <em:staffSideBar top="crm" side="viewCustomerRFM"></em:staffSideBar>
-            <div class="container">
+            <div class="container" >
                 <h:form id="mainForm">
-                    <p:panel header="Deposit RFM Dashboard">
-                        <p:dataTable value="#{customerRFMManagedBean.customers}" var="customer" >
+                    <div class="ui-g-12 ui-md-12 datatable-holder">
+                            <p:dataTable value="#{customerRFMManagedBean.customers}" var="customer" paginator="true" paginatorAlwaysVisible="true" class="datatable-main">
+                                <f:facet name="header">
+                                    Deposit RFM Dashboard
+                                </f:facet>
 
-                            <p:column headerText="Customer ID">
-                                <h:outputText value="#{customer.id}" />
-                            </p:column>
 
-                            <p:column headerText="Recency">
-                                <h:outputText value="#{customer.depositRecency}" />
-                            </p:column>
+                                <p:column headerText="Customer ID">
+                                    <h:outputText value="#{customer.id}" />
+                                </p:column>
 
-                            <p:column headerText="Frequency">
-                                <h:outputText value="#{customer.depositFrequency}" />
-                            </p:column>
+                                <p:column headerText="Recency" sortBy="#{customer.depositRecency}">
+                                    <h:outputText value="#{customer.depositRecency}" />
+                                </p:column>
 
-                            <p:column headerText="Monetary">
-                                <h:outputText value="#{customer.depositMonetary}" />
-                            </p:column>
+                                <p:column headerText="Frequency" sortBy="#{customer.depositFrequency}">
+                                    <h:outputText value="#{customer.depositFrequency}" />
+                                </p:column>
+
+                                <p:column headerText="Monetary" sortBy="#{customer.depositMonetary}">
+                                    <h:outputText value="#{customer.depositMonetary}" />
+                                </p:column>
+
+                            </p:dataTable>
+                    </div>
+                    <div class="ui-g-12 ui-md-12 datatable-holder">
+                        <p:dataTable value="#{customerRFMManagedBean.customers}" var="customer" paginator="true" paginatorAlwaysVisible="true" class="datatable-main">
+                            <f:facet name="header">
+                                Card RFM Dashboard
+                            </f:facet>
                             
-                        </p:dataTable>
-
-                    </p:panel>
-
-                    <p:panel header="Card RFM Dashboard">
-                        <p:dataTable value="#{customerRFMManagedBean.customers}" var="customer" >
-
                             <p:column headerText="Customer ID">
                                 <h:outputText value="#{customer.id}" />
                             </p:column>
 
-                            <p:column headerText="Recency">
+                            <p:column headerText="Recency" sortBy="#{customer.cardRecency}">
                                 <h:outputText value="#{customer.cardRecency}" />
                             </p:column>
 
-                            <p:column headerText="Frequency">
+                            <p:column headerText="Frequency" sortBy="#{customer.cardFrequency}">
                                 <h:outputText value="#{customer.cardFrequency}" />
                             </p:column>
 
-                            <p:column headerText="Monetary">
+                            <p:column headerText="Monetary" sortBy="#{customer.cardMonetary}">
                                 <h:outputText value="#{customer.cardMonetary}" />
                             </p:column>
                         </p:dataTable>
-                    </p:panel>
-                    <p:commandButton value="Refresh Customer RFM" action="#{customerRFMManagedBean.refreshCustomerRFM()}">
+                    </div>
+                    <p:commandButton value="Refresh Customer RFM" action="#{customerRFMManagedBean.refreshCustomerRFM()}" update="@form">
                     </p:commandButton>
                     <p:messages id="messagesStatus" redisplay="false" >
                     </p:messages>

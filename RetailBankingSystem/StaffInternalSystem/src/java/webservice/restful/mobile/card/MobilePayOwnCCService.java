@@ -11,6 +11,7 @@ import entity.card.account.CreditCardAccount;
 import entity.common.TransactionRecord;
 import entity.dams.account.MobileAccount;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import javax.ejb.EJB;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
@@ -52,7 +53,7 @@ public class MobilePayOwnCCService {
         if (result.equals("SUCCESS")) {
             TransactionRecord record = mobileBean.latestTransactionFromMobileNumber(mobileNumber);
             TransferDTO t = new TransferDTO();
-            t.setTransferAmount(record.getAmount().setScale(2).toString());
+            t.setTransferAmount(record.getAmount().setScale(2, RoundingMode.UP).toString());
             t.setReferenceNumber(record.getReferenceNumber());
             t.setTransferType(record.getActionType().toString());
             t.setTransferDate(DateUtils.readableDate(record.getCreationDate()));

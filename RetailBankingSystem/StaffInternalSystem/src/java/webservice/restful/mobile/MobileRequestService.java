@@ -6,10 +6,10 @@
 package webservice.restful.mobile;
 
 import ejb.session.dams.MobileAccountSessionBeanLocal;
+import entity.common.PayMeRequest;
 import entity.common.TransactionRecord;
 import entity.dams.account.MobileAccount;
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import javax.ejb.EJB;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
@@ -25,9 +25,9 @@ import server.utilities.DateUtils;
  *
  * @author leiyang
  */
-@Path("transfer")
-public class MobileTransferService {
-
+@Path("request")
+public class MobileRequestService {
+    
     @EJB
     private MobileAccountSessionBeanLocal mobileBean;
 
@@ -37,44 +37,38 @@ public class MobileTransferService {
     public Response mobileTransfer(
             @FormParam("fromAccount") String fromAccount,
             @FormParam("toAccount") String toAccount,
-            @FormParam("amount") String amount
+            @FormParam("amount") String amount,
+            @FormParam("remark") String remark
     ) {
         System.out.println("Received fromAccount:" + fromAccount);
         System.out.println("Received toAccount:" + toAccount);
         System.out.println("Received amount:" + amount);
-        System.out.println("Received POST http transfer");
+        System.out.println("Received remark:" + remark);
+        System.out.println("Received POST http request");
         String jsonString = null;
         MobileAccount fromMobileAccount = mobileBean.getMobileAccountByMobileNumber(fromAccount);
         MobileAccount toMobileAccount = mobileBean.getMobileAccountByMobileNumber(toAccount);
         // request to set up mobile password
         if (toMobileAccount != null) {
             BigDecimal actualAmount = new BigDecimal(amount);
-            if (fromMobileAccount.getBalance().compareTo(actualAmount) < 0) {
-                ErrorDTO err = new ErrorDTO();
-                err.setCode(-2);
-                err.setError("Not enough balance! Please top up!");
-                jsonString = new JSONObject(err).toString();
-                return Response.ok(jsonString, MediaType.APPLICATION_JSON).build();
-            } else {
-                String result = mobileBean.transferFromAccountToAccount(fromAccount, toAccount, actualAmount);
-                if (result.equals("SUCCESS")) {
-                    TransactionRecord record = mobileBean.latestTransactionFromMobileAccount(fromMobileAccount);
-                    TransferDTO t = new TransferDTO();
-                    t.setTransferAmount(record.getAmount().setScale(2, RoundingMode.UP).toString());
-                    t.setReferenceNumber(record.getReferenceNumber());
-                    t.setTransferType(record.getActionType().toString());
-                    t.setTransferDate(DateUtils.readableDate(record.getCreationDate()));
-                    t.setTransferAccount(toAccount);
-                    jsonString = new JSONObject(t).toString();
-                    return Response.ok(jsonString, MediaType.APPLICATION_JSON).build();
-                } else {
-                    ErrorDTO err = new ErrorDTO();
-                    err.setCode(-2);
-                    err.setError(result);
-                    jsonString = new JSONObject(err).toString();
-                    return Response.ok(jsonString, MediaType.APPLICATION_JSON).build();
-                }
-            }
+            // payme request
+            PayMeRequest pmr = new PayMeRequest();
+            pmr.setAmount(actualAmount);
+            pmr.setFromAccount(fromMobileAccount);
+            pmr.setToAccount(toMobileAccount);
+            pmr.setRemark(remark);
+            pmr = mobileBean.createPayMeRequest(pmr);
+            // update mobile account
+            fromMobileAccount.getSentRequest().add(pmr);
+            toMobileAccount.getReceivedRequest().add(pmr);
+            mobileBean.updateMobileAccount(fromMobileAccount);
+            mobileBean.updateMobileAccount(toMobileAccount);
+            
+            ErrorDTO err = new ErrorDTO();
+            err.setCode(0);
+            err.setError("Request Sent!");
+            jsonString = new JSONObject(err).toString();
+            return Response.ok(jsonString, MediaType.APPLICATION_JSON).build();
         } else {
             // error
             ErrorDTO err = new ErrorDTO();
@@ -84,4 +78,5 @@ public class MobileTransferService {
             return Response.ok(jsonString, MediaType.APPLICATION_JSON).build();
         }
     }
+    
 }
