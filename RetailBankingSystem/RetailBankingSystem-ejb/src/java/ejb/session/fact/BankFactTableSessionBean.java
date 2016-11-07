@@ -48,9 +48,13 @@ public class BankFactTableSessionBean implements BankFactTableSessionBeanLocal {
 
     @Override
     public BankFactTable getBankFactTableByCreationDate(Date date) {
-        Query q = em.createQuery("SELECT r FROM BankFactTable r WHERE r.creationDate =:inDate");
-        q.setParameter("inDate", date);
-        return (BankFactTable) q.getSingleResult();
+        try{
+            Query q = em.createQuery("SELECT r FROM BankFactTable r WHERE r.creationDate =:inDate");
+            q.setParameter("inDate", date);
+            return (BankFactTable) q.getSingleResult();
+        }catch(Exception ex){
+            return new BankFactTable();
+        }
     }
 
 }

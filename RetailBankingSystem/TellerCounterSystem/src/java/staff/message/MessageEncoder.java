@@ -9,10 +9,8 @@ package staff.message;
  *
  * @author leiyang
  */
-import entity.staff.Message;
 import org.primefaces.json.JSONObject;
 import org.primefaces.push.Encoder;
-import server.utilities.LoggingUtils;
  
 /**
  * A Simple {@link org.primefaces.push.Encoder} that decode a {@link MessageDTO} into a simple JSON object.

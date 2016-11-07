@@ -26,7 +26,8 @@
                         <li id="header-overview" class="#{cc.attrs.context == 'customer' ? 'active' : ''}" value="customer"><a href="../cms/staff_view_customer.xhtml">Customer</a></li>
                         <li id="header-overview" class="#{cc.attrs.context == 'account' ? 'active' : ''}" value="dams"><a href="../dams/check_account_balance.xhtml">DAMS</a></li>
                         <li id="header-overview" class="#{cc.attrs.context == 'card' ? 'active' : ''}" value="card"><a href="">Card</a></li>
-                        <li id="header-overview" class="#{cc.attrs.context == 'bill' ? 'active' : ''}" value="bill"><a href="../bill/manage_organization.xhtml">Bill</a></li>
+                        <li id="header-overview" class="#{cc.attrs.context == 'bill' ? 'active' : ''}" value="bill"><a href="../bill/pay_own_credit_card_bill.xhtml">Bill</a></li>
+                        <li id="header-overview" class="#{cc.attrs.context == 'transfer' ? 'active' : ''}" value="transfer"><a href="../transfer/intra_bank_transfer.xhtml">Transfer</a></li>
                     </c:if>
                 </ul>
                 <emcomp:headerMenu context="staff_home" userName="#{staffUserCounterManagedBean.getUserName()}"></emcomp:headerMenu>

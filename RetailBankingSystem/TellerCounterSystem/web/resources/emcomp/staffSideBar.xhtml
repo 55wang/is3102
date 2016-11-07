@@ -79,11 +79,30 @@
                     </c:if>
 
                     <c:if test="#{cc.attrs.top == 'bill'}">
-                        
+                        <li class="side-menu-item #{cc.attrs.side == 'payOwnCreditCard' ? 'active' : ''}">
+                            <h:link outcome="pay_own_credit_card_bill" value="Own Credit Card" />
+                        </li>
+                        <li class="side-menu-item #{cc.attrs.side == 'payOtherCreditCard' ? 'active' : ''}">
+                            <h:link outcome="pay_other_credit_card_bill" value="Other Credit Card" />
+                        </li>
+                        <li class="side-menu-item #{cc.attrs.side == 'payOtherBill' ? 'active' : ''}">
+                            <h:link outcome="pay_other_bill" value="Other Bill" />
+                        </li>
+                        <li class="side-menu-item #{cc.attrs.side == 'manageGIRO' ? 'active' : ''}">
+                            <h:link outcome="manage_giro" value="GIRO" />
+                        </li>
                     </c:if>
                     
                     <c:if test="#{cc.attrs.top == 'transfer'}">
-                        
+                        <li class="side-menu-item #{cc.attrs.side == 'intraBankTransfer' ? 'active' : ''}">
+                            <h:link outcome="intra_bank_transfer" value="Intra Bank " />
+                        </li>
+                        <li class="side-menu-item #{cc.attrs.side == 'interBankTransfer' ? 'active' : ''}">
+                            <h:link outcome="inter_bank_transfer" value="Other Bank " />
+                        </li>
+                        <li class="side-menu-item #{cc.attrs.side == 'overseasBankTransfer' ? 'active' : ''}">
+                            <h:link outcome="overseas_bank_transfer" value="Overseas Bank " />
+                        </li>
                     </c:if>
                 </ul>
             </div>

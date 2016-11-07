@@ -70,13 +70,13 @@ public class EntityFactBuilder {
         bft.setTotalCardAcct(99L);
         bft.setTotalActiveCardAcct(22L);
         bft.setNewCardAcct(11L);
-        bft.setTotalCardCurrentAmount(1200000.0);
-        bft.setTotalOutstandingAmount(3000000.0);
+        bft.setTotalCardCurrentAmount(120000.0);
+        bft.setTotalOutstandingAmount(300000.0);
         bft.setNumOfBadCardAccount(33L);
 
         bft.setTotalExecutedPortfolio(55L);
         bft.setNewExecutedPortfolio(9L);
-        bft.setTotalPortfolioAmount(3000000000.0);
+        bft.setTotalPortfolioAmount(300000.0);
         bft.setTotalPortfolioProfitAmount(33333.3);
         bankFactTableSessionBean.createBankFactTable(bft);
         
@@ -102,13 +102,13 @@ public class EntityFactBuilder {
         bft.setTotalCardAcct(109L);
         bft.setTotalActiveCardAcct(29L);
         bft.setNewCardAcct(15L);
-        bft.setTotalCardCurrentAmount(1300000.0);
-        bft.setTotalOutstandingAmount(4000000.0);
+        bft.setTotalCardCurrentAmount(130000.0);
+        bft.setTotalOutstandingAmount(400000.0);
         bft.setNumOfBadCardAccount(43L);
 
         bft.setTotalExecutedPortfolio(75L);
         bft.setNewExecutedPortfolio(15L);
-        bft.setTotalPortfolioAmount(3200000000.0);
+        bft.setTotalPortfolioAmount(320000.0);
         bft.setTotalPortfolioProfitAmount(43333.3);
         bankFactTableSessionBean.createBankFactTable(bft);
         

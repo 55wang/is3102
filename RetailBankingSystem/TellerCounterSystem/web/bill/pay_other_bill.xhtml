@@ -1,0 +1,82 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:em="http://xmlns.jcp.org/jsf/composite/emcomp"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <!--shift + ctrl + F, format-->
+    <f:view>
+        <h:head>
+            <title>MBS Counter</title>
+            <em:cssImport></em:cssImport>
+        </h:head>
+        <h:body>
+            <em:staffNavBar context="bill"></em:staffNavBar>
+            <em:staffSideBar top="bill" side="payOtherBill"></em:staffSideBar>
+            <div class="container">
+                <h:form id="mainForm">
+                    <p:panel header="Pay Other Bill">
+                        <p:messages id="messagesStatus" redisplay="false" >
+
+                            <h:panelGrid columns="2" cellpadding="5">
+                                <h:outputLabel value="Customer IC: " />
+                                <h:inputText value="#{payOtherBillCounterManagedBean.customerIC}"/>
+                                <p:commandButton value="Retrieve" action="#{payOtherBillCounterManagedBean.retrieveMainAccount}" update="@form"/>
+                            </h:panelGrid>
+
+                            <h:panelGrid columns="2" cellpadding="5">
+                                <c:if test="#{payOtherBillCounterManagedBean.mainAccount != null}">
+
+                                    <h:outputText value="Deposit Account to Pay from: " />
+                                    <p:selectOneMenu value="#{payOtherBillCounterManagedBean.fromAccountNumber}" rendered="true" required="true">
+                                        <f:selectItems value="#{payOtherBillCounterManagedBean.depositAccounts}" var="a" itemValue="#{a.accountNumber}" itemLabel="#{a.product.name} #{a.accountNumber} #{a.balance.setScale(2)}" />
+                                    </p:selectOneMenu>
+
+                                    <h:outputText value="Paying To: " />
+                                    <p:selectOneMenu value="#{payOtherBillCounterManagedBean.selectedBillId}" rendered="true" required="true">
+                                        <f:selectItem itemValue="New Receipiant" itemLabel="New Receipiant" />
+                                        <c:if test="#{payOtherBillCounterManagedBean.addedBillOrgs.size() > 0 }">
+                                            <f:selectItems value="#{payOtherBillCounterManagedBean.addedBillOrgs}" var="bo" itemValue="#{bo.id.toString()}" itemLabel="#{bo.organization.name} - #{bo.billReference}" />
+                                        </c:if>
+                                        <f:ajax render="@form" listener="#{payOtherBillCounterManagedBean.changeBillOrg}" />
+                                    </p:selectOneMenu>
+
+                                    <c:if test="#{payOtherBillCounterManagedBean.selectedBillId == 'New Receipiant'}">
+
+                                        <h:outputText value="Select Credit Card Billing Org: " />
+                                        <p:selectOneMenu id="type" value="#{payOtherBillCounterManagedBean.selectedBillOrgId}">
+                                            <f:selectItems value="#{payOtherBillCounterManagedBean.billOrgsOptions}" var="b" itemValue="#{b.id}" itemLabel="#{b.name}"/>
+                                        </p:selectOneMenu>
+                                        <h:outputText value="Reference Number: " />
+                                        <h:inputText value="#{payOtherBillCounterManagedBean.toReferenceNumber}" required="true" />
+
+                                    </c:if>
+                                    
+                                    <c:if test="#{payOtherBillCounterManagedBean.selectedBillId != 'New Receipiant'}">
+                                        
+                                        <p:outputLabel value="Credit Card Billing Org: " />
+                                        <p:outputLabel value="#{payOtherBillCounterManagedBean.billingOrg.organization.name}"/>
+                                        <p:outputLabel value="Reference Number: " />
+                                        <p:outputLabel value="#{payOtherBillCounterManagedBean.billingOrg.billReference}"/>
+                                        
+                                    </c:if>
+
+                                    <p:outputLabel for="amount" value="Amount: " />
+                                    <p:inputText id="amount" value="#{payOtherBillCounterManagedBean.amount}"/>
+
+                                    <p:commandButton value="Pay" icon="ui-icon-plus" update="@form" actionListener="#{payOtherBillCounterManagedBean.transfer()}" />
+                                </c:if>
+
+                            </h:panelGrid>
+                        </p:messages>
+                    </p:panel>
+                </h:form>
+            </div>
+        </h:body>
+    </f:view>
+
+
+</html>
+
