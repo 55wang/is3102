@@ -232,7 +232,6 @@ public class CardAcctSessionBean implements CardAcctSessionBeanLocal {
 
     @Override
     public CreditCardAccount getCreditCardAccountByCardNumber(String cardNumber) {
-        System.out.println("EJB getCardByCardNumber " + cardNumber);
         Query q = em.createQuery("SELECT cca FROM CreditCardAccount cca WHERE cca.creditCardNum = :cardNumber");
         q.setParameter("cardNumber", cardNumber);
         return (CreditCardAccount) q.getSingleResult();

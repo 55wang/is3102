@@ -12,6 +12,7 @@ import ejb.session.common.OTPSessionBeanLocal;
 import ejb.session.dams.CustomerDepositSessionBeanLocal;
 import ejb.session.webservice.WebserviceSessionBeanLocal;
 import entity.bill.BillingOrg;
+import entity.bill.Organization;
 import entity.common.BillTransferRecord;
 import entity.customer.MainAccount;
 import entity.dams.account.CustomerDepositAccount;
@@ -56,8 +57,12 @@ public class PayBillManagedBean implements Serializable {
     private String ccBillOrgId;
     private BigDecimal amount;
     private MainAccount ma;
+    private BillingOrg bo = new BillingOrg();
+    private String newBillOrgId;
+    private String referenceNumber;
     private List<BillingOrg> ccBillList = new ArrayList<>();
     private List<CustomerDepositAccount> accounts = new ArrayList<>();
+    private List<Organization> billOrgsOptions;
 
     private String inputTokenString;
 
@@ -69,6 +74,16 @@ public class PayBillManagedBean implements Serializable {
         setMa(loginBean.getMainAccountByUserID(SessionUtils.getUserName()));
         accounts = depositBean.getAllNonFixedCustomerAccounts(ma.getId());
         ccBillList = billBean.getBillingOrgMainAccountId(ma.getId());
+        setBillOrgsOptions(billBean.getActiveListOrganization());
+        ccBillOrgId = "New Bill";
+    }
+
+    public void changeBO() {
+        if (ccBillOrgId.equals("New Bill")) {
+            setBo(new BillingOrg());
+        } else {
+            setBo(billBean.getBillingOrganizationById(Long.parseLong(ccBillOrgId)));
+        }
     }
 
     public void transfer() {
@@ -78,19 +93,36 @@ public class PayBillManagedBean implements Serializable {
         }
 
         DepositAccount fromAccount = depositBean.getAccountFromId(fromAccountNo);
+
         if (fromAccount != null && fromAccount.getBalance().compareTo(amount) < 0) {
             JSUtils.callJSMethod("PF('myWizard').back()");
             MessageUtils.displayError(ConstantUtils.NOT_ENOUGH_BALANCE);
             return;
         }
-        transferClearing();
-        JSUtils.callJSMethod("PF('myWizard').next()");
-        MessageUtils.displayInfo(ConstantUtils.TRANSFER_SUCCESS);
+
+        if (ccBillOrgId.equals("New Bill")) {
+            Organization o = billBean.getOrganizationById(Long.parseLong(newBillOrgId));
+            bo.setOrganization(o);
+            bo.setBillReference(referenceNumber);
+            bo.setMainAccount(ma);
+            BillingOrg result = billBean.createBillingOrganization(bo);
+            if (result != null) {
+                transferClearing();
+                JSUtils.callJSMethod("PF('myWizard').next()");
+                MessageUtils.displayInfo(ConstantUtils.TRANSFER_SUCCESS);
+            } else {
+                JSUtils.callJSMethod("PF('myWizard').back()");
+                MessageUtils.displayError(ConstantUtils.TRANSFER_FAILED);
+            }
+        } else {
+            transferClearing();
+            JSUtils.callJSMethod("PF('myWizard').next()");
+            MessageUtils.displayInfo(ConstantUtils.TRANSFER_SUCCESS);
+        }
     }
 
     private void transferClearing() {
         DepositAccount da = depositBean.getAccountFromId(fromAccountNo);
-        BillingOrg bo = billBean.getBillingOrganizationById(Long.parseLong(ccBillOrgId));
 
         System.out.println("----------------Bill Payment clearing----------------");
         BillTransferRecord btr = new BillTransferRecord();
@@ -109,9 +141,14 @@ public class PayBillManagedBean implements Serializable {
 
     }
 
-    public String getBillName(String id) {
-        BillingOrg bo = billBean.getBillingOrganizationById(Long.parseLong(ccBillOrgId));
-        return bo.getOrganization().getName() + " - " + bo.getBillReference();
+    public String getBillName() {
+        if (ccBillOrgId.equals("New Bill")) {
+            Organization o = billBean.getOrganizationById(Long.parseLong(newBillOrgId));
+            return o.getName() + " - " + referenceNumber;
+        } else {
+            return bo.getOrganization().getName() + " - " + referenceNumber;
+        }
+
     }
 
     public void sendOpt() {
@@ -234,5 +271,61 @@ public class PayBillManagedBean implements Serializable {
      */
     public void setInputTokenString(String inputTokenString) {
         this.inputTokenString = inputTokenString;
+    }
+
+    /**
+     * @return the bo
+     */
+    public BillingOrg getBo() {
+        return bo;
+    }
+
+    /**
+     * @param bo the bo to set
+     */
+    public void setBo(BillingOrg bo) {
+        this.bo = bo;
+    }
+
+    /**
+     * @return the billOrgsOptions
+     */
+    public List<Organization> getBillOrgsOptions() {
+        return billOrgsOptions;
+    }
+
+    /**
+     * @param billOrgsOptions the billOrgsOptions to set
+     */
+    public void setBillOrgsOptions(List<Organization> billOrgsOptions) {
+        this.billOrgsOptions = billOrgsOptions;
+    }
+
+    /**
+     * @return the newBillOrgId
+     */
+    public String getNewBillOrgId() {
+        return newBillOrgId;
+    }
+
+    /**
+     * @param newBillOrgId the newBillOrgId to set
+     */
+    public void setNewBillOrgId(String newBillOrgId) {
+        this.newBillOrgId = newBillOrgId;
+    }
+
+    /**
+     * @return the referenceNumber
+     */
+    public String getReferenceNumber() {
+        return referenceNumber;
+    }
+
+    /**
+     * @param referenceNumber the referenceNumber to set
+     */
+    public void setReferenceNumber(String referenceNumber) {
+        this.referenceNumber = referenceNumber;
     }
 }

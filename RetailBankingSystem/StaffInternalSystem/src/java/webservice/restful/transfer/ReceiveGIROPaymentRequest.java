@@ -28,11 +28,10 @@ import webservice.restful.mobile.ErrorDTO;
  *
  * @author leiyang
  */
-
 // REMARK: Change receiving url @Path("This is receiving url, need to change for new service")
 @Path("mbs_receive_giro_request")
 public class ReceiveGIROPaymentRequest {
-    
+
     // REMARK: Import your ejb sessions bean
     @EJB
     private BillSessionBeanLocal billBean;
@@ -40,7 +39,7 @@ public class ReceiveGIROPaymentRequest {
     private WebserviceSessionBeanLocal serviceBean;
     @EJB
     private CustomerDepositSessionBeanLocal depositBean;
-    
+
     // REMARK: receiving in POST method
     // REMARK: DO NOT CHANGE, just copy
     @POST
@@ -55,11 +54,14 @@ public class ReceiveGIROPaymentRequest {
     ) {
         // REMARK: All the print lines, 
         // TODO: Need to improve the readablity
-        System.out.println("Received referenceNumber:" + referenceNumber);
-        System.out.println("Received amount:" + amount);
-        System.out.println("Received billReferenceNumber:" + billReferenceNumber);
-        System.out.println("Received shortCode:" + shortCode);
-        System.out.println("Received POST http mbs_receive_giro_request");
+        System.out.println(".");
+        System.out.println("[MBS]");
+        System.out.println(".      Received GIRO request from SACH...");
+        System.out.println(".      Received Reference Number:" + referenceNumber);
+        System.out.println(".      Received Amount:" + amount);
+        System.out.println(".      Received Bill Reference Number:" + billReferenceNumber);
+        System.out.println(".      Received Short Code:" + shortCode);
+        System.out.println(".      Received POST http mbs_receive_giro_request");
 
         // REMARK: EJB do the business logics
         GiroArrangement ga = billBean.getGiroArrByReferenceNumberAndOrgCode(billReferenceNumber, shortCode);
@@ -87,16 +89,16 @@ public class ReceiveGIROPaymentRequest {
             btr.setPartnerBankCode(ga.getOrganization().getPartnerBankCode());
             btr.setAmount(new BigDecimal(amount));
             btr.setReferenceNumber(referenceNumber);
-            
+
             serviceBean.billingClearingSACH(btr);
             DepositAccount da = ga.getDepositAccount();
             depositBean.payBillFromAccount(da, new BigDecimal(amount));
-            
+
             ErrorDTO err = new ErrorDTO();
             err.setCode(0);
             err.setError("SUCCESS");
             return Response.ok(new JSONObject(err).toString(), MediaType.APPLICATION_JSON).build();
         }
     }
-    
+
 }
