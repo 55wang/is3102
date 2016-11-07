@@ -179,6 +179,8 @@ public class ViewCustomerOverviewManagedBean implements Serializable {
 
         model.addSeries(series1);
         model.addSeries(series2);
+        model.setSeriesColors(ColorUtils.getFlatUIColors(0) + "," + ColorUtils.getFlatUIColors(10));
+        model.setExtender("customExtender");
 
         return model;
     }
