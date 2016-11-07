@@ -112,7 +112,6 @@ public class EntityBuilderBean {
 
         entityFactBuilder.initBankFact();
 
-        entityFactBuilder.initBankFact();
         entityTellerCounterBuilder.init();
     }
 }
