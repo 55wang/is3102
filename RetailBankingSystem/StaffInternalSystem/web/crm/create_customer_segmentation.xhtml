@@ -17,8 +17,51 @@
             <em:staffSideBar top="crm" side="createCustomerSegmentation"></em:staffSideBar>
             <div class="container">
                 <h:form id="mainForm">
-                    
-                    
+                    <p:panel header="Create Customer Group">
+                        <p:dataTable value="#{createCustomerSegmentationManagedBean.customerGroups}" var="cg" >
+
+                            <p:column headerText="Customer Group ID">
+                                <h:outputText value="#{cg.id}" />
+                            </p:column>
+                            <p:column headerText="Group Name">
+                                <h:outputText value="#{cg.groupName}"/>
+                            </p:column>
+                            <p:column headerText="HashTag">
+                                <h:outputText value="#{cg.hashTag}" />
+                            </p:column>
+                            <p:column headerText="Group Size">
+                                <h:outputText value="#{cg.customer.size()}" />
+                            </p:column>
+                        </p:dataTable>
+                    </p:panel>
+
+                    <h:panelGrid columns="2" cellpadding="10">
+                        <p:outputLabel for="GroupName" value="Group Name: " />
+                        <p:inputText id="GroupName" value="#{createCustomerSegmentationManagedBean.customerGroup.groupName}" />
+                        <p:outputLabel for="DepositRecency" value="Deposit Recency: " />
+                        <p:inputText id="DepositRecency" value="#{createCustomerSegmentationManagedBean.customerGroup.depositRecency}" />
+                        <p:outputLabel for="DepositFrequency" value="Deposit Frequency: " />
+                        <p:inputText id="DepositFrequency" value="#{createCustomerSegmentationManagedBean.customerGroup.depositFrequency}" />
+                        <p:outputLabel for="DepositMonetary" value="Deposit Monetary: " />
+                        <p:inputText id="DepositMonetary" value="#{createCustomerSegmentationManagedBean.customerGroup.depositMonetary}" />
+
+                        <p:outputLabel for="cardRecency" value="Card Recency: " />
+                        <p:inputText id="cardRecency" value="#{createCustomerSegmentationManagedBean.customerGroup.cardRecency}" />
+                        <p:outputLabel for="cardFrequency" value="Card Frequency: " />
+                        <p:inputText id="cardFrequency" value="#{createCustomerSegmentationManagedBean.customerGroup.cardFrequency}" />
+                        <p:outputLabel for="cardMonetary" value="Card Monetary: " />
+                        <p:inputText id="cardMonetary" value="#{createCustomerSegmentationManagedBean.customerGroup.cardMonetary}" />
+
+                        <p:outputLabel for="actualIncome" value="Income: " />
+                        <p:inputText id="actualIncome" value="#{createCustomerSegmentationManagedBean.customerGroup.actualIncome}" />
+                        <p:outputLabel for="hashTag" value="Hash Tag: " />
+                        <p:inputText id="hashTag" value="#{createCustomerSegmentationManagedBean.customerGroup.hashTag}" />
+                        <p:commandButton value="Set HashTag" action="#{createCustomerSegmentationManagedBean.setHashTag()}" update="@form">
+                        </p:commandButton>
+                        <p:commandButton value="Create Customer Group" action="#{createCustomerSegmentationManagedBean.createGroup()}" update="@form">
+                        </p:commandButton>
+                    </h:panelGrid>
+
                     <p:messages id="messagesStatus" redisplay="false" >
                     </p:messages>
                 </h:form>
