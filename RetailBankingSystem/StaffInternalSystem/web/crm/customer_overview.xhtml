@@ -1,0 +1,192 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:em="http://xmlns.jcp.org/jsf/composite/emcomp"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <!--shift + ctrl + F, format-->
+    <f:view>
+        <h:head>
+            <title>Merlion Internal</title>
+            <em:cssImport></em:cssImport>
+        </h:head>
+        <h:body class="crm-body">
+            <em:staffNavBar context="crm"></em:staffNavBar>
+            <em:staffSideBar top="crm" side="viewCustomerOverview"></em:staffSideBar>
+            <script>
+                function customExtender () {
+                   this.cfg.grid = {
+                      background: '#FFF' //Set background to white
+                   };
+                 }
+            </script>
+            <div class="container crm-container">
+                <h:form id="mainForm">
+                    <p:messages id="messagesStatus" redisplay="false" >
+                        <div class="ui-g-12 ui-md-12">
+                            <div class="crm-header-holder">
+                                <span class="header-content">
+                                    Customer Overview
+                                </span>
+                            </div>
+                        </div>
+                        <div class="ui-g-12 ui-md-5">
+                            <div class="date-holder">
+                                <div class="ui-g-12 ui-md-4 ui-lg-8">
+                                    <div class="date-label">
+                                        <div>Start Date</div>
+                                    </div>
+                                    <div class="date-picker">
+                                        <p:calendar id="startDate" value="#{viewCustomerOverviewManagedBean.startDate}" pattern="yyyy-MM-dd" />
+                                    </div>
+                                </div>
+                                <div class="ui-g-12 ui-md-4 ui-lg-4">
+                                    <div class="date-icon">
+                                        <img src="../resources/img/calendar-icon.png"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui-g-12 ui-md-5">
+                            <div class="date-holder">
+                                <div class="ui-g-12 ui-md-4 ui-lg-8">
+                                    <div class="date-label">
+                                        <div>End Date</div>
+                                    </div>
+                                    <div class="date-picker">
+                                        <p:calendar id="endDate" value="#{viewCustomerOverviewManagedBean.endDate}" pattern="yyyy-MM-dd"/>
+                                    </div>
+                                </div>
+                                <div class="ui-g-12 ui-md-4 ui-lg-4">
+                                    <div class="date-icon">
+                                        <img src="../resources/img/calendar-icon.png"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui-g-12 ui-md-2">
+                            <div class="button-holder">
+                                <p:commandButton value="VIEW" action="#{viewCustomerOverviewManagedBean.viewDataTable()}" update="@form">
+                                </p:commandButton>
+                            </div>
+                        </div>
+                        <div class="ui-g-12 ui-md-3">
+                            <div class="crm-info-holder color-1">
+                                <div class="ui-g-12 ui-md-3 ui-lg-5 crm-info-icon">
+                                    <img src="../resources/img/crm/deposit_icon.png"/>
+                                </div>
+                                <div class="ui-g-12 ui-md-3 ui-lg-7 crm-info">
+                                    <span class="info-label">
+                                        Deposit Churn Customer
+                                    </span>
+                                    <span class="info-amount">
+                                        <h:outputText value="#{viewCustomerOverviewManagedBean.depositChurnCustomer}" />
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui-g-12 ui-md-3">
+                            <div class="crm-info-holder color-2">
+                                <div class="ui-g-12 ui-md-3 ui-lg-5 crm-info-icon">
+                                    <img src="../resources/img/crm/loan_icon.png"/>
+                                </div>
+                                <div class="ui-g-12 ui-md-3 ui-lg-7 crm-info">
+                                    <span class="info-label">
+                                        Loan Churn Customer
+                                    </span>
+                                    <span class="info-amount">
+                                        <h:outputText value="#{viewCustomerOverviewManagedBean.loanChurnCustomer}" />
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui-g-12 ui-md-3">
+                            <div class="crm-info-holder color-3">
+                                <div class="ui-g-12 ui-md-3 ui-lg-5 crm-info-icon">
+                                    <img src="../resources/img/crm/card_icon.png"/>
+                                </div>
+                                <div class="ui-g-12 ui-md-3 ui-lg-7 crm-info">
+                                    <span class="info-label">
+                                        Card Churn Customer
+                                    </span>
+                                    <span class="info-amount">
+                                        <h:outputText value="#{viewCustomerOverviewManagedBean.cardChurnCustomer}" />
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui-g-12 ui-md-3">
+                            <div class="crm-info-holder color-4">
+                                <div class="ui-g-12 ui-md-3 ui-lg-5 crm-info-icon">
+                                    <img src="../resources/img/crm/wealth_icon.png"/>
+                                </div>
+                                <div class="ui-g-12 ui-md-3 ui-lg-7 crm-info">
+                                    <span class="info-label">
+                                        Wealth Churn Customer
+                                    </span>
+                                    <span class="info-amount">
+                                        <h:outputText value="#{viewCustomerOverviewManagedBean.wealthChurnCustomer}" />
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui-g-12 ui-md-6">
+                            <div class="crm-highlight-holder">
+                                <div class="ui-g-12 ui-md-6 ui-lg-7">
+                                    <div class="crm-highlight-label">
+                                        <span class="label">
+                                            Average Customer Deposit Amount
+                                        </span>
+                                    </div>
+                                    <div class="crm-highlight-icon">
+                                        <img src="../resources/img/highlight-icon-1.svg.svg"/>
+                                    </div>
+                                </div>
+                                <div class="ui-g-12 ui-md-6 ui-lg-5">
+                                    <div class="crm-highlight-amount">
+                                        <h:outputText value="#{viewCustomerOverviewManagedBean.avgCustomerDepositSavingAmount}" >
+                                            <f:convertNumber maxFractionDigits="2" type="currency" currencySymbol="S$"/>
+                                        </h:outputText>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui-g-12 ui-md-6">
+                            <div class="crm-highlight-holder">
+                                <div class="ui-g-12 ui-md-6 ui-lg-7">
+                                    <div class="crm-highlight-label">
+                                        <span class="label">
+                                            Average Customer Loan Amount
+                                        </span>
+                                    </div>
+                                    <div class="crm-highlight-icon">
+                                        <img src="../resources/img/highlight-icon-2.svg.svg"/>
+                                    </div>
+                                </div>
+                                <div class="ui-g-12 ui-md-6 ui-lg-5">
+                                    <div class="crm-highlight-amount">
+                                        <h:outputText value="#{viewCustomerOverviewManagedBean.avgCustomerLoanAmount}" style="color:#F44336">
+                                            <f:convertNumber maxFractionDigits="2" type="currency" currencySymbol="S$"/>
+                                        </h:outputText>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui-g-12 ui-md-6">
+                            <div class="chart-holder">
+                                <p:chart type="bar" model="#{viewCustomerOverviewManagedBean.customerAcctBarModel}" style="height:300px;"/>     
+                            </div>
+                        </div>
+                        <div class="ui-g-12 ui-md-6">
+                            <div class="chart-holder">
+                                <p:chart type="bar" model="#{viewCustomerOverviewManagedBean.customerAgeBarModel}" style="height:300px;"/>
+                            </div>
+                        </div>
+                    </p:messages>
+                </h:form>
+            </div>
+        </h:body> 
+    </f:view>
+</html>

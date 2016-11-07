@@ -378,11 +378,11 @@ and open the template in the editor.
 }
 /*End of Investment Plan*/
 /*BI*/
-.bi-deposit-loan-body{
+.bi-body{
     background: #efefef;
 }
 
-.bi-deposit-loan .bi-header-holder{
+.bi-container .bi-header-holder{
     text-align: center;
     padding: 5px;
     min-height: 30px;
@@ -390,43 +390,43 @@ and open the template in the editor.
     -webkit-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
 }
 
-.bi-deposit-loan .bi-header-holder .header-content{
+.bi-container .bi-header-holder .header-content{
     position: relative;
     top:5px;
     font-size: 20px;
     color: white;  
 }
 
-.bi-deposit-loan .date-holder{
+.bi-container .date-holder{
     padding: 10px;
     min-height: 80px;
     background: white;
     -webkit-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
 }
-.bi-deposit-loan .date-holder .date-label{
+.bi-container .date-holder .date-label{
     font-size: 24px;
 }
 
-.bi-deposit-loan .date-holder .date-picker{
+.bi-container .date-holder .date-picker{
     margin-top: 15px;
 }
 
-.bi-deposit-loan .date-holder .date-picker .ui-inputfield{
+.bi-container .date-holder .date-picker .ui-inputfield{
     width:100%;
 }
 
-.bi-deposit-loan .date-holder .date-icon{
+.bi-container .date-holder .date-icon{
     width:100%;
     height:100%;
 }
 
-.bi-deposit-loan .date-holder .date-icon img{
+.bi-container .date-holder .date-icon img{
     padding-left: 25%;
     width:63%;
     height:63%;
 }
 
-.bi-deposit-loan .button-holder{
+.bi-container .button-holder{
     width:70%;
     margin: 0 auto;
     min-height: 80px;
@@ -434,17 +434,17 @@ and open the template in the editor.
     -webkit-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
 }
 
-.bi-deposit-loan .button-holder .ui-button{
+.bi-container .button-holder .ui-button{
     width:100%;
     height:100px;
 }
 
-.bi-deposit-loan .button-holder .ui-button-text-only .ui-button-text{
+.bi-container .button-holder .ui-button-text-only .ui-button-text{
     font-size: 30px;
     padding:0;
 }
 
-.bi-deposit-loan .dashboard-hightlight-holder{
+.bi-container .dashboard-hightlight-holder{
     position: relative;
     padding-top: 10px;
     min-height: 100px;
@@ -452,44 +452,44 @@ and open the template in the editor.
     -webkit-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
 }
 
-.bi-deposit-loan .dashboard-hightlight-holder .highlight-label{
+.bi-container .dashboard-hightlight-holder .highlight-label{
     padding: 10px;
     font-size: 13px;
     color:#757575;
 }
 
-.bi-deposit-loan .dashboard-hightlight-holder .highlight-amount{
+.bi-container .dashboard-hightlight-holder .highlight-amount{
     padding: 10px;
     font-size: 26px;
     display:block;
 }
 
-.bi-deposit-loan .dashboard-hightlight-holder img{
+.bi-container .dashboard-hightlight-holder img{
     position:absolute;
     bottom: 0;
     width: 100%;
     display: block;
 }
 
-.bi-deposit-loan .dashboard-info-holder{
+.bi-container .dashboard-info-holder{
     min-height: 100px;
     background: white;
     -webkit-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
 }
 
-.bi-deposit-loan .dashboard-info-holder .dashboard-info-label{
+.bi-container .dashboard-info-holder .dashboard-info-label{
     height: 20px;
     display: block;
     padding: 5px;
     text-align: center;
 }
 
-.bi-deposit-loan .dashboard-info-holder .dashboard-info-label .label{
+.bi-container .dashboard-info-holder .dashboard-info-label .label{
     font-size: 12px;
     color: white;
 }
 
-.bi-deposit-loan .dashboard-info-holder .dashboard-info-amount{
+.bi-container .dashboard-info-holder .dashboard-info-amount{
     position: relative;
     width: 100%;
     font-size: 40px;
@@ -499,83 +499,258 @@ and open the template in the editor.
     text-align: center;
 }
 
-.bi-deposit-loan .dashboard-info-holder .dashboard-info-amount .info-amount{
+.bi-container .dashboard-info-holder .dashboard-info-amount .info-amount{
     position: relative;
     top: 15px;
 }
 
-.bi-deposit-loan .chart-holder{
+.bi-container .chart-holder{
     padding: 30px;
     min-height: 120px;
     background: white;
     -webkit-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
 }
 
-.bi-deposit-loan .chart-holder .pie-chart-content{
+.bi-container .chart-holder .pie-chart-content{
     height: 60px;
     display:block;
 }
 
-.bi-deposit-loan .chart-holder .pie-chart-content .amount-1{
+.bi-container .chart-holder .pie-chart-content .amount-1{
     color:#2196F3;
     float:right;
     font-size: 36px;
 }
 
-.bi-deposit-loan .chart-holder .pie-chart-content .amount-2{
+.bi-container .chart-holder .pie-chart-content .amount-2{
     color:#009688;
     float:right;
     font-size: 36px;
 }
 
-.bi-deposit-loan .color-1 .dashboard-info-label{
+.bi-container .color-1 .dashboard-info-label{
     background: #c9392f;
 }
 
-.bi-deposit-loan .color-1 .dashboard-info-amount{
+.bi-container .color-1 .dashboard-info-amount{
     background: #F44336;
 }
 
-.bi-deposit-loan .color-2 .dashboard-info-label{
+.bi-container .color-2 .dashboard-info-label{
     background: #492b80;
 }
 
-.bi-deposit-loan .color-2 .dashboard-info-amount{
+.bi-container .color-2 .dashboard-info-amount{
     background: #673AB7;
 }
 
-.bi-deposit-loan .color-3 .dashboard-info-label{
+.bi-container .color-3 .dashboard-info-label{
     background: #1e649b;
 }
 
-.bi-deposit-loan .color-3 .dashboard-info-amount{
+.bi-container .color-3 .dashboard-info-amount{
     background: #2196F3;
 }
 
-.bi-deposit-loan .color-4 .dashboard-info-label{
+.bi-container .color-4 .dashboard-info-label{
     background: #146961;
 }
 
-.bi-deposit-loan .color-4 .dashboard-info-amount{
+.bi-container .color-4 .dashboard-info-amount{
     background: #009688;
 }
 
-.bi-deposit-loan .color-5 .dashboard-info-label{
+.bi-container .color-5 .dashboard-info-label{
     background: #c8ba43;
 }
 
-.bi-deposit-loan .color-5 .dashboard-info-amount{
+.bi-container .color-5 .dashboard-info-amount{
     background: #FFEB3B;
 }
 
-.bi-deposit-loan .color-6 .dashboard-info-label{
+.bi-container .color-6 .dashboard-info-label{
     background: #ca3e12;
 }
 
-.bi-deposit-loan .color-6 .dashboard-info-amount{
+.bi-container .color-6 .dashboard-info-amount{
     background: #FF5722;
 }
 /*End of BI*/
+/*crm*/
+.crm-body{
+    background: #efefef;
+}
+
+.crm-container .crm-header-holder{
+    text-align: center;
+    padding: 5px;
+    min-height: 30px;
+    background: #009688;
+    -webkit-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
+}
+
+.crm-container .crm-header-holder .header-content{
+    position: relative;
+    top:5px;
+    font-size: 20px;
+    color: white;  
+}
+
+.crm-container .date-holder{
+    padding: 10px;
+    min-height: 80px;
+    background: white;
+    -webkit-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
+}
+.crm-container .date-holder .date-label{
+    font-size: 24px;
+}
+
+.crm-container .date-holder .date-picker{
+    margin-top: 15px;
+}
+
+.crm-container .date-holder .date-picker .ui-inputfield{
+    width:100%;
+}
+
+.crm-container .date-holder .date-icon{
+    width:100%;
+    height:100%;
+}
+
+.crm-container .date-holder .date-icon img{
+    padding-left: 25%;
+    width:63%;
+    height:63%;
+}
+
+.crm-container .button-holder{
+    width:70%;
+    margin: 0 auto;
+    min-height: 80px;
+    background: white;
+    -webkit-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
+}
+
+.crm-container .button-holder .ui-button{
+    width:100%;
+    height:100px;
+}
+
+.crm-container .button-holder .ui-button-text-only .ui-button-text{
+    font-size: 30px;
+    padding:0;
+}
+
+.crm-container .crm-info-holder{
+    min-height: 95px;
+    background: white;
+    -webkit-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
+}
+
+.crm-container .crm-info-holder .crm-info-icon{
+    height:100%;
+}
+
+.crm-container .crm-info-holder .crm-info-icon img{
+    width: 76px;
+    height: 76px;
+}
+
+.crm-container .crm-info-holder .crm-info .info-label{
+    font-size: 14px;
+    color:#666;
+    display: block;
+    text-align: center;
+}
+
+.crm-container .crm-info-holder .crm-info .info-amount{
+    position:relative;
+    top:10px;
+    display: block;
+    font-size: 40px;
+    text-align: center;
+}
+
+.crm-container .crm-highlight-holder{
+    position:relative;
+    min-height: 100px;
+    background: white;
+    -webkit-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
+}
+
+.crm-container .crm-highlight-holder .crm-highlight-label{
+    text-align: center;
+    color:#666;
+    display: block;
+    position: relative;
+    top: 10px;
+}
+
+.crm-container .crm-highlight-holder .crm-highlight-icon{
+    position: absolute;
+    bottom: 0;
+    width: 55%;
+}
+
+.crm-container .crm-highlight-holder .crm-highlight-icon img{
+    width: 100%;
+}
+
+.crm-container .crm-highlight-holder .crm-highlight-amount{
+    position: relative;
+    top:30px;
+    text-align: center;
+    font-size: 28px;
+    color: #2196F3;
+}
+
+.crm-container .chart-holder{
+    padding: 30px;
+    min-height: 120px;
+    background: white;
+    -webkit-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
+}
+
+.crm-container .age-picker-holder{
+    min-height: 100px;
+    background: white;
+    -webkit-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
+}
+
+.crm-container .color-1 .crm-info-icon{
+    background: #c9392f; 
+}
+
+.crm-container .color-1 .crm-info .info-amount{
+    color: #F44336; 
+}
+
+.crm-container .color-2 .crm-info-icon{
+    background: #492b80; 
+}
+
+.crm-container .color-2 .crm-info .info-amount{
+    color: #673AB7;
+}
+
+.crm-container .color-3 .crm-info-icon{
+    background: #1e649b;
+}
+
+.crm-container .color-3 .crm-info .info-amount{
+    color: #2196F3;
+}
+
+.crm-container .color-4 .crm-info-icon{
+    background: #146961;
+}
+
+.crm-container .color-4 .crm-info .info-amount{
+    color: #009688;
+}
+/*end of crm*/
 /* general */
 .container {
     padding-top: 100px;
