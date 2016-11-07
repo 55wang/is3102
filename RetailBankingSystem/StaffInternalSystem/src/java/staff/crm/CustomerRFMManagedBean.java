@@ -25,11 +25,11 @@ import javax.faces.view.ViewScoped;
 public class CustomerRFMManagedBean implements Serializable {
 
     @EJB
-    RFMSessionBeanLocal rFMSessionBean;
+    private RFMSessionBeanLocal rFMSessionBean;
     @EJB
-    CustomerProfileSessionBeanLocal customerProfileSessionBean;
+    private CustomerProfileSessionBeanLocal customerProfileSessionBean;
     @EJB
-    NewCustomerSessionBeanLocal customerSessionBean;
+    private NewCustomerSessionBeanLocal customerSessionBean;
 
     private List<Customer> customers;
 

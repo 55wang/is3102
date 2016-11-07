@@ -122,6 +122,7 @@ public class InternationalBankTransferManagedBean implements Serializable {
                 MessageUtils.displayError(ConstantUtils.TRANSFER_FAILED);
             }
         } else {
+            payee = transferBean.getPayeeById(Long.parseLong(payeeId));
             transferClearing();
             JSUtils.callJSMethod("PF('myWizard').next()");
             MessageUtils.displayInfo(ConstantUtils.TRANSFER_SUCCESS);
