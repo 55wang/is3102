@@ -45,6 +45,7 @@ public class DemoPageManagedBean implements Serializable {
     private Long bankTotalCardAcct;
     private Long bankTotalActiveCardAcct;
     private Long bankTotalNewCardAcct;
+    private Long bankNumOfBadCardAccount;
     private Double bankTotalCardCurrentAmount;
     private Double bankTotalCardOutstandingAmount;
 
@@ -58,9 +59,12 @@ public class DemoPageManagedBean implements Serializable {
     }
 
     public void insertBankFactTable() {
-        BankFactTable bft = new BankFactTable();
+        
         Calendar cal = Calendar.getInstance();
         Date predefined = cal.getTime();
+        BankFactTable bft;
+        bft = bankFactTableSessionBean.getBankFactTableByCreationDate(predefined);
+        
         bft.setCreationDate(predefined);
         bft.setMonthOfDate(DateUtils.getStringMonth(cal.get(Calendar.MONTH))); //might need change
         bft.setYearOfDate(cal.get(Calendar.YEAR));
@@ -77,9 +81,11 @@ public class DemoPageManagedBean implements Serializable {
         bft.setNewDepositAcct(bankTotalNewDepositAcct);
 
         bankTotalDepositAmount = bizIntelligenceSessionBean.getBankTotalDepositAmount(endDate);
+        if(bankTotalDepositAmount == null) bankTotalDepositAmount = 0.0;
         bft.setTotalDepositAmount(bankTotalDepositAmount);
 
         bankDepositInterestAmount = bizIntelligenceSessionBean.getBankTotalDepositInterestAmount(endDate);
+        if(bankDepositInterestAmount == null) bankDepositInterestAmount = 0.0;
         bft.setTotalDepositInterestAmount(bankDepositInterestAmount);
 
         bankTotalLoanAcct = bizIntelligenceSessionBean.getBankTotalLoanAcct(endDate);
@@ -89,12 +95,15 @@ public class DemoPageManagedBean implements Serializable {
         bft.setNewLoanAcct(bankTotalNewLoanAcct);
 
         bankTotalLoanAmount = bizIntelligenceSessionBean.getBankTotalLoanAmount(endDate);
+        if(bankTotalLoanAmount == null) bankTotalLoanAmount = 0.0;
         bft.setTotalLoanAmount(bankTotalLoanAmount);
 
         bankLoanInterestEarned = bizIntelligenceSessionBean.getBankLoanInterestEarned(endDate);
+        if(bankLoanInterestEarned == null) bankLoanInterestEarned = 0.0;
         bft.setTotalLoanInterestEarned(bankLoanInterestEarned);
 
         bankLoanInterestUnearned = bizIntelligenceSessionBean.getBankLoanInterestUnearned(endDate);
+        if(bankLoanInterestUnearned == null) bankLoanInterestUnearned = 0.0;
         bft.setTotalLoanInterestUnearned(bankLoanInterestUnearned);
 
         bankTotalDefaultLoanAcct = bizIntelligenceSessionBean.getBankTotalDefaultLoanAcct(endDate);
@@ -108,12 +117,20 @@ public class DemoPageManagedBean implements Serializable {
 
         bankTotalNewCardAcct = bizIntelligenceSessionBean.getBankTotalNewCardAcct(startDate, endDate);
         bft.setNewCardAcct(bankTotalNewCardAcct);
+        
+        bankNumOfBadCardAccount = bizIntelligenceSessionBean.getBankNumOfBadCardAccount(startDate, endDate);
+        bft.setNumOfBadCardAccount(bankNumOfBadCardAccount);
 
         bankTotalCardCurrentAmount = bizIntelligenceSessionBean.getBankTotalCardCurrentAmount(endDate);
+        if(bankTotalCardCurrentAmount == null) bankTotalCardCurrentAmount = 0.0;
         bft.setTotalCardCurrentAmount(bankTotalCardCurrentAmount);
 
         bankTotalCardOutstandingAmount = bizIntelligenceSessionBean.getBankTotalCardOutstandingAmount(endDate);
+        if(bankTotalCardOutstandingAmount == null) bankTotalCardOutstandingAmount = 0.0;
         bft.setTotalOutstandingAmount(bankTotalCardOutstandingAmount);
+        
+        bankNumOfBadCardAccount = bizIntelligenceSessionBean.getBankNumOfBadCardAccount(startDate, endDate);
+        bft.setNumOfBadCardAccount(bankNumOfBadCardAccount);
 
         bankTotalWealthManagementSubscriber = bizIntelligenceSessionBean.getBankTotalWealthManagementSubsciber();
         bft.setTotalWealthManagementSubscriber(bankTotalWealthManagementSubscriber);
@@ -125,10 +142,13 @@ public class DemoPageManagedBean implements Serializable {
         bft.setNewExecutedPortfolio(bankNewExecutedPortfolio);
         
         bankTotalInvestmentAmount = bizIntelligenceSessionBean.getBankTotalInvestmentAmount(endDate);
+        if(bankTotalInvestmentAmount == null) bankTotalInvestmentAmount = 0.0;
         bft.setTotalPortfolioAmount(bankTotalInvestmentAmount);
         
         bankTotalProfitAmount = bizIntelligenceSessionBean.getBankTotalProfitAmount(endDate);
+        if(bankTotalProfitAmount == null) bankTotalProfitAmount = 0.0;
         bft.setTotalPortfolioProfitAmount(bankTotalProfitAmount);
+        
         bankFactTableSessionBean.createBankFactTable(bft);
     }
 

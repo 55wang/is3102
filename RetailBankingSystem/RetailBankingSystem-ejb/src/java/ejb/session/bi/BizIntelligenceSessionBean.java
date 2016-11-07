@@ -12,6 +12,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import server.utilities.EnumUtils;
+import server.utilities.EnumUtils.CardTransactionStatus;
 import server.utilities.EnumUtils.InvestmentPlanStatus;
 import server.utilities.EnumUtils.LoanAccountStatus;
 import server.utilities.EnumUtils.StatusType;
@@ -195,12 +196,23 @@ public class BizIntelligenceSessionBean implements BizIntelligenceSessionBeanLoc
     
     @Override
     public Double getBankSettledTransactionAmount(Date startDate, Date endDate) {
-        return 0.0;
+        try{
+            Query q = em.createQuery("SELECT SUM(ct.amount) FROM CardTransaction ct WHERE ct.cardTransactionStatus =:settledStatus AND ct.createDate BETWEEN :startDate AND :endDate");
+            q.setParameter("settledStatus", CardTransactionStatus.SETTLEDTRANSACTION);
+            q.setParameter("startDate", startDate);
+            q.setParameter("endDate", endDate);
+            return (Double) q.getSingleResult();
+        }catch(Exception ex){
+            return 0.0;
+        }
     }
     
     @Override
     public Long getBankNumOfBadCardAccount(Date startDate, Date endDate){
-        return 0L;
+        Query q = em.createQuery("SELECT COUNT(cca.id) FROM CreditCardAccount cca WHERE cca.lastLatePaymentDate BETWEEN :startDate AND  :endDate");
+        q.setParameter("startDate", startDate);
+        q.setParameter("endDate", endDate);
+        return (Long)q.getSingleResult();
     }
     
     //portfolio service

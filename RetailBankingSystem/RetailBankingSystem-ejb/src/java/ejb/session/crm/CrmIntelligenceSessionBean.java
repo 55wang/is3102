@@ -11,6 +11,7 @@ import entity.customer.Customer;
 import entity.dams.account.DepositAccount;
 import entity.loan.LoanAccount;
 import entity.wealth.InvestmentPlan;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
@@ -37,6 +38,7 @@ public class CrmIntelligenceSessionBean implements CrmIntelligenceSessionBeanLoc
 
     @Override
     public Long getDepositChurnCustomer(Date startDate, Date endDate){
+        System.out.println("");
         System.out.println("---------getDepositChurnCustomer---------");
         Query q = em.createQuery("SELECT c FROM Customer c, MainAccount m WHERE c.mainAccount = m AND EXISTS (SELECT d FROM DepositAccount d WHERE d.mainAccount = m)");
         List<Customer> customers = q.getResultList();
@@ -58,6 +60,7 @@ public class CrmIntelligenceSessionBean implements CrmIntelligenceSessionBeanLoc
     
     @Override
     public Long getCardChurnCustomer(Date startDate, Date endDate){
+        System.out.println("");
         System.out.println("---------getCardChurnCustomer---------");
         Query q = em.createQuery("SELECT c FROM Customer c, MainAccount m WHERE c.mainAccount = m AND EXISTS (SELECT cca FROM CreditCardAccount cca WHERE cca.mainAccount = m)");
         List<Customer> customers = q.getResultList();
@@ -79,6 +82,7 @@ public class CrmIntelligenceSessionBean implements CrmIntelligenceSessionBeanLoc
     
     @Override
     public Long getLoanChurnCustomer(Date startDate, Date endDate){
+        System.out.println("");
         System.out.println("---------getLoanChurnCustomer---------");
         Query q = em.createQuery("SELECT c FROM Customer c, MainAccount m WHERE c.mainAccount = m AND EXISTS (SELECT la FROM LoanAccount la WHERE la.mainAccount = m)");
         List<Customer> customers = q.getResultList();
@@ -100,6 +104,7 @@ public class CrmIntelligenceSessionBean implements CrmIntelligenceSessionBeanLoc
     
     @Override
     public Long getWealthChurnCustomer(Date startDate, Date endDate){
+        System.out.println("");
         System.out.println("---------getWealthChurnCustomer---------");
         Query q = em.createQuery("SELECT c FROM Customer c, MainAccount m WHERE c.mainAccount = m AND EXISTS (SELECT ip FROM InvestmentPlan ip WHERE ip.wealthManagementSubscriber.mainAccount = m)");
         List<Customer> customers = q.getResultList();
@@ -121,6 +126,7 @@ public class CrmIntelligenceSessionBean implements CrmIntelligenceSessionBeanLoc
 
     @Override
     public Double getCustomerAvgDepositSavingAmount(Date endDate) {
+        System.out.println("");
         System.out.println("---------getCustomerAvgDepositSavingAmount---------");
         Query q = em.createQuery("SELECT c FROM Customer c, MainAccount m WHERE c.mainAccount = m AND EXISTS (SELECT d FROM DepositAccount d WHERE d.mainAccount = m AND d.creationDate <= :endDate)");
         q.setParameter("endDate", endDate);
@@ -136,6 +142,7 @@ public class CrmIntelligenceSessionBean implements CrmIntelligenceSessionBeanLoc
 
     @Override
     public Double getCustomerAvgLoanAmount(Date endDate) {
+        System.out.println("");
         System.out.println("---------getCustomerAvgLoanAmount---------");
         Query q = em.createQuery("SELECT c FROM Customer c, MainAccount m WHERE c.mainAccount = m AND EXISTS (SELECT la FROM LoanAccount la WHERE la.mainAccount = m AND la.creationDate <= :endDate)");
         q.setParameter("endDate", endDate);
@@ -159,10 +166,43 @@ public class CrmIntelligenceSessionBean implements CrmIntelligenceSessionBeanLoc
 
     @Override
     public Long getNewCustomerAgeGroup(Integer startAge, Integer endAge, Date startDate, Date endDate) {
-        Query q = em.createQuery("SELECT COUNT(c) FROM Customer c WHERE c.age BETWEEN :inStartAge AND :inEndAge");
+        System.out.println("");
+        System.out.println("---------getNewCustomerAgeGroup"+" age group("+startAge + " and "+ endAge + ")---------");
+        Query q = em.createQuery("SELECT c FROM Customer c, MainAccount m WHERE c.age BETWEEN :inStartAge AND :inEndAge AND c.mainAccount = m AND (EXISTS (SELECT la FROM LoanAccount la WHERE la.mainAccount = m AND la.creationDate BETWEEN :startDate AND :endDate) OR EXISTS (SELECT da FROM DepositAccount da WHERE da.mainAccount = m AND da.creationDate BETWEEN :startDate AND :endDate) OR EXISTS (SELECT cca FROM CreditCardAccount cca WHERE cca.mainAccount = m AND cca.creationDate BETWEEN :startDate AND :endDate) OR EXISTS (SELECT ip FROM InvestmentPlan ip WHERE ip.wealthManagementSubscriber.mainAccount = m AND ip.creationDate BETWEEN :startDate AND :endDate))");
         q.setParameter("inStartAge", startAge);
         q.setParameter("inEndAge", endAge);
-        return (Long) q.getSingleResult();
+        q.setParameter("startDate", startDate);
+        q.setParameter("endDate", endDate);
+        List<Customer> customers = q.getResultList();
+        System.out.println("Number of Customer Who Has Subscriber at least 1 Service: " + customers.size());
+        Long counter = 0L;
+        for(int i=0; i < customers.size();i++){
+            System.out.println("");
+            System.out.println("**Customer #" + i+"**");
+            List<DepositAccount> das = customers.get(i).getMainAccount().getBankAcounts();
+            System.out.println("DepositAccount number: " + das.size());
+            List<LoanAccount> las = customers.get(i).getMainAccount().getLoanAccounts();
+            System.out.println("LoanAccount number: " + las.size());
+            List<CreditCardAccount> ccas = customers.get(i).getMainAccount().getCreditCardAccounts();
+            List<InvestmentPlan> ips = new ArrayList<InvestmentPlan>();
+            try{
+                System.out.println("CreditCardAccount number: " + ccas.size());
+                ips = customers.get(i).getMainAccount().getWealthManagementSubscriber().getInvestmentPlans();
+                System.out.println("InvestmentPlan number: " + ips.size());
+            }catch(Exception ex){
+                System.out.println("InvestmentPlan number: 0");
+            }
+            
+            if(das.size()==1 && las.isEmpty() && ccas.isEmpty() && ips.isEmpty())
+                counter++;
+            else if(das.isEmpty() && las.size()==1 && ccas.isEmpty() && ips.isEmpty())
+                counter++;
+            else if(das.isEmpty() && las.isEmpty() && ccas.size()==1 && ips.isEmpty())
+                counter++;
+            else if(das.isEmpty() && las.isEmpty() && ccas.isEmpty() && ips.size()==1)
+                counter++;
+        }
+        return (Long) counter;
     }
 
 }

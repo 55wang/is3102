@@ -6,9 +6,12 @@
 package server.utilities;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.Random;
 
 /**
  *
@@ -318,6 +321,18 @@ public class DateUtils {
         } else {
             return null;
         }
+    }
+    
+    public static Date randomDate(){
+        Random random = new Random();
+        int minDay = (int) LocalDate.of(2015, 1, 1).toEpochDay();
+        int maxDay = (int) LocalDate.of(2016, 11, 07).toEpochDay();
+        long randomDay = minDay + random.nextInt(maxDay - minDay);
+        
+        LocalDate randomLocalDate = LocalDate.ofEpochDay(randomDay);
+        
+        Date date = Date.from(randomLocalDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+        return date;
     }
     
 }

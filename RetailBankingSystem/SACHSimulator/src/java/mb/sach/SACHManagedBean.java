@@ -22,7 +22,7 @@ import javax.faces.view.ViewScoped;
 @Named(value = "sachManagedBean")
 @ViewScoped
 public class SACHManagedBean implements Serializable {
-    
+
     private String referenceNumber;
     private BigDecimal amount;
     private String toBankCode = "001";
@@ -31,26 +31,27 @@ public class SACHManagedBean implements Serializable {
     private String toName;
     private String fromName;
     private String myInitial;
-    
+
     private String ccNumber;
     private BigDecimal ccAmount;
     private String partnerBankCode = "001";
+    private String fromCCBankCode = "002";
     private String organizationName = "Merlion Bank";
-    
+
     private String referenceNumber1;
     private String billReferenceNumber;
     private String shortCode;
     private BigDecimal billAmount;
-    
+
     @EJB
     private SACHSessionBean sachBean;
-    
+
     public SACHManagedBean() {
     }
-    
+
     public void sendMBSNetSettlement() {
         // REMARK: MBS only transfer to SACH, dont care about other things
-        
+
         System.out.println("----------------Settlement Processing----------------");
         BigDecimal netSettlementAmount = BigDecimal.ZERO;
         List<PaymentTransfer> paymentTransfers = sachBean.findAllPaymentTransferFromBankCode("001");
@@ -61,7 +62,7 @@ public class SACHManagedBean implements Serializable {
         for (BillTransfer bt : billTransfers) {
             netSettlementAmount = netSettlementAmount.add(bt.getAmount());
         }
-        
+
         paymentTransfers = sachBean.findAllPaymentTransferToBankCode("001");
         for (PaymentTransfer pt : paymentTransfers) {
             netSettlementAmount = netSettlementAmount.subtract(pt.getAmount());
@@ -70,21 +71,20 @@ public class SACHManagedBean implements Serializable {
         for (BillTransfer bt : billTransfers) {
             netSettlementAmount = netSettlementAmount.subtract(bt.getAmount());
         }
-        
+
         if (netSettlementAmount.compareTo(BigDecimal.ZERO) > 0) {
             sachBean.sendMBSNetSettlement(netSettlementAmount.toString());
         } else {
             System.out.println("No need to ask MBS for settlement, ask other banks to pay MBS");
         }
     }
-    
-    public void sendMEPSNetSettlement(){
+
+    public void sendMEPSNetSettlement() {
         sachBean.sendMEPSNetSettlement();
     }
-   
-    
+
     public void sendMBSTransfer() {
-        
+        System.out.println("----------------Fund Transfer to MBS----------------");
         PaymentTransfer pt = new PaymentTransfer();
         pt.setReferenceNumber(getReferenceNumber());
         pt.setAmount(getAmount());
@@ -95,31 +95,32 @@ public class SACHManagedBean implements Serializable {
         pt.setFromName(getFromName());
         pt.setMyInitial(getMyInitial());
         pt.setSettled(true);
-        
-        sachBean.sendMBSPaymentTransferSettlement(pt);
+
+        sachBean.sendMBSPaymentTransfer(pt);
     }
-    
+
     public void sendMBSCCPayment() {
-        
+        System.out.println("----------------Bill Transfer to MBS----------------");
         BillTransfer bt = new BillTransfer();
         bt.setReferenceNumber(ccNumber);
         bt.setAmount(ccAmount);
         bt.setPartnerBankCode(getPartnerBankCode());
         bt.setOrganizationName(getOrganizationName());
+        bt.setFromBankCode(fromCCBankCode);
         bt.setSettled(true);
-        
+
         sachBean.sendMBSCCPaymentSettlement(bt);
     }
-    
+
     public void sendMBSGiroRequest() {
-        
+        System.out.println("----------------GIRO request----------------");
         BillTransfer bt = new BillTransfer();
         bt.setReferenceNumber(referenceNumber1);
         bt.setAmount(billAmount);
         bt.setBillReferenceNumber(billReferenceNumber);
         bt.setShortCode(shortCode);
         bt.setSettled(false);
-        
+
         sachBean.sendMBSGiroRequest(bt);
     }
 
@@ -345,5 +346,19 @@ public class SACHManagedBean implements Serializable {
      */
     public void setBillAmount(BigDecimal billAmount) {
         this.billAmount = billAmount;
+    }
+
+    /**
+     * @return the fromCCBankCode
+     */
+    public String getFromCCBankCode() {
+        return fromCCBankCode;
+    }
+
+    /**
+     * @param fromCCBankCode the fromCCBankCode to set
+     */
+    public void setFromCCBankCode(String fromCCBankCode) {
+        this.fromCCBankCode = fromCCBankCode;
     }
 }

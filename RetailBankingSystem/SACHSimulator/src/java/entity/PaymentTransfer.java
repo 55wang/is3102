@@ -10,6 +10,8 @@ import java.math.BigDecimal;
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -24,6 +26,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class PaymentTransfer implements Serializable {
     
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private String referenceNumber;
     @Temporal(value = TemporalType.TIMESTAMP)
     private Date creationDate = new Date();
@@ -196,5 +200,19 @@ public class PaymentTransfer implements Serializable {
      */
     public void setFromBankCode(String fromBankCode) {
         this.fromBankCode = fromBankCode;
+    }
+
+    /**
+     * @return the id
+     */
+    public Long getId() {
+        return id;
+    }
+
+    /**
+     * @param id the id to set
+     */
+    public void setId(Long id) {
+        this.id = id;
     }
 }

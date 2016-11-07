@@ -27,7 +27,7 @@ import webservice.restful.mobile.ErrorDTO;
  */
 @Path("mbs_receive_cc_payment")
 public class ReceiveCCPayment {
-    
+
     @EJB
     private CardAcctSessionBeanLocal cardBean;
 
@@ -35,12 +35,18 @@ public class ReceiveCCPayment {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     public Response netSettlement(
+            @FormParam("partnerBankCode") String partnerBankCode,
+            @FormParam("fromBankCode") String fromBankCode,
             @FormParam("ccNumber") String ccNumber,
             @FormParam("ccAmount") String ccAmount
     ) {
-
-        System.out.println("Received ccNumber:" + ccNumber);
-        System.out.println("Received ccAmount:" + ccAmount);
+        System.out.println(".");
+        System.out.println("[MBS]:");
+        System.out.println("Received payment instruction from SACH...");
+        System.out.println(".      Received partnerBankCode:" + partnerBankCode);
+        System.out.println(".      Received fromBankCode:" + fromBankCode);
+        System.out.println(".      Received ccNumber:" + ccNumber);
+        System.out.println(".      Received ccAmount:" + ccAmount);
         System.out.println("Received POST http mbs_receive_cc_payment");
 
         CreditCardAccount cca = cardBean.getCreditCardAccountByCardNumber(ccNumber);
@@ -51,7 +57,10 @@ public class ReceiveCCPayment {
             return Response.ok(new JSONObject(err).toString(), MediaType.APPLICATION_JSON).build();
         } else {
             System.out.println("Sending back mbs_receive_cc_payment response");
+            System.out.println("Current credit card outstanding amount: " + cardBean.getCreditCardAccountByCardNumber(ccNumber).getOutstandingAmount());
+            System.out.println("Updating balance...");
             cardBean.payCreditCardAccountBillByCardNumber(ccNumber, new BigDecimal(ccAmount));
+            System.out.println("Updated credit card outstanding amount: " + cardBean.getCreditCardAccountByCardNumber(ccNumber).getOutstandingAmount());
             ErrorDTO err = new ErrorDTO();
             err.setCode(0);
             err.setError("SUCCESS");

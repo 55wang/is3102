@@ -32,6 +32,7 @@ public class ApplicationConfig extends Application {
     private void addRestResourceClasses(Set<Class<?>> resources) {
         resources.add(filter.CORSFilter.class);
         resources.add(webservice.restful.transfer.InformSettlementService.class);
+        resources.add(webservice.restful.transfer.SWIFTTransferService.class);
         resources.add(webservice.restful.transfer.TransferFastService.class);
     }
     

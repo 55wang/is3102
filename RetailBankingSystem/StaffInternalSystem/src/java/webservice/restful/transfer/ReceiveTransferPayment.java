@@ -40,14 +40,16 @@ public class ReceiveTransferPayment {
             @FormParam("fromName") String fromName,
             @FormParam("myInitial") String myInitial
     ) {
-
-        System.out.println("Received referenceNumber:" + referenceNumber);
-        System.out.println("Received amount:" + amount);
-        System.out.println("Received accountNumber:" + accountNumber);
-        System.out.println("Received toName:" + toName);
-        System.out.println("Received fromName:" + fromName);
-        System.out.println("Received myInitial:" + myInitial);
-        System.out.println("Received POST http mbs_receive_transfer_payment");
+        System.out.println(".");
+        System.out.println("[MBS]:");
+        System.out.println(".      Received payment instruction from SACH...");
+        System.out.println(".      Received Reference Number:" + referenceNumber);
+        System.out.println(".      Received Amount:" + amount);
+        System.out.println(".      Received Account Number:" + accountNumber);
+        System.out.println(".      Received To Name:" + toName);
+        System.out.println(".      Received From Name:" + fromName);
+        System.out.println(".      Received my Initial:" + myInitial);
+        System.out.println(".      Received POST http mbs_receive_transfer_payment");
 
         DepositAccount da = depositBean.getAccountFromId(accountNumber);
         if (da == null) {
@@ -56,8 +58,13 @@ public class ReceiveTransferPayment {
             err.setError("Account Not Found");
             return Response.ok(new JSONObject(err).toString(), MediaType.APPLICATION_JSON).build();
         } else {
+            
             System.out.println("Sending back mbs_receive_transfer_payment response");
+            System.out.println("Current bank account balance: " + da.getBalance());
+            System.out.println("Updating balance...");
             depositBean.transferToAccount(da, new BigDecimal(amount));
+            System.out.println("Updated bank account balance: " + da.getBalance());
+
             ErrorDTO err = new ErrorDTO();
             err.setCode(0);
             err.setError("SUCCESS");

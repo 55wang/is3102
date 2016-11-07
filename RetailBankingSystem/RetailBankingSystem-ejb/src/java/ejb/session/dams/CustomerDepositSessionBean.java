@@ -23,6 +23,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import server.utilities.ConstantUtils;
+import server.utilities.DateUtils;
 import server.utilities.EnumUtils;
 import server.utilities.GenerateAccountAndCCNumber;
 
@@ -260,6 +261,25 @@ public class CustomerDepositSessionBean implements CustomerDepositSessionBeanLoc
             return null;
         } else {
             TransactionRecord t = new TransactionRecord();
+            t.setActionType(EnumUtils.TransactionType.DEPOSIT);
+            t.setAmount(depositAmount);
+            t.setCredit(Boolean.TRUE);
+            t.setFromAccount(account);
+            t.setReferenceNumber(generateReferenceNumber());
+            account.addTransaction(t);
+            account.addBalance(depositAmount);
+            em.merge(account);
+            return account;
+        }
+    }
+    
+     @Override
+    public DepositAccount demoDepositIntoAccount(DepositAccount account, BigDecimal depositAmount) {
+        if (account == null || depositAmount == null) {
+            return null;
+        } else {
+            TransactionRecord t = new TransactionRecord();
+            t.setCreationDate(DateUtils.randomDate());
             t.setActionType(EnumUtils.TransactionType.DEPOSIT);
             t.setAmount(depositAmount);
             t.setCredit(Boolean.TRUE);

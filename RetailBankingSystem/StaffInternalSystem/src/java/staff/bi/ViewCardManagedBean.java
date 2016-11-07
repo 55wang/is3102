@@ -144,9 +144,10 @@ public class ViewCardManagedBean implements Serializable {
         series1.setLabel("Credit Card Settled Transaction Amount");
 
         List<BankFactTable> bfts = bankFactTableSessionBean.getListBankFactTables();
-
         for (BankFactTable bft : bfts) {
-            series1.set(bft.getMonthOfDate().toString(), bft.getTotalCardCurrentAmount());
+            System.out.println("total card current: "+bft.getTotalCardCurrentAmount());
+            System.out.println("total card outstanding: "+bft.getTotalOutstandingAmount());
+            series1.set(bft.getMonthOfDate().toString(), bft.getTotalCardCurrentAmount()+bft.getTotalOutstandingAmount());
         }
 
         model.addSeries(series1);

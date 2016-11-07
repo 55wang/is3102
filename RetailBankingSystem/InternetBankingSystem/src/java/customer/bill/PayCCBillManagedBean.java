@@ -12,6 +12,7 @@ import ejb.session.common.OTPSessionBeanLocal;
 import ejb.session.dams.CustomerDepositSessionBeanLocal;
 import ejb.session.webservice.WebserviceSessionBeanLocal;
 import entity.bill.BillingOrg;
+import entity.bill.Organization;
 import entity.common.BillTransferRecord;
 import entity.customer.MainAccount;
 import entity.dams.account.CustomerDepositAccount;
@@ -51,48 +52,87 @@ public class PayCCBillManagedBean implements Serializable {
     private WebserviceSessionBeanLocal webserviceBean;
     @EJB
     private OTPSessionBeanLocal otpBean;
-    
+
     private String fromAccountNo;
     private String ccBillOrgId;
     private BigDecimal amount;
     private MainAccount ma;
+    private String referenceNumber;
+    private BillingOrg bo = new BillingOrg();
+    private String newCcBillOrgId;
     private List<BillingOrg> ccBillList = new ArrayList<>();
     private List<CustomerDepositAccount> accounts = new ArrayList<>();
-    
+    private List<Organization> billOrgsOptions;
+
     private String inputTokenString;
-    
-    public PayCCBillManagedBean() {}
-    
+
+    public PayCCBillManagedBean() {
+    }
+
     @PostConstruct
     public void init() {
         setMa(loginBean.getMainAccountByUserID(SessionUtils.getUserName()));
         setAccounts(depositBean.getAllNonFixedCustomerAccounts(ma.getId()));
         ccBillList = billBean.getCreditCardBillingMainAccountId(ma.getId());
+        setBillOrgsOptions(billBean.getCreditCardOrganization());
+        ccBillOrgId = "New Receipiant";
+
     }
-    
+
+    public void changeBO() {
+        if (ccBillOrgId.equals("New Receipiant")) {
+            setBo(new BillingOrg());
+        } else {
+            setBo(billBean.getBillingOrganizationById(Long.parseLong(ccBillOrgId)));
+        }
+    }
+
     public void transfer() {
-        
+
         if (!checkOptAndProceed()) {
             return;
         }
-        
+
         DepositAccount fromAccount = depositBean.getAccountFromId(fromAccountNo);
         if (fromAccount != null && fromAccount.getBalance().compareTo(amount) < 0) {
             JSUtils.callJSMethod("PF('myWizard').back()");
             MessageUtils.displayError(ConstantUtils.NOT_ENOUGH_BALANCE);
             return;
         }
-        
-        transferClearing();
-        JSUtils.callJSMethod("PF('myWizard').next()");
-        MessageUtils.displayInfo(ConstantUtils.TRANSFER_SUCCESS);
+
+        if (ccBillOrgId.equals("New Receipiant")) {
+            ccBillOrgId = newCcBillOrgId;
+            if (!GenerateAccountAndCCNumber.isValidCreditCardNumber(referenceNumber)) {
+                JSUtils.callJSMethod("PF('myWizard').back()");
+                MessageUtils.displayError(ConstantUtils.CC_NUMBER_INVALID);
+                return;
+            }
+            Organization o = billBean.getOrganizationById(Long.parseLong(ccBillOrgId));
+            getBo().setOrganization(o);
+            getBo().setBillReference(getReferenceNumber());
+            getBo().setMainAccount(getMa());
+            BillingOrg result = billBean.createBillingOrganization(getBo());
+
+            if (result != null) {
+                setBo(result);
+                transferClearing();
+                JSUtils.callJSMethod("PF('myWizard').next()");
+                MessageUtils.displayInfo(ConstantUtils.TRANSFER_SUCCESS);
+            } else {
+                JSUtils.callJSMethod("PF('myWizard').back()");
+                MessageUtils.displayError(ConstantUtils.TRANSFER_FAILED);
+            }
+        } else {
+            transferClearing();
+            JSUtils.callJSMethod("PF('myWizard').next()");
+            MessageUtils.displayInfo(ConstantUtils.TRANSFER_SUCCESS);
+        }
+
     }
-    
-    
+
     private void transferClearing() {
         DepositAccount da = depositBean.getAccountFromId(fromAccountNo);
-        BillingOrg bo = billBean.getBillingOrganizationById(Long.parseLong(ccBillOrgId));
-        
+
         System.out.println("----------------Bill Payment clearing----------------");
         BillTransferRecord btr = new BillTransferRecord();
         btr.setBillReferenceNumber(bo.getBillReference());// it will be credit card number
@@ -107,20 +147,21 @@ public class PayCCBillManagedBean implements Serializable {
         btr.setActionType(EnumUtils.TransactionType.CCSPENDING);
         webserviceBean.billingClearingSACH(btr);
         da.removeBalance(amount);
-        depositBean.updateAccount(da);        
+        depositBean.updateAccount(da);
     }
-    
+
     public String getBillName(String id) {
-        BillingOrg bo = billBean.getBillingOrganizationById(Long.parseLong(ccBillOrgId));
-        return bo.getOrganization().getName() + " - " + bo.getBillReference();
+        Organization o = billBean.getOrganizationById(Long.parseLong(id));
+        return o.getName();
     }
-    
+
     public void sendOpt() {
+
         System.out.println("sendOTP clicked, sending otp to: " + ma.getCustomer().getPhone());
         JSUtils.callJSMethod("PF('myWizard').next()");
         otpBean.generateOTP(ma.getCustomer().getPhone());
     }
-    
+
     private Boolean checkOptAndProceed() {
         if (inputTokenString == null || inputTokenString.isEmpty()) {
             MessageUtils.displayError("Please enter one time password!");
@@ -222,7 +263,7 @@ public class PayCCBillManagedBean implements Serializable {
     public void setAccounts(List<CustomerDepositAccount> accounts) {
         this.accounts = accounts;
     }
-    
+
     /**
      * @return the inputTokenString
      */
@@ -236,5 +277,61 @@ public class PayCCBillManagedBean implements Serializable {
     public void setInputTokenString(String inputTokenString) {
         this.inputTokenString = inputTokenString;
     }
-  
+
+    /**
+     * @return the billOrgsOptions
+     */
+    public List<Organization> getBillOrgsOptions() {
+        return billOrgsOptions;
+    }
+
+    /**
+     * @param billOrgsOptions the billOrgsOptions to set
+     */
+    public void setBillOrgsOptions(List<Organization> billOrgsOptions) {
+        this.billOrgsOptions = billOrgsOptions;
+    }
+
+    /**
+     * @return the referenceNumber
+     */
+    public String getReferenceNumber() {
+        return referenceNumber;
+    }
+
+    /**
+     * @param referenceNumber the referenceNumber to set
+     */
+    public void setReferenceNumber(String referenceNumber) {
+        this.referenceNumber = referenceNumber;
+    }
+
+    /**
+     * @return the bo
+     */
+    public BillingOrg getBo() {
+        return bo;
+    }
+
+    /**
+     * @param bo the bo to set
+     */
+    public void setBo(BillingOrg bo) {
+        this.bo = bo;
+    }
+
+    /**
+     * @return the newCcBillOrgId
+     */
+    public String getNewCcBillOrgId() {
+        return newCcBillOrgId;
+    }
+
+    /**
+     * @param newCcBillOrgId the newCcBillOrgId to set
+     */
+    public void setNewCcBillOrgId(String newCcBillOrgId) {
+        this.newCcBillOrgId = newCcBillOrgId;
+    }
+
 }
