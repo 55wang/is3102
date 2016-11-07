@@ -73,54 +73,58 @@ public class MarketBasketAnalysisSessionBean implements MarketBasketAnalysisSess
             }
 
         }
-        long startTime = System.nanoTime();
-        FrequentItemsetData<String> data = generator.generate(itemsetList, 0.0);
-        long endTime = System.nanoTime();
 
-        int i = 1;
+        if (!itemsetList.isEmpty()) {
 
-        System.out.println("--- Frequent itemsets ---");
+            long startTime = System.nanoTime();
+            FrequentItemsetData<String> data = generator.generate(itemsetList, 0.0);
+            long endTime = System.nanoTime();
 
-        for (Set<String> itemset : data.getFrequentItemsetList()) {
-            System.out.printf("%2d: %9s, support: %1.1f\n",
-                    i++,
-                    itemset,
-                    data.getSupport(itemset));
+            int i = 1;
+
+            System.out.println("--- Frequent itemsets ---");
+
+            for (Set<String> itemset : data.getFrequentItemsetList()) {
+                System.out.printf("%2d: %9s, support: %1.1f\n",
+                        i++,
+                        itemset,
+                        data.getSupport(itemset));
+            }
+
+            System.out.printf("Mined frequent itemset in %d milliseconds.\n",
+                    (endTime - startTime) / 1_000_000);
+
+            startTime = System.nanoTime();
+            List<AssociationRule<String>> associationRuleList
+                    = new AssociationRuleGenerator<String>()
+                    .mineAssociationRules(data, 0.0);
+            endTime = System.nanoTime();
+
+            i = 1;
+
+            System.out.println();
+
+            System.out.println("### Delete Association Rules Table ###");
+            deleteAssociationrules();
+
+            System.out.println("--- Association rules ---");
+
+            for (AssociationRule<String> rule : associationRuleList) {
+                System.out.printf("%2d: %s\n", i++, rule);
+                //save the rule into entity
+                AssociationRuleEntity ruleEntity = new AssociationRuleEntity();
+                ruleEntity.setAntecedent(rule.getAntecedent());
+                ruleEntity.setConsequent(rule.getConsequent());
+                ruleEntity.setConfidence(rule.getConfidence());
+                ruleEntity.setLift(rule.getLift());
+
+                marketBasketAnalysisSessionBean.createAssociationRule(ruleEntity);
+
+            }
+
+            System.out.printf("Mined association rules in %d milliseconds.\n",
+                    (endTime - startTime) / 1_000_000);
         }
-
-        System.out.printf("Mined frequent itemset in %d milliseconds.\n",
-                (endTime - startTime) / 1_000_000);
-
-        startTime = System.nanoTime();
-        List<AssociationRule<String>> associationRuleList
-                = new AssociationRuleGenerator<String>()
-                .mineAssociationRules(data, 0.0);
-        endTime = System.nanoTime();
-
-        i = 1;
-
-        System.out.println();
-
-        System.out.println("### Delete Association Rules Table ###");
-        deleteAssociationrules();
-
-        System.out.println("--- Association rules ---");
-
-        for (AssociationRule<String> rule : associationRuleList) {
-            System.out.printf("%2d: %s\n", i++, rule);
-            //save the rule into entity
-            AssociationRuleEntity ruleEntity = new AssociationRuleEntity();
-            ruleEntity.setAntecedent(rule.getAntecedent());
-            ruleEntity.setConsequent(rule.getConsequent());
-            ruleEntity.setConfidence(rule.getConfidence());
-            ruleEntity.setLift(rule.getLift());
-
-            marketBasketAnalysisSessionBean.createAssociationRule(ruleEntity);
-
-        }
-
-        System.out.printf("Mined association rules in %d milliseconds.\n",
-                (endTime - startTime) / 1_000_000);
 
     }
 

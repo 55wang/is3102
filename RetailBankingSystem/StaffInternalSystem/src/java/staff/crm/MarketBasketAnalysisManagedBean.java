@@ -35,7 +35,7 @@ public class MarketBasketAnalysisManagedBean implements Serializable {
 
     public MarketBasketAnalysisManagedBean() {
     }
-    
+
 //    public static void main(String[] args) {
 //        Set<String> a = new HashSet<>();
 //        a.add("a");
@@ -43,7 +43,6 @@ public class MarketBasketAnalysisManagedBean implements Serializable {
 //        a.add("a");
 //        System.out.println(a.toString());
 //    }
-
     @PostConstruct
     public void init() {
         rules = marketBasketAnalysisSessionBean.getListAssociationRules();
@@ -56,7 +55,10 @@ public class MarketBasketAnalysisManagedBean implements Serializable {
 
         for (Customer c : allCustomers) {
             Set<String> productsOfCustomer = marketBasketAnalysisSessionBean.getListProductNameByCustomerId(c.getId());
-            System.out.println("customer "+c.getId()+": "+productsOfCustomer.toString());
+            if (productsOfCustomer != null) {
+                System.out.println("customer " + c.getId() + ": " + productsOfCustomer.toString());
+            }
+
         }
 
     }
