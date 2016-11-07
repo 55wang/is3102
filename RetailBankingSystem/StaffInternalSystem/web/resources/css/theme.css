@@ -386,7 +386,7 @@ and open the template in the editor.
     text-align: center;
     padding: 5px;
     min-height: 30px;
-    background: #2087d8;
+    background: #c00;
     -webkit-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
 }
 
@@ -585,7 +585,7 @@ and open the template in the editor.
     text-align: center;
     padding: 5px;
     min-height: 30px;
-    background: #009688;
+    background: #c00;
     -webkit-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
 }
 
@@ -720,11 +720,11 @@ and open the template in the editor.
 }
 
 .crm-container .color-1 .crm-info-icon{
-    background: #c9392f; 
+    background: #c8ba43; 
 }
 
 .crm-container .color-1 .crm-info .info-amount{
-    color: #F44336; 
+    color: #FFEB3B; 
 }
 
 .crm-container .color-2 .crm-info-icon{
@@ -833,4 +833,42 @@ and open the template in the editor.
 .ui-separator{
     height:0px;
     margin:5px 0 5px 0;
+}
+
+.ui-datatable .ui-datatable-header {
+    border-bottom: 0 none;
+    background-color: white;
+    border: 1px solid black;
+    color: black;
+    font-size: 20px;
+}
+
+.ui-datatable .ui-paginator{
+    border: 1px solid black;
+}   
+
+.ui-datatable .ui-state-default, .ui-datatable .ui-widget-content .ui-state-default, .ui-datatable .ui-widget-header .ui-state-default{
+    background-color: #c00 !important;
+    color: white;
+}
+
+.ui-datatable-odd{
+    background: none repeat scroll 0 0 #f2f5f9 !important;
+}
+
+.datatable-holder{
+    padding: 30px;
+    min-height: 120px;
+    background: white;
+    -webkit-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
+    margin: 10px;
+}
+
+.datatable-main{
+    width:99%;
+}
+
+.ui-datatable .ui-row-toggler {
+    cursor: pointer;
+    background: #c00;
 }
