@@ -1,0 +1,93 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+      xmlns:jsf="http://xmlns.jcp.org/jsf"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <cc:interface>
+        <cc:attribute name="top" required="true"/>
+        <cc:attribute name="side" required="true"/>
+    </cc:interface>
+
+    <cc:implementation>
+        <f:view>
+            <h:outputStylesheet library="css" name="theme.css"/>
+            <div id="side-menu">
+                <ul id="side-menu-container">
+                    
+                    <c:if test="#{cc.attrs.top == 'counter'}">
+                        <li class="side-menu-item #{cc.attrs.side == 'counterSummary' ? 'active' : ''}">
+                            <h:link outcome="counter_summary" value="Summary" />
+                        </li>
+                        <li class="side-menu-item #{cc.attrs.side == 'counterChargeFee' ? 'active' : ''}">
+                            <h:link outcome="counter_charge_fee" value="Charge Fee" />
+                        </li>
+                    </c:if>
+                    
+                    <c:if test="#{cc.attrs.top == 'message'}">
+                        <li class="side-menu-item #{cc.attrs.side == 'chat' ? 'active' : ''}">
+                            <h:link outcome="chat" value="Chat" />
+                        </li>
+                        <li class="side-menu-item #{cc.attrs.side == 'notification' ? 'active' : ''}">
+                            <h:link outcome="notification" value="Broadcast" />
+                        </li>
+                    </c:if>
+                    
+                    <c:if test="#{cc.attrs.top == 'customer'}">
+                        <li class="side-menu-item #{cc.attrs.side == 'viewCustomer' ? 'active' : ''}">
+                            <h:link outcome="staff_view_customer" value="View Customer" />
+                        </li>
+                        <li class="side-menu-item #{cc.attrs.side == 'createChargebackCase' ? 'active' : ''}">
+                            <h:link outcome="staff_create_case" value="Create Chargeback Case" />
+                        </li>
+                        <li class="side-menu-item #{cc.attrs.side == 'viewChargebackCase' ? 'active' : ''}">
+                            <h:link outcome="staff_view_case" value="View Chargeback Case" />
+                        </li>
+                        <li class="side-menu-item #{cc.attrs.side == 'createCase' ? 'active' : ''}">
+                            <h:link outcome="create_case" value="Create Case" />
+                        </li>
+                        <li class="side-menu-item #{cc.attrs.side == 'viewCase' ? 'active' : ''}">
+                            <h:link outcome="view_case" value="View Case" />
+                        </li>
+                    </c:if>
+                    
+                    <c:if test="#{cc.attrs.top == 'account'}">
+                        <li class="side-menu-item #{cc.attrs.side == 'checkAccountBalance' ? 'active' : ''}">
+                            <h:link outcome="check_account_balance" value="Check Balance" />
+                        </li>
+                        
+                        <li class="side-menu-item #{cc.attrs.side == 'openAccount' ? 'active' : ''}">
+                            <h:link outcome="open_account" value="Open Account" />
+                        </li>
+
+                        <li class="side-menu-item #{cc.attrs.side == 'accountDeposit' ? 'active' : ''}">
+                            <h:link outcome="account_deposit" value="Deposit" />
+                        </li>
+
+                        <li class="side-menu-item #{cc.attrs.side == 'accountWithDraw' ? 'active' : ''}">
+                            <h:link outcome="account_withdraw" value="Withdraw " />
+                        </li>
+                        
+                    </c:if>
+                    
+                    <c:if test="#{cc.attrs.top == 'card'}">
+                        
+                    </c:if>
+
+                    <c:if test="#{cc.attrs.top == 'bill'}">
+                        
+                    </c:if>
+                    
+                    <c:if test="#{cc.attrs.top == 'transfer'}">
+                        
+                    </c:if>
+                </ul>
+            </div>
+            <!--TODO: Fillin all the sub menus here -->
+        </f:view>
+    </cc:implementation>
+</html>

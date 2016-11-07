@@ -842,6 +842,9 @@ public class EntityDAMSBuilder {
         for (int i = 1; i < 20; i++) {
             da = customerDepositSessionBean.depositIntoAccount(da, new BigDecimal(500 * i));
         }
+        for (int i = 1; i < 10; i++) {
+            da = customerDepositSessionBean.demoDepositIntoAccount(da, new BigDecimal(100 * i));
+        }
         // credit salary of at least 2000
         da = customerDepositSessionBean.creditSalaryIntoAccount(da, new BigDecimal(2000));
         // pay 3 bills

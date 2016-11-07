@@ -55,6 +55,10 @@
                                         <h:outputText value="#{cca.annualInterestRate}%" />
                                     </p:column>
 
+                                    <p:column headerText="Remaining Credit Limit">
+                                        <h:outputText value="#{cca.getRemainingCreditLimit()}" />
+                                    </p:column>
+                                    
                                     <p:column headerText="Card Status">
                                         <h:outputText value="#{cca.cardStatus}" />
                                     </p:column>

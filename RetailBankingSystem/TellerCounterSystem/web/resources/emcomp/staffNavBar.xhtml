@@ -1,0 +1,63 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:emcomp="http://xmlns.jcp.org/jsf/composite/emcomp">
+
+    <cc:interface>
+        <cc:attribute name="context" required="true"/>
+    </cc:interface>
+
+    <cc:implementation>
+        <f:view>
+            <p:growl id="msgs" widgetVar="globalGrowl" showDetail="true" sticky="true" severity="INFO"/>
+            <div id="header">
+                <div id="logo-wrapper" class="header-navigation">
+                    <h:graphicImage library="img" name="merlionLogo3.png" style="width:150px" />
+                </div>
+                <ul class="header-navigation">
+                    <c:if test="#{staffUserCounterManagedBean.isUserInRole(staffUserCounterManagedBean.GENERAL_TELLER)}">
+                        <li id="header-overview" class="#{cc.attrs.context == 'counter' ? 'active' : ''}" value="counter"><a href="../counter/counter_summary.xhtml">Counter</a></li>
+                        <li id="header-overview" class="#{cc.attrs.context == 'message' ? 'active' : ''}" value="message"><a href="../message/chat.xhtml">Message</a></li>
+                        <li id="header-overview" class="#{cc.attrs.context == 'customer' ? 'active' : ''}" value="customer"><a href="../cms/staff_view_customer.xhtml">Customer</a></li>
+                        <li id="header-overview" class="#{cc.attrs.context == 'account' ? 'active' : ''}" value="dams"><a href="../dams/check_account_balance.xhtml">DAMS</a></li>
+                        <li id="header-overview" class="#{cc.attrs.context == 'card' ? 'active' : ''}" value="card"><a href="">Card</a></li>
+                        <li id="header-overview" class="#{cc.attrs.context == 'bill' ? 'active' : ''}" value="bill"><a href="../bill/manage_organization.xhtml">Bill</a></li>
+                    </c:if>
+                </ul>
+                <emcomp:headerMenu context="staff_home" userName="#{staffUserCounterManagedBean.getUserName()}"></emcomp:headerMenu>
+            </div>
+            <!--receive event from channel-->
+            <!--onMessage="handleMessage" This calls a js function-->
+            <p:socket channel="/chat/#{staffUserCounterManagedBean.userName}" widgetVar='subscriber' onMessage="handleMessage" autoConnect="true" />
+            <!-- Global Notification -->
+            <p:socket onMessage="handleAnnouncement" channel="/staff_notify"/>
+            <c:forEach items="#{staffUserCounterManagedBean.roles}" var="role" >
+                <p:socket onMessage="handleAnnouncement" channel="/role_notification/#{role.roleName}"/>
+            </c:forEach>
+            <!--This js function will be replace at notification.xhtml page-->
+            <script type="text/javascript">
+                function handleAnnouncement(facesmessage) {
+                    console.log(facesmessage);
+                    facesmessage.severity = "info";
+                    PF('globalGrowl').show([facesmessage]);
+                }
+
+                function handleMessage(message) {
+                    console.log(message);
+                    facesmessage = {};
+                    facesmessage.rendered = false;
+                    facesmessage.severity = "info"
+                    facesmessage.summary = message.senderName;
+                    facesmessage.detail = message.message;
+                    PF('globalGrowl').show([facesmessage]);
+                }
+            </script>
+
+        </f:view>
+    </cc:implementation>
+</html>

@@ -10,6 +10,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -26,6 +27,19 @@ public class CustomerGroup implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    
+    @Column(unique=true, nullable = false)
+    private String groupName;
+    private Long depositRecency = 1L;
+    private Long depositFrequency =1L;
+    private Long depositMonetary =1L;
+    
+    private Long cardRecency =1L;
+    private Long cardFrequency =1L;
+    private Long cardMonetary =1L;
+    
+    private String hashTag;
+    private Double actualIncome = 0.0;
     
     @OneToMany(cascade = CascadeType.MERGE)
     private List<Customer> customer = new ArrayList<>();
@@ -70,5 +84,77 @@ public class CustomerGroup implements Serializable {
     public void setCustomer(List<Customer> customer) {
         this.customer = customer;
     }
-    
+
+    public String getGroupName() {
+        return groupName;
+    }
+
+    public void setGroupName(String groupName) {
+        this.groupName = groupName;
+    }
+
+    public Long getDepositRecency() {
+        return depositRecency;
+    }
+
+    public void setDepositRecency(Long depositRecency) {
+        this.depositRecency = depositRecency;
+    }
+
+    public Long getDepositFrequency() {
+        return depositFrequency;
+    }
+
+    public void setDepositFrequency(Long depositFrequency) {
+        this.depositFrequency = depositFrequency;
+    }
+
+    public Long getDepositMonetary() {
+        return depositMonetary;
+    }
+
+    public void setDepositMonetary(Long depositMonetary) {
+        this.depositMonetary = depositMonetary;
+    }
+
+    public Long getCardRecency() {
+        return cardRecency;
+    }
+
+    public void setCardRecency(Long cardRecency) {
+        this.cardRecency = cardRecency;
+    }
+
+    public Long getCardFrequency() {
+        return cardFrequency;
+    }
+
+    public void setCardFrequency(Long cardFrequency) {
+        this.cardFrequency = cardFrequency;
+    }
+
+    public Long getCardMonetary() {
+        return cardMonetary;
+    }
+
+    public void setCardMonetary(Long cardMonetary) {
+        this.cardMonetary = cardMonetary;
+    }
+
+    public String getHashTag() {
+        return hashTag;
+    }
+
+    public void setHashTag(String hashTag) {
+        this.hashTag = hashTag;
+    }
+
+    public Double getActualIncome() {
+        return actualIncome;
+    }
+
+    public void setActualIncome(Double actualIncome) {
+        this.actualIncome = actualIncome;
+    }
+
 }

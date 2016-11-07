@@ -1,0 +1,164 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:em="http://xmlns.jcp.org/jsf/composite/emcomp"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <!--shift + ctrl + F, format-->
+    <f:view>
+        <h:head>
+            <title>Merlion Internal</title>
+            <em:cssImport></em:cssImport>
+        </h:head>
+        <h:body>
+            <em:staffNavBar context="customer"></em:staffNavBar>
+            <em:staffSideBar top="customer" side="viewCustomer"></em:staffSideBar>
+            <div class="container">
+
+
+                <!--                <p:messages id="messagesStatus" redisplay="false">-->
+                <p:panel header="Search Customer">
+
+                    <p:outputPanel>
+                        <h:form id="search-form">
+                            <p:inputText id="idFilter" style="width:180px" value="#{staffCustomerInformationCounterManagedBean.searchText}" placeholder="Enter identity number"  />
+                            <p:commandButton value="Search" actionListener="#{staffCustomerInformationCounterManagedBean.search}" update="update-form"/>
+                        </h:form>
+                    </p:outputPanel>
+                </p:panel>
+
+
+                <p:panel header="List of Customers">
+                    <h:form id="update-form">
+                        <p:dataTable id="customerList" value="#{staffCustomerInformationCounterManagedBean.customers}" var="customer" sortMode="multiple" >
+
+                            <p:column style="width:16px">
+                                <p:rowToggler />
+                            </p:column>
+
+                            <p:column headerText="Last Name" sortBy="#{customer.lastname}">
+                                <h:outputText value="#{customer.lastname}" />
+                            </p:column>
+
+                            <p:column headerText="First Name" sortBy="#{customer.firstname}">
+                                <h:outputText value="#{customer.firstname}" />
+                            </p:column>
+
+                            <p:column headerText="Identity Type" sortBy="#{customer.identityType.toString()}" >
+                                <h:outputText value="#{customer.identityType.toString()}" />
+                            </p:column>
+
+                            <p:column headerText="Identity Number" sortBy="#{customer.identityNumber}">
+                                <h:outputText value="#{customer.identityNumber}" />
+                            </p:column>
+
+                            <p:column headerText="Income" sortBy="#{customer.income.toString()}">
+                                <h:outputText value="#{customer.income.toString()}" />                                 
+                            </p:column>
+
+                            <p:column headerText="No. of Accounts" sortBy="#{customer.getMainAccount().getBankAcounts().size()}">
+                                <h:outputText value="#{customer.getMainAccount().getBankAcounts().size()}" />
+                            </p:column>
+                            <p:rowExpansion>
+                                <p:panelGrid  columns="2" columnClasses="label,value" style="width:500px; margin:auto" >
+                                    <f:facet name="header">
+                                        Basic Information
+                                    </f:facet>
+
+                                    <h:outputText value="Last Name: " />
+                                    <h:outputText value="#{customer.lastname}" style="width:97%"/>
+
+                                    <h:outputText value="First Name: " />
+                                    <h:outputText value="#{customer.firstname}" style="width:97%"/>
+
+                                    <h:outputText value="Status: " />
+                                    <h:outputText value="#{customer.mainAccount.status.toString()}" style="width:100%"/>
+
+                                    <h:outputText value="Gender: " />
+                                    <h:outputText value="#{customer.gender.toString()}" style="width:100%"/>
+                                     
+                                    <h:outputText value="Nationality: " />
+                                    <h:outputText value="#{customer.nationality.toString()}" style="width:100%"/>
+                               
+                                    <h:outputText value="Identity Type: " />
+                                    <h:outputText value="#{customer.identityType.toString()}" style="width:100%"/>
+                                     
+                                    <h:outputText value="Identity Number: " />
+                                    <h:outputText value="#{customer.identityNumber}" />
+                                      
+                                    <h:outputText value="Income (S$): " />
+                                    <h:outputText value="#{customer.income.toString()}" style="width:100%"/>
+
+                                    <h:outputText value="Marital Status: " />
+                                    <h:outputText value="#{customer.maritalStatus.toString()}" style="width:100%"/>
+                            
+                                    <h:outputText value="Education: " />
+                                    <h:outputText value="#{customer.education.toString()}" style="width:100%"/>
+                                 
+                                    <h:outputText value="DOB: " />
+                                    <h:outputText value="#{customer.birthDay}" style="width:100%"><f:convertDateTime pattern="dd-MM-yyyy" /></h:outputText>
+
+                                    <h:outputText value="Credit Score" />
+                                    <h:outputText value="#{customer.creditScore}" ><f:convertNumber pattern="#0.00" /></h:outputText>
+                                </p:panelGrid>
+
+                                <f:facet name="header">
+                                    Contact Details 
+                                </f:facet>
+
+                                <p:panelGrid  columns="2" columnClasses="label,value" style="width:500px; margin: auto" >
+                                    <f:facet name="header" >
+                                        Contact Details 
+                                    </f:facet>
+
+                                    <h:outputText value="Phone Number: " />
+                                    <h:outputText value="#{customer.phone}" />
+
+                                    <h:outputText value="Email: " />
+                                    <h:outputText value="#{customer.email}" />                                   
+
+                                    <h:outputText value="Address: " />
+                                    <h:outputText value="#{customer.address}" />
+
+                                    <h:outputText value="Postal Code: " />
+                                    <h:outputText value="#{customer.postalCode}"/>
+
+
+                                </p:panelGrid>
+
+                                <p:dataTable var="account" value="#{customer.mainAccount.bankAcounts}" style="width:500px; margin:auto">
+                                    <f:facet name="header">
+                                        Account Details 
+                                    </f:facet>
+                                    <p:column headerText="Account Type">
+                                        <h:outputText value="#{account.type}" />
+                                    </p:column>
+
+                                    <p:column headerText="Balance">
+                                        <h:outputText value="#{account.balance}" ><f:convertNumber pattern="#0.00" /></h:outputText>
+                                    </p:column>
+
+                                </p:dataTable>
+                                <br/><br/>
+                                <p:outputPanel>
+
+                                    <p:commandButton class="h-center" value="Edit"  action="#{staffCustomerInformationCounterManagedBean.goToEditPage(customer)}" />
+
+                                </p:outputPanel>
+
+
+                            </p:rowExpansion>
+
+                        </p:dataTable>
+                    </h:form>
+                </p:panel>
+                <!--                </p:messages>-->
+            </div>
+        </h:body> 
+    </f:view>
+
+
+</html>
+

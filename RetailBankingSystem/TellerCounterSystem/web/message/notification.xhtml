@@ -1,0 +1,40 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:em="http://xmlns.jcp.org/jsf/composite/emcomp"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <!--shift + ctrl + F, format-->
+    <f:view>
+        <h:head>
+            <title>MBS Counter</title>
+            <em:cssImport></em:cssImport>
+        </h:head>
+        <h:body>
+            <em:staffNavBar context="message"></em:staffNavBar>
+            <em:staffSideBar top="message" side="notification"></em:staffSideBar>
+            <div class="container">
+                <h:form>
+                    <p:panel header="Announcements">
+                        <div id="output">
+                            <c:forEach items="#{notificationViewCounterManagedBean.announcements}" var="announcement">
+                                <div class="table-cell border-bottom" onclick="showModal('#{announcement.title}', '#{announcement.content}');">
+                                    <span class="v-center absolute-left">#{announcement.title}</span>
+                                    <span class="v-center absolute-right">#{announcement.creationDate}</span>
+                                </div>
+                            </c:forEach>
+                        </div>
+                    </p:panel>
+                </h:form>
+            </div>
+            <p:dialog id="modal" header="" widgetVar="notificationModal" modal="true" height="100">
+                <h:outputText id="modal-content" value="" />
+            </p:dialog>
+            <h:outputScript library="primefaces" name="jquery/jquery.js" />
+            <script type="text/javascript" src="notify.js"></script>
+        </h:body>
+    </f:view>
+</html>
+

@@ -23,6 +23,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import server.utilities.ConstantUtils;
+import server.utilities.DateUtils;
 import server.utilities.EnumUtils;
 import server.utilities.GenerateAccountAndCCNumber;
 
@@ -188,7 +189,7 @@ public class CustomerDepositSessionBean implements CustomerDepositSessionBeanLoc
             ba.addTransaction(t);
             ba.addBalance(depositAmount);
             em.merge(ba);
-            return "Deposit Success!";
+            return "SUCCESS";
         }
     }
 
@@ -218,9 +219,8 @@ public class CustomerDepositSessionBean implements CustomerDepositSessionBeanLoc
         if (ba == null) {
             return "Account Not Found";
         } else {
-            int res = ba.getBalance().compareTo(withdrawAmount);
-            if (res == -1) {
-                return "Withdraw Failed! Balance not enough!";
+            if (ba.getBalance().compareTo(withdrawAmount) < 0) {
+                return "Withdraw Failed! Balance not enough! Current balance is:" + ba.getBalance();
             } else {
                 TransactionRecord t = new TransactionRecord();
                 t.setActionType(EnumUtils.TransactionType.WITHDRAW);
@@ -231,7 +231,7 @@ public class CustomerDepositSessionBean implements CustomerDepositSessionBeanLoc
                 ba.addTransaction(t);
                 ba.removeBalance(withdrawAmount);
                 em.merge(ba);
-                return "Withdraw Success!";
+                return "SUCCESS";
             }
         }
     }
@@ -272,14 +272,32 @@ public class CustomerDepositSessionBean implements CustomerDepositSessionBeanLoc
             return account;
         }
     }
+    
+     @Override
+    public DepositAccount demoDepositIntoAccount(DepositAccount account, BigDecimal depositAmount) {
+        if (account == null || depositAmount == null) {
+            return null;
+        } else {
+            TransactionRecord t = new TransactionRecord();
+            t.setCreationDate(DateUtils.randomDate());
+            t.setActionType(EnumUtils.TransactionType.DEPOSIT);
+            t.setAmount(depositAmount);
+            t.setCredit(Boolean.TRUE);
+            t.setFromAccount(account);
+            t.setReferenceNumber(generateReferenceNumber());
+            account.addTransaction(t);
+            account.addBalance(depositAmount);
+            em.merge(account);
+            return account;
+        }
+    }
 
     @Override
     public DepositAccount withdrawFromAccount(DepositAccount account, BigDecimal withdrawAmount) {
         if (account == null || withdrawAmount == null) {
             return null;
         } else {
-            int res = account.getBalance().compareTo(withdrawAmount);
-            if (res == -1) {
+            if (account.getBalance().compareTo(withdrawAmount) < 0) {
                 return null;
             } else {
                 TransactionRecord t = new TransactionRecord();

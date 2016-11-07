@@ -85,7 +85,7 @@ public class CardAcctSessionBean implements CardAcctSessionBeanLocal {
 
                     //add bad credit record
                     cca.setNumOfLatePayment(cca.getNumOfLatePayment() + 1);
-
+                    cca.setLastLatePaymentDate(new Date());
                     if (cca.getOverDueDays() >= 30 && cca.getOverDueDays() <= 59) {
                         cca.setNumOf_30_59_LatePayment(cca.getNumOf_30_59_LatePayment() + 1);
                     } else if (cca.getOverDueDays() >= 60 && cca.getOverDueDays() <= 89) {

@@ -58,6 +58,8 @@ public class EntityBuilderBean {
     private EntityWealthBuilder entityWealthBuilder;
     @EJB
     private EntityFactBuilder entityFactBuilder;
+    @EJB
+    private EntityTellerCounterBuilder entityTellerCounterBuilder;
     
     // session beans
     @EJB
@@ -102,13 +104,15 @@ public class EntityBuilderBean {
         entityPayLahBuilder.initPayLahDemoData();
 
         //wealth
-//        List<FinancialInstrument> allFinancialInstruments = entityWealthBuilder.allFinancialInstrument();
-//        demoPortfolio = entityWealthBuilder.initWealth(allFinancialInstruments);
-//        entityFactBuilder.initSinglePortfolioFact(demoMainAccount, demoPortfolio);
-//        demoPortfolio = entityWealthBuilder.initPortfolioFactTable2(demoMainAccount, allFinancialInstruments);
-//        entityFactBuilder.initSinglePortfolioFact(demoMainAccount, demoPortfolio);
-//
-//        entityFactBuilder.initBankFact();
+        List<FinancialInstrument> allFinancialInstruments = entityWealthBuilder.allFinancialInstrument();
+        demoPortfolio = entityWealthBuilder.initWealth(allFinancialInstruments);
+        entityFactBuilder.initSinglePortfolioFact(demoMainAccount, demoPortfolio);
+        demoPortfolio = entityWealthBuilder.initPortfolioFactTable2(demoMainAccount, allFinancialInstruments);
+        entityFactBuilder.initSinglePortfolioFact(demoMainAccount, demoPortfolio);
 
+        entityFactBuilder.initBankFact();
+
+        entityFactBuilder.initBankFact();
+        entityTellerCounterBuilder.init();
     }
 }
