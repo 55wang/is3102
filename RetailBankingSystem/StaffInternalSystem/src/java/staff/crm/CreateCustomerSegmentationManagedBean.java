@@ -5,7 +5,6 @@
  */
 package staff.crm;
 
-import ejb.session.common.NewCustomerSessionBean;
 import ejb.session.common.NewCustomerSessionBeanLocal;
 import ejb.session.crm.CustomerSegmentationSessionBeanLocal;
 import entity.crm.CustomerGroup;

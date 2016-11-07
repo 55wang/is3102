@@ -41,7 +41,7 @@ public class BizIntelligenceSessionBean implements BizIntelligenceSessionBeanLoc
     public Long getBankTotalActiveDepositAcct(Date startDate, Date endDate) {
         System.out.println(startDate.toString());
         System.out.println(endDate.toString());
-        Query q = em.createQuery("SELECT COUNT(DISTINCT(d.accountNumber)) FROM DepositAccount d, TransactionRecord t1, TransactionRecord t2 WHERE d.status=:activeStatus AND ((t1.creationDate BETWEEN :startDate AND :endDate AND t1.fromAccount.accountNumber=d.accountNumber)  OR (t2.creationDate BETWEEN :startDate AND :endDate AND t2.toAccount.accountNumber=d.accountNumber))");
+        Query q = em.createQuery("SELECT COUNT(DISTINCT(d.accountNumber)) FROM DepositAccount d WHERE d.status=:activeStatus AND (EXISTS (SELECT t1 FROM TransactionRecord t1 WHERE t1.creationDate BETWEEN :startDate AND :endDate AND t1.fromAccount.accountNumber=d.accountNumber) OR EXISTS (SELECT t2 FROM TransactionRecord t2 WHERE t2.creationDate BETWEEN :startDate AND :endDate AND t2.toAccount.accountNumber=d.accountNumber))");
         q.setParameter("activeStatus", StatusType.ACTIVE);
         q.setParameter("startDate", startDate);
         q.setParameter("endDate", endDate);
@@ -157,7 +157,7 @@ public class BizIntelligenceSessionBean implements BizIntelligenceSessionBeanLoc
     
     @Override
     public Long getBankTotalActiveCardAcct(Date startDate, Date endDate) {
-        Query q1 = em.createQuery("SELECT COUNT(DISTINCT(cc.id)) FROM CreditCardAccount cc, CardTransaction ct WHERE cc.CardStatus=:activeStatus AND (ct.createDate BETWEEN :startDate AND :endDate AND ct.creditCardAccount.id=cc.id)");
+        Query q1 = em.createQuery("SELECT COUNT(DISTINCT(cc.id)) FROM CreditCardAccount cc WHERE cc.CardStatus=:activeStatus AND EXISTS (SELECT ct FROM CardTransaction ct WHERE ct.createDate BETWEEN :startDate AND :endDate AND ct.creditCardAccount.id=cc.id)");
         q1.setParameter("activeStatus", EnumUtils.CardAccountStatus.ACTIVE);
         q1.setParameter("startDate", startDate);
         q1.setParameter("endDate", endDate);

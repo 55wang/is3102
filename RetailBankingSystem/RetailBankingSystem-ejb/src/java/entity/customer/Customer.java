@@ -106,7 +106,7 @@ public class Customer implements Serializable {
     private Long cardFrequency = 0L;
     private Long cardMonetary = 0L;
             
-    private String hashTag;
+    private String hashTag = "";
 
     // mapping
     @OneToOne(cascade = {CascadeType.MERGE})
@@ -879,7 +879,7 @@ public class Customer implements Serializable {
     }
 
     public void setHashTag(String hashTag) {
-        this.hashTag = hashTag;
+        this.hashTag += hashTag;
     }
 
 }

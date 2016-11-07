@@ -19,6 +19,7 @@ import org.primefaces.model.chart.Axis;
 import org.primefaces.model.chart.AxisType;
 import org.primefaces.model.chart.BarChartModel;
 import org.primefaces.model.chart.ChartSeries;
+import server.utilities.ColorUtils;
 import server.utilities.DateUtils;
 
 /**
@@ -77,20 +78,38 @@ public class ViewCustomerOverviewManagedBean implements Serializable {
     private BarChartModel customerAcctBarModel;
     private BarChartModel customerAgeBarModel;
     private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-    private Date startDate = DateUtils.getBeginOfMonth();
-    private Date endDate = DateUtils.getEndOfMonth();
+    private Date startDate;
+    private Date endDate;
 
     public ViewCustomerOverviewManagedBean() {
     }
 
     @PostConstruct
     public void init() {
+        startDate = DateUtils.getBeginOfMonth();
+        endDate = DateUtils.getEndOfMonth();
+        
+        System.out.println(startDate);
+        System.out.println(endDate);
+        
         depositChurnCustomer = crmIntelligenceSessionBean.getDepositChurnCustomer(startDate, endDate);
         cardChurnCustomer = crmIntelligenceSessionBean.getCardChurnCustomer(startDate, endDate);
         loanChurnCustomer = crmIntelligenceSessionBean.getLoanChurnCustomer(startDate, endDate);
         wealthChurnCustomer = crmIntelligenceSessionBean.getWealthChurnCustomer(startDate, endDate);
         avgCustomerDepositSavingAmount = crmIntelligenceSessionBean.getCustomerAvgDepositSavingAmount(endDate);
         avgCustomerLoanAmount = crmIntelligenceSessionBean.getCustomerAvgLoanAmount(endDate);
+        createCustomerAcctBarModel();
+        createCustomerAgeBarModel();
+    }
+    
+    public void viewDataTable(){
+        depositChurnCustomer = crmIntelligenceSessionBean.getDepositChurnCustomer(startDate, endDate);
+        cardChurnCustomer = crmIntelligenceSessionBean.getCardChurnCustomer(startDate, endDate);
+        loanChurnCustomer = crmIntelligenceSessionBean.getLoanChurnCustomer(startDate, endDate);
+        wealthChurnCustomer = crmIntelligenceSessionBean.getWealthChurnCustomer(startDate, endDate);
+        avgCustomerDepositSavingAmount = crmIntelligenceSessionBean.getCustomerAvgDepositSavingAmount(endDate);
+        avgCustomerLoanAmount = crmIntelligenceSessionBean.getCustomerAvgLoanAmount(endDate);
+        
         createCustomerAcctBarModel();
         createCustomerAgeBarModel();
     }
@@ -108,7 +127,7 @@ public class ViewCustomerOverviewManagedBean implements Serializable {
 
     private BarChartModel createCustomerAcctBarModel() {
         customerAcctBarModel = initCustomerAcctBarModel();
-        customerAcctBarModel.setTitle("New Customer Banking Service");
+        customerAcctBarModel.setTitle("New Banking Service");
         customerAcctBarModel.setLegendPosition("ne");
 
         Axis xAxis = customerAcctBarModel.getAxis(AxisType.X);
@@ -160,6 +179,8 @@ public class ViewCustomerOverviewManagedBean implements Serializable {
 
         model.addSeries(series1);
         model.addSeries(series2);
+        model.setSeriesColors(ColorUtils.getFlatUIColors(0) + "," + ColorUtils.getFlatUIColors(10));
+        model.setExtender("customExtender");
 
         return model;
     }
@@ -168,7 +189,13 @@ public class ViewCustomerOverviewManagedBean implements Serializable {
         BarChartModel model = new BarChartModel();
 
         ChartSeries series1 = new ChartSeries();
-        series1.setLabel("# of new customers");
+        ChartSeries series2 = new ChartSeries();
+        ChartSeries series3 = new ChartSeries();
+        ChartSeries series4 = new ChartSeries();
+        series1.setLabel("# of new deposit accounts");
+        series2.setLabel("# of new credit card accounts");
+        series3.setLabel("# of new loan accounts");
+        series4.setLabel("# of new executed investment plans");
 
         bankTotalDepositAcct = bizIntelligenceSessionBean.getBankTotalNewDepositAcct(startDate, endDate);
         bankTotalCardAcct = bizIntelligenceSessionBean.getBankTotalNewCardAcct(startDate, endDate);
@@ -176,11 +203,16 @@ public class ViewCustomerOverviewManagedBean implements Serializable {
         bankTotalExecutedPortfolio = bizIntelligenceSessionBean.getBankNewExecutedPortfolio(startDate, endDate);
 
         series1.set("Deposit Service", bankTotalDepositAcct);
-        series1.set("Card Service", bankTotalCardAcct);
-        series1.set("Loan Service", bankTotalLoanAcct);
-        series1.set("Portfolio Service", bankTotalExecutedPortfolio);
+        series2.set("Card Service", bankTotalCardAcct);
+        series3.set("Loan Service", bankTotalLoanAcct);
+        series4.set("Portfolio Service", bankTotalExecutedPortfolio);
 
         model.addSeries(series1);
+        model.addSeries(series2);
+        model.addSeries(series3);
+        model.addSeries(series4);
+        model.setSeriesColors(ColorUtils.getFlatUIColors(0) + "," + ColorUtils.getFlatUIColors(5) + "," + ColorUtils.getFlatUIColors(10) + "," + ColorUtils.getFlatUIColors(15) );
+        model.setExtender("customExtender");
 
         return model;
     }

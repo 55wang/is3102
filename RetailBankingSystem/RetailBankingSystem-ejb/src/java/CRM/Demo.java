@@ -30,17 +30,47 @@ public class Demo {
 //        itemsetList.add(new HashSet<>(Arrays.asList("d", "e")));
 //        itemsetList.add(new HashSet<>(Arrays.asList("a", "b", "c")));
 //        itemsetList.add(new HashSet<>(Arrays.asList("b")));
-        itemsetList.add(new HashSet<>(Arrays.asList("a", "b")));
-        itemsetList.add(new HashSet<>(Arrays.asList("b", "c", "d")));
-        itemsetList.add(new HashSet<>(Arrays.asList("a", "c", "d", "e")));
-        itemsetList.add(new HashSet<>(Arrays.asList("a", "d", "e")));
-        itemsetList.add(new HashSet<>(Arrays.asList("a", "b", "c")));
- 
-        itemsetList.add(new HashSet<>(Arrays.asList("a", "b", "c", "d")));
-        itemsetList.add(new HashSet<>(Arrays.asList("a")));
-        itemsetList.add(new HashSet<>(Arrays.asList("a", "b", "c")));
-        itemsetList.add(new HashSet<>(Arrays.asList("a", "b", "d")));
-        itemsetList.add(new HashSet<>(Arrays.asList("b", "c", "e")));
+        
+        List<String> testList = new ArrayList<>();
+        testList.add("a");
+        testList.add("b");
+        itemsetList.add(new HashSet<>(testList));
+        
+        testList = new ArrayList<>();
+        testList.add("c");
+        itemsetList.add(new HashSet<>(testList));
+        
+        testList = new ArrayList<>();
+        testList.add("a");
+        itemsetList.add(new HashSet<>(testList));
+        
+        testList = new ArrayList<>();
+        testList.add("d");
+        testList.add("e");
+        itemsetList.add(new HashSet<>(testList));
+        
+        testList = new ArrayList<>();
+        testList.add("a");
+        testList.add("b");
+        testList.add("c");
+        itemsetList.add(new HashSet<>(testList));
+        
+        testList = new ArrayList<>();
+        testList.add("b");
+        itemsetList.add(new HashSet<>(testList));
+        
+        
+//        itemsetList.add(new HashSet<>(Arrays.asList("a", "b")));
+//        itemsetList.add(new HashSet<>(Arrays.asList("b", "c", "d")));
+//        itemsetList.add(new HashSet<>(Arrays.asList("a", "c", "d", "e")));
+//        itemsetList.add(new HashSet<>(Arrays.asList("a", "d", "e")));
+//        itemsetList.add(new HashSet<>(Arrays.asList("a", "b", "c")));
+// 
+//        itemsetList.add(new HashSet<>(Arrays.asList("a", "b", "c", "d")));
+//        itemsetList.add(new HashSet<>(Arrays.asList("a")));
+//        itemsetList.add(new HashSet<>(Arrays.asList("a", "b", "c")));
+//        itemsetList.add(new HashSet<>(Arrays.asList("a", "b", "d")));
+//        itemsetList.add(new HashSet<>(Arrays.asList("b", "c", "e")));
 
         long startTime = System.nanoTime();
         FrequentItemsetData<String> data = generator.generate(itemsetList, 0.0);
