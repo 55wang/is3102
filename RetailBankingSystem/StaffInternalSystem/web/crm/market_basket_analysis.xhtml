@@ -18,10 +18,28 @@
             <div class="container">
                 <h:form id="mainForm">
                     <p:panel header="Market Basket Analysis">
-                        <p:messages id="messagesStatus" redisplay="false" >
-                        </p:messages>
-                    </p:panel>
 
+                        <p:dataTable value="#{marketBasketAnalysisManagedBean.rules}" var="rule" >
+                            <p:column headerText="Antecedent">
+                                <h:outputText value="#{rule.antecedent}" />
+                            </p:column>
+                            <p:column headerText="Consequent">
+                                <h:outputText value="#{rule.consequent}"/>
+                            </p:column>
+                            <p:column headerText="Confidence">
+                                <h:outputText value="#{rule.confidence}" />
+                            </p:column>
+                            <p:column headerText="Lift">
+                                <h:outputText value="#{rule.lift}" />
+                            </p:column>
+                        </p:dataTable>
+                        <p:commandButton value="Refresh Association Rules" action="#{marketBasketAnalysisManagedBean.refreshAssociationRules()}" update="@form">
+                        </p:commandButton>
+                        <p:commandButton value="Test getListProductName for all customers" action="#{marketBasketAnalysisManagedBean.testGetListProductName()}" update="@form">
+                        </p:commandButton>
+                    </p:panel>
+                    <p:messages id="messagesStatus" redisplay="false" >
+                    </p:messages>
                 </h:form>
             </div>
 
