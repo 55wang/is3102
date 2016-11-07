@@ -101,7 +101,7 @@ public class EntityBuilderBean {
         entityCreditCardOrderBuilder.initCreditCardOrder(demoRewardCardProduct, demoPromoProduct);
         entityCaseBuilder.initCase();
         entityBillOrgBuilder.initBillOrganization();
-        entityPayLahBuilder.initPayLahDemoData();
+//        entityPayLahBuilder.initPayLahDemoData();
 
         //wealth
 //        List<FinancialInstrument> allFinancialInstruments = entityWealthBuilder.allFinancialInstrument();

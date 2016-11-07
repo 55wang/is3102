@@ -150,7 +150,7 @@ public class EntityCustomerBuilder {
         Customer c4 = new Customer(); //Customer group 4: wealthy customer
         c4.setAddress("3 Sim Lim Avenue, 898B-501"); //make it a bit more real
         try {
-            c3.setBirthDay(new SimpleDateFormat("dd-MM-yyyy").parse("01-01-1970"));
+            c4.setBirthDay(new SimpleDateFormat("dd-MM-yyyy").parse("01-01-1970"));
         } catch (Exception ex) {
         }
         c4.setEmail("raymondlei90s@gmail.com");      
@@ -174,8 +174,8 @@ public class EntityCustomerBuilder {
         ma4.setUserID(u4);
         ma4.setPassword(p4);
         ma4.setStatus(EnumUtils.StatusType.ACTIVE);
-        mainAccountSessionBean.createMainAccount(ma4);
-        newCustomerSessionBean.createCustomer(c4);
+        ma4 = mainAccountSessionBean.createMainAccount(ma4);
+        c4 = newCustomerSessionBean.createCustomer(c4);
 
         ma4.setCustomer(c4);
         c4.setMainAccount(ma4);
