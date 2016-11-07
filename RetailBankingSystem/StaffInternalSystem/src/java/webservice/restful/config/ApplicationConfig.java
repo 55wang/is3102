@@ -36,10 +36,14 @@ public class ApplicationConfig extends Application {
         resources.add(webservice.restful.creditcard.CreditCardSettlementService.class);
         resources.add(webservice.restful.mobile.MobileInitPayLahService.class);
         resources.add(webservice.restful.mobile.MobileOTPService.class);
+        resources.add(webservice.restful.mobile.MobileRequestService.class);
         resources.add(webservice.restful.mobile.MobileTransferService.class);
         resources.add(webservice.restful.mobile.MobileUserLoginService.class);
         resources.add(webservice.restful.mobile.card.MobileCardSummaryService.class);
         resources.add(webservice.restful.mobile.card.MobilePayOwnCCService.class);
+        resources.add(webservice.restful.mobile.request.MobilePayForRequestService.class);
+        resources.add(webservice.restful.mobile.request.MobilePaymeRequestSummaryService.class);
+        resources.add(webservice.restful.mobile.setting.MobileSaveSettingService.class);
         resources.add(webservice.restful.mobile.summary.MobileAccountHistoryService.class);
         resources.add(webservice.restful.mobile.summary.MobileAccountSummaryService.class);
         resources.add(webservice.restful.mobile.transfer.MobileInterAccountTransferService.class);

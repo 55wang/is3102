@@ -14,6 +14,7 @@ import entity.dams.account.CustomerDepositAccount;
 import entity.dams.account.CustomerFixedDepositAccount;
 import entity.dams.account.MobileAccount;
 import entity.loan.LoanAccount;
+import java.math.RoundingMode;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ws.rs.Consumes;
@@ -73,7 +74,7 @@ public class MobileAccountSummaryService {
             MobileAccount mobileAccount = mobileBean.getMobileAccountByUserId(ma.getUserID());
             // request to set up mobile password
             AccountDTO mobileAccountDTO = new AccountDTO();
-            mobileAccountDTO.setAccountBalance(mobileAccount.getBalance().setScale(2).toString());
+            mobileAccountDTO.setAccountBalance(mobileAccount.getBalance().setScale(2, RoundingMode.UP).toString());
             mobileAccountDTO.setAccountName("Mobile Account");
             mobileAccountDTO.setAccountNumber(mobileAccount.getAccountNumber());
             mobileAccountDTO.setAccountType("MOBILE");
@@ -83,7 +84,7 @@ public class MobileAccountSummaryService {
             List<CustomerDepositAccount> savingsAccounts = depositBean.getAllNonFixedCustomerAccounts(ma.getId());
             for (CustomerDepositAccount a : savingsAccounts) {
                 AccountDTO dto = new AccountDTO();
-                dto.setAccountBalance(a.getBalance().setScale(2).toString());
+                dto.setAccountBalance(a.getBalance().setScale(2, RoundingMode.UP).toString());
                 dto.setAccountName(a.getProduct().getName());
                 dto.setAccountNumber(a.getAccountNumber());
                 dto.setAccountType("SAVING");
@@ -93,7 +94,7 @@ public class MobileAccountSummaryService {
             List<CustomerFixedDepositAccount> fixedAccounts = depositBean.getAllFixedCustomerAccounts(ma.getId());
             for (CustomerFixedDepositAccount a : fixedAccounts) {
                 AccountDTO dto = new AccountDTO();
-                dto.setAccountBalance(a.getBalance().setScale(2).toString());
+                dto.setAccountBalance(a.getBalance().setScale(2, RoundingMode.UP).toString());
                 dto.setAccountName(a.getProduct().getName());
                 dto.setAccountNumber(a.getAccountNumber());
                 dto.setAccountType("FIXED");

@@ -13,6 +13,7 @@ import entity.dams.account.CustomerDepositAccount;
 import entity.dams.account.CustomerFixedDepositAccount;
 import entity.dams.account.MobileAccount;
 import entity.loan.LoanAccount;
+import java.math.RoundingMode;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ws.rs.Consumes;
@@ -72,7 +73,7 @@ public class MobileRetreiveInterAccountsService {
             List<CustomerDepositAccount> savingsAccounts = depositBean.getAllNonFixedCustomerAccounts(ma.getId());
             for (CustomerDepositAccount a : savingsAccounts) {
                 AccountDTO dto = new AccountDTO();
-                dto.setAccountBalance(a.getBalance().setScale(2).toString());
+                dto.setAccountBalance(a.getBalance().setScale(2, RoundingMode.UP).toString());
                 dto.setAccountName(a.getProduct().getName());
                 dto.setAccountNumber(a.getAccountNumber());
                 dto.setAccountType("SAVING");
@@ -81,7 +82,7 @@ public class MobileRetreiveInterAccountsService {
 
             MobileAccount mobileAccount = mobileBean.getMobileAccountByUserId(username);
             AccountDTO dto = new AccountDTO();
-            dto.setAccountBalance(mobileAccount.getBalance().setScale(2).toString());
+            dto.setAccountBalance(mobileAccount.getBalance().setScale(2, RoundingMode.UP).toString());
             dto.setAccountName("Mobile Account");
             dto.setAccountNumber(mobileAccount.getAccountNumber());
             dto.setAccountType("MOBILE");

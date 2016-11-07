@@ -18,6 +18,7 @@ import entity.card.account.CreditCardAccount;
 import entity.customer.MainAccount;
 import entity.dams.account.CustomerDepositAccount;
 import entity.dams.account.MobileAccount;
+import java.math.RoundingMode;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ws.rs.Consumes;
@@ -86,7 +87,7 @@ public class MobileRetrieveDepositAccountsAndPayee {
             List<CustomerDepositAccount> savingsAccounts = depositBean.getAllNonFixedCustomerAccounts(ma.getId());
             for (CustomerDepositAccount a : savingsAccounts) {
                 AccountDTO dto = new AccountDTO();
-                dto.setAccountBalance(a.getBalance().setScale(2).toString());
+                dto.setAccountBalance(a.getBalance().setScale(2, RoundingMode.UP).toString());
                 dto.setAccountName(a.getProduct().getName());
                 dto.setAccountNumber(a.getAccountNumber());
                 dto.setAccountType("SAVING");
@@ -95,7 +96,7 @@ public class MobileRetrieveDepositAccountsAndPayee {
 
             MobileAccount mobileAccount = mobileBean.getMobileAccountByUserId(username);
             AccountDTO dto = new AccountDTO();
-            dto.setAccountBalance(mobileAccount.getBalance().setScale(2).toString());
+            dto.setAccountBalance(mobileAccount.getBalance().setScale(2, RoundingMode.UP).toString());
             dto.setAccountName("Mobile Account");
             dto.setAccountNumber(mobileAccount.getAccountNumber());
             dto.setAccountType("MOBILE");

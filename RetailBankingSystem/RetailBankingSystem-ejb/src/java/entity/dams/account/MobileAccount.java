@@ -5,9 +5,14 @@
  */
 package entity.dams.account;
 
+import entity.common.PayMeRequest;
 import entity.common.TransactionRecord;
+import java.util.ArrayList;
+import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.OneToMany;
 import server.utilities.PincodeGenerationUtils;
 
 /**
@@ -23,6 +28,11 @@ public class MobileAccount extends DepositAccount {
     private String password;
     @Column(unique = true, nullable = false)
     private String referralCode = PincodeGenerationUtils.generateRandom(false, 6);
+    
+    @OneToMany(cascade = CascadeType.MERGE, mappedBy = "toAccount")
+    private List<PayMeRequest> receivedRequest = new ArrayList<>();
+    @OneToMany(cascade = CascadeType.MERGE, mappedBy = "fromAccount")
+    private List<PayMeRequest> sentRequest = new ArrayList<>();
     
     // REMARK: Depreciated, use ejb to get, easier and more accurate
     public TransactionRecord getLatestTransaction() {
@@ -76,5 +86,33 @@ public class MobileAccount extends DepositAccount {
      */
     public void setReferralCode(String referralCode) {
         this.referralCode = referralCode;
+    }
+
+    /**
+     * @return the receivedRequest
+     */
+    public List<PayMeRequest> getReceivedRequest() {
+        return receivedRequest;
+    }
+
+    /**
+     * @param receivedRequest the receivedRequest to set
+     */
+    public void setReceivedRequest(List<PayMeRequest> receivedRequest) {
+        this.receivedRequest = receivedRequest;
+    }
+
+    /**
+     * @return the sentRequest
+     */
+    public List<PayMeRequest> getSentRequest() {
+        return sentRequest;
+    }
+
+    /**
+     * @param sentRequest the sentRequest to set
+     */
+    public void setSentRequest(List<PayMeRequest> sentRequest) {
+        this.sentRequest = sentRequest;
     }
 }
