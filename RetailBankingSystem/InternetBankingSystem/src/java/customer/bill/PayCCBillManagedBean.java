@@ -82,6 +82,7 @@ public class PayCCBillManagedBean implements Serializable {
             MessageUtils.displayError(ConstantUtils.NOT_ENOUGH_BALANCE);
             return;
         }
+        
         transferClearing();
         JSUtils.callJSMethod("PF('myWizard').next()");
         MessageUtils.displayInfo(ConstantUtils.TRANSFER_SUCCESS);

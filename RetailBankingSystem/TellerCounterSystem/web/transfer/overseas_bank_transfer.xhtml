@@ -1,0 +1,91 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:em="http://xmlns.jcp.org/jsf/composite/emcomp"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <!--shift + ctrl + F, format-->
+    <f:view>
+        <h:head>
+            <title>MBS Counter</title>
+            <em:cssImport></em:cssImport>
+        </h:head>
+        <h:body>
+            <em:staffNavBar context="transfer"></em:staffNavBar>
+            <em:staffSideBar top="transfer" side="overseasBankTransfer"></em:staffSideBar>
+            <div class="container">
+                <h:form id="mainForm">
+                    <p:panel header="Overseas Bank Transfer">
+                        <p:messages id="messagesStatus" redisplay="false" >
+
+                            <h:panelGrid columns="2" cellpadding="5">
+                                <h:outputLabel value="Customer IC: " />
+                                <h:inputText value="#{overseasBankTransferCounterManagedBean.customerIC}"/>
+                                <p:commandButton value="Retrieve" action="#{overseasBankTransferCounterManagedBean.retrieveMainAccount}" update="@form"/>
+                            </h:panelGrid>
+
+                            <h:panelGrid columns="2" cellpadding="5">
+                                <c:if test="#{overseasBankTransferCounterManagedBean.mainAccount != null}">
+                                    <p:outputLabel value="From Account Number: " />
+                                    <p:selectOneMenu value="#{overseasBankTransferCounterManagedBean.fromAccountNumber}" style="width:187px; height: 31px; line-height: 21px; top:8px" required="true" >
+                                        <f:selectItems value="#{overseasBankTransferCounterManagedBean.depositAccounts}" var="a" itemValue="#{a.accountNumber}" itemLabel="#{a.product.name} - #{a.accountNumber} - S$ #{a.balance}" />
+                                    </p:selectOneMenu>
+
+                                    <h:outputText value="Paying To: " />
+                                    <p:selectOneMenu value="#{overseasBankTransferCounterManagedBean.payeeId}" rendered="true" required="true">
+                                        <f:selectItem itemValue="New Receipiant" itemLabel="New Receipiant" />
+                                        <c:if test="#{overseasBankTransferCounterManagedBean.payees.size() > 0 }">
+                                            <f:selectItems value="#{overseasBankTransferCounterManagedBean.payees}" var="p" itemValue="#{p.id.toString()}" itemLabel="#{p.name} - #{overseasBankTransferCounterManagedBean.getBankName(p.bankCode)} #{p.accountNumber}" />
+                                        </c:if>
+                                        <f:ajax render="@form" listener="#{overseasBankTransferCounterManagedBean.changePayee}" />
+                                    </p:selectOneMenu>
+
+                                    <c:if test="#{overseasBankTransferCounterManagedBean.payeeId == 'New Receipiant'}">
+                                        <h:outputText value="Recipient's Name: " />
+                                        <p:inputText value="#{overseasBankTransferCounterManagedBean.payee.name}" required="true" />
+                                        <h:outputText value="SWIFT CODE: " />
+                                        <p:inputText value="#{overseasBankTransferCounterManagedBean.payee.swiftCode}" required="true" />
+                                        <h:outputText value="Recipient's Account: " />
+                                        <p:inputText value="#{overseasBankTransferCounterManagedBean.payee.accountNumber}" required="true" />
+                                        <h:outputText value="Bank Address: " />
+                                        <p:inputText value="#{overseasBankTransferCounterManagedBean.payee.bankAddress}" required="true" />
+                                        <h:outputText value="My Initials: " />
+                                        <p:inputText value="#{overseasBankTransferCounterManagedBean.payee.myInitial}" required="true" />
+                                    </c:if>
+                                    <c:if test="#{overseasBankTransferCounterManagedBean.payeeId != 'New Receipiant'}">
+                                        <h:outputText value="Recipient's Name: " />
+                                        <h:outputText value="#{overseasBankTransferCounterManagedBean.payee.name}"/>
+                                        <h:outputText value="SWIFT CODE: " />
+                                        <h:outputText value="#{overseasBankTransferCounterManagedBean.payee.swiftCode}"/>
+                                        <h:outputText value="Recipient's Account: " />
+                                        <h:outputText value="#{overseasBankTransferCounterManagedBean.payee.accountNumber}"/>
+                                        <h:outputText value="Bank Address: " />
+                                        <h:outputText value="#{overseasBankTransferCounterManagedBean.payee.bankAddress}" />
+                                        <h:outputText value="My Initials: " />
+                                        <h:outputText value="#{overseasBankTransferCounterManagedBean.payee.myInitial}" />
+                                    </c:if>
+
+                                    <h:outputText value="Purpose of Transfer: " />
+                                    <p:selectOneMenu value="#{overseasBankTransferCounterManagedBean.purpose}" rendered="true" required="true">
+                                        <f:selectItems value="#{overseasBankTransferCounterManagedBean.purposeOptions}"/>
+                                    </p:selectOneMenu>
+
+                                    <p:outputLabel value="Transfer Amount: " />
+                                    <p:inputText value="#{overseasBankTransferCounterManagedBean.amount}" required="true" />
+
+                                    <p:commandButton value="Transfer" icon="ui-icon-plus" update="@form" actionListener="#{overseasBankTransferCounterManagedBean.transfer()}" />
+                                </c:if>
+
+                            </h:panelGrid>
+                        </p:messages>
+                    </p:panel>
+                </h:form>
+            </div>
+        </h:body>
+    </f:view>
+
+
+</html>
+
