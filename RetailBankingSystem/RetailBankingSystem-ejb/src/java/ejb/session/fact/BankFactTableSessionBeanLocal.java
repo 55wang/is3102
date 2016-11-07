@@ -6,6 +6,7 @@
 package ejb.session.fact;
 
 import entity.fact.bank.BankFactTable;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.Local;
 
@@ -20,5 +21,6 @@ public interface BankFactTableSessionBeanLocal {
     public BankFactTable createBankFactTable(BankFactTable r);
     public BankFactTable updateBankFactTable(BankFactTable r);
     public BankFactTable getBankFactTableById(Long Id);
+    public BankFactTable getBankFactTableByCreationDate(Date date);
 
 }

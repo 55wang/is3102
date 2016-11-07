@@ -71,7 +71,7 @@ public class Customer implements Serializable {
     private ResidentialType residentialType;
     private EmploymentStatus employmentStatus;
     private Income income;
-    private Double actualIncome;
+    private Double actualIncome = 0.0;
     private Double savingPerMonth;
     private Gender gender;
 
@@ -105,6 +105,8 @@ public class Customer implements Serializable {
     private Long cardRecency = 0L;
     private Long cardFrequency = 0L;
     private Long cardMonetary = 0L;
+            
+    private String hashTag;
 
     // mapping
     @OneToOne(cascade = {CascadeType.MERGE})
@@ -870,6 +872,14 @@ public class Customer implements Serializable {
 
     public void setAge(Integer age) {
         this.age = age;
+    }
+
+    public String getHashTag() {
+        return hashTag;
+    }
+
+    public void setHashTag(String hashTag) {
+        this.hashTag = hashTag;
     }
 
 }

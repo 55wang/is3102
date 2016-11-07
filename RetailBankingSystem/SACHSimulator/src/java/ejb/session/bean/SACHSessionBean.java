@@ -158,7 +158,7 @@ public class SACHSessionBean {
         form.param("ocbcSettlementAmount", settlements.get(2).getAmount().setScale(4).toString());
         form.param("ocbcName", settlements.get(2).getName());
 
-        System.out.println(".");
+        System.out.println("----------------Bill Transfer to MBS----------------");
         System.out.println("[SACH]:");
         System.out.println("Sending Net Settlement Amount to MEPS...");
 
@@ -246,8 +246,14 @@ public class SACHSessionBean {
         }
     }
 
-    @Asynchronous
-    public void sendMBSPaymentTransferSettlement(PaymentTransfer pt) {
+    public void sendMBSPaymentTransfer(PaymentTransfer pt) {
+        System.out.println("[Other bank]:");
+        System.out.println("Generating payment instruction...");
+        System.out.println("Sending payment instruction to SACH...");
+
+        System.out.println(".");
+        System.out.println("[SACH]:");
+        System.out.println("Received payment instruction...");
 
         // send to mbs
         Form form = new Form(); //bank info
@@ -258,38 +264,82 @@ public class SACHSessionBean {
         form.param("fromName", pt.getFromName());
         form.param("myInitial", pt.getMyInitial());
 
+        List<SachSettlement> bankAccounts = getSettlements();
+
+        System.out.println("Current net settlement:");
+        for (SachSettlement s : bankAccounts) {
+            System.out.println(".       " + s.getBankCode() + " " + s.getName() + ": " + s.getAmount().setScale(4).toString());
+        }
+
+        System.out.println("Updating net settlement...");
+        updateNetSettlement(pt);
+
+        List<SachSettlement> updatedbankAccounts = getSettlements();
+
+        System.out.println("Updated net settlement:");
+        for (SachSettlement s : updatedbankAccounts) {
+            System.out.println(".       " + s.getBankCode() + " " + s.getName() + ": " + s.getAmount().setScale(4).toString());
+        }
+
+        System.out.println(".");
+        System.out.println("Sending MBS payment instruction...");
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(MBS_TRANSFER_PAYMENT);
 
         // This is the response
         JsonObject jsonString = target.request(MediaType.APPLICATION_JSON).post(Entity.entity(form, MediaType.APPLICATION_FORM_URLENCODED), JsonObject.class);
-        System.out.println(jsonString);
 
         if (jsonString != null && jsonString.getString("error").equals("SUCCESS")) {
-            System.out.println("Request received");
+            System.out.println("Request approved");
             em.persist(pt);
         } else {
             System.out.println("FAIL");
         }
     }
 
-    @Asynchronous
     public void sendMBSCCPaymentSettlement(BillTransfer bt) {
+        System.out.println("[Other bank]:");
+        System.out.println("Generating payment instruction...");
+        System.out.println("Sending payment instruction to SACH...");
 
+        System.out.println(".");
+        System.out.println("[SACH]:");
+        System.out.println("Received payment instruction...");
         // send to mbs
         Form form = new Form(); //bank info
+        form.param("partnerBankCode", bt.getPartnerBankCode());
+        form.param("fromBankCode", bt.getFromBankCode());
         form.param("ccNumber", bt.getReferenceNumber());
         form.param("ccAmount", bt.getAmount().toString());
+        
 
+        List<SachSettlement> bankAccounts = getSettlements();
+
+        System.out.println("Current net settlement:");
+        for (SachSettlement s : bankAccounts) {
+            System.out.println(".       " + s.getBankCode() + " " + s.getName() + ": " + s.getAmount().setScale(4).toString());
+        }
+
+        System.out.println("Updating net settlement...");
+        updateNetSettlementAddBill(bt);
+
+        List<SachSettlement> updatedbankAccounts = getSettlements();
+
+        System.out.println("Updated net settlement:");
+        for (SachSettlement s : updatedbankAccounts) {
+            System.out.println(".       " + s.getBankCode() + " " + s.getName() + ": " + s.getAmount().setScale(4).toString());
+        }
+
+        System.out.println(".");
+        System.out.println("Sending MBS payment instruction...");
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(MBS_CC_PAYMENT);
 
         // This is the response
         JsonObject jsonString = target.request(MediaType.APPLICATION_JSON).post(Entity.entity(form, MediaType.APPLICATION_FORM_URLENCODED), JsonObject.class);
-        System.out.println(jsonString);
 
         if (jsonString != null && jsonString.getString("error").equals("SUCCESS")) {
-            System.out.println("Request received");
+            System.out.println("Request approved");
             em.persist(bt);
         } else {
             System.out.println("FAIL");
@@ -298,6 +348,13 @@ public class SACHSessionBean {
 
     @Asynchronous
     public void sendMBSGiroRequest(BillTransfer bt) {
+        System.out.println("[Other bank]");
+        System.out.println("Generating GIRO request...");
+        System.out.println("Sending GIRO request to SACH...");
+
+        System.out.println(".");
+        System.out.println("[SACH]");
+        System.out.println("Received GIRO request...");
 
         // send to mbs
         // REMARK: Form key must match FormParam in the receiver side
@@ -308,6 +365,7 @@ public class SACHSessionBean {
         form.param("shortCode", bt.getShortCode());
         form.param("billReferenceNumber", bt.getBillReferenceNumber());
 
+        System.out.println("Sending GIRO request to MBS...");
         // REMARK: Copy this, and change client.target("TO BE CHANGED");
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(MBS_GIRO_REQUEST);
@@ -315,7 +373,6 @@ public class SACHSessionBean {
         // This is the response
         // REMARK: Copy this, and do not change anything
         JsonObject jsonString = target.request(MediaType.APPLICATION_JSON).post(Entity.entity(form, MediaType.APPLICATION_FORM_URLENCODED), JsonObject.class);
-        System.out.println(jsonString);
 
         // REMARK: Copy this, and change client.target("TO BE CHANGED");
         if (jsonString != null && jsonString.getString("error").equals("SUCCESS")) {

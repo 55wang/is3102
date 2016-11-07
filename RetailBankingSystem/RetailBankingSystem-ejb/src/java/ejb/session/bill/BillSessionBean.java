@@ -23,7 +23,7 @@ import server.utilities.EnumUtils.StatusType;
  */
 @Stateless
 public class BillSessionBean implements BillSessionBeanLocal {
-    
+
     @PersistenceContext(unitName = "RetailBankingSystem-ejbPU")
     private EntityManager em;
 
@@ -38,12 +38,12 @@ public class BillSessionBean implements BillSessionBeanLocal {
         em.merge(o);
         return o;
     }
-    
+
     @Override
-    public Organization getOrganizationById(Long id){
+    public Organization getOrganizationById(Long id) {
         return em.find(Organization.class, id);
     }
-    
+
     @Override
     public List<Organization> getActiveListOrganization() {
         Query q = em.createQuery("SELECT o FROM Organization o WHERE o.status = :inStatus AND o.type !=:inType");
@@ -51,7 +51,7 @@ public class BillSessionBean implements BillSessionBeanLocal {
         q.setParameter("inType", EnumUtils.BillType.CARD);
         return q.getResultList();
     }
-    
+
     @Override
     public List<Organization> getCreditCardOrganization() {
         Query q = em.createQuery("SELECT o FROM Organization o WHERE o.status = :inStatus AND o.type =:inType");
@@ -59,9 +59,8 @@ public class BillSessionBean implements BillSessionBeanLocal {
         q.setParameter("inType", EnumUtils.BillType.CARD);
         return q.getResultList();
     }
-    
+
     // bank entity
-    
     @Override
     public BankEntity createBankEntity(BankEntity o) {
         em.persist(o);
@@ -73,47 +72,46 @@ public class BillSessionBean implements BillSessionBeanLocal {
         em.merge(o);
         return o;
     }
-    
+
     @Override
-    public BankEntity getBankEntityByCode(String code){
+    public BankEntity getBankEntityByCode(String code) {
         Query q = em.createQuery("SELECT b FROM BankEntity b WHERE b.status = :inStatus AND b.bankCode =:code");
         q.setParameter("inStatus", StatusType.ACTIVE);
         q.setParameter("code", code);
-        return (BankEntity)q.getSingleResult();
+        return (BankEntity) q.getSingleResult();
     }
-    
+
     @Override
-    public BankEntity getBankEntityById(Long id){
+    public BankEntity getBankEntityById(Long id) {
         return em.find(BankEntity.class, id);
     }
-    
+
     @Override
-    public List<BankEntity> getActiveListBankEntities(){
+    public List<BankEntity> getActiveListBankEntities() {
         Query q = em.createQuery("SELECT b FROM BankEntity b WHERE b.status = :inStatus");
         q.setParameter("inStatus", StatusType.ACTIVE);
         return q.getResultList();
     }
-    
+
     // bill org
-    
     @Override
     public BillingOrg createBillingOrganization(BillingOrg o) {
         em.persist(o);
         return o;
     }
-    
+
     @Override
     public BillingOrg getBillingOrganizationById(Long id) {
         return em.find(BillingOrg.class, id);
     }
-    
+
     @Override
     public String deleteBillingOrganizationById(Long id) {
         BillingOrg bo = getBillingOrganizationById(id);
         em.remove(bo);
         return "SUCCESS";
     }
-    
+
     @Override
     public List<BillingOrg> getBillingOrgMainAccountId(Long id) {
         Query q = em.createQuery("SELECT bo FROM BillingOrg bo WHERE bo.mainAccount.id =:mainAccountId AND bo.organization.type !=:inType");
@@ -121,7 +119,7 @@ public class BillSessionBean implements BillSessionBeanLocal {
         q.setParameter("inType", EnumUtils.BillType.CARD);
         return q.getResultList();
     }
-    
+
     @Override
     public List<BillingOrg> getCreditCardBillingMainAccountId(Long id) {
         Query q = em.createQuery("SELECT bo FROM BillingOrg bo WHERE bo.mainAccount.id =:mainAccountId AND bo.organization.type =:inType");
@@ -129,45 +127,49 @@ public class BillSessionBean implements BillSessionBeanLocal {
         q.setParameter("inType", EnumUtils.BillType.CARD);
         return q.getResultList();
     }
-    
+
     // giro
     @Override
     public GiroArrangement createGiroArr(GiroArrangement o) {
         em.persist(o);
         return o;
     }
-    
+
     @Override
     public GiroArrangement updateGiroArr(GiroArrangement o) {
         em.merge(o);
         return o;
     }
-    
+
     @Override
     public GiroArrangement getGiroArrById(Long id) {
         return em.find(GiroArrangement.class, id);
     }
-    
+
     @Override
     public GiroArrangement getGiroArrByReferenceNumberAndOrgCode(String referenceNumber, String shortCode) {
         Query q = em.createQuery("SELECT ga FROM GiroArrangement ga WHERE ga.billReference =:referenceNumber AND ga.organization.shortCode =:shortCode");
         q.setParameter("referenceNumber", referenceNumber);
         q.setParameter("shortCode", shortCode);
-        return (GiroArrangement)q.getSingleResult();
+        try {
+            return (GiroArrangement) q.getSingleResult();
+        } catch (Exception e) {
+            return null;
+        }
     }
-    
+
     @Override
     public String deleteGiroArrById(Long id) {
         GiroArrangement ga = getGiroArrById(id);
         em.remove(ga);
         return "SUCCESS";
     }
-    
+
     @Override
     public List<GiroArrangement> getGiroArrsByMainAccountId(Long id) {
         Query q = em.createQuery("SELECT ga FROM GiroArrangement ga WHERE ga.mainAccount.id =:mainAccountId");
         q.setParameter("mainAccountId", id);
         return q.getResultList();
     }
-            
+
 }

@@ -22,57 +22,69 @@ and open the template in the editor.
             <em:customerHeader context="personal" userName="#{customerHomeManagedBean.customer.firstname }"></em:customerHeader>
             <em:customerNavBar context="personal" personalPage="transfer" ></em:customerNavBar>
             <div class="customer_main_container">
-                <p:panel header="Pay Pre arranged Bill">
-                <h:form>
-                    <p:messages id="message" redisplay="false" >
-                        <p:wizard widgetVar="myWizard" showNavBar="false">
-                            <p:tab id="input_detail" title="1.Input Details">
-                                <h:panelGrid columns="2" cellpadding="5">
-                                    <h:outputText value="Choose Your Account to transfer from: " />
-                                    <p:selectOneMenu value="#{payBillManagedBean.fromAccountNo}" rendered="true" required="true">
-                                        <f:selectItems value="#{payBillManagedBean.accounts}" var="a" itemValue="#{a.accountNumber}" itemLabel="#{a.product.name} #{a.accountNumber} #{a.balance.setScale(2)}" />
-                                    </p:selectOneMenu>
-                                    <h:outputText value="Credit Card Bill to transfer to " />
-                                    <p:selectOneMenu value="#{payBillManagedBean.ccBillOrgId}" rendered="true" required="true">
-                                        <f:selectItems value="#{payBillManagedBean.ccBillList}" var="b" itemValue="#{b.id}" itemLabel="#{b.organization.name} #{b.billReference}" />
-                                    </p:selectOneMenu>
-                                    <p:outputLabel for="amount" value="Amount: " />
-                                    <p:inputText id="amount" value="#{payBillManagedBean.amount}"/>
-                                    <p:commandButton  value="Next" actionListener="#{payBillManagedBean.sendOpt()}" update="@form" />
-                                </h:panelGrid>
+                <p:panel header="Pay Bills">
+                    <h:form>
+                        <p:messages id="message" redisplay="false" >
+                            <p:wizard widgetVar="myWizard" showNavBar="false">
+                                <p:tab id="input_detail" title="1.Input Details">
+                                    <h:panelGrid columns="2" cellpadding="5">
+                                        <h:outputText value="Choose Your Account to transfer from: " />
+                                        <p:selectOneMenu value="#{payBillManagedBean.fromAccountNo}" rendered="true" required="true">
+                                            <f:selectItems value="#{payBillManagedBean.accounts}" var="a" itemValue="#{a.accountNumber}" itemLabel="#{a.product.name} #{a.accountNumber} #{a.balance.setScale(2)}" />
+                                        </p:selectOneMenu>
+                                        <h:outputText value="Credit Card Bill to transfer to " />
+                                        <p:selectOneMenu value="#{payBillManagedBean.ccBillOrgId}" rendered="true" required="true">
+                                            <f:selectItem itemValue="New Bill" itemLabel="New Bill" />
+                                            <c:if test="#{payBillManagedBean.ccBillList.size() > 0 }">
+                                                <f:selectItems value="#{payBillManagedBean.ccBillList}" var="b" itemValue="#{b.id}" itemLabel="#{b.organization.name} #{b.billReference}" />
+                                            </c:if>
+                                            <f:ajax render="@form" listener="#{payBillManagedBean.changeBO}" />
+                                        </p:selectOneMenu>
+                                        <c:if test="#{payBillManagedBean.ccBillOrgId == 'New Bill'}">
+                                            <h:outputText value="Select Billing Org: " />
+                                            <p:selectOneMenu id="type" value="#{payBillManagedBean.newBillOrgId}">
+                                                <f:selectItems value="#{payBillManagedBean.billOrgsOptions}" var="b" itemValue="#{b.id.toString()}" itemLabel="#{b.name}"/>
+                                            </p:selectOneMenu>
+                                            <h:outputText value="Bill Reference Number: " />
+                                            <h:inputText value="#{payBillManagedBean.referenceNumber}" required="true" />
+                                        </c:if>
+                                        <p:outputLabel for="amount" value="Amount: " />
+                                        <p:inputText id="amount" value="#{payBillManagedBean.amount}"/>
+                                        <p:commandButton  value="Next" actionListener="#{payBillManagedBean.sendOpt()}" update="@form" />
+                                    </h:panelGrid>
 
-                            </p:tab>
+                                </p:tab>
 
-                            <p:tab id="verify_details" title="2.Verify Details">
-                                <h:panelGrid columns="2" cellpadding="5">
-                                    <h:outputText value="From Your Account: " />
-                                    <h:outputText value="#{payBillManagedBean.fromAccountNo}" />
-                                    <h:outputText value="To Bill: " />
-                                    <h:outputText value="#{payBillManagedBean.getBillName(payBillManagedBean.ccBillOrgId)}" />
-                                    <p:outputLabel value="Amount: " />
-                                    <p:outputLabel value="#{payBillManagedBean.amount}"/>
-                                    
-                                    <h2>Input Token Number</h2>
-                                    <p:inputText value="#{payBillManagedBean.inputTokenString}" />
-                                    
-                                    <p:commandButton  value="Back" type="button" onclick="PF('myWizard').back()" />
-                                    <p:commandButton value="Transfer" action="#{payBillManagedBean.transfer}" update="@form"/> 
-                                </h:panelGrid>
-                            </p:tab>
+                                <p:tab id="verify_details" title="2.Verify Details">
+                                    <h:panelGrid columns="2" cellpadding="5">
+                                        <h:outputText value="From Your Account: " />
+                                        <h:outputText value="#{payBillManagedBean.fromAccountNo}" />
+                                        <h:outputText value="To Bill: " />
+                                        <h:outputText value="#{payBillManagedBean.getBillName()}" />
+                                        <p:outputLabel value="Amount: " />
+                                        <p:outputLabel value="#{payBillManagedBean.amount}"/>
 
-                            <p:tab id="completion" title="3.Completion">
-                                <h:panelGrid columns="2" cellpadding="5">
-                                    <h:outputText value="From Your Account: " />
-                                    <h:outputText value="#{payBillManagedBean.fromAccountNo}" />
-                                    <h:outputText value="To Bill: " />
-                                    <h:outputText value="#{payBillManagedBean.getBillName(payBillManagedBean.ccBillOrgId)}" />
-                                    <p:outputLabel value="Amount: " />
-                                    <p:outputLabel value="#{payBillManagedBean.amount}"/>
-                                </h:panelGrid>
-                            </p:tab>
-                        </p:wizard>
-                    </p:messages>
-                </h:form>
+                                        <h2>Input Token Number</h2>
+                                        <p:inputText value="#{payBillManagedBean.inputTokenString}" />
+
+                                        <p:commandButton  value="Back" type="button" onclick="PF('myWizard').back()" />
+                                        <p:commandButton value="Transfer" action="#{payBillManagedBean.transfer}" update="@form"/> 
+                                    </h:panelGrid>
+                                </p:tab>
+
+                                <p:tab id="completion" title="3.Completion">
+                                    <h:panelGrid columns="2" cellpadding="5">
+                                        <h:outputText value="From Your Account: " />
+                                        <h:outputText value="#{payBillManagedBean.fromAccountNo}" />
+                                        <h:outputText value="To Bill: " />
+                                        <h:outputText value="#{payBillManagedBean.getBillName()}" />
+                                        <p:outputLabel value="Amount: " />
+                                        <p:outputLabel value="#{payBillManagedBean.amount}"/>
+                                    </h:panelGrid>
+                                </p:tab>
+                            </p:wizard>
+                        </p:messages>
+                    </h:form>
                 </p:panel>
             </div>
             <em:customerFooter></em:customerFooter>
