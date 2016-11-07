@@ -34,6 +34,7 @@ public interface CustomerDepositSessionBeanLocal {
     public DepositAccount transferFromAccount(DepositAccount account, BigDecimal amount);
     public DepositAccount transferToAccount(DepositAccount account, BigDecimal amount);
     public DepositAccount depositIntoAccount(DepositAccount account, BigDecimal depositAmount);
+    public DepositAccount demoDepositIntoAccount(DepositAccount account, BigDecimal depositAmount);
     public DepositAccount withdrawFromAccount(DepositAccount account, BigDecimal withdrawAmount);
     public DepositAccount creditSalaryIntoAccount(DepositAccount account, BigDecimal depositAmount);
     public DepositAccount payBillFromAccount(DepositAccount account, BigDecimal payAmount);
