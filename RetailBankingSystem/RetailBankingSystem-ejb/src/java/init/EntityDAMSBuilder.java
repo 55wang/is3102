@@ -40,7 +40,7 @@ import server.utilities.EnumUtils;
 @Stateless
 @LocalBean
 public class EntityDAMSBuilder {
-    
+
     @EJB
     private InterestSessionBeanLocal interestSessionBean;
     @EJB
@@ -53,7 +53,7 @@ public class EntityDAMSBuilder {
     private DepositProductSessionBeanLocal depositProductSessionBean;
     @EJB
     private LoginSessionBeanLocal loginBean;
-    
+
     private Interest demoNormalInterestData;
     private List<Interest> demoRangeInterestData = new ArrayList<>();
     private List<Interest> demoTimeRangeInterestData = new ArrayList<>();
@@ -61,14 +61,14 @@ public class EntityDAMSBuilder {
     private List<Interest> demoConditionalInterestDataForSavingsDepositProduct = new ArrayList<>();
 
     private MainAccount demoMainAccount;
-    
+
     public CustomerDepositAccount initDAMS() {
         demoMainAccount = loginBean.getMainAccountByUserID(ConstantUtils.DEMO_MAIN_ACCOUNT_USER_ID);
         initInterest();
         initDepositProducts();
-        return initDepositAccounts();
+        return initDepositAccount();
     }
-    
+
     private void initInterest() {
         Interest i = new Interest();
         i.setName("0.05% basenterest");
@@ -728,11 +728,6 @@ public class EntityDAMSBuilder {
         depositProductSessionBean.createDepositProduct(fixedProduct);
     }
 
-    private CustomerDepositAccount initDepositAccounts() {
-        return initDepositAccount();
-        // TODO: Fixed
-    }
-
     // custom account for demo
     private CustomerDepositAccount initDepositAccount() {
         CustomerDepositAccount customAccount = new CustomerDepositAccount();
@@ -745,7 +740,10 @@ public class EntityDAMSBuilder {
         DepositAccount dp = customerDepositSessionBean.createAccount(customAccount);
         initTransactions(dp);
         initCheques(dp);
-        cardAcctSessionBean.createDebitAccount(customAccount);
+        if (dp instanceof CustomerDepositAccount) {
+            customAccount = (CustomerDepositAccount) dp;
+            cardAcctSessionBean.createDebitAccount(customAccount);
+        }
 
         CustomerDepositAccount savingAccount = new CustomerDepositAccount();
         savingAccount.setType(EnumUtils.DepositAccountType.SAVING);
@@ -753,8 +751,12 @@ public class EntityDAMSBuilder {
         savingAccount.setProduct(depositProductSessionBean.getDepositProductByName(ConstantUtils.DEMO_SAVING1_DEPOSIT_PRODUCT_NAME));
         savingAccount.setBalance(new BigDecimal(0));
         savingAccount.setMainAccount(demoMainAccount);
-        customerDepositSessionBean.createAccount(savingAccount);
-        cardAcctSessionBean.createDebitAccount(savingAccount);
+        
+        DepositAccount temp = customerDepositSessionBean.createAccount(savingAccount);
+        if (temp instanceof CustomerDepositAccount) {
+            savingAccount = (CustomerDepositAccount) temp;
+            cardAcctSessionBean.createDebitAccount(savingAccount);
+        }
 
         CustomerDepositAccount savingAccount2 = new CustomerDepositAccount();
         savingAccount2.setType(EnumUtils.DepositAccountType.SAVING);
@@ -762,7 +764,13 @@ public class EntityDAMSBuilder {
         savingAccount2.setProduct(depositProductSessionBean.getDepositProductByName(ConstantUtils.DEMO_SAVING2_DEPOSIT_PRODUCT_NAME));
         savingAccount2.setBalance(new BigDecimal(1000));
         savingAccount2.setMainAccount(demoMainAccount);
-        customerDepositSessionBean.createAccount(savingAccount2);
+        
+        temp = customerDepositSessionBean.createAccount(savingAccount2);
+        if (dp instanceof CustomerDepositAccount) {
+            savingAccount2 = (CustomerDepositAccount) dp;
+            cardAcctSessionBean.createDebitAccount(savingAccount2);
+        }
+        
         cardAcctSessionBean.createDebitAccount(savingAccount2);
 
         CustomerDepositAccount currentAccount = new CustomerDepositAccount();
@@ -771,8 +779,12 @@ public class EntityDAMSBuilder {
         currentAccount.setProduct(depositProductSessionBean.getDepositProductByName(ConstantUtils.DEMO_CURRENT_DEPOSIT_PRODUCT_NAME));
         currentAccount.setBalance(new BigDecimal(1000));
         currentAccount.setMainAccount(demoMainAccount);
-        customerDepositSessionBean.createAccount(currentAccount);
-        cardAcctSessionBean.createDebitAccount(currentAccount);
+        
+        temp = customerDepositSessionBean.createAccount(currentAccount);
+        if (temp instanceof CustomerDepositAccount) {
+            currentAccount = (CustomerDepositAccount) temp;
+            cardAcctSessionBean.createDebitAccount(currentAccount);
+        }
 
         CustomerFixedDepositAccount fixedAccount = new CustomerFixedDepositAccount();
         fixedAccount.setType(EnumUtils.DepositAccountType.FIXED);
@@ -782,9 +794,12 @@ public class EntityDAMSBuilder {
         fixedAccount.setMainAccount(demoMainAccount);
         fixedAccount.setInterestRules(interestSessionBean.getFixedDepositAccountDefaultInterests());
         customerDepositSessionBean.createAccount(fixedAccount);
-        
+
         MainAccount secondMain = loginBean.getMainAccountByUserID(ConstantUtils.DEMO_MAIN_ACCOUNT_USER_ID_2);
-        
+        System.out.println(secondMain);
+        System.out.println(secondMain.getCustomer());
+        System.out.println(secondMain.getCustomer().getFullName());
+
         customAccount = new CustomerDepositAccount();
         customAccount.setType(EnumUtils.DepositAccountType.CUSTOM);
         customAccount.setStatus(EnumUtils.StatusType.ACTIVE);
@@ -792,11 +807,14 @@ public class EntityDAMSBuilder {
         customAccount.setBalance(new BigDecimal(1000));
         customAccount.setMainAccount(secondMain);
 
-        dp = customerDepositSessionBean.createAccount(customAccount);
-        initTransactions(dp);
-        initCheques(dp);
-        initInterestTransaction(dp);
-        cardAcctSessionBean.createDebitAccount(customAccount);
+        temp = customerDepositSessionBean.createAccount(customAccount);
+        initTransactions(temp);
+        initCheques(temp);
+        initInterestTransaction(temp);
+        if (temp instanceof CustomerDepositAccount) {
+            customAccount = (CustomerDepositAccount) temp;
+            cardAcctSessionBean.createDebitAccount(customAccount);
+        }
 
         savingAccount = new CustomerDepositAccount();
         savingAccount.setType(EnumUtils.DepositAccountType.SAVING);
@@ -804,8 +822,12 @@ public class EntityDAMSBuilder {
         savingAccount.setProduct(depositProductSessionBean.getDepositProductByName(ConstantUtils.DEMO_SAVING1_DEPOSIT_PRODUCT_NAME));
         savingAccount.setBalance(new BigDecimal(0));
         savingAccount.setMainAccount(secondMain);
-        customerDepositSessionBean.createAccount(savingAccount);
-        cardAcctSessionBean.createDebitAccount(savingAccount);
+        
+        temp = customerDepositSessionBean.createAccount(savingAccount);
+        if (temp instanceof CustomerDepositAccount) {
+            savingAccount = (CustomerDepositAccount) temp;
+            cardAcctSessionBean.createDebitAccount(savingAccount);
+        }
 
         savingAccount2 = new CustomerDepositAccount();
         savingAccount2.setType(EnumUtils.DepositAccountType.SAVING);
@@ -813,8 +835,12 @@ public class EntityDAMSBuilder {
         savingAccount2.setProduct(depositProductSessionBean.getDepositProductByName(ConstantUtils.DEMO_SAVING2_DEPOSIT_PRODUCT_NAME));
         savingAccount2.setBalance(new BigDecimal(1000));
         savingAccount2.setMainAccount(secondMain);
-        customerDepositSessionBean.createAccount(savingAccount2);
-        cardAcctSessionBean.createDebitAccount(savingAccount2);
+        
+        temp = customerDepositSessionBean.createAccount(savingAccount2);
+        if (temp instanceof CustomerDepositAccount) {
+            savingAccount2 = (CustomerDepositAccount) temp;
+            cardAcctSessionBean.createDebitAccount(savingAccount2);
+        }
 
         currentAccount = new CustomerDepositAccount();
         currentAccount.setType(EnumUtils.DepositAccountType.SAVING);
@@ -822,8 +848,12 @@ public class EntityDAMSBuilder {
         currentAccount.setProduct(depositProductSessionBean.getDepositProductByName(ConstantUtils.DEMO_CURRENT_DEPOSIT_PRODUCT_NAME));
         currentAccount.setBalance(new BigDecimal(1000));
         currentAccount.setMainAccount(secondMain);
-        customerDepositSessionBean.createAccount(currentAccount);
-        cardAcctSessionBean.createDebitAccount(currentAccount);
+        
+        temp = customerDepositSessionBean.createAccount(currentAccount);
+        if (temp instanceof CustomerDepositAccount) {
+            currentAccount = (CustomerDepositAccount) temp;
+            cardAcctSessionBean.createDebitAccount(currentAccount);
+        }
 
         fixedAccount = new CustomerFixedDepositAccount();
         fixedAccount.setType(EnumUtils.DepositAccountType.FIXED);
@@ -833,7 +863,7 @@ public class EntityDAMSBuilder {
         fixedAccount.setMainAccount(secondMain);
         fixedAccount.setInterestRules(interestSessionBean.getFixedDepositAccountDefaultInterests());
         customerDepositSessionBean.createAccount(fixedAccount);
-        
+
         return (CustomerDepositAccount) dp;
     }
 
@@ -883,15 +913,15 @@ public class EntityDAMSBuilder {
             }
         }
     }
-    
-    private void initInterestTransaction(DepositAccount account){
-        for(int i = 0; i < 10; i++){
+
+    private void initInterestTransaction(DepositAccount account) {
+        for (int i = 0; i < 10; i++) {
             Random ran = new Random();
             Double randomInterest = ran.nextDouble() + 5.0;
             CumulatedInterest ci = new CumulatedInterest();
             ci.setCummulativeAmount(BigDecimal.valueOf(randomInterest));
             account.setCumulatedInterest(ci);
             customerDepositSessionBean.creditInterestAccount(account);
-        }      
+        }
     }
 }

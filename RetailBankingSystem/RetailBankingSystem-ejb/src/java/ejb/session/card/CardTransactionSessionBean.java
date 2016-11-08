@@ -118,6 +118,21 @@ public class CardTransactionSessionBean implements CardTransactionSessionBeanLoc
 
         return q.getResultList();
     }
+    
+    @Override
+    public List<CardTransaction> getTransactionByCCNumberAndStartDateAndEndDate(String ccNumber, Date startDate, Date endDate) {
+
+        System.out.println("SELECT ct FROM CardTransaction ct WHERE ct.updateDate BETWEEN " + startDate + " AND " + endDate + "");
+        Query q = em.createQuery("SELECT ct FROM CardTransaction ct WHERE ct.creditCardAccount.creditCardNum =:ccNumber AND "
+                + "ct.updateDate BETWEEN :startDate AND :endDate"
+        );
+        
+        q.setParameter("ccNumber", ccNumber);
+        q.setParameter("startDate", startDate);
+        q.setParameter("endDate", endDate);
+
+        return q.getResultList();
+    }
 
     @Override
     public List<CardTransaction> getListDailyTransactionsByCreditCardAccount(CreditCardAccount cca) {
@@ -146,8 +161,8 @@ public class CardTransactionSessionBean implements CardTransactionSessionBeanLoc
     @Override
     public List<CardTransaction> getListMonthlyTransactionsByCreditCardAccount(CreditCardAccount cca) {
 
-        Date startDate = DateUtils.getBeginOfDay();
-        Date endDate = DateUtils.getEndOfDay();
+        Date startDate = DateUtils.getBeginOfMonth();
+        Date endDate = DateUtils.getEndOfMonth();
         System.out.println("Getting Monthly Transaction");
         Query q = em.createQuery("SELECT ct FROM CardTransaction ct WHERE "
                 + "ct.creditCardAccount.id =:ccId AND "

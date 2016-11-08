@@ -15,4 +15,5 @@ import javax.ejb.Local;
 @Local
 public interface ReportGenerationBeanLocal {
     public boolean generateMonthlyDepositAccountTransactionReport(String accountNumber, Date startDate, Date endDate);
+    public boolean generateMonthlyCreditCardAccountTransactionReport(String accountNumber, Date startDate, Date endDate);
 }
