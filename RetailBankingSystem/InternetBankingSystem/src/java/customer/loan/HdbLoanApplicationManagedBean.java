@@ -14,12 +14,14 @@ import entity.loan.LoanApplication;
 import entity.loan.LoanProduct;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.event.ValueChangeEvent;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
+import server.utilities.CommonUtils;
 import server.utilities.ConstantUtils;
 import server.utilities.EnumUtils;
 import utils.JSUtils;
@@ -49,9 +51,11 @@ public class HdbLoanApplicationManagedBean implements Serializable {
     private Integer age;
     private Double monthlyIncome;
     private String idNumber;
-    private String name;
+    private String lastName;
+    private String firstName;
     private String phoneNumber;
     private String email;
+    private Date birthday;
     private Double otherLoan = 0.0;
     private Double loanAmount;
     private Integer housingTenure;
@@ -66,6 +70,10 @@ public class HdbLoanApplicationManagedBean implements Serializable {
     private Double marketValue=0.0;
     private Double LTV;
     private Integer tenure;
+    private EnumUtils.IdentityType identityType;
+    private Date currentDate=new Date();
+    
+    private List<String> identityTypeOptions = CommonUtils.getEnumList(EnumUtils.IdentityType.class);
     
     /**
      * Creates a new instance of HdbLoanApplicationManagedBean
@@ -85,6 +93,13 @@ public class HdbLoanApplicationManagedBean implements Serializable {
             JSUtils.callJSMethod("PF('myWizard').next();");
         }
     }
+    
+     public void checkAge2(){
+        Long ageLong=(new Date().getTime() - this.getBirthday().getTime()) / (24 * 60 * 60 * 1000) / 365;
+        Integer age1=ageLong.intValue();
+        this.setAge(age1);
+        checkAge();
+}
     
     public void changeLTV(ValueChangeEvent e){
         if((Integer)e.getNewValue()==0)
@@ -125,11 +140,15 @@ public class HdbLoanApplicationManagedBean implements Serializable {
         }
         
         LoanApplication newApplication = new LoanApplication();
-        newApplication.setAge(age);
-        newApplication.setIdNumber(idNumber);
+        newApplication.setIdentityType(identityType);
+        newApplication.setIdentityNumber(idNumber);
         newApplication.setEmail(email);
-        newApplication.setIncome(monthlyIncome);
-        newApplication.setName(name);
+        newApplication.setBirthDay(birthday);
+        newApplication.setAge(age);
+        newApplication.setActualIncome(monthlyIncome);
+        newApplication.setLastname(lastName);
+        newApplication.setFirstname(firstName);
+        newApplication.setFullName(newApplication.getLastname()+" "+newApplication.getFirstname());
         newApplication.setOtherCommitment(otherLoan);
         newApplication.setOtherHousingLoan(numOfHousingLoan);
         newApplication.setPhone(phoneNumber);
@@ -192,19 +211,7 @@ public class HdbLoanApplicationManagedBean implements Serializable {
         this.idNumber = idNumber;
     }
 
-    /**
-     * @return the name
-     */
-    public String getName() {
-        return name;
-    }
-
-    /**
-     * @param name the name to set
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
+    
 
     /**
      * @return the phoneNumber
@@ -416,6 +423,54 @@ public class HdbLoanApplicationManagedBean implements Serializable {
 
     public void setTenure(Integer tenure) {
         this.tenure = tenure;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public EnumUtils.IdentityType getIdentityType() {
+        return identityType;
+    }
+
+    public void setIdentityType(EnumUtils.IdentityType identityType) {
+        this.identityType = identityType;
+    }
+
+    public Date getCurrentDate() {
+        return currentDate;
+    }
+
+    public void setCurrentDate(Date currentDate) {
+        this.currentDate = currentDate;
+    }
+
+    public List<String> getIdentityTypeOptions() {
+        return identityTypeOptions;
+    }
+
+    public void setIdentityTypeOptions(List<String> identityTypeOptions) {
+        this.identityTypeOptions = identityTypeOptions;
+    }
+
+    public Date getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(Date birthday) {
+        this.birthday = birthday;
     }
     
     

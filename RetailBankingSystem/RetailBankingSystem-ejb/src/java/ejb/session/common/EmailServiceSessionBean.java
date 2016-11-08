@@ -613,8 +613,8 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
                     InternetAddress.parse("merlionbanking@gmail.com"));
             message.setSubject("New Loan Application Submitted");
             message.setText("Hi, there is a new loan application.\n"
-                    + "  Applicant Name: " + lp.getName() + "\n"
-                    + "  Applicant Income: " + lp.getIncome() + "\n"
+                    + "  Applicant Name: " + lp.getFullName()+ "\n"
+                    + "  Applicant Income: " + lp.getActualIncome()+ "\n"
                     + "  Product Type: " + lp.getProductType() + "\n"
                     + "  Product Name: " + lp.getLoanProduct().getProductName() + "\n"
                     + "  Requested Amount: " + lp.getRequestedAmount() + "\n"
