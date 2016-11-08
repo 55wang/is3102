@@ -124,6 +124,8 @@ public class Authentication implements Filter {
                     || reqURI.contains("/index.xhtml")
                     || reqURI.contains("/common/")
                     || reqURI.contains("/main_")
+                    || reqURI.contains("/landing_page")
+                    || reqURI.contains("/ads_banner")
                     || (ses != null && ses.getAttribute("username") != null)) {
 //                System.out.println("Before token checker");
                         if(     
