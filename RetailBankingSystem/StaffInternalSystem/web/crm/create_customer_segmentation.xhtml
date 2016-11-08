@@ -88,7 +88,7 @@
                             </div>
                             <div class="tag-cloud">
                                 <p:tagCloud model="#{createCustomerSegmentationManagedBean.model}">
-                                    <!--<p:ajax event="select" update="@form"  />-->
+                                    <p:ajax event="select" update="hashTag" listener="#{createCustomerSegmentationManagedBean.onSelect}"/>
                                 </p:tagCloud>
                             </div>
                         </div>

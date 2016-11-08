@@ -18,8 +18,10 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
+import org.primefaces.event.SelectEvent;
 import org.primefaces.model.tagcloud.DefaultTagCloudItem;
 import org.primefaces.model.tagcloud.DefaultTagCloudModel;
+import org.primefaces.model.tagcloud.TagCloudItem;
 import org.primefaces.model.tagcloud.TagCloudModel;
 import utils.MessageUtils;
 
@@ -98,7 +100,10 @@ public class CreateCustomerSegmentationManagedBean implements Serializable {
                 c.setHashTag(customerGroup.getHashTag());
                 newCustomerSessionBean.updateCustomer(c);
             }
-            MessageUtils.displayInfo("HashTag Created Successfully!");
+
+            customerGroup.setHashTag("");
+
+            createTagCloudModel();
         }
 
     }
@@ -190,6 +195,17 @@ public class CreateCustomerSegmentationManagedBean implements Serializable {
         }
 
         return tempMapHashTagCount;
+    }
+
+    public void onSelect(SelectEvent event) {
+        if (functionType.equals(CREATE_CUSTOMER_GROUP)) {
+            TagCloudItem item = (TagCloudItem) event.getObject();
+            if (customerGroup.getHashTag() == null || customerGroup.getHashTag().isEmpty()) {
+                customerGroup.setHashTag("#" + item.getLabel());
+            } else {
+                customerGroup.setHashTag(customerGroup.getHashTag() + "#" + item.getLabel());
+            }
+        }
     }
 
     public TagCloudModel getModel() {

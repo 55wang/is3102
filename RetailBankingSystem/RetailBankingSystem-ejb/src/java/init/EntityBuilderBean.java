@@ -113,18 +113,14 @@ public class EntityBuilderBean {
 
         //wealth
 
-//        List<FinancialInstrument> allFinancialInstruments = entityWealthBuilder.allFinancialInstrument();
-//        demoPortfolio = entityWealthBuilder.initWealth(allFinancialInstruments);
-//        entityFactBuilder.initSinglePortfolioFact(demoMainAccount, demoPortfolio);
-//        demoPortfolio = entityWealthBuilder.initPortfolioFactTable2(demoMainAccount, allFinancialInstruments);
-//        entityFactBuilder.initSinglePortfolioFact(demoMainAccount, demoPortfolio);
-//
-//        entityFactBuilder.initBankFact();
+        List<FinancialInstrument> allFinancialInstruments = entityWealthBuilder.allFinancialInstrument();
+        demoPortfolio = entityWealthBuilder.initWealth(allFinancialInstruments);
+        entityFactBuilder.initSinglePortfolioFact(demoMainAccount, demoPortfolio);
+        demoPortfolio = entityWealthBuilder.initPortfolioFactTable2(demoMainAccount, allFinancialInstruments);
+        entityFactBuilder.initSinglePortfolioFact(demoMainAccount, demoPortfolio);
+
+        entityFactBuilder.initBankFact();
            
         entityCRMBuilder.initCustomerRFM();
-
-//        entityTellerCounterBuilder.init();
-
-
     }
 }
