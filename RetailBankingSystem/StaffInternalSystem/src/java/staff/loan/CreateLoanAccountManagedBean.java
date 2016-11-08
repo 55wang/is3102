@@ -127,7 +127,7 @@ public class CreateLoanAccountManagedBean implements Serializable {
     private void createOhterAccounts(LoanApplication la) {
         MainAccount ma = null;
         try {
-            ma = loginBean.getMainAccountByUserID(generateUserID(EnumUtils.IdentityType.NRIC, la.getIdNumber()));
+            ma = loginBean.getMainAccountByUserID(generateUserID(EnumUtils.IdentityType.NRIC, la.getIdentityNumber()));
         } catch (Exception e) {
             System.out.println("Main Account not found, creating new..");
         }
@@ -136,7 +136,7 @@ public class CreateLoanAccountManagedBean implements Serializable {
             // new customer
             MainAccount mainAccount = new MainAccount();
             mainAccount.setStatus(EnumUtils.StatusType.PENDING);
-            mainAccount.setUserID(generateUserID(EnumUtils.IdentityType.NRIC, la.getIdNumber()));
+            mainAccount.setUserID(generateUserID(EnumUtils.IdentityType.NRIC, la.getIdentityNumber()));
             String randomPwd = PincodeGenerationUtils.generatePwd();
             mainAccount.setPassword(randomPwd);
             mainAccount = mainAccountBean.createMainAccount(mainAccount);
@@ -144,10 +144,27 @@ public class CreateLoanAccountManagedBean implements Serializable {
 
             // TODO: Need to check if all information was updated
             Customer customer = new Customer();
-            customer.setIncome(EnumUtils.Income.getEnumFromNumber(la.getIncome()));
-            customer.setActualIncome(la.getIncome());
+            customer.setIdentityType(la.getIdentityType());
+            customer.setIdentityNumber(la.getIdentityNumber());
+            customer.setAge(la.getAge());
+            customer.setBirthDay(la.getBirthDay());
+            customer.setFirstname(la.getFirstname());
+            customer.setLastname(la.getLastname());
+            customer.setFullName(la.getFullName());
             customer.setEmail(la.getEmail());
-            customer.setFullName(la.getName());
+            customer.setPhone(la.getPhone());
+            customer.setIncome(EnumUtils.Income.getEnumFromNumber(la.getActualIncome()));
+            customer.setActualIncome(la.getActualIncome());
+            
+            customer.setNationality(la.getNationality());
+            customer.setMaritalStatus(la.getMaritalStatus());
+            customer.setAddress(la.getAddress());
+            customer.setPostalCode(la.getPostalCode());
+            customer.setIndustry(la.getIndustry());
+            customer.setEducation(la.getEducation());
+            customer.setEmploymentStatus(la.getEmploymentStatus());
+            customer.setGender(la.getGender());
+            
             customer.setMainAccount(mainAccount);
             newCustomerBean.createCustomer(customer);
 
@@ -171,8 +188,29 @@ public class CreateLoanAccountManagedBean implements Serializable {
             loanAccountBean.updateLoanApplication(la);
             
             Customer customer = ma.getCustomer();
-            customer.setIncome(EnumUtils.Income.getEnumFromNumber(la.getIncome()));
-            customer.setActualIncome(la.getIncome());
+//            customer.setIdentityType(la.getIdentityType());
+//            customer.setIdentityNumber(la.getIdentityNumber());
+//            customer.setAge(la.getAge());
+//            customer.setBirthDay(la.getBirthDay());
+//            customer.setFirstname(la.getFirstname());
+//            customer.setLastname(la.getLastname());
+//            customer.setFullName(la.getFullName());
+//            customer.setEmail(la.getEmail());
+//            customer.setPhone(la.getPhone());
+//            customer.setIncome(EnumUtils.Income.getEnumFromNumber(la.getActualIncome()));
+//            customer.setActualIncome(la.getActualIncome());
+//            
+//            customer.setNationality(la.getNationality());
+//            customer.setMaritalStatus(la.getMaritalStatus());
+//            customer.setAddress(la.getAddress());
+//            customer.setPostalCode(la.getPostalCode());
+//            customer.setIndustry(la.getIndustry());
+//            customer.setEducation(la.getEducation());
+//            customer.setEmploymentStatus(la.getEmploymentStatus());
+//            customer.setGender(la.getGender());
+           
+            customer.setIncome(EnumUtils.Income.getEnumFromNumber(la.getActualIncome()));
+            customer.setActualIncome(la.getActualIncome());
             newCustomerBean.updateCustomer(customer);
             
             depositAccountBean.getDaytoDayAccountByMainAccount(ma);

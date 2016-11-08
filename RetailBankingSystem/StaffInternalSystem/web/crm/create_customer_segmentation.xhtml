@@ -38,7 +38,7 @@
                             <p:selectOneButton id="functionType" value="#{createCustomerSegmentationManagedBean.functionType}">
                                 <f:selectItem itemLabel="Create HashTag" itemValue="#{createCustomerSegmentationManagedBean.SET_HASH_TAG}" />
                                 <f:selectItem itemLabel="Create Customer Group" itemValue="#{createCustomerSegmentationManagedBean.CREATE_CUSTOMER_GROUP}" />
-                                <f:ajax render="input-panel" />
+                                <f:ajax  render="@form" />
                             </p:selectOneButton>
                         </p:panel>
                     </div>

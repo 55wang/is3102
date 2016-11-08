@@ -26,6 +26,9 @@
                             <p:panel>
                                 <p:messages id="msgs1"/>
                                 <h:panelGrid columns="2" cellpadding="5px" columnClasses="label, value">
+                                    
+                                    <h:outputText value="ID number: " />
+                                    <h:outputText id="idNumber" value="#{customerProfileManagedBean.customer.identityNumber}"/>
 
                                     <h:outputText value="Name: " />
                                     <h:outputText id="name" value="#{customerProfileManagedBean.customer.lastname}  #{customerProfileManagedBean.customer.firstname}"/>
@@ -42,6 +45,9 @@
                                     <h:outputText value="Email Address: " />
                                     <h:outputText id="email" value="#{customerProfileManagedBean.customer.email}"/>
                                     
+                                    <h:outputText value="Monthly Income: " />
+                                    <h:outputText id="income" value="#{customerProfileManagedBean.customer.actualIncome}"/>
+                                    
 
                                 </h:panelGrid>
 
@@ -55,9 +61,7 @@
                             <p:panel>
                                 <h:panelGrid columns="2" cellpadding="5px" columnClasses="label, value">
 
-                                    <h:outputText value="Monthly income: " />
-                                    <p:inputText value="#{personalLoanApplicationManagedBean.monthlyIncome}" required="true" requiredMessage="Monthly income is required." onchange="submit()" valueChangeListener="#{personalLoanApplicationManagedBean.changeLoanUpperLimit}"/>
-
+                                    
                                     <h:outputText id="upperLimitDescription" value="You can get up to" styleClass="outputLabel"/>
                                     <h:outputText id="upperLimit" value="#{personalLoanApplicationManagedBean.upperLimit}" styleClass="outputLabel"/>
                                     

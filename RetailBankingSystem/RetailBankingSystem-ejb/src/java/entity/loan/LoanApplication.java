@@ -10,6 +10,7 @@ import entity.staff.StaffAccount;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -32,13 +33,36 @@ public class LoanApplication implements Serializable {
     @Temporal(value = TemporalType.TIMESTAMP)
     private Date creationDate = new Date();
     
-    // info
-    private String name;
-    private String idNumber;
-    private String email;
-    private String phone;
+    
+    //personal info
+    private EnumUtils.IdentityType identityType;
+    private String identityNumber;
+    @Temporal(javax.persistence.TemporalType.DATE)
+    private Date birthDay;
     private Integer age;
-    private Double income;
+    private String firstname;
+    private String lastname;
+    private String fullName;
+    private String phone;
+    private String email;
+    
+    
+    // general info
+    private EnumUtils.Nationality nationality;
+    private EnumUtils.MaritalStatus maritalStatus;
+    private String address;
+    private String postalCode;
+    private EnumUtils.Industry industry;
+    private EnumUtils.Education education;
+    private EnumUtils.ResidentialStatus residentialStatus;
+    private EnumUtils.ResidentialType residentialType;
+    private EnumUtils.EmploymentStatus employmentStatus;
+    private Double actualIncome = 0.0;
+    private Double savingPerMonth;
+    private EnumUtils.Gender gender;
+    
+    // loan info
+
     private Double otherCommitment;
     private Double requestedAmount;
     private Double marketValue;
@@ -91,16 +115,7 @@ public class LoanApplication implements Serializable {
     /**
      * @return the name
      */
-    public String getName() {
-        return name;
-    }
-
-    /**
-     * @param name the name to set
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
+   
 
     /**
      * @return the email
@@ -147,16 +162,7 @@ public class LoanApplication implements Serializable {
     /**
      * @return the income
      */
-    public Double getIncome() {
-        return income;
-    }
-
-    /**
-     * @param income the income to set
-     */
-    public void setIncome(Double income) {
-        this.income = income;
-    }
+    
 
     /**
      * @return the otherCommitment
@@ -242,19 +248,151 @@ public class LoanApplication implements Serializable {
         this.marketValue = marketValue;
     }
 
-    /**
-     * @return the idNumber
-     */
-    public String getIdNumber() {
-        return idNumber;
+    public EnumUtils.IdentityType getIdentityType() {
+        return identityType;
     }
 
-    /**
-     * @param idNumber the idNumber to set
-     */
-    public void setIdNumber(String idNumber) {
-        this.idNumber = idNumber;
+    public void setIdentityType(EnumUtils.IdentityType identityType) {
+        this.identityType = identityType;
     }
+
+    public String getIdentityNumber() {
+        return identityNumber;
+    }
+
+    public void setIdentityNumber(String identityNumber) {
+        this.identityNumber = identityNumber;
+    }
+
+    public Date getBirthDay() {
+        return birthDay;
+    }
+
+    public void setBirthDay(Date birthDay) {
+        this.birthDay = birthDay;
+    }
+
+    public String getFirstname() {
+        return firstname;
+    }
+
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
+    }
+
+    public String getLastname() {
+        return lastname;
+    }
+
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
+    public EnumUtils.Nationality getNationality() {
+        return nationality;
+    }
+
+    public void setNationality(EnumUtils.Nationality nationality) {
+        this.nationality = nationality;
+    }
+
+    public EnumUtils.MaritalStatus getMaritalStatus() {
+        return maritalStatus;
+    }
+
+    public void setMaritalStatus(EnumUtils.MaritalStatus maritalStatus) {
+        this.maritalStatus = maritalStatus;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getPostalCode() {
+        return postalCode;
+    }
+
+    public void setPostalCode(String postalCode) {
+        this.postalCode = postalCode;
+    }
+
+    public EnumUtils.Industry getIndustry() {
+        return industry;
+    }
+
+    public void setIndustry(EnumUtils.Industry industry) {
+        this.industry = industry;
+    }
+
+    public EnumUtils.Education getEducation() {
+        return education;
+    }
+
+    public void setEducation(EnumUtils.Education education) {
+        this.education = education;
+    }
+
+    public EnumUtils.ResidentialStatus getResidentialStatus() {
+        return residentialStatus;
+    }
+
+    public void setResidentialStatus(EnumUtils.ResidentialStatus residentialStatus) {
+        this.residentialStatus = residentialStatus;
+    }
+
+    public EnumUtils.ResidentialType getResidentialType() {
+        return residentialType;
+    }
+
+    public void setResidentialType(EnumUtils.ResidentialType residentialType) {
+        this.residentialType = residentialType;
+    }
+
+    public EnumUtils.EmploymentStatus getEmploymentStatus() {
+        return employmentStatus;
+    }
+
+    public void setEmploymentStatus(EnumUtils.EmploymentStatus employmentStatus) {
+        this.employmentStatus = employmentStatus;
+    }
+
+    public Double getActualIncome() {
+        return actualIncome;
+    }
+
+    public void setActualIncome(Double actualIncome) {
+        this.actualIncome = actualIncome;
+    }
+
+    public Double getSavingPerMonth() {
+        return savingPerMonth;
+    }
+
+    public void setSavingPerMonth(Double savingPerMonth) {
+        this.savingPerMonth = savingPerMonth;
+    }
+
+    public EnumUtils.Gender getGender() {
+        return gender;
+    }
+
+    public void setGender(EnumUtils.Gender gender) {
+        this.gender = gender;
+    }
+
+
 
     /**
      * @return the loanProduct

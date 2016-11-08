@@ -21,6 +21,7 @@ import javax.ejb.EJB;
 import javax.faces.event.ValueChangeEvent;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
+import server.utilities.CommonUtils;
 import server.utilities.ConstantUtils;
 import server.utilities.EnumUtils;
 import utils.JSUtils;
@@ -50,7 +51,8 @@ public class CarLoanApplicationManagedBean implements Serializable {
     private Integer age;
     private Double monthlyIncome;
     private String idNumber;
-    private String name;
+    private String lastName;
+    private String firstName;
     private String phoneNumber;
     private String email;
     private Double otherLoan = 0.0;
@@ -69,6 +71,11 @@ public class CarLoanApplicationManagedBean implements Serializable {
     private Long carTenureProductId;
     private Double LTV;
     private Date birthDay;
+    private EnumUtils.IdentityType identityType;
+    private Date currentDate=new Date();
+    
+    private List<String> identityTypeOptions = CommonUtils.getEnumList(EnumUtils.IdentityType.class);
+
     
     /**
      * Creates a new instance of CarLoanApplicationManagedBean
@@ -84,6 +91,13 @@ public class CarLoanApplicationManagedBean implements Serializable {
             setCarMaxTenure(carLoanProducts.get(0).getTenure());
         }
     }
+    
+     public void checkAge2(){
+        Long ageLong=(new Date().getTime() - this.getBirthDay().getTime()) / (24 * 60 * 60 * 1000) / 365;
+        Integer age1=ageLong.intValue();
+        this.setAge(age1);
+        checkAge();
+}
     
     public void checkAge(){
         if (getAge() < 21) {
@@ -115,7 +129,7 @@ public class CarLoanApplicationManagedBean implements Serializable {
         }
         
         setMaxCarLoanMonthlyInstalment(calculator.calculateMaxPPMonthlyInstalment(monthlyIncome, otherLoan));   
-        setMaxCarLoanAmt(calculator.calculateMaxCarLoanAmt(maxCarLoanMonthlyInstalment, carTenure));
+        setMaxCarLoanAmt(carOpenMarketValue*LTV);
         
         JSUtils.callJSMethod("PF('myWizard').next()");
     }
@@ -127,11 +141,16 @@ public class CarLoanApplicationManagedBean implements Serializable {
         }
         
         LoanApplication newApplication = new LoanApplication();
+        newApplication.setIdentityNumber(idNumber);
+        newApplication.setBirthDay(birthDay);
         newApplication.setAge(age);
-        newApplication.setIdNumber(idNumber);
         newApplication.setEmail(email);
-        newApplication.setIncome(monthlyIncome);
-        newApplication.setName(name);
+        newApplication.setActualIncome(monthlyIncome);
+        newApplication.setLastname(lastName);
+        newApplication.setFirstname(firstName);
+        newApplication.setFullName(newApplication.getLastname()+" "+newApplication.getFirstname());
+        newApplication.setIdentityType(identityType);
+        newApplication.setIdentityNumber(idNumber);
         newApplication.setOtherCommitment(otherLoan);
         newApplication.setPhone(phoneNumber);
         newApplication.setProductType(EnumUtils.LoanProductType.LOAN_PRODUCT_TYPE_CAR);
@@ -203,19 +222,7 @@ public class CarLoanApplicationManagedBean implements Serializable {
         this.idNumber = idNumber;
     }
 
-    /**
-     * @return the name
-     */
-    public String getName() {
-        return name;
-    }
 
-    /**
-     * @param name the name to set
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
 
     /**
      * @return the phoneNumber
@@ -430,6 +437,50 @@ public class CarLoanApplicationManagedBean implements Serializable {
 
     public void setBirthDay(Date birthDay) {
         this.birthDay = birthDay;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public EnumUtils.IdentityType getIdentityType() {
+        return identityType;
+    }
+
+    public void setIdentityType(EnumUtils.IdentityType identityType) {
+        this.identityType = identityType;
+    }
+
+    public Date getCurrentDate() {
+        return currentDate;
+    }
+
+    public void setCurrentDate(Date currentDate) {
+        this.currentDate = currentDate;
+    }
+
+    public List<String> getIdentityTypeOptions() {
+        return identityTypeOptions;
+    }
+
+    public void setIdentityTypeOptions(List<String> identityTypeOptions) {
+        this.identityTypeOptions = identityTypeOptions;
+    }
+
+    private Object getBirthday() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
   
