@@ -38,14 +38,14 @@
                             <p:selectOneButton id="functionType" value="#{createCustomerSegmentationManagedBean.functionType}">
                                 <f:selectItem itemLabel="Create HashTag" itemValue="#{createCustomerSegmentationManagedBean.SET_HASH_TAG}" />
                                 <f:selectItem itemLabel="Create Customer Group" itemValue="#{createCustomerSegmentationManagedBean.CREATE_CUSTOMER_GROUP}" />
-                                <f:ajax render="@form" />
+                                <f:ajax render="input-panel" />
                             </p:selectOneButton>
                         </p:panel>
                     </div>
 
                     <div class="ui-g-12 ui-md-5">
                         <p:separator/>
-                        <h:panelGrid columns="2" cellpadding="10">
+                        <h:panelGrid columns="2" cellpadding="10" id="input-panel">
                             <p:outputLabel for="GroupName" value="Group Name: " rendered="#{createCustomerSegmentationManagedBean.functionType == createCustomerSegmentationManagedBean.CREATE_CUSTOMER_GROUP}"/>
                             <p:inputText id="GroupName" value="#{createCustomerSegmentationManagedBean.customerGroup.groupName}" rendered="#{createCustomerSegmentationManagedBean.functionType == createCustomerSegmentationManagedBean.CREATE_CUSTOMER_GROUP}"/>
                             <p:outputLabel for="DepositRecency" value="Deposit Recency: " />
@@ -93,8 +93,8 @@
                             </div>
                         </div>
                     </div>
-                    <p:messages id="messagesStatus" redisplay="false" >
-                    </p:messages>
+                    <p:growl id="messagesStatus" redisplay="false" >
+                    </p:growl>
                     <!--To use jquery with javascript here-->
                     <h:outputScript library="primefaces" name="jquery/jquery.js" />
                     <script type="text/javascript" src="tagCloudRandomColor.js"></script>

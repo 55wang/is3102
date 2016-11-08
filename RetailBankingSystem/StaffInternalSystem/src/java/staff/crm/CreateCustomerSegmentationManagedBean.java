@@ -21,6 +21,7 @@ import javax.faces.view.ViewScoped;
 import org.primefaces.model.tagcloud.DefaultTagCloudItem;
 import org.primefaces.model.tagcloud.DefaultTagCloudModel;
 import org.primefaces.model.tagcloud.TagCloudModel;
+import utils.MessageUtils;
 
 /**
  *
@@ -61,7 +62,6 @@ public class CreateCustomerSegmentationManagedBean implements Serializable {
         customerGroups = customerSegmentationSessionBean.getListCustomerGroup();
         customerGroup = new CustomerGroup();
         createTagCloudModel();
-
     }
 
     public void setHashTag() {
@@ -90,14 +90,15 @@ public class CreateCustomerSegmentationManagedBean implements Serializable {
                     selectedAntecedent
             );
         }
-
-        System.out.println(setHashTagCustomers.size());
-
-        for (Customer c : setHashTagCustomers) {
-            c.setHashTag(customerGroup.getHashTag());
-            newCustomerSessionBean.updateCustomer(c);
+        
+        if(setHashTagCustomers.isEmpty()){
+            MessageUtils.displayError("No Customer Meet the Requirements");
+        }else{
+            for (Customer c : setHashTagCustomers) {
+                c.setHashTag(customerGroup.getHashTag());
+                newCustomerSessionBean.updateCustomer(c);
+            }
         }
-
     }
 
     public void createGroup() {
