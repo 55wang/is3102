@@ -46,7 +46,7 @@ public abstract class DepositAccount implements Serializable {
     // info
     private DepositAccountType type;
     private StatusType status = StatusType.PENDING;
-    @Column(precision=30, scale=20)
+    @Column(precision=18, scale=4)
     private BigDecimal balance = BigDecimal.ZERO;
     @Embedded
     private CumulatedInterest cumulatedInterest = new CumulatedInterest();

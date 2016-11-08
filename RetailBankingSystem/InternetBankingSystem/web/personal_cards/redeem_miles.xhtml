@@ -25,11 +25,11 @@
                     <p:panel header="Promotional Products">
                         <h:panelGrid columns="2" cellpadding="5">
                             <h:outputText value="Your points:" style="font-weight: bold;font-size: 14pt"/>
-                            <h:outputText value="#{redeemRewardsManagedBean.cca.merlionPoints}" style="font-size: 14pt"/>
+                            <h:outputText value="#{redeemRewardsManagedBean.cca.merlionMiles}" style="font-size: 14pt"/>
                         </h:panelGrid>
                         <h:panelGrid columns="2" cellpadding="5" style="margin-top: 10px">
 
-                            <p:dataTable value="#{redeemRewardsManagedBean.rewardProducts}" var="product" >
+                            <p:dataTable value="#{redeemRewardsManagedBean.mileProducts}" var="product" >
 
                                 <p:column headerText="Name:" style="width:25%">
                                     <h:outputText value="#{product.name}" />
@@ -44,7 +44,7 @@
                                 </p:column>
 
                                 <p:column headerText="Redeem:" style="width:15%">
-                                    <p:commandButton value="Redeem" action="#{redeemRewardsManagedBean.redeemReward(product)}" update="@form" style="width:100%;  height: 30px" />
+                                    <p:commandButton value="Redeem" action="#{redeemRewardsManagedBean.redeemMile(product)}" update="@form" style="width:100%;  height: 30px" />
                                 </p:column>
 
                             </p:dataTable>

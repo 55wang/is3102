@@ -6,6 +6,7 @@
 package init;
 
 import ejb.session.staff.StaffAccountSessionBeanLocal;
+import entity.card.product.MileCardProduct;
 import entity.card.product.PromoProduct;
 import entity.card.product.RewardCardProduct;
 import entity.customer.MainAccount;
@@ -67,7 +68,11 @@ public class EntityBuilderBean {
     private StaffAccountSessionBeanLocal staffAccountSessionBean;
 
     private RewardCardProduct demoRewardCardProduct;
+    private MileCardProduct demoMileCardProduct;
+
     private PromoProduct demoPromoProduct;
+    private PromoProduct demoPromoProduct2;
+
     private MainAccount demoMainAccount;
     private Portfolio demoPortfolio;
 
@@ -80,7 +85,7 @@ public class EntityBuilderBean {
         if (needInit()) {
             buildEntities();
         } else {
-            
+
         }
     }
 
@@ -95,17 +100,19 @@ public class EntityBuilderBean {
         demoMainAccount = entityCustomerBuilder.initCustomer();
         CustomerDepositAccount demoDepositAccount = entityDAMSBuilder.initDAMS();
         entityLoanBuilder.initLoanAccount(demoDepositAccount);
-        
+
         demoPromoProduct = entityPromoProductBuilder.initPromoProduct(demoPromoProduct);
-        demoRewardCardProduct = entityCreditCardProductBuilder.initCreditCardProduct(demoPromoProduct);
-        
-        entityCreditCardOrderBuilder.initCreditCardOrder(demoRewardCardProduct, demoPromoProduct);
+        demoRewardCardProduct = entityCreditCardProductBuilder.initCreditCardProduct();
+        demoMileCardProduct = entityCreditCardProductBuilder.initMileCreditCardProduct();
+
+        entityCreditCardOrderBuilder.initCreditCardOrder(demoRewardCardProduct, demoMileCardProduct, demoPromoProduct);
         entityCaseBuilder.initCase();
         entityBillOrgBuilder.initBillOrganization();
         entityPayLahBuilder.initPayLahDemoData();
         entityTellerCounterBuilder.init();
 
-//        wealth
+        //wealth
+
 //        List<FinancialInstrument> allFinancialInstruments = entityWealthBuilder.allFinancialInstrument();
 //        demoPortfolio = entityWealthBuilder.initWealth(allFinancialInstruments);
 //        entityFactBuilder.initSinglePortfolioFact(demoMainAccount, demoPortfolio);
@@ -115,6 +122,9 @@ public class EntityBuilderBean {
 //        entityFactBuilder.initBankFact();
            
         entityCRMBuilder.initCustomerRFM();
+
+//        entityTellerCounterBuilder.init();
+
 
     }
 }

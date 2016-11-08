@@ -54,10 +54,13 @@
                                     <p:commandButton value="Change transaction limit" action="#{customerCardManagedBean.redirectToChangeTransactionLimitPage(cca)}" update="@form" style="width:100%; margin-top:5px; height: 70px"/>
                                 </p:column>
 
-                                <p:column headerText="Promo Rewards">
-                                    <p:commandButton value="Redeem" action="#{customerCardManagedBean.viewRedeemPage(cca)}" ></p:commandButton>
-                                </p:column>
+                                <p:column headerText="Points" >
+                                    <h:outputText value="#{cca.merlionPoints}" rendered="#{cca.creditCardProduct.cartType == 'REWARD'}" />
+                                    <p:commandButton value="Redeem" action="#{customerCardManagedBean.viewRedeemPage(cca)}" rendered="#{cca.creditCardProduct.cartType == 'REWARD'}" style="width:100%; margin-top:10px; height: 30px" ></p:commandButton>
 
+                                    <h:outputText value="#{cca.merlionMiles}" rendered="#{cca.creditCardProduct.cartType == 'MILE'}"/>
+                                    <p:commandButton value="Redeem" action="#{customerCardManagedBean.viewRedeemPage(cca)}" rendered="#{cca.creditCardProduct.cartType == 'MILE'}" style="width:100%; margin-top:10px; height: 30px" ></p:commandButton>
+                                </p:column>
 
                             </p:dataTable>
 

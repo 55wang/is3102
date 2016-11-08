@@ -6,7 +6,7 @@
 package webservice.restful.transfer;
 
 import ejb.session.bean.FASTSessionBean;
-import entity.PaymentTransfer;
+import entity.FastTransfer;
 import java.math.BigDecimal;
 import java.util.List;
 import javax.ejb.EJB;
@@ -18,6 +18,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import org.primefaces.json.JSONObject;
+import webservice.restful.transfer.MessageDTO;
 
 /**
  *
@@ -56,7 +57,7 @@ public class SWIFTTransferService {
 
         // makes payment to other bank
         // TODO: if needed, use a MAP to check net settlement to other banks
-        PaymentTransfer pt = new PaymentTransfer();
+        FastTransfer pt = new FastTransfer();
         pt.setReferenceNumber(referenceNumber);
         pt.setAmount(new BigDecimal(amount));
         pt.setFromBankCode(fromBankCode);
@@ -71,7 +72,7 @@ public class SWIFTTransferService {
         fastBean.sendMEPS(pt);
 
         try {
-            Thread.sleep(500);                 //1000 milliseconds is one second.
+            Thread.sleep(500); //1000 milliseconds is one second.
         } catch (InterruptedException ex) {
             Thread.currentThread().interrupt();
         }

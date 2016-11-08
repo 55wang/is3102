@@ -42,7 +42,7 @@ public class EnumUtils {
             throw new IllegalArgumentException();
         }
     }
-    
+
     public enum Month {
 
         JANUARY("JANUARY"),
@@ -57,7 +57,6 @@ public class EnumUtils {
         OCTOBER("OCTOBER"),
         NOVEMBER("NOVEMBER"),
         DECEMBER("DECEMBER");
-        
 
         private String value;
 
@@ -206,7 +205,7 @@ public class EnumUtils {
     public enum CardNetwork {
 
         VISA("VISA"),
-        Master("MASTER");
+        MasterCard("MASTERCARD");
         private String value;
 
         CardNetwork(String value) {
@@ -269,8 +268,9 @@ public class EnumUtils {
     //for card account only
     public enum CardAccountStatus {
 
-        NEW("NEW"),
         PENDING("PENDING"),
+        APPROVED("APPROVED"),
+        ISSUED("ISSUED"),
         ACTIVE("ACTIVE"),
         FREEZE("FREEZE"),
         CLOSED("CLOSED");
@@ -361,6 +361,39 @@ public class EnumUtils {
 
         public static ApplicationStatus getEnum(String value) {
             for (ApplicationStatus v : values()) {
+                if (v.getValue().equalsIgnoreCase(value)) {
+                    return v;
+                }
+            }
+            throw new IllegalArgumentException();
+        }
+    }
+
+    public enum CardApplicationStatus {
+
+        PENDING("PENDING"),
+        APPROVED("APPROVED"),
+        ISSUED("ISSUED"),
+        REJECTED("REJECTED"),
+        CANCELLED("CANCELLED");
+
+        private String value;
+
+        CardApplicationStatus(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        @Override
+        public String toString() {
+            return this.getValue();
+        }
+
+        public static CardApplicationStatus getEnum(String value) {
+            for (CardApplicationStatus v : values()) {
                 if (v.getValue().equalsIgnoreCase(value)) {
                     return v;
                 }
@@ -1581,7 +1614,8 @@ public class EnumUtils {
         WAITING("WAITING APPROVAL"),
         APPROVAL("APPROVAL"),
         EXECUTED("EXECUTED"),
-        TERMINATED("TERMINATED");;
+        TERMINATED("TERMINATED");
+        ;
 
         private String value;
 
@@ -1931,6 +1965,37 @@ public class EnumUtils {
 
         public static PortfolioStatus getEnum(String value) {
             for (PortfolioStatus v : values()) {
+                if (v.getValue().equalsIgnoreCase(value)) {
+                    return v;
+                }
+            }
+            throw new IllegalArgumentException();
+        }
+    }
+
+    public enum CreditCardType {
+
+        REWARD("REWARD"),
+        MILE("MILE"),
+        CASHBACK("CASHBACK");
+
+        private String value;
+
+        CreditCardType(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        @Override
+        public String toString() {
+            return this.getValue();
+        }
+
+        public static CreditCardType getEnum(String value) {
+            for (CreditCardType v : values()) {
                 if (v.getValue().equalsIgnoreCase(value)) {
                     return v;
                 }

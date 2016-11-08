@@ -19,6 +19,7 @@ import entity.dams.rules.RangeInterest;
 import entity.dams.rules.TimeRangeInterest;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -100,7 +101,7 @@ public class InterestDemoManagedBean implements Serializable {
     public BigDecimal getTotalInterest(DepositAccount account) {
         System.out.println("getTotalInterest starting: account balance:" + account.getBalance());
         // TODO: Seperate from fixed deposit account
-        BigDecimal totalInterest = BigDecimal.ZERO.setScale(20);
+        BigDecimal totalInterest = BigDecimal.ZERO.setScale(4, RoundingMode.UP);
         
         System.out.println("Current cumulated interest amount:" + account.getCumulatedInterest().getCummulativeAmount());
         for (int i = 0; i < 30; i ++) {

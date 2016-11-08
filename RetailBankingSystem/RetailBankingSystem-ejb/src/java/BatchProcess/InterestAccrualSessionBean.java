@@ -64,7 +64,7 @@ public class InterestAccrualSessionBean implements InterestAccrualSessionBeanLoc
         for (DepositAccount a : accounts) {
             if (a instanceof CustomerDepositAccount) {
                 result.add(calculateDailyInterestForCustomerDepositAccount((CustomerDepositAccount) a));
-            } else { // fixed account
+            } else if (a instanceof CustomerFixedDepositAccount) { // fixed account
                 result.add(calculateDailyInterestForCustomerFixedDepositAccount((CustomerFixedDepositAccount) a));
             }
         }
@@ -82,16 +82,17 @@ public class InterestAccrualSessionBean implements InterestAccrualSessionBeanLoc
     public DepositAccount calculateDailyInterestForDepositAccount(DepositAccount a) {
         if (a instanceof CustomerDepositAccount) {
             return calculateDailyInterestForCustomerDepositAccount((CustomerDepositAccount) a);
-        } else { // fixed account
+        } else if (a instanceof CustomerFixedDepositAccount) { // fixed account
             return calculateDailyInterestForCustomerFixedDepositAccount((CustomerFixedDepositAccount) a);
         }
+        return null;
     }
 
     private CustomerFixedDepositAccount calculateDailyInterestForCustomerFixedDepositAccount(CustomerFixedDepositAccount account) {
         List<TimeRangeInterest> interests = account.getInterestRules();
 
-        BigDecimal originalAmount = account.getBalance().setScale(30);
-        BigDecimal totalInterest = BigDecimal.ZERO.setScale(30);
+        BigDecimal originalAmount = account.getBalance().setScale(4, RoundingMode.UP);
+        BigDecimal totalInterest = BigDecimal.ZERO.setScale(4, RoundingMode.UP);
         // TODO: Change to day in month
         BigDecimal dailyInterval = new BigDecimal(30 * 12 / account.getProduct().getInterestInterval());
 
@@ -136,13 +137,13 @@ public class InterestAccrualSessionBean implements InterestAccrualSessionBeanLoc
             }
         }
 
-        BigDecimal originalAmount = a.getBalance().setScale(30);
-        BigDecimal totalInterest = BigDecimal.ZERO.setScale(30);
+        BigDecimal originalAmount = a.getBalance().setScale(4, RoundingMode.UP);
+        BigDecimal totalInterest = BigDecimal.ZERO.setScale(4, RoundingMode.UP);
         // TODO: Change to day in month
         BigDecimal dailyInterval = new BigDecimal(30 * 12 / a.getProduct().getInterestInterval());
 
         // Get highest base interest
-        BigDecimal baseInterest = BigDecimal.ZERO.setScale(30);
+        BigDecimal baseInterest = BigDecimal.ZERO.setScale(4, RoundingMode.UP);
         for (Interest i : normalInterests) {
             if (baseInterest.compareTo(i.getPercentage()) < 0) {
                 baseInterest = i.getPercentage();

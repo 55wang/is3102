@@ -25,6 +25,7 @@ public interface CustomerDepositSessionBeanLocal {
     public DepositAccount createAccount(DepositAccount account);
     public DepositAccount updateAccount(DepositAccount account);
     public List<DepositAccount> showAllAccounts();
+    public List<DepositAccount> showAllActiveAccounts();
     public List<DepositAccount> getAllCustomerAccounts(Long mainAccountId);
     public CustomerDepositAccount getDaytoDayAccountByMainAccount(MainAccount ma);
     public List<CustomerDepositAccount> getAllNonFixedCustomerAccounts(Long mainAccountId);
@@ -44,4 +45,6 @@ public interface CustomerDepositSessionBeanLocal {
     public DepositAccount creditInterestAccount(DepositAccount account);
     public List<TransactionRecord> transactionRecordFromAccountNumber(String accountNumber);
     public TransactionRecord latestTransactionFromAccountNumber(String accountNumber);
+    public CustomerDepositAccount updateCustomerDepositAccount(CustomerDepositAccount account);
+
 }

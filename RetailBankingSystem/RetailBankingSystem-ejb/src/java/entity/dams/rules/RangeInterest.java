@@ -17,9 +17,9 @@ import javax.persistence.Entity;
 public class RangeInterest extends Interest {
     
     // info
-    @Column(precision=12, scale=2)
+    @Column(precision=18, scale=4)
     private BigDecimal minimum;
-    @Column(precision=12, scale=2)
+    @Column(precision=18, scale=4)
     private BigDecimal maximum;
 
     /**

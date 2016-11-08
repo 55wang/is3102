@@ -25,7 +25,7 @@ public class BillTransfer implements Serializable {
     @Temporal(value = TemporalType.TIMESTAMP)
     private Date creationDate = new Date();
     // info
-    @Column(precision=30, scale=20)
+    @Column(precision=18, scale=4)
     private BigDecimal amount;
     private String partnerBankCode;
     private String fromBankCode;

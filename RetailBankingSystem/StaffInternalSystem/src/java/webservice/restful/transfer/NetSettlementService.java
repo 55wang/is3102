@@ -6,6 +6,7 @@
 package webservice.restful.transfer;
 
 import ejb.session.webservice.WebserviceSessionBeanLocal;
+import java.math.BigDecimal;
 import javax.ejb.EJB;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
@@ -31,14 +32,32 @@ public class NetSettlementService {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     public Response netSettlement(
-            @FormParam("netSettlementAmount") String netSettlementAmount,
+            @FormParam("citiToBankCode") String citiToBankCode,
+            @FormParam("citiToBankName") String citiToBankName,
+            @FormParam("citiSettlementAmount") String citiSettlementAmount,
+            @FormParam("ocbcToBankCode") String ocbcToBankCode,
+            @FormParam("ocbcToBankName") String ocbcToBankName,
+            @FormParam("ocbcSettlementAmount") String ocbcSettlementAmount,
             @FormParam("date") String date,
             @FormParam("agencyCode") String agencyCode
     ) {
         System.out.println(".");
         System.out.println("[MBS]");
         System.out.println("Received Net Settlement Broadcast from MEPS:");
-        System.out.println("Net Settlement Amount: " + netSettlementAmount);
+
+        if (new BigDecimal(citiSettlementAmount).compareTo(BigDecimal.ZERO) == -1) {
+            System.out.println(".       Net Settlement from " + citiToBankCode + " " + citiToBankName + ": " + new BigDecimal(citiSettlementAmount).abs().setScale(4).toString());
+        } else if (new BigDecimal(citiSettlementAmount).compareTo(BigDecimal.ZERO) == 1) {
+            System.out.println(".       Net Settlement to " + citiToBankCode + " " + citiToBankName + ": " + new BigDecimal(citiSettlementAmount).abs().setScale(4).toString());
+        } else {
+        }
+        if (new BigDecimal(ocbcSettlementAmount).compareTo(BigDecimal.ZERO) == -1) {
+            System.out.println(".       Net Settlement from " + ocbcToBankCode + " " + ocbcToBankName + ": " + new BigDecimal(ocbcSettlementAmount).abs().setScale(4).toString());
+        } else if (new BigDecimal(ocbcSettlementAmount).compareTo(BigDecimal.ZERO) == 1) {
+            System.out.println(".       Net Settlement to " + ocbcToBankCode + " " + ocbcToBankName + ": " + new BigDecimal(ocbcSettlementAmount).abs().setScale(4).toString());
+        } else {
+        }
+
         System.out.println("Date: " + date);
         System.out.println("Received POST http net_settlement");
 

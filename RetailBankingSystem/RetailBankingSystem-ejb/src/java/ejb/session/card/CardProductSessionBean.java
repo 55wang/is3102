@@ -8,12 +8,14 @@ package ejb.session.card;
 import entity.card.product.CashBackCardProduct;
 import entity.card.product.CreditCardProduct;
 import entity.card.product.MileCardProduct;
+import entity.card.product.PromoProduct;
 import entity.card.product.RewardCardProduct;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import server.utilities.EnumUtils;
 
 /**
  *
@@ -85,6 +87,13 @@ public class CardProductSessionBean implements CardProductSessionBeanLocal {
         Query q = em.createQuery("SELECT ccp FROM CreditCardProduct ccp WHERE ccp.productName=:inPName");
         q.setParameter("inPName", productName);
         return (CreditCardProduct)q.getSingleResult();
+    }
+    
+    @Override
+    public List<PromoProduct> getPromoProductByCardType(String cardType) {
+        Query q = em.createQuery("SELECT pp FROM PromoProduct pp WHERE pp.cardType = :cardType");
+        q.setParameter("cardType", EnumUtils.CreditCardType.getEnum(cardType));
+        return q.getResultList();
     }
 
 }

@@ -6,7 +6,7 @@
 package webservice.restful.transfer;
 
 import ejb.session.bean.FASTSessionBean;
-import entity.PaymentTransfer;
+import entity.FastTransfer;
 import java.math.BigDecimal;
 import javax.ejb.EJB;
 import javax.ws.rs.Consumes;
@@ -56,7 +56,7 @@ public class TransferFastService {
         System.out.println(".      Sender's Initial:" + myInitial);
         System.out.println("Received POST http fast_transfer_clearing");
         // at this point, Clear and save all to db before give a end of day settlement amount
-        PaymentTransfer pt = new PaymentTransfer();
+        FastTransfer pt = new FastTransfer();
         pt.setReferenceNumber(referenceNumber);
         pt.setAmount(new BigDecimal(amount));
         pt.setFromBankCode(fromBankCode);
