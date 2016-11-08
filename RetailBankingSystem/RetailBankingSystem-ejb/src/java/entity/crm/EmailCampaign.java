@@ -6,8 +6,9 @@
 package entity.crm;
 
 import java.io.Serializable;
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -24,7 +25,7 @@ public class EmailCampaign extends MarketingCampaign implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
-    private List<String> participantEmailAddresses = new ArrayList<>();
+    private Set<String> participantEmailAddresses = new HashSet<>();
     private String contentEmail;
     private String senderEmailAddress;
 
@@ -61,14 +62,6 @@ public class EmailCampaign extends MarketingCampaign implements Serializable {
         return "entity.crm.EmailCampaign[ id=" + id + " ]";
     }
 
-    public List<String> getParticipantEmailAddresses() {
-        return participantEmailAddresses;
-    }
-
-    public void setParticipantEmailAddresses(List<String> participantEmailAddresses) {
-        this.participantEmailAddresses = participantEmailAddresses;
-    }
-
     public String getContentEmail() {
         return contentEmail;
     }
@@ -83,6 +76,14 @@ public class EmailCampaign extends MarketingCampaign implements Serializable {
 
     public void setSenderEmailAddress(String senderEmailAddress) {
         this.senderEmailAddress = senderEmailAddress;
+    }
+
+    public Set<String> getParticipantEmailAddresses() {
+        return participantEmailAddresses;
+    }
+
+    public void setParticipantEmailAddresses(Set<String> participantEmailAddresses) {
+        this.participantEmailAddresses = participantEmailAddresses;
     }
     
 }

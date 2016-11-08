@@ -26,13 +26,21 @@
                                 <h:panelGrid columns="2" cellpadding="10">
                                     <p:outputLabel for="emailCampaignName" value="Name: " />
                                     <p:inputText id="emailCampaignName" value="#{createMarketingCampaignManagedBean.emailMarketingCampaign.nameCampaign}" />
-                                    <p:outputLabel for="emailCampaignType" value="Type: " />
-                                    <p:inputText id="emailCampaignType" value="#{createMarketingCampaignManagedBean.emailMarketingCampaign.typeCampaign}" />
                                     <p:outputLabel for="emailCampaignDesc" value="Description: " />
                                     <p:inputText id="emailCampaignDesc" value="#{createMarketingCampaignManagedBean.emailMarketingCampaign.description}" />
-                                    <p:outputLabel for="emailCampaignLandingUrl" value="Landing Url: " />
-                                    <p:inputText id="emailCampaignLandingUrl" value="#{createMarketingCampaignManagedBean.emailMarketingCampaign.landingPageUrl}" />
-                                    <p:commandButton value="Confirm" action="#{createMarketingCampaignManagedBean.addNewEmailMarketingCampaign()}" update="@form">
+                                    <p:outputLabel for="emailCampaignLandingName" value="Landing Page Name: e.g. product_a" />
+                                    <p:inputText id="emailCampaignLandingName" value="#{createMarketingCampaignManagedBean.emailMarketingCampaign.landingPageName}" />
+
+                                    <p:outputLabel for="emailCampaignContent" value="Email Content" />
+                                    <p:inputText id="emailCampaignContent" value="#{createMarketingCampaignManagedBean.emailMarketingCampaign.contentEmail}" />
+
+                                    <p:outputLabel value="Select Customer Group: " />
+                                    <p:selectOneMenu value="#{createMarketingCampaignManagedBean.selectedCustomerGroupEmail}" style="width:187px; height: 30px; line-height: 21px; top:10px" rendered="true" required="true">
+                                        <f:selectItems value="#{createMarketingCampaignManagedBean.customerGroupOptions}" var="a" itemValue="#{a.id}" itemLabel="#{a.groupName}" />
+
+                                    </p:selectOneMenu>
+
+                                    <p:commandButton value="Create Email Campaign" action="#{createMarketingCampaignManagedBean.addNewEmailMarketingCampaign()}" update="@form">
                                     </p:commandButton>
                                 </h:panelGrid>
                             </p:tab>
@@ -40,16 +48,18 @@
                                 <h:panelGrid columns="2" cellpadding="10">
                                     <p:outputLabel for="adsBannerCampaignName" value="Name: " />
                                     <p:inputText id="adsBannerCampaignName" value="#{createMarketingCampaignManagedBean.adsMarketingCampaign.nameCampaign}" />
-                                    <p:outputLabel for="adsBannerCampaignType" value="Type: " />
-                                    <p:inputText id="adsBannerCampaignType" value="#{createMarketingCampaignManagedBean.adsMarketingCampaign.typeCampaign}" />
                                     <p:outputLabel for="adsBannerCampaignDesc" value="Description: " />
                                     <p:inputText id="adsBannerCampaignDesc" value="#{createMarketingCampaignManagedBean.adsMarketingCampaign.description}" />
-                                    <p:outputLabel for="adsBannerCampaignLandingUrl" value="Landing Url: " />
-                                    <p:inputText id="adsBannerCampaignLandingUrl" value="#{createMarketingCampaignManagedBean.adsMarketingCampaign.landingPageUrl}" />
-                                    <p:outputLabel for="adsBannerCampaignCardFrequencyLevel" value="Card Frequency Level: " />
-                                    <p:inputText id="adsBannerCampaignCardFrequencyLevel" value="#{createMarketingCampaignManagedBean.adsMarketingCampaign.cardFrequencyLevel}" />
-                                    
-                                    <p:commandButton value="Confirm" action="#{createMarketingCampaignManagedBean.addNewAdsBannerMarketingCampaign()}" update="@form">
+                                    <p:outputLabel for="adsBannerCampaignLandingName" value="Landing Page Name: e.g. product_a" />
+                                    <p:inputText id="adsBannerCampaignLandingName" value="#{createMarketingCampaignManagedBean.adsMarketingCampaign.landingPageName}" />
+
+                                    <p:outputLabel value="Select Customer Group: " />
+                                    <p:selectOneMenu value="#{createMarketingCampaignManagedBean.selectedCustomerGroupAdsBanner}" style="width:187px; height: 30px; line-height: 21px; top:10px" rendered="true" required="true">
+                                        <f:selectItems value="#{createMarketingCampaignManagedBean.customerGroupOptions}" var="a" itemValue="#{a.id}" itemLabel="#{a.groupName}" />
+
+                                    </p:selectOneMenu>
+
+                                    <p:commandButton value="Create Ads Campaign" action="#{createMarketingCampaignManagedBean.addNewAdsBannerMarketingCampaign()}" update="@form">
                                     </p:commandButton>
                                 </h:panelGrid>
                             </p:tab>
