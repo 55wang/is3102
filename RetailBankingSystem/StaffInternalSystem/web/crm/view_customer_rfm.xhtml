@@ -39,7 +39,10 @@
                                 <p:column headerText="Monetary" sortBy="#{customer.depositMonetary}">
                                     <h:outputText value="#{customer.depositMonetary}" />
                                 </p:column>
-
+                                
+                                <p:column headerText="Deposit RFM Score" sortBy="#{customer.depositRFMScore}">
+                                    <h:outputText value="#{customer.depositRFMScore}" />
+                                </p:column>
                             </p:dataTable>
                     </div>
                     <div class="ui-g-12 ui-md-12 datatable-holder">
@@ -62,6 +65,10 @@
 
                             <p:column headerText="Monetary" sortBy="#{customer.cardMonetary}">
                                 <h:outputText value="#{customer.cardMonetary}" />
+                            </p:column>
+                            
+                            <p:column headerText="Card RFM Score" sortBy="#{customer.cardRFMScore}">
+                                <h:outputText value="#{customer.cardRFMScore}" />
                             </p:column>
                         </p:dataTable>
                     </div>

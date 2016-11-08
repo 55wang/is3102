@@ -25,6 +25,7 @@ public class EntityPromoProductBuilder {
 
     public PromoProduct initPromoProduct(PromoProduct demoPromoProduct) {
         PromoProduct p1 = new PromoProduct();
+        p1.setCardType(EnumUtils.CreditCardType.REWARD);
         p1.setName("Golden Village 1 Movie Ticket (Any day)");
         p1.setTerms("• Voucher will be mail within 7 days from the date of redemption. \n"
                 + "• Valid for movie screenings at any Golden Village cinemas at anytime. \n"
@@ -40,6 +41,7 @@ public class EntityPromoProductBuilder {
 
         PromoProduct p2 = new PromoProduct();
         p2.setName("Crabtree & Evelyn S$25 Voucher");
+        p2.setCardType(EnumUtils.CreditCardType.REWARD);
         p2.setTerms("• Usage of multiple vouchers allowed.\n"
                 + "• Voucher is not valid for items on special offer, sale or discount.\n"
                 + "• Crabtree & Evelyn reserves the right to make the final decisions concerning the promotion.\n"
@@ -52,6 +54,7 @@ public class EntityPromoProductBuilder {
 
         PromoProduct p3 = new PromoProduct();
         p3.setName("Best Denki S$50 Voucher");
+        p3.setCardType(EnumUtils.CreditCardType.REWARD);
         p3.setTerms("• Usage of multiple vouchers is allowed.\n"
                 + "• Voucher is not valid for use with other Gift Vouchers, discounts or on-going promotions.\n"
                 + "• Voucher is not exchangeable for cash and any unused value of the Voucher will be forfeited.\n"
@@ -63,6 +66,7 @@ public class EntityPromoProductBuilder {
 
         PromoProduct p4 = new PromoProduct();
         p4.setName("Takashimaya Department Store S$100 Voucher");
+        p4.setCardType(EnumUtils.CreditCardType.REWARD);
         p4.setTerms("• Voucher will expire 3 months from date of redemption or date of issue. \n"
                 + "• Voucher will be mail within 7 days from the date of redemption. \n"
                 + "• Voucher is not exchangeable for cash or Takashimaya Gift Voucher and any unused value of the Voucher will be forfeited.  \n"
@@ -73,7 +77,28 @@ public class EntityPromoProductBuilder {
         p4.setPoints(16500.0);
         p4.setType(EnumUtils.PromoType.VOUCHER);
         utilsBean.persist(p4);
-        
+
+        PromoProduct p5 = new PromoProduct();
+        p5.setName("Singapore Airline Ticket - China");
+        p5.setCardType(EnumUtils.CreditCardType.MILE);
+        p5.setTerms("• Actual destinations can be varied depending on frequent flyer programmes of each airline\n"
+                + "• S$15 administration fee will be charged for each redemption. For processing of the redemption request, please allow 5 working days for Asia Miles, Avios, Gold Points, Delta Skymiles, Infinity MileageLands Miles, Flying Blue Award Miles, Garuda Frequent Flyer Miles, Enrich Miles, Qantas Points, Qmiles, KrisFlyer Miles, HHonors or IHG Rewards and 14 working days for Royal Orchid Plus or Guest Miles.\n"
+                + "• Under travel insurances coverage, round trip must depart from, and return to Singapore within 90 days. For details and terms and conditions, please contact Citi PremierMiles Services.");
+        p5.setPoints(50000.0);
+        p5.setType(EnumUtils.PromoType.VOUCHER);
+        utilsBean.persist(p5);
+
+        PromoProduct p6 = new PromoProduct();
+        p6.setName("Singapore Airline Ticket - US");
+        p6.setCardType(EnumUtils.CreditCardType.MILE);
+        p6.setTerms("• Actual destinations can be varied depending on frequent flyer programmes of each airline\n"
+                + "• S$15 administration fee will be charged for each redemption. For processing of the redemption request, please allow 5 working days for Asia Miles, Avios, Gold Points, Delta Skymiles, Infinity MileageLands Miles, Flying Blue Award Miles, Garuda Frequent Flyer Miles, Enrich Miles, Qantas Points, Qmiles, KrisFlyer Miles, HHonors or IHG Rewards and 14 working days for Royal Orchid Plus or Guest Miles.\n"
+                + "• Under travel insurances coverage, round trip must depart from, and return to Singapore within 90 days. For details and terms and conditions, please contact Citi PremierMiles Services.");
+        p6.setPoints(100000.0);
+        p6.setType(EnumUtils.PromoType.VOUCHER);
+        utilsBean.persist(p6);
+
         return demoPromoProduct;
     }
+
 }

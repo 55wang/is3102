@@ -6,6 +6,9 @@
 package webservice.restful.transfer;
 
 import ejb.session.webservice.WebserviceSessionBeanLocal;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
@@ -29,17 +32,44 @@ public class NetSettlementService {
 
     @POST
     @Produces(MediaType.APPLICATION_JSON)
-    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    @Consumes(MediaType.APPLICATION_JSON)
     public Response netSettlement(
-            @FormParam("netSettlementAmount") String netSettlementAmount,
-            @FormParam("date") String date,
-            @FormParam("agencyCode") String agencyCode
+            TransactionSummaryDTO transactionSummary
     ) {
+
+        String citiToBankCode = transactionSummary.getCitiToBankCode();
+        String citiToBankName = transactionSummary.getCitiToBankName();
+        String citiSettlementAmount = transactionSummary.getCitiSettlementAmount();
+        String ocbcToBankCode = transactionSummary.getOcbcToBankCode();
+        String ocbcToBankName = transactionSummary.getOcbcToBankName();
+        String ocbcSettlementAmount = transactionSummary.getOcbcSettlementAmount();
+        String sentDate = transactionSummary.getDate();
+        List<String> mbsTransactions = new ArrayList<String>();
+        for (TransactionDTO dto : transactionSummary.getTransactionSummary()) {
+            mbsTransactions.add(dto.getReferenceNumber());
+        }
         System.out.println(".");
         System.out.println("[MBS]");
         System.out.println("Received Net Settlement Broadcast from MEPS:");
-        System.out.println("Net Settlement Amount: " + netSettlementAmount);
-        System.out.println("Date: " + date);
+
+        if (new BigDecimal(citiSettlementAmount).compareTo(BigDecimal.ZERO) == -1) {
+            System.out.println(".       Net Settlement from " + citiToBankCode + " " + citiToBankName + ": " + new BigDecimal(citiSettlementAmount).abs().setScale(4).toString());
+        } else if (new BigDecimal(citiSettlementAmount).compareTo(BigDecimal.ZERO) == 1) {
+            System.out.println(".       Net Settlement to " + citiToBankCode + " " + citiToBankName + ": " + new BigDecimal(citiSettlementAmount).abs().setScale(4).toString());
+        } else {
+        }
+        if (new BigDecimal(ocbcSettlementAmount).compareTo(BigDecimal.ZERO) == -1) {
+            System.out.println(".       Net Settlement from " + ocbcToBankCode + " " + ocbcToBankName + ": " + new BigDecimal(ocbcSettlementAmount).abs().setScale(4).toString());
+        } else if (new BigDecimal(ocbcSettlementAmount).compareTo(BigDecimal.ZERO) == 1) {
+            System.out.println(".       Net Settlement to " + ocbcToBankCode + " " + ocbcToBankName + ": " + new BigDecimal(ocbcSettlementAmount).abs().setScale(4).toString());
+        } else {
+        }
+        System.out.println("Settled Transactions:");
+        for (String tr : mbsTransactions) {
+            System.out.println(".       ID: " + tr);
+        }
+
+        System.out.println("Date: " + sentDate);
         System.out.println("Received POST http net_settlement");
 
         // requesting to MEPS

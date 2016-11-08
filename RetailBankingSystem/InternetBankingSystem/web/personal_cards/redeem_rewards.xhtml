@@ -21,57 +21,62 @@
             <em:customerNavBar context="personal" personalPage="cards" ></em:customerNavBar>
             <div class="customer_main_container">
                 <h:form id="mainForm">
+                    <p:growl id="growl" sticky="true" showDetail="true"/>
                     <p:panel header="Promotional Products">
-                        <p:messages id="messagesStatus" redisplay="false" >
-                            <h:panelGrid columns="2" cellpadding="5">
-                                <p:dataTable value="#{redeemRewardsManagedBean.products}" var="product" >
+                        <h:panelGrid columns="2" cellpadding="5">
+                            <h:outputText value="Your points:" style="font-weight: bold;font-size: 14pt"/>
+                            <h:outputText value="#{redeemRewardsManagedBean.cca.merlionPoints}" style="font-size: 14pt"/>
+                        </h:panelGrid>
+                        <h:panelGrid columns="2" cellpadding="5" style="margin-top: 10px">
 
-                                    <p:column headerText="Name:">
-                                        <h:outputText value="#{product.name}" />
-                                    </p:column>
-                                    
-                                    <p:column headerText="Points:">
-                                        <h:outputText value="#{product.points}" />
-                                    </p:column>
+                            <p:dataTable value="#{redeemRewardsManagedBean.rewardProducts}" var="product" >
 
-                                    <p:column headerText="Terms:">
-                                        <h:outputText value="#{product.terms}" />
-                                    </p:column>
+                                <p:column headerText="Name:" style="width:25%">
+                                    <h:outputText value="#{product.name}" />
+                                </p:column>
 
-                                    <p:column headerText="Promo Rewards">
-                                        <p:commandButton value="Redeem" action="#{redeemRewardsManagedBean.redeem(product)}" update="@form" />
-                                    </p:column>
+                                <p:column headerText="Points Required:" style="width:15%">
+                                    <h:outputText value="#{product.points}" />
+                                </p:column>
 
-                                </p:dataTable>
+                                <p:column headerText="Terms:">
+                                    <h:outputText value="#{product.terms}" />
+                                </p:column>
 
-                            </h:panelGrid>
-                        </p:messages>
+                                <p:column headerText="Redeem:" style="width:15%">
+                                    <p:commandButton value="Redeem" action="#{redeemRewardsManagedBean.redeemReward(product)}" update="@form" style="width:100%;  height: 30px" />
+                                </p:column>
+
+                            </p:dataTable>
+
+                        </h:panelGrid>
                     </p:panel>
-                    
-                    <p:panel header="Redeemed Products">
-                            <h:panelGrid columns="2" cellpadding="5">
-                                <p:dataTable value="#{redeemRewardsManagedBean.cca.promoCode}" var="promoCode" >
 
-                                    <p:column headerText="Name: ">
-                                        <h:outputText value="#{promoCode.product.name}" />
-                                    </p:column>
-                                    
-                                    <p:column headerText="Code: ">
-                                        <h:outputText value="#{promoCode.promotionCode}" />
-                                    </p:column>
-                                    
-                                    <p:column headerText="Points: ">
-                                        <h:outputText value="#{promoCode.product.points}" />
-                                    </p:column>
+                    <p:panel id = "new" header="Redeemed Products">
 
-                                </p:dataTable>
+                        <h:panelGrid columns="2" cellpadding="5">
+                            <p:dataTable value="#{redeemRewardsManagedBean.cca.promoCode}" var="promoCode" >
 
-                            </h:panelGrid>
+                                <p:column headerText="Name: ">
+                                    <h:outputText value="#{promoCode.product.name}" />
+                                </p:column>
+
+                                <p:column headerText="Code: ">
+                                    <h:outputText value="#{promoCode.promotionCode}" />
+                                </p:column>
+
+                                <p:column headerText="Points: ">
+                                    <h:outputText value="#{promoCode.product.points}" />
+                                </p:column>
+
+                            </p:dataTable>
+
+                        </h:panelGrid>
                     </p:panel>
-                    
+
                 </h:form>
             </div>
-        <em:customerFooter></em:customerFooter>
+            <em:customerFooter></em:customerFooter>
         </h:body>
     </f:view>
 

@@ -17,6 +17,7 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
+import server.utilities.CommonUtils;
 import server.utilities.EnumUtils;
 import utils.MessageUtils;
 import utils.RedirectUtils;
@@ -34,16 +35,19 @@ public class ApplyDebitCardAccountManagedBean implements Serializable {
     private CustomerDepositSessionBeanLocal depositBean;
     @EJB
     private CardAcctSessionBeanLocal cardAcctSessionBean;
+    private String selectedCardNetwork;
     
     private List<CustomerDepositAccount> depositAccounts = new ArrayList<>();
     private List<String> accountOptions = new ArrayList<>();
+    private List<String> cardNetworkOptions = CommonUtils.getEnumList(EnumUtils.CardNetwork.class);
     private String selectedAccountNumber;
+
     /**
      * Creates a new instance of ApplyDebitCardAccountManagedBean
      */
     public ApplyDebitCardAccountManagedBean() {
     }
-    
+
     @PostConstruct
     public void init() {
         depositAccounts = depositBean.getAllNonFixedCustomerAccounts(Long.parseLong(SessionUtils.getUserId()));
@@ -51,34 +55,33 @@ public class ApplyDebitCardAccountManagedBean implements Serializable {
             accountOptions.add(a.getAccountNumber());
         }
     }
-    
+
     public void applyDebitCard() {
         System.out.println("card account session bean called");
         CustomerDepositAccount selectedAccount = getSelectedAccount();
         if (selectedAccount != null) {
-            // TODO: create debit card and link with account
-//            dca.setCustomerDepositAccount(selectedAccount);
-//            dca.setCardStatus(EnumUtils.CardAccountStatus.PENDING);
-//            dca.setCreationDate(new Date());
-//            dca.setNameOnCard(dca, selectedAccount);
-//            cardAcctSessionBean.createDebitAccount(dca, );
-            System.out.println("inside the loop");
-            cardAcctSessionBean.createDebitAccount(selectedAccount);
-            MessageUtils.displayInfo("Your application is successful!");
-            RedirectUtils.redirect("/InternetBankingSystem/personal_cards/debit_card_summary.xhtml");
+            DebitCardAccount result = cardAcctSessionBean.createDebitAccount(selectedAccount);
             
+            if (result != null) {
+                result.setCardNetwork(EnumUtils.CardNetwork.getEnum(selectedCardNetwork));
+                List<DebitCardAccount> dcas = selectedAccount.getDebitCardAccount();
+                dcas.add(result);
+                selectedAccount.setDebitCardAccount(dcas);
+                depositBean.updateCustomerDepositAccount(selectedAccount);
+                cardAcctSessionBean.updateDebitAccount(result);
+                MessageUtils.displayInfo("Your application is successful!");
+                RedirectUtils.redirect("/InternetBankingSystem/personal_cards/debit_card_summary.xhtml");
+            }
         }
-        
         System.out.println("ended");
-        
     }
-    
+
     public CustomerDepositAccount getSelectedAccount() {
         for (CustomerDepositAccount a : depositAccounts) {
             if (a.getAccountNumber().equals(selectedAccountNumber)) {
                 return a;
             }
-        } 
+        }
         return null;
     }
 
@@ -109,5 +112,33 @@ public class ApplyDebitCardAccountManagedBean implements Serializable {
     public void setSelectedAccountNumber(String selectedAccountNumber) {
         this.selectedAccountNumber = selectedAccountNumber;
     }
-    
+
+    /**
+     * @return the cardNetworkOptions
+     */
+    public List<String> getCardNetworkOptions() {
+        return cardNetworkOptions;
+    }
+
+    /**
+     * @param cardNetworkOptions the cardNetworkOptions to set
+     */
+    public void setCardNetworkOptions(List<String> cardNetworkOptions) {
+        this.cardNetworkOptions = cardNetworkOptions;
+    }
+
+    /**
+     * @return the selectedCardNetwork
+     */
+    public String getSelectedCardNetwork() {
+        return selectedCardNetwork;
+    }
+
+    /**
+     * @param selectedCardNetwork the selectedCardNetwork to set
+     */
+    public void setSelectedCardNetwork(String selectedCardNetwork) {
+        this.selectedCardNetwork = selectedCardNetwork;
+    }
+
 }

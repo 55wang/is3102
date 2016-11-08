@@ -41,6 +41,29 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
 
     @Asynchronous
     @Override
+    public void sendEmailMarketingCampaign(String recipient, String subject, String content, String landingPage) {
+        Session session = getSession();
+
+        try {
+
+            Message message = new MimeMessage(session);
+            message.setFrom(new InternetAddress("merlionbanking@gmail.com"));
+            message.setRecipients(Message.RecipientType.TO,
+                    InternetAddress.parse(recipient));
+            message.setSubject(subject);
+            message.setText(content + "\n Apply at this link: "+"https://localhost:8181/InternetBankingSystem/landing_page/" + landingPage);
+
+            Transport.send(message);
+
+            System.out.println("Email send out successfully");
+
+        } catch (MessagingException e) {
+            System.out.println(e);
+        }
+    }
+
+    @Asynchronous
+    @Override
     public void sendUpdatePortfolioNotice(String recipient) {
         Session session = getSession();
 
@@ -112,7 +135,7 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
                     InternetAddress.parse(recipient));
             message.setSubject("Welcome to Merlion Banking");
             message.setText("Dear Customer, Thank you to register merionlion banking.\n"
-                    + "Link to activate your member account: https://"+ConstantUtils.ipAddress+":8181/InternetBankingSystem/common/customer_activate_account.xhtml?email=" + recipient + "&code=" + pwd);
+                    + "Link to activate your member account: https://" + ConstantUtils.ipAddress + ":8181/InternetBankingSystem/common/customer_activate_account.xhtml?email=" + recipient + "&code=" + pwd);
 
             Transport.send(message);
 
@@ -141,7 +164,7 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
                     + "Your Reward Credit Card No.  " + ccNumber + " is on the way.\n"
                     + "CCV:   " + ccv + " is on the way.\n"
                     + "Your ibanking account is " + userName + " \n"
-                    + "Click to activate your member account: https://"+ConstantUtils.ipAddress+":8181/InternetBankingSystem/common/customer_activate_account.xhtml?email=" + recipient + "&code=" + pwd);
+                    + "Click to activate your member account: https://" + ConstantUtils.ipAddress + ":8181/InternetBankingSystem/common/customer_activate_account.xhtml?email=" + recipient + "&code=" + pwd);
 
             Transport.send(message);
 
@@ -179,7 +202,7 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
         }
 
     }
-    
+
     @Asynchronous
     @Override
     public void sendchargeBackGmailForSuccessfulCustomer(String recipient, Long ID) {
@@ -271,7 +294,7 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
                     InternetAddress.parse(recipient));
             message.setSubject("Welcome to Merlion Banking");
             message.setText("Dear Staff, Thank you to work for merionlion banking.\n"
-                    + "Link to activate your staff account: https://"+ConstantUtils.ipAddress+":8181/StaffInternalSystem/common/staff_activate_account.xhtml?email=" + recipient + "&code=" + pwd);
+                    + "Link to activate your staff account: https://" + ConstantUtils.ipAddress + ":8181/StaffInternalSystem/common/staff_activate_account.xhtml?email=" + recipient + "&code=" + pwd);
 
             Transport.send(message);
 
@@ -342,7 +365,7 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
                     InternetAddress.parse(recipient));
             message.setSubject("Reset your password");
             message.setText("Dear Customer, please go to following link to reset your password: \n"
-                    + "https://"+ConstantUtils.ipAddress+":8181/InternetBankingSystem/common/customer_activate_account.xhtml?email=" + recipient + "&code=" + forgotAccount.getPassword());
+                    + "https://" + ConstantUtils.ipAddress + ":8181/InternetBankingSystem/common/customer_activate_account.xhtml?email=" + recipient + "&code=" + forgotAccount.getPassword());
 
             Transport.send(message);
 
@@ -366,7 +389,7 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
                     InternetAddress.parse(recipient));
             message.setSubject("Reset your password");
             message.setText("Dear Staff, please go to following link to reset your password: \n"
-                    + "https://"+ConstantUtils.ipAddress+":8181/StaffInternalSystem/common/staff_activate_account.xhtml?email=" + recipient + "&code=" + forgotAccount.getPassword());
+                    + "https://" + ConstantUtils.ipAddress + ":8181/StaffInternalSystem/common/staff_activate_account.xhtml?email=" + recipient + "&code=" + forgotAccount.getPassword());
 
             Transport.send(message);
 
@@ -439,7 +462,7 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
             message.setSubject("Your profile is updated - Merlion Bank");
             message.setText("Dear Customer, \n Your profile has been updated. "
                     + "Click the link to check updated profile: "
-                    + "https://"+ConstantUtils.ipAddress+":8181/InternetBankingSystem/header_user/view_profile.xhtml .");
+                    + "https://" + ConstantUtils.ipAddress + ":8181/InternetBankingSystem/header_user/view_profile.xhtml .");
 
             Transport.send(message);
 
@@ -489,7 +512,7 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
             message.setSubject("Your transaction limit is updated - Merlion Bank");
             message.setText("Dear Customer, \n Your transaction limit of MBS card has been updated. "
                     + "Click the link to check updated transaction limit: "
-                    + "https://"+ConstantUtils.ipAddress+":8181/InternetBankingSystem/personal_cards/credit_card_summary.xhtml .");
+                    + "https://" + ConstantUtils.ipAddress + ":8181/InternetBankingSystem/personal_cards/credit_card_summary.xhtml .");
 
             Transport.send(message);
 
@@ -514,7 +537,7 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
             message.setSubject("Your Loan Application is Approved! - Merlion Bank");
             message.setText("Dear Customer, \n Your Loan Application is Approved! "
                     + "Click the link to view more details "
-                    + "https://"+ConstantUtils.ipAddress+":8181/InternetBankingSystem/main_loan/check_loan_application.xhtml .");
+                    + "https://" + ConstantUtils.ipAddress + ":8181/InternetBankingSystem/main_loan/check_loan_application.xhtml .");
 
             Transport.send(message);
 
@@ -539,7 +562,7 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
             message.setSubject("Your Loan Application is Approved! - Merlion Bank");
             message.setText("Dear Customer, \n Your Loan Application is Approved! "
                     + "Click the link to view more details "
-                    + "https://"+ConstantUtils.ipAddress+":8181/InternetBankingSystem/personal_loan/view_loan_summary.xhtml .");
+                    + "https://" + ConstantUtils.ipAddress + ":8181/InternetBankingSystem/personal_loan/view_loan_summary.xhtml .");
 
             Transport.send(message);
 
@@ -588,7 +611,7 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
             message.setSubject("Your credit card application is submitted - Merlion Bank");
             message.setText("Dear Customer, \n Your credit card application is submitted."
                     + "We are processing your application. Meanwhile, you can go to this link to check your application status."
-                    + "https://"+ConstantUtils.ipAddress+":8181/InternetBankingSystem/main_cards/default.xhtml.");
+                    + "https://" + ConstantUtils.ipAddress + ":8181/InternetBankingSystem/main_cards/default.xhtml.");
 
             Transport.send(message);
 
@@ -618,7 +641,7 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
                     + "  Product Type: " + lp.getProductType() + "\n"
                     + "  Product Name: " + lp.getLoanProduct().getProductName() + "\n"
                     + "  Requested Amount: " + lp.getRequestedAmount() + "\n"
-                    + "View more details at: https://"+ConstantUtils.ipAddress+":8181/StaffInternalSystem/loan/view_loan_application.xhtml");
+                    + "View more details at: https://" + ConstantUtils.ipAddress + ":8181/StaffInternalSystem/loan/view_loan_application.xhtml");
 
             Transport.send(message);
 
@@ -645,7 +668,7 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
             message.setSubject("Your loan application is submitted - Merlion Bank");
             message.setText("Dear Customer, \n Your loan application is submitted.\n"
                     + "We are processing your application and will reply to you soon. Thank you.\n"
-                    + "View more details at: https://"+ConstantUtils.ipAddress+":8181/StaffInternalSystem/loan/view_loan_application.xhtml");
+                    + "View more details at: https://" + ConstantUtils.ipAddress + ":8181/StaffInternalSystem/loan/view_loan_application.xhtml");
 
             Transport.send(message);
 

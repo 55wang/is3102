@@ -11,6 +11,8 @@ import ejb.session.common.EmailServiceSessionBeanLocal;
 import entity.card.account.CardTransaction;
 import entity.card.account.CreditCardAccount;
 import entity.card.account.DebitCardAccount;
+import entity.card.product.MileCardProduct;
+import entity.card.product.RewardCardProduct;
 import entity.customer.Customer;
 import java.io.Serializable;
 import java.util.Date;
@@ -21,6 +23,7 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
+import server.utilities.EnumUtils;
 import server.utilities.EnumUtils.CardAccountStatus;
 import utils.MessageUtils;
 import utils.RedirectUtils;
@@ -84,7 +87,11 @@ public class CustomerCardManagedBean implements Serializable {
         Map<String, String> map = new HashMap<>();
         map.put("creditCardId", cca.getId().toString());
         String params = RedirectUtils.generateParameters(map);
-        RedirectUtils.redirect("redeem_rewards.xhtml" + params);
+        if (cca.getCreditCardProduct().getCartType().equals(EnumUtils.CreditCardType.REWARD)) {
+            RedirectUtils.redirect("redeem_rewards.xhtml" + params);
+        } else {
+            RedirectUtils.redirect("redeem_miles.xhtml" + params);
+        }
     }
 
     public void redirectToChangeTransactionLimitPage(CreditCardAccount aCca) {

@@ -43,7 +43,7 @@ public interface CardAcctSessionBeanLocal {
     public CreditCardAccount getCardAccountById(Long cardID);
     public CreditCardAccount getCreditCardAccountByCardNumber(String cardNumber);
     public CreditCardAccount payCreditCardAccountBillByCardNumber(String cardNumber, BigDecimal amount);
-    public List<CreditCardAccount> getListCreditCardAccountsByCardStatusAndAppStatus(EnumUtils.CardAccountStatus cardAccountStatus, EnumUtils.ApplicationStatus cardApplicationStatus);
+    public List<CreditCardAccount> getListCreditCardAccountsByCardStatusAndAppStatus(EnumUtils.CardAccountStatus cardAccountStatus, EnumUtils.CardApplicationStatus cardApplicationStatus);
     public List<CreditCardAccount> getListCreditCardAccountsByIdAndNotStatus(Long id, EnumUtils.CardAccountStatus status);
     public List<CreditCardAccount> getAllActiveCreditCardAccountsByMainId(Long id);
     public List<CreditCardAccount> updateListInterestToOutstandingAmountCcas();
@@ -60,5 +60,7 @@ public interface CardAcctSessionBeanLocal {
     public DebitCardAccount updateDebitAccountStatus(DebitCardAccount dca, EnumUtils.CardAccountStatus status);
     public DebitCardAccount activateDebitCard(String identityNumber, Date birthday, String cardNumber, String cvv);
     public List<DebitCardAccount> getListDebitCardAccountsByIdAndNotStatus(Long id, EnumUtils.CardAccountStatus status);
-    
+    public List<DebitCardAccount> getListDebitCardAccountsByStatus(EnumUtils.CardAccountStatus status);
+    public DebitCardAccount updateDebitAccount(DebitCardAccount dca);
+
 }

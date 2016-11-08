@@ -5,6 +5,8 @@
  */
 package ejb.session.bean;
 
+import dto.TransactionDTO;
+import dto.TransactionSummaryDTO;
 import entity.SettlementAccount;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -97,18 +99,21 @@ public class MEPSSessionBean {
         }
     }
 
-    public List<SettlementAccount> updateSettlementAccountsBalance(String mbsCode, String mbsSettlementAmount,
-            String citiCode, String citiSettlementAmount, String ocbcCode, String ocbcSettlementAmount) {
-        List<SettlementAccount> accounts = retrieveThreeSettlementAccounts(mbsCode, citiCode, ocbcCode);
+    public List<SettlementAccount> updateSettlementAccountsBalance(String citiFromBankCode, String citiToBankCode, String citiSettlementAmount, String ocbcFromBankCode, String ocbcToBankCode, String ocbcSettlementAmount) {
+        List<SettlementAccount> accounts = retrieveThreeSettlementAccounts(citiFromBankCode, citiToBankCode, ocbcToBankCode);
         for (SettlementAccount sa : accounts) {
-            if (sa.getBankCode().equals(mbsCode)) {
-                sa.setAmount(sa.getAmount().add(new BigDecimal(mbsSettlementAmount)));
-            } else if (sa.getBankCode().equals(citiCode)) {
+            if (sa.getBankCode().equals(citiToBankCode)) {
                 sa.setAmount(sa.getAmount().add(new BigDecimal(citiSettlementAmount)));
-            } else if (sa.getBankCode().equals(ocbcCode)) {
+            } 
+            if (sa.getBankCode().equals(ocbcToBankCode)) {
                 sa.setAmount(sa.getAmount().add(new BigDecimal(ocbcSettlementAmount)));
-            } else {
+            } 
+            if (sa.getBankCode().equals(citiFromBankCode)) {
+                sa.setAmount(sa.getAmount().subtract(new BigDecimal(citiSettlementAmount)));
             }
+            if (sa.getBankCode().equals(ocbcFromBankCode)) {
+                sa.setAmount(sa.getAmount().subtract(new BigDecimal(ocbcSettlementAmount)));
+            } 
         }
         return accounts;
     }
@@ -122,19 +127,14 @@ public class MEPSSessionBean {
         return q.getResultList();
     }
 
-    public void sendMBSNetSettlement(String netSettlementAmount) {
-
+    public void sendMBSNetSettlement(TransactionSummaryDTO transactionSummary){
         // send to mbs
-        Form form = new Form(); //bank info
-        form.param("netSettlementAmount", netSettlementAmount);
-        form.param("date", (new Date()).toString());
-        form.param("agencyCode", "000");
 
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(MBS_NET_SETTLEMENT_PATH);
 
         // This is the response
-        JsonObject jsonString = target.request(MediaType.APPLICATION_JSON).post(Entity.entity(form, MediaType.APPLICATION_FORM_URLENCODED), JsonObject.class);
+        JsonObject jsonString = target.request(MediaType.APPLICATION_JSON).post(Entity.entity(transactionSummary, MediaType.APPLICATION_JSON), JsonObject.class);
 
         if (jsonString != null && jsonString.getString("error").equals("SUCCESS")) {
 
@@ -145,4 +145,30 @@ public class MEPSSessionBean {
             System.out.println("FAIL");
         }
     }
+    
+    public void testMBS(){
+
+        // send to mbs
+        System.out.println("Testing");
+        TransactionSummaryDTO summary = new TransactionSummaryDTO();
+        TransactionDTO dto = new TransactionDTO();
+        dto.setReferenceNumber("TEST1234");
+        summary.getTransactionSummary().add(dto);
+
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target("https://localhost:8181/StaffInternalSystem/rest/test_json");
+
+        // This is the response
+        JsonObject jsonString = target.request(MediaType.APPLICATION_JSON).post(Entity.entity(summary, MediaType.APPLICATION_JSON), JsonObject.class);
+
+        if (jsonString != null && jsonString.getString("error").equals("SUCCESS")) {
+
+            System.out.println(".");
+            System.out.println("[MEPS]");
+            System.out.println("Received response from MBS..");
+        } else {
+            System.out.println("FAIL");
+        }
+    }
+
 }

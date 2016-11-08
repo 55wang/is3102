@@ -14,23 +14,27 @@
             <em:customerHeader context="personal" userName="#{customerHomeManagedBean.customer.firstname }"></em:customerHeader>
             <em:customerNavBar context="personal" personalPage="apply" ></em:customerNavBar>          
             <div class="customer_main_container">
-            <h:form>
-                <p:panel header="Apply a debit card">
-                <p:growl id="growl" sticky="true" showDetail="true"/>
-                <p:wizard widgetVar="myWizard" showNavBar="false">
+                <h:form>
+                    <p:panel header="Apply a debit card">
+                        <p:growl id="growl" sticky="true" showDetail="true"/>
+                        <p:wizard widgetVar="myWizard" showNavBar="false">
 
-                <p:tab id="apply" title="Apply a debit card">
-                        
-                            <p:messages />
-                            <h:panelGrid columns="2" columnClasses="label, value">
-                                 <p:outputLabel for="staffrole" value="Select Deposit Account:" />
-                                <p:selectOneMenu id="staffrole" value="#{applyDebitCardAccountManagedBean.selectedAccountNumber}" style="width:125px">
-                                    <f:selectItems value="#{applyDebitCardAccountManagedBean.accountOptions}" />
-                                </p:selectOneMenu>
-                                 
-                            </h:panelGrid>
-                            <h:panelGrid columns="1">
-                             <p:scrollPanel mode="native" style="width:500px;height:200px;margin-top:10px;border:1px solid grey">
+                            <p:tab id="apply" title="Apply a debit card">
+
+                                <p:messages />
+                                <h:panelGrid columns="2" columnClasses="label, value">
+                                    <p:outputLabel for="account" value="Select Deposit Account:" />
+                                    <p:selectOneMenu id="account" value="#{applyDebitCardAccountManagedBean.selectedAccountNumber}" style="width:125px">
+                                        <f:selectItems value="#{applyDebitCardAccountManagedBean.accountOptions}" />
+                                    </p:selectOneMenu>
+                                    <p:outputLabel for="type" value="Select Debit Card Product:" />
+                                    <p:selectOneMenu id="type" value="#{applyDebitCardAccountManagedBean.selectedCardNetwork}" style="width:125px">
+                                        <f:selectItems value="#{applyDebitCardAccountManagedBean.cardNetworkOptions}" />
+                                    </p:selectOneMenu>
+
+                                </h:panelGrid>
+                                <h:panelGrid columns="1">
+                                    <p:scrollPanel mode="native" style="width:500px;height:200px;margin-top:10px;border:1px solid grey">
 
                                         <p>
                                             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean blandit tortor a ipsum vehicula, in semper sapien auctor. Nulla tempor eget est non consequat. Nulla sit amet lorem justo. Cras non tellus eros. Sed ultricies orci ut quam interdum fringilla. Nam vitae massa ac mi elementum mattis vel vitae sem. Ut eros ipsum, scelerisque a erat a, eleifend luctus nibh. Interdum et malesuada fames ac ante ipsum primis in faucibus.
@@ -48,22 +52,22 @@
                                             Praesent volutpat scelerisque vestibulum. In eu massa non neque rutrum commodo. Nunc vel enim nisi. Aenean leo ipsum, molestie vel justo nec, pharetra luctus dui. Nunc rhoncus turpis id lorem luctus consequat. Nulla condimentum adipiscing turpis consequat semper. Etiam ullamcorper velit nec hendrerit malesuada. Praesent venenatis leo sit amet arcu commodo, sit amet porta tellus suscipit. Quisque mi tortor, vestibulum in arcu non, pretium auctor libero. In commodo luctus placerat.
                                         </p>
                                     </p:scrollPanel>
-                                <div  style="margin-top: 30px" >
+                                    <div  style="margin-top: 30px" >
                                         <input type="checkbox" name="term" value="Term" id="TCcheck">I acknowledge and agree to the above. </input>
                                     </div>
-                            </h:panelGrid>
+                                </h:panelGrid>
 
 
 
-                            <div class="register-form-button" style="margin-top: 20px">
-                                
-                                 <p:commandButton value="Apply" icon="ui-icon-plus" update="@form" actionListener="#{applyDebitCardAccountManagedBean.applyDebitCard}" />
-                            </div>
-                        
-                    </p:tab>
-                </p:wizard>
-                </p:panel>
-            </h:form>
+                                <div class="register-form-button" style="margin-top: 20px">
+
+                                    <p:commandButton value="Apply" icon="ui-icon-plus" update="@form" actionListener="#{applyDebitCardAccountManagedBean.applyDebitCard}" />
+                                </div>
+
+                            </p:tab>
+                        </p:wizard>
+                    </p:panel>
+                </h:form>
             </div>
             <em:customerFooter></em:customerFooter>
         </h:body>

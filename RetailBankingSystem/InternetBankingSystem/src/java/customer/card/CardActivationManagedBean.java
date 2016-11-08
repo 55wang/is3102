@@ -42,7 +42,7 @@ public class CardActivationManagedBean implements Serializable {
     }
 
     public void activateCreditCard() {
-
+        
         if (cardAcctSessionBean.activateCreditCard(identityNumber, birthday, cardNumber, cvv) == null) {
             MessageUtils.displayError("Invalid input. Please check");
         } else {

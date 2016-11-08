@@ -28,11 +28,11 @@ public interface CreditCardOrderSessionBeanLocal {
 
     public CreditCardOrder getCreditCardOrderByIdMainId(Long ccoId, Long mainId);
 
-    public CreditCardOrder updateCreditCardOrderStatus(CreditCardOrder cco, EnumUtils.ApplicationStatus status);
+    public CreditCardOrder updateCreditCardOrderStatus(CreditCardOrder cco, EnumUtils.CardApplicationStatus status);
 
     public List<CreditCardAccount> getListCreditCardOrdersByPendingStatus();
 
-    public List<CreditCardOrder> getListCreditCardOrdersByApplicationStatus(EnumUtils.ApplicationStatus applicationStatus);
+    public List<CreditCardOrder> getListCreditCardOrdersByApplicationStatus(EnumUtils.CardApplicationStatus applicationStatus);
 
     public CreditCardOrder createCardOrder(CreditCardOrder order);
 
