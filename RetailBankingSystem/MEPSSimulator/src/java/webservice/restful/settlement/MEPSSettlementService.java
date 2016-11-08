@@ -5,6 +5,8 @@
  */
 package webservice.restful.settlement;
 
+import dto.TransactionDTO;
+import dto.TransactionSummaryDTO;
 import ejb.session.bean.MEPSSessionBean;
 import entity.SettlementAccount;
 import java.math.BigDecimal;
@@ -32,27 +34,47 @@ public class MEPSSettlementService {
 
     @POST
     @Produces(MediaType.APPLICATION_JSON)
-    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    @Consumes(MediaType.APPLICATION_JSON)
     public Response netSettlement(
-            @FormParam("mbsCode") String mbsCode,
-            @FormParam("mbsSettlementAmount") String mbsSettlementAmount,
-            @FormParam("mbsName") String mbsName,
-            @FormParam("citiCode") String citiCode,
-            @FormParam("citiSettlementAmount") String citiSettlementAmount,
-            @FormParam("citiName") String citiName,
-            @FormParam("ocbcCode") String ocbcCode,
-            @FormParam("ocbcSettlementAmount") String ocbcSettlementAmount,
-            @FormParam("ocbcName") String ocbcName
+            TransactionSummaryDTO transactionSummary
     ) {
+
+        String citiToBankCode = transactionSummary.getCitiToBankCode();
+        String citiToBankName = transactionSummary.getCitiToBankName();
+        String citiFromBankCode = transactionSummary.getCitiFromBankCode();
+        String citiFromBankName = transactionSummary.getCitiFromBankName();
+        String citiSettlementAmount = transactionSummary.getCitiSettlementAmount();
+        String ocbcToBankCode = transactionSummary.getOcbcToBankCode();
+        String ocbcToBankName = transactionSummary.getOcbcToBankName();
+        String ocbcFromBankCode = transactionSummary.getOcbcFromBankCode();
+        String ocbcFromBankName = transactionSummary.getOcbcFromBankName();
+        String ocbcSettlementAmount = transactionSummary.getOcbcSettlementAmount();
+        String sentDate = transactionSummary.getDate();
+        List<String> mbsTransactions = new ArrayList<String>();
+        for (TransactionDTO dto:transactionSummary.getTransactionSummary() ){
+            mbsTransactions.add(dto.getReferenceNumber());
+        }
+
         System.out.println(".");
         System.out.println("[MEPS]:");
         System.out.println("Received Net Settlement from SACH:");
-        System.out.println(".       " + mbsCode + " " + mbsName + ": " + mbsSettlementAmount);
-        System.out.println(".       " + citiCode + " " + citiName + ": " + citiSettlementAmount);
-        System.out.println(".       " + ocbcCode + " " + ocbcName + ": " + ocbcSettlementAmount);
-        System.out.println("Received POST http meps_settlement");
+        if (new BigDecimal(citiSettlementAmount).compareTo(BigDecimal.ZERO) == -1) {
+            System.out.println(".       " + citiToBankCode + " " + citiToBankName + " to " + citiFromBankCode + " " + citiFromBankName + ": " + new BigDecimal(citiSettlementAmount).setScale(4).toString());
+        } else if (new BigDecimal(citiSettlementAmount).compareTo(BigDecimal.ZERO) == 1) {
+            System.out.println(".       " + citiFromBankCode + " " + citiFromBankName + " to " + citiToBankCode + " " + citiToBankName + ": " + new BigDecimal(citiSettlementAmount).setScale(4).toString());
+        } else {
+        }
 
-        List<SettlementAccount> bankAccounts = mepsBean.retrieveThreeSettlementAccounts(mbsCode, citiCode, ocbcCode);
+        if (new BigDecimal(ocbcSettlementAmount).compareTo(BigDecimal.ZERO) == -1) {
+            System.out.println(".       " + ocbcToBankCode + " " + ocbcToBankName + " to " + ocbcFromBankCode + " " + ocbcFromBankName + ": " + new BigDecimal(ocbcSettlementAmount).setScale(4).toString());
+        } else if (new BigDecimal(ocbcSettlementAmount).compareTo(BigDecimal.ZERO) == 1) {
+            System.out.println(".       " + ocbcFromBankCode + " " + ocbcFromBankName + " to " + ocbcToBankCode + " " + ocbcToBankName + ": " + new BigDecimal(ocbcSettlementAmount).setScale(4).toString());
+        } else {
+        }
+
+        System.out.println("Received POST http meps_settlement");
+        System.out.println(citiFromBankCode);
+        List<SettlementAccount> bankAccounts = mepsBean.retrieveThreeSettlementAccounts(citiFromBankCode, citiToBankCode, ocbcToBankCode);
         System.out.println("Current Bank Account Balance:");
         for (SettlementAccount s : bankAccounts) {
             System.out.println(".       " + s.getBankCode() + " " + s.getName() + ": " + s.getAmount().setScale(4).toString());
@@ -60,17 +82,16 @@ public class MEPSSettlementService {
 
         System.out.println(".");
         System.out.println("Broadcasting net settlement ...");
-        mepsBean.sendMBSNetSettlement(mbsSettlementAmount);
-
+        mepsBean.sendMBSNetSettlement(transactionSummary);
         System.out.println(".");
         System.out.println("Updating Bank Accounts ...");
-        List<SettlementAccount> updatedankAccounts = mepsBean.updateSettlementAccountsBalance(mbsCode, mbsSettlementAmount, citiCode, citiSettlementAmount, ocbcCode, ocbcSettlementAmount);
+        List<SettlementAccount> updatedankAccounts = mepsBean.updateSettlementAccountsBalance(citiFromBankCode, citiToBankCode, citiSettlementAmount, ocbcFromBankCode, ocbcToBankCode, ocbcSettlementAmount);
 
         System.out.println("Bank Accounts Balance Updated:");
         for (SettlementAccount s : updatedankAccounts) {
             System.out.println(".       " + s.getBankCode() + " " + s.getName() + ": " + s.getAmount().setScale(4).toString());
         }
-        
+
         System.out.println("Sending back meps_settlement response");
         MessageDTO err = new MessageDTO();
         err.setCode(0);

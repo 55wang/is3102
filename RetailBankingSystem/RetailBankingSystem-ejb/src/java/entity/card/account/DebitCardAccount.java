@@ -34,22 +34,22 @@ public class DebitCardAccount implements Serializable {
     private Long id;
     @Temporal(value = TemporalType.TIMESTAMP)
     private Date creationDate = new Date();
-    
+
     // info
     @Temporal(value = TemporalType.DATE)
     private Date validDate;
     private EnumUtils.CardNetwork cardNetwork;
     private EnumUtils.CardAccountStatus CardStatus;
     private String creditCardNum;
-    private String cvv; 
+    private String cvv;
     private String nameOnCard;
-    
+
     private double transactionMonthlyLimit;
     private double transactionDailyLimit;
-    
+
     @OneToMany(cascade = {CascadeType.MERGE}, mappedBy = "debitCardAccount")
     private List<CardTransaction> cardTransactions = new ArrayList<>();
-    
+
     // mappings
     @ManyToOne()
     private CustomerDepositAccount customerDepositAccount;
@@ -85,6 +85,13 @@ public class DebitCardAccount implements Serializable {
     @Override
     public String toString() {
         return "entity.card.account.DebitCardAccount[ id=" + id + " ]";
+    }
+
+    public String getPartialHiddenAccountNumber() {
+        return this.creditCardNum.substring(
+                this.creditCardNum.length() - 4,
+                this.creditCardNum.length()
+        );
     }
 
     public EnumUtils.CardNetwork getCardNetwork() {

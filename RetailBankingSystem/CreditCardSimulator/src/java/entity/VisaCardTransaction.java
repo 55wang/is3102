@@ -27,6 +27,7 @@ public class VisaCardTransaction implements Serializable {
     private String message;
     private String transactionCode;
     private String authorizationCode;
+    private String cardType;
     private Boolean settledStatus = false;
 
     public VisaCardTransaction() {
@@ -166,6 +167,20 @@ public class VisaCardTransaction implements Serializable {
 
     public void setSettledStatus(Boolean settledStatus) {
         this.settledStatus = settledStatus;
+    }
+
+    /**
+     * @return the cardType
+     */
+    public String getCardType() {
+        return cardType;
+    }
+
+    /**
+     * @param cardType the cardType to set
+     */
+    public void setCardType(String cardType) {
+        this.cardType = cardType;
     }
 
 }

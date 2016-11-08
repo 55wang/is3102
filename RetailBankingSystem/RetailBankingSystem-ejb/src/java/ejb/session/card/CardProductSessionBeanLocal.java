@@ -8,6 +8,7 @@ package ejb.session.card;
 import entity.card.product.CashBackCardProduct;
 import entity.card.product.CreditCardProduct;
 import entity.card.product.MileCardProduct;
+import entity.card.product.PromoProduct;
 import entity.card.product.RewardCardProduct;
 import java.util.List;
 import javax.ejb.Local;
@@ -40,5 +41,7 @@ public interface CardProductSessionBeanLocal {
     public List<CreditCardProduct> getListCreditCardProducts();
 
     public CreditCardProduct getCreditCardProductByProductName(String productName);
+
+    public List<PromoProduct> getPromoProductByCardType(String cardType);
 
 }

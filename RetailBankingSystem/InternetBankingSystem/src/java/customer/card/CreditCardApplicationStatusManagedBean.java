@@ -51,7 +51,7 @@ public class CreditCardApplicationStatusManagedBean implements Serializable {
     }
 
     public void cancel(CreditCardOrder cco) {
-        CreditCardOrder result = creditCardOrderSessionBean.updateCreditCardOrderStatus(cco, EnumUtils.ApplicationStatus.CANCELLED);
+        CreditCardOrder result = creditCardOrderSessionBean.updateCreditCardOrderStatus(cco, EnumUtils.CardApplicationStatus.CANCELLED);
         if (result != null) {
             applications.remove(cco);
             MessageUtils.displayInfo("Cancel successfully");

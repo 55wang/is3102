@@ -57,6 +57,7 @@ public class ApplicationConfig extends Application {
         resources.add(webservice.restful.transfer.ReceiveCCPayment.class);
         resources.add(webservice.restful.transfer.ReceiveGIROPaymentRequest.class);
         resources.add(webservice.restful.transfer.ReceiveTransferPayment.class);
+        resources.add(webservice.restful.transfer.TestJSONService.class);
     }
     
 }

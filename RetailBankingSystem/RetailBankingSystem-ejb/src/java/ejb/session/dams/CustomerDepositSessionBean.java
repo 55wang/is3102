@@ -36,7 +36,7 @@ public class CustomerDepositSessionBean implements CustomerDepositSessionBeanLoc
 
     @PersistenceContext(unitName = "RetailBankingSystem-ejbPU")
     private EntityManager em;
-    
+
     @EJB
     private DepositProductSessionBeanLocal depositProductBean;
     @EJB
@@ -103,8 +103,22 @@ public class CustomerDepositSessionBean implements CustomerDepositSessionBeanLoc
     @Override
     public DepositAccount updateAccount(DepositAccount account) {
         try {
-            if(account.getStatus() == EnumUtils.StatusType.CLOSED)
+            if (account.getStatus() == EnumUtils.StatusType.CLOSED) {
                 account.setCloseDate(new Date());
+            }
+            em.merge(account);
+            return account;
+        } catch (EntityExistsException e) {
+            return null;
+        }
+    }
+
+    @Override
+    public CustomerDepositAccount updateCustomerDepositAccount(CustomerDepositAccount account) {
+        try {
+            if (account.getStatus() == EnumUtils.StatusType.CLOSED) {
+                account.setCloseDate(new Date());
+            }
             em.merge(account);
             return account;
         } catch (EntityExistsException e) {
@@ -132,7 +146,7 @@ public class CustomerDepositSessionBean implements CustomerDepositSessionBeanLoc
         q.setParameter("status", EnumUtils.StatusType.CLOSED);
         return q.getResultList();
     }
-    
+
     @Override
     public CustomerDepositAccount getDaytoDayAccountByMainAccount(MainAccount ma) {
         Query q = em.createQuery("SELECT ba FROM CustomerDepositAccount ba WHERE ba.mainAccount.userID =:mainAccountId AND ba.type = :inType");
@@ -161,7 +175,7 @@ public class CustomerDepositSessionBean implements CustomerDepositSessionBeanLoc
         q.setParameter("mainAccountId", mainAccountId);
         return q.getResultList();
     }
-    
+
     @Override
     public List<CustomerFixedDepositAccount> getAllFixedCustomerAccounts(Long mainAccountId) {
         Query q = em.createQuery("SELECT ba FROM CustomerFixedDepositAccount ba WHERE ba.mainAccount.id =:mainAccountId");
@@ -273,8 +287,8 @@ public class CustomerDepositSessionBean implements CustomerDepositSessionBeanLoc
             return account;
         }
     }
-    
-     @Override
+
+    @Override
     public DepositAccount demoDepositIntoAccount(DepositAccount account, BigDecimal depositAmount) {
         if (account == null || depositAmount == null) {
             return null;
@@ -423,14 +437,14 @@ public class CustomerDepositSessionBean implements CustomerDepositSessionBeanLoc
             return account;
         }
     }
-    
+
     @Override
     public List<TransactionRecord> transactionRecordFromAccountNumber(String accountNumber) {
         Query q = em.createQuery("SELECT tr FROM TransactionRecord tr WHERE tr.toAccount.accountNumber =:accountNumber OR tr.fromAccount.accountNumber =:accountNumber ORDER BY tr.creationDate DESC");
         q.setParameter("accountNumber", accountNumber);
         return q.getResultList();
     }
-    
+
     @Override
     public TransactionRecord latestTransactionFromAccountNumber(String accountNumber) {
         Query q = em.createQuery("SELECT tr FROM TransactionRecord tr WHERE tr.toAccount.accountNumber =:accountNumber OR tr.fromAccount.accountNumber =:accountNumber ORDER BY tr.creationDate DESC");
@@ -442,7 +456,7 @@ public class CustomerDepositSessionBean implements CustomerDepositSessionBeanLoc
             return null;
         }
     }
-    
+
     @Override
     public String payCCBillFromAccount(String accountNumber, String ccNumber, BigDecimal amount) {
         DepositAccount fromAccount = getAccountFromId(accountNumber);
@@ -451,10 +465,10 @@ public class CustomerDepositSessionBean implements CustomerDepositSessionBeanLoc
         } else if (fromAccount.getBalance().compareTo(amount) < 0) {
             return "Mobile Account Balance not enough. Please Top up first!";
         } else {
-            
+
             cardBean.payCreditCardAccountBillByCardNumber(ccNumber, amount);
             ccSpendingFromAccount(fromAccount, amount);
-            
+
             return "SUCCESS";
         }
     }

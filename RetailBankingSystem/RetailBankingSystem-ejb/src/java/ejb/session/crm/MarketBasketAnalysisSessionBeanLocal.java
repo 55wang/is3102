@@ -18,6 +18,7 @@ import javax.ejb.Local;
 @Local
 public interface MarketBasketAnalysisSessionBeanLocal {
     
+    public Set<String> getListProductName();
     public List<AssociationRuleEntity> getListAssociationRules();
     public AssociationRuleEntity getAssociationRule(Long Id);
     public AssociationRuleEntity updateAssociationRule(AssociationRuleEntity rule);

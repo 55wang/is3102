@@ -26,8 +26,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class BillTransfer implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
     private String referenceNumber;
     @Temporal(value = TemporalType.TIMESTAMP)
     private Date creationDate = new Date();
@@ -185,20 +183,6 @@ public class BillTransfer implements Serializable {
      */
     public void setPartnerBankAccount(String partnerBankAccount) {
         this.partnerBankAccount = partnerBankAccount;
-    }
-
-    /**
-     * @return the id
-     */
-    public Long getId() {
-        return id;
-    }
-
-    /**
-     * @param id the id to set
-     */
-    public void setId(Long id) {
-        this.id = id;
     }
 
 }

@@ -9,15 +9,16 @@ import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import server.utilities.EnumUtils.CreditCardType;
 import server.utilities.EnumUtils.PromoType;
 
 /**
  *
  * @author leiyang
  */
-@Entity 
+@Entity
 public class PromoProduct implements Serializable {
-    
+
     // info
     @Id
     private String name;
@@ -26,10 +27,10 @@ public class PromoProduct implements Serializable {
     private Double points;
     @Column(length = 4000)
     private String terms;
-    
+    private CreditCardType cardType;
+
     // Amount
     // retrieve rule
-    
     /**
      * @return the name
      */
@@ -100,4 +101,13 @@ public class PromoProduct implements Serializable {
         this.terms = terms;
     }
     
+        
+    public CreditCardType getCardType() {
+        return cardType;
+    }
+
+    public void setCardType(CreditCardType cardType) {
+        this.cardType = cardType;
+    }
+
 }
