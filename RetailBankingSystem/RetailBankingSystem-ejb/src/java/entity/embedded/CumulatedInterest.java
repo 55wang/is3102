@@ -21,7 +21,7 @@ import javax.persistence.TemporalType;
 public class CumulatedInterest implements Serializable {
     
     // info
-    @Column(precision=30, scale=20)
+    @Column(precision=18, scale=4)
     private BigDecimal cummulativeAmount = BigDecimal.ZERO;// use to differetiate simple and cummulative interest
     private Integer times = 0;
     @Temporal(value = TemporalType.TIMESTAMP)

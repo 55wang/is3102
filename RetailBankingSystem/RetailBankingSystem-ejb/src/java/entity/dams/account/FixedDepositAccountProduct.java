@@ -17,9 +17,9 @@ import javax.persistence.Entity;
 public class FixedDepositAccountProduct extends DepositProduct {
     
     // info
-    @Column(precision=12, scale=2)
+    @Column(precision=18, scale=4)
     private BigDecimal minAmount;
-    @Column(precision=12, scale=2)
+    @Column(precision=18, scale=4)
     private BigDecimal maxAmount;
     private Integer maximumMaturityMonths = 36; // interest follow this rule
     private Integer minimumMaturityMonths = 1;

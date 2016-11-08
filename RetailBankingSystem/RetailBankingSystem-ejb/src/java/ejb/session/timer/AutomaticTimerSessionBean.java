@@ -57,12 +57,12 @@ public class AutomaticTimerSessionBean {
         System.out.println("Perform Beginning of Day Tasks at 9 AM: " + new Date());
     }
     
-    @Schedule(year = "*", month = "*", dayOfMonth = "*", dayOfWeek = "*",  hour = "*", minute = "*/1", second = "*")
-    public void testingMethod(Timer timer) 
-    {
-        System.out.println("Perform Testing Tasks: " + new Date());
-        System.out.println("REMARK: MUST ensure the method is correct before write into the actual timer");
-        // For example: damsBean.calculateDailyInterest();
-    }
+//    @Schedule(year = "*", month = "*", dayOfMonth = "*", dayOfWeek = "*",  hour = "*", minute = "*/10", second = "*")
+//    public void testingMethod(Timer timer) 
+//    {
+//        System.out.println("Perform Testing Tasks: " + new Date());
+//        System.out.println("REMARK: MUST ensure the method is correct before write into the actual timer");
+//        // For example: damsBean.calculateDailyInterest();
+//    }
     
 }
