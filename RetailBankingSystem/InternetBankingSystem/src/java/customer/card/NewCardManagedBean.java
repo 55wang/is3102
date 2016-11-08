@@ -129,10 +129,10 @@ public class NewCardManagedBean implements Serializable {
         ma = new MainAccount();
         mainAccountSessionBean.createMainAccount(ma);
 
-        cca.setCardStatus(CardAccountStatus.NEW);
+        cca.setCardStatus(CardAccountStatus.PENDING);
         cardAcctSessionBean.createCardAccount(cca);
 
-        cco.setApplicationStatus(ApplicationStatus.NEW);
+        cco.setApplicationStatus(CardApplicationStatus.PENDING);
         creditCardOrderSessionBean.createCardOrder(cco);
 
         //update relations
@@ -162,15 +162,22 @@ public class NewCardManagedBean implements Serializable {
         System.out.println("inside saveupdatedCreditcardorder");
 
         //persist
-        cca.setCardStatus(CardAccountStatus.NEW);
+        cca.setCardStatus(CardAccountStatus.PENDING);
         cardAcctSessionBean.createCardAccount(cca);
 
-        cco.setApplicationStatus(ApplicationStatus.NEW);
-        creditCardOrderSessionBean.createCardOrder(cco);
-
         cca.setMainAccount(existingCustomer.getMainAccount());
+        List<CreditCardAccount> ccas = existingCustomer.getMainAccount().getCreditCardAccounts();
+        ccas.add(cca);
+        existingCustomer.getMainAccount().setCreditCardAccounts(ccas);
+        mainAccountSessionBean.updateMainAccount(existingCustomer.getMainAccount());
+
         cca.setCreditCardProduct(newCardProductSessionBean.getCreditCardProductByProductName(selectedProductName));
+
+        cco.setApplicationStatus(CardApplicationStatus.PENDING);
+        creditCardOrderSessionBean.createCardOrder(cco);
         cca.setCreditCardOrder(cco);
+        cco.setCreditCardAccount(cca);
+        
         cardAcctSessionBean.updateCreditCardAccount(cca);
 
         cco.setMainAccount(existingCustomer.getMainAccount());

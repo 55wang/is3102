@@ -86,11 +86,17 @@ public class BillingClearingService {
 
         List<SachSettlement> bankAccounts = sachBean.getSettlements();
 
+
         System.out.println("Current net settlement:");
         for (SachSettlement s : bankAccounts) {
-            System.out.println(".       " + s.getBankCode() + " " + s.getName() + ": " + s.getAmount().setScale(4).toString());
-        }
+            if (s.getAmount().compareTo(BigDecimal.ZERO) == -1) {
+                System.out.println(".       " + s.getToBankCode() + " " + s.getToBankName() + " to " + s.getFromBankCode() + " " + s.getFromBankName() + ": " + s.getAmount().setScale(4).toString());
+            } else {
+                System.out.println(".       " + s.getFromBankCode() + " " + s.getFromBankName() + " to " + s.getToBankCode() + " " + s.getToBankName() + ": " + s.getAmount().setScale(4).toString());
 
+            }
+        }
+        
         System.out.println("Updating net settlement...");
         sachBean.updateNetSettlementAddBill(bt);
 
@@ -98,7 +104,12 @@ public class BillingClearingService {
 
         System.out.println("Updated net settlement:");
         for (SachSettlement s : updatedbankAccounts) {
-            System.out.println(".       " + s.getBankCode() + " " + s.getName() + ": " + s.getAmount().setScale(4).toString());
+            if (s.getAmount().compareTo(BigDecimal.ZERO) == -1) {
+                System.out.println(".       " + s.getToBankCode() + " " + s.getToBankName() + " to " + s.getFromBankCode() + " " + s.getFromBankName() + ": " + s.getAmount().setScale(4).toString());
+            } else {
+                System.out.println(".       " + s.getFromBankCode() + " " + s.getFromBankName() + " to " + s.getToBankCode() + " " + s.getToBankName() + ": " + s.getAmount().setScale(4).toString());
+
+            }
         }
 
         System.out.println("Sending back SACH_transfer_clearing response");

@@ -23,11 +23,9 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @Entity
 @XmlRootElement
-public class PaymentTransfer implements Serializable {
+public class FastTransfer implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
     private String referenceNumber;
     @Temporal(value = TemporalType.TIMESTAMP)
     private Date creationDate = new Date();
@@ -197,17 +195,4 @@ public class PaymentTransfer implements Serializable {
         this.fromBankCode = fromBankCode;
     }
 
-    /**
-     * @return the id
-     */
-    public Long getId() {
-        return id;
-    }
-
-    /**
-     * @param id the id to set
-     */
-    public void setId(Long id) {
-        this.id = id;
-    }
 }

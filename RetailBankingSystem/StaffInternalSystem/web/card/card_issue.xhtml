@@ -19,7 +19,7 @@
             <div class="container">
                 <h:form id="mainForm">
                     <p:panel header="Credit Card Applications">
-                        <p:messages id="messagesStatus" redisplay="false" >
+                    <p:growl id="growl" sticky="true" showDetail="true"/>
                             <h:panelGrid columns="2" cellpadding="5">
                                 <p:dataTable value="#{cardIssueManagedBean.ccas}" var="cca" >
 
@@ -39,9 +39,28 @@
                                     </p:column>
                                 </p:dataTable>
                             </h:panelGrid>
-                        </p:messages>
                     </p:panel>
+                    <p:panel header="Debit Card Applications">
+                        <h:panelGrid columns="2" cellpadding="5">
+                            <p:dataTable value="#{cardIssueManagedBean.dcas}" var="dca" >
 
+                                <p:column headerText="Card Number">
+                                    <h:outputText value="#{dca.partialHiddenAccountNumber}" />
+                                </p:column>
+
+                                <p:column headerText="Product Name">
+                                    <h:outputText value="#{dca.cardNetwork} Debit Card" />
+                                </p:column>
+
+                                <p:column headerText="Status">
+                                    <h:outputText value="#{dca.cardStatus}" />
+                                </p:column>
+                                <p:column headerText="Action">
+                                    <p:commandButton value="Issue" action="#{cardIssueManagedBean.issueDebitCard(dca)}" icon="ui-icon-check" update="@form" />
+                                </p:column>
+                            </p:dataTable>
+                        </h:panelGrid>
+                    </p:panel>
                 </h:form>
             </div>
 

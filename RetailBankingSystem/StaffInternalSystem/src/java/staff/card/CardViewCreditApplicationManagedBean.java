@@ -63,7 +63,7 @@ public class CardViewCreditApplicationManagedBean implements Serializable {
         a.setFunctionInput("Getting all credit card applications");
         a.setStaffAccount(SessionUtils.getStaff());
         utilsBean.persist(a);
-        ccos = creditCardOrderSessionBean.getListCreditCardOrdersByApplicationStatus(EnumUtils.ApplicationStatus.NEW);
+        ccos = creditCardOrderSessionBean.getListCreditCardOrdersByApplicationStatus(EnumUtils.CardApplicationStatus.PENDING);
     }
 
     public void approveOrder(CreditCardOrder cco) {
@@ -89,7 +89,9 @@ public class CardViewCreditApplicationManagedBean implements Serializable {
         } else if (customerMonthlyIncome >= 120000.0/12) {
             cco.getCreditCardAccount().setCreditLimit(10 * customerMonthlyIncome);
         }
-        creditCardOrderSessionBean.updateCreditCardOrderStatus(cco, EnumUtils.ApplicationStatus.APPROVED);
+        creditCardOrderSessionBean.updateCreditCardOrderStatus(cco, EnumUtils.CardApplicationStatus.APPROVED);
+        cco.getCreditCardAccount().setCardStatus(EnumUtils.CardAccountStatus.APPROVED);
+        cardAcctSessionBean.updateCreditCardAccount(cco.getCreditCardAccount());
         
         MainAccount mainAccount = cco.getMainAccount();
         mainAccount.setStatus(EnumUtils.StatusType.PENDING);
@@ -112,7 +114,9 @@ public class CardViewCreditApplicationManagedBean implements Serializable {
     }
 
     public void rejectOrder(CreditCardOrder cco) {
-        creditCardOrderSessionBean.updateCreditCardOrderStatus(cco, EnumUtils.ApplicationStatus.REJECT);
+        creditCardOrderSessionBean.updateCreditCardOrderStatus(cco, EnumUtils.CardApplicationStatus.REJECTED);
+        cco.getCreditCardAccount().setCardStatus(EnumUtils.CardAccountStatus.CLOSED);
+        cardAcctSessionBean.updateCreditCardAccount(cco.getCreditCardAccount());
         emailServiceSessionBean.sendCreditCardApplicationRejectionToCustomers(cco.getMainAccount().getCustomer().getEmail());
 
         MessageUtils.displayInfo("Order Rejected!");

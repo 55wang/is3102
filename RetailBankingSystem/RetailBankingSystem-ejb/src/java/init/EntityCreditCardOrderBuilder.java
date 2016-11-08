@@ -15,6 +15,7 @@ import ejb.session.utils.UtilsSessionBeanLocal;
 import entity.card.account.CardTransaction;
 import entity.card.account.CreditCardAccount;
 import entity.card.order.CreditCardOrder;
+import entity.card.product.MileCardProduct;
 import entity.card.product.PromoCode;
 import entity.card.product.PromoProduct;
 import entity.card.product.RewardCardProduct;
@@ -45,7 +46,7 @@ public class EntityCreditCardOrderBuilder {
     @EJB
     private LoginSessionBeanLocal loginBean;
 
-    public void initCreditCardOrder(RewardCardProduct demoRewardCardProduct, PromoProduct demoPromoProduct) {
+    public void initCreditCardOrder(RewardCardProduct demoRewardCardProduct, MileCardProduct demoMileCardProduct, PromoProduct demoPromoProduct) {
         MainAccount demoMainAccount = loginBean.getMainAccountByUserID(ConstantUtils.DEMO_MAIN_ACCOUNT_USER_ID);
         //create an active cca and its cco
         CreditCardAccount cca = new CreditCardAccount();
@@ -94,7 +95,7 @@ public class EntityCreditCardOrderBuilder {
         cardTransactionSessionBean.createCardAccountTransaction(cca, cardTransaction);
 
         CreditCardOrder cco = new CreditCardOrder();
-        cco.setApplicationStatus(EnumUtils.ApplicationStatus.APPROVED);
+        cco.setApplicationStatus(EnumUtils.CardApplicationStatus.APPROVED);
         cco.setCreditCardAccount(cca);
         cco.setMainAccount(demoMainAccount);
         creditCardOrderSessionBean.createCardOrder(cco);
@@ -108,12 +109,12 @@ public class EntityCreditCardOrderBuilder {
         cca2.setCreditCardNum("5273076135089505");
         cca2.setOutstandingAmount(0.0);
         cca2.setMerlionPoints(100000.0);
-        cca2.setCardStatus(EnumUtils.CardAccountStatus.NEW);
+        cca2.setCardStatus(EnumUtils.CardAccountStatus.PENDING);
         cca2.setMainAccount(demoMainAccount);
         cardAcctSessionBean.createCardAccount(cca2);
 
         CreditCardOrder cco2 = new CreditCardOrder();
-        cco2.setApplicationStatus(EnumUtils.ApplicationStatus.NEW);
+        cco2.setApplicationStatus(EnumUtils.CardApplicationStatus.PENDING);
         cco2.setCreditCardAccount(cca2);
         cco2.setMainAccount(demoMainAccount);
         creditCardOrderSessionBean.createCardOrder(cco2);
@@ -121,21 +122,40 @@ public class EntityCreditCardOrderBuilder {
         cardAcctSessionBean.updateCreditCardAccount(cca2);
 
         CreditCardAccount cca3 = new CreditCardAccount();
-        cca3.setCreditCardProduct(demoRewardCardProduct);
+        cca3.setCreditCardProduct(demoMileCardProduct);
         cca3.setNameOnCard(demoMainAccount.getCustomer().getFullName());
         cca3.setCreditCardNum("5556336827217675");
         cca3.setOutstandingAmount(10000.0);
-        cca3.setMerlionPoints(8000.0);
+        cca3.setMerlionMiles(80000.0);
         cca3.setCardStatus(EnumUtils.CardAccountStatus.ACTIVE);
         cca3.setMainAccount(demoMainAccount);
         cca3 = cardAcctSessionBean.createCardAccount(cca3);
 
         CreditCardOrder cco3 = new CreditCardOrder();
-        cco3.setApplicationStatus(EnumUtils.ApplicationStatus.APPROVED);
+        cco3.setApplicationStatus(EnumUtils.CardApplicationStatus.PENDING);
         cco3.setCreditCardAccount(cca3);
         cco3.setMainAccount(demoMainAccount);
         creditCardOrderSessionBean.createCardOrder(cco3);
         cca3.setCreditCardOrder(cco3);
         cardAcctSessionBean.updateCreditCardAccount(cca3);
+
+        CreditCardAccount cca4 = new CreditCardAccount();
+        cca4.setCreditCardProduct(demoMileCardProduct);
+        cca4.setNameOnCard(demoMainAccount.getCustomer().getFullName());
+        cca4.setCreditCardNum("5374943811149259");
+        cca4.setOutstandingAmount(500.0);
+        cca4.setMerlionMiles(8000.0);
+        cca4.setCardStatus(EnumUtils.CardAccountStatus.ACTIVE);
+        cca4.setMainAccount(demoMainAccount);
+        cca4 = cardAcctSessionBean.createCardAccount(cca4);
+
+        CreditCardOrder cco4 = new CreditCardOrder();
+        cco4.setApplicationStatus(EnumUtils.CardApplicationStatus.APPROVED);
+        cco4.setCreditCardAccount(cca4);
+        cco4.setMainAccount(demoMainAccount);
+        creditCardOrderSessionBean.createCardOrder(cco4);
+        cca4.setCreditCardOrder(cco4);
+        cardAcctSessionBean.updateCreditCardAccount(cca4);
+
     }
 }

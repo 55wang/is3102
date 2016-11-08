@@ -6,7 +6,7 @@
 package ejb.session.bean;
 
 import entity.FastSettlement;
-import entity.PaymentTransfer;
+import entity.FastTransfer;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,11 +35,11 @@ public class FASTSessionBean {
     @PersistenceContext(unitName = "FASTSimulatorPU")
     private EntityManager em;
 
-    public void persist(PaymentTransfer object) {
+    public void persist(FastTransfer object) {
         em.persist(object);
     }
 
-    public void merge(PaymentTransfer object) {
+    public void merge(FastTransfer object) {
         em.merge(object);
     }
 
@@ -52,12 +52,12 @@ public class FASTSessionBean {
     }
     
 
-    public PaymentTransfer findPaymentTransferByReferenceNumber(String referenceNumber) {
-        return em.find(PaymentTransfer.class, referenceNumber);
+    public FastTransfer findPaymentTransferByReferenceNumber(String referenceNumber) {
+        return em.find(FastTransfer.class, referenceNumber);
     }
     
     @Asynchronous
-    public void sendMEPS(PaymentTransfer tr) {
+    public void sendMEPS(FastTransfer tr) {
         List<FastSettlement> settlements = getSettlements(tr);
 
         // send to MEPS+
@@ -84,7 +84,7 @@ public class FASTSessionBean {
 
         if (jsonString.getString("message").equals("SUCCESS")) {
             System.out.println("");
-//            PaymentTransfer pt = findPaymentTransferByReferenceNumber(referenceNumber);
+//            FastTransfer pt = findPaymentTransferByReferenceNumber(referenceNumber);
 //            pt.setSettled(Boolean.TRUE);
 //            merge(pt);
         } else {
@@ -92,7 +92,7 @@ public class FASTSessionBean {
         }
     }
 
-    private List<FastSettlement> getSettlements(PaymentTransfer tr) {
+    private List<FastSettlement> getSettlements(FastTransfer tr) {
         Query q = em.createQuery("SELECT fs FROM FastSettlement fs");
         List<FastSettlement> settlements = new ArrayList<FastSettlement>();
         settlements = q.getResultList();

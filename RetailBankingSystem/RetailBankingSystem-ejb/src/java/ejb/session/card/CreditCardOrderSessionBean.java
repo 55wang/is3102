@@ -15,6 +15,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import server.utilities.EnumUtils;
 import server.utilities.EnumUtils.ApplicationStatus;
+import server.utilities.EnumUtils.CardApplicationStatus;
 
 /**
  *
@@ -92,7 +93,7 @@ public class CreditCardOrderSessionBean implements CreditCardOrderSessionBeanLoc
     }
 
     @Override
-    public CreditCardOrder updateCreditCardOrderStatus(CreditCardOrder cco, ApplicationStatus status) {
+    public CreditCardOrder updateCreditCardOrderStatus(CreditCardOrder cco, CardApplicationStatus status) {
         cco.setApplicationStatus(status);
         em.merge(cco);
         return cco;
@@ -106,7 +107,7 @@ public class CreditCardOrderSessionBean implements CreditCardOrderSessionBeanLoc
     }
 
     @Override
-    public List<CreditCardOrder> getListCreditCardOrdersByApplicationStatus(EnumUtils.ApplicationStatus applicationStatus) {
+    public List<CreditCardOrder> getListCreditCardOrdersByApplicationStatus(EnumUtils.CardApplicationStatus applicationStatus) {
         Query q = em.createQuery("SELECT cco FROM CreditCardOrder cco WHERE cco.applicationStatus = :applicationStatus");
         q.setParameter("applicationStatus", applicationStatus);
         return q.getResultList();
