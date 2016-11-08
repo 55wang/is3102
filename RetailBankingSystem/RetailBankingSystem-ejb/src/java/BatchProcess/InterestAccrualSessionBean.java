@@ -64,7 +64,7 @@ public class InterestAccrualSessionBean implements InterestAccrualSessionBeanLoc
         for (DepositAccount a : accounts) {
             if (a instanceof CustomerDepositAccount) {
                 result.add(calculateDailyInterestForCustomerDepositAccount((CustomerDepositAccount) a));
-            } else { // fixed account
+            } else if (a instanceof CustomerFixedDepositAccount) { // fixed account
                 result.add(calculateDailyInterestForCustomerFixedDepositAccount((CustomerFixedDepositAccount) a));
             }
         }
@@ -82,9 +82,10 @@ public class InterestAccrualSessionBean implements InterestAccrualSessionBeanLoc
     public DepositAccount calculateDailyInterestForDepositAccount(DepositAccount a) {
         if (a instanceof CustomerDepositAccount) {
             return calculateDailyInterestForCustomerDepositAccount((CustomerDepositAccount) a);
-        } else { // fixed account
+        } else if (a instanceof CustomerFixedDepositAccount) { // fixed account
             return calculateDailyInterestForCustomerFixedDepositAccount((CustomerFixedDepositAccount) a);
         }
+        return null;
     }
 
     private CustomerFixedDepositAccount calculateDailyInterestForCustomerFixedDepositAccount(CustomerFixedDepositAccount account) {
