@@ -5,9 +5,9 @@
  */
 package entity.crm;
 
-import entity.customer.Customer;
 import entity.staff.StaffAccount;
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -16,7 +16,8 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
-import server.utilities.EnumUtils;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import server.utilities.EnumUtils.TypeMarketingCampaign;
 
 /**
@@ -36,6 +37,11 @@ public abstract class MarketingCampaign implements Serializable {
     private TypeMarketingCampaign TypeCampaign; //email or ads
     private String description;
     private String landingPageName; //for the image and hyperlink
+    
+    @Temporal(value = TemporalType.DATE)
+    private Date startDate;
+    @Temporal(value = TemporalType.DATE)
+    private Date endDate;
     
     private Long numOfResponse = 0L;
     private Long numOfTargetResponse = 0L;
@@ -158,6 +164,22 @@ public abstract class MarketingCampaign implements Serializable {
 
     public void setViewCount(Long viewCount) {
         this.viewCount = viewCount;
+    }
+
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
     }
 
 }
