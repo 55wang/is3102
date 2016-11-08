@@ -750,6 +750,32 @@ and open the template in the editor.
 .crm-container .color-4 .crm-info .info-amount{
     color: #009688;
 }
+
+.customer-segmentation-container .select-menu-holde{
+    display: block;
+}
+.tag-cloud-holder{
+    text-align: center;
+    position: relative;
+    top: 30px;
+}
+.tag-cloud-holder .tag-cloud-label{
+    font-size: 32px;
+
+}
+
+.tag-cloud-holder .ui-tagcloud{
+    width:500px;
+    font-size: 32px;
+    margin: 0 auto;
+}
+
+.tag-cloud-holder .ui-tagcloud .ui-state-hover{
+    border: none !important;
+    text-decoration: none !important;
+    box-shadow: none !important;
+    background-color: #ddd;
+}
 /*end of crm*/
 /* general */
 .container {
