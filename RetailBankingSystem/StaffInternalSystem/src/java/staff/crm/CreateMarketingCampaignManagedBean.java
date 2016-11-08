@@ -29,7 +29,7 @@ import utils.RedirectUtils;
  */
 @Named(value = "createMarketingCampaignManagedBean")
 @ViewScoped
-public class createMarketingCampaignManagedBean implements Serializable {
+public class CreateMarketingCampaignManagedBean implements Serializable {
 
     @EJB
     MarketingCampaignSessionBeanLocal marketingCampaignSessionBean;
@@ -46,7 +46,7 @@ public class createMarketingCampaignManagedBean implements Serializable {
     private Long selectedCustomerGroupEmail;
     private Long selectedCustomerGroupAdsBanner;
 
-    public createMarketingCampaignManagedBean() {
+    public CreateMarketingCampaignManagedBean() {
     }
 
     @PostConstruct

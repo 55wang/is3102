@@ -19,8 +19,7 @@ public interface CustomerSegmentationSessionBeanLocal {
 
     public List<String> getListCustomersHashTag();
     public List<Customer> getListFilterCustomersByRFMAndHashTag(Long depositRecency, Long depositFrequency, Long depositMonetary, Long cardRecency, Long cardFrequency, Long cardMonetary, String hashTag, Double actualIncome);    
-    public List<Customer> getCustomersByOptions(Long depositRecency, Long depositFrequency, Long depositMonetary, Long cardRecency, Long cardFrequency, Long cardMonetary, Double actualIncome);
-    public List<Customer> getListFilterCustomersByRFM(Long depositRecency, Long depositFrequency, Long depositMonetary, Long cardRecency, Long cardFrequency, Long cardMonetary, Double actualIncome);
+    public List<Customer> getListFilterCustomersByRFMAndIncome(Long depositRecency, Long depositFrequency, Long depositMonetary, Long cardRecency, Long cardFrequency, Long cardMonetary, Double actualIncome);
     public List<CustomerGroup> getListCustomerGroup();
     public CustomerGroup getCustomerGroup(Long Id);
     public CustomerGroup createCustomerGroup(CustomerGroup customerGroup);

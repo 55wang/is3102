@@ -42,7 +42,7 @@ public class EntitySetHashTag {
     private void setHashTagName(HashTagProperties htp,String hashTag) {
 
         List<Customer> setHashTagCustomers;
-        setHashTagCustomers = customerSegmentationSessionBean.getCustomersByOptions(
+        setHashTagCustomers = customerSegmentationSessionBean.getListFilterCustomersByRFMAndIncome(
                 htp.getDepositRecency(),
                 htp.getDepositFrequency(),
                 htp.getDepositMonetary(),

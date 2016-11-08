@@ -7,11 +7,13 @@ package staff.crm;
 
 import ejb.session.common.NewCustomerSessionBeanLocal;
 import ejb.session.crm.CustomerSegmentationSessionBeanLocal;
+import ejb.session.crm.MarketBasketAnalysisSessionBeanLocal;
 import entity.crm.CustomerGroup;
 import entity.customer.Customer;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
@@ -32,11 +34,16 @@ public class CreateCustomerSegmentationManagedBean implements Serializable {
     private CustomerSegmentationSessionBeanLocal customerSegmentationSessionBean;
     @EJB
     private NewCustomerSessionBeanLocal newCustomerSessionBean;
+    @EJB
+    private MarketBasketAnalysisSessionBeanLocal marketBasketAnalysisSessionBean;
 
     private List<CustomerGroup> customerGroups;
     private CustomerGroup customerGroup;
     private List<Customer> filterCustomers;
     private List<Customer> setHashTagCustomers;
+
+    private String selectedAntecedent;
+    private Set<String> totalUniqueProductName;
 
     private String functionType = "SET_HASH_TAG";
     private String SET_HASH_TAG = "SET_HASH_TAG";
@@ -50,15 +57,18 @@ public class CreateCustomerSegmentationManagedBean implements Serializable {
 
     @PostConstruct
     public void init() {
+        totalUniqueProductName = marketBasketAnalysisSessionBean.getListProductName();
         customerGroups = customerSegmentationSessionBean.getListCustomerGroup();
         customerGroup = new CustomerGroup();
         createTagCloudModel();
+
     }
 
     public void setHashTag() {
         System.out.println("setHashTag()");
+        System.out.println("selectedAntecedent: " + selectedAntecedent);
 
-        setHashTagCustomers = customerSegmentationSessionBean.getCustomersByOptions(
+        setHashTagCustomers = customerSegmentationSessionBean.getListFilterCustomersByRFMAndIncome(
                 customerGroup.getDepositRecency(),
                 customerGroup.getDepositFrequency(),
                 customerGroup.getDepositMonetary(),
@@ -78,9 +88,11 @@ public class CreateCustomerSegmentationManagedBean implements Serializable {
     }
 
     public void createGroup() {
+        System.out.println("createGroup()");
+        System.out.println("selectedAntecedent: " + selectedAntecedent);
 
         if (customerGroup.getHashTag() == null) {
-            filterCustomers = customerSegmentationSessionBean.getListFilterCustomersByRFM(
+            filterCustomers = customerSegmentationSessionBean.getListFilterCustomersByRFMAndIncome(
                     customerGroup.getDepositRecency(),
                     customerGroup.getDepositFrequency(),
                     customerGroup.getDepositMonetary(),
@@ -227,6 +239,22 @@ public class CreateCustomerSegmentationManagedBean implements Serializable {
 
     public void setMapHashTagCount(HashMap<String, Long> mapHashTagCount) {
         this.mapHashTagCount = mapHashTagCount;
+    }
+
+    public String getSelectedAntecedent() {
+        return selectedAntecedent;
+    }
+
+    public void setSelectedAntecedent(String selectedAntecedent) {
+        this.selectedAntecedent = selectedAntecedent;
+    }
+
+    public Set<String> getTotalUniqueProductName() {
+        return totalUniqueProductName;
+    }
+
+    public void setTotalUniqueProductName(Set<String> totalUniqueProductName) {
+        this.totalUniqueProductName = totalUniqueProductName;
     }
 
 }
