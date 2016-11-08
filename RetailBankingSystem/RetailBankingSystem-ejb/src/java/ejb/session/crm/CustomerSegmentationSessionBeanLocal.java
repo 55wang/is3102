@@ -17,6 +17,7 @@ import javax.ejb.Local;
 @Local
 public interface CustomerSegmentationSessionBeanLocal {
 
+    public List<String> getListCustomersHashTag();
     public List<Customer> getListFilterCustomersByRFMAndHashTag(Long depositRecency, Long depositFrequency, Long depositMonetary, Long cardRecency, Long cardFrequency, Long cardMonetary, String hashTag, Double actualIncome);    
     public List<Customer> getCustomersByOptions(Long depositRecency, Long depositFrequency, Long depositMonetary, Long cardRecency, Long cardFrequency, Long cardMonetary, Double actualIncome);
     public List<Customer> getListFilterCustomersByRFM(Long depositRecency, Long depositFrequency, Long depositMonetary, Long cardRecency, Long cardFrequency, Long cardMonetary, Double actualIncome);
