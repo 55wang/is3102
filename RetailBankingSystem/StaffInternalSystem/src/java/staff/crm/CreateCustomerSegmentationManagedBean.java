@@ -68,15 +68,28 @@ public class CreateCustomerSegmentationManagedBean implements Serializable {
         System.out.println("setHashTag()");
         System.out.println("selectedAntecedent: " + selectedAntecedent);
 
-        setHashTagCustomers = customerSegmentationSessionBean.getListFilterCustomersByRFMAndIncome(
-                customerGroup.getDepositRecency(),
-                customerGroup.getDepositFrequency(),
-                customerGroup.getDepositMonetary(),
-                customerGroup.getCardRecency(),
-                customerGroup.getCardFrequency(),
-                customerGroup.getCardMonetary(),
-                customerGroup.getActualIncome()
-        );
+        if (selectedAntecedent == null) {
+            setHashTagCustomers = customerSegmentationSessionBean.getListFilterCustomersByRFMAndIncome(
+                    customerGroup.getDepositRecency(),
+                    customerGroup.getDepositFrequency(),
+                    customerGroup.getDepositMonetary(),
+                    customerGroup.getCardRecency(),
+                    customerGroup.getCardFrequency(),
+                    customerGroup.getCardMonetary(),
+                    customerGroup.getActualIncome()
+            );
+        } else {
+            setHashTagCustomers = customerSegmentationSessionBean.getListFilterCustomersByRFMAndIncomeAndAntecedent(
+                    customerGroup.getDepositRecency(),
+                    customerGroup.getDepositFrequency(),
+                    customerGroup.getDepositMonetary(),
+                    customerGroup.getCardRecency(),
+                    customerGroup.getCardFrequency(),
+                    customerGroup.getCardMonetary(),
+                    customerGroup.getActualIncome(),
+                    selectedAntecedent
+            );
+        }
 
         System.out.println(setHashTagCustomers.size());
 

@@ -21,6 +21,7 @@ import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import server.utilities.ConstantUtils;
 import server.utilities.EnumUtils;
+import utils.MessageUtils;
 import utils.RedirectUtils;
 
 /**
@@ -94,14 +95,12 @@ public class CreateMarketingCampaignManagedBean implements Serializable {
             marketingCampaignSessionBean.createMarketingCampaign(emailMarketingCampaign);
             sa.getMarketingCampaign().add(emailMarketingCampaign);
             staffAccountSessionBean.updateAccount(sa);
-
             RedirectUtils.redirect(ConstantUtils.STAFF_MC_VIEW_MARKETING_CAMPAIGNS);
 
         } catch (Exception ex) {
             System.out.println("createMarketingCampaignManagedBean.addNewEmailMarketingCampaign Error");
             System.out.println(ex);
-
-            RedirectUtils.redirect(ConstantUtils.STAFF_MC_CREATE_MARKETING_CAMPAIGNS);
+            MessageUtils.displayError("Email Campaign Created Fail!");
         }
     }
 

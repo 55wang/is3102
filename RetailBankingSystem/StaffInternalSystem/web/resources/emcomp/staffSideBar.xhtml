@@ -225,14 +225,14 @@
                     </c:if>
 
                     <c:if test="#{cc.attrs.top == 'crm'}">
-                        <li class="side-menu-item #{cc.attrs.side == 'viewMarketingCampaigns' ? 'active' : ''}">
-                            <h:link outcome="view_marketing_campaigns" value="View Marketing Campaigns" />
+                        <li class="side-menu-item #{cc.attrs.side == 'createMarketingCampaign' ? 'active' : ''}">
+                            <h:link outcome="create_marketing_campaign" value="Create Marketing Campaign" />
                         </li>
                     </c:if>
 
                     <c:if test="#{cc.attrs.top == 'crm'}">
-                        <li class="side-menu-item #{cc.attrs.side == 'createMarketingCampaign' ? 'active' : ''}">
-                            <h:link outcome="create_marketing_campaign" value="Create Marketing Campaign" />
+                        <li class="side-menu-item #{cc.attrs.side == 'viewMarketingCampaigns' ? 'active' : ''}">
+                            <h:link outcome="view_marketing_campaigns" value="View Marketing Campaigns" />
                         </li>
                     </c:if>
 

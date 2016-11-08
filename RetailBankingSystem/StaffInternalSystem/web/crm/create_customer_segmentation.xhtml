@@ -67,8 +67,8 @@
                             <p:outputLabel for="hashTag" value="Hash Tag: " />
                             <p:inputText id="hashTag" value="#{createCustomerSegmentationManagedBean.customerGroup.hashTag}" />
 
-                            <p:outputLabel value="Antecedent: " />
-                            <p:selectOneMenu value="#{createCustomerSegmentationManagedBean.selectedAntecedent}" style="width:187px; height: 30px; line-height: 21px; top:10px" rendered="true">
+                            <p:outputLabel value="Antecedent: " rendered="#{createCustomerSegmentationManagedBean.functionType == createCustomerSegmentationManagedBean.SET_HASH_TAG}"/>
+                            <p:selectOneMenu value="#{createCustomerSegmentationManagedBean.selectedAntecedent}" style="width:187px; height: 30px; line-height: 21px; top:10px" rendered="#{createCustomerSegmentationManagedBean.functionType == createCustomerSegmentationManagedBean.SET_HASH_TAG}">
                                 <f:selectItem itemLabel="Select Antecedent" itemValue="" noSelectionOption="true" />
                                 <f:selectItems value="#{createCustomerSegmentationManagedBean.totalUniqueProductName}" var="a" itemValue="#{a}" itemLabel="#{a}" />
                             </p:selectOneMenu>
