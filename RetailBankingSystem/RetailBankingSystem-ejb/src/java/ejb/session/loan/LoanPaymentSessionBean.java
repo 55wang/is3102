@@ -272,11 +272,14 @@ public class LoanPaymentSessionBean implements LoanPaymentSessionBeanLocal {
     @Override
     public String loanRepaymentFromAccount(String loanAccountNumber, String depositAccountNumber, BigDecimal amount) {
         DepositAccount fromAccount = depositBean.getAccountFromId(depositAccountNumber);
+        LoanAccount loanAccount = loanAccountBean.getLoanAccountByAccountNumber(loanAccountNumber);
         if (fromAccount.getBalance().compareTo(amount) < 0) {
             // not enough money
             return "FAIL";
         } else {
             depositBean.transferFromAccount(fromAccount, amount);
+            BigDecimal outPrin=new BigDecimal(loanAccount.getOutstandingPrincipal());
+            if(amount.compareTo(outPrin)==1 ) return "FAIL2";
             loanAccountRepayment(loanAccountNumber, amount.doubleValue());
             return "SUCCESS";
         }
@@ -288,9 +291,11 @@ public class LoanPaymentSessionBean implements LoanPaymentSessionBeanLocal {
         LoanAccount loanAccount = loanAccountBean.getLoanAccountByAccountNumber(loanAccountNumber);
         if (fromAccount.getBalance().compareTo(amount) < 0 || loanAccount.getOutstandingPrincipal() < amount.doubleValue()) {
             // not enough money
-            return "FAIL";
+            return "FAIL1";
         } else {
             depositBean.transferFromAccount(fromAccount, amount);
+            BigDecimal outPrin=new BigDecimal(loanAccount.getOutstandingPrincipal());
+            if(amount.compareTo(outPrin)==1 ) return "FAIL2";
             LoanAccount la = loanAccountLumsumPayment(loanAccountNumber, amount.doubleValue());
             futurePaymentBreakdown(la);
             return "SUCCESS";
@@ -337,6 +342,7 @@ public class LoanPaymentSessionBean implements LoanPaymentSessionBeanLocal {
     private LoanAccount loanAccountRepayment(String loanAccountNumber, Double amount) {
         LoanAccount loanAccount = loanAccountBean.getLoanAccountByAccountNumber(loanAccountNumber);
         loanAccount.setAmountPaidBeforeDueDate(amount + loanAccount.getAmountPaidBeforeDueDate());
+        loanAccount.setOutstandingPrincipal(loanAccount.getOutstandingPrincipal() - amount);
 
         LoanRepaymentRecord record = new LoanRepaymentRecord();
         record.setBeginningBalance(loanAccount.getOutstandingPrincipal());

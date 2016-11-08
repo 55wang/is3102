@@ -11,6 +11,7 @@ import entity.common.TransactionRecord;
 import entity.dams.account.DepositAccount;
 import entity.loan.LoanAccount;
 import entity.loan.LoanRepaymentRecord;
+import java.math.RoundingMode;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ws.rs.Consumes;
@@ -78,7 +79,7 @@ public class MobileAccountHistoryService {
             List<TransactionRecord> records = depositBean.transactionRecordFromAccountNumber(accountNumber);
             for (TransactionRecord r : records) {
                 TransferHistoryDTO dto = new TransferHistoryDTO();
-                dto.setTransferAmount(r.getAmount().setScale(2).toString());
+                dto.setTransferAmount(r.getAmount().setScale(2, RoundingMode.UP).toString());
                 dto.setTransferCredit(r.getCredit() == null || r.getCredit() ? "CREDIT" : "DEBIT");
                 dto.setTransferType(r.getActionType().toString());
                 dto.setTransferDate(DateUtils.readableDate(r.getCreationDate()));

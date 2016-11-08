@@ -94,7 +94,8 @@ public class ConstantUtils {
     public static final String PASSWORD_CHANGE_SUCCESS = "Successful! You have reset your password. ";
     // Transfer
     public static final String TRANSFER_SUCCESS = "Transfer Successed!";
-    public static final String TRANSFER_FAILED = "Transfer Failed! Check your account balance!";
+    public static final String TRANSFER_FAILED = "Transfer Failed! Not enough balance in your deposit account!";
+    public static final String TRANSFER_FAILED2 = "Your payment is greater than your outstanding loan amount!";
     public static final String EXCEED_TRANSFER_LIMIT = "Transfer Failed! Check your transfer limit!";
     public static final String TRANSFER_ACCOUNT_NOT_FOUND = "Transfer Failed! Check your whether account number is correct!";
     public static final String UPDATE_TRANSFER_LIMIT_SUCCESS = "Transfer Limits updated!";

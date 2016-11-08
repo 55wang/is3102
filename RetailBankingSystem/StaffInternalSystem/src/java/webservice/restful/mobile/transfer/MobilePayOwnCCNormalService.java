@@ -9,6 +9,7 @@ import ejb.session.dams.CustomerDepositSessionBeanLocal;
 import ejb.session.dams.MobileAccountSessionBeanLocal;
 import entity.common.TransactionRecord;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import javax.ejb.EJB;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
@@ -49,7 +50,7 @@ public class MobilePayOwnCCNormalService {
         if (result.equals("SUCCESS")) {
             TransactionRecord record = depositBean.latestTransactionFromAccountNumber(fromAccountNumber);
             TransferDTO t = new TransferDTO();
-            t.setTransferAmount(record.getAmount().setScale(2).toString());
+            t.setTransferAmount(record.getAmount().setScale(2, RoundingMode.UP).toString());
             t.setReferenceNumber(record.getReferenceNumber());
             t.setTransferType(record.getActionType().toString());
             t.setTransferDate(DateUtils.readableDate(record.getCreationDate()));

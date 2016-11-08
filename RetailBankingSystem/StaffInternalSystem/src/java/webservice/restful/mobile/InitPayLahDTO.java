@@ -11,6 +11,7 @@ package webservice.restful.mobile;
  */
 public class InitPayLahDTO {
     
+    private String noNewReq;
     private String balance;
     private String walletLimit;
     private String transferLimit;
@@ -115,6 +116,20 @@ public class InitPayLahDTO {
      */
     public void setTransferAccount(String transferAccount) {
         this.transferAccount = transferAccount;
+    }
+
+    /**
+     * @return the noNewReq
+     */
+    public String getNoNewReq() {
+        return noNewReq;
+    }
+
+    /**
+     * @param noNewReq the noNewReq to set
+     */
+    public void setNoNewReq(String noNewReq) {
+        this.noNewReq = noNewReq;
     }
     
 }

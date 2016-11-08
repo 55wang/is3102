@@ -84,9 +84,12 @@ public class LoanRepaymentManagedBean implements Serializable {
         if (result.equals("SUCCESS")) {
             JSUtils.callJSMethod("PF('myWizard').next()");
             MessageUtils.displayInfo(ConstantUtils.TRANSFER_SUCCESS);
-        } else {
+        } else if (result.equals("FAIL1")){
             JSUtils.callJSMethod("PF('myWizard').back()");
             MessageUtils.displayError(ConstantUtils.TRANSFER_FAILED);
+        } else {
+            JSUtils.callJSMethod("PF('myWizard').back()");
+            MessageUtils.displayError(ConstantUtils.TRANSFER_FAILED2);
         }
     }
     
