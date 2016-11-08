@@ -92,19 +92,20 @@ public class CreateCustomerSegmentationManagedBean implements Serializable {
                     selectedAntecedent
             );
         }
-        
-        if(setHashTagCustomers.isEmpty()){
+
+        if (setHashTagCustomers.isEmpty()) {
             MessageUtils.displayError("No Customer Meet the Requirements");
-        }else{
+        } else {
             for (Customer c : setHashTagCustomers) {
                 c.setHashTag(customerGroup.getHashTag());
                 newCustomerSessionBean.updateCustomer(c);
             }
-            
+
             customerGroup.setHashTag("");
-            
+
             createTagCloudModel();
         }
+
     }
 
     public void createGroup() {
@@ -138,8 +139,10 @@ public class CreateCustomerSegmentationManagedBean implements Serializable {
 
         try {
             customerSegmentationSessionBean.createCustomerGroup(customerGroup);
+            MessageUtils.displayInfo("Customer Group Created Successfully!");
         } catch (Exception ex) {
             System.out.println(ex);
+            MessageUtils.displayError("Customer Group Created Fail!");
         }
 
     }
@@ -152,7 +155,7 @@ public class CreateCustomerSegmentationManagedBean implements Serializable {
 
         for (HashMap.Entry<String, Long> entry : mapHashTagCount.entrySet()) {
             System.out.println("Key = " + entry.getKey() + ", Value = " + entry.getValue());
-            model.addTag(new DefaultTagCloudItem(entry.getKey(), entry.getValue().intValue()));
+            model.addTag(new DefaultTagCloudItem(entry.getKey(), "#", entry.getValue().intValue()));
         }
 
 //        model.addTag(new DefaultTagCloudItem("Transformers", 1));
@@ -185,21 +188,23 @@ public class CreateCustomerSegmentationManagedBean implements Serializable {
             if (part.length() != 0) {
 
                 Long value = tempMapHashTagCount.getOrDefault(part, 0L);
+
+                tempMapHashTagCount.put(part, ++value);
                 System.out.println(part + " " + value);
-                tempMapHashTagCount.put(part, value++);
             }
         }
 
         return tempMapHashTagCount;
     }
-    
+
     public void onSelect(SelectEvent event) {
-        if(functionType.equals(CREATE_CUSTOMER_GROUP)){
+        if (functionType.equals(CREATE_CUSTOMER_GROUP)) {
             TagCloudItem item = (TagCloudItem) event.getObject();
-            if(customerGroup.getHashTag() == null || customerGroup.getHashTag().isEmpty())
-                customerGroup.setHashTag("#"+item.getLabel());
-            else
-                customerGroup.setHashTag(customerGroup.getHashTag()+"#"+item.getLabel());
+            if (customerGroup.getHashTag() == null || customerGroup.getHashTag().isEmpty()) {
+                customerGroup.setHashTag("#" + item.getLabel());
+            } else {
+                customerGroup.setHashTag(customerGroup.getHashTag() + "#" + item.getLabel());
+            }
         }
     }
 

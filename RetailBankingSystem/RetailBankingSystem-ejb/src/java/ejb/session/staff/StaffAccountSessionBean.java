@@ -13,15 +13,28 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import server.utilities.ConstantUtils;
 
 /**
  *
  * @author leiyang
  */
 @Stateless
-public class StaffAccountSessionBean implements StaffAccountSessionBeanLocal {
+public class StaffAccountSessionBean implements StaffAccountSessionBeanLocal, StaffAccountSessionBeanRemote {
     @PersistenceContext(unitName = "RetailBankingSystem-ejbPU")
     private EntityManager em;
+    
+    @Override 
+    public StaffAccount getAdminStaff() {
+        
+        try {
+            StaffAccount user =  em.find(StaffAccount.class, ConstantUtils.SUPER_ADMIN_USERNAME);
+            return user;
+        } catch (NoResultException ex) {
+            return null;
+        }
+        
+    }
 
     @Override
     public StaffAccount loginAccount(String username, String password) {

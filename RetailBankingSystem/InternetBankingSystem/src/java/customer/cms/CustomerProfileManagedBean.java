@@ -21,6 +21,7 @@ import server.utilities.EnumUtils.Income;
 import server.utilities.CommonUtils;
 import server.utilities.ConstantUtils;
 import server.utilities.DateUtils;
+import util.exception.cms.CustomerNotExistException;
 import utils.JSUtils;
 import utils.MessageUtils;
 import utils.RedirectUtils;
@@ -53,8 +54,21 @@ public class CustomerProfileManagedBean implements Serializable {
     /**
      * Creates a new instance of CustomerInformationManagedBean
      */
-    public CustomerProfileManagedBean() {
-
+    public CustomerProfileManagedBean() {}
+    
+    @PostConstruct
+    public void setCustomer() {
+        
+        
+        try {
+            this.customer = customerProfileSessionBean.getCustomerByUserID(SessionUtils.getUserName());
+        } catch (CustomerNotExistException e) {
+            System.out.println("CustomerNotExistException CustomerProfileManagedBean.java");
+        }
+        
+        this.auditLogs = auditSessionBean.getAuditLogByCustomerID(SessionUtils.getUserName());
+        selectedIncome = customer.getIncome().toString();
+        age=DateUtils.calculateAge(customer.getBirthDay());
     }
 
     public void goToEditPage() {
@@ -86,17 +100,18 @@ public class CustomerProfileManagedBean implements Serializable {
 
     }
     
+    //for loan
+    public void checkAge(){
+        if (getAge() < 21) {
+            MessageUtils.displayError(ConstantUtils.NOT_ENOUGH_AGE);
+        } else {
+            JSUtils.callJSMethod("PF('myWizard').next();");
+        }  
+    }
+    
 
     public Customer getCustomer() {
         return customer;
-    }
-
-    @PostConstruct
-    public void setCustomer() {
-        this.customer = customerProfileSessionBean.getCustomerByUserID(SessionUtils.getUserName());
-        this.auditLogs = auditSessionBean.getAuditLogByCustomerID(SessionUtils.getUserName());
-        selectedIncome = customer.getIncome().toString();
-        age=DateUtils.calculateAge(customer.getBirthDay());
     }
 
     /**
@@ -199,13 +214,6 @@ public class CustomerProfileManagedBean implements Serializable {
         this.age = age;
     }
     
-    //for loan
-    public void checkAge(){
-        if (getAge() < 21) {
-            MessageUtils.displayError(ConstantUtils.NOT_ENOUGH_AGE);
-        } else {
-            JSUtils.callJSMethod("PF('myWizard').next();");
-        }  
-    }
+    
     
 }

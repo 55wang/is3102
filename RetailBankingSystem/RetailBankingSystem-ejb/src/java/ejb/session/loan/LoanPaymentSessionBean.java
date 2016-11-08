@@ -334,6 +334,7 @@ public class LoanPaymentSessionBean implements LoanPaymentSessionBeanLocal {
         }
         
         loanAccount.setMonthlyInstallment(calculateMonthlyInstallment(loanAccount));
+        em.persist(loanAccount);
 
         LoanRepaymentRecord record = new LoanRepaymentRecord();
         record.setBeginningBalance(loanAccount.getOutstandingPrincipal()+amount);
@@ -363,6 +364,7 @@ public class LoanPaymentSessionBean implements LoanPaymentSessionBeanLocal {
         }
         
         loanAccount.setOutstandingPrincipal(loanAccount.getOutstandingPrincipal() - amount);
+        em.persist(loanAccount);
 
         LoanRepaymentRecord record = new LoanRepaymentRecord();
         record.setBeginningBalance(loanAccount.getOutstandingPrincipal()+amount);

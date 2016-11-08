@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -29,16 +30,16 @@ import server.utilities.EnumUtils.CardOperatorChargebackStatus;
  */
 @Entity
 public class CustomerCase implements Serializable {
-    private static final long serialVersionUID = 1L;
+    
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
+    
     @Temporal(javax.persistence.TemporalType.DATE)
-    private Date createDate;
+    private Date createDate = new Date();
     
     // info
     private String title;
-    private CaseStatus caseStatus;
+    private CaseStatus caseStatus = CaseStatus.ONHOLD;
     private Boolean isChargeBackCase = false;
     private CardOperatorChargebackStatus cardOperatorResponse;
     
@@ -53,14 +54,6 @@ public class CustomerCase implements Serializable {
     private CardTransaction chargebackTransaction;
     @OneToOne
     private CardTransaction reverseTransaction;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getTitle() {
         return title;
@@ -97,7 +90,7 @@ public class CustomerCase implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
+        hash += (getId() != null ? getId().hashCode() : 0);
         return hash;
     }
 
@@ -108,7 +101,7 @@ public class CustomerCase implements Serializable {
             return false;
         }
         CustomerCase other = (CustomerCase) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+        if ((this.getId() == null && other.getId() != null) || (this.getId() != null && !this.id.equals(other.id))) {
             return false;
         }
         return true;
@@ -124,7 +117,7 @@ public class CustomerCase implements Serializable {
 
     @Override
     public String toString() {
-        return "entity.customer.Case[ id=" + id + " ]";
+        return "entity.customer.Case[ id=" + getId() + " ]";
     }   
 
     public Date getCreateDate() {
@@ -166,4 +159,19 @@ public class CustomerCase implements Serializable {
     public void setReverseTransaction(CardTransaction reverseTransaction) {
         this.reverseTransaction = reverseTransaction;
     }
+
+    /**
+     * @return the id
+     */
+    public String getId() {
+        return id;
+    }
+
+    /**
+     * @param id the id to set
+     */
+    public void setId(String id) {
+        this.id = id;
+    }
+    
 }

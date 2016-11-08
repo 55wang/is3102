@@ -5,6 +5,7 @@
  */
 package staff.crm;
 
+import ejb.session.common.EmailServiceSessionBeanLocal;
 import ejb.session.crm.CustomerSegmentationSessionBeanLocal;
 import ejb.session.crm.MarketingCampaignSessionBeanLocal;
 import ejb.session.staff.StaffAccountSessionBeanLocal;
@@ -12,6 +13,7 @@ import entity.crm.AdsBannerCampaign;
 import entity.crm.CustomerGroup;
 import entity.crm.EmailCampaign;
 import entity.crm.MarketingCampaign;
+import entity.customer.Customer;
 import entity.staff.StaffAccount;
 import java.io.Serializable;
 import java.util.List;
@@ -38,6 +40,8 @@ public class CreateMarketingCampaignManagedBean implements Serializable {
     StaffAccountSessionBeanLocal staffAccountSessionBean;
     @EJB
     CustomerSegmentationSessionBeanLocal customerSegmentationSessionBean;
+    @EJB
+    EmailServiceSessionBeanLocal emailServiceSessionBean;
 
     private EmailCampaign emailMarketingCampaign;
     private AdsBannerCampaign AdsMarketingCampaign;
@@ -95,12 +99,22 @@ public class CreateMarketingCampaignManagedBean implements Serializable {
             marketingCampaignSessionBean.createMarketingCampaign(emailMarketingCampaign);
             sa.getMarketingCampaign().add(emailMarketingCampaign);
             staffAccountSessionBean.updateAccount(sa);
+            
+            //send email
+            sendMassEmail();
+            
             RedirectUtils.redirect(ConstantUtils.STAFF_MC_VIEW_MARKETING_CAMPAIGNS);
 
         } catch (Exception ex) {
             System.out.println("createMarketingCampaignManagedBean.addNewEmailMarketingCampaign Error");
             System.out.println(ex);
             MessageUtils.displayError("Email Campaign Created Fail!");
+        }
+    }
+    
+    public void sendMassEmail() {
+        for (Customer c : emailMarketingCampaign.getCustomerGroup().getCustomers()){
+            emailServiceSessionBean.sendEmailMarketingCampaign(c.getEmail(), emailMarketingCampaign.getSubjectEmail(), emailMarketingCampaign.getContentEmail(), emailMarketingCampaign.getLandingPageName());
         }
     }
 

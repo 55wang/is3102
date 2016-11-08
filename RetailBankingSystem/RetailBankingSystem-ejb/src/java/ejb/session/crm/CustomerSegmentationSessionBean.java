@@ -27,7 +27,7 @@ public class CustomerSegmentationSessionBean implements CustomerSegmentationSess
 
     @Override
     public List<String> getListCustomersHashTag() {
-        Query q = em.createQuery("SELECT DISTINCT(c.hashTag) FROM Customer c");
+        Query q = em.createQuery("SELECT c.hashTag FROM Customer c");
         return q.getResultList();
     }
 

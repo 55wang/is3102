@@ -19,6 +19,8 @@ import javax.ejb.Local;
  */
 @Local
 public interface EmailServiceSessionBeanLocal {
+    
+    public void sendEmailMarketingCampaign(String recipient, String subject, String content, String landingPage);
     public void sendCreditCardActivationGmailForCustomer(String recipient, String pwd, String ccNumber, String ccv, String userName);
     public void sendCreditCardApplicationRejectionToCustomers(String recipient);
     public void sendActivationEmailForCustomer(String recipient);
@@ -27,8 +29,8 @@ public interface EmailServiceSessionBeanLocal {
     public void sendUpdatePortfolioNotice(String recipient);
     public void sendUserIDforForgottenCustomer(String recipient, MainAccount forgotAccount);
     public void sendResetPwdLinkforForgottenCustomer(String recipient, MainAccount forgotAccount);
-    public void sendchargeBackGmailForSuccessfulCustomer(String recipient, Long ID);
-    public void sendchargeBackGmailForRejectedCustomer(String recipient, Long ID);
+    public void sendchargeBackGmailForSuccessfulCustomer(String recipient, String ID);
+    public void sendchargeBackGmailForRejectedCustomer(String recipient, String ID);
     public void sendActivationGmailForStaff(String recipient, String pwd);
     public void sendRequireAdditionalInfo(String recipient, String msg);
     public void sendUserNameforForgottenStaff(String recipient, String username);
