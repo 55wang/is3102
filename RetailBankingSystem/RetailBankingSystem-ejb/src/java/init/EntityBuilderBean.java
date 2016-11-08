@@ -12,9 +12,7 @@ import entity.card.product.RewardCardProduct;
 import entity.customer.MainAccount;
 import entity.dams.account.CustomerDepositAccount;
 import entity.staff.StaffAccount;
-import entity.wealth.FinancialInstrument;
 import entity.wealth.Portfolio;
-import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.ejb.Singleton;
@@ -91,7 +89,14 @@ public class EntityBuilderBean {
 
     // Use Super Admin Account as a flag
     private Boolean needInit() {
-        StaffAccount sa = staffAccountSessionBean.getAccountByUsername(ConstantUtils.SUPER_ADMIN_USERNAME);
+        StaffAccount sa = null;
+        
+        try {
+            sa = staffAccountSessionBean.getAdminStaff();
+        } catch (Exception e) {
+            System.out.println("Super admin not found, init all data...");
+        }
+         
         return sa == null;
     }
 

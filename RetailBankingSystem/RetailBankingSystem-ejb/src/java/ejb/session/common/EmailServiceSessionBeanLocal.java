@@ -29,8 +29,8 @@ public interface EmailServiceSessionBeanLocal {
     public void sendUpdatePortfolioNotice(String recipient);
     public void sendUserIDforForgottenCustomer(String recipient, MainAccount forgotAccount);
     public void sendResetPwdLinkforForgottenCustomer(String recipient, MainAccount forgotAccount);
-    public void sendchargeBackGmailForSuccessfulCustomer(String recipient, Long ID);
-    public void sendchargeBackGmailForRejectedCustomer(String recipient, Long ID);
+    public void sendchargeBackGmailForSuccessfulCustomer(String recipient, String ID);
+    public void sendchargeBackGmailForRejectedCustomer(String recipient, String ID);
     public void sendActivationGmailForStaff(String recipient, String pwd);
     public void sendRequireAdditionalInfo(String recipient, String msg);
     public void sendUserNameforForgottenStaff(String recipient, String username);

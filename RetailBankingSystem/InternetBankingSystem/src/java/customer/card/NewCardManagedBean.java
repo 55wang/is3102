@@ -29,6 +29,7 @@ import server.utilities.CommonUtils;
 import utils.RedirectUtils;
 import server.utilities.EnumUtils.*;
 import server.utilities.CommonHelper;
+import util.exception.cms.CustomerNotExistException;
 import utils.SessionUtils;
 
 /**
@@ -190,7 +191,13 @@ public class NewCardManagedBean implements Serializable {
     }
 
     public void setExistingCustomerForCardApplication() {
-        existingCustomer = customerProfileSessionBean.getCustomerByUserID(SessionUtils.getUserName());
+        
+        try {
+            existingCustomer = customerProfileSessionBean.getCustomerByUserID(SessionUtils.getUserName());
+        } catch (CustomerNotExistException e) {
+            System.out.println("CustomerNotExistException NewCardManagedBean.java");
+        }
+        
     }
 
     public CreditCardOrder getCco() {

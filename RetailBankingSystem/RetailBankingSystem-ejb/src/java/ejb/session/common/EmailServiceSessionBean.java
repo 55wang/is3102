@@ -205,7 +205,7 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
 
     @Asynchronous
     @Override
-    public void sendchargeBackGmailForSuccessfulCustomer(String recipient, Long ID) {
+    public void sendchargeBackGmailForSuccessfulCustomer(String recipient, String ID) {
 
         Session session = getSession();
 
@@ -231,7 +231,7 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
 
     @Asynchronous
     @Override
-    public void sendchargeBackGmailForRejectedCustomer(String recipient, Long ID) {
+    public void sendchargeBackGmailForRejectedCustomer(String recipient, String ID) {
 
         Session session = getSession();
 

@@ -20,7 +20,6 @@ import javax.ejb.Local;
  */
 @Local
 public interface CustomerDepositSessionBeanLocal {
-    public long showNumberOfAccounts();
     public DepositAccount getAccountFromId(String accountNumber);
     public DepositAccount createAccount(DepositAccount account);
     public DepositAccount updateAccount(DepositAccount account);
