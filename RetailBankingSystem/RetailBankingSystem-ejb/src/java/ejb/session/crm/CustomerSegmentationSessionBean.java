@@ -20,7 +20,13 @@ public class CustomerSegmentationSessionBean implements CustomerSegmentationSess
     private EntityManager em;
 
     @Override
-    public List<Customer> getCustomersByOptions(Long depositRecency, Long depositFrequency, Long depositMonetary, Long cardRecency, Long cardFrequency, Long cardMonetary, Double actualIncome) {
+    public List<String> getListCustomersHashTag() {
+        Query q = em.createQuery("SELECT DISTINCT(c.hashTag) FROM Customer c");
+        return q.getResultList();
+    }
+
+    @Override
+    public List<Customer> getListFilterCustomersByRFMAndIncomeAndAntecedent(Long depositRecency, Long depositFrequency, Long depositMonetary, Long cardRecency, Long cardFrequency, Long cardMonetary, Double actualIncome, String antecedent) {
         Query q = em.createQuery("Select c from Customer c WHERE c.depositRecency >=:inDepositRecency AND c.depositFrequency >=:inDepositFrequency AND c.depositMonetary >=:inDepositMonetary AND c.cardRecency >=:inCardRecency AND c.cardFrequency >=:inCardFrequency AND c.cardMonetary >=:inCardMonetary AND c.actualIncome >=:inIncome");
         q.setParameter("inDepositRecency", depositRecency);
         q.setParameter("inDepositFrequency", depositFrequency);
@@ -29,11 +35,14 @@ public class CustomerSegmentationSessionBean implements CustomerSegmentationSess
         q.setParameter("inCardFrequency", cardFrequency);
         q.setParameter("inCardMonetary", cardMonetary);
         q.setParameter("inIncome", actualIncome);
-        return q.getResultList();
+        
+        //to be continued
+        
+        return null;
     }
-
+    
     @Override
-    public List<Customer> getListFilterCustomersByRFM(Long depositRecency, Long depositFrequency, Long depositMonetary, Long cardRecency, Long cardFrequency, Long cardMonetary, Double actualIncome) {
+    public List<Customer> getListFilterCustomersByRFMAndIncome(Long depositRecency, Long depositFrequency, Long depositMonetary, Long cardRecency, Long cardFrequency, Long cardMonetary, Double actualIncome) {
         Query q = em.createQuery("Select c from Customer c WHERE c.depositRecency >=:inDepositRecency AND c.depositFrequency >=:inDepositFrequency AND c.depositMonetary >=:inDepositMonetary AND c.cardRecency >=:inCardRecency AND c.cardFrequency >=:inCardFrequency AND c.cardMonetary >=:inCardMonetary AND c.actualIncome >=:inIncome");
         q.setParameter("inDepositRecency", depositRecency);
         q.setParameter("inDepositFrequency", depositFrequency);

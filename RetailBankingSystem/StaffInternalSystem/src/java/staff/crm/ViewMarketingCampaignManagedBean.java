@@ -20,14 +20,14 @@ import javax.faces.view.ViewScoped;
  */
 @Named(value = "viewMarketingCampaignManagedBean")
 @ViewScoped
-public class viewMarketingCampaignManagedBean implements Serializable {
+public class ViewMarketingCampaignManagedBean implements Serializable {
 
     @EJB
     MarketingCampaignSessionBeanLocal marketingCampaignSessionBean;
 
     private List<MarketingCampaign> marketingCampaigns;
     
-    public viewMarketingCampaignManagedBean() {
+    public ViewMarketingCampaignManagedBean() {
     }
     
     @PostConstruct

@@ -14,6 +14,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import javax.annotation.PostConstruct;
+import javax.ejb.Asynchronous;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
@@ -36,13 +37,6 @@ public class MarketBasketAnalysisManagedBean implements Serializable {
     public MarketBasketAnalysisManagedBean() {
     }
 
-//    public static void main(String[] args) {
-//        Set<String> a = new HashSet<>();
-//        a.add("a");
-//        a.add("b");
-//        a.add("a");
-//        System.out.println(a.toString());
-//    }
     @PostConstruct
     public void init() {
         rules = marketBasketAnalysisSessionBean.getListAssociationRules();
@@ -63,6 +57,7 @@ public class MarketBasketAnalysisManagedBean implements Serializable {
 
     }
 
+    @Asynchronous
     public void refreshAssociationRules() {
         System.out.println("refreshAssociationRules()");
         //drop table and recreate new set of rules

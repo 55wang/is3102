@@ -60,7 +60,9 @@ public class EntityBuilderBean {
     private EntityFactBuilder entityFactBuilder;
     @EJB
     private EntityTellerCounterBuilder entityTellerCounterBuilder;
-
+    @EJB
+    private EntityCRMBuilder entityCRMBuilder;
+    
     // session beans
     @EJB
     private StaffAccountSessionBeanLocal staffAccountSessionBean;
@@ -118,6 +120,8 @@ public class EntityBuilderBean {
 //        entityFactBuilder.initSinglePortfolioFact(demoMainAccount, demoPortfolio);
 //
 //        entityFactBuilder.initBankFact();
+           
+        entityCRMBuilder.initCustomerRFM();
 
 //        entityTellerCounterBuilder.init();
 

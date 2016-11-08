@@ -37,6 +37,36 @@ public class MarketBasketAnalysisSessionBean implements MarketBasketAnalysisSess
     @EJB
     private MarketBasketAnalysisSessionBeanLocal marketBasketAnalysisSessionBean;
 
+     //get all product name from the system
+    @Override
+    public Set<String> getListProductName() {
+        Set<String> productNames = new HashSet<>();
+        
+        Query queryDepositProduct = em.createQuery("SELECT DISTINCT(dp.name) FROM DepositProduct dp");
+        List<String> dps = queryDepositProduct.getResultList();
+        for(int i = 0; i < dps.size(); i++){
+            productNames.add(dps.get(i));
+        }
+        
+        Query queryCardProduct = em.createQuery("SELECT DISTINCT(ccp.productName) FROM CreditCardProduct ccp");
+        List<String> ccps = queryCardProduct.getResultList();
+        for(int i = 0; i < ccps.size(); i++){
+            productNames.add(ccps.get(i));
+        }
+        
+        Query queryLoanProduct = em.createQuery("SELECT DISTINCT(lp.productName) FROM LoanProduct lp");
+        List<String> lps = queryLoanProduct.getResultList();
+        for(int i = 0; i < lps.size(); i++){
+            productNames.add(lps.get(i));
+        }
+        
+        if(productNames.isEmpty())
+            return null;
+        else
+            return productNames;
+    }
+    
+    
     //get all product name from a single customer
     @Override
     public Set<String> getListProductNameByCustomerId(Long Id) {

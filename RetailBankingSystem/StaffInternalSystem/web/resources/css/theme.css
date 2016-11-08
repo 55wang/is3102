@@ -172,14 +172,14 @@ and open the template in the editor.
     margin: 0 auto;
     width:400px;
     height:300px;
-    top:15% !important;
+    top:3% !important;
     border-top: 7px solid #c00;
     box-shadow: 0 10px 10px 0 rgba(0,0,0,0.30),0 6px 3px 0 rgba(0,0,0,0.23);
 }
 
 .staff-login-icon{
     position:relative; 
-    top:15%; 
+    top:5%; 
     width: 100%;
     text-align: center;
 }
