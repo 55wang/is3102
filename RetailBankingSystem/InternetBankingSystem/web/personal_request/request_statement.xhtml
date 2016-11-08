@@ -24,22 +24,37 @@ and open the template in the editor.
             <em:customerHeader context="personal" userName="#{customerHomeManagedBean.customer.firstname }"></em:customerHeader>
             <em:customerNavBar context="personal" personalPage="home" ></em:customerNavBar>
             <div class="customer_main_container">
-                <p:panel header="E-Statement">
-                <h:form>
-                    <h:panelGrid columns="2" cellpadding="5">
-                        <h:outputText value="Choose Account: " />
-                        <p:selectOneMenu value="#{requestManagedBean.fromAccountNo}" rendered="true" required="true">
-                            <f:selectItems value="#{requestManagedBean.accounts}" var="a" itemValue="#{a.accountNumber}" itemLabel="#{a.product.name} #{a.accountNumber} #{a.balance.setScale(2)}" />
-                        </p:selectOneMenu>
-                        <h:outputText value="Select Month: " />
-                        <p:selectOneMenu value="#{requestManagedBean.selectedMonth}" rendered="true" required="true">
-                            <f:selectItems value="#{requestManagedBean.monthOptions}"/>
-                        </p:selectOneMenu>
-                        <p:commandButton value="View your bank statement" action="#{requestManagedBean.requestEStatement}"/> 
-                    </h:panelGrid>
-                </h:form>
+                <p:panel header="Deposit Account E-Statement">
+                    <h:form>
+                        <h:panelGrid columns="2" cellpadding="5">
+                            <h:outputText value="Choose Account: " />
+                            <p:selectOneMenu value="#{requestManagedBean.fromAccountNo}" rendered="true" required="true">
+                                <f:selectItems value="#{requestManagedBean.accounts}" var="a" itemValue="#{a.accountNumber}" itemLabel="#{a.product.name} #{a.accountNumber} #{a.balance.setScale(2)}" />
+                            </p:selectOneMenu>
+                            <h:outputText value="Select Month: " />
+                            <p:selectOneMenu value="#{requestManagedBean.selectedMonth}" rendered="true" required="true">
+                                <f:selectItems value="#{requestManagedBean.monthOptions}"/>
+                            </p:selectOneMenu>
+                            <p:commandButton value="View your bank statement" action="#{requestManagedBean.requestEStatement}"/> 
+                        </h:panelGrid>
+                    </h:form>
                 </p:panel>
 
+                <p:panel header="Credit Card E-Statement">
+                    <h:form>
+                        <h:panelGrid columns="2" cellpadding="5">
+                            <h:outputText value="Choose Account: " />
+                            <p:selectOneMenu value="#{requestManagedBean.fromCCNo}" rendered="true" required="true">
+                                <f:selectItems value="#{requestManagedBean.ccAccounts}" var="a" itemValue="#{a.creditCardNum}" itemLabel="#{a.creditCardNum}" />
+                            </p:selectOneMenu>
+                            <h:outputText value="Select Month: " />
+                            <p:selectOneMenu value="#{requestManagedBean.selectedMonthCC}" rendered="true" required="true">
+                                <f:selectItems value="#{requestManagedBean.monthOptions}"/>
+                            </p:selectOneMenu>
+                            <p:commandButton value="View your CC statement" action="#{requestManagedBean.requestCCEStatement}"/> 
+                        </h:panelGrid>
+                    </h:form>
+                </p:panel>
             </div>
 
             <em:customerFooter></em:customerFooter>
