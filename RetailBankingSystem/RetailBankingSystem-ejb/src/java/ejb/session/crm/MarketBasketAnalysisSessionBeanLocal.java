@@ -24,7 +24,7 @@ public interface MarketBasketAnalysisSessionBeanLocal {
     public AssociationRuleEntity updateAssociationRule(AssociationRuleEntity rule);
     public Integer deleteAssociationrules();
     public AssociationRuleEntity createAssociationRule(AssociationRuleEntity rule);
-    public Set<String> getListProductNameByCustomerId(Long Id);
+    public Set<String> getListProductNameByCustomerId(String Id);
     public void generateAssociationRules();
     
 }

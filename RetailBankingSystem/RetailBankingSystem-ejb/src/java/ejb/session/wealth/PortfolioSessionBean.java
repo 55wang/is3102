@@ -8,9 +8,7 @@ package ejb.session.wealth;
 import entity.wealth.Portfolio;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Queue;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -20,7 +18,6 @@ import org.rosuda.REngine.Rserve.RConnection;
 import org.rosuda.REngine.Rserve.RserveException;
 import server.utilities.CommonUtils;
 import server.utilities.ConstantUtils;
-import server.utilities.EnumUtils;
 import server.utilities.EnumUtils.PortfolioStatus;
 
 /**
@@ -71,7 +68,7 @@ public class PortfolioSessionBean implements PortfolioSessionBeanLocal {
     }
 
     @Override
-    public List<Portfolio> getListPortfoliosByCustomerId(Long Id) {
+    public List<Portfolio> getListPortfoliosByCustomerId(String Id) {
         Query q = em.createQuery("Select p from Portfolio p where p.wealthManagementSubscriber.mainAccount.customer.id=:inId AND p.status =:status");
         q.setParameter("inId", Id);
         q.setParameter("status", PortfolioStatus.BOUGHT);

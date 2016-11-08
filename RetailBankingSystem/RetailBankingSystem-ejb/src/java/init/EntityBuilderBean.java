@@ -12,7 +12,9 @@ import entity.card.product.RewardCardProduct;
 import entity.customer.MainAccount;
 import entity.dams.account.CustomerDepositAccount;
 import entity.staff.StaffAccount;
+import entity.wealth.FinancialInstrument;
 import entity.wealth.Portfolio;
+import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.ejb.Singleton;
@@ -118,14 +120,12 @@ public class EntityBuilderBean {
 
         //wealth
 
-        List<FinancialInstrument> allFinancialInstruments = entityWealthBuilder.allFinancialInstrument();
-        demoPortfolio = entityWealthBuilder.initWealth(allFinancialInstruments);
-        entityFactBuilder.initSinglePortfolioFact(demoMainAccount, demoPortfolio);
-        demoPortfolio = entityWealthBuilder.initPortfolioFactTable2(demoMainAccount, allFinancialInstruments);
-        entityFactBuilder.initSinglePortfolioFact(demoMainAccount, demoPortfolio);
-
-        entityFactBuilder.initBankFact();
-           
-        entityCRMBuilder.initCustomerRFM();
+//        List<FinancialInstrument> allFinancialInstruments = entityWealthBuilder.allFinancialInstrument();
+//        demoPortfolio = entityWealthBuilder.initWealth(allFinancialInstruments);
+//        entityFactBuilder.initSinglePortfolioFact(demoMainAccount, demoPortfolio);
+//        demoPortfolio = entityWealthBuilder.initPortfolioFactTable2(demoMainAccount, allFinancialInstruments);
+//        entityFactBuilder.initSinglePortfolioFact(demoMainAccount, demoPortfolio);
+//        entityFactBuilder.initBankFact();
+//        entityCRMBuilder.initCustomerRFM();
     }
 }

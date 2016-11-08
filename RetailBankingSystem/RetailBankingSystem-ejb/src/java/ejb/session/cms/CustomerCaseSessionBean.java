@@ -62,7 +62,7 @@ public class CustomerCaseSessionBean implements CustomerCaseSessionBeanLocal, Cu
             em.persist(customerCase);
             return customerCase;
         } catch (EntityExistsException e) {
-            throw new DuplicateCaseExistException(e.getMessage());
+            throw new DuplicateCaseExistException("Catch Duplicate Customer Case!");
         }
 
     }

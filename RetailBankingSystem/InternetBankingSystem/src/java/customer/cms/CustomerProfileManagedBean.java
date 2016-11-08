@@ -7,6 +7,7 @@ package customer.cms;
 
 import ejb.session.audit.AuditSessionBeanLocal;
 import ejb.session.cms.CustomerProfileSessionBeanLocal;
+import ejb.session.common.EmailServiceSessionBeanLocal;
 import ejb.session.utils.UtilsSessionBeanLocal;
 import entity.customer.Customer;
 import entity.common.AuditLog;
@@ -22,6 +23,7 @@ import server.utilities.CommonUtils;
 import server.utilities.ConstantUtils;
 import server.utilities.DateUtils;
 import util.exception.cms.CustomerNotExistException;
+import util.exception.cms.UpdateCustomerException;
 import utils.JSUtils;
 import utils.MessageUtils;
 import utils.RedirectUtils;
@@ -41,6 +43,8 @@ public class CustomerProfileManagedBean implements Serializable {
     private CustomerProfileSessionBeanLocal customerProfileSessionBean;
     @EJB
     private AuditSessionBeanLocal auditSessionBean;
+    @EJB
+    private EmailServiceSessionBeanLocal emailBean;
 
     private Customer customer;
     private List<AuditLog> auditLogs;
@@ -89,11 +93,12 @@ public class CustomerProfileManagedBean implements Serializable {
             MessageUtils.displayInfo("Phone is registered!");
 
         } else {
-            Customer result = customerProfileSessionBean.saveProfile(customer);
-            if (result != null) {
+            try {
+                customerProfileSessionBean.updateCustomer(customer);
                 MessageUtils.displayInfo("Profile successfully updated!");
+                emailBean.sendUpdatedProfile(customer.getEmail());
                 RedirectUtils.redirect("view_profile.xhtml");
-            } else {
+            } catch (UpdateCustomerException e) {
                 MessageUtils.displayInfo("Update is unsuccessful, please check your input.");
             }
         }

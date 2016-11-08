@@ -53,7 +53,7 @@ public class PortfolioFactSessionBean implements PortfolioFactSessionBeanLocal {
     }
 
     @Override
-    public SinglePortfolioFactTable getSinglePortfolioFactTable(Date date, Long custId, Long portId) {
+    public SinglePortfolioFactTable getSinglePortfolioFactTable(Date date, String custId, Long portId) {
         Query q = em.createQuery("SELECT p FROM SinglePortfolioFactTable p where p.creationDate=:inDate AND p.customer.id =:inCustomer AND p.portfolio.id =:inPort");
         q.setParameter("inDate", date, TemporalType.DATE);
         q.setParameter("inCustomer", custId);
@@ -68,7 +68,7 @@ public class PortfolioFactSessionBean implements PortfolioFactSessionBeanLocal {
     }
 
     @Override
-    public List<SinglePortfolioFactTable> getListPortfoliosFtByCustomerIdPortfolioId(Long custId, Long portId) {
+    public List<SinglePortfolioFactTable> getListPortfoliosFtByCustomerIdPortfolioId(String custId, Long portId) {
         Query q = em.createQuery("SELECT p FROM SinglePortfolioFactTable p where p.portfolio.id =:inPortId AND p.customer.id =:inCustId ORDER BY p.creationDate asc");
         q.setParameter("inCustId", custId);
         q.setParameter("inPortId", portId);
@@ -76,14 +76,14 @@ public class PortfolioFactSessionBean implements PortfolioFactSessionBeanLocal {
     }
 
     @Override
-    public List<SinglePortfolioFactTable> getListPortfoliosFtByCustomerId(Long custId) {
+    public List<SinglePortfolioFactTable> getListPortfoliosFtByCustomerId(String custId) {
         Query q = em.createQuery("SELECT p FROM SinglePortfolioFactTable p where p.customer.id =:inCustId");
         q.setParameter("inCustId", custId);
         return q.getResultList();
     }
 
     @Override
-    public SinglePortfolioFactTable getLatestPortfolioFtByCustomerIdPortfolioId(Long custId, Long portId) {
+    public SinglePortfolioFactTable getLatestPortfolioFtByCustomerIdPortfolioId(String custId, Long portId) {
         //to be continued
         return null;
     }

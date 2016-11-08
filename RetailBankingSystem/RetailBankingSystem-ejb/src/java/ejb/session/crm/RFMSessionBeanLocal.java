@@ -14,12 +14,12 @@ import javax.ejb.Local;
 @Local
 public interface RFMSessionBeanLocal {
 
-    public Long getDepositRecencyByCustomerId(Long Id);
-    public Long getDepositFrequencyByCustomerId(Long Id);
-    public Long getDepositMonetaryByCustomerId(Long Id);
+    public Long getDepositRecencyByCustomerId(String Id);
+    public Long getDepositFrequencyByCustomerId(String Id);
+    public Long getDepositMonetaryByCustomerId(String Id);
     
-    public Long getCardRecencyByCustomerId(Long Id);
-    public Long getCardFrequencyByCustomerId(Long Id);
-    public Long getCardMonetaryByCustomerId(Long Id);
+    public Long getCardRecencyByCustomerId(String Id);
+    public Long getCardFrequencyByCustomerId(String Id);
+    public Long getCardMonetaryByCustomerId(String Id);
     
 }
