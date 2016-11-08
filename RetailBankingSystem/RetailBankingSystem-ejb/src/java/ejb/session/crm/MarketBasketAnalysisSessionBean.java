@@ -12,8 +12,11 @@ import CRM.FrequentItemsetData;
 import ejb.session.cms.CustomerProfileSessionBeanLocal;
 import ejb.session.common.NewCustomerSessionBean;
 import ejb.session.common.NewCustomerSessionBeanLocal;
+import entity.card.product.CreditCardProduct;
 import entity.crm.AssociationRuleEntity;
 import entity.customer.Customer;
+import entity.dams.account.DepositProduct;
+import entity.loan.LoanProduct;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -43,6 +46,32 @@ public class MarketBasketAnalysisSessionBean implements MarketBasketAnalysisSess
     @Override
     public Set<String> getListProductNameByCustomerId(Long Id) {
         Set<String> productNames = new HashSet<>();
+        
+        Query queryDepositProduct = em.createQuery("SELECT dp.name FROM DepositProduct dp, Customer c, MainAccount ma, DepositAccount da WHERE da.product = dp AND da.mainAccount = ma AND ma.customer = c AND c.id =:id");
+        queryDepositProduct.setParameter("id", Id);
+        List<String> dps = queryDepositProduct.getResultList();
+        for(int i = 0; i < dps.size(); i++){
+            productNames.add(dps.get(i));
+        }
+        
+        Query queryCardProduct = em.createQuery("SELECT ccp.productName FROM CreditCardProduct ccp, Customer c, MainAccount ma, CreditCardAccount cca WHERE cca.creditCardProduct = ccp AND cca.mainAccount = ma AND ma.customer = c AND c.id =:id");
+        queryCardProduct.setParameter("id", Id);
+        List<String> ccps = queryCardProduct.getResultList();
+        for(int i = 0; i < ccps.size(); i++){
+            productNames.add(ccps.get(i));
+        }
+        
+        Query queryLoanProduct = em.createQuery("SELECT lp.productName FROM LoanProduct lp, Customer c, MainAccount ma, LoanAccount la WHERE la.loanProduct = lp AND la.mainAccount = ma AND ma.customer = c AND c.id =:id");
+        queryLoanProduct.setParameter("id", Id);
+        List<String> lps = queryLoanProduct.getResultList();
+        for(int i = 0; i < lps.size(); i++){
+            productNames.add(lps.get(i));
+        }
+        
+        if(productNames.isEmpty())
+            return null;
+        else
+            return productNames;
         //use it as if it is an arraylist
         //it would automatically store unique items, add duplicated items, would 
         //automatically handled by itself, and return a list of unique items
@@ -51,7 +80,6 @@ public class MarketBasketAnalysisSessionBean implements MarketBasketAnalysisSess
         //return a list of product name owned by this customer
         //e.g. productA, productB, productC
         //return null if no products used by this customer
-        return null;
     }
 
     @Override
