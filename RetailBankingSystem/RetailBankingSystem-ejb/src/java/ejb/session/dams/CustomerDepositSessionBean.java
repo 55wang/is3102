@@ -43,12 +43,6 @@ public class CustomerDepositSessionBean implements CustomerDepositSessionBeanLoc
     private CardAcctSessionBeanLocal cardBean;
 
     @Override
-    public long showNumberOfAccounts() {
-        Query q = em.createQuery("SELECT COUNT(*) FROM DepositAccount");
-        return ((Long) q.getSingleResult()).longValue();
-    }
-
-    @Override
     public DepositAccount getAccountFromId(String accountNumber) {
         return em.find(DepositAccount.class, accountNumber);
     }

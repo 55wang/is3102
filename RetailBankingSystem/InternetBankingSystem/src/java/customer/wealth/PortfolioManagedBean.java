@@ -29,6 +29,7 @@ import org.primefaces.model.chart.LineChartModel;
 import org.primefaces.model.chart.LineChartSeries;
 import org.primefaces.model.chart.PieChartModel;
 import server.utilities.ColorUtils;
+import util.exception.cms.CustomerNotExistException;
 import utils.SessionUtils;
 
 /**
@@ -80,7 +81,15 @@ public class PortfolioManagedBean implements Serializable {
     @PostConstruct
     public void init() {
         initDate();
-        customer = customerProfileSessionBean.getCustomerByUserID(SessionUtils.getUserName());
+        
+        
+        try {
+            customer = customerProfileSessionBean.getCustomerByUserID(SessionUtils.getUserName());
+        } catch (CustomerNotExistException e) {
+            System.out.println("CustomerNotExistException PorfolioManagedBean.java");
+        }
+        
+        
         portfolios = portfolioSessionBean.getListPortfoliosByCustomerId(customer.getId());
         chargeFee = customer.getMainAccount().getWealthManagementSubscriber().getMonthlyAdvisoryFee();
         createPieModels();

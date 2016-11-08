@@ -7,14 +7,14 @@ package ejb.session.staff;
 
 import entity.staff.StaffAccount;
 import java.util.List;
-import javax.ejb.Local;
+import javax.ejb.Remote;
 
 /**
  *
  * @author leiyang
  */
-@Local
-public interface StaffAccountSessionBeanLocal {
+@Remote
+public interface StaffAccountSessionBeanRemote {
     public StaffAccount getAdminStaff();
     public StaffAccount loginAccount(String username, String password);
     public StaffAccount getAccountByUsername(String username);
