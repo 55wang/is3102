@@ -40,7 +40,7 @@ public class Interest implements Serializable {
     // REMARK:Update will create a new version and leave a copy
     private Integer version = 0;
     private Boolean isHistory = Boolean.FALSE;
-    @Column(precision=18, scale=6)
+    @Column(precision=18, scale=4)
     private BigDecimal percentage;
     private Boolean isCumulative = Boolean.TRUE;
 

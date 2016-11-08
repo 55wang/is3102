@@ -29,7 +29,7 @@ public class EntityPayLahBuilder {
     private MobileAccountSessionBeanLocal mobileBean;
     
     public void initPayLahDemoData() {
-        MainAccount ma1 = loginBean.getMainAccountByUserID(ConstantUtils.DEMO_MAIN_ACCOUNT_USER_ID);
+        MainAccount ma1 = loginBean.getMainAccountByUserID(ConstantUtils.DEMO_MAIN_ACCOUNT_USER_ID_1);
         MobileAccount m1 = mobileBean.createMobileAccount(ma1);
         MainAccount ma2 = loginBean.getMainAccountByUserID(ConstantUtils.DEMO_MAIN_ACCOUNT_USER_ID_2);
         MobileAccount m2 = mobileBean.createMobileAccount(ma2);

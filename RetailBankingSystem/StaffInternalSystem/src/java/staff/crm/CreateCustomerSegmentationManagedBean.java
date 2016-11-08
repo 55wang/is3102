@@ -10,6 +10,7 @@ import ejb.session.crm.CustomerSegmentationSessionBeanLocal;
 import entity.crm.CustomerGroup;
 import entity.customer.Customer;
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -36,11 +37,12 @@ public class CreateCustomerSegmentationManagedBean implements Serializable {
     private CustomerGroup customerGroup;
     private List<Customer> filterCustomers;
     private List<Customer> setHashTagCustomers;
-    
+
     private String functionType = "SET_HASH_TAG";
     private String SET_HASH_TAG = "SET_HASH_TAG";
     private String CREATE_CUSTOMER_GROUP = "CREATE_CUSTOMER_GROUP";
-    
+
+    private HashMap<String, Long> mapHashTagCount = new HashMap<>();
     private TagCloudModel model;
 
     public CreateCustomerSegmentationManagedBean() {
@@ -54,6 +56,8 @@ public class CreateCustomerSegmentationManagedBean implements Serializable {
     }
 
     public void setHashTag() {
+        System.out.println("setHashTag()");
+
         setHashTagCustomers = customerSegmentationSessionBean.getCustomersByOptions(
                 customerGroup.getDepositRecency(),
                 customerGroup.getDepositFrequency(),
@@ -63,6 +67,8 @@ public class CreateCustomerSegmentationManagedBean implements Serializable {
                 customerGroup.getCardMonetary(),
                 customerGroup.getActualIncome()
         );
+
+        System.out.println(setHashTagCustomers.size());
 
         for (Customer c : setHashTagCustomers) {
             c.setHashTag(customerGroup.getHashTag());
@@ -96,7 +102,7 @@ public class CreateCustomerSegmentationManagedBean implements Serializable {
             );
         }
 
-        customerGroup.setCustomer(filterCustomers);
+        customerGroup.setCustomers(filterCustomers);
 
         try {
             customerSegmentationSessionBean.createCustomerGroup(customerGroup);
@@ -105,21 +111,56 @@ public class CreateCustomerSegmentationManagedBean implements Serializable {
         }
 
     }
-    
-    private void createTagCloudModel(){
+
+    private void createTagCloudModel() {
+        System.out.println("createTagCloudModel()");
         model = new DefaultTagCloudModel();
-        model.addTag(new DefaultTagCloudItem("Transformers", 1));
-        model.addTag(new DefaultTagCloudItem("RIA", "#", 3));
-        model.addTag(new DefaultTagCloudItem("AJAX", 2));
-        model.addTag(new DefaultTagCloudItem("jQuery", "#", 5));
-        model.addTag(new DefaultTagCloudItem("NextGen", 4));
-        model.addTag(new DefaultTagCloudItem("JSF 2.0", "#", 2));
-        model.addTag(new DefaultTagCloudItem("FCB", 5));
-        model.addTag(new DefaultTagCloudItem("Mobile",  3));
-        model.addTag(new DefaultTagCloudItem("Themes", "#", 4));
-        model.addTag(new DefaultTagCloudItem("Rocks", "#", 1));
+
+        mapHashTagCount = generateHashTagAndCount();
+
+        for (HashMap.Entry<String, Long> entry : mapHashTagCount.entrySet()) {
+            System.out.println("Key = " + entry.getKey() + ", Value = " + entry.getValue());
+            model.addTag(new DefaultTagCloudItem(entry.getKey(), entry.getValue().intValue()));
+        }
+
+//        model.addTag(new DefaultTagCloudItem("Transformers", 1));
+//        model.addTag(new DefaultTagCloudItem("RIA", "#", 3));
+//        model.addTag(new DefaultTagCloudItem("AJAX", 2));
+//        model.addTag(new DefaultTagCloudItem("jQuery", "#", 5));
+//        model.addTag(new DefaultTagCloudItem("NextGen", 4));
+//        model.addTag(new DefaultTagCloudItem("JSF 2.0", "#", 2));
+//        model.addTag(new DefaultTagCloudItem("FCB", 5));
+//        model.addTag(new DefaultTagCloudItem("Mobile", 3));
+//        model.addTag(new DefaultTagCloudItem("Themes", "#", 4));
+//        model.addTag(new DefaultTagCloudItem("Rocks", "#", 1));
     }
-    
+
+    public HashMap<String, Long> generateHashTagAndCount() {
+        System.out.println("generateHashTagAndCount()");
+
+        List<String> listHashTags = customerSegmentationSessionBean.getListCustomersHashTag();
+        System.out.println(listHashTags.size());
+
+        String totalHashTag = "";
+        for (String hashTag : listHashTags) {
+            totalHashTag += hashTag;
+        }
+        System.out.println(totalHashTag);
+        String[] parts = totalHashTag.split("#");
+        HashMap<String, Long> tempMapHashTagCount = new HashMap<>();
+        for (String part : parts) {
+
+            if (part.length() != 0) {
+
+                Long value = tempMapHashTagCount.getOrDefault(part, 0L);
+                System.out.println(part + " " + value);
+                tempMapHashTagCount.put(part, value++);
+            }
+        }
+
+        return tempMapHashTagCount;
+    }
+
     public TagCloudModel getModel() {
         return model;
     }
@@ -178,6 +219,14 @@ public class CreateCustomerSegmentationManagedBean implements Serializable {
 
     public void setCREATE_CUSTOMER_GROUP(String CREATE_CUSTOMER_GROUP) {
         this.CREATE_CUSTOMER_GROUP = CREATE_CUSTOMER_GROUP;
+    }
+
+    public HashMap<String, Long> getMapHashTagCount() {
+        return mapHashTagCount;
+    }
+
+    public void setMapHashTagCount(HashMap<String, Long> mapHashTagCount) {
+        this.mapHashTagCount = mapHashTagCount;
     }
 
 }

@@ -76,7 +76,7 @@ public class CardApplicationManagedBean implements Serializable {
     public CreditCardAccount issueCreditCard(String creditCardOrder) {
         CreditCardOrder cco = creditCardOrderSessionBean.getCreditCardOrderById(Long.parseLong(creditCardOrder));
 
-        updateApplicationStatus(creditCardOrder, ApplicationStatus.APPROVED);
+        updateApplicationStatus(creditCardOrder, CardApplicationStatus.APPROVED);
         //generate card number
         String cardNumber = GenerateAccountAndCCNumber.generateMasterCardNumber();
 
@@ -115,7 +115,7 @@ public class CardApplicationManagedBean implements Serializable {
         try {
 
             CreditCardOrder cco = creditCardOrderSessionBean.getCreditCardOrderById(Long.parseLong(creditCardOrder));
-            creditCardOrderSessionBean.updateCreditCardOrderStatus(cco, ApplicationStatus.PENDING);
+            creditCardOrderSessionBean.updateCreditCardOrderStatus(cco, CardApplicationStatus.PENDING);
 
             //email the customer
             String email = cco.getMainAccount().getCustomer().getEmail();
@@ -129,7 +129,7 @@ public class CardApplicationManagedBean implements Serializable {
     }
 
     //pending, reject,
-    public CreditCardOrder updateApplicationStatus(String creditCardOrder, ApplicationStatus status) {
+    public CreditCardOrder updateApplicationStatus(String creditCardOrder, CardApplicationStatus status) {
         CreditCardOrder cco = creditCardOrderSessionBean.getCreditCardOrderById(Long.parseLong(creditCardOrder));
 
         CreditCardOrder result = creditCardOrderSessionBean.updateCreditCardOrderStatus(cco, status);

@@ -12,6 +12,7 @@ import entity.loan.LoanAccount;
 import entity.wealth.Portfolio;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.CascadeType;
@@ -20,6 +21,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.OneToOne;
@@ -105,7 +108,8 @@ public class Customer implements Serializable {
     private Long cardRecency = 0L;
     private Long cardFrequency = 0L;
     private Long cardMonetary = 0L;
-            
+
+    @Column(length = 2000)
     private String hashTag = "";
 
     // mapping
@@ -113,6 +117,9 @@ public class Customer implements Serializable {
     private MainAccount mainAccount;
     @ManyToOne
     private CustomerGroup customerGroup;
+    @ManyToMany()
+    @JoinTable(name = "CustomerGroup_Customer_Bdi")
+    private List<CustomerGroup> customerGroups = new ArrayList<>();
 
     public Long calcAge() {
         return ((new Date().getTime() - getBirthDay().getTime()) / (24 * 60 * 60 * 1000)) / 365;
@@ -779,84 +786,108 @@ public class Customer implements Serializable {
     public void setCardMonetary(Long cardMonetary) {
         this.cardMonetary = cardMonetary;
     }
+
     //1
+
     public Long getDepositRFMScore() {
         Long recency = depositRecency * 100;
         Long frequency = depositFrequency * 10;
         Long monetary = depositMonetary * 1;
         return recency + frequency + monetary;
     }
+
     //2
+
     public Long getCardRFMScore() {
         Long recency = cardRecency * 100;
         Long frequency = cardFrequency * 10;
         Long monetary = cardMonetary * 1;
         return recency + frequency + monetary;
     }
+
     //3
+
     public Long getDepositRMFScore() {
         Long recency = depositRecency * 100;
         Long frequency = depositFrequency * 1;
         Long monetary = depositMonetary * 10;
         return recency + frequency + monetary;
     }
+
     //4
+
     public Long getCardRMFScore() {
         Long recency = cardRecency * 100;
         Long frequency = cardFrequency * 1;
         Long monetary = cardMonetary * 10;
         return recency + frequency + monetary;
     }
+
     //5
+
     public Long getDepositFRMScore() {
         Long recency = depositRecency * 10;
         Long frequency = depositFrequency * 100;
         Long monetary = depositMonetary * 1;
         return recency + frequency + monetary;
     }
+
     //6
+
     public Long getCardFRMScore() {
         Long recency = cardRecency * 10;
         Long frequency = cardFrequency * 100;
         Long monetary = cardMonetary * 1;
         return recency + frequency + monetary;
     }
+
     //7
+
     public Long getDepositFMRScore() {
         Long recency = depositRecency * 1;
         Long frequency = depositFrequency * 100;
         Long monetary = depositMonetary * 10;
         return recency + frequency + monetary;
     }
+
     //8
+
     public Long getCardFMRScore() {
         Long recency = depositRecency * 1;
         Long frequency = depositFrequency * 100;
         Long monetary = depositMonetary * 10;
         return recency + frequency + monetary;
     }
+
     //9
+
     public Long getDepositMRFScore() {
         Long recency = depositRecency * 10;
         Long frequency = depositFrequency * 1;
         Long monetary = depositMonetary * 100;
         return recency + frequency + monetary;
     }
+
     //10
+
     public Long getCardMRFScore() {
         Long recency = depositRecency * 10;
         Long frequency = depositFrequency * 1;
         Long monetary = depositMonetary * 100;
         return recency + frequency + monetary;
     }
+
     //11
+
     public Long getDepositMFRScore() {
         Long recency = depositRecency * 1;
         Long frequency = depositFrequency * 10;
         Long monetary = depositMonetary * 100;
         return recency + frequency + monetary;
     }
+
     //12
+
     public Long getCardMFRScore() {
         Long recency = depositRecency * 1;
         Long frequency = depositFrequency * 10;
@@ -880,6 +911,14 @@ public class Customer implements Serializable {
 
     public void setHashTag(String hashTag) {
         this.hashTag += hashTag;
+    }
+
+    public List<CustomerGroup> getCustomerGroups() {
+        return customerGroups;
+    }
+
+    public void setCustomerGroups(List<CustomerGroup> customerGroups) {
+        this.customerGroups = customerGroups;
     }
 
 }

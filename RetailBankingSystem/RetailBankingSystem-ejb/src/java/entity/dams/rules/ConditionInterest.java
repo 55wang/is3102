@@ -20,7 +20,7 @@ public class ConditionInterest extends Interest {
     // info
     private InterestConditionType conditionType;
     private BigDecimal ceiling = new BigDecimal(60000);
-    @Column(precision=12, scale=2)
+    @Column(precision=18, scale=4)
     private BigDecimal amount = BigDecimal.ZERO;
     private Boolean stack = Boolean.TRUE;
     private Integer benefitMonths = 1;

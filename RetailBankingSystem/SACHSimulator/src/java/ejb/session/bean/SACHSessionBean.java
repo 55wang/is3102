@@ -41,6 +41,11 @@ public class SACHSessionBean {
     @PersistenceContext(unitName = "BillPaymentSimulatorPU")
     private EntityManager em;
 
+    public List<SachSettlement> needInit() {
+        Query q = em.createQuery("SELECT ss FROM SachSettlement ss");
+        return q.getResultList();
+    }
+
     public void persist(Object object) {
         em.persist(object);
     }
@@ -59,6 +64,12 @@ public class SACHSessionBean {
 
     public BillTransfer findBillTransferByReferenceNumber(String referenceNumber) {
         return em.find(BillTransfer.class, referenceNumber);
+    }
+
+    public SachSettlement findSettlementByToBankCode(String toBankCode) {
+        Query q = em.createQuery("SELECT ss FROM SachSettlement ss WHERE ss.toBankCode = :toBankCode");
+        q.setParameter("toBankCode", toBankCode);
+        return (SachSettlement) q.getSingleResult();
     }
 
     // TODO: Find by date range
@@ -148,15 +159,17 @@ public class SACHSessionBean {
 
         // send to MEPS+
         Form form = new Form(); //bank info
-        form.param("mbsCode", settlements.get(0).getBankCode());
-        form.param("mbsSettlementAmount", settlements.get(0).getAmount().setScale(4).toString());
-        form.param("mbsName", settlements.get(0).getName());
-        form.param("citiCode", settlements.get(1).getBankCode());
-        form.param("citiSettlementAmount", settlements.get(1).getAmount().setScale(4).toString());
-        form.param("citiName", settlements.get(1).getName());
-        form.param("ocbcCode", settlements.get(2).getBankCode());
-        form.param("ocbcSettlementAmount", settlements.get(2).getAmount().setScale(4).toString());
-        form.param("ocbcName", settlements.get(2).getName());
+        form.param("citiToBankCode", settlements.get(0).getToBankCode());
+        form.param("citiToBankName", settlements.get(0).getToBankName());
+        form.param("citiFromBankCode", settlements.get(0).getFromBankCode());
+        form.param("citiFromBankName", settlements.get(0).getFromBankName());
+        form.param("citiSettlementAmount", settlements.get(0).getAmount().setScale(4).toString());
+
+        form.param("ocbcToBankCode", settlements.get(1).getToBankCode());
+        form.param("ocbcToBankName", settlements.get(1).getToBankName());
+        form.param("ocbcFromBankCode", settlements.get(1).getFromBankCode());
+        form.param("ocbcFromBankName", settlements.get(1).getFromBankName());
+        form.param("ocbcSettlementAmount", settlements.get(1).getAmount().setScale(4).toString());
 
         System.out.println("----------------Bill Transfer to MBS----------------");
         System.out.println("[SACH]:");
@@ -165,6 +178,7 @@ public class SACHSessionBean {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(MEPS_SETTLEMENT);
 
+        clearNetSettlements();
         // This is the response
         JsonObject jsonString = target.request(MediaType.APPLICATION_JSON).post(Entity.entity(form, MediaType.APPLICATION_FORM_URLENCODED), JsonObject.class);
 
@@ -176,6 +190,16 @@ public class SACHSessionBean {
         } else {
             System.out.println("FAIL");
         }
+    }
+
+    public void clearNetSettlements() {
+        Query q = em.createQuery("SELECT ss FROM SachSettlement ss");
+        List<SachSettlement> result = q.getResultList();
+        for (SachSettlement s : result) {
+            s.setAmount(BigDecimal.ZERO);
+            em.merge(s);
+        }
+
     }
 
     public List<SachSettlement> getSettlements() {
@@ -191,14 +215,16 @@ public class SACHSessionBean {
         }
         for (SachSettlement s : settlements) {
 
-            if (tr.getFromBankCode().equals(s.getBankCode())) {
-                s.setAmount(s.getAmount().subtract(tr.getAmount()));
-                em.merge(s);
-            }
-            if (tr.getToBankCode().equals(s.getBankCode())) {
+            if (tr.getFromBankCode().equals(s.getFromBankCode()) && tr.getToBankCode().equals(s.getToBankCode())) {
                 s.setAmount(s.getAmount().add(tr.getAmount()));
                 em.merge(s);
             }
+
+            if (tr.getFromBankCode().equals(s.getToBankCode()) && tr.getToBankCode().equals(s.getFromBankCode())) {
+                s.setAmount(s.getAmount().subtract(tr.getAmount()));
+                em.merge(s);
+            }
+
         }
     }
 
@@ -210,12 +236,13 @@ public class SACHSessionBean {
         }
         for (SachSettlement s : settlements) {
 
-            if (br.getFromBankCode().equals(s.getBankCode())) {
-                s.setAmount(s.getAmount().subtract(br.getAmount()));
+            if (br.getFromBankCode().equals(s.getFromBankCode()) && br.getPartnerBankCode().equals(s.getToBankCode())) {
+                s.setAmount(s.getAmount().add(br.getAmount()));
                 em.merge(s);
             }
-            if (br.getPartnerBankCode().equals(s.getBankCode())) {
-                s.setAmount(s.getAmount().add(br.getAmount()));
+
+            if (br.getFromBankCode().equals(s.getToBankCode()) && br.getPartnerBankAccount().equals(s.getFromBankCode())) {
+                s.setAmount(s.getAmount().subtract(br.getAmount()));
                 em.merge(s);
             }
         }
@@ -268,7 +295,12 @@ public class SACHSessionBean {
 
         System.out.println("Current net settlement:");
         for (SachSettlement s : bankAccounts) {
-            System.out.println(".       " + s.getBankCode() + " " + s.getName() + ": " + s.getAmount().setScale(4).toString());
+            if (s.getAmount().compareTo(BigDecimal.ZERO) == -1) {
+                System.out.println(".       " + s.getToBankCode() + " " + s.getToBankName() + " to " + s.getFromBankCode() + " " + s.getFromBankName() + ": " + s.getAmount().setScale(4).toString());
+            } else {
+                System.out.println(".       " + s.getFromBankCode() + " " + s.getFromBankName() + " to " + s.getToBankCode() + " " + s.getToBankName() + ": " + s.getAmount().setScale(4).toString());
+
+            }
         }
 
         System.out.println("Updating net settlement...");
@@ -278,7 +310,12 @@ public class SACHSessionBean {
 
         System.out.println("Updated net settlement:");
         for (SachSettlement s : updatedbankAccounts) {
-            System.out.println(".       " + s.getBankCode() + " " + s.getName() + ": " + s.getAmount().setScale(4).toString());
+            if (s.getAmount().compareTo(BigDecimal.ZERO) == -1) {
+                System.out.println(".       " + s.getToBankCode() + " " + s.getToBankName() + " to " + s.getFromBankCode() + " " + s.getFromBankName() + ": " + s.getAmount().setScale(4).toString());
+            } else {
+                System.out.println(".       " + s.getFromBankCode() + " " + s.getFromBankName() + " to " + s.getToBankCode() + " " + s.getToBankName() + ": " + s.getAmount().setScale(4).toString());
+
+            }
         }
 
         System.out.println(".");
@@ -311,13 +348,17 @@ public class SACHSessionBean {
         form.param("fromBankCode", bt.getFromBankCode());
         form.param("ccNumber", bt.getReferenceNumber());
         form.param("ccAmount", bt.getAmount().toString());
-        
 
         List<SachSettlement> bankAccounts = getSettlements();
 
         System.out.println("Current net settlement:");
         for (SachSettlement s : bankAccounts) {
-            System.out.println(".       " + s.getBankCode() + " " + s.getName() + ": " + s.getAmount().setScale(4).toString());
+            if (s.getAmount().compareTo(BigDecimal.ZERO) == -1) {
+                System.out.println(".       " + s.getToBankCode() + " " + s.getToBankName() + " to " + s.getFromBankCode() + " " + s.getFromBankName() + ": " + s.getAmount().setScale(4).toString());
+            } else {
+                System.out.println(".       " + s.getFromBankCode() + " " + s.getFromBankName() + " to " + s.getToBankCode() + " " + s.getToBankName() + ": " + s.getAmount().setScale(4).toString());
+
+            }
         }
 
         System.out.println("Updating net settlement...");
@@ -327,7 +368,12 @@ public class SACHSessionBean {
 
         System.out.println("Updated net settlement:");
         for (SachSettlement s : updatedbankAccounts) {
-            System.out.println(".       " + s.getBankCode() + " " + s.getName() + ": " + s.getAmount().setScale(4).toString());
+            if (s.getAmount().compareTo(BigDecimal.ZERO) == -1) {
+                System.out.println(".       " + s.getToBankCode() + " " + s.getToBankName() + " to " + s.getFromBankCode() + " " + s.getFromBankName() + ": " + s.getAmount().setScale(4).toString());
+            } else {
+                System.out.println(".       " + s.getFromBankCode() + " " + s.getFromBankName() + " to " + s.getToBankCode() + " " + s.getToBankName() + ": " + s.getAmount().setScale(4).toString());
+
+            }
         }
 
         System.out.println(".");

@@ -1,0 +1,74 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:em="http://xmlns.jcp.org/jsf/composite/emcomp"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <!--shift + ctrl + F, format-->
+    <f:view>
+        <h:head>
+            <title>Merlion Internal</title>
+            <em:cssImport></em:cssImport>
+        </h:head>
+        <h:body>
+            <em:staffNavBar context="loan"></em:staffNavBar>
+            <em:staffSideBar top="loan" side="badLoan"></em:staffSideBar>
+            <div class="container">
+                <h:form id="mainForm">
+                    <p:panel header="Bad Loans">
+                        <p:dataScroller value="#{viewBadLoansManagedBean.badLoans}" var="badLoan" chunkSize="10">
+                            <f:facet name="header">
+                                Scroll Down to Load More Bad Loans
+                            </f:facet>
+                            <h:panelGrid columns="4" style="width:100%" cellpadding="5" class="border-bottom" >
+
+                                <h:outputText value="Status:"/>
+                                <h:outputText value="#{badLoan.loanAccountStatus}"/>
+                                
+                                <h:outputText value="Customer Name:"/>
+                                <h:outputText value="#{badLoan.mainAccount.customer.fullName}"/>
+
+                                <h:outputText value="ID Number:"/>
+                                <h:outputText value="#{badLoan.mainAccount.customer.identityNumber}"/>
+
+                                <h:outputText value="Email:"/>
+                                <h:outputText value="#{badLoan.mainAccount.customer.email}"/> 
+
+                                <h:outputText value="Phone:"/>
+                                <h:outputText value="#{badLoan.mainAccount.customer.phone}"/> 
+
+                                <h:outputText value="Type:"/>
+                                <h:outputText value="#{badLoan.loanProduct.productType}"/> 
+                                
+                                <h:outputText value="Loan Product"/>
+                                <h:outputText value="#{badLoan.loanProduct.productName}"/> 
+                                
+                                <h:outputText value="Loan Start Date"/>
+                                <h:outputText value="#{badLoan.paymentStartDate}"/> 
+
+                                <h:outputText value="Loan Amount:"/>
+                                <h:outputText value="#{badLoan.principal}"/> 
+                                
+                                <h:outputText value="Tenure:"/>
+                                <h:outputText value="#{badLoan.tenure}"/> 
+                                
+                                <h:outputText value="Overdue Amount:"/>
+                                <h:outputText value="#{badLoan.overduePayment}"/> 
+                                
+
+                            </h:panelGrid>
+                            <p:commandButton value="Close" action="#{viewBadLoansManagedBean.closeBadLoanAccount}" update="mainForm"  /> 
+                            
+                            
+                    </p:dataScroller>
+                </p:panel>
+            </h:form>
+        </div>
+    </h:body>
+</f:view>
+
+
+</html>
+

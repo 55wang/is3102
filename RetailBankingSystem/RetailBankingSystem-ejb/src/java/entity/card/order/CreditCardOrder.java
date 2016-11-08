@@ -15,7 +15,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
-import server.utilities.EnumUtils.ApplicationStatus;
+import server.utilities.EnumUtils.CardApplicationStatus;
 
 /**
  *
@@ -30,7 +30,7 @@ public class CreditCardOrder implements Serializable {
     private Long id;
     
     // info
-    private ApplicationStatus applicationStatus;
+    private CardApplicationStatus applicationStatus;
 
     // mapping
     @ManyToOne
@@ -57,13 +57,6 @@ public class CreditCardOrder implements Serializable {
         this.mainAccount = mainAccount;
     }
 
-    public ApplicationStatus getApplicationStatus() {
-        return applicationStatus;
-    }
-
-    public void setApplicationStatus(ApplicationStatus applicationStatus) {
-        this.applicationStatus = applicationStatus;
-    }
 
     public CreditCardAccount getCreditCardAccount() {
         return creditCardAccount;
@@ -72,5 +65,14 @@ public class CreditCardOrder implements Serializable {
     public void setCreditCardAccount(CreditCardAccount creditCardAccount) {
         this.creditCardAccount = creditCardAccount;
     }
+
+    public CardApplicationStatus getApplicationStatus() {
+        return applicationStatus;
+    }
+
+    public void setApplicationStatus(CardApplicationStatus applicationStatus) {
+        this.applicationStatus = applicationStatus;
+    }
+
 
 }

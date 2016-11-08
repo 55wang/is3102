@@ -37,32 +37,25 @@ public class SachBankAccountBuilder {
     }
 
     private Boolean needInit() {
-        SachSettlement result = null;
-        try {
-            result = sachBean.findSettlement("001");
-        } catch (Exception e) {
-            return true;
-        }
-        return result == null;
+        return sachBean.needInit().isEmpty();
     }
 
     private void buildEntities() {
-        SachSettlement mbs = new SachSettlement();
-        mbs.setBankCode("001");
-        mbs.setAmount(BigDecimal.ZERO);
-        mbs.setName("Merlion Bank Singapore");
-        sachBean.persistSettlement(mbs);
 
         SachSettlement citi = new SachSettlement();
-        citi.setBankCode("005");
+        citi.setFromBankCode("001");
+        citi.setToBankCode("005");
         citi.setAmount(BigDecimal.ZERO);
-        citi.setName("CITIBANK NA");
+        citi.setFromBankName("Merlion Bank Singapore");
+        citi.setToBankName("CITIBANK NA");
         sachBean.persistSettlement(citi);
 
         SachSettlement ocbc = new SachSettlement();
-        ocbc.setBankCode("013");
+        ocbc.setFromBankCode("001");
+        ocbc.setToBankCode("013");
         ocbc.setAmount(BigDecimal.ZERO);
-        ocbc.setName("OVERSEA-CHINESE BANKING CORPN LTD");
+        ocbc.setFromBankName("Merlion Bank Singapore");
+        ocbc.setToBankName("OVERSEA-CHINESE BANKING CORPN LTD");
         sachBean.persistSettlement(ocbc);
 
     }

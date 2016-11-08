@@ -6,7 +6,7 @@
 package webservice.restful.transfer;
 
 import ejb.session.bean.FASTSessionBean;
-import entity.PaymentTransfer;
+import entity.FastTransfer;
 import javax.ejb.EJB;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;

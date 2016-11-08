@@ -59,7 +59,7 @@ public class CreditCardAccount implements Serializable {
     // info
     @Temporal(value = TemporalType.DATE)
     private Date validDate = DateUtils.getDateForNextNthYear(5);
-    private CardAccountStatus CardStatus = CardAccountStatus.NEW;
+    private CardAccountStatus CardStatus = CardAccountStatus.PENDING;
     @Column(unique = true)
     private String creditCardNum;
     private String cvv;
@@ -155,6 +155,10 @@ public class CreditCardAccount implements Serializable {
 
     public void deductPoints(Double amount) {
         this.setMerlionPoints((Double) (this.getMerlionPoints() - amount));
+    }
+
+    public void deductMiles(Double amount) {
+        this.setMerlionMiles((Double) (this.getMerlionMiles() - amount));
     }
 
     public void addPromoCode(PromoCode pc) {

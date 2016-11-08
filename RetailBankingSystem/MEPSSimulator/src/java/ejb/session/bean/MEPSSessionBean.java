@@ -97,18 +97,21 @@ public class MEPSSessionBean {
         }
     }
 
-    public List<SettlementAccount> updateSettlementAccountsBalance(String mbsCode, String mbsSettlementAmount,
-            String citiCode, String citiSettlementAmount, String ocbcCode, String ocbcSettlementAmount) {
-        List<SettlementAccount> accounts = retrieveThreeSettlementAccounts(mbsCode, citiCode, ocbcCode);
+    public List<SettlementAccount> updateSettlementAccountsBalance(String citiFromBankCode, String citiToBankCode, String citiSettlementAmount, String ocbcFromBankCode, String ocbcToBankCode, String ocbcSettlementAmount) {
+        List<SettlementAccount> accounts = retrieveThreeSettlementAccounts(citiFromBankCode, citiToBankCode, ocbcToBankCode);
         for (SettlementAccount sa : accounts) {
-            if (sa.getBankCode().equals(mbsCode)) {
-                sa.setAmount(sa.getAmount().add(new BigDecimal(mbsSettlementAmount)));
-            } else if (sa.getBankCode().equals(citiCode)) {
+            if (sa.getBankCode().equals(citiToBankCode)) {
                 sa.setAmount(sa.getAmount().add(new BigDecimal(citiSettlementAmount)));
-            } else if (sa.getBankCode().equals(ocbcCode)) {
+            } 
+            if (sa.getBankCode().equals(ocbcToBankCode)) {
                 sa.setAmount(sa.getAmount().add(new BigDecimal(ocbcSettlementAmount)));
-            } else {
+            } 
+            if (sa.getBankCode().equals(citiFromBankCode)) {
+                sa.setAmount(sa.getAmount().subtract(new BigDecimal(citiSettlementAmount)));
             }
+            if (sa.getBankCode().equals(ocbcFromBankCode)) {
+                sa.setAmount(sa.getAmount().subtract(new BigDecimal(ocbcSettlementAmount)));
+            } 
         }
         return accounts;
     }
@@ -122,11 +125,17 @@ public class MEPSSessionBean {
         return q.getResultList();
     }
 
-    public void sendMBSNetSettlement(String netSettlementAmount) {
+    public void sendMBSNetSettlement(String citiToBankCode, String citiToBankName, String citiSettlementAmount, String ocbcToBankCode, String ocbcToBankName, String ocbcSettlementAmount) {
 
         // send to mbs
         Form form = new Form(); //bank info
-        form.param("netSettlementAmount", netSettlementAmount);
+
+        form.param("citiToBankCode", citiToBankCode);
+        form.param("citiToBankName", citiToBankName);
+        form.param("citiSettlementAmount", citiSettlementAmount);
+        form.param("ocbcToBankCode", ocbcToBankCode);
+        form.param("ocbcToBankName", ocbcToBankName);
+        form.param("ocbcSettlementAmount", ocbcSettlementAmount);
         form.param("date", (new Date()).toString());
         form.param("agencyCode", "000");
 

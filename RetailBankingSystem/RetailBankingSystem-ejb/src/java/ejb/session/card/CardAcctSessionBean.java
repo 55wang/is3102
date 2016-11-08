@@ -182,7 +182,7 @@ public class CardAcctSessionBean implements CardAcctSessionBeanLocal {
         q.setParameter("inStatusTwo", CardAccountStatus.FREEZE);
         return q.getResultList();
     }
-    
+
     @Override
     public List<CreditCardAccount> getAllActiveCreditCardAccountsByMainId(Long id) {
         Query q = em.createQuery("SELECT cca FROM CreditCardAccount cca WHERE cca.CardStatus =:inStatus AND cca.mainAccount.id =:mainAccountId");
@@ -193,8 +193,9 @@ public class CardAcctSessionBean implements CardAcctSessionBeanLocal {
 
     @Override
     public CreditCardAccount updateCreditCardAccount(CreditCardAccount cca) {
-        if(cca.getCardStatus() == CardAccountStatus.CLOSED)
+        if (cca.getCardStatus() == CardAccountStatus.CLOSED) {
             cca.setCloseDate(new Date());
+        }
         em.merge(cca);
         return cca;
     }
@@ -209,7 +210,7 @@ public class CardAcctSessionBean implements CardAcctSessionBeanLocal {
     }
 
     @Override
-    public List<CreditCardAccount> getListCreditCardAccountsByCardStatusAndAppStatus(CardAccountStatus cardAccountStatus, EnumUtils.ApplicationStatus cardApplicationStatus) {
+    public List<CreditCardAccount> getListCreditCardAccountsByCardStatusAndAppStatus(CardAccountStatus cardAccountStatus, EnumUtils.CardApplicationStatus cardApplicationStatus) {
         Query q = em.createQuery("SELECT cca FROM CreditCardAccount cca WHERE cca.CardStatus = :cardStatus AND cca.creditCardOrder.applicationStatus =:appStatus");
         q.setParameter("cardStatus", cardAccountStatus);
         q.setParameter("appStatus", cardApplicationStatus);
@@ -222,6 +223,13 @@ public class CardAcctSessionBean implements CardAcctSessionBeanLocal {
         Query q = em.createQuery("SELECT cca FROM DebitCardAccount cca WHERE cca.CardStatus != :inStatus AND cca.customerDepositAccount.mainAccount.id =:id");
         q.setParameter("inStatus", status);
         q.setParameter("id", id);
+        return q.getResultList();
+    }
+
+    @Override
+    public List<DebitCardAccount> getListDebitCardAccountsByStatus(CardAccountStatus status) {
+        Query q = em.createQuery("SELECT cca FROM DebitCardAccount cca WHERE cca.CardStatus = :inStatus");
+        q.setParameter("inStatus", status);
         return q.getResultList();
     }
 
@@ -240,14 +248,14 @@ public class CardAcctSessionBean implements CardAcctSessionBeanLocal {
     @Override
     public CreditCardAccount payCreditCardAccountBillByCardNumber(String cardNumber, BigDecimal amount) {
         CreditCardAccount ccAccount = getCreditCardAccountByCardNumber(cardNumber);
-        
+
         CardTransaction t = new CardTransaction();
         t.setAmount(amount.doubleValue());
         t.setCardTransactionStatus(EnumUtils.CardTransactionStatus.SETTLEDTRANSACTION);
         t.setCreditCardAccount(ccAccount);
         t.setIsCredit(Boolean.TRUE);
         em.persist(t);
-        
+
         ccAccount.payOutstandingAmount(amount);
         ccAccount.addTransactions(t);
         em.merge(ccAccount);
@@ -290,6 +298,12 @@ public class CardAcctSessionBean implements CardAcctSessionBeanLocal {
     }
 
     @Override
+    public DebitCardAccount updateDebitAccount(DebitCardAccount dca) {
+        em.merge(dca);
+        return dca;
+    }
+
+    @Override
     public CreditCardAccount updateCardAcctTransactionDailyLimit(CreditCardAccount cca, double newDailyLimit) {
         cca.setTransactionDailyLimit(newDailyLimit);
         em.merge(cca);
@@ -304,13 +318,13 @@ public class CardAcctSessionBean implements CardAcctSessionBeanLocal {
             DebitCardAccount dca = new DebitCardAccount();
             dca.setCreditCardNum(generateAccountNumber());
             dca.setCvv(server.utilities.CommonHelper.generateRandom(true, 3));
-            dca.setCardStatus(EnumUtils.CardAccountStatus.PENDING);
+            dca.setCardStatus(EnumUtils.CardAccountStatus.APPROVED);
             Calendar cal = Calendar.getInstance();
             dca.setCreationDate(cal.getTime());
             cal.set(Calendar.YEAR, 2);
             dca.setValidDate(cal.getTime());
-            dca.setCustomerDepositAccount((CustomerDepositAccount) da);
             dca.setNameOnCard(da.getMainAccount().getCustomer().getFullName());
+            dca.setCustomerDepositAccount((CustomerDepositAccount) da);
             em.persist(dca);
 
             return dca;
@@ -326,14 +340,14 @@ public class CardAcctSessionBean implements CardAcctSessionBeanLocal {
         try {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
             Query q = em.createQuery("SELECT c FROM CreditCardAccount c WHERE c.creditCardNum =:cardNumber AND c.CardStatus =:inStatus");
-            q.setParameter("inStatus", CardAccountStatus.PENDING);
+            q.setParameter("inStatus", CardAccountStatus.ISSUED);
             q.setParameter("cardNumber", cardNumber);
 
             CreditCardAccount cca = (CreditCardAccount) q.getSingleResult();
 
             String formattedBirthdayToCheck = sdf.format(birthday);
             String formattedBirthdayInDB = sdf.format(cca.getMainAccount().getCustomer().getBirthDay());
-     
+
             if (cca.getCvv().equals(cvv) == false) {
                 return null;
             } else if (formattedBirthdayToCheck.equals(formattedBirthdayInDB) == false) {
@@ -358,15 +372,16 @@ public class CardAcctSessionBean implements CardAcctSessionBeanLocal {
         try {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
 
-            Query q = em.createQuery("SELECT c FROM DebitCardAccount c WHERE c.creditCardNum =:cardNumber");
+            Query q = em.createQuery("SELECT c FROM DebitCardAccount c WHERE c.creditCardNum =:cardNumber AND c.CardStatus =:inStatus");
             q.setParameter("cardNumber", cardNumber);
+            q.setParameter("inStatus", CardAccountStatus.ISSUED);
 
             DebitCardAccount dca = (DebitCardAccount) q.getSingleResult();
             System.out.println(dca);
 
             String formattedBirthdayToCheck = sdf.format(birthday);
             String formattedBirthdayInDB = sdf.format(dca.getCustomerDepositAccount().getMainAccount().getCustomer().getBirthDay());
- 
+
             if (dca.getCvv().equals(cvv) == false) {
                 return null;
             } else if (formattedBirthdayToCheck.equals(formattedBirthdayInDB) == false) {

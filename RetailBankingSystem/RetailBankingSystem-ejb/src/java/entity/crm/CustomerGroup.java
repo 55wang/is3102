@@ -6,6 +6,7 @@
 package entity.crm;
 
 import entity.customer.Customer;
+import entity.staff.Role;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +16,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
 /**
@@ -41,8 +44,8 @@ public class CustomerGroup implements Serializable {
     private String hashTag;
     private Double actualIncome = 0.0;
     
-    @OneToMany(cascade = CascadeType.MERGE)
-    private List<Customer> customer = new ArrayList<>();
+    @ManyToMany(mappedBy = "customerGroups")
+    private List<Customer> customers = new ArrayList<>();
     
     public Long getId() {
         return id;
@@ -75,14 +78,6 @@ public class CustomerGroup implements Serializable {
     @Override
     public String toString() {
         return "entity.crm.CustomerGroup[ id=" + id + " ]";
-    }
-
-    public List<Customer> getCustomer() {
-        return customer;
-    }
-
-    public void setCustomer(List<Customer> customer) {
-        this.customer = customer;
     }
 
     public String getGroupName() {
@@ -155,6 +150,14 @@ public class CustomerGroup implements Serializable {
 
     public void setActualIncome(Double actualIncome) {
         this.actualIncome = actualIncome;
+    }
+
+    public List<Customer> getCustomers() {
+        return customers;
+    }
+
+    public void setCustomers(List<Customer> customers) {
+        this.customers = customers;
     }
 
 }
