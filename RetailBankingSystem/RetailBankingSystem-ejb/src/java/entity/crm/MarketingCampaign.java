@@ -35,11 +35,12 @@ public abstract class MarketingCampaign implements Serializable {
     private String nameCampaign;
     private TypeMarketingCampaign TypeCampaign; //email or ads
     private String description;
-    private String landingPageName;
+    private String landingPageName; //for the image and hyperlink
     
     private Long numOfResponse = 0L;
     private Long numOfTargetResponse = 0L;
     private Long clickCount = 0L; //when ads banner or email URL is clicked 
+    private Long viewCount = 0L; //when landing page is visited
     
     @ManyToOne
     private StaffAccount staffAccount;
@@ -149,6 +150,14 @@ public abstract class MarketingCampaign implements Serializable {
 
     public void setClickCount(Long clickCount) {
         this.clickCount = clickCount;
+    }
+
+    public Long getViewCount() {
+        return viewCount;
+    }
+
+    public void setViewCount(Long viewCount) {
+        this.viewCount = viewCount;
     }
 
 }

@@ -25,7 +25,6 @@ public class EmailCampaign extends MarketingCampaign implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
-    private Set<String> participantEmailAddresses = new HashSet<>();
     private String contentEmail;
     private String senderEmailAddress;
 
@@ -76,14 +75,6 @@ public class EmailCampaign extends MarketingCampaign implements Serializable {
 
     public void setSenderEmailAddress(String senderEmailAddress) {
         this.senderEmailAddress = senderEmailAddress;
-    }
-
-    public Set<String> getParticipantEmailAddresses() {
-        return participantEmailAddresses;
-    }
-
-    public void setParticipantEmailAddresses(Set<String> participantEmailAddresses) {
-        this.participantEmailAddresses = participantEmailAddresses;
     }
     
 }

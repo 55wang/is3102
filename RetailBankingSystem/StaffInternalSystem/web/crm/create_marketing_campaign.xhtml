@@ -52,6 +52,9 @@
                                     <p:inputText id="adsBannerCampaignDesc" value="#{createMarketingCampaignManagedBean.adsMarketingCampaign.description}" />
                                     <p:outputLabel for="adsBannerCampaignLandingName" value="Landing Page Name: e.g. product_a" />
                                     <p:inputText id="adsBannerCampaignLandingName" value="#{createMarketingCampaignManagedBean.adsMarketingCampaign.landingPageName}" />
+                                    <p:outputLabel for="adsBannerCampaignImage" value="Upload Image: " />
+                                    <p:inputText id="adsBannerCampaignImage" value="#{createMarketingCampaignManagedBean.adsMarketingCampaign.bannerImgFilename}" />
+
 
                                     <p:outputLabel value="Select Customer Group: " />
                                     <p:selectOneMenu value="#{createMarketingCampaignManagedBean.selectedCustomerGroupAdsBanner}" style="width:187px; height: 30px; line-height: 21px; top:10px" rendered="true" required="true">

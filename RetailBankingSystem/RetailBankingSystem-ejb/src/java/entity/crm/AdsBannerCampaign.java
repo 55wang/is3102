@@ -24,7 +24,6 @@ public class AdsBannerCampaign extends MarketingCampaign implements Serializable
     private Long id;
     
     private String bannerImgFilename;
-    private Long viewCount; //display ads banner only
 
     public Long getId() {
         return id;
@@ -65,14 +64,6 @@ public class AdsBannerCampaign extends MarketingCampaign implements Serializable
 
     public void setBannerImgFilename(String bannerImgFilename) {
         this.bannerImgFilename = bannerImgFilename;
-    }
-
-    public Long getViewCount() {
-        return viewCount;
-    }
-
-    public void setViewCount(Long viewCount) {
-        this.viewCount = viewCount;
     }
     
 }
