@@ -23,6 +23,8 @@
                 <h:form id="mainForm">
                     <p:panel header="Breakdown for account #{loanAccountBreakdownManagedBean.accountId}">
                         <h2>Monthly installment is #{loanAccountBreakdownManagedBean.loanAccount.monthlyInstallment}</h2>
+                        <h2>Amount paid before next due date is #{loanAccountBreakdownManagedBean.loanAccount.amountPaidBeforeDueDate}</h2>
+                        <h2>Late payment is #{loanAccountBreakdownManagedBean.loanAccount.overduePayment}</h2>
                         <p:messages id="messagesStatus" redisplay="false" >
 
                             <p:dataTable value="#{loanAccountBreakdownManagedBean.breakdowns}" var="breakdown">
@@ -45,7 +47,7 @@
                                     </h:outputText>
                                 </p:column>
                                 
-                                <p:column headerText="Outstanding" sortBy="#{breakdown.outstandingPrincipalPayment}">
+                                <p:column headerText="Outstanding Principal after payment" sortBy="#{breakdown.outstandingPrincipalPayment}">
                                     <h:outputText value="#{breakdown.outstandingPrincipalPayment}">
                                         <f:convertNumber pattern="###00.00"/>
                                     </h:outputText>

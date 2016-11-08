@@ -103,7 +103,7 @@ public class EntityBuilderBean {
         entityPayLahBuilder.initPayLahDemoData();
         entityTellerCounterBuilder.init();
 
-        //wealth
+//        wealth
 //        List<FinancialInstrument> allFinancialInstruments = entityWealthBuilder.allFinancialInstrument();
 //        demoPortfolio = entityWealthBuilder.initWealth(allFinancialInstruments);
 //        entityFactBuilder.initSinglePortfolioFact(demoMainAccount, demoPortfolio);
@@ -111,5 +111,6 @@ public class EntityBuilderBean {
 //        entityFactBuilder.initSinglePortfolioFact(demoMainAccount, demoPortfolio);
 //
 //        entityFactBuilder.initBankFact();
+
     }
 }

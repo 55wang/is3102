@@ -7,6 +7,8 @@ startServer <- function() {
 
 stopServer <- function() {
   #shutdown rs server
+  library(Rserve)
+  library(RSclient)
   rsc <- RSconnect(port = 6311)
   RSshutdown(rsc)
 }

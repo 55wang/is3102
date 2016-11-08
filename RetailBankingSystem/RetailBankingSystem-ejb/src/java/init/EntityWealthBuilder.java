@@ -77,7 +77,7 @@ public class EntityWealthBuilder {
         //generate PortfolioModel table
         constructPortfolioModel();
 
-        MainAccount demoMainAccount = loginBean.getMainAccountByUserID(ConstantUtils.DEMO_MAIN_ACCOUNT_USER_ID);
+        MainAccount demoMainAccount = loginBean.getMainAccountByUserID(ConstantUtils.DEMO_MAIN_ACCOUNT_USER_ID_1);
         demoMainAccount.getCustomer().setSavingPerMonth(500.0);
         WealthManagementSubscriber wms = new WealthManagementSubscriber();
         wms.setMainAccount(demoMainAccount);

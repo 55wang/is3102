@@ -36,7 +36,7 @@ public class EntityCaseBuilder {
     private LoginSessionBeanLocal loginBean;
 
     public void initCase() {
-        MainAccount demoMainAccount = loginBean.getMainAccountByUserID(ConstantUtils.DEMO_MAIN_ACCOUNT_USER_ID);
+        MainAccount demoMainAccount = loginBean.getMainAccountByUserID(ConstantUtils.DEMO_MAIN_ACCOUNT_USER_ID_1);
         CustomerCase cc = new CustomerCase();
         Issue issue = new Issue();
         List<Issue> issues = new ArrayList<>();
