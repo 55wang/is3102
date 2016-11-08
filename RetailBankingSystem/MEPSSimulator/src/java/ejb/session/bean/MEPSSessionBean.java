@@ -5,6 +5,8 @@
  */
 package ejb.session.bean;
 
+import dto.TransactionDTO;
+import dto.TransactionSummaryDTO;
 import entity.SettlementAccount;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -125,25 +127,14 @@ public class MEPSSessionBean {
         return q.getResultList();
     }
 
-    public void sendMBSNetSettlement(String citiToBankCode, String citiToBankName, String citiSettlementAmount, String ocbcToBankCode, String ocbcToBankName, String ocbcSettlementAmount) {
-
+    public void sendMBSNetSettlement(TransactionSummaryDTO transactionSummary){
         // send to mbs
-        Form form = new Form(); //bank info
-
-        form.param("citiToBankCode", citiToBankCode);
-        form.param("citiToBankName", citiToBankName);
-        form.param("citiSettlementAmount", citiSettlementAmount);
-        form.param("ocbcToBankCode", ocbcToBankCode);
-        form.param("ocbcToBankName", ocbcToBankName);
-        form.param("ocbcSettlementAmount", ocbcSettlementAmount);
-        form.param("date", (new Date()).toString());
-        form.param("agencyCode", "000");
 
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(MBS_NET_SETTLEMENT_PATH);
 
         // This is the response
-        JsonObject jsonString = target.request(MediaType.APPLICATION_JSON).post(Entity.entity(form, MediaType.APPLICATION_FORM_URLENCODED), JsonObject.class);
+        JsonObject jsonString = target.request(MediaType.APPLICATION_JSON).post(Entity.entity(transactionSummary, MediaType.APPLICATION_JSON), JsonObject.class);
 
         if (jsonString != null && jsonString.getString("error").equals("SUCCESS")) {
 
@@ -154,4 +145,30 @@ public class MEPSSessionBean {
             System.out.println("FAIL");
         }
     }
+    
+    public void testMBS(){
+
+        // send to mbs
+        System.out.println("Testing");
+        TransactionSummaryDTO summary = new TransactionSummaryDTO();
+        TransactionDTO dto = new TransactionDTO();
+        dto.setReferenceNumber("TEST1234");
+        summary.getTransactionSummary().add(dto);
+
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target("https://localhost:8181/StaffInternalSystem/rest/test_json");
+
+        // This is the response
+        JsonObject jsonString = target.request(MediaType.APPLICATION_JSON).post(Entity.entity(summary, MediaType.APPLICATION_JSON), JsonObject.class);
+
+        if (jsonString != null && jsonString.getString("error").equals("SUCCESS")) {
+
+            System.out.println(".");
+            System.out.println("[MEPS]");
+            System.out.println("Received response from MBS..");
+        } else {
+            System.out.println("FAIL");
+        }
+    }
+
 }
