@@ -47,6 +47,7 @@ and open the template in the editor.
     width: 85%;
     height:67px;
     min-height: 40px;
+    display:block;
 }
 #header #customer-header-nav ul{
     list-style-type: none;
@@ -159,6 +160,7 @@ and open the template in the editor.
     position: fixed;
     top: 87px;
     left: 5%;
+    display:block;
 }
 
 #customer-index-navbar ul{
@@ -345,15 +347,15 @@ and open the template in the editor.
 }
 
 #customer-slideshow{
-    height:fit-content;
+    margin: 0 auto;
+    height: 100%;
     width: 85%;
     min-height: 100px;
     background: #fff;
     color: #999;
-    float: left;
     z-index: 10;
-    position: fixed;
-    top:380px;
+    position: relative;
+    top: 200px;
 }
 
 #customer-slideshow .ui-widget-content{
@@ -375,20 +377,20 @@ and open the template in the editor.
 
 .slideshow-img-holder .slideshow-img-holder-button-1{
     position: absolute;
-    bottom:120px;
-    right:435px;
+    bottom:40%;
+    right:43%;
 }
 
 .slideshow-img-holder .slideshow-img-holder-button-2{
     position: absolute;
-    top:180px;
-    left:25px;
+    top:40%;
+    left:2%;
 }
 
 .slideshow-img-holder .slideshow-img-holder-button-3{
     position: absolute;
-    bottom:120px;
-    right:400px;
+    bottom:40%;
+    right:40%;
 }
 /* end of customer slideshow */
 /* wizard overwrite */
@@ -470,12 +472,26 @@ and open the template in the editor.
 /* end of toggleable */
 /*customer log in*/
 .customer-login-layout{
+    margin: 0 auto;
     width:400px;
     height:300px;
-    top:350px !important;
+    top:15% !important;
     border-top: 7px solid #c00;
     box-shadow: 0 10px 10px 0 rgba(0,0,0,0.30),0 6px 3px 0 rgba(0,0,0,0.23);
 }
+
+.customer-login-icon{
+    position:relative; 
+    top:15%; 
+    width: 100%;
+    text-align: center;
+}
+
+.customer-login-icon img{
+
+    width:200px;
+}
+
 .customer-login-body{
     height:100vh;
     background-image: url("../resources/img/customer_login_bg.jpg");

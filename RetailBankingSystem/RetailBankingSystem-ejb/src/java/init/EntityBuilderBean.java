@@ -111,5 +111,6 @@ public class EntityBuilderBean {
 //        entityFactBuilder.initSinglePortfolioFact(demoMainAccount, demoPortfolio);
 //
 //        entityFactBuilder.initBankFact();
+
     }
 }
