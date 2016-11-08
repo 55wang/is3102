@@ -25,6 +25,7 @@ public interface CustomerDepositSessionBeanLocal {
     public DepositAccount createAccount(DepositAccount account);
     public DepositAccount updateAccount(DepositAccount account);
     public List<DepositAccount> showAllAccounts();
+    public List<DepositAccount> showAllActiveAccounts();
     public List<DepositAccount> getAllCustomerAccounts(Long mainAccountId);
     public CustomerDepositAccount getDaytoDayAccountByMainAccount(MainAccount ma);
     public List<CustomerDepositAccount> getAllNonFixedCustomerAccounts(Long mainAccountId);

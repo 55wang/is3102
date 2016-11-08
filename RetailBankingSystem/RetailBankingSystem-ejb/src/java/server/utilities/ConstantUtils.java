@@ -32,8 +32,10 @@ public class ConstantUtils {
     // Personal loan
     public static final String DEMO_PERSONAL_LOAN_PRODUCT_NAME_12 = "MBS Personal Loan 0-12 Month";
     public static final String DEMO_PERSONAL_LOAN_PRODUCT_NAME_24 = "MBS Personal Loan 0-24 Month";
+    public static final String DEMO_PERSONAL_LOAN_PRODUCT_NAME_36 = "MBS Personal Loan 0-36 Month";
     public static final String DEMO_PERSONAL_LOAN_INTEREST_NAME_12 = "MBS Personal Loan Interest 1 year";
     public static final String DEMO_PERSONAL_LOAN_INTEREST_NAME_24 = "MBS Personal Loan Interest 2 years";
+    public static final String DEMO_PERSONAL_LOAN_INTEREST_NAME_36 = "MBS Personal Loan Interest 3 years";
     // Car loan
     public static final String DEMO_CAR_LOAN_PRODUCT_NAME = "MBS Car Loan";
     public static final String DEMO_CAR_LOAN_INTEREST_NAME = "MBS Car Loan Interest";
@@ -46,8 +48,12 @@ public class ConstantUtils {
     
     public static final String DEMO_LOAN_COMMON_INTEREST_NAME = "SIBOR Interest";
     
-    public static final String DEMO_MAIN_ACCOUNT_USER_ID = "c1234567";
-    public static final String DEMO_MAIN_ACCOUNT_USER_ID_2 = "c7654321" ;
+    public static final String DEMO_MAIN_ACCOUNT_USER_ID_1 = "c1234567";
+    public static final String DEMO_MAIN_ACCOUNT_USER_ID_2 = "c0000002";
+    public static final String DEMO_MAIN_ACCOUNT_USER_ID_3 = "c0000003";
+    public static final String DEMO_MAIN_ACCOUNT_USER_ID_4 = "c0000004";
+    public static final String DEMO_MAIN_ACCOUNT_USER_ID_5 = "c0000005";
+    
     public static final String SUPER_ADMIN_USERNAME = "adminadmin";
     public static final String SUPER_ADMIN_PASSWORD = HashPwdUtils.hashPwd("password");
     public static final String CUSTOMER_SERVICE_USERNAME = "customer_service";
@@ -94,7 +100,9 @@ public class ConstantUtils {
     public static final String PASSWORD_CHANGE_SUCCESS = "Successful! You have reset your password. ";
     // Transfer
     public static final String TRANSFER_SUCCESS = "Transfer Successed!";
-    public static final String TRANSFER_FAILED = "Transfer Failed! Check your account balance!";
+    public static final String TRANSFER_FAILED = "Transfer Failed! Not enough balance in your deposit account!";
+    public static final String TRANSFER_FAILED2 = "Your payment is greater than your outstanding loan amount!";
+    public static final String TRANSFER_FAILED3 = "Please go to lum Sum Payment if your repayment is greater then 10,000";
     public static final String EXCEED_TRANSFER_LIMIT = "Transfer Failed! Check your transfer limit!";
     public static final String TRANSFER_ACCOUNT_NOT_FOUND = "Transfer Failed! Check your whether account number is correct!";
     public static final String UPDATE_TRANSFER_LIMIT_SUCCESS = "Transfer Limits updated!";

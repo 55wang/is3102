@@ -1,0 +1,69 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:em="http://xmlns.jcp.org/jsf/composite/emcomp"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <!--shift + ctrl + F, format-->
+    <f:view>
+        <h:head>
+            <title>MBS Counter</title>
+            <em:cssImport></em:cssImport>
+        </h:head>
+        <h:body>
+            <em:staffNavBar context="transfer"></em:staffNavBar>
+            <em:staffSideBar top="transfer" side="intraBankTransfer"></em:staffSideBar>
+            <div class="container">
+                <h:form id="mainForm">
+                    <p:panel header="Merlion Bank Transfer">
+                        <p:messages id="messagesStatus" redisplay="false" >
+                            
+                            <h:panelGrid columns="2" cellpadding="5">
+                                <h:outputLabel value="Customer IC: " />
+                                <h:inputText value="#{intraBankTransferCounterManagedBean.customerIC}"/>
+                                <p:commandButton value="Retrieve" action="#{intraBankTransferCounterManagedBean.retrieveMainAccount}" update="@form"/>
+                            </h:panelGrid>
+
+                            <h:panelGrid columns="2" cellpadding="5">
+                                <p:outputLabel value="From Account Number: " />
+                                <c:if test="#{intraBankTransferCounterManagedBean.mainAccount == null}">
+                                    <p:inputText value="#{intraBankTransferCounterManagedBean.fromAccountNumber}"/>
+                                </c:if>
+                                <c:if test="#{intraBankTransferCounterManagedBean.mainAccount != null}">
+                                    <p:selectOneMenu value="#{intraBankTransferCounterManagedBean.fromAccountNumber}" style="width:187px; height: 31px; line-height: 21px; top:8px" rendered="true" >
+                                        <f:selectItems value="#{intraBankTransferCounterManagedBean.depositAccounts}" var="a" itemValue="#{a.accountNumber}" itemLabel="#{a.product.name} - #{a.accountNumber}" />
+                                    </p:selectOneMenu>
+                                </c:if>
+                                
+                                <h:outputText value="To Own Account: " />
+                                <p:selectBooleanButton value="#{intraBankTransferCounterManagedBean.isOwn}" onLabel="Own" offLabel="Other" >
+                                    <f:ajax render="@form" />
+                                </p:selectBooleanButton>
+                                
+                                <p:outputLabel value="To Account Number: " />
+                                <c:if test="#{intraBankTransferCounterManagedBean.isOwn == false}">
+                                    <p:inputText value="#{intraBankTransferCounterManagedBean.toAccountNumber}"/>
+                                </c:if>
+                                <c:if test="#{intraBankTransferCounterManagedBean.isOwn == true}">
+                                    <p:selectOneMenu value="#{intraBankTransferCounterManagedBean.toAccountNumber}" style="width:187px; height: 31px; line-height: 21px; top:8px" rendered="true" >
+                                        <f:selectItems value="#{intraBankTransferCounterManagedBean.depositAccounts}" var="a" itemValue="#{a.accountNumber}" itemLabel="#{a.product.name} - #{a.accountNumber}" />
+                                    </p:selectOneMenu>
+                                </c:if>
+                                
+                                <p:outputLabel value="Transfer Amount: " />
+                                <p:inputText value="#{intraBankTransferCounterManagedBean.amount}"/>
+
+                                <p:commandButton value="Transfer" icon="ui-icon-plus" update="@form" actionListener="#{intraBankTransferCounterManagedBean.transfer}" />
+                            </h:panelGrid>
+                        </p:messages>
+                    </p:panel>
+                </h:form>
+            </div>
+        </h:body>
+    </f:view>
+
+
+</html>
+

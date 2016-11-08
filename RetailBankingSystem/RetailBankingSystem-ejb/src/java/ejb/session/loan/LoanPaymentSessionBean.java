@@ -180,7 +180,7 @@ public class LoanPaymentSessionBean implements LoanPaymentSessionBeanLocal {
 
         System.out.println(loanAccount);
 
-        Double outstandingLoanPrincipal = loanAccount.getOutstandingPrincipal();
+        Double outstandingLoanPrincipal = loanAccount.getPrincipal();
         // currentPeriod starting in 0
         Date beginningDate = DateUtils.addMonths(loanAccount.getPaymentStartDate(), loanAccount.getCurrentPeriod());
 
@@ -192,15 +192,15 @@ public class LoanPaymentSessionBean implements LoanPaymentSessionBeanLocal {
             System.out.println("Only 1 loan interest");
             LoanInterest interest = loanInterests.get(0);
             // original calculation
-            Double totalPrincipal = loanAccount.getOutstandingPrincipal();
-            Double totalInterest = loanAccount.getOutstandingPrincipal() * interest.getInterestRate() * loanAccount.getTenure();
+            Double totalPrincipal = loanAccount.getPrincipal();
+            Double totalInterest = loanAccount.getPrincipal() * interest.getInterestRate() * loanAccount.getTenure();
             Double monthlyInterest = totalInterest / loanAccount.tenureInMonth();
             Double monthlyPrincipal = totalPrincipal / loanAccount.tenureInMonth();
 
             removePreviousPaymentBreakDown(loanAccount);
             // insert breakdown
             System.out.println();
-            for (int i = loanAccount.getCurrentPeriod(); i < loanAccount.tenureInMonth(); i++) {
+            for (int i = loanAccount.getCurrentPeriod(); i < loanAccount.tenureInMonth()+1; i++) {
                 System.out.println("Creating breakdown for nth month: " + i);
                 Date schedulePaymentDate = DateUtils.addMonths(beginningDate, i);
                 LoanPaymentBreakdown lpb = new LoanPaymentBreakdown();
@@ -228,7 +228,7 @@ public class LoanPaymentSessionBean implements LoanPaymentSessionBeanLocal {
 
         System.out.println(loanAccount);
 
-        Double outstandingLoanPrincipal = loanAccount.getOutstandingPrincipal();
+        Double outstandingLoanPrincipal = loanAccount.getPrincipal();
         Date beginningDate = DateUtils.addMonths(loanAccount.getPaymentStartDate(), loanAccount.getCurrentPeriod());
         Double monthlyIntallment = loanAccount.getMonthlyInstallment();
 
@@ -272,11 +272,15 @@ public class LoanPaymentSessionBean implements LoanPaymentSessionBeanLocal {
     @Override
     public String loanRepaymentFromAccount(String loanAccountNumber, String depositAccountNumber, BigDecimal amount) {
         DepositAccount fromAccount = depositBean.getAccountFromId(depositAccountNumber);
+        LoanAccount loanAccount = loanAccountBean.getLoanAccountByAccountNumber(loanAccountNumber);
         if (fromAccount.getBalance().compareTo(amount) < 0) {
             // not enough money
             return "FAIL";
         } else {
             depositBean.transferFromAccount(fromAccount, amount);
+            BigDecimal outPrin=new BigDecimal(loanAccount.getOutstandingPrincipal());
+            if(amount.compareTo(outPrin)==1 ) return "FAIL2";
+            if(amount.compareTo(new BigDecimal(10000))==1) return "FAIL3";
             loanAccountRepayment(loanAccountNumber, amount.doubleValue());
             return "SUCCESS";
         }
@@ -288,9 +292,11 @@ public class LoanPaymentSessionBean implements LoanPaymentSessionBeanLocal {
         LoanAccount loanAccount = loanAccountBean.getLoanAccountByAccountNumber(loanAccountNumber);
         if (fromAccount.getBalance().compareTo(amount) < 0 || loanAccount.getOutstandingPrincipal() < amount.doubleValue()) {
             // not enough money
-            return "FAIL";
+            return "FAIL1";
         } else {
             depositBean.transferFromAccount(fromAccount, amount);
+            BigDecimal outPrin=new BigDecimal(loanAccount.getOutstandingPrincipal());
+            if(amount.compareTo(outPrin)==1 ) return "FAIL2";
             LoanAccount la = loanAccountLumsumPayment(loanAccountNumber, amount.doubleValue());
             futurePaymentBreakdown(la);
             return "SUCCESS";
@@ -319,13 +325,21 @@ public class LoanPaymentSessionBean implements LoanPaymentSessionBeanLocal {
         LoanAccount loanAccount = loanAccountBean.getLoanAccountByAccountNumber(loanAccountNumber);
         loanAccount.setOutstandingPrincipal(loanAccount.getOutstandingPrincipal() - amount);
         System.out.println("Out standing pricipal is: " + loanAccount.getOutstandingPrincipal());
+        
+        if(loanAccount.getOverduePayment()>0){
+            if (loanAccount.getOverduePayment()>=amount) loanAccount.setOverduePayment(loanAccount.getOverduePayment()-amount);
+            else {
+                loanAccount.setOverduePayment(0.0);
+            }
+        }
+        
         loanAccount.setMonthlyInstallment(calculateMonthlyInstallment(loanAccount));
 
         LoanRepaymentRecord record = new LoanRepaymentRecord();
-        record.setBeginningBalance(loanAccount.getOutstandingPrincipal());
+        record.setBeginningBalance(loanAccount.getOutstandingPrincipal()+amount);
         record.setLoanAccount(loanAccount);
         record.setPaymentAmount(amount);
-        record.setRemainingBalance(loanAccount.getOutstandingPrincipal() - amount);
+        record.setRemainingBalance(loanAccount.getOutstandingPrincipal());
         record.setTransactionDate(new Date());
         record.setType(EnumUtils.LoanRepaymentType.LOAN_LUMSUM_PAY);
         em.persist(record);
@@ -336,14 +350,26 @@ public class LoanPaymentSessionBean implements LoanPaymentSessionBeanLocal {
 
     private LoanAccount loanAccountRepayment(String loanAccountNumber, Double amount) {
         LoanAccount loanAccount = loanAccountBean.getLoanAccountByAccountNumber(loanAccountNumber);
+        if(loanAccount.getOverduePayment()>0){
+            System.out.println("YESSSS");
+            if (loanAccount.getOverduePayment()>=amount) loanAccount.setOverduePayment(loanAccount.getOverduePayment()-amount);
+            else {
+                loanAccount.setOverduePayment(0.0);
+                loanAccount.setAmountPaidBeforeDueDate(amount-loanAccount.getOverduePayment());
+            }
+        } else{
+            System.out.println("Noooo");
         loanAccount.setAmountPaidBeforeDueDate(amount + loanAccount.getAmountPaidBeforeDueDate());
+        }
+        
+        loanAccount.setOutstandingPrincipal(loanAccount.getOutstandingPrincipal() - amount);
 
         LoanRepaymentRecord record = new LoanRepaymentRecord();
-        record.setBeginningBalance(loanAccount.getOutstandingPrincipal());
+        record.setBeginningBalance(loanAccount.getOutstandingPrincipal()+amount);
         record.setLoanAccount(loanAccount);
         record.setNthMonth(loanAccount.getCurrentPeriod());
         record.setPaymentAmount(amount);
-        record.setRemainingBalance(loanAccount.getOutstandingPrincipal() - amount);
+        record.setRemainingBalance(loanAccount.getOutstandingPrincipal());
         record.setTransactionDate(new Date());
         record.setType(EnumUtils.LoanRepaymentType.LOAN_REPAYMENT);
         em.persist(record);

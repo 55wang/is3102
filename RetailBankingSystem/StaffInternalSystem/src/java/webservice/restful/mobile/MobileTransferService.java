@@ -9,6 +9,7 @@ import ejb.session.dams.MobileAccountSessionBeanLocal;
 import entity.common.TransactionRecord;
 import entity.dams.account.MobileAccount;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import javax.ejb.EJB;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
@@ -39,7 +40,9 @@ public class MobileTransferService {
             @FormParam("amount") String amount
     ) {
         System.out.println("Received fromAccount:" + fromAccount);
-        System.out.println("Received POST http init_pay_lah");
+        System.out.println("Received toAccount:" + toAccount);
+        System.out.println("Received amount:" + amount);
+        System.out.println("Received POST http transfer");
         String jsonString = null;
         MobileAccount fromMobileAccount = mobileBean.getMobileAccountByMobileNumber(fromAccount);
         MobileAccount toMobileAccount = mobileBean.getMobileAccountByMobileNumber(toAccount);
@@ -57,7 +60,7 @@ public class MobileTransferService {
                 if (result.equals("SUCCESS")) {
                     TransactionRecord record = mobileBean.latestTransactionFromMobileAccount(fromMobileAccount);
                     TransferDTO t = new TransferDTO();
-                    t.setTransferAmount(record.getAmount().setScale(2).toString());
+                    t.setTransferAmount(record.getAmount().setScale(2, RoundingMode.UP).toString());
                     t.setReferenceNumber(record.getReferenceNumber());
                     t.setTransferType(record.getActionType().toString());
                     t.setTransferDate(DateUtils.readableDate(record.getCreationDate()));
@@ -67,7 +70,7 @@ public class MobileTransferService {
                 } else {
                     ErrorDTO err = new ErrorDTO();
                     err.setCode(-2);
-                    err.setError("Not enough balance! Please top up!");
+                    err.setError(result);
                     jsonString = new JSONObject(err).toString();
                     return Response.ok(jsonString, MediaType.APPLICATION_JSON).build();
                 }

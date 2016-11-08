@@ -5,9 +5,9 @@
  */
 package entity.crm;
 
-import entity.customer.Customer;
 import entity.staff.StaffAccount;
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -16,7 +16,8 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
-import server.utilities.EnumUtils;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import server.utilities.EnumUtils.TypeMarketingCampaign;
 
 /**
@@ -35,19 +36,17 @@ public abstract class MarketingCampaign implements Serializable {
     private String nameCampaign;
     private TypeMarketingCampaign TypeCampaign; //email or ads
     private String description;
-    private String landingPageUrl;
-    private Integer numOfResponse;
-    private Integer numOfTargetResponse;
+    private String landingPageName; //for the image and hyperlink
     
-    private EnumUtils.RFMLevel depositRecencyLevel;
-    private EnumUtils.RFMLevel depositFrequencyLevel;
-    private EnumUtils.RFMLevel depositMonetaryLevel;
-    private EnumUtils.RFMLevel depositOverallRFMLevel;
+    @Temporal(value = TemporalType.DATE)
+    private Date startDate;
+    @Temporal(value = TemporalType.DATE)
+    private Date endDate;
     
-    private EnumUtils.RFMLevel cardRecencyLevel;
-    private EnumUtils.RFMLevel cardFrequencyLevel;
-    private EnumUtils.RFMLevel cardMonetaryLevel;
-    private EnumUtils.RFMLevel cardOverallRFMLevel;
+    private Long numOfResponse = 0L;
+    private Long numOfTargetResponse = 0L;
+    private Long clickCount = 0L; //when ads banner or email URL is clicked 
+    private Long viewCount = 0L; //when landing page is visited
     
     @ManyToOne
     private StaffAccount staffAccount;
@@ -111,30 +110,6 @@ public abstract class MarketingCampaign implements Serializable {
         this.description = description;
     }
 
-    public String getLandingPageUrl() {
-        return landingPageUrl;
-    }
-
-    public void setLandingPageUrl(String landingPageUrl) {
-        this.landingPageUrl = landingPageUrl;
-    }
-
-    public Integer getNumOfResponse() {
-        return numOfResponse;
-    }
-
-    public void setNumOfResponse(Integer numOfResponse) {
-        this.numOfResponse = numOfResponse;
-    }
-
-    public Integer getNumOfTargetResponse() {
-        return numOfTargetResponse;
-    }
-
-    public void setNumOfTargetResponse(Integer numOfTargetResponse) {
-        this.numOfTargetResponse = numOfTargetResponse;
-    }
-
     public StaffAccount getStaffAccount() {
         return staffAccount;
     }
@@ -143,76 +118,68 @@ public abstract class MarketingCampaign implements Serializable {
         this.staffAccount = staffAccount;
     }
 
-    public EnumUtils.RFMLevel getDepositRecencyLevel() {
-        return depositRecencyLevel;
-    }
-
-    public void setDepositRecencyLevel(EnumUtils.RFMLevel depositRecencyLevel) {
-        this.depositRecencyLevel = depositRecencyLevel;
-    }
-
-    public EnumUtils.RFMLevel getDepositFrequencyLevel() {
-        return depositFrequencyLevel;
-    }
-
-    public void setDepositFrequencyLevel(EnumUtils.RFMLevel depositFrequencyLevel) {
-        this.depositFrequencyLevel = depositFrequencyLevel;
-    }
-
-    public EnumUtils.RFMLevel getDepositMonetaryLevel() {
-        return depositMonetaryLevel;
-    }
-
-    public void setDepositMonetaryLevel(EnumUtils.RFMLevel depositMonetaryLevel) {
-        this.depositMonetaryLevel = depositMonetaryLevel;
-    }
-
-    public EnumUtils.RFMLevel getDepositOverallRFMLevel() {
-        return depositOverallRFMLevel;
-    }
-
-    public void setDepositOverallRFMLevel(EnumUtils.RFMLevel depositOverallRFMLevel) {
-        this.depositOverallRFMLevel = depositOverallRFMLevel;
-    }
-
-    public EnumUtils.RFMLevel getCardRecencyLevel() {
-        return cardRecencyLevel;
-    }
-
-    public void setCardRecencyLevel(EnumUtils.RFMLevel cardRecencyLevel) {
-        this.cardRecencyLevel = cardRecencyLevel;
-    }
-
-    public EnumUtils.RFMLevel getCardFrequencyLevel() {
-        return cardFrequencyLevel;
-    }
-
-    public void setCardFrequencyLevel(EnumUtils.RFMLevel cardFrequencyLevel) {
-        this.cardFrequencyLevel = cardFrequencyLevel;
-    }
-
-    public EnumUtils.RFMLevel getCardMonetaryLevel() {
-        return cardMonetaryLevel;
-    }
-
-    public void setCardMonetaryLevel(EnumUtils.RFMLevel cardMonetaryLevel) {
-        this.cardMonetaryLevel = cardMonetaryLevel;
-    }
-
-    public EnumUtils.RFMLevel getCardOverallRFMLevel() {
-        return cardOverallRFMLevel;
-    }
-
-    public void setCardOverallRFMLevel(EnumUtils.RFMLevel cardOverallRFMLevel) {
-        this.cardOverallRFMLevel = cardOverallRFMLevel;
-    }
-
     public CustomerGroup getCustomerGroup() {
         return customerGroup;
     }
 
     public void setCustomerGroup(CustomerGroup customerGroup) {
         this.customerGroup = customerGroup;
+    }
+
+    public String getLandingPageName() {
+        return landingPageName;
+    }
+
+    public void setLandingPageName(String landingPageName) {
+        this.landingPageName = landingPageName;
+    }
+
+    public Long getNumOfResponse() {
+        return numOfResponse;
+    }
+
+    public void setNumOfResponse(Long numOfResponse) {
+        this.numOfResponse = numOfResponse;
+    }
+
+    public Long getNumOfTargetResponse() {
+        return numOfTargetResponse;
+    }
+
+    public void setNumOfTargetResponse(Long numOfTargetResponse) {
+        this.numOfTargetResponse = numOfTargetResponse;
+    }
+
+    public Long getClickCount() {
+        return clickCount;
+    }
+
+    public void setClickCount(Long clickCount) {
+        this.clickCount = clickCount;
+    }
+
+    public Long getViewCount() {
+        return viewCount;
+    }
+
+    public void setViewCount(Long viewCount) {
+        this.viewCount = viewCount;
+    }
+
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
     }
 
 }

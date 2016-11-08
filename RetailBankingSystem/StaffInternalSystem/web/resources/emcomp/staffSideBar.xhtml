@@ -75,6 +75,9 @@
                         <li class="side-menu-item #{cc.attrs.side == 'updateSiborRate' ? 'active' : ''}">
                             <h:link outcome="update_sibor_rate" value="Update Sibor Rate" />
                         </li>
+                        <li class="side-menu-item #{cc.attrs.side == 'badLoan' ? 'active' : ''}">
+                            <h:link outcome="bad_loans" value="Bad Loans" />
+                        </li>
                         <li class="side-menu-item #{cc.attrs.side == 'loanAccountDetail' ? 'active' : ''}">
                             <h:link outcome="customer_loan_account_details" value="Find Details" />
                         </li>
@@ -199,7 +202,7 @@
 
                     <c:if test="#{cc.attrs.top == 'crm'}">
                         <li class="side-menu-item #{cc.attrs.side == 'viewCustomerOverview' ? 'active' : ''}">
-                            <h:link outcome="view_customer_overview" value="Customer Overview" />
+                            <h:link outcome="customer_overview" value="Customer Overview" />
                         </li>
                     </c:if>
 

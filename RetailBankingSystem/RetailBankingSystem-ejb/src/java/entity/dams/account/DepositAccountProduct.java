@@ -26,13 +26,13 @@ import javax.persistence.OneToMany;
 public class DepositAccountProduct extends DepositProduct {
     
     // info
-    @Column(precision=12, scale=2)
+    @Column(precision=18, scale=4)
     private BigDecimal initialDeposit;
-    @Column(precision=12, scale=2)
+    @Column(precision=18, scale=4)
     private BigDecimal minBalance;
-    @Column(precision=12, scale=2)
+    @Column(precision=18, scale=4)
     private BigDecimal charges;
-    @Column(precision=12, scale=2)
+    @Column(precision=18, scale=4)
     private BigDecimal annualFees;
     private Integer waivedMonths;
     

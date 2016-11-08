@@ -5,7 +5,6 @@
  */
 package staff.crm;
 
-import ejb.session.common.NewCustomerSessionBean;
 import ejb.session.common.NewCustomerSessionBeanLocal;
 import ejb.session.crm.CustomerSegmentationSessionBeanLocal;
 import entity.crm.CustomerGroup;
@@ -16,6 +15,9 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
+import org.primefaces.model.tagcloud.DefaultTagCloudItem;
+import org.primefaces.model.tagcloud.DefaultTagCloudModel;
+import org.primefaces.model.tagcloud.TagCloudModel;
 
 /**
  *
@@ -34,6 +36,12 @@ public class CreateCustomerSegmentationManagedBean implements Serializable {
     private CustomerGroup customerGroup;
     private List<Customer> filterCustomers;
     private List<Customer> setHashTagCustomers;
+    
+    private String functionType = "SET_HASH_TAG";
+    private String SET_HASH_TAG = "SET_HASH_TAG";
+    private String CREATE_CUSTOMER_GROUP = "CREATE_CUSTOMER_GROUP";
+    
+    private TagCloudModel model;
 
     public CreateCustomerSegmentationManagedBean() {
     }
@@ -42,6 +50,7 @@ public class CreateCustomerSegmentationManagedBean implements Serializable {
     public void init() {
         customerGroups = customerSegmentationSessionBean.getListCustomerGroup();
         customerGroup = new CustomerGroup();
+        createTagCloudModel();
     }
 
     public void setHashTag() {
@@ -96,6 +105,24 @@ public class CreateCustomerSegmentationManagedBean implements Serializable {
         }
 
     }
+    
+    private void createTagCloudModel(){
+        model = new DefaultTagCloudModel();
+        model.addTag(new DefaultTagCloudItem("Transformers", 1));
+        model.addTag(new DefaultTagCloudItem("RIA", "#", 3));
+        model.addTag(new DefaultTagCloudItem("AJAX", 2));
+        model.addTag(new DefaultTagCloudItem("jQuery", "#", 5));
+        model.addTag(new DefaultTagCloudItem("NextGen", 4));
+        model.addTag(new DefaultTagCloudItem("JSF 2.0", "#", 2));
+        model.addTag(new DefaultTagCloudItem("FCB", 5));
+        model.addTag(new DefaultTagCloudItem("Mobile",  3));
+        model.addTag(new DefaultTagCloudItem("Themes", "#", 4));
+        model.addTag(new DefaultTagCloudItem("Rocks", "#", 1));
+    }
+    
+    public TagCloudModel getModel() {
+        return model;
+    }
 
     public List<CustomerGroup> getCustomerGroups() {
         return customerGroups;
@@ -127,6 +154,30 @@ public class CreateCustomerSegmentationManagedBean implements Serializable {
 
     public void setSetHashTagCustomers(List<Customer> setHashTagCustomers) {
         this.setHashTagCustomers = setHashTagCustomers;
+    }
+
+    public String getFunctionType() {
+        return functionType;
+    }
+
+    public void setFunctionType(String functionType) {
+        this.functionType = functionType;
+    }
+
+    public String getSET_HASH_TAG() {
+        return SET_HASH_TAG;
+    }
+
+    public void setSET_HASH_TAG(String SET_HASH_TAG) {
+        this.SET_HASH_TAG = SET_HASH_TAG;
+    }
+
+    public String getCREATE_CUSTOMER_GROUP() {
+        return CREATE_CUSTOMER_GROUP;
+    }
+
+    public void setCREATE_CUSTOMER_GROUP(String CREATE_CUSTOMER_GROUP) {
+        this.CREATE_CUSTOMER_GROUP = CREATE_CUSTOMER_GROUP;
     }
 
 }

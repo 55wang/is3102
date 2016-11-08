@@ -1,0 +1,87 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:em="http://xmlns.jcp.org/jsf/composite/emcomp"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <!--shift + ctrl + F, format-->
+    <f:view>
+        <h:head>
+            <title>MBS Counter</title>
+            <em:cssImport></em:cssImport>
+        </h:head>
+        <h:body>
+            <em:staffNavBar context="bill"></em:staffNavBar>
+            <em:staffSideBar top="bill" side="manageGIRO"></em:staffSideBar>
+            <div class="container">
+                <h:form id="mainForm">
+                    <p:panel header="Manage GIRO">
+                        <p:messages id="messagesStatus" redisplay="false" >
+
+                            <h:panelGrid columns="2" cellpadding="5">
+                                <h:outputLabel value="Customer IC: " />
+                                <h:inputText value="#{manageGIROCounterManagedBean.customerIC}"/>
+                                <p:commandButton value="Retrieve" action="#{manageGIROCounterManagedBean.retrieveMainAccount}" update="@form"/>
+                            </h:panelGrid>
+
+                            <c:if test="#{manageGIROCounterManagedBean.mainAccount != null}">
+                                <h:panelGrid columns="2" cellpadding="5">
+
+                                    <h:outputText value="Select Billing Org: " />
+                                    <p:selectOneMenu id="type" value="#{manageGIROCounterManagedBean.selectedBillId}">
+                                        <f:selectItems value="#{manageGIROCounterManagedBean.billOrgsOptions}" var="b" itemValue="#{b.id.toString()}" itemLabel="#{b.name}"/>
+                                    </p:selectOneMenu>
+                                    <h:outputText value="Bill Reference Number: " />
+                                    <h:inputText value="#{manageGIROCounterManagedBean.referenceNumber}" />
+                                    <h:outputText value="Billing Limit: " />
+                                    <h:inputText value="#{manageGIROCounterManagedBean.billLimit}" />
+                                    <h:outputText value="Choose Your Account to transfer from: " />
+                                    <p:selectOneMenu value="#{manageGIROCounterManagedBean.fromAccountNo}" rendered="true" >
+                                        <f:selectItems value="#{manageGIROCounterManagedBean.accounts}" var="a" itemValue="#{a.accountNumber}" itemLabel="#{a.product.name} #{a.accountNumber} #{a.balance.setScale(2)}" />
+                                    </p:selectOneMenu>
+
+                                    <p:commandButton value="Add" icon="ui-icon-plus" update="@form" actionListener="#{manageGIROCounterManagedBean.addGIROArrangement()}" />
+
+                                </h:panelGrid>
+
+                                <h1>Added GIRO Arrangement</h1>
+                                <p:dataTable value="#{manageGIROCounterManagedBean.addedGiroArrs}" var="giro" editable="true" editMode="cell">
+                                    <f:facet name="header">
+                                        Edit Limits By Clicking the cell
+                                    </f:facet>
+                                    <p:ajax event="cellEdit" listener="#{manageGIROCounterManagedBean.onCellEdit(giro)}" update="@form" />
+                                    <p:column headerText="Name" sortBy="#{giro.organization.name}">
+                                        <h:outputText value="#{giro.organization.name}"/>
+                                    </p:column>
+                                    <p:column headerText="Bill Reference" sortBy="#{giro.billReference}">
+                                        <h:outputText value="#{giro.billReference}"/>
+                                    </p:column>
+                                    <p:column headerText="GIRO Limit" sortBy="#{giro.billLimit}">
+                                        <p:cellEditor>
+                                            <f:facet name="output">
+                                                <h:outputText value="#{giro.billLimit}"/>
+                                            </f:facet>
+                                            <f:facet name="input">
+                                                <p:inputText value="#{giro.billLimit}" style="width:96%"/>
+                                            </f:facet>
+                                        </p:cellEditor>
+                                    </p:column>
+                                    <p:column headerText="Delete">
+                                        <p:commandButton value="Delete Receipiant" action="#{manageGIROCounterManagedBean.removeGIROArrangement(giro)}" update="@form"/> 
+                                    </p:column>
+                                </p:dataTable>
+                            </c:if>
+
+
+                        </p:messages>
+                    </p:panel>
+                </h:form>
+            </div>
+        </h:body>
+    </f:view>
+
+
+</html>
+

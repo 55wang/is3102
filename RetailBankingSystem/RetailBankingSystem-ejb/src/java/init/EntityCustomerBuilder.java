@@ -32,12 +32,14 @@ public class EntityCustomerBuilder {
     private MainAccountSessionBeanLocal mainAccountSessionBean;
 
     public MainAccount initCustomer() {
-        String p = HashPwdUtils.hashPwd("password");
 
-        Customer c = new Customer();
+        String u1 = ConstantUtils.DEMO_MAIN_ACCOUNT_USER_ID_1;
+        String p1 = HashPwdUtils.hashPwd("password");
+
+        Customer c = new Customer(); //Customer Group 1: Young, or lower income
         c.setAddress("10 Punggol, 08-08"); //make it a bit more real
         try {
-            c.setBirthDay(new SimpleDateFormat("dd-MM-yyyy").parse("01-01-1990"));
+            c.setBirthDay(new SimpleDateFormat("dd-MM-yyyy").parse("01-01-1993"));
         } catch (Exception ex) {
         }
         c.setEmail("wangzhe.lynx@gmail.com");
@@ -48,23 +50,19 @@ public class EntityCustomerBuilder {
         c.setIdentityType(EnumUtils.IdentityType.NRIC);
         c.setIdentityNumber("S1234567Z");
         c.setIncome(EnumUtils.Income.FROM_2000_TO_4000);
+        c.setActualIncome(3000.0);
         c.setEducation(EnumUtils.Education.DIPLOMA);
         c.setEmploymentStatus(EnumUtils.EmploymentStatus.EMPLOYEE);
-        c.setLastname("Chen");
-        c.setNationality(EnumUtils.Nationality.CHINA); //enum type if possible
         c.setPhone("81567758"); //must use real phone number as we need sms code
         c.setPostalCode("654321");
-        c.setIndustry(EnumUtils.Industry.BANKING_FINANCE);
+        c.setIndustry(EnumUtils.Industry.RETAIL);
         c.setNationality(EnumUtils.Nationality.SINGAPORE);
-        c.setMaritalStatus(EnumUtils.MaritalStatus.MARRIED);
-        c.setEducation(EnumUtils.Education.POSTGRAD);
-        c.setIncome(EnumUtils.Income.FROM_4000_TO_6000);
-        c.setActualIncome(5000.0);
-        c.setEmploymentStatus(EnumUtils.EmploymentStatus.EMPLOYEE);
+        c.setMaritalStatus(EnumUtils.MaritalStatus.SINGLE);
+        
 
         MainAccount ma = new MainAccount();
-        ma.setUserID(ConstantUtils.DEMO_MAIN_ACCOUNT_USER_ID);
-        ma.setPassword(p);
+        ma.setUserID(u1);
+        ma.setPassword(p1);
         ma.setStatus(EnumUtils.StatusType.ACTIVE);
         ma = mainAccountSessionBean.createMainAccount(ma);
         c = newCustomerSessionBean.createCustomer(c);
@@ -72,25 +70,33 @@ public class EntityCustomerBuilder {
         ma.setCustomer(c);
         c.setMainAccount(ma);
         newCustomerSessionBean.updateCustomer(c);
+        mainAccountSessionBean.updateMainAccount(ma);
 
-        String u2 = "c0000002";
+        String u2 = ConstantUtils.DEMO_MAIN_ACCOUNT_USER_ID_2;
         String p2 = HashPwdUtils.hashPwd("password");
 
-        Customer c2 = new Customer();
-        c2.setAddress("19 Tanglin Road, 131-1-1"); //make it a bit more real
-        c2.setBirthDay(new Date()); //make some real birthday.
-        c2.setEmail("wangzhe.lynx2@gmail.com");
-        c2.setFirstname("Zhe");
-        c2.setGender(EnumUtils.Gender.MALE); // pls modify gender to enum type
+        Customer c2 = new Customer(); //Cutomer Group 2: transaction intensive
+        c2.setAddress("19 Tanglin Road, 131-1-1"); 
+        try {
+            c2.setBirthDay(new SimpleDateFormat("dd-MM-yyyy").parse("01-01-1989"));
+        } catch (Exception ex) {
+        }
+        c2.setEmail("ripple0204@gmail.com");      
+        c2.setLastname("Alice");
+        c2.setFirstname("Lee");
+        c2.setFullName("Lee Alice");
+        c2.setGender(EnumUtils.Gender.FEMALE); 
         c2.setIdentityType(EnumUtils.IdentityType.NRIC);
-        c2.setIdentityNumber("S1234223Z");
+        c2.setIdentityNumber("S0000002Z");
         c2.setIncome(EnumUtils.Income.FROM_4000_TO_6000);
-        c2.setEducation(EnumUtils.Education.POSTGRAD);
+        c2.setActualIncome(6000.0);
+        c2.setEducation(EnumUtils.Education.UNIVERSITY);
         c2.setEmploymentStatus(EnumUtils.EmploymentStatus.EMPLOYEE);
-        c2.setLastname("Wang");
-        c2.setNationality(EnumUtils.Nationality.CHINA_HONG_KONG); //enum type if possible
-        c2.setPhone("81567712"); //must use real phone number as we need sms code
+        c2.setIndustry(EnumUtils.Industry.HOTEL_RESTAURANT);
+        c2.setNationality(EnumUtils.Nationality.SINGAPORE); //enum type if possible
+        c2.setPhone("83193049"); //must use real phone number as we need sms code
         c2.setPostalCode("654302");
+        c2.setMaritalStatus(EnumUtils.MaritalStatus.SINGLE);
 
         MainAccount ma2 = new MainAccount();
         ma2.setUserID(u2);
@@ -102,25 +108,33 @@ public class EntityCustomerBuilder {
         ma2.setCustomer(c2);
         c2.setMainAccount(ma2);
         newCustomerSessionBean.updateCustomer(c2);
+        mainAccountSessionBean.updateMainAccount(ma2);
 
-        String u3 = ConstantUtils.DEMO_MAIN_ACCOUNT_USER_ID_2;
+        String u3 = ConstantUtils.DEMO_MAIN_ACCOUNT_USER_ID_3;
         String p3 = HashPwdUtils.hashPwd("password");
 
-        Customer c3 = new Customer();
+        Customer c3 = new Customer(); //Customer Group 3: higher income, Loan demanded
         c3.setAddress("9 Thomson Road, 9-1-B"); //make it a bit more real
-        c3.setBirthDay(new Date()); //make some real birthday.
-        c3.setEmail("leiyang007@gmail.com");
-        c3.setFirstname("Yang");
-        c3.setGender(EnumUtils.Gender.FEMALE); // pls modify gender to enum type
+        try {
+            c3.setBirthDay(new SimpleDateFormat("dd-MM-yyyy").parse("01-01-1979"));
+        } catch (Exception ex) {
+        }
+        c3.setEmail("sunyuxuan123@gmail.com");      
+        c3.setLastname("Jack");
+        c3.setFirstname("Woon");
+        c3.setFullName("Woon Jack");
+        c3.setGender(EnumUtils.Gender.MALE); 
         c3.setIdentityType(EnumUtils.IdentityType.NRIC);
-        c3.setIdentityNumber("S7654321Z");
+        c3.setIdentityNumber("S0000003Z");
         c3.setIncome(EnumUtils.Income.FROM_6000_TO_8000);
-        c3.setEducation(EnumUtils.Education.SECONDARY);
+        c3.setActualIncome(8000.0);
+        c3.setEducation(EnumUtils.Education.UNIVERSITY);
         c3.setEmploymentStatus(EnumUtils.EmploymentStatus.EMPLOYEE);
-        c3.setLastname("Lei");
-        c3.setNationality(EnumUtils.Nationality.GERMANY); //enum type if possible
-        c3.setPhone("94761895"); //must use real phone number as we need sms code
-        c3.setPostalCode("654111");
+        c3.setIndustry(EnumUtils.Industry.SHIPPING_TRANSPORT);
+        c3.setNationality(EnumUtils.Nationality.SINGAPORE); 
+        c3.setPhone("85404279"); 
+        c3.setPostalCode("114302");
+        c3.setMaritalStatus(EnumUtils.MaritalStatus.MARRIED);
 
         MainAccount ma3 = new MainAccount();
         ma3.setUserID(u3);
@@ -132,66 +146,83 @@ public class EntityCustomerBuilder {
         ma3.setCustomer(c3);
         c3.setMainAccount(ma3);
         newCustomerSessionBean.updateCustomer(c3);
+        mainAccountSessionBean.updateMainAccount(ma3);
 
-        String u4 = "c0000004";
+        String u4 = ConstantUtils.DEMO_MAIN_ACCOUNT_USER_ID_4;
         String p4 = HashPwdUtils.hashPwd("password");
 
-        Customer c4 = new Customer();
+        Customer c4 = new Customer(); //Customer group 4: wealthy customer
         c4.setAddress("3 Sim Lim Avenue, 898B-501"); //make it a bit more real
-        c4.setBirthDay(new Date()); //make some real birthday.
-        c4.setEmail("sunyuxuan123@gmail.com");
-        c4.setFirstname("Yuxuan");
-        c4.setGender(EnumUtils.Gender.MALE); // pls modify gender to enum type
+        try {
+            c4.setBirthDay(new SimpleDateFormat("dd-MM-yyyy").parse("01-01-1970"));
+        } catch (Exception ex) {
+        }
+        c4.setEmail("raymondlei90s@gmail.com");      
+        c4.setLastname("Raymond");
+        c4.setFirstname("Lei");
+        c4.setFullName("Lei Raymond");
+        c4.setGender(EnumUtils.Gender.MALE); 
         c4.setIdentityType(EnumUtils.IdentityType.NRIC);
-        c4.setIdentityNumber("S1243267Z");
-        c4.setIncome(EnumUtils.Income.FROM_8000_TO_10000);
-        c4.setEducation(EnumUtils.Education.TECHNICAL);
+        c4.setIdentityNumber("S0000004Z");
+        c4.setIncome(EnumUtils.Income.OVER_10000);
+        c4.setActualIncome(15000.0);
+        c4.setEducation(EnumUtils.Education.POSTGRAD);
         c4.setEmploymentStatus(EnumUtils.EmploymentStatus.EMPLOYEE);
-        c4.setLastname("Sun");
-        c4.setNationality(EnumUtils.Nationality.INDONESIA); //enum type if possible
-        c4.setPhone("81123558"); //must use real phone number as we need sms code
-        c4.setPostalCode("621329");
+        c4.setIndustry(EnumUtils.Industry.IT_TELCO);
+        c4.setNationality(EnumUtils.Nationality.SINGAPORE); 
+        c4.setPhone("94761895"); 
+        c4.setPostalCode("224302");
+        c4.setMaritalStatus(EnumUtils.MaritalStatus.MARRIED);
 
         MainAccount ma4 = new MainAccount();
         ma4.setUserID(u4);
         ma4.setPassword(p4);
         ma4.setStatus(EnumUtils.StatusType.ACTIVE);
-        mainAccountSessionBean.createMainAccount(ma4);
-        newCustomerSessionBean.createCustomer(c4);
+        ma4 = mainAccountSessionBean.createMainAccount(ma4);
+        c4 = newCustomerSessionBean.createCustomer(c4);
 
         ma4.setCustomer(c4);
         c4.setMainAccount(ma4);
         newCustomerSessionBean.updateCustomer(c4);
+        mainAccountSessionBean.updateMainAccount(ma4);
 
-        String u5 = "c0000005";
+        String u5 = ConstantUtils.DEMO_MAIN_ACCOUNT_USER_ID_5;
         String p5 = HashPwdUtils.hashPwd("password");
 
         Customer c5 = new Customer();
         c5.setAddress("28 West Coast Road, B-2"); //make it a bit more real
-        c5.setBirthDay(new Date()); //make some real birthday.
-        c5.setEmail("lilitong01@gmail.com");
-        c5.setFirstname("Litong");
-        c5.setGender(EnumUtils.Gender.MALE); // pls modify gender to enum type
+        try {
+            c5.setBirthDay(new SimpleDateFormat("dd-MM-yyyy").parse("01-01-1970"));
+        } catch (Exception ex) {
+        }
+        c5.setEmail("lei_flash@hotmail.com");
+        c5.setLastname("Low");
+        c5.setFirstname("Coco");
+        c5.setFullName("Low Coco");
+        c5.setGender(EnumUtils.Gender.FEMALE); 
         c5.setIdentityType(EnumUtils.IdentityType.NRIC);
-        c5.setIdentityNumber("S1289812Z");
+        c5.setIdentityNumber("S0000005Z");
         c5.setIncome(EnumUtils.Income.FROM_2000_TO_4000);
-        c5.setEducation(EnumUtils.Education.OTHERS);
+        c5.setActualIncome(3000.0);
+        c5.setEducation(EnumUtils.Education.UNIVERSITY);
         c5.setEmploymentStatus(EnumUtils.EmploymentStatus.EMPLOYEE);
-        c5.setLastname("Chen");
-        c5.setNationality(EnumUtils.Nationality.JAPAN); //enum type if possible
-        c5.setPhone("90028125");//must use real phone number as we need sms code
-        c5.setPostalCode("001409");
+        c5.setIndustry(EnumUtils.Industry.ENTERTAINMENT);
+        c5.setNationality(EnumUtils.Nationality.SINGAPORE); 
+        c5.setPhone("94761895"); 
+        c5.setPostalCode("224302");
+        c5.setMaritalStatus(EnumUtils.MaritalStatus.MARRIED);
 
         MainAccount ma5 = new MainAccount();
         ma5.setUserID(u5);
         ma5.setPassword(p5);
         ma5.setStatus(EnumUtils.StatusType.ACTIVE);
-        mainAccountSessionBean.createMainAccount(ma5);
-        newCustomerSessionBean.createCustomer(c5);
+        ma5 = mainAccountSessionBean.createMainAccount(ma5);
+        c5 = newCustomerSessionBean.createCustomer(c5);
 
         ma5.setCustomer(c5);
         c5.setMainAccount(ma5);
         newCustomerSessionBean.updateCustomer(c5);
+        mainAccountSessionBean.updateMainAccount(ma5);
 
         String u6 = "c0000006";
         String p6 = HashPwdUtils.hashPwd("password");
@@ -222,6 +253,7 @@ public class EntityCustomerBuilder {
         ma6.setCustomer(c6);
         c6.setMainAccount(ma6);
         newCustomerSessionBean.updateCustomer(c6);
+        mainAccountSessionBean.updateMainAccount(ma6);
 
         String u7 = "c0000007";
         String p7 = HashPwdUtils.hashPwd("password");
@@ -252,6 +284,7 @@ public class EntityCustomerBuilder {
         ma7.setCustomer(c7);
         c7.setMainAccount(ma7);
         newCustomerSessionBean.updateCustomer(c7);
+        mainAccountSessionBean.updateMainAccount(ma7);
 
         String u8 = "c0000008";
         String p8 = HashPwdUtils.hashPwd("password");
@@ -278,9 +311,11 @@ public class EntityCustomerBuilder {
         ma8.setStatus(EnumUtils.StatusType.ACTIVE);
         mainAccountSessionBean.createMainAccount(ma8);
         newCustomerSessionBean.createCustomer(c8);
+        
         ma8.setCustomer(c8);
         c8.setMainAccount(ma8);
         newCustomerSessionBean.updateCustomer(c8);
+        mainAccountSessionBean.updateMainAccount(ma8);
 
         String u9 = "c0000009";
         String p9 = HashPwdUtils.hashPwd("password");
@@ -311,6 +346,7 @@ public class EntityCustomerBuilder {
         ma9.setCustomer(c9);
         c9.setMainAccount(ma9);
         newCustomerSessionBean.updateCustomer(c9);
+        mainAccountSessionBean.updateMainAccount(ma9);
 
         return ma;
     }

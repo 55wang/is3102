@@ -137,6 +137,13 @@ public class CustomerDepositSessionBean implements CustomerDepositSessionBeanLoc
         Query q = em.createQuery("SELECT ba FROM DepositAccount ba");
         return q.getResultList();
     }
+    
+    @Override
+    public List<DepositAccount> showAllActiveAccounts() {
+        Query q = em.createQuery("SELECT ba FROM DepositAccount ba WHERE ba.status =:inStatus");
+        q.setParameter("inStatus", EnumUtils.StatusType.ACTIVE);
+        return q.getResultList();
+    }
 
     @Override
     public List<DepositAccount> getAllCustomerAccounts(Long mainAccountId) {
