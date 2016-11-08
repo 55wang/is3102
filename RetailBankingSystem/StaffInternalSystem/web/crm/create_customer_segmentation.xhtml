@@ -46,8 +46,8 @@
                     <div class="ui-g-12 ui-md-5">
                         <p:separator/>
                         <h:panelGrid columns="2" cellpadding="10">
-                            <p:outputLabel for="GroupName" value="Group Name: " />
-                            <p:inputText id="GroupName" value="#{createCustomerSegmentationManagedBean.customerGroup.groupName}" />
+                            <p:outputLabel for="GroupName" value="Group Name: " rendered="#{createCustomerSegmentationManagedBean.functionType == createCustomerSegmentationManagedBean.CREATE_CUSTOMER_GROUP}"/>
+                            <p:inputText id="GroupName" value="#{createCustomerSegmentationManagedBean.customerGroup.groupName}" rendered="#{createCustomerSegmentationManagedBean.functionType == createCustomerSegmentationManagedBean.CREATE_CUSTOMER_GROUP}"/>
                             <p:outputLabel for="DepositRecency" value="Deposit Recency: " />
                             <p:inputText id="DepositRecency" value="#{createCustomerSegmentationManagedBean.customerGroup.depositRecency}" />
                             <p:outputLabel for="DepositFrequency" value="Deposit Frequency: " />
@@ -81,7 +81,7 @@
                             </div>
                             <div class="tag-cloud">
                                 <p:tagCloud model="#{createCustomerSegmentationManagedBean.model}">
-                                    <p:ajax event="select" update="@form" listener="#{createCustomerSegmentationManagedBean.onSelect}" />
+                                    <!--<p:ajax event="select" update="@form"  />-->
                                 </p:tagCloud>
                             </div>
                         </div>
