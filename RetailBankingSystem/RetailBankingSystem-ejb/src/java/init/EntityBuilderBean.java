@@ -21,7 +21,6 @@ import javax.ejb.LocalBean;
 import javax.ejb.Startup;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.sound.sampled.Port;
 import server.utilities.ConstantUtils;
 
 /**
@@ -101,17 +100,16 @@ public class EntityBuilderBean {
         entityCreditCardOrderBuilder.initCreditCardOrder(demoRewardCardProduct, demoPromoProduct);
         entityCaseBuilder.initCase();
         entityBillOrgBuilder.initBillOrganization();
-//        entityPayLahBuilder.initPayLahDemoData();
+        entityPayLahBuilder.initPayLahDemoData();
+        entityTellerCounterBuilder.init();
 
         //wealth
-        List<FinancialInstrument> allFinancialInstruments = entityWealthBuilder.allFinancialInstrument();
-        demoPortfolio = entityWealthBuilder.initWealth(allFinancialInstruments);
-        entityFactBuilder.initSinglePortfolioFact(demoMainAccount, demoPortfolio);
-        demoPortfolio = entityWealthBuilder.initPortfolioFactTable2(demoMainAccount, allFinancialInstruments);
-        entityFactBuilder.initSinglePortfolioFact(demoMainAccount, demoPortfolio);
-
-        entityFactBuilder.initBankFact();
-
-        entityTellerCounterBuilder.init();
+//        List<FinancialInstrument> allFinancialInstruments = entityWealthBuilder.allFinancialInstrument();
+//        demoPortfolio = entityWealthBuilder.initWealth(allFinancialInstruments);
+//        entityFactBuilder.initSinglePortfolioFact(demoMainAccount, demoPortfolio);
+//        demoPortfolio = entityWealthBuilder.initPortfolioFactTable2(demoMainAccount, allFinancialInstruments);
+//        entityFactBuilder.initSinglePortfolioFact(demoMainAccount, demoPortfolio);
+//
+//        entityFactBuilder.initBankFact();
     }
 }

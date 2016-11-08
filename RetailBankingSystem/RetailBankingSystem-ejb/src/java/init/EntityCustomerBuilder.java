@@ -32,7 +32,8 @@ public class EntityCustomerBuilder {
     private MainAccountSessionBeanLocal mainAccountSessionBean;
 
     public MainAccount initCustomer() {
-        String u1 = "c1234567";
+        
+        String u1 = ConstantUtils.DEMO_MAIN_ACCOUNT_USER_ID;
         String p1 = HashPwdUtils.hashPwd("password");
 
         Customer c = new Customer(); //Customer Group 1: Young, or lower income
@@ -69,8 +70,9 @@ public class EntityCustomerBuilder {
         ma.setCustomer(c);
         c.setMainAccount(ma);
         newCustomerSessionBean.updateCustomer(c);
+        mainAccountSessionBean.updateMainAccount(ma);
 
-        String u2 = "c0000002";
+        String u2 = ConstantUtils.DEMO_MAIN_ACCOUNT_USER_ID_2;
         String p2 = HashPwdUtils.hashPwd("password");
 
         Customer c2 = new Customer(); //Cutomer Group 2: transaction intensive
@@ -106,6 +108,7 @@ public class EntityCustomerBuilder {
         ma2.setCustomer(c2);
         c2.setMainAccount(ma2);
         newCustomerSessionBean.updateCustomer(c2);
+        mainAccountSessionBean.updateMainAccount(ma2);
 
         String u3 = "c0000003";
         String p3 = HashPwdUtils.hashPwd("password");
@@ -143,6 +146,7 @@ public class EntityCustomerBuilder {
         ma3.setCustomer(c3);
         c3.setMainAccount(ma3);
         newCustomerSessionBean.updateCustomer(c3);
+        mainAccountSessionBean.updateMainAccount(ma3);
 
         String u4 = "c0000004";
         String p4 = HashPwdUtils.hashPwd("password");
@@ -180,6 +184,7 @@ public class EntityCustomerBuilder {
         ma4.setCustomer(c4);
         c4.setMainAccount(ma4);
         newCustomerSessionBean.updateCustomer(c4);
+        mainAccountSessionBean.updateMainAccount(ma4);
 
         String u5 = "c0000005";
         String p5 = HashPwdUtils.hashPwd("password");
@@ -210,6 +215,7 @@ public class EntityCustomerBuilder {
         ma5.setCustomer(c5);
         c5.setMainAccount(ma5);
         newCustomerSessionBean.updateCustomer(c5);
+        mainAccountSessionBean.updateMainAccount(ma5);
 
         String u6 = "c0000006";
         String p6 = HashPwdUtils.hashPwd("password");
@@ -240,6 +246,7 @@ public class EntityCustomerBuilder {
         ma6.setCustomer(c6);
         c6.setMainAccount(ma6);
         newCustomerSessionBean.updateCustomer(c6);
+        mainAccountSessionBean.updateMainAccount(ma6);
 
         String u7 = "c0000007";
         String p7 = HashPwdUtils.hashPwd("password");
@@ -270,6 +277,7 @@ public class EntityCustomerBuilder {
         ma7.setCustomer(c7);
         c7.setMainAccount(ma7);
         newCustomerSessionBean.updateCustomer(c7);
+        mainAccountSessionBean.updateMainAccount(ma7);
 
         String u8 = "c0000008";
         String p8 = HashPwdUtils.hashPwd("password");
@@ -296,9 +304,11 @@ public class EntityCustomerBuilder {
         ma8.setStatus(EnumUtils.StatusType.ACTIVE);
         mainAccountSessionBean.createMainAccount(ma8);
         newCustomerSessionBean.createCustomer(c8);
+        
         ma8.setCustomer(c8);
         c8.setMainAccount(ma8);
         newCustomerSessionBean.updateCustomer(c8);
+        mainAccountSessionBean.updateMainAccount(ma8);
 
         String u9 = "c0000009";
         String p9 = HashPwdUtils.hashPwd("password");
@@ -329,6 +339,7 @@ public class EntityCustomerBuilder {
         ma9.setCustomer(c9);
         c9.setMainAccount(ma9);
         newCustomerSessionBean.updateCustomer(c9);
+        mainAccountSessionBean.updateMainAccount(ma9);
 
         return ma;
     }
