@@ -148,13 +148,6 @@ and open the template in the editor.
 
 /* end of side menu */
 /*staff log in*/
-.staff-login-layout{
-    width:400px;
-    height:300px;
-    top:350px !important;
-    border-top: 7px solid #c00;
-    box-shadow: 0 10px 10px 0 rgba(0,0,0,0.30),0 6px 3px 0 rgba(0,0,0,0.23);
-}
 .staff-login-body{
     height:100vh;
     background-image: url("../resources/img/staff_login_bg.jpg");
@@ -174,6 +167,28 @@ and open the template in the editor.
 .staff-login-input{
     background: white !important;
 }
+
+.staff-login-layout{
+    margin: 0 auto;
+    width:400px;
+    height:300px;
+    top:15% !important;
+    border-top: 7px solid #c00;
+    box-shadow: 0 10px 10px 0 rgba(0,0,0,0.30),0 6px 3px 0 rgba(0,0,0,0.23);
+}
+
+.staff-login-icon{
+    position:relative; 
+    top:15%; 
+    width: 100%;
+    text-align: center;
+}
+
+.staff-login-icon img{
+
+    width:200px;
+}
+
 /*end of staff log in*/
 /*footer*/
 .footer {
@@ -749,6 +764,31 @@ and open the template in the editor.
 
 .crm-container .color-4 .crm-info .info-amount{
     color: #009688;
+}
+
+.customer-segmentation-container .select-menu-holde{
+    display: block;
+}
+.tag-cloud-holder{
+    text-align: center;
+    position: relative;
+    top: 30px;
+}
+.tag-cloud-holder .tag-cloud-label{
+    font-size: 32px;
+}
+
+.tag-cloud-holder .ui-tagcloud{
+    width:500px;
+    font-size: 32px;
+    margin: 0 auto;
+}
+
+.tag-cloud-holder .ui-tagcloud .ui-state-hover{
+    border: none !important;
+    text-decoration: none !important;
+    box-shadow: none !important;
+    background-color: #ddd;
 }
 /*end of crm*/
 /* general */

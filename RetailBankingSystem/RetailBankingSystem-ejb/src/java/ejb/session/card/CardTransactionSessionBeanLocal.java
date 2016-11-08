@@ -20,6 +20,7 @@ import server.utilities.EnumUtils;
 public interface CardTransactionSessionBeanLocal {
      public Boolean createCardTransaction(CardTransaction ct);
      public List<CardTransaction> getTransactionByStartDateAndEndDate(Date start, Date end);
+     public List<CardTransaction> getTransactionByCCNumberAndStartDateAndEndDate(String ccNumber, Date startDate, Date endDate);
      public List<CardTransaction> getListCardTransactionsByCcaId(Long ccaId);
      public List<CardTransaction> getListCardTransactionsByStatus(EnumUtils.CardTransactionStatus status);
      public CardTransaction getCardTransactionByCcaId(Long ccaId);

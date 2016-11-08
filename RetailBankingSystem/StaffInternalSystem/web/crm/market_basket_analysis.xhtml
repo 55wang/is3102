@@ -12,14 +12,17 @@
             <title>Merlion Internal</title>
             <em:cssImport></em:cssImport>
         </h:head>
-        <h:body>
+        <h:body style="background: #efefef;">
             <em:staffNavBar context="crm"></em:staffNavBar>
             <em:staffSideBar top="crm" side="marketBasketAnalysis"></em:staffSideBar>
             <div class="container">
                 <h:form id="mainForm">
-                    <p:panel header="Market Basket Analysis">
+                    <div class="ui-g-12 ui-md-12 datatable-holder">
 
-                        <p:dataTable value="#{marketBasketAnalysisManagedBean.rules}" var="rule" >
+                        <p:dataTable value="#{marketBasketAnalysisManagedBean.rules}" var="rule" paginator="true" paginatorAlwaysVisible="true" class="datatable-main">
+                            <f:facet name="header">
+                                    Market Basket Analysis
+                                </f:facet>
                             <p:column headerText="Antecedent">
                                 <h:outputText value="#{rule.antecedent}" />
                             </p:column>
@@ -37,7 +40,7 @@
                         </p:commandButton>
                         <p:commandButton value="Test getListProductName for all customers" action="#{marketBasketAnalysisManagedBean.testGetListProductName()}" update="@form">
                         </p:commandButton>
-                    </p:panel>
+                    </div>
                     <p:messages id="messagesStatus" redisplay="false" >
                     </p:messages>
                 </h:form>

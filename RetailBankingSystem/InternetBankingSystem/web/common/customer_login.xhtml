@@ -18,8 +18,10 @@ and open the template in the editor.
             <em:cssImport></em:cssImport>
         </h:head>
         <h:body class="customer-login-body">
-            <h:graphicImage library="img" name="merlionLogo.png" class="h-center" style="top:18%; width:200px"/>
-            <p:layout class="h-center customer-login-layout" style="">
+            <div class="customer-login-icon">
+                <h:graphicImage library="img" name="merlionLogo.png" />
+            </div>
+            <p:layout class="customer-login-layout">
                 <p:layoutUnit position="center" class="customer-login-panel-layoutUnit">
                     <h:form id="customer-login-form">
                         <p:messages id="messagesStatus" redisplay="false">

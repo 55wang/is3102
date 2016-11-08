@@ -21,7 +21,6 @@ import javax.ejb.LocalBean;
 import javax.ejb.Startup;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.sound.sampled.Port;
 import server.utilities.ConstantUtils;
 
 /**
@@ -101,9 +100,10 @@ public class EntityBuilderBean {
         entityCreditCardOrderBuilder.initCreditCardOrder(demoRewardCardProduct, demoPromoProduct);
         entityCaseBuilder.initCase();
         entityBillOrgBuilder.initBillOrganization();
-//        entityPayLahBuilder.initPayLahDemoData();
+        entityPayLahBuilder.initPayLahDemoData();
+        entityTellerCounterBuilder.init();
 
-        //wealth
+//        wealth
 //        List<FinancialInstrument> allFinancialInstruments = entityWealthBuilder.allFinancialInstrument();
 //        demoPortfolio = entityWealthBuilder.initWealth(allFinancialInstruments);
 //        entityFactBuilder.initSinglePortfolioFact(demoMainAccount, demoPortfolio);
@@ -112,6 +112,5 @@ public class EntityBuilderBean {
 //
 //        entityFactBuilder.initBankFact();
 
-        entityTellerCounterBuilder.init();
     }
 }
