@@ -46,7 +46,7 @@ public class EntityCreditCardOrderBuilder {
     private LoginSessionBeanLocal loginBean;
 
     public void initCreditCardOrder(RewardCardProduct demoRewardCardProduct, PromoProduct demoPromoProduct) {
-        MainAccount demoMainAccount = loginBean.getMainAccountByUserID(ConstantUtils.DEMO_MAIN_ACCOUNT_USER_ID);
+        MainAccount demoMainAccount = loginBean.getMainAccountByUserID(ConstantUtils.DEMO_MAIN_ACCOUNT_USER_ID_1);
         //create an active cca and its cco
         CreditCardAccount cca = new CreditCardAccount();
         cca.setCreditCardProduct(demoRewardCardProduct);

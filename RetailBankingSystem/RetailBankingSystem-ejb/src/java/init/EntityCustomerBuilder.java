@@ -32,8 +32,8 @@ public class EntityCustomerBuilder {
     private MainAccountSessionBeanLocal mainAccountSessionBean;
 
     public MainAccount initCustomer() {
-        
-        String u1 = ConstantUtils.DEMO_MAIN_ACCOUNT_USER_ID;
+
+        String u1 = ConstantUtils.DEMO_MAIN_ACCOUNT_USER_ID_1;
         String p1 = HashPwdUtils.hashPwd("password");
 
         Customer c = new Customer(); //Customer Group 1: Young, or lower income
@@ -110,7 +110,7 @@ public class EntityCustomerBuilder {
         newCustomerSessionBean.updateCustomer(c2);
         mainAccountSessionBean.updateMainAccount(ma2);
 
-        String u3 = "c0000003";
+        String u3 = ConstantUtils.DEMO_MAIN_ACCOUNT_USER_ID_3;
         String p3 = HashPwdUtils.hashPwd("password");
 
         Customer c3 = new Customer(); //Customer Group 3: higher income, Loan demanded
@@ -148,7 +148,7 @@ public class EntityCustomerBuilder {
         newCustomerSessionBean.updateCustomer(c3);
         mainAccountSessionBean.updateMainAccount(ma3);
 
-        String u4 = "c0000004";
+        String u4 = ConstantUtils.DEMO_MAIN_ACCOUNT_USER_ID_4;
         String p4 = HashPwdUtils.hashPwd("password");
 
         Customer c4 = new Customer(); //Customer group 4: wealthy customer
@@ -186,31 +186,38 @@ public class EntityCustomerBuilder {
         newCustomerSessionBean.updateCustomer(c4);
         mainAccountSessionBean.updateMainAccount(ma4);
 
-        String u5 = "c0000005";
+        String u5 = ConstantUtils.DEMO_MAIN_ACCOUNT_USER_ID_5;
         String p5 = HashPwdUtils.hashPwd("password");
 
         Customer c5 = new Customer();
         c5.setAddress("28 West Coast Road, B-2"); //make it a bit more real
-        c5.setBirthDay(new Date()); //make some real birthday.
-        c5.setEmail("lilitong01@gmail.com");
-        c5.setFirstname("Litong");
-        c5.setGender(EnumUtils.Gender.MALE); // pls modify gender to enum type
+        try {
+            c5.setBirthDay(new SimpleDateFormat("dd-MM-yyyy").parse("01-01-1970"));
+        } catch (Exception ex) {
+        }
+        c5.setEmail("lei_flash@hotmail.com");
+        c5.setLastname("Low");
+        c5.setFirstname("Coco");
+        c5.setFullName("Low Coco");
+        c5.setGender(EnumUtils.Gender.FEMALE); 
         c5.setIdentityType(EnumUtils.IdentityType.NRIC);
-        c5.setIdentityNumber("S1289812Z");
+        c5.setIdentityNumber("S0000005Z");
         c5.setIncome(EnumUtils.Income.FROM_2000_TO_4000);
-        c5.setEducation(EnumUtils.Education.OTHERS);
+        c5.setActualIncome(3000.0);
+        c5.setEducation(EnumUtils.Education.UNIVERSITY);
         c5.setEmploymentStatus(EnumUtils.EmploymentStatus.EMPLOYEE);
-        c5.setLastname("Chen");
-        c5.setNationality(EnumUtils.Nationality.JAPAN); //enum type if possible
-        c5.setPhone("90028125");//must use real phone number as we need sms code
-        c5.setPostalCode("001409");
+        c5.setIndustry(EnumUtils.Industry.ENTERTAINMENT);
+        c5.setNationality(EnumUtils.Nationality.SINGAPORE); 
+        c5.setPhone("94761895"); 
+        c5.setPostalCode("224302");
+        c5.setMaritalStatus(EnumUtils.MaritalStatus.MARRIED);
 
         MainAccount ma5 = new MainAccount();
         ma5.setUserID(u5);
         ma5.setPassword(p5);
         ma5.setStatus(EnumUtils.StatusType.ACTIVE);
-        mainAccountSessionBean.createMainAccount(ma5);
-        newCustomerSessionBean.createCustomer(c5);
+        ma5 = mainAccountSessionBean.createMainAccount(ma5);
+        c5 = newCustomerSessionBean.createCustomer(c5);
 
         ma5.setCustomer(c5);
         c5.setMainAccount(ma5);

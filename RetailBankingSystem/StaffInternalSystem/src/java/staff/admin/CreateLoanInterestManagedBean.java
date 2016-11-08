@@ -132,29 +132,29 @@ public class CreateLoanInterestManagedBean implements Serializable {
         LoanRangeInterestDTO i1 = new LoanRangeInterestDTO();
         i1.setStartMonth(0);
         i1.setEndMonth(12);
-        i1.setInterestRate(0.018);
+        i1.setInterestRate(0.019);
         i1.setExternalInteret("NO_EXTERNAL_INTEREST");
         getCollectionDTOs().add(i1);
 
         LoanRangeInterestDTO i2 = new LoanRangeInterestDTO();
         i2.setStartMonth(13);
         i2.setEndMonth(24);
-        i2.setInterestRate(0.018);
+        i2.setInterestRate(0.019);
         i2.setExternalInteret("NO_EXTERNAL_INTEREST");
         getCollectionDTOs().add(i2);
 
         LoanRangeInterestDTO i3 = new LoanRangeInterestDTO();
         i3.setStartMonth(25);
         i3.setEndMonth(36);
-        i3.setInterestRate(0.018);
+        i3.setInterestRate(0.019);
         i3.setExternalInteret("NO_EXTERNAL_INTEREST");
         getCollectionDTOs().add(i3);
 
         LoanRangeInterestDTO i4 = new LoanRangeInterestDTO();
         i4.setStartMonth(37);
         i4.setEndMonth(-1);
-        i4.setInterestRate(0.018);
-        i4.setExternalInteret("NO_EXTERNAL_INTEREST");
+        i4.setInterestRate(0.012);
+        i4.setExternalInteret("FHR18_INTEREST");
         getCollectionDTOs().add(i4);
     }
 
