@@ -9,20 +9,22 @@ import entity.common.AuditLog;
 import entity.crm.MarketingCampaign;
 import entity.customer.CustomerCase;
 import entity.customer.WealthManagementSubscriber;
-import entity.embedded.StaffInfo;
 import entity.loan.LoanAccount;
 import entity.loan.LoanApplication;
 import entity.wealth.InvestplanCommunication;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.persistence.Temporal;
+import server.utilities.EnumUtils;
 import server.utilities.EnumUtils.StatusType;
 
 /**
@@ -41,8 +43,13 @@ public class StaffAccount implements Serializable {
     @Column(unique = true)
     private String email;
     private StatusType status = StatusType.PENDING;
-    @Embedded
-    private StaffInfo staffInfo = new StaffInfo();
+    private String address;
+    private String postalCode;
+    private String phone;
+    private EnumUtils.Nationality nationality;
+    private EnumUtils.Gender gender;
+    @Temporal(javax.persistence.TemporalType.DATE)
+    private Date birthDay;
 
     // mapping
     @ManyToMany(mappedBy = "staffAccounts")
@@ -73,28 +80,41 @@ public class StaffAccount implements Serializable {
     public String getFullName() {
         return this.getFirstName() + " " + this.getLastName();
     }
-    
+
     public void addRole(Role r) {
         roles.add(r);
     }
-    
+
     @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof StaffAccount)) {
+    public int hashCode() {
+        int hash = 5;
+        hash = 67 * hash + Objects.hashCode(this.username);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
             return false;
         }
-        StaffAccount other = (StaffAccount) object;
-        if ((this.username == null && other.username != null) || (this.username != null && !this.username.equals(other.username))) {
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final StaffAccount other = (StaffAccount) obj;
+        if (!Objects.equals(this.username, other.username)) {
             return false;
         }
         return true;
     }
+    
+    
 
     @Override
     public String toString() {
-        return "StaffAccount{" + "username=" + username + ", firstName=" + firstName + ", lastName=" + lastName + ", password=" + password + ", email=" + email + ", status=" + status + ", staffInfo=" + staffInfo + ", roles=" + getRoles() + ", auditLog=" + auditLog + ", senderConversation=" + senderConversation + ", receiverConversation=" + receiverConversation + ", cases=" + cases + ", wealthManagementSubscribers=" + wealthManagementSubscribers + '}';
+        return "StaffAccount{" + "username=" + getUsername() + ", firstName=" + getFirstName() + ", lastName=" + getLastName() + ", password=" + getPassword() + ", email=" + getEmail() + ", status=" + getStatus() + ", address=" + getAddress() + ", postalCode=" + getPostalCode() + ", phone=" + getPhone() + ", nationality=" + getNationality() + ", gender=" + getGender() + ", birthDay=" + getBirthDay() + ", roles=" + roles + ", auditLog=" + auditLog + ", senderConversation=" + senderConversation + ", receiverConversation=" + receiverConversation + ", investplanCommunications=" + investplanCommunications + ", cases=" + cases + ", wealthManagementSubscribers=" + wealthManagementSubscribers + ", marketingCampaign=" + marketingCampaign + ", loanAccounts=" + loanAccounts + ", loanApplications=" + loanApplications + '}';
     }
+    
+    
 
     // Getter and Setter
     public String getUsername() {
@@ -197,20 +217,6 @@ public class StaffAccount implements Serializable {
         this.email = email;
     }
 
-    /**
-     * @return the staffInfo
-     */
-    public StaffInfo getStaffInfo() {
-        return staffInfo;
-    }
-
-    /**
-     * @param staffInfo the staffInfo to set
-     */
-    public void setStaffInfo(StaffInfo staffInfo) {
-        this.staffInfo = staffInfo;
-    }
-
     public List<CustomerCase> getCases() {
         return cases;
     }
@@ -254,7 +260,7 @@ public class StaffAccount implements Serializable {
     public void setRoles(List<Role> roles) {
         this.roles = roles;
     }
-        
+
     public List<MarketingCampaign> getMarketingCampaign() {
         return marketingCampaign;
     }
@@ -297,5 +303,89 @@ public class StaffAccount implements Serializable {
 
     public void setInvestplanCommunications(List<InvestplanCommunication> investplanCommunications) {
         this.investplanCommunications = investplanCommunications;
+    }
+
+    /**
+     * @return the address
+     */
+    public String getAddress() {
+        return address;
+    }
+
+    /**
+     * @param address the address to set
+     */
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    /**
+     * @return the postalCode
+     */
+    public String getPostalCode() {
+        return postalCode;
+    }
+
+    /**
+     * @param postalCode the postalCode to set
+     */
+    public void setPostalCode(String postalCode) {
+        this.postalCode = postalCode;
+    }
+
+    /**
+     * @return the phone
+     */
+    public String getPhone() {
+        return phone;
+    }
+
+    /**
+     * @param phone the phone to set
+     */
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    /**
+     * @return the nationality
+     */
+    public EnumUtils.Nationality getNationality() {
+        return nationality;
+    }
+
+    /**
+     * @param nationality the nationality to set
+     */
+    public void setNationality(EnumUtils.Nationality nationality) {
+        this.nationality = nationality;
+    }
+
+    /**
+     * @return the gender
+     */
+    public EnumUtils.Gender getGender() {
+        return gender;
+    }
+
+    /**
+     * @param gender the gender to set
+     */
+    public void setGender(EnumUtils.Gender gender) {
+        this.gender = gender;
+    }
+
+    /**
+     * @return the birthDay
+     */
+    public Date getBirthDay() {
+        return birthDay;
+    }
+
+    /**
+     * @param birthDay the birthDay to set
+     */
+    public void setBirthDay(Date birthDay) {
+        this.birthDay = birthDay;
     }
 }
