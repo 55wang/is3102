@@ -337,12 +337,15 @@ public class SACHSessionBean {
         System.out.println("[SACH]:");
         System.out.println("Received payment instruction...");
 
+        pt.setSettled(true);
         // send to mbs
         Form form = new Form(); //bank info
         form.param("referenceNumber", pt.getReferenceNumber());
         form.param("amount", pt.getAmount().toString());
-        form.param("accountNumber", pt.getAccountNumber());
+        form.param("toBankCode", pt.getToBankCode());
+        form.param("toBankAccount", pt.getAccountNumber());
         form.param("toName", pt.getToName());
+        form.param("fromCode", pt.getFromBankCode());
         form.param("fromName", pt.getFromName());
         form.param("myInitial", pt.getMyInitial());
 
@@ -399,9 +402,10 @@ public class SACHSessionBean {
         System.out.println("Received payment instruction...");
         // send to mbs
         Form form = new Form(); //bank info
+        form.param("referenceNumber", bt.getReferenceNumber());
         form.param("partnerBankCode", bt.getPartnerBankCode());
         form.param("fromBankCode", bt.getFromBankCode());
-        form.param("ccNumber", bt.getReferenceNumber());
+        form.param("ccNumber", bt.getBillReferenceNumber());
         form.param("ccAmount", bt.getAmount().toString());
 
         List<SachSettlement> bankAccounts = getSettlements();

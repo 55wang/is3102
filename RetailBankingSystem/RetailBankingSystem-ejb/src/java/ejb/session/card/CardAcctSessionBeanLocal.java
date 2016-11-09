@@ -62,5 +62,6 @@ public interface CardAcctSessionBeanLocal {
     public List<DebitCardAccount> getListDebitCardAccountsByIdAndNotStatus(Long id, EnumUtils.CardAccountStatus status);
     public List<DebitCardAccount> getListDebitCardAccountsByStatus(EnumUtils.CardAccountStatus status);
     public DebitCardAccount updateDebitAccount(DebitCardAccount dca);
+    public List<DebitCardAccount> getListDebitCardAccountsInProcess();
 
 }

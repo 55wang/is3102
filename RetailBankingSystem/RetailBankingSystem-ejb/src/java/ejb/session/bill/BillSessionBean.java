@@ -6,9 +6,11 @@
 package ejb.session.bill;
 
 import entity.bill.BankEntity;
+import entity.bill.BillFundTransferRecord;
 import entity.bill.BillingOrg;
 import entity.bill.GiroArrangement;
 import entity.bill.Organization;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -172,4 +174,26 @@ public class BillSessionBean implements BillSessionBeanLocal {
         return q.getResultList();
     }
 
+    @Override
+    public List<BillFundTransferRecord> updateTransactionStatusSettled(List<String> referenceNums) {
+        List<BillFundTransferRecord> transactionRecords = new ArrayList<>();
+        for (String referenceNum : referenceNums) {
+            System.out.println(".  " + referenceNum + " is settled");
+            BillFundTransferRecord btr = em.find(BillFundTransferRecord.class, referenceNum);
+            if (btr == null) {
+                continue;
+            }
+            btr.setSettled(Boolean.TRUE);
+            em.merge(btr);
+            em.flush();
+            transactionRecords.add(btr);
+        }
+        return transactionRecords;
+    }
+
+    @Override
+    public BillFundTransferRecord createBillFundTransferRecord(BillFundTransferRecord o) {
+        em.persist(o);
+        return o;
+    }
 }

@@ -20,7 +20,7 @@
                     <p:panel header="Debit Cards">
                         <p:messages id="messagesStatus" redisplay="false" >
                             <h:panelGrid columns="2" cellpadding="5">
-                                <p:dataTable var="dca" value="#{customerDebitManagedBean.dcas}">
+                                <p:dataTable var="dca" value="#{customerDebitManagedBean.activeDcas}">
                                     <p:column headerText="Debit Card Number">
                                         <h:outputText value="#{dca.creditCardNum}" />
                                     </p:column>
@@ -32,19 +32,19 @@
                                     <p:column headerText="Action">
 
 
-                                            <p:menu>
-                                                <p:submenu>
-                                                    <p:menuitem value="View transactions" action="#{customerCardManagedBean.sendDCTransactionDetail(dca)}" />
-                                                </p:submenu>
-                                            </p:menu>
-                                        
-                                            <p:commandButton value="Cancel" action="#{customerCardManagedBean.terminateDebitCard(dca)}" update="@form">
-                                                <p:confirm header="Confirmation" message="Are you sure you want to close your account?" icon="ui-icon-alert" />
-                                                <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
-                                                    <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
-                                                    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
-                                                </p:confirmDialog>
-                                            </p:commandButton>
+                                        <p:menu>
+                                            <p:submenu>
+                                                <p:menuitem value="View transactions" action="#{customerCardManagedBean.sendDCTransactionDetail(dca)}" />
+                                            </p:submenu>
+                                        </p:menu>
+
+                                        <p:commandButton value="Cancel" action="#{customerCardManagedBean.terminateDebitCard(dca)}" update="@form">
+                                            <p:confirm header="Confirmation" message="Are you sure you want to close your account?" icon="ui-icon-alert" />
+                                            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                                                <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                                                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                                            </p:confirmDialog>
+                                        </p:commandButton>
 
                                     </p:column>
 
@@ -54,6 +54,36 @@
 
                             </h:panelGrid>
                         </p:messages>
+                    </p:panel>
+
+                    <p:panel header="Debit Card Application">
+                        <h:panelGrid columns="2" cellpadding="5">
+                            <p:dataTable var="dca" value="#{customerDebitManagedBean.pendingDcas}">
+                                <p:column headerText="Debit Card Number">
+                                    <h:outputText value="#{dca.creditCardNum}" />
+                                </p:column>
+
+                                <p:column headerText="Status">
+                                    <h:outputText value="#{dca.cardStatus}" />
+                                </p:column>
+
+                                <p:column headerText="Action">
+
+                                    <p:commandButton value="Cancel" action="#{customerCardManagedBean.terminateDebitCard(dca)}" update="@form">
+                                        <p:confirm header="Confirmation" message="Are you sure you want to close your account?" icon="ui-icon-alert" />
+                                        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                                            <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                                            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                                        </p:confirmDialog>
+                                    </p:commandButton>
+
+                                </p:column>
+
+
+
+                            </p:dataTable>
+
+                        </h:panelGrid>
                     </p:panel>
                 </h:form>
             </div>

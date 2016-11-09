@@ -11,6 +11,7 @@ import ejb.session.common.LoginSessionBeanLocal;
 import ejb.session.common.OTPSessionBeanLocal;
 import ejb.session.dams.CustomerDepositSessionBeanLocal;
 import ejb.session.webservice.WebserviceSessionBeanLocal;
+import entity.bill.BillFundTransferRecord;
 import entity.bill.BillingOrg;
 import entity.bill.Organization;
 import entity.common.BillTransferRecord;
@@ -20,6 +21,7 @@ import entity.dams.account.DepositAccount;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -148,6 +150,8 @@ public class PayCCBillManagedBean implements Serializable {
         webserviceBean.billingClearingSACH(btr);
         da.removeBalance(amount);
         depositBean.updateAccount(da);
+        
+
     }
 
     public String getBillName(String id) {

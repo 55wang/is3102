@@ -143,7 +143,7 @@ public class InterBankTransferManagedBean implements Serializable {
     }
     
     public void transferFAST() {
-        transferMethod = "FAST";
+        transferMethod=  "FAST";
         transfer();
     }
     

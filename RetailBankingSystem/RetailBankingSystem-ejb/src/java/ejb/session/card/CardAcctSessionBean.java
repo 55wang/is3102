@@ -234,6 +234,16 @@ public class CardAcctSessionBean implements CardAcctSessionBeanLocal {
     }
 
     @Override
+    public List<DebitCardAccount> getListDebitCardAccountsInProcess() {
+        Query q = em.createQuery("SELECT cca FROM DebitCardAccount cca WHERE cca.CardStatus = :inStatus1 OR cca.CardStatus = :inStatus2 OR cca.CardStatus = :inStatus3");
+        q.setParameter("inStatus1", CardAccountStatus.APPROVED);
+        q.setParameter("inStatus2", CardAccountStatus.PENDING);
+        q.setParameter("inStatus3", CardAccountStatus.ISSUED);
+
+        return q.getResultList();
+    }
+
+    @Override
     public CreditCardAccount getCardAccountById(Long cardID) {
         return em.find(CreditCardAccount.class, cardID);
     }

@@ -34,7 +34,8 @@ import utils.SessionUtils;
 public class CustomerDebitManagedBean implements Serializable {
 
     private Customer customer;
-    private List<DebitCardAccount> dcas;
+    private List<DebitCardAccount> activeDcas;
+    private List<DebitCardAccount> pendingDcas;
     private List<CardTransaction> cardTransactions;
     private String APPLICATION_STATUS_PENDING = EnumUtils.CardAccountStatus.PENDING.toString();
 
@@ -63,7 +64,8 @@ public class CustomerDebitManagedBean implements Serializable {
     public void setCustomer() {
         System.out.println("@POSTCONSTRUCT INIT CustomerCardManagedBean");
         this.customer = customerProfileSessionBean.getCustomerByUserID(SessionUtils.getUserName());
-        this.setDcas(cardAcctSessionBean.getListDebitCardAccountsByIdAndNotStatus(customer.getMainAccount().getId(),CardAccountStatus.CLOSED)); //that is not closed
+        this.setActiveDcas(cardAcctSessionBean.getListDebitCardAccountsByStatus(CardAccountStatus.ACTIVE));
+        this.setPendingDcas(cardAcctSessionBean.getListDebitCardAccountsInProcess()); //that is not closed
     }
 
     public Customer getCustomer() {
@@ -82,14 +84,6 @@ public class CustomerDebitManagedBean implements Serializable {
         this.cardTransactions = cardTransactions;
     }
 
-    public List<DebitCardAccount> getDcas() {
-        return dcas;
-    }
-
-    public void setDcas(List<DebitCardAccount> dcas) {
-        this.dcas = dcas;
-    }
-
     public String getAPPLICATION_STATUS_PENDING() {
         return APPLICATION_STATUS_PENDING;
     }
@@ -97,4 +91,33 @@ public class CustomerDebitManagedBean implements Serializable {
     public void setAPPLICATION_STATUS_PENDING(String APPLICATION_STATUS_PENDING) {
         this.APPLICATION_STATUS_PENDING = APPLICATION_STATUS_PENDING;
     }
+
+    /**
+     * @return the activeDcas
+     */
+    public List<DebitCardAccount> getActiveDcas() {
+        return activeDcas;
+    }
+
+    /**
+     * @param activeDcas the activeDcas to set
+     */
+    public void setActiveDcas(List<DebitCardAccount> activeDcas) {
+        this.activeDcas = activeDcas;
+    }
+
+    /**
+     * @return the pendingDcas
+     */
+    public List<DebitCardAccount> getPendingDcas() {
+        return pendingDcas;
+    }
+
+    /**
+     * @param pendingDcas the pendingDcas to set
+     */
+    public void setPendingDcas(List<DebitCardAccount> pendingDcas) {
+        this.pendingDcas = pendingDcas;
+    }
+
 }

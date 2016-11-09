@@ -8,10 +8,12 @@ package webservice.restful.transfer;
 import ejb.session.bill.BillSessionBeanLocal;
 import ejb.session.dams.CustomerDepositSessionBeanLocal;
 import ejb.session.webservice.WebserviceSessionBeanLocal;
+import entity.bill.BillFundTransferRecord;
 import entity.bill.GiroArrangement;
 import entity.common.BillTransferRecord;
 import entity.dams.account.DepositAccount;
 import java.math.BigDecimal;
+import java.util.Date;
 import javax.ejb.EJB;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
@@ -93,7 +95,17 @@ public class ReceiveGIROPaymentRequest {
             serviceBean.billingClearingSACH(btr);
             DepositAccount da = ga.getDepositAccount();
             depositBean.payBillFromAccount(da, new BigDecimal(amount));
-
+            
+            BillFundTransferRecord bft = new BillFundTransferRecord();
+            bft.setReferenceNumber(referenceNumber);
+            bft.setToBankCode("001");
+            bft.setBillReferenceNumber(billReferenceNumber);
+            bft.setShortCode(shortCode);
+            bft.setCreationDate(new Date());
+            bft.setAmount(new BigDecimal(amount));
+            bft.setSettled(Boolean.FALSE);
+            billBean.createBillFundTransferRecord(bft);
+            
             ErrorDTO err = new ErrorDTO();
             err.setCode(0);
             err.setError("SUCCESS");

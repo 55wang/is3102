@@ -5,9 +5,14 @@
  */
 package ejb.session.webservice;
 
+import ejb.session.bill.BillSessionBeanLocal;
+import entity.bill.BillFundTransferRecord;
 import entity.common.BillTransferRecord;
 import entity.common.TransferRecord;
+import java.math.BigDecimal;
+import java.util.Date;
 import javax.ejb.Asynchronous;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.json.JsonObject;
 import javax.persistence.EntityManager;
@@ -27,6 +32,9 @@ import protocal.swift.SwiftMessage;
  */
 @Stateless
 public class WebserviceSessionBean implements WebserviceSessionBeanLocal {
+
+    @EJB
+    private BillSessionBeanLocal billSessionBean;
 
     @PersistenceContext(unitName = "RetailBankingSystem-ejbPU")
     private EntityManager em;
@@ -110,7 +118,17 @@ public class WebserviceSessionBean implements WebserviceSessionBeanLocal {
 
         // This is the response
         JsonObject jsonString = target.request(MediaType.APPLICATION_JSON).post(Entity.entity(form, MediaType.APPLICATION_FORM_URLENCODED), JsonObject.class);
+        
+        BillFundTransferRecord bft = new BillFundTransferRecord();
+        bft.setReferenceNumber(tr.getReferenceNumber());
+        bft.setAmount(tr.getAmount());
+        bft.setToBankCode(tr.getToBankCode());
+        bft.setToBankAccount(tr.getAccountNumber());
+        bft.setFromBankCode("001");
+        bft.setSettled(Boolean.FALSE);
+        bft.setCreationDate(new Date());
 
+        billSessionBean.createBillFundTransferRecord(bft);
         if (jsonString.getString("message").equals("SUCCESS")) {
             System.out.println(".");
             System.out.println("[MBS]:");
@@ -130,12 +148,12 @@ public class WebserviceSessionBean implements WebserviceSessionBeanLocal {
         form.param("referenceNumber", btr.getReferenceNumber());
         form.param("amount", btr.getAmount().toString());
         form.param("partnerBankCode", btr.getPartnerBankCode()); // other bank
-        form.param("partnerBankAccount", btr.getPartnerBankAccount()); 
+        form.param("partnerBankAccount", btr.getPartnerBankAccount());
         form.param("shortCode", btr.getShortCode());
         form.param("fromBankCode", "001");
         form.param("organizationName", btr.getOrganizationName());
         form.param("billReferenceNumber", btr.getBillReferenceNumber());
-        
+
         System.out.println("Sending payment instruction...");
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(SACH_BILLING_CLEARING);
@@ -143,10 +161,24 @@ public class WebserviceSessionBean implements WebserviceSessionBeanLocal {
         // This is the response
         JsonObject jsonString = target.request(MediaType.APPLICATION_JSON).post(Entity.entity(form, MediaType.APPLICATION_FORM_URLENCODED), JsonObject.class);
 
+        BillFundTransferRecord bft = new BillFundTransferRecord();
+        bft.setReferenceNumber(btr.getReferenceNumber());
+        bft.setAmount(btr.getAmount());
+        bft.setBillReferenceNumber(btr.getBillReferenceNumber());
+        bft.setToBankCode(btr.getPartnerBankCode());
+        bft.setToBankAccount(btr.getPartnerBankAccount());
+        bft.setShortCode(btr.getShortCode());
+        bft.setFromBankCode("001");
+        bft.setOrganizationName(btr.getOrganizationName());
+        bft.setSettled(Boolean.FALSE);
+        bft.setCreationDate(new Date());
+
+        billSessionBean.createBillFundTransferRecord(bft);
+        
         if (jsonString.getString("message").equals("SUCCESS")) {
             System.out.println(".");
             System.out.println("[MBS]:");
-            System.out.println("Received response from SACH...");   
+            System.out.println("Received response from SACH...");
             em.persist(btr);
         } else {
             System.out.println("FAIL");
