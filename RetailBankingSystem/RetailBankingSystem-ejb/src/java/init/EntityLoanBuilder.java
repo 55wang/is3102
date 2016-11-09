@@ -197,7 +197,7 @@ public class EntityLoanBuilder {
         // start of personal loan
         LoanInterest loanInterest1 = new LoanInterest();
         loanInterest1.setName(ConstantUtils.DEMO_PERSONAL_LOAN_INTEREST_NAME_12);
-        loanInterest1.setStartMonth(1);
+        loanInterest1.setStartMonth(0);
         loanInterest1.setEndMonth(12); // need to differetiate
         loanInterest1.setProductType(EnumUtils.LoanProductType.LOAN_PRODUCT_TYPE_PERSONAL);
         loanInterest1.setInterestRate(0.085);
@@ -231,12 +231,12 @@ public class EntityLoanBuilder {
         loanAccount.setLoanProduct(loanProduct);
         loanAccount.setMainAccount(demoMainAccount);
         loanAccount.setLoanOfficer(staffAccountSessionBean.getAccountByUsername(ConstantUtils.LOAN_OFFICIER_USERNAME));
-        loanAccount.setPaymentStartDate(new Date());
-        loanAccount.setMaturityDate(DateUtils.addYearsToDate(new Date(), loanAccount.getTenure()));// calculated 
+        // calculated 
         loanAccount.setPrincipal(10000.0);
         loanAccount.setOutstandingPrincipal(loanAccount.getPrincipal());
         loanAccount.setLoanAccountStatus(EnumUtils.LoanAccountStatus.APPROVED);
-        loanAccount.setCurrentPeriod(0);
+        loanAccount.setPaymentStartDate(new Date());
+        loanAccount.setMaturityDate(DateUtils.addYearsToDate(new Date(), loanAccount.getTenure()));
         loanAccount.setPaymentDate(12);
         
         loanAccount.setMonthlyInstallment(loanPaymentSessionBean.calculateMonthlyInstallment(loanAccount));
@@ -253,7 +253,7 @@ public class EntityLoanBuilder {
         // late payment demo account
         LoanInterest loanInterest1 = new LoanInterest();
         loanInterest1.setName(ConstantUtils.DEMO_PERSONAL_LOAN_INTEREST_NAME_24);
-        loanInterest1.setStartMonth(1);
+        loanInterest1.setStartMonth(0);
         loanInterest1.setEndMonth(24); // need to differetiate
         loanInterest1.setProductType(EnumUtils.LoanProductType.LOAN_PRODUCT_TYPE_PERSONAL);
         loanInterest1.setInterestRate(0.085);
@@ -295,7 +295,7 @@ public class EntityLoanBuilder {
         loanAccount.setPrincipal(10000.0); 
         loanAccount.setLoanAccountStatus(EnumUtils.LoanAccountStatus.APPROVED);
         loanAccount.setCurrentPeriod(0);
-        loanAccount.setPaymentDate(8);
+        loanAccount.setPaymentDate(9);
         loanAccount.setOutstandingPrincipal(loanAccount.getPrincipal());
         loanAccount.setMonthlyInstallment(loanPaymentSessionBean.calculateMonthlyInstallment(loanAccount));
         Double overdue=loanAccount.getMonthlyInstallment()*(1+0.17*4/365);
@@ -321,8 +321,8 @@ public class EntityLoanBuilder {
         badLoanAccount.setMaturityDate(DateUtils.addYearsToDate(loanAccount.getPaymentStartDate(), loanAccount.getTenure()));// calculated 
         badLoanAccount.setPrincipal(10000.0); 
         badLoanAccount.setLoanAccountStatus(EnumUtils.LoanAccountStatus.SUSPENDED);
-        badLoanAccount.setCurrentPeriod(0);
-        badLoanAccount.setPaymentDate(8);
+        badLoanAccount.setCurrentPeriod(4);
+        badLoanAccount.setPaymentDate(12);
         badLoanAccount.setOutstandingPrincipal(badLoanAccount.getPrincipal());
         badLoanAccount.setMonthlyInstallment(loanPaymentSessionBean.calculateMonthlyInstallment(badLoanAccount));
         Double overdue2=badLoanAccount.getMonthlyInstallment()*(4+0.17*122/365+0.17*91/365+0.17*61/365+0.17*30/365);
@@ -377,11 +377,12 @@ public class EntityLoanBuilder {
         loanAccount.setMainAccount(demoMainAccount2);
         loanAccount.setLoanOfficer(staffAccountSessionBean.getAccountByUsername(ConstantUtils.LOAN_OFFICIER_USERNAME));
         loanAccount.setPaymentStartDate(new Date());
-        loanAccount.setMaturityDate(DateUtils.addYearsToDate(new Date(), loanAccount.getTenure()));// calculated 
+        loanAccount.setMaturityDate(DateUtils.addYearsToDate(new Date(), loanAccount.getTenure()));
+        // calculated 
         loanAccount.setPrincipal(10000.0);
         loanAccount.setOutstandingPrincipal(loanAccount.getPrincipal());
         loanAccount.setLoanAccountStatus(EnumUtils.LoanAccountStatus.APPROVED);
-        loanAccount.setCurrentPeriod(0);
+       
         loanAccount.setPaymentDate(12);
         
         loanAccount.setMonthlyInstallment(loanPaymentSessionBean.calculateMonthlyInstallment(loanAccount));
@@ -431,14 +432,15 @@ public class EntityLoanBuilder {
         loanAccount.setTenure(loanProduct.getTenure());
         loanAccount.setDepositAccount(demoDepositAccount);
         loanAccount.setLoanProduct(loanProduct);
-        loanAccount.setMainAccount(demoMainAccount3);
+        loanAccount.setMainAccount(demoMainAccount4);
         loanAccount.setLoanOfficer(staffAccountSessionBean.getAccountByUsername(ConstantUtils.LOAN_OFFICIER_USERNAME));
-        loanAccount.setPaymentStartDate(new Date());
-        loanAccount.setMaturityDate(DateUtils.addYearsToDate(new Date(), loanAccount.getTenure()));// calculated 
+        
+        
         loanAccount.setPrincipal(100000.0);
         loanAccount.setOutstandingPrincipal(loanAccount.getPrincipal());
         loanAccount.setLoanAccountStatus(EnumUtils.LoanAccountStatus.APPROVED);
-        loanAccount.setCurrentPeriod(0);
+        loanAccount.setPaymentStartDate(new Date());
+        loanAccount.setMaturityDate(DateUtils.addYearsToDate(new Date(), loanAccount.getTenure()));
         loanAccount.setPaymentDate(DateUtils.getDayNumber(loanAccount.getPaymentStartDate()));
         
         loanAccount.setMonthlyInstallment(loanPaymentSessionBean.calculateMonthlyInstallment(loanAccount));
@@ -461,7 +463,7 @@ public class EntityLoanBuilder {
         badLoanAccount.setMaturityDate(DateUtils.addYearsToDate(badLoanAccount.getPaymentStartDate(), loanAccount.getTenure()));// calculated 
         badLoanAccount.setPrincipal(30000.0); 
         badLoanAccount.setLoanAccountStatus(EnumUtils.LoanAccountStatus.SUSPENDED);
-        badLoanAccount.setCurrentPeriod(0);
+        
         badLoanAccount.setPaymentDate(9);
         badLoanAccount.setOutstandingPrincipal(badLoanAccount.getPrincipal());
         badLoanAccount.setMonthlyInstallment(loanPaymentSessionBean.calculateMonthlyInstallment(loanAccount));
@@ -553,15 +555,16 @@ public class EntityLoanBuilder {
         loanAccount.setTenure(loanProduct.getTenure());
         loanAccount.setDepositAccount(demoDepositAccount);
         loanAccount.setLoanProduct(loanProduct);
-        loanAccount.setMainAccount(demoMainAccount3);
+        loanAccount.setMainAccount(demoMainAccount4);
         loanAccount.setLoanOfficer(staffAccountSessionBean.getAccountByUsername(ConstantUtils.LOAN_OFFICIER_USERNAME));
-        loanAccount.setPaymentStartDate(new Date());
-        loanAccount.setMaturityDate(DateUtils.addYearsToDate(new Date(), loanAccount.getTenure()));// calculated 
+        
+        
         loanAccount.setPrincipal(300000.0);
         loanAccount.setOutstandingPrincipal(loanAccount.getPrincipal());
         loanAccount.setLoanAccountStatus(EnumUtils.LoanAccountStatus.APPROVED);
-        loanAccount.setCurrentPeriod(0);
-        loanAccount.setPaymentDate(23);
+        loanAccount.setPaymentStartDate(new Date());
+        loanAccount.setMaturityDate(DateUtils.addYearsToDate(new Date(), loanAccount.getTenure()));
+        loanAccount.setPaymentDate(12);
         
         loanAccount.setMonthlyInstallment(loanPaymentSessionBean.calculateMonthlyInstallment(loanAccount));
         System.out.println("Monthly installment is: $" + loanAccount.getMonthlyInstallment());
@@ -648,7 +651,7 @@ public class EntityLoanBuilder {
         loanAccount.setOutstandingPrincipal(loanAccount.getPrincipal());
         loanAccount.setLoanAccountStatus(EnumUtils.LoanAccountStatus.APPROVED);
         loanAccount.setCurrentPeriod(0);
-        loanAccount.setPaymentDate(23);
+        loanAccount.setPaymentDate(12);
         
         loanAccount.setMonthlyInstallment(loanPaymentSessionBean.calculateMonthlyInstallment(loanAccount));
         System.out.println("Monthly installment is: $" + loanAccount.getMonthlyInstallment());

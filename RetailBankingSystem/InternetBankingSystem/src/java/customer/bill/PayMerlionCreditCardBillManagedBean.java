@@ -22,6 +22,7 @@ import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import server.utilities.ConstantUtils;
+import util.exception.dams.DepositAccountNotFoundException;
 import utils.JSUtils;
 import utils.MessageUtils;
 import utils.SessionUtils;
@@ -42,53 +43,62 @@ public class PayMerlionCreditCardBillManagedBean implements Serializable {
     private CustomerDepositSessionBeanLocal depositBean;
     @EJB
     private OTPSessionBeanLocal otpBean;
-    
+
     private String fromAccountNo;
     private String toCreditCardNo;
     private BigDecimal amount;
     private MainAccount ma;
     private List<CustomerDepositAccount> depositAccounts = new ArrayList<>();
     private List<CreditCardAccount> creditCardAccounts = new ArrayList<>();
-    
+
     private String inputTokenString;
-    
-    public PayMerlionCreditCardBillManagedBean() {}
-    
+
+    public PayMerlionCreditCardBillManagedBean() {
+    }
+
     @PostConstruct
     public void init() {
         ma = loginBean.getMainAccountByUserID(SessionUtils.getUserName());
         depositAccounts = depositBean.getAllNonFixedCustomerAccounts(ma.getId());
         setCreditCardAccounts(ma.getCreditCardAccounts());
     }
-    
+
     public void transfer() {
-        
+
         if (!checkOptAndProceed()) {
             return;
         }
-        
-        DepositAccount fromAccount = depositBean.getAccountFromId(getFromAccountNo());
-        if (fromAccount != null && fromAccount.getBalance().compareTo(getAmount()) < 0) {
-            JSUtils.callJSMethod("PF('myWizard').back()");
-            MessageUtils.displayError(ConstantUtils.NOT_ENOUGH_BALANCE);
-        }
-        //TODO: need another authentication
-        String result = transferBean.transferFromAccountToCreditCard(getFromAccountNo(), getToCreditCardNo(), getAmount());
-        if (result.equals("SUCCESS")) {
-            JSUtils.callJSMethod("PF('myWizard').next()");
-            MessageUtils.displayInfo(ConstantUtils.TRANSFER_SUCCESS);
-        } else {
+
+        try {
+
+            DepositAccount fromAccount = depositBean.getAccountFromId(getFromAccountNo());
+            if (fromAccount != null && fromAccount.getBalance().compareTo(getAmount()) < 0) {
+                JSUtils.callJSMethod("PF('myWizard').back()");
+                MessageUtils.displayError(ConstantUtils.NOT_ENOUGH_BALANCE);
+            }
+            //TODO: need another authentication
+            String result = transferBean.transferFromAccountToCreditCard(getFromAccountNo(), getToCreditCardNo(), getAmount());
+            if (result.equals("SUCCESS")) {
+                JSUtils.callJSMethod("PF('myWizard').next()");
+                MessageUtils.displayInfo(ConstantUtils.TRANSFER_SUCCESS);
+            } else {
+                JSUtils.callJSMethod("PF('myWizard').back()");
+                MessageUtils.displayError(ConstantUtils.TRANSFER_FAILED);
+            }
+
+        } catch (DepositAccountNotFoundException e) {
             JSUtils.callJSMethod("PF('myWizard').back()");
             MessageUtils.displayError(ConstantUtils.TRANSFER_FAILED);
         }
+
     }
-    
+
     public void sendOpt() {
         System.out.println("sendOTP clicked, sending otp to: " + ma.getCustomer().getPhone());
         JSUtils.callJSMethod("PF('myWizard').next()");
         otpBean.generateOTP(ma.getCustomer().getPhone());
     }
-    
+
     private Boolean checkOptAndProceed() {
         if (inputTokenString == null || inputTokenString.isEmpty()) {
             MessageUtils.displayError("Please enter one time password!");
@@ -176,7 +186,7 @@ public class PayMerlionCreditCardBillManagedBean implements Serializable {
     public void setDepositAccounts(List<CustomerDepositAccount> depositAccounts) {
         this.depositAccounts = depositAccounts;
     }
-    
+
     /**
      * @return the inputTokenString
      */

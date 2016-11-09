@@ -11,6 +11,7 @@ import java.io.Serializable;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
+import util.exception.dams.DepositAccountNotFoundException;
 
 /**
  *
@@ -20,23 +21,28 @@ import javax.faces.view.ViewScoped;
 @ViewScoped
 public class CustomerDepositAccountTransactionHistoryManagedBean implements Serializable {
 
-    @EJB 
+    @EJB
     private CustomerDepositSessionBeanLocal depositAccountBean;
-    
+
     private String accountId;
     private DepositAccount account;
-    
+
     /**
      * Creates a new instance of
      * CustomerDepositAccountTransactionHistoryManagedBean
      */
     public CustomerDepositAccountTransactionHistoryManagedBean() {
     }
-    
+
     public void init() {
-        System.out.println("Account id is: " + getAccountId());
-        setAccount(depositAccountBean.getAccountFromId(getAccountId()));
-        System.out.println("Account retrieved is: " + account.getAccountNumber());
+        try {
+            System.out.println("Account id is: " + getAccountId());
+            setAccount(depositAccountBean.getAccountFromId(getAccountId()));
+            System.out.println("Account retrieved is: " + account.getAccountNumber());
+        } catch (DepositAccountNotFoundException e) {
+            System.out.println("Account not retrieved, DepositAccountNotFoundException");
+        }
+
     }
 
     /**
@@ -66,5 +72,5 @@ public class CustomerDepositAccountTransactionHistoryManagedBean implements Seri
     public void setAccount(DepositAccount account) {
         this.account = account;
     }
-    
+
 }

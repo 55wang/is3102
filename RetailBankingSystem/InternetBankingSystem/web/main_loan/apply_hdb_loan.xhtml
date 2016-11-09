@@ -30,13 +30,13 @@
                                 <h:panelGrid columns="2" cellpadding="5px" columnClasses="label, value">
 
                                     <h:outputText value="Identity Type: " />
-                                    <p:selectOneMenu value="#{hdbLoanApplicationManagedBean}" style="width:187px; height: 31px; line-height: 21px; top:8px" rendered="true" label="identityType" >
+                                    <p:selectOneMenu value="#{hdbLoanApplicationManagedBean.identityType}" style="width:187px; height: 31px; line-height: 21px; top:8px" rendered="true" label="identityType" >
                                         <f:selectItem itemLabel="Please select.." itemValue=""/>                                                    
                                         <f:selectItems value="#{hdbLoanApplicationManagedBean.identityTypeOptions}" />
                                     </p:selectOneMenu>
 
                                     <h:outputText value="Identity Number: " />
-                                    <p:inputText value="#{hdbLoanApplicationManagedBean.idNumber}" required="true" requiredMessage="Identity number is required." validatorMessage="Invalid identity number.">
+                                    <p:inputText value="#{hdbLoanApplicationManagedBean.identificationNumber}" required="true" requiredMessage="Identity number is required." validatorMessage="Invalid identity number.">
                                         <f:validateRegex
                                             pattern="^[A-Za-z0-9]{9}$" />
                                     </p:inputText>

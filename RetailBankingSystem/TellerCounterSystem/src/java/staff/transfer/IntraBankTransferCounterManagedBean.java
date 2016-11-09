@@ -9,7 +9,6 @@ import ejb.session.bill.TransferSessionBeanLocal;
 import ejb.session.common.LoginSessionBeanLocal;
 import ejb.session.counter.TellerCounterSessionBeanLocal;
 import ejb.session.dams.CustomerDepositSessionBeanLocal;
-import entity.counter.TellerCounter;
 import entity.customer.MainAccount;
 import entity.dams.account.DepositAccount;
 import java.io.Serializable;
@@ -21,8 +20,8 @@ import javax.faces.event.ActionEvent;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import server.utilities.ConstantUtils;
+import util.exception.dams.DepositAccountNotFoundException;
 import utils.MessageUtils;
-import utils.SessionUtils;
 
 /**
  *
@@ -66,7 +65,9 @@ public class IntraBankTransferCounterManagedBean implements Serializable {
     
     public void transfer(ActionEvent event) {
         
-        DepositAccount fromAccount = depositBean.getAccountFromId(fromAccountNumber);
+        try {
+            
+            DepositAccount fromAccount = depositBean.getAccountFromId(fromAccountNumber);
         if (fromAccount != null && fromAccount.getBalance().compareTo(amount) < 0) {
             MessageUtils.displayError(ConstantUtils.NOT_ENOUGH_BALANCE);
             return;
@@ -78,6 +79,12 @@ public class IntraBankTransferCounterManagedBean implements Serializable {
         } else {
             MessageUtils.displayError(ConstantUtils.TRANSFER_FAILED);
         }
+        
+        } catch (DepositAccountNotFoundException e) {
+            System.out.println("DepositAccountNotFoundException IntraBankTransferCounterManagedBean transfer()");
+            MessageUtils.displayError(ConstantUtils.TRANSFER_FAILED);
+        } 
+        
     }
 
     /**

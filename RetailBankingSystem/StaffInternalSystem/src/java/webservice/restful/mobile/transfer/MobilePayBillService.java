@@ -25,6 +25,8 @@ import org.primefaces.json.JSONObject;
 import server.utilities.DateUtils;
 import server.utilities.EnumUtils;
 import server.utilities.GenerateAccountAndCCNumber;
+import util.exception.dams.DepositAccountNotFoundException;
+import util.exception.dams.UpdateDepositAccountException;
 import webservice.restful.mobile.ErrorDTO;
 import webservice.restful.mobile.TransferDTO;
 
@@ -56,40 +58,50 @@ public class MobilePayBillService {
         System.out.println("Received POST http mobile_pay_own_cc_normal");
         String jsonString = null;
 
-        DepositAccount da = depositBean.getAccountFromId(fromAccountNumber);
-        BigDecimal transferAmount = new BigDecimal(amount);
-        if (da.getBalance().compareTo(transferAmount) < 0) {
+        try {
+
+            DepositAccount da = depositBean.getAccountFromId(fromAccountNumber);
+            BigDecimal transferAmount = new BigDecimal(amount);
+            if (da.getBalance().compareTo(transferAmount) < 0) {
+                ErrorDTO err = new ErrorDTO();
+                err.setCode(-1);
+                err.setError("Not Enough Balance");
+                jsonString = new JSONObject(err).toString();
+                return Response.ok(jsonString, MediaType.APPLICATION_JSON).build();
+            }
+
+            BillingOrg bo = billBean.getBillingOrganizationById(Long.parseLong(billId));
+
+            BillTransferRecord btr = new BillTransferRecord();
+            btr.setBillReferenceNumber(bo.getBillReference());// it will be credit card number
+            btr.setOrganizationName(bo.getOrganization().getName());
+            btr.setPartnerBankCode(bo.getOrganization().getPartnerBankCode());
+            btr.setSettled(false);
+            btr.setAmount(transferAmount);
+            btr.setShortCode(bo.getOrganization().getShortCode());
+            btr.setReferenceNumber(GenerateAccountAndCCNumber.generateReferenceNumber());
+            btr.setActionType(EnumUtils.TransactionType.BILL);
+            System.out.println("Bill Payment clearing");
+            webserviceBean.billingClearingSACH(btr);
+            da.removeBalance(transferAmount);
+            depositBean.updateAccount(da);
+
+            TransactionRecord record = depositBean.latestTransactionFromAccountNumber(fromAccountNumber);
+            TransferDTO t = new TransferDTO();
+            t.setTransferAmount(record.getAmount().setScale(2).toString());
+            t.setReferenceNumber(record.getReferenceNumber());
+            t.setTransferType(record.getActionType().toString());
+            t.setTransferDate(DateUtils.readableDate(record.getCreationDate()));
+            t.setTransferAccount(fromAccountNumber);
+            jsonString = new JSONObject(t).toString();
+            return Response.ok(jsonString, MediaType.APPLICATION_JSON).build();
+
+        } catch (DepositAccountNotFoundException | UpdateDepositAccountException e) {
             ErrorDTO err = new ErrorDTO();
-            err.setCode(-1);
-            err.setError("Not Enough Balance");
+            err.setCode(-2);
+            err.setError("Account Not Found");
             jsonString = new JSONObject(err).toString();
             return Response.ok(jsonString, MediaType.APPLICATION_JSON).build();
         }
-
-        BillingOrg bo = billBean.getBillingOrganizationById(Long.parseLong(billId));
-
-        BillTransferRecord btr = new BillTransferRecord();
-        btr.setBillReferenceNumber(bo.getBillReference());// it will be credit card number
-        btr.setOrganizationName(bo.getOrganization().getName());
-        btr.setPartnerBankCode(bo.getOrganization().getPartnerBankCode());
-        btr.setSettled(false);
-        btr.setAmount(transferAmount);
-        btr.setShortCode(bo.getOrganization().getShortCode());
-        btr.setReferenceNumber(GenerateAccountAndCCNumber.generateReferenceNumber());
-        btr.setActionType(EnumUtils.TransactionType.BILL);
-        System.out.println("Bill Payment clearing");
-        webserviceBean.billingClearingSACH(btr);
-        da.removeBalance(transferAmount);
-        depositBean.updateAccount(da);
-
-        TransactionRecord record = depositBean.latestTransactionFromAccountNumber(fromAccountNumber);
-        TransferDTO t = new TransferDTO();
-        t.setTransferAmount(record.getAmount().setScale(2).toString());
-        t.setReferenceNumber(record.getReferenceNumber());
-        t.setTransferType(record.getActionType().toString());
-        t.setTransferDate(DateUtils.readableDate(record.getCreationDate()));
-        t.setTransferAccount(fromAccountNumber);
-        jsonString = new JSONObject(t).toString();
-        return Response.ok(jsonString, MediaType.APPLICATION_JSON).build();
     }
 }

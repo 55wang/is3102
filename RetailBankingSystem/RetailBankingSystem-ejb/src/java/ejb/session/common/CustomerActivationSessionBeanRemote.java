@@ -6,14 +6,16 @@
 package ejb.session.common;
 
 import entity.customer.MainAccount;
-import javax.ejb.Local;
+import javax.ejb.Remote;
+import util.exception.common.MainAccountNotExistException;
 import util.exception.common.UpdateMainAccountException;
 
 /**
  *
  * @author VIN-S
  */
-@Local
-public interface ChangePasswordSessionBeanLocal {
-    public MainAccount changeMainAccountPwd(MainAccount mainAccount) throws UpdateMainAccountException;
+@Remote
+public interface CustomerActivationSessionBeanRemote {
+    public MainAccount getMainAccountByEmail(String email) throws MainAccountNotExistException;
+    public MainAccount updateMainAccount(MainAccount ma) throws UpdateMainAccountException;
 }

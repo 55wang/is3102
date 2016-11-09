@@ -218,6 +218,7 @@ public class PersonalLoanApplicationManagedBean implements Serializable {
         existingApplication.setIdentityNumber(thisCustomer.getIdentityNumber());
         existingApplication.setActualIncome(thisCustomer.getActualIncome());
         this.setMonthlyIncome(thisCustomer.getActualIncome());
+        updateUpperLimit(thisCustomer);
         JSUtils.callJSMethod("PF('myWizard').next()");
     }
     

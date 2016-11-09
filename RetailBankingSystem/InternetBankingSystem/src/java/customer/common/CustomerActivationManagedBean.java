@@ -21,6 +21,9 @@ import javax.enterprise.context.RequestScoped;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.context.FacesContext;
 import server.utilities.EnumUtils;
+import util.exception.common.MainAccountNotExistException;
+import util.exception.common.UpdateMainAccountException;
+import util.exception.dams.UpdateDepositAccountException;
 import utils.SessionUtils;
 
 /**
@@ -52,11 +55,16 @@ public class CustomerActivationManagedBean implements Serializable {
         String randomPwd = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("code");
         System.out.println(email);
         System.out.println(randomPwd);
-        mainAccount = customerActivationSessionBean.getMainAccountByEmail(email);
+        try{
+            mainAccount = customerActivationSessionBean.getMainAccountByEmail(email);
+        }catch(MainAccountNotExistException ex){
+            System.out.println("CustomerActivationManagedBean.init.customerActivationSessionBean.getMainAccountByEmail:"+ex.toString());
+        }
         if (mainAccount.getStatus().equals(EnumUtils.StatusType.PENDING) && randomPwd.equals(mainAccount.getPassword())) {
             valid = true; // And auto-login if valid?
             try {
-                customerActivationSessionBean.updateAccountStatus(mainAccount);
+                mainAccount.setStatus(EnumUtils.StatusType.ACTIVE);
+                customerActivationSessionBean.updateMainAccount(mainAccount);
                 loginSessionBean.loginAccount(mainAccount.getUserID(), mainAccount.getPassword());
                 SessionUtils.setUserId(mainAccount.getId());
                 SessionUtils.setUserName(mainAccount.getUserID());
@@ -71,8 +79,10 @@ public class CustomerActivationManagedBean implements Serializable {
                     depositAccountBean.updateAccount(da);
                 }
                 // TODO: Activate all the deposit account
-            } catch (Exception ex) {
-
+            } catch (UpdateMainAccountException ex1) {
+                System.out.println("UpdateMainAccountException");
+            }catch(UpdateDepositAccountException ex2){
+                System.out.println("UpdateDepositAccountException");
             }
         } else {
             valid = false;

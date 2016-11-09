@@ -20,6 +20,7 @@ import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import server.utilities.ConstantUtils;
+import util.exception.dams.DepositAccountNotFoundException;
 import utils.MessageUtils;
 
 /**
@@ -36,7 +37,7 @@ public class PayOwnBankCreditCardBillCounterManagedBean implements Serializable 
     private TransferSessionBeanLocal transferBean;
     @EJB
     private CustomerDepositSessionBeanLocal depositBean;
-    
+
     private String fromAccountNo;
     private String toCreditCardNo;
     private BigDecimal amount;
@@ -44,15 +45,15 @@ public class PayOwnBankCreditCardBillCounterManagedBean implements Serializable 
     private MainAccount mainAccount;
     private List<CustomerDepositAccount> depositAccounts = new ArrayList<>();
     private List<CreditCardAccount> creditCardAccounts = new ArrayList<>();
-    
+
     /**
      * Creates a new instance of PayOwnBankCreditCardBillCounterManagedBean
      */
     public PayOwnBankCreditCardBillCounterManagedBean() {
     }
-    
+
     public void retrieveMainAccount() {
-        
+
         try {
             mainAccount = loginBean.getMainAccountByUserIC(getCustomerIC());
             depositAccounts = depositBean.getAllNonFixedCustomerAccounts(mainAccount.getId());
@@ -61,20 +62,27 @@ public class PayOwnBankCreditCardBillCounterManagedBean implements Serializable 
             mainAccount = null;
             MessageUtils.displayError("Customer Main Account Not Found!");
         }
-        
+
     }
-    
+
     public void transfer() {
-        
-        DepositAccount fromAccount = depositBean.getAccountFromId(getFromAccountNo());
-        if (fromAccount != null && fromAccount.getBalance().compareTo(getAmount()) < 0) {
-            MessageUtils.displayError(ConstantUtils.NOT_ENOUGH_BALANCE);
-        }
-        //TODO: need another authentication
-        String result = transferBean.transferFromAccountToCreditCard(getFromAccountNo(), getToCreditCardNo(), getAmount());
-        if (result.equals("SUCCESS")) {
-            MessageUtils.displayInfo(ConstantUtils.TRANSFER_SUCCESS);
-        } else {
+
+        try {
+
+            DepositAccount fromAccount = depositBean.getAccountFromId(getFromAccountNo());
+            if (fromAccount != null && fromAccount.getBalance().compareTo(getAmount()) < 0) {
+                MessageUtils.displayError(ConstantUtils.NOT_ENOUGH_BALANCE);
+            }
+            //TODO: need another authentication
+            String result = transferBean.transferFromAccountToCreditCard(getFromAccountNo(), getToCreditCardNo(), getAmount());
+            if (result.equals("SUCCESS")) {
+                MessageUtils.displayInfo(ConstantUtils.TRANSFER_SUCCESS);
+            } else {
+                MessageUtils.displayError(ConstantUtils.TRANSFER_FAILED);
+            }
+
+        } catch (DepositAccountNotFoundException e) {
+            System.out.println("DepositAccountNotFoundException PayOwnBankCreditCardBillCounterManagedBean transfer()");
             MessageUtils.displayError(ConstantUtils.TRANSFER_FAILED);
         }
     }
@@ -176,5 +184,5 @@ public class PayOwnBankCreditCardBillCounterManagedBean implements Serializable 
     public void setCreditCardAccounts(List<CreditCardAccount> creditCardAccounts) {
         this.creditCardAccounts = creditCardAccounts;
     }
-    
+
 }

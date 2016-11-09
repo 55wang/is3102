@@ -20,6 +20,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import org.primefaces.json.JSONObject;
+import util.exception.dams.DepositAccountNotFoundException;
 import webservice.restful.mobile.ErrorDTO;
 
 /**
@@ -59,34 +60,42 @@ public class ReceiveTransferPayment {
         System.out.println(".      Received my Initial:" + myInitial);
         System.out.println(".      Received POST http mbs_receive_transfer_payment");
 
-        DepositAccount da = depositBean.getAccountFromId(accountNumber);
-        if (da == null) {
+        try {
+            DepositAccount da = depositBean.getAccountFromId(accountNumber);
+            if (da == null) {
+                ErrorDTO err = new ErrorDTO();
+                err.setCode(-1);
+                err.setError("Account Not Found");
+                return Response.ok(new JSONObject(err).toString(), MediaType.APPLICATION_JSON).build();
+            } else {
+
+                BillFundTransferRecord bft = new BillFundTransferRecord();
+                bft.setReferenceNumber(referenceNumber);
+                bft.setToBankAccount(accountNumber);
+                bft.setToBankCode("001");
+                bft.setFromBankCode(fromCode);
+                bft.setCreationDate(new Date());
+                bft.setAmount(new BigDecimal(amount));
+                bft.setSettled(Boolean.FALSE);
+                billSessionBean.createBillFundTransferRecord(bft);
+
+                System.out.println("Sending back mbs_receive_transfer_payment response");
+                System.out.println("Current bank account balance: " + da.getBalance());
+                System.out.println("Updating balance...");
+                depositBean.transferToAccount(da, new BigDecimal(amount));
+                System.out.println("Updated bank account balance: " + da.getBalance());
+
+                ErrorDTO err = new ErrorDTO();
+                err.setCode(0);
+                err.setError("SUCCESS");
+                return Response.ok(new JSONObject(err).toString(), MediaType.APPLICATION_JSON).build();
+            }
+        } catch (DepositAccountNotFoundException e) {
             ErrorDTO err = new ErrorDTO();
             err.setCode(-1);
             err.setError("Account Not Found");
             return Response.ok(new JSONObject(err).toString(), MediaType.APPLICATION_JSON).build();
-        } else {
 
-            BillFundTransferRecord bft = new BillFundTransferRecord();
-            bft.setReferenceNumber(referenceNumber);
-            bft.setToBankAccount(accountNumber);
-            bft.setToBankCode("001");
-            bft.setFromBankCode(fromCode);
-            bft.setCreationDate(new Date());
-            bft.setAmount(new BigDecimal(amount));
-            bft.setSettled(Boolean.FALSE);
-            billSessionBean.createBillFundTransferRecord(bft);
-
-            System.out.println("Sending back mbs_receive_transfer_payment response");
-            System.out.println("Current bank account balance: " + da.getBalance());
-            System.out.println("Updating balance...");
-            depositBean.transferToAccount(da, new BigDecimal(amount));
-            System.out.println("Updated bank account balance: " + da.getBalance());
-
-            ErrorDTO err = new ErrorDTO();
-            err.setCode(0);
-            err.setError("SUCCESS");
-            return Response.ok(new JSONObject(err).toString(), MediaType.APPLICATION_JSON).build();
         }
     }
 }
