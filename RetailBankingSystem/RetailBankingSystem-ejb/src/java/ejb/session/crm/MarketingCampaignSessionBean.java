@@ -5,8 +5,14 @@
  */
 package ejb.session.crm;
 
+import entity.crm.AdsBannerCampaign;
+import entity.crm.CustomerGroup;
 import entity.crm.MarketingCampaign;
+import entity.customer.Customer;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Random;
+import java.util.Set;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -21,6 +27,51 @@ public class MarketingCampaignSessionBean implements MarketingCampaignSessionBea
 
     @PersistenceContext(unitName = "RetailBankingSystem-ejbPU")
     private EntityManager em;
+
+    @Override
+    public AdsBannerCampaign getDefaultMarketingCampaign() {
+        AdsBannerCampaign abc = new AdsBannerCampaign();
+        abc.setAdsTitle("MBS Deposit!");
+        abc.setAdsType("deposit");
+        abc.setAdsInfo("Merlion Account, the more you save, the more you gain.");
+        abc.setAdsExtraInfo("Provide interest rate as high as 2.5%.");
+        abc.setLandingPageName("https://localhost:8181/InternetBankingSystem/landing_page/deposit_campaign.xhtml");
+
+        return abc;
+    }
+
+    @Override
+    public AdsBannerCampaign getMarketingCampaignByCustomer(Customer c) {
+        System.out.println("getMarketingCampaignByCustomer()");
+        System.out.println("customerGroup size: " + c.getCustomerGroups().size());
+        Set<AdsBannerCampaign> mcHashSet = new HashSet<>();
+
+        for (CustomerGroup cg : c.getCustomerGroups()) {
+            if (!cg.getMarketingCampaigns().isEmpty()) {
+                System.out.println("!cg.getMarketingCampaigns() size: " + cg.getMarketingCampaigns().size());
+                for (MarketingCampaign mc : cg.getMarketingCampaigns()) {
+                    mcHashSet.add((AdsBannerCampaign) mc);
+                    System.out.println("mc added into hashset");
+                }
+            }
+        }
+        System.out.println("marketing campaign size: " + mcHashSet.size());
+
+        int size = mcHashSet.size();
+        if (size > 0) {
+            int item = new Random().nextInt(size);
+            int i = 0;
+            for (AdsBannerCampaign mc : mcHashSet) {
+                if (i == item) {
+                    System.out.println("return mc" + mc.getId());
+                    return mc;
+                }
+                i = i + 1;
+            }
+        }
+
+        return null;
+    }
 
     @Override
     public List<MarketingCampaign> getListMarketingCampaigns() {

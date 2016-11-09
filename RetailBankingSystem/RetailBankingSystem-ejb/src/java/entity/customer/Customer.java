@@ -113,12 +113,14 @@ public class Customer implements Serializable {
     // mapping
     @OneToOne(cascade = {CascadeType.MERGE})
     private MainAccount mainAccount;
-    @ManyToOne
-    private CustomerGroup customerGroup;
-    @ManyToMany()
+    @ManyToMany(cascade = {CascadeType.MERGE})
     @JoinTable(name = "CustomerGroup_Customer_Bdi")
     private List<CustomerGroup> customerGroups = new ArrayList<>();
 
+    public void addCustomerGroup(CustomerGroup cg) {
+        customerGroups.add(cg);
+    }
+    
     public Long calcAge() {
         return ((new Date().getTime() - getBirthDay().getTime()) / (24 * 60 * 60 * 1000)) / 365;
     }
@@ -686,14 +688,6 @@ public class Customer implements Serializable {
 
     public void setIdentityType(IdentityType identityType) {
         this.identityType = identityType;
-    }
-
-    public CustomerGroup getCustomerGroup() {
-        return customerGroup;
-    }
-
-    public void setCustomerGroup(CustomerGroup customerGroup) {
-        this.customerGroup = customerGroup;
     }
 
     /**

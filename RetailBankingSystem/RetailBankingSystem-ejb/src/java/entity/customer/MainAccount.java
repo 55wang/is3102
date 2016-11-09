@@ -11,7 +11,6 @@ import entity.card.account.CreditCardAccount;
 import entity.card.order.CreditCardOrder;
 import entity.common.AuditLog;
 import entity.dams.account.DepositAccount;
-import entity.dams.account.MobileAccount;
 import entity.loan.LoanAccount;
 import entity.loan.LoanApplication;
 import java.io.Serializable;

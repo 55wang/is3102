@@ -6,7 +6,6 @@
 package entity.crm;
 
 import entity.customer.Customer;
-import entity.staff.Role;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,8 +15,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 /**
@@ -46,6 +45,13 @@ public class CustomerGroup implements Serializable {
     
     @ManyToMany(mappedBy = "customerGroups")
     private List<Customer> customers = new ArrayList<>();
+    
+    @OneToMany(cascade = {CascadeType.MERGE}, mappedBy = "customerGroup")
+    private List<MarketingCampaign> marketingCampaigns = new ArrayList<>();
+    
+    public void addCustomer(Customer c) {
+        customers.add(c);
+    }
     
     public Long getId() {
         return id;
@@ -158,6 +164,14 @@ public class CustomerGroup implements Serializable {
 
     public void setCustomers(List<Customer> customers) {
         this.customers = customers;
+    }
+
+    public List<MarketingCampaign> getMarketingCampaigns() {
+        return marketingCampaigns;
+    }
+
+    public void setMarketingCampaigns(List<MarketingCampaign> marketingCampaigns) {
+        this.marketingCampaigns = marketingCampaigns;
     }
 
 }

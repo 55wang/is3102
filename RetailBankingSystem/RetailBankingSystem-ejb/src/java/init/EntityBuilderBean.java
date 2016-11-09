@@ -126,6 +126,6 @@ public class EntityBuilderBean {
 //        demoPortfolio = entityWealthBuilder.initPortfolioFactTable2(demoMainAccount, allFinancialInstruments);
 //        entityFactBuilder.initSinglePortfolioFact(demoMainAccount, demoPortfolio);
 //        entityFactBuilder.initBankFact();
-//        entityCRMBuilder.initCustomerRFM();
+        entityCRMBuilder.initCustomerRFM();
     }
 }

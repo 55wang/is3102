@@ -8,8 +8,11 @@ package customer.common;
 import interceptor.audit.Audit;
 import ejb.session.common.ChangePasswordSessionBeanLocal;
 import ejb.session.common.LoginSessionBeanLocal;
+import ejb.session.crm.MarketingCampaignSessionBeanLocal;
 import ejb.session.utils.UtilsSessionBeanLocal;
 import entity.common.AuditLog;
+import entity.crm.AdsBannerCampaign;
+import entity.crm.MarketingCampaign;
 import entity.customer.Customer;
 import entity.customer.MainAccount;
 import java.io.Serializable;
@@ -36,6 +39,10 @@ public class CustomerHomeManagedBean implements Serializable {
     private LoginSessionBeanLocal loginSessionBean;
     @EJB
     private UtilsSessionBeanLocal utilsBean;
+    @EJB
+    MarketingCampaignSessionBeanLocal marketingCampaignSessionBean;
+
+    private AdsBannerCampaign adsBannerCampaign;
     private Customer customer;
     private String newPwd;
     private Date currentDate = new Date();
@@ -72,7 +79,34 @@ public class CustomerHomeManagedBean implements Serializable {
 
     @PostConstruct
     public void setCustomer() {
+        System.out.println("CustomerHomeManagedBean().setCustomer()");
         this.customer = loginSessionBean.getCustomerByUserID(SessionUtils.getUserName());
+        adsBannerCampaign = selectAdsBannerCampaign();
+        
+        System.out.println("adsBannerCampaign.getAdsTitle(): "+adsBannerCampaign.getAdsTitle());
+        System.out.println("adsBannerCampaign.adstype: "+adsBannerCampaign.getAdsType());
+        System.out.println("adsBannerCampaign.adsinfo: "+adsBannerCampaign.getAdsInfo());
+        System.out.println("adsBannerCampaign.extrainfo: "+adsBannerCampaign.getAdsExtraInfo());
+        System.out.println("adsBannerCampaign.landing: "+adsBannerCampaign.getLandingPageName());
+    }
+
+    public AdsBannerCampaign selectAdsBannerCampaign() {
+        System.out.println("selectAdsBannerCampaign()");
+        if (getTargetedAdsBannerCampaign() != null) {
+            System.out.println("getTargetedAdsBannerCampaign()");
+            return getTargetedAdsBannerCampaign();
+        } else {
+            System.out.println("getDefaultAdsBannerCampaign()");
+            return getDefaultAdsBannerCampaign();
+        }
+    }
+
+    public AdsBannerCampaign getDefaultAdsBannerCampaign() {
+        return marketingCampaignSessionBean.getDefaultMarketingCampaign();
+    }
+
+    public AdsBannerCampaign getTargetedAdsBannerCampaign() {
+        return marketingCampaignSessionBean.getMarketingCampaignByCustomer(customer);
     }
 
     public String getNewPwd() {
@@ -89,6 +123,14 @@ public class CustomerHomeManagedBean implements Serializable {
 
     public void setCurrentDate(Date currentDate) {
         this.currentDate = currentDate;
+    }
+
+    public AdsBannerCampaign getAdsBannerCampaign() {
+        return adsBannerCampaign;
+    }
+
+    public void setAdsBannerCampaign(AdsBannerCampaign adsBannerCampaign) {
+        this.adsBannerCampaign = adsBannerCampaign;
     }
 
 }
