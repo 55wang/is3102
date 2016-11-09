@@ -80,14 +80,23 @@ public class CustomerHomeManagedBean implements Serializable {
     @PostConstruct
     public void setCustomer() {
         System.out.println("CustomerHomeManagedBean().setCustomer()");
-        this.customer = loginSessionBean.getCustomerByUserID(SessionUtils.getUserName());
-        adsBannerCampaign = selectAdsBannerCampaign();
-        
-        System.out.println("adsBannerCampaign.getAdsTitle(): "+adsBannerCampaign.getAdsTitle());
-        System.out.println("adsBannerCampaign.adstype: "+adsBannerCampaign.getAdsType());
-        System.out.println("adsBannerCampaign.adsinfo: "+adsBannerCampaign.getAdsInfo());
-        System.out.println("adsBannerCampaign.extrainfo: "+adsBannerCampaign.getAdsExtraInfo());
-        System.out.println("adsBannerCampaign.landing: "+adsBannerCampaign.getLandingPageName());
+        try{
+            String userID = SessionUtils.getUserName();
+            if(userID == null)
+                adsBannerCampaign = getDefaultAdsBannerCampaign();
+            else{
+                this.customer = loginSessionBean.getCustomerByUserID(SessionUtils.getUserName());
+                adsBannerCampaign = selectAdsBannerCampaign();
+
+                System.out.println("adsBannerCampaign.getAdsTitle(): "+adsBannerCampaign.getAdsTitle());
+                System.out.println("adsBannerCampaign.adstype: "+adsBannerCampaign.getAdsType());
+                System.out.println("adsBannerCampaign.adsinfo: "+adsBannerCampaign.getAdsInfo());
+                System.out.println("adsBannerCampaign.extrainfo: "+adsBannerCampaign.getAdsExtraInfo());
+                System.out.println("adsBannerCampaign.landing: "+adsBannerCampaign.getLandingPageName());
+            }
+        }catch(Exception ex){
+            adsBannerCampaign = getDefaultAdsBannerCampaign();
+        }
     }
 
     public AdsBannerCampaign selectAdsBannerCampaign() {

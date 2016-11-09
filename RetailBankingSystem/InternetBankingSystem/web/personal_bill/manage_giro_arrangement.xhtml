@@ -23,13 +23,13 @@ and open the template in the editor.
             <em:customerNavBar context="personal" personalPage="pay" ></em:customerNavBar>
             <div class="customer_main_container">
                 <p:panel header="Manage GIRO Arrangements">
-                <h:form>
-                    <p:messages id="message" redisplay="false" >
-                        <p:wizard widgetVar="myWizard" showNavBar="false">
+                    <h:form>
+                        <p:messages id="message" redisplay="false" >
+                            <p:wizard widgetVar="myWizard" showNavBar="false">
 
-                            <p:tab id="input_detail" title="1.Input Details">
+                                <p:tab id="input_detail" title="1.Input Details">
 
-                                <h1>To</h1>
+                                    <h1>To</h1>
                                     <h:panelGrid columns="2" cellpadding="5">
                                         <h:outputText value="Select Billing Org: " />
                                         <p:selectOneMenu id="type" value="#{manageGIROArrangementManagedBean.selectedBillId}">
@@ -44,46 +44,46 @@ and open the template in the editor.
                                             <f:selectItems value="#{manageGIROArrangementManagedBean.accounts}" var="a" itemValue="#{a.accountNumber}" itemLabel="#{a.product.name} #{a.accountNumber} #{a.balance.setScale(2)}" />
                                         </p:selectOneMenu>
                                     </h:panelGrid>
-                                <p:commandButton  value="Next" actionListener="#{manageGIROArrangementManagedBean.sendOpt()}" update="@form" />
-                            </p:tab>
+                                    <p:commandButton  value="Next" actionListener="#{manageGIROArrangementManagedBean.sendOpt()}" update="@form" />
+                                </p:tab>
 
-                            <p:tab id="verify_details" title="2.Verify Details">
-                                <h:panelGrid columns="2" cellpadding="5">
-                                    <h:outputText value="Bill Organization: " />
-                                    <h:outputText value="#{manageGIROArrangementManagedBean.getOrgName(manageGIROArrangementManagedBean.selectedBillId)}" />
-                                    <h:outputText value="Bill Reference Number: " />
-                                    <h:outputText value="#{manageGIROArrangementManagedBean.referenceNumber}" />
-                                    <h:outputText value="Billing Limit: " />
-                                    <h:outputText value="#{manageGIROArrangementManagedBean.billLimit}" />
-                                    <h:outputText value="From Account Number: " />
-                                    <h:outputText value="#{manageGIROArrangementManagedBean.fromAccountNo}" />
-                                    
-                                    <h2>Input Token Number</h2>
-                                    <p:inputText value="#{manageGIROArrangementManagedBean.inputTokenString}" />
-                                    
-                                    <p:commandButton  value="Back" type="button" onclick="PF('myWizard').back()" />
-                                    <p:commandButton value="Add GIRO" action="#{manageGIROArrangementManagedBean.addGIROArrangement}" update="form"/> 
-                                </h:panelGrid>
-                            </p:tab>
+                                <p:tab id="verify_details" title="2.Verify Details">
+                                    <h:panelGrid columns="2" cellpadding="5">
+                                        <h:outputText value="Bill Organization: " />
+                                        <h:outputText value="#{manageGIROArrangementManagedBean.getOrgName(manageGIROArrangementManagedBean.selectedBillId)}" />
+                                        <h:outputText value="Bill Reference Number: " />
+                                        <h:outputText value="#{manageGIROArrangementManagedBean.referenceNumber}" />
+                                        <h:outputText value="Billing Limit: " />
+                                        <h:outputText value="#{manageGIROArrangementManagedBean.billLimit}" />
+                                        <h:outputText value="From Account Number: " />
+                                        <h:outputText value="#{manageGIROArrangementManagedBean.fromAccountNo}" />
 
-                            <p:tab id="completion" title="3.Completion">
-                                <h:panelGrid columns="2" cellpadding="5">
-                                    <h:outputText value="Bill Organization: " />
-                                    <h:outputText value="#{manageGIROArrangementManagedBean.getOrgName(manageGIROArrangementManagedBean.selectedBillId)}" />
-                                    <h:outputText value="Bill Reference Number: " />
-                                    <h:outputText value="#{manageGIROArrangementManagedBean.referenceNumber}" />
-                                    <h:outputText value="Billing Limit: " />
-                                    <h:outputText value="#{manageGIROArrangementManagedBean.billLimit}" />
-                                    <h:outputText value="From Account Number: " />
-                                    <h:outputText value="#{manageGIROArrangementManagedBean.fromAccountNo}" />
-                                </h:panelGrid>
-                            </p:tab>
-                        </p:wizard>
-                    </p:messages>
-                </h:form>
-                <h:form id="form">
-                    <p:messages>
-                        <h1>Added GIRO Arrangement</h1>
+                                        <h2>Input Token Number</h2>
+                                        <p:inputText value="#{manageGIROArrangementManagedBean.inputTokenString}" />
+
+                                        <p:commandButton  value="Back" type="button" onclick="PF('myWizard').back()" />
+                                        <p:commandButton value="Add GIRO" action="#{manageGIROArrangementManagedBean.addGIROArrangement}" update="form"/> 
+                                    </h:panelGrid>
+                                </p:tab>
+
+                                <p:tab id="completion" title="3.Completion">
+                                    <h:panelGrid columns="2" cellpadding="5">
+                                        <h:outputText value="Bill Organization: " />
+                                        <h:outputText value="#{manageGIROArrangementManagedBean.getOrgName(manageGIROArrangementManagedBean.selectedBillId)}" />
+                                        <h:outputText value="Bill Reference Number: " />
+                                        <h:outputText value="#{manageGIROArrangementManagedBean.referenceNumber}" />
+                                        <h:outputText value="Billing Limit: " />
+                                        <h:outputText value="#{manageGIROArrangementManagedBean.billLimit}" />
+                                        <h:outputText value="From Account Number: " />
+                                        <h:outputText value="#{manageGIROArrangementManagedBean.fromAccountNo}" />
+                                    </h:panelGrid>
+                                </p:tab>
+                            </p:wizard>
+                        </p:messages>
+                    </h:form>
+                    <h:form id="form">
+                        <p:messages>
+                            <h1>Added GIRO Arrangement</h1>
                             <p:dataTable value="#{manageGIROArrangementManagedBean.addedGiroArrs}" var="giro" editable="true" editMode="cell">
                                 <f:facet name="header">
                                     Edit Limits By Clicking the cell
@@ -109,10 +109,11 @@ and open the template in the editor.
                                     <p:commandButton value="Delete Receipiant" action="#{manageGIROArrangementManagedBean.removeGIROArrangement(giro)}" update="form"/> 
                                 </p:column>
                             </p:dataTable>
-                    </p:messages>
-                </h:form>
+                        </p:messages>
+                    </h:form>
                 </p:panel>
             </div>
+            <em:adsBanner advertismentTitle="#{customerHomeManagedBean.adsBannerCampaign.adsTitle}" advertismentType="#{customerHomeManagedBean.adsBannerCampaign.adsType}" advertismentInfo="#{customerHomeManagedBean.adsBannerCampaign.adsInfo}" extraAdvertismentInfo="#{customerHomeManagedBean.adsBannerCampaign.adsExtraInfo}" landingPageUrl="https://localhost:8181/InternetBankingSystem/landing_page/#{customerHomeManagedBean.adsBannerCampaign.landingPageName}" />
             <em:customerFooter></em:customerFooter>
         </h:body>
     </f:view>

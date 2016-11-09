@@ -15,84 +15,84 @@
         <h:body>
             <em:customerHeader context="main" userName="Log in"></em:customerHeader>
             <em:customerNavBar context="main" mainPage="index"></em:customerNavBar>
-             
-        <f:view>
-            <em:cssImport></em:cssImport>
-            <div id="register-form-container" class="h-center">
-                <h:form>
-                    <p:growl id="growl" sticky="true" showDetail="true"/>
 
-                    <p:wizard widgetVar="myWizard" showNavBar="false">
+            <f:view>
+                <em:cssImport></em:cssImport>
+                <div id="register-form-container" class="h-center">
+                    <h:form>
+                        <p:growl id="growl" sticky="true" showDetail="true"/>
 
-                        <p:tab id="identity" title="Information" >
-                            <p:panel>
-                                <p:messages id="msgs2"/>
-                                <h:panelGrid columns="2" columnClasses="label, value">
+                        <p:wizard widgetVar="myWizard" showNavBar="false">
 
-                                    <h:outputText value="Age: " />
-                                    <p:inputText value="age" required="true" requiredMessage="Age is required." validatorMessage="Invalid identity number."/>
-                                   
-
-                                    <h:outputText value="Monthly income: " />
-                                    <p:inputText value="income" required="true" requiredMessage="Monthly income is required." validatorMessage="Invalid identity number."/>
-                      
-                                   
-
-                                    <h:outputText value="Open market value of car: " />
-                                    <p:inputText value="#{loanCalculatorManagedBean.carOpenMarketValue}" required="true" requiredMessage="Open market value is required." />
-   
-
-                                    <h:outputText value="Tenure: " />
-                                    <p:inputText value="#{loanCalculatorManagedBean.carTenure}" required="true" requiredMessage="Tenure is required." />
-                         
-                                    <h:outputText value="Annual Interest Rate: " />
-                                   <h:outputText value="#{loanCalculatorManagedBean.carLoanAnnualInterestRate}" styleClass="outputLabel"/>
-
-                                    
-                                </h:panelGrid>
-
-                                <div class="register-form-button">
-                                    
-                                    <p:commandButton value="Next" actionListener="#{loanCalculatorManagedBean.calculateCar()}" update="@form:msgs2"/>
-                                </div>
-                            </p:panel>
-                        </p:tab>
-
-                        
-
-                        <p:tab id="result" title="Results">
-                            <p:panel>
-                                <p:scrollPanel id="result" style="height:238px">
+                            <p:tab id="identity" title="Information" >
+                                <p:panel>
+                                    <p:messages id="msgs2"/>
                                     <h:panelGrid columns="2" columnClasses="label, value">
-                                        <h:outputText value="Maximum loan amount: " />
-                                        <h:outputText value="#{loanCalculatorManagedBean.carLoanAmt}" styleClass="outputLabel">
-                                            <f:convertNumber pattern="###00.00"/>
-                                        </h:outputText>
 
-                                        <h:outputText value="Monthly instalment: " />
-                                        <h:outputText value="#{loanCalculatorManagedBean.carLoanMonthlyInstalment}" styleClass="outputLabel">
-                                            <f:convertNumber pattern="###00.00"/>
-                                        </h:outputText>
+                                        <h:outputText value="Age: " />
+                                        <p:inputText value="age" required="true" requiredMessage="Age is required." validatorMessage="Invalid identity number."/>
 
-                                        
+
+                                        <h:outputText value="Monthly income: " />
+                                        <p:inputText value="income" required="true" requiredMessage="Monthly income is required." validatorMessage="Invalid identity number."/>
+
+
+
+                                        <h:outputText value="Open market value of car: " />
+                                        <p:inputText value="#{loanCalculatorManagedBean.carOpenMarketValue}" required="true" requiredMessage="Open market value is required." />
+
+
+                                        <h:outputText value="Tenure: " />
+                                        <p:inputText value="#{loanCalculatorManagedBean.carTenure}" required="true" requiredMessage="Tenure is required." />
+
+                                        <h:outputText value="Annual Interest Rate: " />
+                                        <h:outputText value="#{loanCalculatorManagedBean.carLoanAnnualInterestRate}" styleClass="outputLabel"/>
+
+
                                     </h:panelGrid>
 
+                                    <div class="register-form-button">
 
-                                </p:scrollPanel>
+                                        <p:commandButton value="Next" actionListener="#{loanCalculatorManagedBean.calculateCar()}" update="@form:msgs2"/>
+                                    </div>
+                                </p:panel>
+                            </p:tab>
 
-                                <div class="register-form-button" style="margin-top: 20px">
-                                    <p:commandButton value="Back" type="button" onclick="PF('myWizard').back();" />
-                                    
-                                </div>
-                            </p:panel>
-                        </p:tab>
-                    </p:wizard>
 
-                </h:form>
-            </div>
-        </f:view>
-   
-            <em:customerFooter></em:customerFooter>
+
+                            <p:tab id="result" title="Results">
+                                <p:panel>
+                                    <p:scrollPanel id="result" style="height:238px">
+                                        <h:panelGrid columns="2" columnClasses="label, value">
+                                            <h:outputText value="Maximum loan amount: " />
+                                            <h:outputText value="#{loanCalculatorManagedBean.carLoanAmt}" styleClass="outputLabel">
+                                                <f:convertNumber pattern="###00.00"/>
+                                            </h:outputText>
+
+                                            <h:outputText value="Monthly instalment: " />
+                                            <h:outputText value="#{loanCalculatorManagedBean.carLoanMonthlyInstalment}" styleClass="outputLabel">
+                                                <f:convertNumber pattern="###00.00"/>
+                                            </h:outputText>
+
+
+                                        </h:panelGrid>
+
+
+                                    </p:scrollPanel>
+
+                                    <div class="register-form-button" style="margin-top: 20px">
+                                        <p:commandButton value="Back" type="button" onclick="PF('myWizard').back();" />
+
+                                    </div>
+                                </p:panel>
+                            </p:tab>
+                        </p:wizard>
+
+                    </h:form>
+                </div>
+            </f:view>
+            <em:adsBanner advertismentTitle="#{customerHomeManagedBean.adsBannerCampaign.adsTitle}" advertismentType="#{customerHomeManagedBean.adsBannerCampaign.adsType}" advertismentInfo="#{customerHomeManagedBean.adsBannerCampaign.adsInfo}" extraAdvertismentInfo="#{customerHomeManagedBean.adsBannerCampaign.adsExtraInfo}" landingPageUrl="https://localhost:8181/InternetBankingSystem/landing_page/#{customerHomeManagedBean.adsBannerCampaign.landingPageName}" />
+            <em:customerMainFooter></em:customerMainFooter>
         </h:body>
     </f:view>
 

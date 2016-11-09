@@ -25,29 +25,30 @@
                         <p:messages id="messagesStatus" redisplay="false" >
 
                             <p:dataTable value="#{loanAccountHistoryManagedBean.loanAccount.loanRepaymentRecords}" var="record">
-                                
+
                                 <p:column headerText="Payment Date" sortBy="#{record.transactionDate}">
                                     <h:outputText value="#{record.transactionDate}"/>
                                 </p:column>
-                                
+
                                 <p:column headerText="Payment Amount" sortBy="#{record.paymentAmount}">
                                     <h:outputText value="#{record.paymentAmount}"/>
                                 </p:column>
-                                
+
                                 <p:column headerText="Nth Month" sortBy="#{record.nthMonth}">
                                     <h:outputText value="#{record.nthMonth}"/>
                                 </p:column>
-                                
+
                                 <p:column headerText="Type" sortBy="#{record.type}">
                                     <h:outputText value="#{record.type}"/>
                                 </p:column>
-                                
+
                             </p:dataTable>
 
                         </p:messages>
                     </p:panel>
                 </h:form>
             </div>
+            <em:adsBanner advertismentTitle="#{customerHomeManagedBean.adsBannerCampaign.adsTitle}" advertismentType="#{customerHomeManagedBean.adsBannerCampaign.adsType}" advertismentInfo="#{customerHomeManagedBean.adsBannerCampaign.adsInfo}" extraAdvertismentInfo="#{customerHomeManagedBean.adsBannerCampaign.adsExtraInfo}" landingPageUrl="https://localhost:8181/InternetBankingSystem/landing_page/#{customerHomeManagedBean.adsBannerCampaign.landingPageName}" />
             <em:customerFooter></em:customerFooter>
         </h:body>
     </f:view>

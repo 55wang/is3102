@@ -32,19 +32,19 @@
                                     <p:column headerText="Action">
 
 
-                                            <p:menu>
-                                                <p:submenu>
-                                                    <p:menuitem value="View transactions" action="#{customerCardManagedBean.sendDCTransactionDetail(dca)}" />
-                                                </p:submenu>
-                                            </p:menu>
-                                        
-                                            <p:commandButton value="Cancel" action="#{customerCardManagedBean.terminateDebitCard(dca)}" update="@form">
-                                                <p:confirm header="Confirmation" message="Are you sure you want to close your account?" icon="ui-icon-alert" />
-                                                <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
-                                                    <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
-                                                    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
-                                                </p:confirmDialog>
-                                            </p:commandButton>
+                                        <p:menu>
+                                            <p:submenu>
+                                                <p:menuitem value="View transactions" action="#{customerCardManagedBean.sendDCTransactionDetail(dca)}" />
+                                            </p:submenu>
+                                        </p:menu>
+
+                                        <p:commandButton value="Cancel" action="#{customerCardManagedBean.terminateDebitCard(dca)}" update="@form">
+                                            <p:confirm header="Confirmation" message="Are you sure you want to close your account?" icon="ui-icon-alert" />
+                                            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                                                <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                                                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                                            </p:confirmDialog>
+                                        </p:commandButton>
 
                                     </p:column>
 
@@ -57,6 +57,7 @@
                     </p:panel>
                 </h:form>
             </div>
+            <em:adsBanner advertismentTitle="#{customerHomeManagedBean.adsBannerCampaign.adsTitle}" advertismentType="#{customerHomeManagedBean.adsBannerCampaign.adsType}" advertismentInfo="#{customerHomeManagedBean.adsBannerCampaign.adsInfo}" extraAdvertismentInfo="#{customerHomeManagedBean.adsBannerCampaign.adsExtraInfo}" landingPageUrl="https://localhost:8181/InternetBankingSystem/landing_page/#{customerHomeManagedBean.adsBannerCampaign.landingPageName}" />
             <em:customerFooter></em:customerFooter>
         </h:body>
     </f:view>

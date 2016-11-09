@@ -57,10 +57,10 @@
 
                                 <h:outputText value="Overdue Payment:" />
                                 <h:outputText value="#{loanAccountDetailsManagedBean.loanAccount.overduePayment}" />
-                                
+
                                 <h:outputText value="Penalty Interest Rate (p.a):" />
                                 <h:outputText value="#{loanAccountDetailsManagedBean.loanAccount.loanProduct.penaltyInterestRate}" />
-                                
+
 
                                 <h:outputText value="Next Payment due date:" />
                                 <h:outputText value="#{loanAccountDetailsManagedBean.loanAccount.paymentDate}" />
@@ -91,6 +91,7 @@
                     </p:panel>
                 </h:form>
             </div>
+            <em:adsBanner advertismentTitle="#{customerHomeManagedBean.adsBannerCampaign.adsTitle}" advertismentType="#{customerHomeManagedBean.adsBannerCampaign.adsType}" advertismentInfo="#{customerHomeManagedBean.adsBannerCampaign.adsInfo}" extraAdvertismentInfo="#{customerHomeManagedBean.adsBannerCampaign.adsExtraInfo}" landingPageUrl="https://localhost:8181/InternetBankingSystem/landing_page/#{customerHomeManagedBean.adsBannerCampaign.landingPageName}" />
             <em:customerFooter></em:customerFooter>
         </h:body>
     </f:view>

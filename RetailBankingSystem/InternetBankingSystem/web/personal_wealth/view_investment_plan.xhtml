@@ -23,17 +23,17 @@
                             <p:commandButton value="Search" actionListener="#{viewInvestmentPlanManagedBean.search}" update="@form"/>
                         </p:outputPanel>
                         <p:separator />
-                        
-                    <p:outputLabel value="Current Monthly Advisor Fee: "/>
-                    <h:outputText id="fee" value="#{viewInvestmentPlanManagedBean.chargeFee}" style="font-size: 30px">
-                        <f:convertNumber type="currency" currencySymbol="S$" />
-                    </h:outputText>
-                    <br/><br/>
-                    <p:dataTable id="requestList" value="#{viewInvestmentPlanManagedBean.investmentPlans}" var="investmentRequest" sortMode="multiple" >
+
+                        <p:outputLabel value="Current Monthly Advisor Fee: "/>
+                        <h:outputText id="fee" value="#{viewInvestmentPlanManagedBean.chargeFee}" style="font-size: 30px">
+                            <f:convertNumber type="currency" currencySymbol="S$" />
+                        </h:outputText>
+                        <br/><br/>
+                        <p:dataTable id="requestList" value="#{viewInvestmentPlanManagedBean.investmentPlans}" var="investmentRequest" sortMode="multiple" >
                             <p:column headerText="ID" sortBy="#{investmentRequest.id}" style="width:15px">
                                 <h:outputText value="#{investmentRequest.id}" />
                             </p:column>
-                            
+
                             <p:column headerText="Create Date" sortBy="#{investmentRequest.creationDate}">
                                 <h:outputText value="#{investmentRequest.creationDate}">
                                     <f:convertDateTime pattern="MM/dd/yy" />
@@ -45,7 +45,7 @@
                                     <f:convertNumber type="currency" currencySymbol="S$" />
                                 </h:outputText>
                             </p:column>
-                        
+
                             <p:column headerText="Prefered Instruments" style="width:180px">
                                 <p:scrollPanel style="width:180px;height:80px">
                                     <p:repeat value="#{investmentRequest.preferedFinancialInstrument}" var="instrument" offset="" size="#{investmentRequest.preferedFinancialInstrument.size()}" step="1" varStatus="">
@@ -55,7 +55,7 @@
                                     </p:repeat>    
                                 </p:scrollPanel>
                             </p:column>
-                        
+
                             <p:column headerText="Status" sortBy="#{investmentRequest.status}" style="width:100px">
                                 <h:outputText value="#{investmentRequest.status}" />
                             </p:column>
@@ -63,11 +63,11 @@
                             <p:column headerText="Remarks" sortBy="#{investmentRequest.remarks}">
                                 <h:outputText value="#{investmentRequest.remarks}" />
                             </p:column>
-                        
+
                             <p:column headerText="Customer" sortBy="#{investmentRequest.wealthManagementSubscriber}">
                                 <h:outputText value="#{investmentRequest.wealthManagementSubscriber.mainAccount.customer.firstname}" />
                             </p:column>
-                            
+
                             <p:column headerText="Action" style="width:150px" rendered="#{investmentRequest.status != 'WAITING' and investmentRequest.status != 'EXECUTED' and investmentRequest.status != 'TERMINATED' and investmentRequest.status != 'ONGOING'}">
                                 <p:commandButton value="Cancel" action="#{viewInvestmentPlanManagedBean.cancel(investmentRequest)}" update="@form" icon="ui-icon-disk" />  
                             </p:column>
@@ -84,6 +84,7 @@
                     <p:messages id="messagesStatus" redisplay="false"></p:messages>
                 </h:form>
             </div>
+            <em:adsBanner advertismentTitle="#{customerHomeManagedBean.adsBannerCampaign.adsTitle}" advertismentType="#{customerHomeManagedBean.adsBannerCampaign.adsType}" advertismentInfo="#{customerHomeManagedBean.adsBannerCampaign.adsInfo}" extraAdvertismentInfo="#{customerHomeManagedBean.adsBannerCampaign.adsExtraInfo}" landingPageUrl="https://localhost:8181/InternetBankingSystem/landing_page/#{customerHomeManagedBean.adsBannerCampaign.landingPageName}" />
             <em:customerFooter></em:customerFooter>
         </h:body> 
     </f:view>
