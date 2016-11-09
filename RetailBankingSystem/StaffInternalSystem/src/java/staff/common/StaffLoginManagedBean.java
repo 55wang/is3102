@@ -7,7 +7,6 @@ package staff.common;
 
 import ejb.session.common.EmailServiceSessionBeanLocal;
 import ejb.session.staff.StaffAccountSessionBeanLocal;
-import ejb.session.staff.StaffRoleSessionBeanLocal;
 import ejb.session.utils.UtilsSessionBeanLocal;
 import entity.common.AuditLog;
 import entity.staff.StaffAccount;
@@ -61,11 +60,7 @@ public class StaffLoginManagedBean implements Serializable {
 
 //        StaffAccount sa = staffBean.loginAccount("relationship_manager", HashPwdUtils.hashPwd("password"));
 //        SessionUtils.setStaffAccount(sa);
-//        RedirectUtils.redirect(SessionUtils.getContextPath() + "/wealth/staff-view-investment-request.xhtml");
-
-        StaffAccount sa = staffBean.loginAccount("relationship_manager", HashPwdUtils.hashPwd("password"));
-        SessionUtils.setStaffAccount(sa);
-        RedirectUtils.redirect(SessionUtils.getContextPath() + "/crm/create_marketing_campaign.xhtml");
+//        RedirectUtils.redirect(SessionUtils.getContextPath() + "/crm/create_marketing_campaign.xhtml");
 
     }
 
