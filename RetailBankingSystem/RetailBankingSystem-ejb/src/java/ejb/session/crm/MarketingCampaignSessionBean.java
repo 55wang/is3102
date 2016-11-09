@@ -43,11 +43,11 @@ public class MarketingCampaignSessionBean implements MarketingCampaignSessionBea
     @Override
     public AdsBannerCampaign getMarketingCampaignByCustomer(Customer c) {
         System.out.println("getMarketingCampaignByCustomer()");
-        
+
         Query q = em.createQuery("SELECT c FROM Customer c WHERE c.id =:inId");
         q.setParameter("inId", c.getId());
         c = (Customer) q.getSingleResult();
-        
+
         System.out.println("customerGroup size: " + c.getCustomerGroups().size());
         Set<AdsBannerCampaign> mcHashSet = new HashSet<>();
 
@@ -76,6 +76,36 @@ public class MarketingCampaignSessionBean implements MarketingCampaignSessionBea
         }
 
         return null;
+    }
+
+    @Override
+    public Long addViewCount(MarketingCampaign mc) {
+
+        MarketingCampaign tempMc = em.find(MarketingCampaign.class, mc.getId());
+        Long newCount = tempMc.getViewCount() + 1L;
+        tempMc.setViewCount(newCount);
+        em.merge(tempMc);
+        return tempMc.getViewCount();
+    }
+
+    @Override
+    public Long addClickCount(MarketingCampaign mc) {
+
+        MarketingCampaign tempMc = em.find(MarketingCampaign.class, mc.getId());
+        Long newCount = tempMc.getClickCount() + 1L;
+        tempMc.setClickCount(newCount);
+        em.merge(tempMc);
+        return tempMc.getClickCount();
+    }
+
+    @Override
+    public Long addResponseCount(MarketingCampaign mc) {
+
+        MarketingCampaign tempMc = em.find(MarketingCampaign.class, mc.getId());
+        Long newCount = tempMc.getNumOfResponse() + 1L;
+        tempMc.setNumOfResponse(newCount);
+        em.merge(tempMc);
+        return tempMc.getNumOfResponse();
     }
 
     @Override

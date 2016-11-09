@@ -8,7 +8,13 @@
     <f:view>
         <f:metadata>
             <f:viewAction action="#{newCardManagedBean.setExistingCustomerForCardApplication()}"></f:viewAction>
+            
+            <f:viewParam name="selectedMC" value="#{newCardManagedBean.selectedMC}" />
+            <f:viewAction action="#{newCardManagedBean.init()}"></f:viewAction>
         </f:metadata>
+        
+        
+        
         <h:head>
             <title>Existing_Apply</title>
             <em:cssImport></em:cssImport>

@@ -52,6 +52,7 @@ public class EntityCustomerBuilder {
         c.setFirstname("Yifan");
         c.setLastname("Chen");
         c.setFullName("Chen Yifan");
+        c.setOccupation(EnumUtils.Occupation.FREELANCER);
         c.setGender(EnumUtils.Gender.MALE); // pls modify gender to enum type
         c.setIdentityType(EnumUtils.IdentityType.NRIC);
         c.setIdentityNumber("S1234567Z");
@@ -91,6 +92,7 @@ public class EntityCustomerBuilder {
         c2.setLastname("Alice");
         c2.setFirstname("Lee");
         c2.setFullName("Lee Alice");
+        c2.setOccupation(EnumUtils.Occupation.EXECUTIVE);
         c2.setGender(EnumUtils.Gender.FEMALE); 
         c2.setIdentityType(EnumUtils.IdentityType.NRIC);
         c2.setIdentityNumber("S0000002Z");
@@ -129,6 +131,7 @@ public class EntityCustomerBuilder {
         c3.setLastname("Jack");
         c3.setFirstname("Woon");
         c3.setFullName("Woon Jack");
+        c3.setOccupation(EnumUtils.Occupation.OTHERS);
         c3.setGender(EnumUtils.Gender.MALE); 
         c3.setIdentityType(EnumUtils.IdentityType.NRIC);
         c3.setIdentityNumber("S0000003Z");
@@ -167,6 +170,7 @@ public class EntityCustomerBuilder {
         c4.setLastname("Raymond");
         c4.setFirstname("Lei");
         c4.setFullName("Lei Raymond");
+        c4.setOccupation(EnumUtils.Occupation.SUPERVISOR);
         c4.setGender(EnumUtils.Gender.MALE); 
         c4.setIdentityType(EnumUtils.IdentityType.NRIC);
         c4.setIdentityNumber("S0000004Z");
@@ -205,6 +209,7 @@ public class EntityCustomerBuilder {
         c5.setLastname("Low");
         c5.setFirstname("Coco");
         c5.setFullName("Low Coco");
+        c5.setOccupation(EnumUtils.Occupation.MANAGERIAL);
         c5.setGender(EnumUtils.Gender.FEMALE); 
         c5.setIdentityType(EnumUtils.IdentityType.NRIC);
         c5.setIdentityNumber("S0000005Z");
@@ -238,6 +243,7 @@ public class EntityCustomerBuilder {
         c6.setBirthDay(new Date()); //make some real birthday.
         c6.setEmail("daisyqiu@gmail.com");
         c6.setFirstname("Xiaqing");
+        c6.setOccupation(EnumUtils.Occupation.SALES);
         c6.setGender(EnumUtils.Gender.MALE); // pls modify gender to enum type
         c6.setIdentityType(EnumUtils.IdentityType.NRIC);
         c6.setIdentityNumber("S1209183Z");
@@ -269,6 +275,7 @@ public class EntityCustomerBuilder {
         c7.setBirthDay(new Date()); //make some real birthday.
         c7.setEmail("daisykoo@gmail.com");
         c7.setFirstname("Daisy");
+        c7.setOccupation(EnumUtils.Occupation.FREELANCER);
         c7.setGender(EnumUtils.Gender.MALE); // pls modify gender to enum type
         c7.setIdentityType(EnumUtils.IdentityType.NRIC);
         c7.setIdentityNumber("S1290528Z");
@@ -300,6 +307,7 @@ public class EntityCustomerBuilder {
         c8.setBirthDay(new Date()); //make some real birthday.
         c8.setEmail("vincentlee@gmail.com");
         c8.setFirstname("Vincent");
+        c8.setOccupation(EnumUtils.Occupation.DIPLOMAT);
         c8.setGender(EnumUtils.Gender.MALE); // pls modify gender to enum type
         c8.setIdentityType(EnumUtils.IdentityType.NRIC);
         c8.setIdentityNumber("S1209123Z");
@@ -331,6 +339,7 @@ public class EntityCustomerBuilder {
         c9.setBirthDay(new Date()); //make some real birthday.
         c9.setEmail("cassychoi@gmail.com");
         c9.setFirstname("Cassy");
+        c9.setOccupation(EnumUtils.Occupation.SELF_EMPLOYED);
         c9.setGender(EnumUtils.Gender.FEMALE); // pls modify gender to enum type
         c9.setIdentityType(EnumUtils.IdentityType.NRIC);
         c9.setIdentityNumber("S3334567Z");
