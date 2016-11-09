@@ -5,7 +5,9 @@
  */
 package ejb.session.crm;
 
+import entity.crm.AdsBannerCampaign;
 import entity.crm.MarketingCampaign;
+import entity.customer.Customer;
 import java.util.List;
 import javax.ejb.Local;
 
@@ -16,6 +18,8 @@ import javax.ejb.Local;
 @Local
 public interface MarketingCampaignSessionBeanLocal {
 
+    public AdsBannerCampaign getDefaultMarketingCampaign();
+    public AdsBannerCampaign getMarketingCampaignByCustomer(Customer c);
     public List<MarketingCampaign> getListMarketingCampaigns();
     public MarketingCampaign getMarketingCampaign(Long Id);
     public MarketingCampaign createMarketingCampaign(MarketingCampaign mc);

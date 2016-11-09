@@ -23,19 +23,19 @@ and open the template in the editor.
             <em:customerNavBar context="personal" personalPage="transfer" ></em:customerNavBar>
             <div class="customer_main_container">
                 <p:panel header="Manage Merlion Bank Payee">
-                <h:form>
-                    <p:messages id="message" redisplay="false" >
-                        <p:wizard widgetVar="myWizard" showNavBar="false">
+                    <h:form>
+                        <p:messages id="message" redisplay="false" >
+                            <p:wizard widgetVar="myWizard" showNavBar="false">
 
-                            <p:tab id="input_detail" title="1.Input Details">
-                                <h1>To</h1>
+                                <p:tab id="input_detail" title="1.Input Details">
+                                    <h1>To</h1>
                                     <h:panelGrid columns="2" cellpadding="5">
                                         <h:outputText value="Payee's Name: " />
                                         <h:inputText value="#{manageMerlionPayeeManagedBean.payee.name}" required="true" />
                                         <h:outputText value="Payee's Account Number: " />
                                         <h:inputText value="#{manageMerlionPayeeManagedBean.payee.accountNumber}" required="true" />
                                     </h:panelGrid>
-                                <h1>From</h1>
+                                    <h1>From</h1>
                                     <h:panelGrid columns="2" cellpadding="5">
                                         <h:outputText value="My Account: " />
                                         <h:outputText value="#{manageMerlionPayeeManagedBean.payee.fromName}"/>
@@ -43,60 +43,61 @@ and open the template in the editor.
                                         <h:inputText value="#{manageMerlionPayeeManagedBean.payee.myInitial}" required="true" />
                                         <p:commandButton  value="Next" actionListener="#{manageMerlionPayeeManagedBean.sendOpt()}" update="@form" />
                                     </h:panelGrid>
-                            </p:tab>
+                                </p:tab>
 
-                            <p:tab id="verify_details" title="2.Verify Details">
-                                <h:panelGrid columns="2" cellpadding="5">
-                                    <h:outputText value="Recipient's Name: " />
-                                    <h:outputText value="#{manageMerlionPayeeManagedBean.payee.name}" />
-                                    <h:outputText value="Recipient's Account Number: " />
-                                    <h:outputText value="#{manageMerlionPayeeManagedBean.payee.accountNumber}" />
-                                    <h:outputText value="My Account: " />
-                                    <h:outputText value="#{manageMerlionPayeeManagedBean.payee.fromName}"/>
-                                    <h:outputText value="My Initials: " />
-                                    <h:outputText value="#{manageMerlionPayeeManagedBean.payee.myInitial}"/>
-                                    
-                                    <h2>Input Token Number</h2>
-                                    <p:inputText value="#{manageMerlionPayeeManagedBean.inputTokenString}" />
-                                    
-                                    <p:commandButton  value="Back" type="button" onclick="PF('myWizard').back()" />
-                                    <p:commandButton value="Add Payee" action="#{manageMerlionPayeeManagedBean.addPayee}" update="form"/> 
-                                </h:panelGrid>
-                            </p:tab>
+                                <p:tab id="verify_details" title="2.Verify Details">
+                                    <h:panelGrid columns="2" cellpadding="5">
+                                        <h:outputText value="Recipient's Name: " />
+                                        <h:outputText value="#{manageMerlionPayeeManagedBean.payee.name}" />
+                                        <h:outputText value="Recipient's Account Number: " />
+                                        <h:outputText value="#{manageMerlionPayeeManagedBean.payee.accountNumber}" />
+                                        <h:outputText value="My Account: " />
+                                        <h:outputText value="#{manageMerlionPayeeManagedBean.payee.fromName}"/>
+                                        <h:outputText value="My Initials: " />
+                                        <h:outputText value="#{manageMerlionPayeeManagedBean.payee.myInitial}"/>
 
-                            <p:tab id="completion" title="3.Completion">
-                                <h:panelGrid columns="2" cellpadding="5">
-                                    <h:outputText value="Payee's Name: " />
-                                    <h:outputText value="#{manageMerlionPayeeManagedBean.payee.name}" />
-                                    <h:outputText value="Payee's Account Number: " />
-                                    <h:outputText value="#{manageMerlionPayeeManagedBean.payee.accountNumber}" />
-                                    <h:outputText value="My Account: " />
-                                    <h:outputText value="#{manageMerlionPayeeManagedBean.payee.fromName}"/>
-                                    <h:outputText value="My Initials: " />
-                                    <h:outputText value="#{manageMerlionPayeeManagedBean.payee.myInitial}"/>
-                                </h:panelGrid>
-                            </p:tab>
-                        </p:wizard>
-                    </p:messages>
+                                        <h2>Input Token Number</h2>
+                                        <p:inputText value="#{manageMerlionPayeeManagedBean.inputTokenString}" />
+
+                                        <p:commandButton  value="Back" type="button" onclick="PF('myWizard').back()" />
+                                        <p:commandButton value="Add Payee" action="#{manageMerlionPayeeManagedBean.addPayee}" update="form"/> 
+                                    </h:panelGrid>
+                                </p:tab>
+
+                                <p:tab id="completion" title="3.Completion">
+                                    <h:panelGrid columns="2" cellpadding="5">
+                                        <h:outputText value="Payee's Name: " />
+                                        <h:outputText value="#{manageMerlionPayeeManagedBean.payee.name}" />
+                                        <h:outputText value="Payee's Account Number: " />
+                                        <h:outputText value="#{manageMerlionPayeeManagedBean.payee.accountNumber}" />
+                                        <h:outputText value="My Account: " />
+                                        <h:outputText value="#{manageMerlionPayeeManagedBean.payee.fromName}"/>
+                                        <h:outputText value="My Initials: " />
+                                        <h:outputText value="#{manageMerlionPayeeManagedBean.payee.myInitial}"/>
+                                    </h:panelGrid>
+                                </p:tab>
+                            </p:wizard>
+                        </p:messages>
                     </h:form>
-                <h:form id="form">
-                    <p:messages>
-                        <h1>Added Receipiants</h1>
-                        <p:dataTable id="transactions" value="#{manageMerlionPayeeManagedBean.payees}" var="payee">
-                            <p:column headerText="Name" sortBy="#{payee.name}">
-                                <h:outputText value="#{payee.name}"/>
-                            </p:column>
-                            <p:column headerText="Account Number" sortBy="#{payee.accountNumber}">
-                                <h:outputText value="#{payee.accountNumber}"/>
-                            </p:column>
-                            <p:column headerText="Delete">
-                                <p:commandButton value="Delete Payee" action="#{manageMerlionPayeeManagedBean.removePayee(payee)}" update="form"/> 
-                            </p:column>
-                        </p:dataTable>
-                    </p:messages>
-                </h:form>
+                    <h:form id="form">
+                        <p:messages>
+                            <h1>Added Receipiants</h1>
+                            <p:dataTable id="transactions" value="#{manageMerlionPayeeManagedBean.payees}" var="payee">
+                                <p:column headerText="Name" sortBy="#{payee.name}">
+                                    <h:outputText value="#{payee.name}"/>
+                                </p:column>
+                                <p:column headerText="Account Number" sortBy="#{payee.accountNumber}">
+                                    <h:outputText value="#{payee.accountNumber}"/>
+                                </p:column>
+                                <p:column headerText="Delete">
+                                    <p:commandButton value="Delete Payee" action="#{manageMerlionPayeeManagedBean.removePayee(payee)}" update="form"/> 
+                                </p:column>
+                            </p:dataTable>
+                        </p:messages>
+                    </h:form>
                 </p:panel>
             </div>
+            <em:adsBanner advertismentTitle="#{customerHomeManagedBean.adsBannerCampaign.adsTitle}" advertismentType="#{customerHomeManagedBean.adsBannerCampaign.adsType}" advertismentInfo="#{customerHomeManagedBean.adsBannerCampaign.adsInfo}" extraAdvertismentInfo="#{customerHomeManagedBean.adsBannerCampaign.adsExtraInfo}" landingPageUrl="https://localhost:8181/InternetBankingSystem/landing_page/#{customerHomeManagedBean.adsBannerCampaign.landingPageName}" />
             <em:customerFooter></em:customerFooter>
         </h:body>
     </f:view>
