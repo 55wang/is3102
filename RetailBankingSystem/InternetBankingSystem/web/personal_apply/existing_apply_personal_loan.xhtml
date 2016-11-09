@@ -3,20 +3,18 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
       xmlns:em="http://xmlns.jcp.org/jsf/composite/emcomp"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     <!--shift + ctrl + F, format-->
     <f:view>
         <h:head>
-            <title>Merlion Bank</title>
-            <h:outputStylesheet library="css" name="reset.css"/>
-            <h:outputStylesheet library="css" name="theme.css"/>
+            <title>Customer Profile</title>
+            <em:cssImport></em:cssImport>
         </h:head>
         <h:body>
-            <em:customerHeader context="main" userName="Log in"></em:customerHeader>
-            <em:customerNavBar context="main" mainPage="mainLoans"></em:customerNavBar>
-
-            <em:cssImport></em:cssImport>
+            <em:customerHeader context="personal" userName="#{customerHomeManagedBean.customer.firstname }"></em:customerHeader>
+            <em:customerNavBar context="personal"></em:customerNavBar>
             <div class="customer_main_container">
                 <h1> Apply for Personal Loan</h1>
                 <h:form>
@@ -24,58 +22,37 @@
                     <p:messages id="msgs"/>
                     <p:wizard widgetVar="myWizard" showNavBar="false">
 
-                        <p:tab id="p-info" title="Identity" >
+                        <p:tab id="p-info" title="Personal Information" >
                             <p:panel>
                                 <p:messages id="msgs1"/>
                                 <h:panelGrid columns="2" cellpadding="5px" columnClasses="label, value">
 
-                                    <h:outputText value="Identity Type: " />
-                                    <p:selectOneMenu value="#{personalLoanApplicationManagedBean.identityType}" style="width:187px; height: 31px; line-height: 21px; top:8px" rendered="true" label="identityType" >
-                                        <f:selectItem itemLabel="Please select.." itemValue=""/>                                                    
-                                        <f:selectItems value="#{personalLoanApplicationManagedBean.identityTypeOptions}" />
-                                    </p:selectOneMenu>
+                                    <h:outputText value="ID number: " />
+                                    <h:outputText id="idNumber" value="#{customerProfileManagedBean.customer.identityNumber}"/>
 
-                                    <h:outputText value="Identity Number: " />
-                                    <p:inputText value="#{personalLoanApplicationManagedBean.idNumber}" required="true" requiredMessage="Identity number is required." validatorMessage="Invalid identity number.">
-                                        <f:validateRegex
-                                            pattern="^[A-Za-z0-9]{9}$" />
-                                    </p:inputText>
+                                    <h:outputText value="Name: " />
+                                    <h:outputText id="name" value="#{customerProfileManagedBean.customer.lastname}  #{customerProfileManagedBean.customer.firstname}"/>
 
-                                    <h:outputText value="Last Name: " />
-                                    <p:inputText value="#{personalLoanApplicationManagedBean.lastName}" required="true" requiredMessage="Last name is required." validatorMessage="Invalid last name.">
-                                        <f:validateLength minimum="2" />
-                                    </p:inputText>
-
-                                    <h:outputText value="First Name: " />
-                                    <p:inputText id="firstName" value="#{personalLoanApplicationManagedBean.firstName}" required="true" requiredMessage="First name is required." validatorMessage="Invalid first name.">
-                                        <f:validateLength minimum="2" />
-                                    </p:inputText>
-
-                                    <h:outputText value="Date of Birth: " />
-                                    <p:calendar value="#{personalLoanApplicationManagedBean.birthday}" navigator="true" yearRange="c-100:c+0" required="true" requiredMessage="DOB is required." 
-                                                pattern="yyyy-MM-dd" maxdate="#{personalLoanApplicationManagedBean.currentDate}"/>
+                                    <h:outputText value="Birthday: " />
+                                    <h:outputText id="birthday" value="#{customerProfileManagedBean.customer.birthDay}"/>
 
                                     <h:outputText value="Age: " />
-                                    <p:inputText value="#{personalLoanApplicationManagedBean.age}" required="true" requiredMessage="Age is required." />
+                                    <h:outputText id="age" value="#{customerProfileManagedBean.age}"/>
 
-                                    <h:outputText value="Email: " />
+                                    <h:outputText value="Phone Number: " />
+                                    <h:outputText id="mobileNumber" value="#{customerProfileManagedBean.customer.phone}"/>
 
-                                    <p:inputText required="true" label="email" size="40"
-                                                 requiredMessage="Email address is required."
-                                                 validatorMessage="Invalid email format"
-                                                 value="#{personalLoanApplicationManagedBean.email}" style="width: 187px">
+                                    <h:outputText value="Email Address: " />
+                                    <h:outputText id="email" value="#{customerProfileManagedBean.customer.email}"/>
 
-                                        <f:validateRegex
-                                            pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
-                                    </p:inputText>
+                                    <h:outputText value="Monthly Income: " />
+                                    <h:outputText id="income" value="#{customerProfileManagedBean.customer.actualIncome}"/>
 
-                                    <h:outputText value="Phone: " />
-                                    <p:inputMask value="#{personalLoanApplicationManagedBean.phoneNumber}" required="true"  requiredMessage="Phone is required." mask="99999999"/>
 
                                 </h:panelGrid>
 
                                 <div class="register-form-button">
-                                    <p:commandButton value="Next" actionListener="#{personalLoanApplicationManagedBean.checkAge2()}" update="@form:msgs1"/>
+                                    <p:commandButton value="Next" actionListener="#{personalLoanApplicationManagedBean.save(customerProfileManagedBean.customer)}" update="@form:msgs1"/>
                                 </div>
                             </p:panel>
                         </p:tab>
@@ -84,8 +61,6 @@
                             <p:panel>
                                 <h:panelGrid columns="2" cellpadding="5px" columnClasses="label, value">
 
-                                    <h:outputText value="Monthly income: " />
-                                    <p:inputText value="#{personalLoanApplicationManagedBean.monthlyIncome}" required="true" requiredMessage="Monthly income is required." onchange="submit()" valueChangeListener="#{personalLoanApplicationManagedBean.changeLoanUpperLimit}"/>
 
                                     <h:outputText id="upperLimitDescription" value="You can get up to" styleClass="outputLabel"/>
                                     <h:outputText id="upperLimit" value="#{personalLoanApplicationManagedBean.upperLimit}" styleClass="outputLabel"/>
@@ -140,7 +115,7 @@
 
                                 <div class="register-form-button">
                                     <p:commandButton value="Back" type="button" onclick="PF('myWizard').back();" />
-                                    <p:commandButton value="Next" actionListener="#{personalLoanApplicationManagedBean.applyPersonalLoan()}" update="@form:msgs"/>
+                                    <p:commandButton value="Next" actionListener="#{personalLoanApplicationManagedBean.existingApplyPersonalLoan}" update="@form:msgs"/>
                                 </div>
                             </p:panel>
                         </p:tab>
@@ -155,9 +130,10 @@
 
                 </h:form>
             </div>   
-            <em:adsBanner advertismentTitle="#{customerHomeManagedBean.adsBannerCampaign.adsTitle}" advertismentType="#{customerHomeManagedBean.adsBannerCampaign.adsType}" advertismentInfo="#{customerHomeManagedBean.adsBannerCampaign.adsInfo}" extraAdvertismentInfo="#{customerHomeManagedBean.adsBannerCampaign.adsExtraInfo}" landingPageUrl="https://localhost:8181/InternetBankingSystem/landing_page/#{customerHomeManagedBean.adsBannerCampaign.landingPageName}" />
-            <em:customerMainFooter></em:customerMainFooter>
         </h:body>
+        <em:adsBanner advertismentTitle="#{customerHomeManagedBean.adsBannerCampaign.adsTitle}" advertismentType="#{customerHomeManagedBean.adsBannerCampaign.adsType}" advertismentInfo="#{customerHomeManagedBean.adsBannerCampaign.adsInfo}" extraAdvertismentInfo="#{customerHomeManagedBean.adsBannerCampaign.adsExtraInfo}" landingPageUrl="https://localhost:8181/InternetBankingSystem/landing_page/#{customerHomeManagedBean.adsBannerCampaign.landingPageName}" />
+        <em:customerFooter></em:customerFooter>
+
     </f:view>
 
 
