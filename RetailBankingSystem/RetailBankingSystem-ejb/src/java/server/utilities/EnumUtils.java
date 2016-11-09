@@ -235,7 +235,7 @@ public class EnumUtils {
     public enum CardNetwork {
 
         VISA("VISA"),
-        MasterCard("MASTERCARD");
+        MASTERCARD("MasterCard");
         private String value;
 
         CardNetwork(String value) {

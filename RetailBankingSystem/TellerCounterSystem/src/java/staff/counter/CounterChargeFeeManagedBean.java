@@ -5,8 +5,8 @@
  */
 package staff.counter;
 
-import ejb.session.common.LoginSessionBeanLocal;
 import ejb.session.counter.TellerCounterSessionBeanLocal;
+import ejb.session.mainaccount.MainAccountSessionBeanLocal;
 import entity.counter.ServiceChargeTransaction;
 import entity.counter.TellerCounter;
 import entity.customer.MainAccount;
@@ -18,6 +18,7 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
+import util.exception.common.MainAccountNotExistException;
 import utils.MessageUtils;
 import utils.SessionUtils;
 
@@ -32,7 +33,7 @@ public class CounterChargeFeeManagedBean implements Serializable {
     @EJB
     private TellerCounterSessionBeanLocal counterBean;
     @EJB
-    private LoginSessionBeanLocal loginBean;
+    private MainAccountSessionBeanLocal mainAccountSessionBean;
     
     private String customerICNumber;
     private String selectedService;
@@ -48,7 +49,12 @@ public class CounterChargeFeeManagedBean implements Serializable {
     
     public void chargeFee() {
         ServiceChargeTransaction newServiceFee = new ServiceChargeTransaction();
-        MainAccount ma = loginBean.getMainAccountByUserIC(customerICNumber);
+        MainAccount ma = null;
+        try{
+            ma = mainAccountSessionBean.getMainAccountByUserId(customerICNumber);
+        }catch(MainAccountNotExistException ex){
+            System.out.println("chargeFee.MainAccountNotExistException");
+        }
         ServiceCharge sc = counterBean.getServiceChargeByName(selectedService);
         newServiceFee.setServiceCharge(sc);
         newServiceFee.setMainAccount(ma);

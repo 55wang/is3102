@@ -5,10 +5,10 @@
  */
 package customer.transfer;
 
-import ejb.session.common.LoginSessionBeanLocal;
 import ejb.session.bill.TransferSessionBeanLocal;
 import ejb.session.common.OTPSessionBeanLocal;
 import ejb.session.dams.CustomerDepositSessionBeanLocal;
+import ejb.session.mainaccount.MainAccountSessionBeanLocal;
 import entity.customer.MainAccount;
 import entity.dams.account.DepositAccount;
 import java.io.Serializable;
@@ -20,6 +20,8 @@ import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import server.utilities.ConstantUtils;
+import util.exception.common.MainAccountNotExistException;
+import util.exception.dams.DepositAccountNotFoundException;
 import utils.JSUtils;
 import utils.MessageUtils;
 import utils.SessionUtils;
@@ -31,62 +33,73 @@ import utils.SessionUtils;
 @Named(value = "interAccountTransferManagedBean")
 @ViewScoped
 public class InterAccountTransferManagedBean implements Serializable {
-    
+
     @EJB
-    private LoginSessionBeanLocal loginBean;
+    private MainAccountSessionBeanLocal mainAccountSessionBean;
     @EJB
     private TransferSessionBeanLocal transferBean;
     @EJB
     private CustomerDepositSessionBeanLocal depositBean;
     @EJB
     private OTPSessionBeanLocal otpBean;
-    
+
     private String fromAccountNo;
     private String toAccountNo;
     private BigDecimal amount;
     private MainAccount ma;
     private List<DepositAccount> accounts = new ArrayList<>();
-    
+
     private String inputTokenString;
-    
-    public InterAccountTransferManagedBean() {}
-    
+
+    public InterAccountTransferManagedBean() {
+    }
+
     @PostConstruct
     public void init() {
-        ma = loginBean.getMainAccountByUserID(SessionUtils.getUserName());
+        try{
+            ma = mainAccountSessionBean.getMainAccountByUserId(SessionUtils.getUserName());
+        }catch(MainAccountNotExistException ex){
+            System.out.println("init.MainAccountNotExistException");
+        }
         accounts = ma.getBankAcounts();
     }
-    
+
     public void transfer() {
-        
+
         if (!checkOptAndProceed()) {
             return;
         }
-        
-        DepositAccount fromAccount = depositBean.getAccountFromId(fromAccountNo);
-        if (fromAccount != null && fromAccount.getBalance().compareTo(amount) < 0) {
-            JSUtils.callJSMethod("PF('myWizard').back()");
-            MessageUtils.displayError(ConstantUtils.NOT_ENOUGH_BALANCE);
-            return;
-        }
-        //TODO: need another authentication
-        String result = transferBean.transferFromAccountToAccount(fromAccountNo, toAccountNo, amount);
-        if (result.equals("SUCCESS")) {
-            init();
-            JSUtils.callJSMethod("PF('myWizard').next()");
-            MessageUtils.displayInfo(ConstantUtils.TRANSFER_SUCCESS);
-        } else {
+
+        try {
+            DepositAccount fromAccount = depositBean.getAccountFromId(fromAccountNo);
+            if (fromAccount != null && fromAccount.getBalance().compareTo(amount) < 0) {
+                JSUtils.callJSMethod("PF('myWizard').back()");
+                MessageUtils.displayError(ConstantUtils.NOT_ENOUGH_BALANCE);
+                return;
+            }
+            //TODO: need another authentication
+            String result = transferBean.transferFromAccountToAccount(fromAccountNo, toAccountNo, amount);
+            if (result.equals("SUCCESS")) {
+                init();
+                JSUtils.callJSMethod("PF('myWizard').next()");
+                MessageUtils.displayInfo(ConstantUtils.TRANSFER_SUCCESS);
+            } else {
+                JSUtils.callJSMethod("PF('myWizard').back()");
+                MessageUtils.displayError(ConstantUtils.TRANSFER_FAILED);
+            }
+        } catch (DepositAccountNotFoundException e) {
             JSUtils.callJSMethod("PF('myWizard').back()");
             MessageUtils.displayError(ConstantUtils.TRANSFER_FAILED);
         }
+
     }
-    
+
     public void sendOpt() {
         System.out.println("sendOTP clicked, sending otp to: " + ma.getCustomer().getPhone());
         JSUtils.callJSMethod("PF('myWizard').next()");
         otpBean.generateOTP(ma.getCustomer().getPhone());
     }
-    
+
     private Boolean checkOptAndProceed() {
         if (inputTokenString == null || inputTokenString.isEmpty()) {
             MessageUtils.displayError("Please enter one time password!");
@@ -160,7 +173,7 @@ public class InterAccountTransferManagedBean implements Serializable {
     public void setAmount(BigDecimal amount) {
         this.amount = amount;
     }
-    
+
     /**
      * @return the inputTokenString
      */
@@ -174,5 +187,5 @@ public class InterAccountTransferManagedBean implements Serializable {
     public void setInputTokenString(String inputTokenString) {
         this.inputTokenString = inputTokenString;
     }
-    
+
 }

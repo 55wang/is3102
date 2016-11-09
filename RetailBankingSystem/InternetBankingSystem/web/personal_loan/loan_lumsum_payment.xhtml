@@ -31,7 +31,7 @@
                                     <h:panelGrid columns="2" cellpadding="5">
                                         <h:outputText value="Choose Your Deposit Account to transfer from: " />
                                         <p:selectOneMenu value="#{loanLumsumPaymentManagedBean.fromAccountNo}" rendered="true" required="true">
-                                            <f:selectItems value="#{loanLumsumPaymentManagedBean.accounts}" var="a" itemValue="#{a.accountNumber}" itemLabel="#{a.product.name} #{a.accountNumber} #{a.balance.setScale(2)}" />
+                                            <f:selectItems value="#{loanLumsumPaymentManagedBean.accounts}" var="a" itemValue="#{a.accountNumber}" itemLabel="#{a.product.name} #{a.accountNumber} #{a.balance.setScale(2, RoundingMode.UP)}" />
                                         </p:selectOneMenu>
                                         <p:outputLabel for="amount" value="Base Amount (S$): " />
                                         <p:outputLabel for="amount" value="10,000.00 " />

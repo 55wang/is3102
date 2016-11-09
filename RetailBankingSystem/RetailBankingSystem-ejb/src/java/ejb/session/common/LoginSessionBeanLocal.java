@@ -8,6 +8,9 @@ package ejb.session.common;
 import entity.customer.Customer;
 import entity.customer.MainAccount;
 import javax.ejb.Local;
+import util.exception.cms.CustomerNotExistException;
+import util.exception.common.LoginFailException;
+import util.exception.common.MainAccountNotExistException;
 
 /**
  *
@@ -15,9 +18,7 @@ import javax.ejb.Local;
  */
 @Local
 public interface LoginSessionBeanLocal {
-    public MainAccount loginAccount(String username, String password); 
-    public Customer getCustomerByUserID(String userID);
-    public MainAccount getMainAccountByEmail(String email);
-    public MainAccount getMainAccountByUserID(String userID);
-    public MainAccount getMainAccountByUserIC(String userIC);
+    public MainAccount loginAccount(String username, String password) throws LoginFailException; 
+    public Customer getCustomerByUserID(String userID) throws CustomerNotExistException;
+    public MainAccount getMainAccountByUserIC(String userIC) throws MainAccountNotExistException;
 }

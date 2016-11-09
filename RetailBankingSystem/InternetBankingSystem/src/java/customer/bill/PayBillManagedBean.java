@@ -6,10 +6,9 @@
 package customer.bill;
 
 import ejb.session.bill.BillSessionBeanLocal;
-import ejb.session.bill.TransferSessionBeanLocal;
-import ejb.session.common.LoginSessionBeanLocal;
 import ejb.session.common.OTPSessionBeanLocal;
 import ejb.session.dams.CustomerDepositSessionBeanLocal;
+import ejb.session.mainaccount.MainAccountSessionBeanLocal;
 import ejb.session.webservice.WebserviceSessionBeanLocal;
 import entity.bill.BillingOrg;
 import entity.bill.Organization;
@@ -28,6 +27,9 @@ import javax.faces.view.ViewScoped;
 import server.utilities.ConstantUtils;
 import server.utilities.EnumUtils;
 import server.utilities.GenerateAccountAndCCNumber;
+import util.exception.common.MainAccountNotExistException;
+import util.exception.dams.DepositAccountNotFoundException;
+import util.exception.dams.UpdateDepositAccountException;
 import utils.JSUtils;
 import utils.MessageUtils;
 import utils.SessionUtils;
@@ -41,9 +43,7 @@ import utils.SessionUtils;
 public class PayBillManagedBean implements Serializable {
 
     @EJB
-    private LoginSessionBeanLocal loginBean;
-    @EJB
-    private TransferSessionBeanLocal transferBean;
+    private MainAccountSessionBeanLocal mainAccountSessionBean;
     @EJB
     private BillSessionBeanLocal billBean;
     @EJB
@@ -71,7 +71,11 @@ public class PayBillManagedBean implements Serializable {
 
     @PostConstruct
     public void init() {
-        setMa(loginBean.getMainAccountByUserID(SessionUtils.getUserName()));
+        try{
+            ma = mainAccountSessionBean.getMainAccountByUserId(SessionUtils.getUserName());
+        }catch(MainAccountNotExistException ex){
+            System.out.println("init.MainAccountNotExistException");
+        }
         accounts = depositBean.getAllNonFixedCustomerAccounts(ma.getId());
         ccBillList = billBean.getBillingOrgMainAccountId(ma.getId());
         setBillOrgsOptions(billBean.getActiveListOrganization());
@@ -92,36 +96,47 @@ public class PayBillManagedBean implements Serializable {
             return;
         }
 
-        DepositAccount fromAccount = depositBean.getAccountFromId(fromAccountNo);
+        try {
 
-        if (fromAccount != null && fromAccount.getBalance().compareTo(amount) < 0) {
-            JSUtils.callJSMethod("PF('myWizard').back()");
-            MessageUtils.displayError(ConstantUtils.NOT_ENOUGH_BALANCE);
-            return;
-        }
+            DepositAccount fromAccount = depositBean.getAccountFromId(fromAccountNo);
 
-        if (ccBillOrgId.equals("New Bill")) {
-            Organization o = billBean.getOrganizationById(Long.parseLong(newBillOrgId));
-            bo.setOrganization(o);
-            bo.setBillReference(referenceNumber);
-            bo.setMainAccount(ma);
-            BillingOrg result = billBean.createBillingOrganization(bo);
-            if (result != null) {
+            if (fromAccount != null && fromAccount.getBalance().compareTo(amount) < 0) {
+                JSUtils.callJSMethod("PF('myWizard').back()");
+                MessageUtils.displayError(ConstantUtils.NOT_ENOUGH_BALANCE);
+                return;
+            }
+
+            if (ccBillOrgId.equals("New Bill")) {
+                Organization o = billBean.getOrganizationById(Long.parseLong(newBillOrgId));
+                bo.setOrganization(o);
+                bo.setBillReference(referenceNumber);
+                bo.setMainAccount(ma);
+                BillingOrg result = billBean.createBillingOrganization(bo);
+                if (result != null) {
+                    transferClearing();
+                    JSUtils.callJSMethod("PF('myWizard').next()");
+                    MessageUtils.displayInfo(ConstantUtils.TRANSFER_SUCCESS);
+                } else {
+                    JSUtils.callJSMethod("PF('myWizard').back()");
+                    MessageUtils.displayError(ConstantUtils.TRANSFER_FAILED);
+                }
+            } else {
                 transferClearing();
                 JSUtils.callJSMethod("PF('myWizard').next()");
                 MessageUtils.displayInfo(ConstantUtils.TRANSFER_SUCCESS);
-            } else {
-                JSUtils.callJSMethod("PF('myWizard').back()");
-                MessageUtils.displayError(ConstantUtils.TRANSFER_FAILED);
             }
-        } else {
-            transferClearing();
-            JSUtils.callJSMethod("PF('myWizard').next()");
-            MessageUtils.displayInfo(ConstantUtils.TRANSFER_SUCCESS);
+
+        } catch (DepositAccountNotFoundException e) {
+            System.out.println("DepositAccountNotFoundException PayBillMangedBean.java transfer()");
+            JSUtils.callJSMethod("PF('myWizard').back()");
+            MessageUtils.displayError(ConstantUtils.TRANSFER_FAILED);
         }
     }
 
     private void transferClearing() {
+        
+        try {
+            
         DepositAccount da = depositBean.getAccountFromId(fromAccountNo);
 
         System.out.println("----------------Bill Payment clearing----------------");
@@ -139,6 +154,10 @@ public class PayBillManagedBean implements Serializable {
         da.removeBalance(amount);
         depositBean.updateAccount(da);
 
+        } catch (DepositAccountNotFoundException | UpdateDepositAccountException e) {
+            System.out.println("DepositAccountNotFoundException | UpdateDepositAccountException PayBillMangedBean.java transfer()");
+            MessageUtils.displayError(ConstantUtils.TRANSFER_FAILED);
+        }
     }
 
     public String getBillName() {

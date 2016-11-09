@@ -7,9 +7,9 @@ package customer.transfer;
 
 import ejb.session.bill.BillSessionBeanLocal;
 import ejb.session.bill.TransferSessionBeanLocal;
-import ejb.session.common.LoginSessionBeanLocal;
 import ejb.session.common.OTPSessionBeanLocal;
 import ejb.session.dams.CustomerDepositSessionBeanLocal;
+import ejb.session.mainaccount.MainAccountSessionBeanLocal;
 import ejb.session.webservice.WebserviceSessionBeanLocal;
 import entity.bill.BankEntity;
 import entity.bill.Payee;
@@ -29,6 +29,9 @@ import server.utilities.CommonUtils;
 import server.utilities.ConstantUtils;
 import server.utilities.EnumUtils;
 import server.utilities.GenerateAccountAndCCNumber;
+import util.exception.common.MainAccountNotExistException;
+import util.exception.dams.DepositAccountNotFoundException;
+import util.exception.dams.UpdateDepositAccountException;
 import utils.JSUtils;
 import utils.MessageUtils;
 import utils.SessionUtils;
@@ -42,7 +45,7 @@ import utils.SessionUtils;
 public class InternationalBankTransferManagedBean implements Serializable {
 
     @EJB
-    private LoginSessionBeanLocal loginBean;
+    private MainAccountSessionBeanLocal mainAccountSessionBean;
     @EJB
     private TransferSessionBeanLocal transferBean;
     @EJB
@@ -53,7 +56,7 @@ public class InternationalBankTransferManagedBean implements Serializable {
     private WebserviceSessionBeanLocal webserviceBean;
     @EJB
     private OTPSessionBeanLocal otpBean;
-    
+
     private String payeeId;
     private String fromAccountNo;
     private String purpose;
@@ -64,22 +67,25 @@ public class InternationalBankTransferManagedBean implements Serializable {
     private List<Payee> payees = new ArrayList<>();
     private List<CustomerDepositAccount> accounts = new ArrayList<>();
     private List<String> purposeOptions = CommonUtils.getEnumList(EnumUtils.TransferPurpose.class);
-    
+
     private String inputTokenString;
-    
+
     public InternationalBankTransferManagedBean() {
     }
-    
-    
+
     @PostConstruct
     public void init() {
-        setMa(loginBean.getMainAccountByUserID(SessionUtils.getUserName()));
+        try{
+            ma = mainAccountSessionBean.getMainAccountByUserId(SessionUtils.getUserName());
+        }catch(MainAccountNotExistException ex){
+            System.out.println("init.MainAccountNotExistException");
+        }
         accounts = depositBean.getAllNonFixedCustomerAccounts(ma.getId());
         setPayees(transferBean.getPayeeFromUserIdWithType(getMa().getId(), EnumUtils.PayeeType.OVERSEAS));
         setPayeeId("New Receipiant");
         calculateTransferLimits();
     }
-    
+
     public void changePayee() {
         if (getPayeeId().equals("New Receipiant")) {
             setPayee(new Payee());
@@ -87,48 +93,56 @@ public class InternationalBankTransferManagedBean implements Serializable {
             setPayee(transferBean.getPayeeById(Long.parseLong(getPayeeId())));
         }
     }
-    
+
     public void transfer() {
-        
+
         if (!checkOptAndProceed()) {
             return;
         }
-        
-        DepositAccount fromAccount = depositBean.getAccountFromId(fromAccountNo);
-        if (fromAccount != null && fromAccount.getBalance().compareTo(amount) < 0) {
-            JSUtils.callJSMethod("PF('myWizard').back()");
-            MessageUtils.displayError(ConstantUtils.NOT_ENOUGH_BALANCE);
-            return;
-        }
-        
-        BigDecimal currentTransferLimit = new BigDecimal(transferLimitLeft);
-        if (currentTransferLimit.compareTo(amount) < 0) {
-            JSUtils.callJSMethod("PF('myWizard').back()");
-            MessageUtils.displayError(ConstantUtils.EXCEED_TRANSFER_LIMIT);
-            return;
-        }
-        
-        if (getPayeeId().equals("New Receipiant")) {
-            getPayee().setType(EnumUtils.PayeeType.OVERSEAS);
-            getPayee().setFromName(getMa().getCustomer().getFullName());
-            payee.setMainAccount(ma);
-            Payee result = transferBean.createPayee(getPayee());
-            if (result != null) {
+
+        try {
+
+            DepositAccount fromAccount = depositBean.getAccountFromId(fromAccountNo);
+            if (fromAccount.getBalance().compareTo(amount) < 0) {
+                JSUtils.callJSMethod("PF('myWizard').back()");
+                MessageUtils.displayError(ConstantUtils.NOT_ENOUGH_BALANCE);
+                return;
+            }
+
+            BigDecimal currentTransferLimit = new BigDecimal(transferLimitLeft);
+            if (currentTransferLimit.compareTo(amount) < 0) {
+                JSUtils.callJSMethod("PF('myWizard').back()");
+                MessageUtils.displayError(ConstantUtils.EXCEED_TRANSFER_LIMIT);
+                return;
+            }
+
+            if (getPayeeId().equals("New Receipiant")) {
+                getPayee().setType(EnumUtils.PayeeType.OVERSEAS);
+                getPayee().setFromName(getMa().getCustomer().getFullName());
+                payee.setMainAccount(ma);
+                Payee result = transferBean.createPayee(getPayee());
+                if (result != null) {
+                    transferClearing();
+                    JSUtils.callJSMethod("PF('myWizard').next()");
+                    MessageUtils.displayInfo(ConstantUtils.TRANSFER_SUCCESS);
+                } else {
+                    JSUtils.callJSMethod("PF('myWizard').back()");
+                    MessageUtils.displayError(ConstantUtils.TRANSFER_FAILED);
+                }
+            } else {
+                payee = transferBean.getPayeeById(Long.parseLong(payeeId));
                 transferClearing();
                 JSUtils.callJSMethod("PF('myWizard').next()");
                 MessageUtils.displayInfo(ConstantUtils.TRANSFER_SUCCESS);
-            } else {
-                JSUtils.callJSMethod("PF('myWizard').back()");
-                MessageUtils.displayError(ConstantUtils.TRANSFER_FAILED);
             }
-        } else {
-            payee = transferBean.getPayeeById(Long.parseLong(payeeId));
-            transferClearing();
-            JSUtils.callJSMethod("PF('myWizard').next()");
-            MessageUtils.displayInfo(ConstantUtils.TRANSFER_SUCCESS);
+
+        } catch (DepositAccountNotFoundException e) {
+            System.out.println("DepositAccountNotFoundException InternationalBankTransferManagedBean transfer()");
+            JSUtils.callJSMethod("PF('myWizard').back()");
+            MessageUtils.displayError(ConstantUtils.TRANSFER_FAILED);
         }
     }
-    
+
     public String getBankName(String bankCode) {
         System.out.println(bankCode);
         if (bankCode == null || bankCode.equals("")) {
@@ -137,13 +151,13 @@ public class InternationalBankTransferManagedBean implements Serializable {
         BankEntity b = billBean.getBankEntityByCode(bankCode);
         return b.getName();
     }
-    
+
     public void sendOpt() {
         System.out.println("sendOTP clicked, sending otp to: " + ma.getCustomer().getPhone());
         JSUtils.callJSMethod("PF('myWizard').next()");
         otpBean.generateOTP(ma.getCustomer().getPhone());
     }
-    
+
     private Boolean checkOptAndProceed() {
         if (inputTokenString == null || inputTokenString.isEmpty()) {
             MessageUtils.displayError("Please enter one time password!");
@@ -161,31 +175,38 @@ public class InternationalBankTransferManagedBean implements Serializable {
             return false;
         }
     }
-    
+
     private void transferClearing() {
-        DepositAccount da = depositBean.getAccountFromId(getFromAccountNo());
-        System.out.println("----------------SWIFT transfer messaging----------------");
-        TransferRecord tr = new TransferRecord();
-        tr.setAccountNumber(getPayee().getAccountNumber());
-        tr.setReferenceNumber(GenerateAccountAndCCNumber.generateReferenceNumber());
-        tr.setAmount(getAmount());
-        tr.setSwiftCode(payee.getSwiftCode());
-        tr.setToBankCode(getPayee().getBankCode());
-        tr.setToBranchCode("010");// dummy
-        tr.setToBankAddress(getPayee().getBankAddress());
-        tr.setName(getPayee().getName());
-        tr.setMyInitial(getPayee().getMyInitial());
-        tr.setFromName(getPayee().getFromName());
-        tr.setPurpose(EnumUtils.TransferPurpose.getEnum(getPurpose()));
-        tr.setFromAccount(da);
-        tr.setType(EnumUtils.PayeeType.OVERSEAS);
-        tr.setActionType(EnumUtils.TransactionType.TRANSFER);
-        webserviceBean.transferSWIFT(tr);
-        da.removeBalance(getAmount());
-        depositBean.updateAccount(da);
-        calculateTransferLimits();
+        try {
+
+            DepositAccount da = depositBean.getAccountFromId(getFromAccountNo());
+            System.out.println("----------------SWIFT transfer messaging----------------");
+            TransferRecord tr = new TransferRecord();
+            tr.setAccountNumber(getPayee().getAccountNumber());
+            tr.setReferenceNumber(GenerateAccountAndCCNumber.generateReferenceNumber());
+            tr.setAmount(getAmount());
+            tr.setSwiftCode(payee.getSwiftCode());
+            tr.setToBankCode(getPayee().getBankCode());
+            tr.setToBranchCode("010");// dummy
+            tr.setToBankAddress(getPayee().getBankAddress());
+            tr.setName(getPayee().getName());
+            tr.setMyInitial(getPayee().getMyInitial());
+            tr.setFromName(getPayee().getFromName());
+            tr.setPurpose(EnumUtils.TransferPurpose.getEnum(getPurpose()));
+            tr.setFromAccount(da);
+            tr.setType(EnumUtils.PayeeType.OVERSEAS);
+            tr.setActionType(EnumUtils.TransactionType.TRANSFER);
+            webserviceBean.transferSWIFT(tr);
+            da.removeBalance(getAmount());
+            depositBean.updateAccount(da);
+            calculateTransferLimits();
+
+        } catch (DepositAccountNotFoundException | UpdateDepositAccountException e) {
+            System.out.println("DepositAccountNotFoundException | UpdateDepositAccountException transferClearing()");
+            MessageUtils.displayError(ConstantUtils.TRANSFER_FAILED);
+        }
     }
-    
+
     private void calculateTransferLimits() {
         BigDecimal todayTransferAmount = transferBean.getTodayBankTransferAmount(ma, EnumUtils.PayeeType.OVERSEAS);
         BigDecimal currentTransferLimit = new BigDecimal(ma.getTransferLimits().getDailyInterBankLimit().toString());
@@ -317,7 +338,7 @@ public class InternationalBankTransferManagedBean implements Serializable {
     public void setAccounts(List<CustomerDepositAccount> accounts) {
         this.accounts = accounts;
     }
-    
+
     /**
      * @return the inputTokenString
      */

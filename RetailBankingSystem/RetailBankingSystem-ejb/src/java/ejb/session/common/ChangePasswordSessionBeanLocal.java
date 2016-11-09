@@ -7,6 +7,7 @@ package ejb.session.common;
 
 import entity.customer.MainAccount;
 import javax.ejb.Local;
+import util.exception.common.UpdateMainAccountException;
 
 /**
  *
@@ -14,5 +15,5 @@ import javax.ejb.Local;
  */
 @Local
 public interface ChangePasswordSessionBeanLocal {
-    public Boolean changePwd(String newPwd, MainAccount mainAccount);
+    public MainAccount changeMainAccountPwd(MainAccount mainAccount) throws UpdateMainAccountException;
 }

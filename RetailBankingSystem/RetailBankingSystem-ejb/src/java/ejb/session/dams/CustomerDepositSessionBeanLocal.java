@@ -13,6 +13,9 @@ import entity.dams.account.DepositAccount;
 import java.math.BigDecimal;
 import java.util.List;
 import javax.ejb.Local;
+import util.exception.dams.DepositAccountNotFoundException;
+import util.exception.dams.DuplicateDepositAccountException;
+import util.exception.dams.UpdateDepositAccountException;
 
 /**
  *
@@ -20,12 +23,12 @@ import javax.ejb.Local;
  */
 @Local
 public interface CustomerDepositSessionBeanLocal {
-    public DepositAccount getAccountFromId(String accountNumber);
-    public DepositAccount createAccount(DepositAccount account);
-    public DepositAccount updateAccount(DepositAccount account);
+    public DepositAccount getAccountFromId(String accountNumber) throws DepositAccountNotFoundException;
+    public DepositAccount createAccount(DepositAccount account)  throws DuplicateDepositAccountException ;
+    public DepositAccount updateAccount(DepositAccount account) throws UpdateDepositAccountException ;
     public List<DepositAccount> showAllAccounts();
     public List<DepositAccount> showAllActiveAccounts();
-    public List<DepositAccount> getAllCustomerAccounts(Long mainAccountId);
+    public List<DepositAccount> getAllCustomerAccounts(String mainAccountId);
     public CustomerDepositAccount getDaytoDayAccountByMainAccount(MainAccount ma);
     public List<CustomerDepositAccount> getAllNonFixedCustomerAccounts(String mainAccountId);
     public List<CustomerFixedDepositAccount> getAllFixedCustomerAccounts(String mainAccountId);

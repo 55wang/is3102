@@ -6,8 +6,6 @@
 package common;
 
 import ejb.session.mainaccount.MainAccountSessionBeanRemote;
-import entity.customer.Customer;
-import entity.customer.CustomerCase;
 import entity.customer.MainAccount;
 import java.io.Serializable;
 import java.util.logging.Level;
@@ -24,10 +22,6 @@ import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
-import util.exception.cms.CustomerCaseNotFoundException;
-import util.exception.cms.CustomerNotExistException;
-import util.exception.cms.DuplicateCaseExistException;
-import util.exception.cms.UpdateCaseException;
 import util.exception.common.DuplicateMainAccountExistException;
 import util.exception.common.MainAccountNotExistException;
 import util.exception.common.UpdateMainAccountException;
@@ -64,7 +58,7 @@ public class MainAccountTest implements Serializable {
     
     @Test
     public void test01createMainAccount() throws DuplicateMainAccountExistException {
-        System.out.println("CustomerCaseTest.test01createMainAccount");   
+        System.out.println("MainAccountTest.test01createMainAccount");   
         MainAccount ma = new MainAccount();
         ma.setId(TEST_CASE_ID);
         MainAccount result = mainBean.createMainAccount(ma);
@@ -73,7 +67,7 @@ public class MainAccountTest implements Serializable {
     
     @Test(expected=DuplicateMainAccountExistException.class)
     public void test02createMainAccountException() throws DuplicateMainAccountExistException {
-        System.out.println("CustomerCaseTest.test02createMainAccountException"); 
+        System.out.println("MainAccountTest.test02createMainAccountException"); 
         MainAccount ma = new MainAccount();
         ma.setId(TEST_CASE_ID);
         MainAccount result = mainBean.createMainAccount(ma);
@@ -82,7 +76,7 @@ public class MainAccountTest implements Serializable {
     
     @Test
     public void test03updateCase() throws UpdateMainAccountException, MainAccountNotExistException {
-        System.out.println("CustomerCaseTest.test03updateCase");   
+        System.out.println("MainAccountTest.test03updateCase");   
         MainAccount ma = mainBean.getMainAccountByUserId(TEST_CASE_ID);
         ma.setUserID(TEST_CASE_ID);
         MainAccount result = mainBean.updateMainAccount(ma);
@@ -91,7 +85,7 @@ public class MainAccountTest implements Serializable {
     
     @Test(expected=UpdateMainAccountException.class)
     public void test04updateCaseSaveException() throws UpdateMainAccountException {
-        System.out.println("CustomerCaseTest.test04updateCaseSaveException");   
+        System.out.println("MainAccountTest.test04updateCaseSaveException");   
         MainAccount ma = new MainAccount();
         MainAccount result = mainBean.updateMainAccount(ma);
         assertEquals(result, ma);     
@@ -99,16 +93,30 @@ public class MainAccountTest implements Serializable {
     
     @Test
     public void test05getMainAccountByUserId() throws MainAccountNotExistException {
-        System.out.println("CustomerProfileTest.test09getCustomerByID");
+        System.out.println("MainAccountTest.test09getCustomerByID");
         MainAccount ma = mainBean.getMainAccountByUserId(TEST_CASE_ID);
         assertNotNull(ma);
     }
 
     @Test(expected = MainAccountNotExistException.class)
     public void test10getCustomerByIDException() throws MainAccountNotExistException {
-        System.out.println("CustomerProfileTest.test10getCustomerByIDException");
+        System.out.println("MainAccountTest.test10getCustomerByIDException");
         MainAccount ma = mainBean.getMainAccountByUserId(TEST_CASE_ID + "2");
         assertNotNull(ma);
+    }
+    
+        @Test
+    public void test11getMainAccountByEmail() throws MainAccountNotExistException {
+        System.out.println("MainAccountTest.test11getMainAccountByEmail");   
+        MainAccount result = mainBean.getMainAccountByEmail("wangzhe.lynx@gmail.com");
+        assertNotNull(result);        
+    }
+    
+    @Test(expected=MainAccountNotExistException.class)
+    public void test12getMainAccountByEmailException() throws MainAccountNotExistException {
+        System.out.println("MainAccountTest.test12getMainAccountByEmailException");   
+        MainAccount result = mainBean.getMainAccountByEmail("customer@merlionbank.com");
+        assertNotNull(result);    
     }
     
     private MainAccountSessionBeanRemote lookupMainAccountSessionBeanRemote() {

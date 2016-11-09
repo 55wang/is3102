@@ -24,6 +24,8 @@ import javax.faces.view.ViewScoped;
 import server.utilities.ConstantUtils;
 import server.utilities.EnumUtils;
 import server.utilities.GenerateAccountAndCCNumber;
+import util.exception.dams.DepositAccountNotFoundException;
+import util.exception.dams.UpdateDepositAccountException;
 import utils.MessageUtils;
 
 /**
@@ -91,52 +93,63 @@ public class PayOtherCreditCardBillCounterManagedBean implements Serializable {
 
     public void transfer() {
 
-        DepositAccount fromAccount = depositBean.getAccountFromId(fromAccountNumber);
-        if (fromAccount != null && fromAccount.getBalance().compareTo(amount) < 0) {
-            MessageUtils.displayError(ConstantUtils.NOT_ENOUGH_BALANCE);
-            return;
-        }
+        try {
+            DepositAccount fromAccount = depositBean.getAccountFromId(fromAccountNumber);
+            if (fromAccount != null && fromAccount.getBalance().compareTo(amount) < 0) {
+                MessageUtils.displayError(ConstantUtils.NOT_ENOUGH_BALANCE);
+                return;
+            }
 
-        if (selectedBillId.equals("New Receipiant")) {
-            Organization o = billBean.getOrganizationById(selectedBillOrgId);
+            if (selectedBillId.equals("New Receipiant")) {
+                Organization o = billBean.getOrganizationById(selectedBillOrgId);
 
-            billingOrg.setOrganization(o);
-            billingOrg.setBillReference(toReferenceNumber);
-            billingOrg.setMainAccount(mainAccount);
-            BillingOrg result = billBean.createBillingOrganization(billingOrg);
-            
-            if (result != null) {
+                billingOrg.setOrganization(o);
+                billingOrg.setBillReference(toReferenceNumber);
+                billingOrg.setMainAccount(mainAccount);
+                BillingOrg result = billBean.createBillingOrganization(billingOrg);
+
+                if (result != null) {
+                    transferClearing();
+                    MessageUtils.displayInfo(ConstantUtils.TRANSFER_SUCCESS);
+                } else {
+                    MessageUtils.displayError(ConstantUtils.TRANSFER_FAILED);
+                }
+
+            } else {
+                billingOrg = billBean.getBillingOrganizationById(Long.parseLong(selectedBillId));
                 transferClearing();
                 MessageUtils.displayInfo(ConstantUtils.TRANSFER_SUCCESS);
-            } else {
-                MessageUtils.displayError(ConstantUtils.TRANSFER_FAILED);
             }
-            
-        } else {
-            billingOrg = billBean.getBillingOrganizationById(Long.parseLong(selectedBillId));
-            transferClearing();
-            MessageUtils.displayInfo(ConstantUtils.TRANSFER_SUCCESS);
+
+        } catch (DepositAccountNotFoundException e) {
+            System.out.println("DepositAccountNotFoundException PayOtherCreditCardBillCounterManagedBean transfer()");
+            MessageUtils.displayError(ConstantUtils.TRANSFER_FAILED);
         }
     }
 
     private void transferClearing() {
-        DepositAccount da = depositBean.getAccountFromId(fromAccountNumber);
+        try {
+            DepositAccount da = depositBean.getAccountFromId(fromAccountNumber);
 
-        System.out.println("----------------Bill Payment clearing----------------");
-        BillTransferRecord btr = new BillTransferRecord();
-        btr.setBillReferenceNumber(billingOrg.getBillReference());// it will be credit card number
-        btr.setOrganizationName(billingOrg.getOrganization().getName());
-        btr.setAmount(amount);
-        btr.setPartnerBankCode(billingOrg.getOrganization().getPartnerBankCode());
-        btr.setPartnerBankAccount(billingOrg.getOrganization().getPartnerBankAccount());
-        btr.setFromAccount(da);
-        btr.setSettled(false);
-        btr.setShortCode(billingOrg.getOrganization().getShortCode());
-        btr.setReferenceNumber(GenerateAccountAndCCNumber.generateReferenceNumber());
-        btr.setActionType(EnumUtils.TransactionType.CCSPENDING);
-        webserviceBean.billingClearingSACH(btr);
-        da.removeBalance(amount);
-        depositBean.updateAccount(da);
+            System.out.println("----------------Bill Payment clearing----------------");
+            BillTransferRecord btr = new BillTransferRecord();
+            btr.setBillReferenceNumber(billingOrg.getBillReference());// it will be credit card number
+            btr.setOrganizationName(billingOrg.getOrganization().getName());
+            btr.setAmount(amount);
+            btr.setPartnerBankCode(billingOrg.getOrganization().getPartnerBankCode());
+            btr.setPartnerBankAccount(billingOrg.getOrganization().getPartnerBankAccount());
+            btr.setFromAccount(da);
+            btr.setSettled(false);
+            btr.setShortCode(billingOrg.getOrganization().getShortCode());
+            btr.setReferenceNumber(GenerateAccountAndCCNumber.generateReferenceNumber());
+            btr.setActionType(EnumUtils.TransactionType.CCSPENDING);
+            webserviceBean.billingClearingSACH(btr);
+            da.removeBalance(amount);
+            depositBean.updateAccount(da);
+        } catch (DepositAccountNotFoundException | UpdateDepositAccountException e) {
+            System.out.println("DepositAccountNotFoundException | UpdateDepositAccountException PayOtherCreditCardBillCounterManagedBean transfer()");
+            MessageUtils.displayError(ConstantUtils.TRANSFER_FAILED);
+        }
     }
 
     /**

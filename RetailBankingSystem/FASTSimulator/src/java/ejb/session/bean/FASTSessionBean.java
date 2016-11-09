@@ -30,7 +30,7 @@ import javax.ws.rs.core.MediaType;
 @Stateless
 public class FASTSessionBean {
 
-    private final String MEPS_SETTLEMENT = "https://localhost:8181/MEPSSimulator/meps/meps_settlement";
+    private final String MEPS_FAST_SETTLEMENT = "https://localhost:8181/MEPSSimulator/meps/meps_fast_settlement";
 
     @PersistenceContext(unitName = "FASTSimulatorPU")
     private EntityManager em;
@@ -46,41 +46,39 @@ public class FASTSessionBean {
     public void persistSettlement(FastSettlement object) {
         em.persist(object);
     }
-    
+
     public FastSettlement findSettlement(String code) {
         return em.find(FastSettlement.class, code);
     }
-    
 
     public FastTransfer findPaymentTransferByReferenceNumber(String referenceNumber) {
         return em.find(FastTransfer.class, referenceNumber);
     }
-    
+
     @Asynchronous
     public void sendMEPS(FastTransfer tr) {
-        List<FastSettlement> settlements = getSettlements(tr);
+//        List<FastSettlement> settlements = getSettlements(tr);
 
         // send to MEPS+
         Form form = new Form(); //bank info
-        form.param("mbsCode", settlements.get(0).getBankCode());
-        form.param("mbsSettlementAmount", settlements.get(0).getAmount().setScale(4).toString());
-        form.param("mbsName", settlements.get(0).getName());
-        form.param("citiCode", settlements.get(1).getBankCode());
-        form.param("citiSettlementAmount", settlements.get(1).getAmount().setScale(4).toString());
-        form.param("citiName", settlements.get(1).getName());
-        form.param("ocbcCode", settlements.get(2).getBankCode());
-        form.param("ocbcSettlementAmount", settlements.get(2).getAmount().setScale(4).toString());
-        form.param("ocbcName", settlements.get(2).getName());
+        form.param("referenceNumber", tr.getReferenceNumber());
+        form.param("amount", tr.getAmount().toString());
+        form.param("toBankCode", tr.getToBankCode()); // other bank
+        form.param("toBankName", tr.getToBankName()); // other bank
+        form.param("fromBankCode", "001");
+        form.param("fromBankName", tr.getFromBankName()); // other bank
 
         System.out.println(".");
         System.out.println("[SACH]:");
         System.out.println("Sending Net Settlement Amount to MEPS...");
-        
+
         Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(MEPS_SETTLEMENT);
+        WebTarget target = client.target(MEPS_FAST_SETTLEMENT);
 
         // This is the response
         JsonObject jsonString = target.request(MediaType.APPLICATION_JSON).post(Entity.entity(form, MediaType.APPLICATION_FORM_URLENCODED), JsonObject.class);
+        tr.setSettled(Boolean.TRUE);
+        merge(tr);
 
         if (jsonString.getString("message").equals("SUCCESS")) {
             System.out.println("");
@@ -92,25 +90,22 @@ public class FASTSessionBean {
         }
     }
 
-    private List<FastSettlement> getSettlements(FastTransfer tr) {
-        Query q = em.createQuery("SELECT fs FROM FastSettlement fs");
-        List<FastSettlement> settlements = new ArrayList<FastSettlement>();
-        settlements = q.getResultList();
-        if (settlements.isEmpty()) {
-            System.out.println("Entity builder failed");
-        }
-        for (FastSettlement s : settlements) {
-            s.setAmount(BigDecimal.ZERO);
-            if (tr.getFromBankCode().equals(s.getBankCode())) {
-                s.setAmount(tr.getAmount().negate());
-            }
-            if (tr.getToBankCode().equals(s.getBankCode())) {
-                s.setAmount(tr.getAmount());
-            }
-        }
-        return settlements;
-    }
-
-
-
+//    private List<FastSettlement> getSettlements(FastTransfer tr) {
+//        Query q = em.createQuery("SELECT fs FROM FastSettlement fs");
+//        List<FastSettlement> settlements = new ArrayList<FastSettlement>();
+//        settlements = q.getResultList();
+//        if (settlements.isEmpty()) {
+//            System.out.println("Entity builder failed");
+//        }
+//        for (FastSettlement s : settlements) {
+//            s.setAmount(BigDecimal.ZERO);
+//            if (tr.getFromBankCode().equals(s.getBankCode())) {
+//                s.setAmount(tr.getAmount().negate());
+//            }
+//            if (tr.getToBankCode().equals(s.getBankCode())) {
+//                s.setAmount(tr.getAmount());
+//            }
+//        }
+//        return settlements;
+//    }
 }

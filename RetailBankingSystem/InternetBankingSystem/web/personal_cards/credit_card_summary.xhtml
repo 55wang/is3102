@@ -23,21 +23,27 @@
                     <p:panel header="Credit Cards">
 
                         <h:panelGrid columns="2" cellpadding="5">
-                            <p:dataTable value="#{customerCardManagedBean.ccas}" var="cca" >
-
-                                <p:column headerText="Credit Card Number">
+                            <p:dataTable value="#{customerCardManagedBean.activeCcas}" var="cca" >
+                                <p:column headerText="Product" style="width: 15%">
+                                    <h:outputText value="#{cca.creditCardProduct.productName}" />
+                                </p:column>
+                                <p:column headerText="Credit Card Number" style="width: 18%">
                                     <h:outputText value="#{cca.creditCardNum}" />
                                 </p:column>
 
+                                <p:column headerText="Credit Limit"  >
+                                    <h:outputText value="#{customerCardManagedBean.retrieveCreditLimit(cca)}" />
+                                </p:column>
+
+                                <p:column headerText="Current Month Spending">
+                                    <h:outputText value="#{cca.currentMonthAmount}" />
+                                </p:column>
+
                                 <p:column headerText="Outstanding Balance">
-                                    <h:outputText value="#{cca.outstandingAmount}" />
+                                    <h:outputText value="#{customerCardManagedBean.displayOutstandingAmount(cca.outstandingAmount)}" />
                                 </p:column>
-
-                                <p:column headerText="Product">
-                                    <h:outputText value="#{cca.creditCardProduct.productName}" />
-                                </p:column>
-
-                                <p:column headerText="Action">
+             
+                                <p:column headerText="Action" style="width: 17%">
                                     <p:menu>
                                         <p:submenu>
                                             <p:menuitem value="View transactions" action="#{customerCardManagedBean.sendCCTransactionDetail(cca)}" style="width:100%"/>
@@ -61,6 +67,38 @@
                                     <h:outputText value="#{cca.merlionMiles}" rendered="#{cca.creditCardProduct.cartType == 'MILE'}"/>
                                     <p:commandButton value="Redeem" action="#{customerCardManagedBean.viewRedeemPage(cca)}" rendered="#{cca.creditCardProduct.cartType == 'MILE'}" style="width:100%; margin-top:10px; height: 30px" ></p:commandButton>
                                 </p:column>
+
+                            </p:dataTable>
+
+                        </h:panelGrid>
+
+                    </p:panel>
+                    <p:panel header="Credit Card Applications">
+
+                        <h:panelGrid columns="2" cellpadding="5">
+                            <p:dataTable value="#{customerCardManagedBean.pendingCcas}" var="cca" >
+
+                                <p:column headerText="Credit Card Number">
+                                    <h:outputText value="#{cca.creditCardNum}" />
+                                </p:column>
+
+                                 <p:column headerText="Product">
+                                    <h:outputText value="#{cca.creditCardProduct.productName}" />
+                                </p:column>
+
+                                <p:column headerText="Action">
+                           
+                                    <p:commandButton value="Delete" action="#{customerCardManagedBean.terminateCreditCard(cca)}" update="growl" style="width:100%; margin-top:5px; height: 30px ">
+                                        <p:confirm header="Confirmation" message="Are you sure you want to cancel card application?" icon="ui-icon-alert" />
+                                        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                                            <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                                            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                                        </p:confirmDialog>
+                                    </p:commandButton>
+
+                                </p:column>
+
+              
 
                             </p:dataTable>
 

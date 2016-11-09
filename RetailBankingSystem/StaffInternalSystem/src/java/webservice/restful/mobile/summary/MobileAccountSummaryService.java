@@ -5,10 +5,10 @@
  */
 package webservice.restful.mobile.summary;
 
-import ejb.session.common.LoginSessionBeanLocal;
 import ejb.session.dams.CustomerDepositSessionBeanLocal;
 import ejb.session.dams.MobileAccountSessionBeanLocal;
 import ejb.session.loan.LoanAccountSessionBeanLocal;
+import ejb.session.mainaccount.MainAccountSessionBeanLocal;
 import entity.customer.MainAccount;
 import entity.dams.account.CustomerDepositAccount;
 import entity.dams.account.CustomerFixedDepositAccount;
@@ -40,7 +40,7 @@ public class MobileAccountSummaryService {
     private UriInfo context;
 
     @EJB
-    private LoginSessionBeanLocal loginBean;
+    private MainAccountSessionBeanLocal mainAccountSessionBean;
     @EJB
     private MobileAccountSessionBeanLocal mobileBean;
     @EJB
@@ -59,7 +59,7 @@ public class MobileAccountSummaryService {
         String jsonString;
         MainAccount ma;
         try {
-            ma = loginBean.getMainAccountByUserID(username);
+            ma = mainAccountSessionBean.getMainAccountByUserId(username);
         } catch (Exception e) {
             ErrorDTO err = new ErrorDTO();
             err.setCode(-1);

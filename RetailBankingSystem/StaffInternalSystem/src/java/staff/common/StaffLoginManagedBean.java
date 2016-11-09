@@ -57,11 +57,6 @@ public class StaffLoginManagedBean implements Serializable {
         a.setFunctionInput("Getting all customer information");
         a.setStaffAccount(SessionUtils.getStaff());
         utilsBean.persist(a);
-
-//        StaffAccount sa = staffBean.loginAccount("relationship_manager", HashPwdUtils.hashPwd("password"));
-//        SessionUtils.setStaffAccount(sa);
-//        RedirectUtils.redirect(SessionUtils.getContextPath() + "/crm/create_marketing_campaign.xhtml");
-
     }
 
     public void loginStaff(ActionEvent event) {

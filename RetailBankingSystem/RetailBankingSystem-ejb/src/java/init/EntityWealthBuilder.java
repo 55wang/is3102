@@ -5,11 +5,9 @@
  */
 package init;
 
-import ejb.session.common.LoginSessionBeanLocal;
 import ejb.session.fact.PortfolioFactSessionBeanLocal;
 import ejb.session.mainaccount.MainAccountSessionBeanLocal;
 import ejb.session.staff.StaffAccountSessionBeanLocal;
-import ejb.session.wealth.DesignInvestmentPlanSessionBeanLocal;
 import ejb.session.wealth.FinancialInstrumentSessionBeanLocal;
 import ejb.session.wealth.InvestmentPlanSessionBeanLocal;
 import ejb.session.wealth.PortfolioSessionBeanLocal;
@@ -41,6 +39,7 @@ import org.rosuda.REngine.Rserve.RserveException;
 import server.utilities.CommonUtils;
 import server.utilities.ConstantUtils;
 import server.utilities.EnumUtils;
+import util.exception.common.MainAccountNotExistException;
 import util.exception.common.UpdateMainAccountException;
 
 /**
@@ -50,11 +49,6 @@ import util.exception.common.UpdateMainAccountException;
 @Stateless
 @LocalBean
 public class EntityWealthBuilder {
-
-    @EJB
-    private DesignInvestmentPlanSessionBeanLocal designInvestmentPlanSessionBean;
-    @EJB
-    private LoginSessionBeanLocal loginBean;
     @EJB
     private InvestmentPlanSessionBeanLocal investmentPlanSessionBean;
     @EJB
@@ -80,7 +74,12 @@ public class EntityWealthBuilder {
             //generate PortfolioModel table
             constructPortfolioModel();
 
-            MainAccount demoMainAccount = loginBean.getMainAccountByUserID(ConstantUtils.DEMO_MAIN_ACCOUNT_USER_ID_1);
+            MainAccount demoMainAccount = null;
+            try{
+                demoMainAccount = mainAccountSessionBean.getMainAccountByUserId(ConstantUtils.DEMO_MAIN_ACCOUNT_USER_ID_1);
+            }catch(MainAccountNotExistException ex){
+                System.out.println("EntityWealthBuilder.initWealth.MainAccountNotExistException");
+            }
             demoMainAccount.getCustomer().setSavingPerMonth(500.0);
             WealthManagementSubscriber wms = new WealthManagementSubscriber();
             wms.setMainAccount(demoMainAccount);

@@ -63,12 +63,17 @@ public class CreateLoanProductManagedBean implements Serializable {
     }
 
     public void createLoanProduct() {
+        LoanInterestCollection lic=new LoanInterestCollection();
+        lic=loanProductBean.getInterestCollectionById(selectedInterestCollectionId);
         newLoanProduct.setProductType(EnumUtils.LoanProductType.getEnum(selectedProductType));
-        newLoanProduct.setLoanInterestCollection(loanProductBean.getInterestCollectionById(selectedInterestCollectionId));
+        newLoanProduct.setLoanInterestCollection(lic);
+        
 
         LoanProduct result = loanProductBean.createLoanProduct(newLoanProduct);
         if (result != null) {
             addedLoanProducts.add(result);
+            lic.setLoanProduct(newLoanProduct);
+            loanProductBean.updateInterestCollection(lic);
             newLoanProduct = new LoanProduct();
             MessageUtils.displayInfo("Loan Product Created");
         } else {

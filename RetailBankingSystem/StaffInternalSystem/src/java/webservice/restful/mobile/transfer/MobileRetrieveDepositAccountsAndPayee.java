@@ -8,12 +8,11 @@ package webservice.restful.mobile.transfer;
 import ejb.session.bill.BillSessionBeanLocal;
 import ejb.session.bill.TransferSessionBeanLocal;
 import ejb.session.card.CardAcctSessionBeanLocal;
-import ejb.session.common.LoginSessionBeanLocal;
 import ejb.session.dams.CustomerDepositSessionBeanLocal;
 import ejb.session.dams.MobileAccountSessionBeanLocal;
+import ejb.session.mainaccount.MainAccountSessionBeanLocal;
 import entity.bill.BillingOrg;
 import entity.bill.Payee;
-import entity.card.account.CardTransaction;
 import entity.card.account.CreditCardAccount;
 import entity.customer.MainAccount;
 import entity.dams.account.CustomerDepositAccount;
@@ -49,7 +48,7 @@ public class MobileRetrieveDepositAccountsAndPayee {
     private UriInfo context;
 
     @EJB
-    private LoginSessionBeanLocal loginBean;
+    private MainAccountSessionBeanLocal mainAccountSessionBean;
     @EJB
     private CustomerDepositSessionBeanLocal depositBean;
     @EJB
@@ -72,7 +71,7 @@ public class MobileRetrieveDepositAccountsAndPayee {
         String jsonString;
         MainAccount ma;
         try {
-            ma = loginBean.getMainAccountByUserID(username);
+            ma = mainAccountSessionBean.getMainAccountByUserId(username);
         } catch (Exception e) {
             ErrorDTO err = new ErrorDTO();
             err.setCode(-1);

@@ -19,6 +19,7 @@ import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import server.utilities.DateUtils;
 import server.utilities.EnumUtils;
+import util.exception.dams.UpdateDepositAccountException;
 import utils.MessageUtils;
 
 /**
@@ -28,35 +29,39 @@ import utils.MessageUtils;
 @Named(value = "manageInternationalTransferManagedBean")
 @ViewScoped
 public class ManageInternationalTransferManagedBean implements Serializable {
-    
+
     @EJB
     private CustomerDepositSessionBeanLocal depositBean;
     @EJB
     private TransferSessionBeanLocal transferBean;
-    
+
     private Date fromDate = DateUtils.getBeginOfDay();
     private Date toDate = DateUtils.getEndOfDay();
     private List<TransferRecord> transferRecords = new ArrayList<>();
-    
+
     public ManageInternationalTransferManagedBean() {
     }
-    
+
     @PostConstruct
     public void init() {
         transferRecords = transferBean.getAllTransactionRecordStartDateEndDateByType(fromDate, toDate, EnumUtils.PayeeType.OVERSEAS);
     }
-    
+
     public void search() {
         fromDate = DateUtils.setTimeToBeginningOfDay(fromDate);
         toDate = DateUtils.setTimeToEndofDay(toDate);
         transferRecords = transferBean.getAllTransactionRecordStartDateEndDateByType(fromDate, toDate, EnumUtils.PayeeType.OVERSEAS);
     }
-    
+
     public void freezeAccount(TransferRecord tr) {
-        DepositAccount da = tr.getFromAccount();
-        da.setStatus(EnumUtils.StatusType.FREEZE);
-        depositBean.updateAccount(da);
-        MessageUtils.displayInfo("Account Freezed");
+        try {
+            DepositAccount da = tr.getFromAccount();
+            da.setStatus(EnumUtils.StatusType.FREEZE);
+            depositBean.updateAccount(da);
+            MessageUtils.displayInfo("Account Freezed");
+        } catch (UpdateDepositAccountException e) {
+            MessageUtils.displayInfo("Account Not Freezed..");
+        }
     }
 
     /**
@@ -100,5 +105,5 @@ public class ManageInternationalTransferManagedBean implements Serializable {
     public void setTransferRecords(List<TransferRecord> transferRecords) {
         this.transferRecords = transferRecords;
     }
-    
+
 }

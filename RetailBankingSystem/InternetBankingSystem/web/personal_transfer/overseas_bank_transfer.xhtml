@@ -73,7 +73,7 @@ and open the template in the editor.
                                             <f:selectItems value="#{internationalBankTransferManagedBean.accounts}" var="a" itemValue="#{a.accountNumber}" itemLabel="#{a.product.name} #{a.accountNumber} #{a.balance.setScale(2)}" />
                                         </p:selectOneMenu>
                                         <p:outputLabel value="Transfer Amount: " />
-                                        <p:inputText value="#{internationalBankTransferManagedBean.amount}"/>
+                                        <p:inputText value="#{internationalBankTransferManagedBean.amount}" required="true"/>
                                         <h:outputText value="Purpose of Transfer: " />
                                         <p:selectOneMenu value="#{internationalBankTransferManagedBean.purpose}" rendered="true" required="true">
                                             <f:selectItems value="#{internationalBankTransferManagedBean.purposeOptions}"/>
