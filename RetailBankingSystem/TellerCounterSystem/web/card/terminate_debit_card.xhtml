@@ -40,20 +40,12 @@
                                                 <p:column headerText="Card Type">
                                                     <h:outputText value="#{dca.cardNetwork}" />
                                                 </p:column>
-                                                
+
                                                 <p:column headerText="Card Type">
                                                     <h:outputText value="#{dca.cardStatus}" />
                                                 </p:column>
 
                                                 <p:column headerText="Action">
-
-
-                                                    <p:menu>
-                                                        <p:submenu>
-                                                            <p:menuitem value="View transactions" action="#{tellerDebitCardManagedBean.sendDCTransactionDetail(dca)}" />
-                                                        </p:submenu>
-                                                    </p:menu>
-
                                                     <p:commandButton value="Cancel" action="#{tellerDebitCardManagedBean.terminateDebitCard(dca)}" update="@form">
                                                         <p:confirm header="Confirmation" message="Are you sure you want to close your account?" icon="ui-icon-alert" />
                                                         <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
@@ -61,11 +53,7 @@
                                                             <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
                                                         </p:confirmDialog>
                                                     </p:commandButton>
-
                                                 </p:column>
-
-
-
                                             </p:dataTable>
 
                                         </h:panelGrid>
