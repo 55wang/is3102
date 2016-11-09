@@ -25,6 +25,7 @@ public interface LoanAccountSessionBeanLocal {
     public List<LoanAccount> getLoanAccountByStaffUsernameAndStatus(String username, EnumUtils.LoanAccountStatus status);
     public List<LoanAccount> getLoanAccountListByCustomerIndentityNumber(String identityNumber);
     public List<LoanAccount> getActiveLoanAccountListByMainAccountId(String id);
+    public List<LoanAccount> getSuspendedLoanAccountListByMainAccountId(String id);
     public String closeLoanAccountByAccountNumber(String accountNumber);
     // loan application
     public LoanApplication createLoanApplication(LoanApplication loanApplication);
