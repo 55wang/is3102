@@ -18,8 +18,6 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
@@ -37,6 +35,7 @@ import server.utilities.EnumUtils.Industry;
 import server.utilities.EnumUtils.LoanProductType;
 import server.utilities.EnumUtils.MaritalStatus;
 import server.utilities.EnumUtils.Nationality;
+import server.utilities.EnumUtils.Occupation;
 import server.utilities.EnumUtils.PortfolioStatus;
 import server.utilities.EnumUtils.ResidentialStatus;
 import server.utilities.EnumUtils.ResidentialType;
@@ -75,6 +74,7 @@ public class Customer implements Serializable {
     private Double actualIncome = 0.0;
     private Double savingPerMonth;
     private Gender gender;
+    private Occupation occupation;
 
     // credit
     private Double creditScore;
@@ -598,6 +598,17 @@ public class Customer implements Serializable {
      */
     public void setGender(Gender gender) {
         this.gender = gender;
+    }
+
+    /**
+     * @param occupation the gender to set
+     */
+    public Occupation getOccupation() {
+        return occupation;
+    }
+
+    public void setOccupation(Occupation occupation) {
+        this.occupation = occupation;
     }
 
     /**

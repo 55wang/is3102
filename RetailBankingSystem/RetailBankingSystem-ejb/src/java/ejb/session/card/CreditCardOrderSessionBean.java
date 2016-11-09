@@ -52,7 +52,7 @@ public class CreditCardOrderSessionBean implements CreditCardOrderSessionBeanLoc
 
     //get 
     @Override
-    public List<CreditCardOrder> getListCreditCardOrdersByMainIdAndNotCancelStatus(Long mainAccountId) {
+    public List<CreditCardOrder> getListCreditCardOrdersByMainIdAndNotCancelStatus(String mainAccountId) {
         Query q = em.createQuery("SELECT cco FROM CreditCardOrder cco WHERE cco.applicationStatus != :cancelStatus "
                 + "AND cco.mainAccount.id = :id");
 
@@ -80,7 +80,7 @@ public class CreditCardOrderSessionBean implements CreditCardOrderSessionBeanLoc
     }
 
     @Override
-    public CreditCardOrder getCreditCardOrderByIdMainId(Long ccoId, Long mainId) {
+    public CreditCardOrder getCreditCardOrderByIdMainId(Long ccoId, String mainId) {
         Query q = em.createQuery("SELECT cco FROM CreditCardOrder cco WHERE "
                 + "cco.id = :ccoId AND cco.mainAccount.id = :mainId"
                 + " AND cco.applicationStatus != :cancelStatus");

@@ -12,14 +12,21 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
 import cms.*;
+import common.MainAccountTest;
 
 /**
  *
  * @author VIN-S
  */
 @RunWith(Suite.class)
-@Suite.SuiteClasses({CustomerProfileTest.class, CustomerCaseTest.class})
-public class cmsTestSuite {
+@Suite.SuiteClasses({
+    // CMS
+    CustomerProfileTest.class, 
+    CustomerCaseTest.class,
+    // Main
+    MainAccountTest.class
+})
+public class MainTestSuite {
 
     @BeforeClass
     public static void setUpClass() throws Exception {

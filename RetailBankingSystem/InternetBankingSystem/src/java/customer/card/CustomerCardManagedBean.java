@@ -11,8 +11,6 @@ import ejb.session.common.EmailServiceSessionBeanLocal;
 import entity.card.account.CardTransaction;
 import entity.card.account.CreditCardAccount;
 import entity.card.account.DebitCardAccount;
-import entity.card.product.MileCardProduct;
-import entity.card.product.RewardCardProduct;
 import entity.customer.Customer;
 import java.io.Serializable;
 import java.util.Date;

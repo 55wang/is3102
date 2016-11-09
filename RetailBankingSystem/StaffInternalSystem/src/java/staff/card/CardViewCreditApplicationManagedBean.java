@@ -9,7 +9,6 @@ import ejb.session.card.CardAcctSessionBeanLocal;
 import ejb.session.card.CardProductSessionBeanLocal;
 import ejb.session.card.CreditCardOrderSessionBeanLocal;
 import ejb.session.common.EmailServiceSessionBeanLocal;
-import ejb.session.common.NewCustomerSessionBeanLocal;
 import ejb.session.mainaccount.MainAccountSessionBeanLocal;
 
 import ejb.session.utils.UtilsSessionBeanLocal;
@@ -25,6 +24,7 @@ import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import server.utilities.EnumUtils;
 import server.utilities.CommonHelper;
+import util.exception.common.UpdateMainAccountException;
 import utils.MessageUtils;
 import utils.SessionUtils;
 
@@ -67,50 +67,55 @@ public class CardViewCreditApplicationManagedBean implements Serializable {
     }
 
     public void approveOrder(CreditCardOrder cco) {
-        
-        // Create Main Account 
-        // Create Customer
-        // 
-        //http://www.mas.gov.sg/moneysense/understanding-financial-products/credit-and-loans/types-of-loans/credit-cards.aspx
-        //update credit limit
-        Double customerMonthlyIncome = cco.getMainAccount().getCustomer().getActualIncome();
-        Integer customerAge = cco.getMainAccount().getCustomer().getAge();
-        
-        if (customerMonthlyIncome >= 30000.0/12) {
-            cco.getCreditCardAccount().setCreditLimit(4 * customerMonthlyIncome);
-        } else if (customerMonthlyIncome >= 15000.0/12 && customerAge >= 55) {
-            if (customerMonthlyIncome <= 30000.0/12 ) {
-                cco.getCreditCardAccount().setCreditLimit(2 * customerMonthlyIncome);
-            } else if (customerMonthlyIncome >= 30000.0/12) {
-                cco.getCreditCardAccount().setCreditLimit(4 * customerMonthlyIncome);
-            }
-        } else if (customerMonthlyIncome <= 2000) {
-            cco.getCreditCardAccount().setCreditLimit(500.0);
-        } else if (customerMonthlyIncome >= 120000.0/12) {
-            cco.getCreditCardAccount().setCreditLimit(10 * customerMonthlyIncome);
-        }
-        creditCardOrderSessionBean.updateCreditCardOrderStatus(cco, EnumUtils.CardApplicationStatus.APPROVED);
-        cco.getCreditCardAccount().setCardStatus(EnumUtils.CardAccountStatus.APPROVED);
-        cardAcctSessionBean.updateCreditCardAccount(cco.getCreditCardAccount());
-        
-        MainAccount mainAccount = cco.getMainAccount();
-        mainAccount.setStatus(EnumUtils.StatusType.PENDING);
-        String randomPwd = CommonHelper.generatePwd();
-        mainAccount.setPassword(randomPwd);
-        mainAccountSessionBean.updateMainAccount(mainAccount);
-        try {
-            emailServiceSessionBean.sendCreditCardActivationGmailForCustomer(
-                    cco.getMainAccount().getCustomer().getEmail(),
-                    randomPwd,
-                    cco.getCreditCardAccount().getCreditCardNum(),
-                    cco.getCreditCardAccount().getCvv(),
-                    cco.getMainAccount().getUserID()
 
-            );
-            MessageUtils.displayInfo("Order Approved!");
-        } catch (Exception ex) {
-            MessageUtils.displayError("Order Approved! But email send failed");
+        try {
+            // Create Main Account 
+            // Create Customer
+            // 
+            //http://www.mas.gov.sg/moneysense/understanding-financial-products/credit-and-loans/types-of-loans/credit-cards.aspx
+            //update credit limit
+            Double customerMonthlyIncome = cco.getMainAccount().getCustomer().getActualIncome();
+            Integer customerAge = cco.getMainAccount().getCustomer().getAge();
+
+            if (customerMonthlyIncome >= 30000.0 / 12) {
+                cco.getCreditCardAccount().setCreditLimit(4 * customerMonthlyIncome);
+            } else if (customerMonthlyIncome >= 15000.0 / 12 && customerAge >= 55) {
+                if (customerMonthlyIncome <= 30000.0 / 12) {
+                    cco.getCreditCardAccount().setCreditLimit(2 * customerMonthlyIncome);
+                } else if (customerMonthlyIncome >= 30000.0 / 12) {
+                    cco.getCreditCardAccount().setCreditLimit(4 * customerMonthlyIncome);
+                }
+            } else if (customerMonthlyIncome <= 2000) {
+                cco.getCreditCardAccount().setCreditLimit(500.0);
+            } else if (customerMonthlyIncome >= 120000.0 / 12) {
+                cco.getCreditCardAccount().setCreditLimit(10 * customerMonthlyIncome);
+            }
+            creditCardOrderSessionBean.updateCreditCardOrderStatus(cco, EnumUtils.CardApplicationStatus.APPROVED);
+            cco.getCreditCardAccount().setCardStatus(EnumUtils.CardAccountStatus.APPROVED);
+            cardAcctSessionBean.updateCreditCardAccount(cco.getCreditCardAccount());
+
+            MainAccount mainAccount = cco.getMainAccount();
+            mainAccount.setStatus(EnumUtils.StatusType.PENDING);
+            String randomPwd = CommonHelper.generatePwd();
+            mainAccount.setPassword(randomPwd);
+            mainAccountSessionBean.updateMainAccount(mainAccount);
+            try {
+                emailServiceSessionBean.sendCreditCardActivationGmailForCustomer(
+                        cco.getMainAccount().getCustomer().getEmail(),
+                        randomPwd,
+                        cco.getCreditCardAccount().getCreditCardNum(),
+                        cco.getCreditCardAccount().getCvv(),
+                        cco.getMainAccount().getUserID()
+                );
+                MessageUtils.displayInfo("Order Approved!");
+            } catch (Exception ex) {
+                MessageUtils.displayError("Order Approved! But email send failed");
+            }
+        } catch (UpdateMainAccountException e) {
+            System.out.println("UpdateMainAccountException CardViewCreditApplicationManagedBean.java approveOrder()");
+            MessageUtils.displayInfo("Order not Approved! Some Error Occurred!");
         }
+
     }
 
     public void rejectOrder(CreditCardOrder cco) {

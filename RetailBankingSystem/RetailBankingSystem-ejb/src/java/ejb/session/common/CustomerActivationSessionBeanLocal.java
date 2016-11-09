@@ -15,5 +15,5 @@ import javax.ejb.Local;
 @Local
 public interface CustomerActivationSessionBeanLocal {
     public MainAccount getMainAccountByEmail(String email);
-    public Boolean updateAccountStatus(MainAccount mainAccount);
+    public MainAccount updateAccountStatus(MainAccount mainAccount);
 }

@@ -17,6 +17,8 @@ import javax.ejb.Stateless;
 import server.utilities.ConstantUtils;
 import server.utilities.EnumUtils;
 import server.utilities.HashPwdUtils;
+import util.exception.common.DuplicateMainAccountExistException;
+import util.exception.common.UpdateMainAccountException;
 
 /**
  *
@@ -32,6 +34,10 @@ public class EntityCustomerBuilder {
     private MainAccountSessionBeanLocal mainAccountSessionBean;
 
     public MainAccount initCustomer() {
+        
+        try {
+            
+        
 
         String u1 = ConstantUtils.DEMO_MAIN_ACCOUNT_USER_ID_1;
         String p1 = HashPwdUtils.hashPwd("password");
@@ -349,6 +355,11 @@ public class EntityCustomerBuilder {
         mainAccountSessionBean.updateMainAccount(ma9);
 
         return ma;
+        
+        } catch (DuplicateMainAccountExistException | UpdateMainAccountException e) {
+            System.out.println("Exception, not returning mainaccount");
+            return null;
+        }
     }
 
 }

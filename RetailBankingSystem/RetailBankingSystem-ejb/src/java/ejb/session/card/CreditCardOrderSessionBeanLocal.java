@@ -22,11 +22,11 @@ public interface CreditCardOrderSessionBeanLocal {
 
     public List<CreditCardOrder> getListCreditCardOrdersByNotCancelStatus();
 
-    public List<CreditCardOrder> getListCreditCardOrdersByMainIdAndNotCancelStatus(Long mainAccountId);
+    public List<CreditCardOrder> getListCreditCardOrdersByMainIdAndNotCancelStatus(String mainAccountId);
 
     public CreditCardOrder getCreditCardOrderById(Long ccoId);
 
-    public CreditCardOrder getCreditCardOrderByIdMainId(Long ccoId, Long mainId);
+    public CreditCardOrder getCreditCardOrderByIdMainId(Long ccoId, String mainId);
 
     public CreditCardOrder updateCreditCardOrderStatus(CreditCardOrder cco, EnumUtils.CardApplicationStatus status);
 

@@ -32,6 +32,7 @@ import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import server.utilities.ConstantUtils;
+import util.exception.common.MainAccountNotExistException;
 
 /**
  *
@@ -52,13 +53,12 @@ public class InterestDemoManagedBean implements Serializable {
     private List<Integer> rowIndex = new ArrayList<>();
     private TimeRangeInterest[][] formatedInterests;
     private Integer colSize;
-    
+
     private MainAccount demoAccount;
     private DepositAccount showingAccount;
     private String selectedDepositAccount;
     private Map<String, String> availableDepositAccount = new HashMap<>();
-    
-    
+
     // Display Current interests with the account
     private List<Interest> normalInterests;
     private List<RangeInterest> rangeInterests;
@@ -76,24 +76,28 @@ public class InterestDemoManagedBean implements Serializable {
         }
         initInterests();
     }
-    
+
     public void changeAccount() {
         showingAccount = getSelectedAccount();
         initInterests();
     }
-    
+
     private void initDemoAccount() {
-        setDemoAccount(mainAccountSessionBean.getMainAccountByUserId(ConstantUtils.DEMO_MAIN_ACCOUNT_USER_ID_1));
-        for (DepositAccount da : demoAccount.getBankAcounts()) {
-            availableDepositAccount.put(da.getAccountNumber(), da.getAccountNumber());
+        try {
+            setDemoAccount(mainAccountSessionBean.getMainAccountByUserId(ConstantUtils.DEMO_MAIN_ACCOUNT_USER_ID_1));
+            for (DepositAccount da : demoAccount.getBankAcounts()) {
+                availableDepositAccount.put(da.getAccountNumber(), da.getAccountNumber());
+            }
+        } catch (MainAccountNotExistException e) {
+            System.out.println("MainAccountNotExistException at InterestDemoManagedBean");
         }
     }
-    
+
     private DepositAccount getSelectedAccount() {
-            for (DepositAccount da : demoAccount.getBankAcounts()) {
-                if (da.getAccountNumber().equals(selectedDepositAccount)) {
-                    return da;
-                }
+        for (DepositAccount da : demoAccount.getBankAcounts()) {
+            if (da.getAccountNumber().equals(selectedDepositAccount)) {
+                return da;
+            }
         }
         return null;
     }
@@ -102,17 +106,17 @@ public class InterestDemoManagedBean implements Serializable {
         System.out.println("getTotalInterest starting: account balance:" + account.getBalance());
         // TODO: Seperate from fixed deposit account
         BigDecimal totalInterest = BigDecimal.ZERO.setScale(4, RoundingMode.UP);
-        
+
         System.out.println("Current cumulated interest amount:" + account.getCumulatedInterest().getCummulativeAmount());
-        for (int i = 0; i < 30; i ++) {
+        for (int i = 0; i < 30; i++) {
             account = interestAccrualSessionBean.calculateDailyInterestForDepositAccount(account);
             System.out.println("Current cumulated interest amount:" + account.getCumulatedInterest().getCummulativeAmount());
         }
-        
+
         // End of month
         totalInterest = account.getCumulatedInterest().getCummulativeAmount();
         showingAccount = interestAccrualSessionBean.calculateMonthlyInterestForDepositAccount(account);
-        
+
         return totalInterest;
     }
 
@@ -121,7 +125,7 @@ public class InterestDemoManagedBean implements Serializable {
         conditionInterests = new ArrayList<>();
         normalInterests = new ArrayList<>();
         timeRangeInterests = new ArrayList<>();
-        
+
         if (showingAccount instanceof CustomerDepositAccount) {
 
             List<Interest> interests = ((DepositAccountProduct) showingAccount.getProduct()).getInterestRules();
@@ -137,12 +141,12 @@ public class InterestDemoManagedBean implements Serializable {
                 }
             }
         } else if (showingAccount instanceof CustomerFixedDepositAccount) {
-            timeRangeInterests = ((CustomerFixedDepositAccount)showingAccount).getInterestRules();
+            timeRangeInterests = ((CustomerFixedDepositAccount) showingAccount).getInterestRules();
             initTimeRangeDisplay();
         }
 
     }
-    
+
     private void initTimeRangeDisplay() {
         Set<Integer> set = new HashSet<>();
         for (TimeRangeInterest i : timeRangeInterests) {
@@ -156,7 +160,7 @@ public class InterestDemoManagedBean implements Serializable {
         Integer row = timeRangeInterests.size() / col;
         System.out.println("Col: " + col + " Row: " + row);
         formatedInterests = new TimeRangeInterest[row][col];
-        
+
         Integer counter = 0;
         for (int i = 0; i < formatedInterests.length; i++) {
             for (int j = 0; j < formatedInterests[i].length; j++) {
@@ -164,9 +168,9 @@ public class InterestDemoManagedBean implements Serializable {
                 counter++;
             }
         }
-        
+
         System.out.println(formatedInterests);
-        
+
         for (int i = 0; i <= col; i++) {
             getColIndex().add(i);
         }
@@ -176,7 +180,7 @@ public class InterestDemoManagedBean implements Serializable {
         }
         setColSize((Integer) getColIndex().size());
     }
-    
+
     public String getDisplayCell(Integer row, Integer col) {
         System.out.println("Row is: " + row + " Col is: " + col);
         if (row == 0 && col == 0) {

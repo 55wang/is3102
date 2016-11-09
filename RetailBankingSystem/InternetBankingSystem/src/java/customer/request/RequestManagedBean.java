@@ -54,7 +54,7 @@ public class RequestManagedBean implements Serializable {
     @PostConstruct
     public void init() {
         setAccounts(depositBean.getAllCustomerAccounts(Long.parseLong(SessionUtils.getUserId())));
-        ccAccounts = cardBean.getAllActiveCreditCardAccountsByMainId(Long.parseLong(SessionUtils.getUserId()));
+        ccAccounts = cardBean.getAllActiveCreditCardAccountsByMainId(SessionUtils.getUserId());
         getMonthOptions().add("Nov");
         getMonthOptions().add("Oct");
         selectedMonth = "Nov";

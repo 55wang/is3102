@@ -31,6 +31,8 @@
 
 
                 <p:panel header="List of Customers">
+                    <p:messages id="messagesStatus" redisplay="false" >
+                    </p:messages>
                     <h:form id="update-form">
                         <p:dataTable id="customerList" value="#{staffCustomerInformationManagedBean.customers}" var="customer" sortMode="multiple" >
 
@@ -96,6 +98,9 @@
                             
                                     <h:outputText value="Education: " />
                                     <h:outputText value="#{customer.education.toString()}" style="width:100%"/>
+                                    
+                                    <h:outputText value="Occupation " />
+                                    <h:outputText value="#{customer.occupation.toString()}" style="width:100%"/>
                                  
                                     <h:outputText value="DOB: " />
                                     <h:outputText value="#{customer.birthDay}" style="width:100%"><f:convertDateTime pattern="dd-MM-yyyy" /></h:outputText>

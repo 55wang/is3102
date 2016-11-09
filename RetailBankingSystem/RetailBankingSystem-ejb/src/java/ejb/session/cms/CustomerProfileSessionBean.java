@@ -7,7 +7,6 @@ package ejb.session.cms;
 
 import ejb.session.common.EmailServiceSessionBeanLocal;
 import entity.customer.Customer;
-import entity.customer.CustomerCase;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -18,9 +17,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import server.utilities.EnumUtils.StatusType;
 import server.utilities.GenerateAccountAndCCNumber;
-import util.exception.cms.CustomerCaseNotFoundException;
 import util.exception.cms.CustomerNotExistException;
-import util.exception.cms.DuplicateCaseExistException;
 import util.exception.cms.DuplicateCustomerExistException;
 import util.exception.cms.UpdateCustomerException;
 

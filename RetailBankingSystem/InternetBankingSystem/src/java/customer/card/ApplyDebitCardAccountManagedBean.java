@@ -11,7 +11,6 @@ import entity.card.account.DebitCardAccount;
 import entity.dams.account.CustomerDepositAccount;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -50,7 +49,7 @@ public class ApplyDebitCardAccountManagedBean implements Serializable {
 
     @PostConstruct
     public void init() {
-        depositAccounts = depositBean.getAllNonFixedCustomerAccounts(Long.parseLong(SessionUtils.getUserId()));
+        depositAccounts = depositBean.getAllNonFixedCustomerAccounts(SessionUtils.getUserId());
         for (CustomerDepositAccount a : depositAccounts) {
             accountOptions.add(a.getAccountNumber());
         }

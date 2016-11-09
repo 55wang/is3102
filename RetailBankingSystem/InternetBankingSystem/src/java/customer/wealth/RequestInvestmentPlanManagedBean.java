@@ -33,6 +33,7 @@ import org.primefaces.model.chart.LineChartModel;
 import org.primefaces.model.chart.LineChartSeries;
 import server.utilities.EnumUtils;
 import server.utilities.EnumUtils.InvestmentPlanStatus;
+import util.exception.common.MainAccountNotExistException;
 import utils.RedirectUtils;
 import utils.SessionUtils;
 
@@ -43,6 +44,7 @@ import utils.SessionUtils;
 @Named(value = "requestInvestmentPlanManagedBean")
 @ViewScoped
 public class RequestInvestmentPlanManagedBean implements Serializable {
+
     @EJB
     private PortfolioFactSessionBeanLocal portfolioFactSessionBean;
 
@@ -54,8 +56,7 @@ public class RequestInvestmentPlanManagedBean implements Serializable {
     private FinancialInstrumentSessionBeanLocal financialInstrumentSessionBean;
     @EJB
     private MainAccountSessionBeanLocal mainAccountSessionBean;
-    
-    
+
     private WealthManagementSubscriber wms;
     private MainAccount mainAccount;
     private InvestmentPlan newInvestmenPlan = new InvestmentPlan();
@@ -63,7 +64,7 @@ public class RequestInvestmentPlanManagedBean implements Serializable {
     private DualListModel<FinancialInstrument> financialInstruments;
     private Double chargeFee = 0.0;
     private Integer investAmount = 500;
-    
+
     //line model
     private LineChartModel lineModel;
     private String currentDate;
@@ -80,57 +81,65 @@ public class RequestInvestmentPlanManagedBean implements Serializable {
      */
     public RequestInvestmentPlanManagedBean() {
     }
-    
+
     // Followed by @PostConstruct
     @PostConstruct
     public void init() {
-        setMainAccount(mainAccountSessionBean.getMainAccountByUserId(SessionUtils.getUserName()));
-        setWms(mainAccount.getWealthManagementSubscriber());
-        setAllFinancialInstruments(financialInstrumentSessionBean.getAllFinancialInstruments());
-        chargeFee = wms.getMonthlyAdvisoryFee();
-        
-        List<FinancialInstrument> selectedFinancialInstruments = new ArrayList<FinancialInstrument>();
-        financialInstruments = new DualListModel<FinancialInstrument>(allFinancialInstruments, selectedFinancialInstruments);     
-        
-        allfis = financialInstrumentSessionBean.getAllFinancialInstruments();
-        for(int i = 0; i < allfis.size(); i++){
-            ETFoptions.add(allfis.get(i).getETFName());
+        try {
+
+            setMainAccount(mainAccountSessionBean.getMainAccountByUserId(SessionUtils.getUserName()));
+            setWms(mainAccount.getWealthManagementSubscriber());
+            setAllFinancialInstruments(financialInstrumentSessionBean.getAllFinancialInstruments());
+            chargeFee = wms.getMonthlyAdvisoryFee();
+
+            List<FinancialInstrument> selectedFinancialInstruments = new ArrayList<>();
+            financialInstruments = new DualListModel<>(allFinancialInstruments, selectedFinancialInstruments);
+
+            allfis = financialInstrumentSessionBean.getAllFinancialInstruments();
+            for (int i = 0; i < allfis.size(); i++) {
+                ETFoptions.add(allfis.get(i).getETFName());
+            }
+
+            initLineModels();
+        } catch (MainAccountNotExistException e) {
+            System.out.println("MainAccountNotExistException thrown at RequestInvestmentPlanManagedBean init()");
         }
-        
-        initLineModels();
     }
-    
-    public void submit(){
 
-            List<FinancialInstrument> targetFI = new ArrayList<FinancialInstrument>();
-            for(int i = 0; i < financialInstruments.getTarget().size(); i++)
-                for(int j=0;j<allFinancialInstruments.size();j++)
-                    if(allFinancialInstruments.get(j).getName().getValue().equals(financialInstruments.getTarget().get(i)))
-                        targetFI.add(allFinancialInstruments.get(j));
+    public void submit() {
 
-            newInvestmenPlan.setAmountOfInvestment(investAmount);
-            newInvestmenPlan.setPreferedFinancialInstrument(targetFI);
-            newInvestmenPlan.setWealthManagementSubscriber(wms);
-            newInvestmenPlan.setStatus(EnumUtils.InvestmentPlanStatus.PENDING);
-            calculateCharge();
-            
-            wealthManegementSubscriberSessionBean.updateWealthManagementSubscriber(wms);
+        List<FinancialInstrument> targetFI = new ArrayList<>();
+        for (int i = 0; i < financialInstruments.getTarget().size(); i++) {
+            for (int j = 0; j < allFinancialInstruments.size(); j++) {
+                if (allFinancialInstruments.get(j).getName().getValue().equals(financialInstruments.getTarget().get(i))) {
+                    targetFI.add(allFinancialInstruments.get(j));
+                }
+            }
+        }
 
-            RedirectUtils.redirect("view_investment_plan.xhtml");
+        newInvestmenPlan.setAmountOfInvestment(investAmount);
+        newInvestmenPlan.setPreferedFinancialInstrument(targetFI);
+        newInvestmenPlan.setWealthManagementSubscriber(wms);
+        newInvestmenPlan.setStatus(EnumUtils.InvestmentPlanStatus.PENDING);
+        calculateCharge();
+
+        wealthManegementSubscriberSessionBean.updateWealthManagementSubscriber(wms);
+
+        RedirectUtils.redirect("view_investment_plan.xhtml");
 
     }
-    
-    public void calculateCharge(){
+
+    public void calculateCharge() {
         List<InvestmentPlan> ips = wms.getInvestmentPlans();
         Integer totalInvest = 0;
-        for(int i = 0; i < ips.size(); i++){
-            if(ips.get(i).getStatus() == InvestmentPlanStatus.EXECUTED){
+        for (int i = 0; i < ips.size(); i++) {
+            if (ips.get(i).getStatus() == InvestmentPlanStatus.EXECUTED) {
                 totalInvest += ips.get(i).getAmountOfInvestment();
             }
         }
-        chargeFee = (totalInvest + investAmount -10000)*0.0025*30/365;
+        chargeFee = (totalInvest + investAmount - 10000) * 0.0025 * 30 / 365;
     }
-    
+
     public void onDropDownChange() {
 
         System.out.println("on drop down changed");
@@ -140,19 +149,20 @@ public class RequestInvestmentPlanManagedBean implements Serializable {
             createLineModels(selectedETF);
         }
     }
-    
+
     public LineChartModel getLineModel() {
         return lineModel;
     }
 
     private LineChartModel createLineModels(String selectedETF) {
         lineModel = createLinearModel(selectedETF);
-        
-        for(int i = 0; i < allfis.size(); i++){
-            if(allfis.get(i).getETFName().equals(selectedETF))
+
+        for (int i = 0; i < allfis.size(); i++) {
+            if (allfis.get(i).getETFName().equals(selectedETF)) {
                 lineModel.setTitle("According Asset Class: " + allfis.get(i).getName());
+            }
         }
-        
+
         Axis yAxis = lineModel.getAxis(AxisType.Y);
 
         DateAxis axis = new DateAxis("Dates");
@@ -213,7 +223,7 @@ public class RequestInvestmentPlanManagedBean implements Serializable {
 
         return model;
     }
-    
+
     private LineChartModel initLineModels() {
         lineModel = initLinearModel();
         lineModel.setTitle("According Asset Class: US Stocks");
@@ -226,7 +236,7 @@ public class RequestInvestmentPlanManagedBean implements Serializable {
         lineModel.getAxes().put(AxisType.X, axis);
         return lineModel;
     }
-    
+
     private LineChartModel initLinearModel() {
         List<FinancialInstrumentFactTable> fif = portfolioFactSessionBean.getListFinancialInstrumentFactTableByETFName("Vanguard VTI ETF");
         System.out.println("fif: " + fif.size());

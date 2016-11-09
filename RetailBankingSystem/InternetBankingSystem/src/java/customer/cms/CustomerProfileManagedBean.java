@@ -22,6 +22,7 @@ import server.utilities.EnumUtils.Income;
 import server.utilities.CommonUtils;
 import server.utilities.ConstantUtils;
 import server.utilities.DateUtils;
+import server.utilities.EnumUtils.Occupation;
 import util.exception.cms.CustomerNotExistException;
 import util.exception.cms.UpdateCustomerException;
 import utils.JSUtils;
@@ -72,6 +73,7 @@ public class CustomerProfileManagedBean implements Serializable {
         
         this.auditLogs = auditSessionBean.getAuditLogByCustomerID(SessionUtils.getUserName());
         selectedIncome = customer.getIncome().toString();
+        selectedOccupation = customer.getOccupation().toString();
         age=DateUtils.calculateAge(customer.getBirthDay());
     }
 
@@ -86,6 +88,7 @@ public class CustomerProfileManagedBean implements Serializable {
 
     public void save() {
         customer.setIncome(Income.getEnum(selectedIncome));
+        customer.setOccupation(Occupation.getEnum(selectedOccupation));
         if (utilsSessionBean.checkUpdatedEmailIsUnique(customer) == false) {
             MessageUtils.displayInfo("Email is registered!");
 

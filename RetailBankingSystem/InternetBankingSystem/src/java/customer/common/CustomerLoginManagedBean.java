@@ -82,7 +82,7 @@ public class CustomerLoginManagedBean implements Serializable {
                 return "FAIL";
             } else if (attemptLogin.getStatus().equals(EnumUtils.StatusType.ACTIVE)) {
                 ma = loginSessionBean.loginAccount(username, HashPwdUtils.hashPwd(password));
-                String userID = Long.toString(ma.getId());
+                String userID = ma.getId();
                 String userName = ma.getUserID();
                 SessionUtils.setUserId(userID);
                 SessionUtils.setUserName(userName);
