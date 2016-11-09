@@ -32,6 +32,8 @@ import server.utilities.ConstantUtils;
 @LocalBean
 @Startup
 public class EntityBuilderBean {
+    @EJB
+    private EntityAnnouncementBuilderBean entityAnnouncementBuilderBean;
 
     // builders
     @EJB
@@ -116,16 +118,22 @@ public class EntityBuilderBean {
         entityCaseBuilder.initCase();
         entityBillOrgBuilder.initBillOrganization();
         entityPayLahBuilder.initPayLahDemoData();
+        entityAnnouncementBuilderBean.initAnnouncement();
+        
         entityTellerCounterBuilder.init();
 
         //wealth
 
-//        List<FinancialInstrument> allFinancialInstruments = entityWealthBuilder.allFinancialInstrument();
-//        demoPortfolio = entityWealthBuilder.initWealth(allFinancialInstruments);
-//        entityFactBuilder.initSinglePortfolioFact(demoMainAccount, demoPortfolio);
-//        demoPortfolio = entityWealthBuilder.initPortfolioFactTable2(demoMainAccount, allFinancialInstruments);
-//        entityFactBuilder.initSinglePortfolioFact(demoMainAccount, demoPortfolio);
-//        entityFactBuilder.initBankFact();
-//        entityCRMBuilder.initCustomerRFM();
+        List<FinancialInstrument> allFinancialInstruments = entityWealthBuilder.allFinancialInstrument();
+        demoPortfolio = entityWealthBuilder.initWealth(allFinancialInstruments);
+        entityFactBuilder.initSinglePortfolioFact(demoMainAccount, demoPortfolio);
+        demoPortfolio = entityWealthBuilder.initPortfolioFactTable2(demoMainAccount, allFinancialInstruments);
+        entityFactBuilder.initSinglePortfolioFact(demoMainAccount, demoPortfolio);
+        entityFactBuilder.initBankFact();
+        entityCRMBuilder.initCustomerRFM();
+    }
+
+    public void persist(Object object) {
+        em.persist(object);
     }
 }

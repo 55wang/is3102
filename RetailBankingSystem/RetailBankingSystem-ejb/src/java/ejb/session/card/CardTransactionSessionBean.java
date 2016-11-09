@@ -30,13 +30,12 @@ public class CardTransactionSessionBean implements CardTransactionSessionBeanLoc
 
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")
-    
     @Override
     public CardTransaction updateCardTransaction(CardTransaction ct) {
         em.merge(ct);
         return ct;
     }
-    
+
     @Override
     public Boolean createCardTransaction(CardTransaction ct) {
         try {
@@ -65,7 +64,7 @@ public class CardTransactionSessionBean implements CardTransactionSessionBeanLoc
         q.setParameter("inVisaId", visaId);
         return (CardTransaction) q.getSingleResult();
     }
-    
+
     @Override
     public CardTransaction getLatestCardTransactionByCcaId(Long ccaId) {
         Query q = em.createQuery("SELECT ct FROM CardTransaction ct WHERE ct.id =:inCcaId ORDER BY ct.createDate DESC");
@@ -118,7 +117,7 @@ public class CardTransactionSessionBean implements CardTransactionSessionBeanLoc
 
         return q.getResultList();
     }
-    
+
     @Override
     public List<CardTransaction> getTransactionByCCNumberAndStartDateAndEndDate(String ccNumber, Date startDate, Date endDate) {
 
@@ -126,7 +125,7 @@ public class CardTransactionSessionBean implements CardTransactionSessionBeanLoc
         Query q = em.createQuery("SELECT ct FROM CardTransaction ct WHERE ct.creditCardAccount.creditCardNum =:ccNumber AND "
                 + "ct.updateDate BETWEEN :startDate AND :endDate"
         );
-        
+
         q.setParameter("ccNumber", ccNumber);
         q.setParameter("startDate", startDate);
         q.setParameter("endDate", endDate);
@@ -219,5 +218,18 @@ public class CardTransactionSessionBean implements CardTransactionSessionBeanLoc
             return false;
         }
         return true;
+    }
+
+    @Override
+    public boolean validateCreditLimit(CreditCardAccount creditCard, Double requestAmount) {
+        System.out.println(requestAmount);
+        System.out.println(creditCard.getRemainingCreditLimit());
+
+        if (requestAmount < creditCard.getRemainingCreditLimit()) {
+            return true;
+        } else {
+            return false;
+        }
+
     }
 }

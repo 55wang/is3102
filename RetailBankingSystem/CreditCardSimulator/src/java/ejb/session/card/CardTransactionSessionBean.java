@@ -75,7 +75,7 @@ public class CardTransactionSessionBean implements CardTransactionSessionBeanLoc
     }
 
     @Override
-    public void sendSuccessAuthorization(String transactionAmount, String creditCardNumber) {
+    public void sendSuccessAuthorization(String transactionAmount, String creditCardNumber, String referenceNum) {
 
         String ccNum;
         if (creditCardNumber.equals("")) {
@@ -91,6 +91,10 @@ public class CardTransactionSessionBean implements CardTransactionSessionBeanLoc
             Form form = new Form();
             form.param("ccNumber", ccNum);
             form.param("ccAmount", transactionAmount); // 500 is daily limit and 1000 for monthly limist, current out standing is 800
+            form.param("referenceNum", referenceNum);
+            form.param("fromBankCode", "005");
+            form.param("ccNumber", ccNum);
+
             form.param("ccTcode", "MDS");
             form.param("ccDescription", "Test Success authorization");
 

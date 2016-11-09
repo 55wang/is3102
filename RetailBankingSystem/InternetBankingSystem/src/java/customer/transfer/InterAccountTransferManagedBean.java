@@ -10,6 +10,7 @@ import ejb.session.common.OTPSessionBeanLocal;
 import ejb.session.dams.CustomerDepositSessionBeanLocal;
 import ejb.session.mainaccount.MainAccountSessionBeanLocal;
 import entity.customer.MainAccount;
+import entity.dams.account.CustomerDepositAccount;
 import entity.dams.account.DepositAccount;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -47,7 +48,7 @@ public class InterAccountTransferManagedBean implements Serializable {
     private String toAccountNo;
     private BigDecimal amount;
     private MainAccount ma;
-    private List<DepositAccount> accounts = new ArrayList<>();
+    private List<CustomerDepositAccount> accounts = new ArrayList<>();
 
     private String inputTokenString;
 
@@ -61,7 +62,7 @@ public class InterAccountTransferManagedBean implements Serializable {
         }catch(MainAccountNotExistException ex){
             System.out.println("init.MainAccountNotExistException");
         }
-        accounts = ma.getBankAcounts();
+        accounts = depositBean.getAllNonFixedCustomerAccounts(ma.getId());
     }
 
     public void transfer() {
@@ -149,14 +150,14 @@ public class InterAccountTransferManagedBean implements Serializable {
     /**
      * @return the accounts
      */
-    public List<DepositAccount> getAccounts() {
+    public List<CustomerDepositAccount> getAccounts() {
         return accounts;
     }
 
     /**
      * @param accounts the accounts to set
      */
-    public void setAccounts(List<DepositAccount> accounts) {
+    public void setAccounts(List<CustomerDepositAccount> accounts) {
         this.accounts = accounts;
     }
 

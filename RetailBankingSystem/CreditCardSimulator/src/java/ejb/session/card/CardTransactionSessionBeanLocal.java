@@ -16,7 +16,7 @@ import javax.ejb.Local;
 @Local
 public interface CardTransactionSessionBeanLocal {
 
-    public void sendSuccessAuthorization(String transactionAmount, String creditCardNumber);
+    public void sendSuccessAuthorization(String transactionAmount, String creditCardNumber, String referenceNum);
 
     public List<VisaCardTransaction> getListVisaCardTransactions();
 

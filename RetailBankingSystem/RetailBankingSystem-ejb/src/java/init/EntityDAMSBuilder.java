@@ -747,7 +747,7 @@ public class EntityDAMSBuilder {
             customAccount.setType(EnumUtils.DepositAccountType.CUSTOM);
             customAccount.setStatus(EnumUtils.StatusType.ACTIVE);
             customAccount.setProduct(depositProductSessionBean.getDepositProductByName(ConstantUtils.DEMO_CUSTOM_DEPOSIT_PRODUCT_NAME));
-            customAccount.setBalance(new BigDecimal(1000));
+            customAccount.setBalance(new BigDecimal(1000.0000));
             customAccount.setMainAccount(demoMainAccount);
 
             DepositAccount dp = customerDepositSessionBean.createAccount(customAccount);
@@ -762,7 +762,7 @@ public class EntityDAMSBuilder {
             savingAccount.setType(EnumUtils.DepositAccountType.SAVING);
             savingAccount.setStatus(EnumUtils.StatusType.ACTIVE);
             savingAccount.setProduct(depositProductSessionBean.getDepositProductByName(ConstantUtils.DEMO_SAVING1_DEPOSIT_PRODUCT_NAME));
-            savingAccount.setBalance(new BigDecimal(0));
+            savingAccount.setBalance(new BigDecimal(1000.0000));
             savingAccount.setMainAccount(demoMainAccount);
 
             DepositAccount temp = customerDepositSessionBean.createAccount(savingAccount);
@@ -775,7 +775,7 @@ public class EntityDAMSBuilder {
             savingAccount2.setType(EnumUtils.DepositAccountType.SAVING);
             savingAccount2.setStatus(EnumUtils.StatusType.ACTIVE);
             savingAccount2.setProduct(depositProductSessionBean.getDepositProductByName(ConstantUtils.DEMO_SAVING2_DEPOSIT_PRODUCT_NAME));
-            savingAccount2.setBalance(new BigDecimal(1000));
+            savingAccount2.setBalance(new BigDecimal(1000.0000));
             savingAccount2.setMainAccount(demoMainAccount);
 
             temp = customerDepositSessionBean.createAccount(savingAccount2);
@@ -790,7 +790,7 @@ public class EntityDAMSBuilder {
             currentAccount.setType(EnumUtils.DepositAccountType.SAVING);
             currentAccount.setStatus(EnumUtils.StatusType.ACTIVE);
             currentAccount.setProduct(depositProductSessionBean.getDepositProductByName(ConstantUtils.DEMO_CURRENT_DEPOSIT_PRODUCT_NAME));
-            currentAccount.setBalance(new BigDecimal(1000));
+            currentAccount.setBalance(new BigDecimal(1000.0000));
             currentAccount.setMainAccount(demoMainAccount);
 
             temp = customerDepositSessionBean.createAccount(currentAccount);
@@ -803,7 +803,7 @@ public class EntityDAMSBuilder {
             fixedAccount.setType(EnumUtils.DepositAccountType.FIXED);
             fixedAccount.setStatus(EnumUtils.StatusType.ACTIVE);
             fixedAccount.setProduct(depositProductSessionBean.getDepositProductByName(ConstantUtils.DEMO_FIXED_DEPOSIT_PRODUCT_NAME));
-            fixedAccount.setBalance(new BigDecimal(750000));
+            fixedAccount.setBalance(new BigDecimal(750000.0000));
             fixedAccount.setMainAccount(demoMainAccount);
             fixedAccount.setInterestRules(interestSessionBean.getFixedDepositAccountDefaultInterests());
             customerDepositSessionBean.createAccount(fixedAccount);
@@ -822,7 +822,7 @@ public class EntityDAMSBuilder {
             customAccount.setType(EnumUtils.DepositAccountType.CUSTOM);
             customAccount.setStatus(EnumUtils.StatusType.ACTIVE);
             customAccount.setProduct(depositProductSessionBean.getDepositProductByName(ConstantUtils.DEMO_CUSTOM_DEPOSIT_PRODUCT_NAME));
-            customAccount.setBalance(new BigDecimal(100000));
+            customAccount.setBalance(new BigDecimal(100000.0000));
             customAccount.setMainAccount(demoMainAccount3);
 
             temp = customerDepositSessionBean.createAccount(customAccount);
@@ -838,7 +838,7 @@ public class EntityDAMSBuilder {
             savingAccount.setType(EnumUtils.DepositAccountType.SAVING);
             savingAccount.setStatus(EnumUtils.StatusType.ACTIVE);
             savingAccount.setProduct(depositProductSessionBean.getDepositProductByName(ConstantUtils.DEMO_SAVING1_DEPOSIT_PRODUCT_NAME));
-            savingAccount.setBalance(new BigDecimal(0));
+            savingAccount.setBalance(new BigDecimal(10000000.0000));
             savingAccount.setMainAccount(secondMain);
 
             temp = customerDepositSessionBean.createAccount(savingAccount);
@@ -851,7 +851,7 @@ public class EntityDAMSBuilder {
             savingAccount2.setType(EnumUtils.DepositAccountType.SAVING);
             savingAccount2.setStatus(EnumUtils.StatusType.ACTIVE);
             savingAccount2.setProduct(depositProductSessionBean.getDepositProductByName(ConstantUtils.DEMO_SAVING2_DEPOSIT_PRODUCT_NAME));
-            savingAccount2.setBalance(new BigDecimal(1000));
+            savingAccount2.setBalance(new BigDecimal(1000.0000));
             savingAccount2.setMainAccount(secondMain);
 
             temp = customerDepositSessionBean.createAccount(savingAccount2);
@@ -864,7 +864,7 @@ public class EntityDAMSBuilder {
             currentAccount.setType(EnumUtils.DepositAccountType.SAVING);
             currentAccount.setStatus(EnumUtils.StatusType.ACTIVE);
             currentAccount.setProduct(depositProductSessionBean.getDepositProductByName(ConstantUtils.DEMO_CURRENT_DEPOSIT_PRODUCT_NAME));
-            currentAccount.setBalance(new BigDecimal(1000));
+            currentAccount.setBalance(new BigDecimal(1000.0000));
             currentAccount.setMainAccount(secondMain);
 
             temp = customerDepositSessionBean.createAccount(currentAccount);
@@ -877,7 +877,7 @@ public class EntityDAMSBuilder {
             fixedAccount.setType(EnumUtils.DepositAccountType.FIXED);
             fixedAccount.setStatus(EnumUtils.StatusType.ACTIVE);
             fixedAccount.setProduct(depositProductSessionBean.getDepositProductByName(ConstantUtils.DEMO_FIXED_DEPOSIT_PRODUCT_NAME));
-            fixedAccount.setBalance(new BigDecimal(30000));
+            fixedAccount.setBalance(new BigDecimal(30000.0000));
             fixedAccount.setMainAccount(demoMainAccount3);
             fixedAccount.setInterestRules(interestSessionBean.getFixedDepositAccountDefaultInterests());
             customerDepositSessionBean.createAccount(fixedAccount);
@@ -898,7 +898,7 @@ public class EntityDAMSBuilder {
             customAccount.setType(EnumUtils.DepositAccountType.CUSTOM);
             customAccount.setStatus(EnumUtils.StatusType.ACTIVE);
             customAccount.setProduct(depositProductSessionBean.getDepositProductByName(ConstantUtils.DEMO_CUSTOM_DEPOSIT_PRODUCT_NAME));
-            customAccount.setBalance(new BigDecimal(10000));
+            customAccount.setBalance(new BigDecimal(10000.0000));
             customAccount.setMainAccount(demoMainAccount4);
 
             DepositAccount dp = customerDepositSessionBean.createAccount(customAccount);
@@ -910,7 +910,7 @@ public class EntityDAMSBuilder {
             savingAccount.setType(EnumUtils.DepositAccountType.SAVING);
             savingAccount.setStatus(EnumUtils.StatusType.ACTIVE);
             savingAccount.setProduct(depositProductSessionBean.getDepositProductByName(ConstantUtils.DEMO_SAVING1_DEPOSIT_PRODUCT_NAME));
-            savingAccount.setBalance(new BigDecimal(20000));
+            savingAccount.setBalance(new BigDecimal(20000.0000));
             savingAccount.setMainAccount(demoMainAccount4);
             customerDepositSessionBean.createAccount(savingAccount);
             cardAcctSessionBean.createDebitAccount(savingAccount);
@@ -919,7 +919,7 @@ public class EntityDAMSBuilder {
             currentAccount.setType(EnumUtils.DepositAccountType.SAVING);
             currentAccount.setStatus(EnumUtils.StatusType.ACTIVE);
             currentAccount.setProduct(depositProductSessionBean.getDepositProductByName(ConstantUtils.DEMO_CURRENT_DEPOSIT_PRODUCT_NAME));
-            currentAccount.setBalance(new BigDecimal(10000));
+            currentAccount.setBalance(new BigDecimal(10000.0000));
             currentAccount.setMainAccount(demoMainAccount4);
             customerDepositSessionBean.createAccount(currentAccount);
             cardAcctSessionBean.createDebitAccount(currentAccount);
@@ -928,7 +928,7 @@ public class EntityDAMSBuilder {
             fixedAccount.setType(EnumUtils.DepositAccountType.FIXED);
             fixedAccount.setStatus(EnumUtils.StatusType.ACTIVE);
             fixedAccount.setProduct(depositProductSessionBean.getDepositProductByName(ConstantUtils.DEMO_FIXED_DEPOSIT_PRODUCT_NAME));
-            fixedAccount.setBalance(new BigDecimal(50000));
+            fixedAccount.setBalance(new BigDecimal(50000.0000));
             fixedAccount.setMainAccount(demoMainAccount4);
             fixedAccount.setInterestRules(interestSessionBean.getFixedDepositAccountDefaultInterests());
             customerDepositSessionBean.createAccount(fixedAccount);
@@ -947,15 +947,15 @@ public class EntityDAMSBuilder {
             da = customerDepositSessionBean.demoDepositIntoAccount(da, new BigDecimal(100 * i));
         }
         // credit salary of at least 2000
-        da = customerDepositSessionBean.creditSalaryIntoAccount(da, new BigDecimal(2000));
+        da = customerDepositSessionBean.creditSalaryIntoAccount(da, new BigDecimal(2000.0000));
         // pay 3 bills
-        da = customerDepositSessionBean.payBillFromAccount(da, new BigDecimal(45));
-        da = customerDepositSessionBean.payBillFromAccount(da, new BigDecimal(45));
-        da = customerDepositSessionBean.payBillFromAccount(da, new BigDecimal(45));
+        da = customerDepositSessionBean.payBillFromAccount(da, new BigDecimal(45.0000));
+        da = customerDepositSessionBean.payBillFromAccount(da, new BigDecimal(45.0000));
+        da = customerDepositSessionBean.payBillFromAccount(da, new BigDecimal(45.0000));
         // credit card spending at least 500
-        da = customerDepositSessionBean.ccSpendingFromAccount(da, new BigDecimal(500));
+        da = customerDepositSessionBean.ccSpendingFromAccount(da, new BigDecimal(500.0000));
         // invest once and for a year
-        da = customerDepositSessionBean.investFromAccount(da, new BigDecimal(5000));
+        da = customerDepositSessionBean.investFromAccount(da, new BigDecimal(5000.0000));
     }
 
     private void initCheques(DepositAccount account) {

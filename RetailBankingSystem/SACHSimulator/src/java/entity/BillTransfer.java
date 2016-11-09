@@ -32,7 +32,7 @@ public class BillTransfer implements Serializable {
     @Column(precision = 30, scale = 20)
     private BigDecimal amount;
     private String partnerBankCode;
-    private String partnerBankAccount;
+    private String toBankAccount;
     private String fromBankCode;
     private String shortCode;
     private String organizationName;
@@ -170,18 +170,19 @@ public class BillTransfer implements Serializable {
         this.fromBankCode = fromBankCode;
     }
 
+
     /**
-     * @return the partnerBankAccount
+     * @return the toBankAccount
      */
-    public String getPartnerBankAccount() {
-        return partnerBankAccount;
+    public String getToBankAccount() {
+        return toBankAccount;
     }
 
     /**
-     * @param partnerBankAccount the partnerBankAccount to set
+     * @param toBankAccount the toBankAccount to set
      */
-    public void setPartnerBankAccount(String partnerBankAccount) {
-        this.partnerBankAccount = partnerBankAccount;
+    public void setToBankAccount(String toBankAccount) {
+        this.toBankAccount = toBankAccount;
     }
 
 }
