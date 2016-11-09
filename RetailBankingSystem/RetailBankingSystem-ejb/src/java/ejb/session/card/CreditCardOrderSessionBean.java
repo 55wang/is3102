@@ -56,7 +56,7 @@ public class CreditCardOrderSessionBean implements CreditCardOrderSessionBeanLoc
         Query q = em.createQuery("SELECT cco FROM CreditCardOrder cco WHERE cco.applicationStatus != :cancelStatus "
                 + "AND cco.mainAccount.id = :id");
 
-        q.setParameter("cancelStatus", ApplicationStatus.CANCELLED);
+        q.setParameter("cancelStatus", CardApplicationStatus.CANCELLED);
         q.setParameter("id", mainAccountId);
 
         try {

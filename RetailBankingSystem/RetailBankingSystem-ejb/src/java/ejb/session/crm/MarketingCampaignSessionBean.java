@@ -35,7 +35,7 @@ public class MarketingCampaignSessionBean implements MarketingCampaignSessionBea
         abc.setAdsType("deposit");
         abc.setAdsInfo("Merlion Account, the more you save, the more you gain.");
         abc.setAdsExtraInfo("Provide interest rate as high as 2.5%.");
-        abc.setLandingPageName("https://localhost:8181/InternetBankingSystem/landing_page/deposit_campaign.xhtml");
+        abc.setLandingPageName("deposit_campaign.xhtml");
 
         return abc;
     }

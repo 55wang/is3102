@@ -66,10 +66,10 @@
 
                                 <p:column headerText="Debit in SGD" sortBy="#{transaction.amount}" rendered="#{!transaction.credit}">
                                     <h:outputText value="#{transaction.amount}">
-                                    <f:convertNumber type="number" pattern="#0.00"/>
+                                        <f:convertNumber type="number" pattern="#0.00"/>
                                     </h:outputText>
                                 </p:column>
-                                
+
                                 <p:column headerText="Type" sortBy="#{transaction.actionType}">
                                     <h:outputText value="#{transaction.actionType}"/>
                                 </p:column>
@@ -79,6 +79,7 @@
                     </p:panel>
                 </h:form>
             </div>
+            <em:adsBanner advertismentTitle="#{customerHomeManagedBean.adsBannerCampaign.adsTitle}" advertismentType="#{customerHomeManagedBean.adsBannerCampaign.adsType}" advertismentInfo="#{customerHomeManagedBean.adsBannerCampaign.adsInfo}" extraAdvertismentInfo="#{customerHomeManagedBean.adsBannerCampaign.adsExtraInfo}" landingPageUrl="https://localhost:8181/InternetBankingSystem/landing_page/#{customerHomeManagedBean.adsBannerCampaign.landingPageName}" />
             <em:customerFooter></em:customerFooter>
         </h:body>
     </f:view>

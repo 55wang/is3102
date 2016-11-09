@@ -24,59 +24,60 @@ and open the template in the editor.
             <div class="customer_main_container">
                 <h:form>
                     <p:panel header="Transfer to My Account">
-                    <p:messages id="message" redisplay="false" >
-                        <p:wizard widgetVar="myWizard" showNavBar="false">
+                        <p:messages id="message" redisplay="false" >
+                            <p:wizard widgetVar="myWizard" showNavBar="false">
 
-                            <p:tab id="input_detail" title="1.Input Details">
+                                <p:tab id="input_detail" title="1.Input Details">
 
-                                <h:panelGrid columns="2" cellpadding="5">
-                                    <h:outputText value="Choose Your Account to transfer from: " />
-                                    <p:selectOneMenu value="#{interAccountTransferManagedBean.fromAccountNo}" rendered="true" required="true">
-                                        <f:selectItems value="#{interAccountTransferManagedBean.accounts}" var="a" itemValue="#{a.accountNumber}" itemLabel="#{a.product.name} #{a.accountNumber} #{a.balance.setScale(2)}" />
-                                    </p:selectOneMenu>
-                                    <h:outputText value="Choose Your Account to transfer to " />
-                                    <p:selectOneMenu value="#{interAccountTransferManagedBean.toAccountNo}" rendered="true" required="true">
-                                        <f:selectItems value="#{interAccountTransferManagedBean.accounts}" var="a" itemValue="#{a.accountNumber}" itemLabel="#{a.product.name} #{a.accountNumber} #{a.balance.setScale(2)}" />
-                                    </p:selectOneMenu>
-                                    <p:outputLabel for="amount" value="Amount S$: " />
-                                    <p:inputText id="amount" value="#{interAccountTransferManagedBean.amount}"/>
-                                    <p:commandButton  value="Next" actionListener="#{interAccountTransferManagedBean.sendOpt()}" update="@form" />
-                                </h:panelGrid>
+                                    <h:panelGrid columns="2" cellpadding="5">
+                                        <h:outputText value="Choose Your Account to transfer from: " />
+                                        <p:selectOneMenu value="#{interAccountTransferManagedBean.fromAccountNo}" rendered="true" required="true">
+                                            <f:selectItems value="#{interAccountTransferManagedBean.accounts}" var="a" itemValue="#{a.accountNumber}" itemLabel="#{a.product.name} #{a.accountNumber} #{a.balance.setScale(2)}" />
+                                        </p:selectOneMenu>
+                                        <h:outputText value="Choose Your Account to transfer to " />
+                                        <p:selectOneMenu value="#{interAccountTransferManagedBean.toAccountNo}" rendered="true" required="true">
+                                            <f:selectItems value="#{interAccountTransferManagedBean.accounts}" var="a" itemValue="#{a.accountNumber}" itemLabel="#{a.product.name} #{a.accountNumber} #{a.balance.setScale(2)}" />
+                                        </p:selectOneMenu>
+                                        <p:outputLabel for="amount" value="Amount S$: " />
+                                        <p:inputText id="amount" value="#{interAccountTransferManagedBean.amount}"/>
+                                        <p:commandButton  value="Next" actionListener="#{interAccountTransferManagedBean.sendOpt()}" update="@form" />
+                                    </h:panelGrid>
 
-                            </p:tab>
+                                </p:tab>
 
-                            <p:tab id="verify_details" title="2.Verify Details">
-                                <h:panelGrid columns="2" cellpadding="5">
-                                    <h:outputText value="From: " />
-                                    <h:outputText value="#{interAccountTransferManagedBean.fromAccountNo}" />
-                                    <h:outputText value="To: " />
-                                    <h:outputText value="#{interAccountTransferManagedBean.toAccountNo}" />
-                                    <p:outputLabel value="Amount S$: " />
-                                    <p:outputLabel value="#{interAccountTransferManagedBean.amount}"/>
-                                    
-                                    <h2>Input Token Number</h2>
-                                    <p:inputText value="#{interAccountTransferManagedBean.inputTokenString}" />
-                                        
-                                    <p:commandButton  value="Back" type="button" onclick="PF('myWizard').back()" />
-                                    <p:commandButton value="Transfer" action="#{interAccountTransferManagedBean.transfer}" update="@form"/> 
-                                </h:panelGrid>
-                            </p:tab>
+                                <p:tab id="verify_details" title="2.Verify Details">
+                                    <h:panelGrid columns="2" cellpadding="5">
+                                        <h:outputText value="From: " />
+                                        <h:outputText value="#{interAccountTransferManagedBean.fromAccountNo}" />
+                                        <h:outputText value="To: " />
+                                        <h:outputText value="#{interAccountTransferManagedBean.toAccountNo}" />
+                                        <p:outputLabel value="Amount S$: " />
+                                        <p:outputLabel value="#{interAccountTransferManagedBean.amount}"/>
 
-                            <p:tab id="completion" title="3.Completion">
-                                <h:panelGrid columns="2" cellpadding="5">
-                                    <h:outputText value="From: " />
-                                    <h:outputText value="#{interAccountTransferManagedBean.fromAccountNo}" />
-                                    <h:outputText value="To: " />
-                                    <h:outputText value="#{interAccountTransferManagedBean.toAccountNo}" />
-                                    <p:outputLabel value="Amount S$: " />
-                                    <p:outputLabel value="#{interAccountTransferManagedBean.amount}"/>
-                                </h:panelGrid>
-                            </p:tab>
-                        </p:wizard>
-                    </p:messages>
+                                        <h2>Input Token Number</h2>
+                                        <p:inputText value="#{interAccountTransferManagedBean.inputTokenString}" />
+
+                                        <p:commandButton  value="Back" type="button" onclick="PF('myWizard').back()" />
+                                        <p:commandButton value="Transfer" action="#{interAccountTransferManagedBean.transfer}" update="@form"/> 
+                                    </h:panelGrid>
+                                </p:tab>
+
+                                <p:tab id="completion" title="3.Completion">
+                                    <h:panelGrid columns="2" cellpadding="5">
+                                        <h:outputText value="From: " />
+                                        <h:outputText value="#{interAccountTransferManagedBean.fromAccountNo}" />
+                                        <h:outputText value="To: " />
+                                        <h:outputText value="#{interAccountTransferManagedBean.toAccountNo}" />
+                                        <p:outputLabel value="Amount S$: " />
+                                        <p:outputLabel value="#{interAccountTransferManagedBean.amount}"/>
+                                    </h:panelGrid>
+                                </p:tab>
+                            </p:wizard>
+                        </p:messages>
                     </p:panel>
                 </h:form>
             </div>
+            <em:adsBanner advertismentTitle="#{customerHomeManagedBean.adsBannerCampaign.adsTitle}" advertismentType="#{customerHomeManagedBean.adsBannerCampaign.adsType}" advertismentInfo="#{customerHomeManagedBean.adsBannerCampaign.adsInfo}" extraAdvertismentInfo="#{customerHomeManagedBean.adsBannerCampaign.adsExtraInfo}" landingPageUrl="https://localhost:8181/InternetBankingSystem/landing_page/#{customerHomeManagedBean.adsBannerCampaign.landingPageName}" />
             <em:customerFooter></em:customerFooter>
         </h:body>
     </f:view>

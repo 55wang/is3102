@@ -31,12 +31,12 @@
                                     <p:graphicImage name="wealth_icon_2.svg" library="img"/>
                                     <p:graphicImage name="wealth_icon_3.svg" library="img"/>
                                     <p:graphicImage name="wealth_icon_4.svg" library="img"/>
-                                    
+
                                     <h:outputText value="$10,000" style="font-size: 30px;"></h:outputText>
                                     <h:outputText value="0.25%" style="font-size: 30px;"></h:outputText>
                                     <h:outputText value="$500" style="font-size: 30px;"></h:outputText>
                                     <h:outputText value="$0" style="font-size: 30px;"></h:outputText>
-                                    
+
                                     <h:outputText value="Managed for free" style="font-size: 16px;"></h:outputText>
                                     <h:outputText value="Low annual advisory fee" style="font-size: 16px;"></h:outputText>
                                     <h:outputText value="Account minimum" style="font-size: 16px;"></h:outputText>
@@ -54,28 +54,27 @@
                                     <h:outputText id="outputamount" value="#{wealthAdvertismentManagedBean.investAmount}" style="font-size: 30px;">
                                         <f:convertNumber type="currency" currencySymbol="S$" />
                                     </h:outputText>
-                                    
+
                                     <p:outputLabel value="Monthly advisor fee"/>
                                     <h:outputText id="fee" value="#{wealthAdvertismentManagedBean.chargeFee}" style="font-size: 30px;">
                                         <f:convertNumber type="currency" currencySymbol="S$" />
                                     </h:outputText>
-                                    
+
                                     <p:slider minValue="500" maxValue="1000000" animate="true" for="amount" display="outputamount">
                                         <p:ajax event="slideEnd" listener="#{wealthAdvertismentManagedBean.onSlideChange}" update="fee"/>
                                     </p:slider>
                                     <h:inputHidden id="amount" value="#{wealthAdvertismentManagedBean.investAmount}" />
                                 </h:panelGrid>
                                 <div class="content">
-                                     <p:commandButton value="Invest Now" actionListener="#{wealthAdvertismentManagedBean.investNow}"></p:commandButton>
+                                    <p:commandButton value="Invest Now" actionListener="#{wealthAdvertismentManagedBean.investNow}"></p:commandButton>
                                 </div>
                             </div>
-                           
+
                         </p:messages>
                     </h:form>
                 </p:panel>              
             </div>
-            <em:adsBanner advertismentTitle="MBS Deposit!" advertismentType="deposit" advertismentInfo="Merlion Account, the more you save, the more you gain." landingPageUrl="#"/>
-            
+            <em:adsBanner advertismentTitle="#{customerHomeManagedBean.adsBannerCampaign.adsTitle}" advertismentType="#{customerHomeManagedBean.adsBannerCampaign.adsType}" advertismentInfo="#{customerHomeManagedBean.adsBannerCampaign.adsInfo}" extraAdvertismentInfo="#{customerHomeManagedBean.adsBannerCampaign.adsExtraInfo}" landingPageUrl="https://localhost:8181/InternetBankingSystem/landing_page/#{customerHomeManagedBean.adsBannerCampaign.landingPageName}" />
             <em:customerFooter></em:customerFooter>
         </h:body>
     </f:view>

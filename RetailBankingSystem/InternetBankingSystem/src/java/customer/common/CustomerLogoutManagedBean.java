@@ -38,7 +38,7 @@ public class CustomerLogoutManagedBean implements Serializable{
         AuditLog a = new AuditLog();
         a.setActivityLog("Log off at: " + new Date());
         a.setFunctionName("CustomerLogoutManagedBean logoutCustomer()");
-        a.setMainAccount((MainAccount)utilsBean.find(MainAccount.class, Long.parseLong(SessionUtils.getUserId())));
+        a.setMainAccount((MainAccount)utilsBean.find(MainAccount.class, SessionUtils.getUserId()));
         utilsBean.persist(a);
         
         HttpSession session = SessionUtils.getSession();

@@ -54,11 +54,11 @@
                                     <h:outputText value="Date of Birth: " />
                                     <p:calendar value="#{hdbLoanApplicationManagedBean.birthday}" navigator="true" yearRange="c-100:c+0" required="true" requiredMessage="DOB is required." 
                                                 pattern="yyyy-MM-dd" maxdate="#{hdbLoanApplicationManagedBean.currentDate}"/>
-                                    
-                                     <h:outputText value="Age: " />
-                                     <p:inputText value="#{hdbLoanApplicationManagedBean.age}" required="true" requiredMessage="Age is required." />
-                                     
-                                     <h:outputText value="Email: " />
+
+                                    <h:outputText value="Age: " />
+                                    <p:inputText value="#{hdbLoanApplicationManagedBean.age}" required="true" requiredMessage="Age is required." />
+
+                                    <h:outputText value="Email: " />
 
                                     <p:inputText required="true" label="email" size="40"
                                                  requiredMessage="Email address is required."
@@ -118,13 +118,13 @@
                                     <h:outputText value="Maximum Tenure: " />
                                     <h:outputText value="#{hdbLoanApplicationManagedBean.maxHousingTenure}" styleClass="outputLabel"/>
 
-                                    
+
                                     <h:outputText value="Refinancing Loan Amount: " />
                                     <p:inputText value="#{hdbLoanApplicationManagedBean.loanAmount}" required="true" requiredMessage="Loan Amount is required." />
-                                    
+
                                     <h:outputText value="Refinancing Tenure: " />
                                     <p:inputText value="#{hdbLoanApplicationManagedBean.tenure}" required="true" requiredMessage="Loan Amount is required." />
-                             
+
 
                                     <h:outputText value="Choose a loan term: " />
                                     <p:selectOneMenu value="#{hdbLoanApplicationManagedBean.loanProductId}" rendered="true" required="true">
@@ -150,8 +150,8 @@
 
                 </h:form>
             </div>   
-
-            <em:customerFooter></em:customerFooter>
+            <em:adsBanner advertismentTitle="#{customerHomeManagedBean.adsBannerCampaign.adsTitle}" advertismentType="#{customerHomeManagedBean.adsBannerCampaign.adsType}" advertismentInfo="#{customerHomeManagedBean.adsBannerCampaign.adsInfo}" extraAdvertismentInfo="#{customerHomeManagedBean.adsBannerCampaign.adsExtraInfo}" landingPageUrl="https://localhost:8181/InternetBankingSystem/landing_page/#{customerHomeManagedBean.adsBannerCampaign.landingPageName}" />
+            <em:customerMainFooter></em:customerMainFooter>
         </h:body>
     </f:view>
 

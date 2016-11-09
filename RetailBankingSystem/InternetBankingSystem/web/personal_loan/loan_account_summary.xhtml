@@ -13,7 +13,7 @@
             <em:cssImport></em:cssImport>
         </h:head>
         <h:body>
-           
+
             <em:customerHeader context="personal" userName="#{customerHomeManagedBean.customer.firstname }"></em:customerHeader>
             <em:customerNavBar context="personal" personalPage="home" ></em:customerNavBar>
             <div class="customer_main_container">
@@ -36,7 +36,7 @@
                                             <f:convertNumber type="number" pattern="#0.00"/>
                                         </h:outputText>
                                     </p:column>
-                                    
+
                                     <p:column headerText="Action">
                                         <p:commandButton value="View Details" actionListener="#{loanAccountSumaryManagedBean.viewDetails(account)}"/>
                                     </p:column>
@@ -47,6 +47,7 @@
                     </p:panel>
                 </h:form>
             </div>
+            <em:adsBanner advertismentTitle="#{customerHomeManagedBean.adsBannerCampaign.adsTitle}" advertismentType="#{customerHomeManagedBean.adsBannerCampaign.adsType}" advertismentInfo="#{customerHomeManagedBean.adsBannerCampaign.adsInfo}" extraAdvertismentInfo="#{customerHomeManagedBean.adsBannerCampaign.adsExtraInfo}" landingPageUrl="https://localhost:8181/InternetBankingSystem/landing_page/#{customerHomeManagedBean.adsBannerCampaign.landingPageName}" />
             <em:customerFooter></em:customerFooter>
         </h:body>
     </f:view>
