@@ -325,7 +325,7 @@ public class EntityLoanBuilder {
         badLoanAccount.setOutstandingPrincipal(badLoanAccount.getPrincipal());
         badLoanAccount.setMonthlyInstallment(loanPaymentSessionBean.calculateMonthlyInstallment(badLoanAccount));
         Double overdue2 = badLoanAccount.getMonthlyInstallment() * (4 + 0.17 * 122 / 365 + 0.17 * 91 / 365 + 0.17 * 61 / 365 + 0.17 * 30 / 365);
-        badLoanAccount.setOverduePayment(overdue);
+        badLoanAccount.setOverduePayment(overdue2);
         badLoanAccount.setOutstandingPrincipal(badLoanAccount.getPrincipal() + badLoanAccount.getOverduePayment());
         System.out.println("Monthly installment is: $" + loanAccount.getMonthlyInstallment());
 
@@ -541,7 +541,7 @@ public class EntityLoanBuilder {
         loanProduct.setLoanInterestCollection(lic);
         loanProduct.setTenure(25);
         loanProduct.setLockInDuration(3);
-        loanProduct.setPenaltyInterestRate(0.2); // TODO: this need to be calculated
+        loanProduct.setPenaltyInterestRate(0.06); // TODO: this need to be calculated
         loanProduct = loanProductSessionBean.createLoanProduct(loanProduct);
         lic.setLoanProduct(loanProduct);
         lic = loanProductSessionBean.updateInterestCollection(lic);
@@ -628,7 +628,7 @@ public class EntityLoanBuilder {
         loanProduct.setLoanInterestCollection(lic);
         loanProduct.setTenure(25);
         loanProduct.setLockInDuration(0);
-        loanProduct.setPenaltyInterestRate(0.5); // TODO: this need to be calculated
+        loanProduct.setPenaltyInterestRate(0.06); // TODO: this need to be calculated
         loanProduct = loanProductSessionBean.createLoanProduct(loanProduct);
         lic.setLoanProduct(loanProduct);
         lic = loanProductSessionBean.updateInterestCollection(lic);

@@ -52,7 +52,7 @@ public class CustomerLoginManagedBean implements Serializable {
      */
     @PostConstruct
     public void init() {
-//        loginCustomer("c1234567", "password");
+        loginCustomer("c1234567", "password");
     }
 
     public CustomerLoginManagedBean() {
@@ -130,14 +130,11 @@ public class CustomerLoginManagedBean implements Serializable {
         MainAccount forgotAccount = null;
         try{
             forgotAccount = mainAccountSessionBean.getMainAccountByEmail(findPasswordEmail);
-        }catch(MainAccountNotExistException ex){
-            System.out.println("forgotUserID.MainAccountNotExistException");
-        }
-        if (forgotAccount != null) {
             emailServiceSessionBean.sendResetPwdLinkforForgottenCustomer(findPasswordEmail, forgotAccount);
             String msg = "Check your email and reset password.";
             MessageUtils.displayInfo(msg);
-        } else {
+        } catch(MainAccountNotExistException ex) {
+            System.out.println("forgotUserID.MainAccountNotExistException");
             String msg = "The email is not registered.";
             MessageUtils.displayError(msg);
         }

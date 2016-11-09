@@ -66,6 +66,20 @@ public class CreditCardOrderSessionBean implements CreditCardOrderSessionBeanLoc
             return null;
         }
     }
+    
+        //get 
+    @Override
+    public List<CreditCardOrder> getListCreditCardOrdersByMainId(String mainAccountId) {
+        Query q = em.createQuery("SELECT cco FROM CreditCardOrder cco WHERE cco.mainAccount.id = :id");
+        q.setParameter("id", mainAccountId);
+
+        try {
+            return q.getResultList();
+        } catch (NoResultException ex) {
+            System.out.println("CreditCardOrderSessionBean.getMainAccountAllCreditCardOrders: " + ex.toString());
+            return null;
+        }
+    }
 
     @Override
     public CreditCardOrder getCreditCardOrderById(Long ccoId) {
