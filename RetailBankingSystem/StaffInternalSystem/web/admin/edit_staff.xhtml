@@ -1,0 +1,57 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:em="http://xmlns.jcp.org/jsf/composite/emcomp"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <!--shift + ctrl + F, format-->
+    <f:view>
+        <f:metadata>
+            <f:viewParam name="staffId" value="#{editStaffManagedBean.staffId}" />
+            <f:viewAction action="#{editStaffManagedBean.init()}"></f:viewAction>
+        </f:metadata>
+        <h:head>
+            <title>Merlion Internal</title>
+            <em:cssImport></em:cssImport>
+        </h:head>
+        <h:body>
+            <em:staffNavBar context="admin"></em:staffNavBar>
+            <em:staffSideBar top="admin" side="createStaff"></em:staffSideBar>
+            <div class="container">
+                <h:form id="form">
+                    <p:growl id="msgs" showDetail="true"/>
+                    <p:panel header="Edit Staff">
+                        <p:messages id="messagesStatus" redisplay="false" >
+                            <h:panelGrid columns="2" cellpadding="5">
+
+                                <p:outputLabel for="username" value="Username: " />
+                                <p:inputText id="username" value="#{editStaffManagedBean.staff.username}" required="true"/>
+
+                                <p:outputLabel for="email" value="Email " />
+                                <p:inputText id="email" value="#{editStaffManagedBean.staff.email}" required="true"/>
+
+                                <p:outputLabel for="firstname" value="First Name " />
+                                <p:inputText id="firstname" value="#{editStaffManagedBean.staff.firstName}" required="true"/>
+
+                                <p:outputLabel for="lastname" value="Last Name " />
+                                <p:inputText id="lastname" value="#{editStaffManagedBean.staff.lastName}" required="true"/>
+
+                                <p:outputLabel value="Select Role:" />
+                                <p:selectCheckboxMenu  value="#{editStaffManagedBean.selectedRoles}" label="Roles" filter="true" filterMatchMode="startsWith" required="true">
+                                    <f:selectItems value="#{editStaffManagedBean.roles}" var="r" itemValue="#{r.roleName}" itemLabel="#{r.roleName}"/>
+                                </p:selectCheckboxMenu>
+
+                                <p:commandButton value="Save" icon="ui-icon-plus" update="@form" actionListener="#{editStaffManagedBean.editStaff}" />
+                            </h:panelGrid>
+                        </p:messages>
+                    </p:panel>
+                </h:form>
+            </div>
+        </h:body>
+    </f:view>
+
+
+</html>
+

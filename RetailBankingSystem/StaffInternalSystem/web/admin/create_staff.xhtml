@@ -43,12 +43,15 @@
                             </h:panelGrid>
                         </p:messages>
                     </p:panel>
+                </h:form>
+
+                <h:form id="dataTableForm">
                     <p:panel header="Added Staff">
                         <p:dataTable id="addedRoles" value="#{createStaffManagedBean.staffs}" var="staff" editable="true" editMode="cell">
                             <f:facet name="header">
                                 Edit Roles By Clicking
                             </f:facet>
-                            <p:ajax event="cellEdit" listener="#{createStaffManagedBean.onCellEdit(staff)}" update=":form:msgs" />
+                            <p:ajax event="cellEdit" listener="#{createStaffManagedBean.onCellEdit(staff)}" update="form:msgs" />
                             <p:column headerText="Name" sortBy="#{staff.username}">
                                 <h:outputText value="#{staff.username}"></h:outputText>
                             </p:column>
@@ -64,21 +67,13 @@
                                     </f:facet>
                                 </p:cellEditor>
                             </p:column>
-                            <p:column headerText="Role" sortBy="#{staff.role.roleName}">
-                                <p:cellEditor>
-                                    <f:facet name="output">
-                                        <h:outputText value="#{staff.role.roleName}" />
-                                    </f:facet>
-                                    <f:facet name="input">
-                                        <h:selectOneMenu value="#{createStaffManagedBean.cellSelectedRoleName}" style="width:100%">
-                                            <f:selectItems value="#{createStaffManagedBean.selectRoles}" />
-                                        </h:selectOneMenu>
-                                    </f:facet>
-                                </p:cellEditor>
+                            <p:column headerText="Role" sortBy="#{staff.roles}">
+                                <p:commandButton value="Edit" icon="ui-icon-plus" update="@form" actionListener="#{createStaffManagedBean.editStaff(staff)}" />
                             </p:column>
                         </p:dataTable>
                     </p:panel>
                 </h:form>
+
             </div>
         </h:body>
     </f:view>
