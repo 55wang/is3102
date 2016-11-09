@@ -60,6 +60,14 @@ public class CustomerCardManagedBean implements Serializable {
         }
     }
 
+    public Double retrieveCreditLimit(CreditCardAccount cca) {
+        if (cca.getOutstandingAmount() < 0.0) {
+            return cca.getCreditLimit() - cca.getOutstandingAmount();
+        } else {
+            return cca.getCreditLimit();
+        }
+    }
+
     public void sendCCTransactionDetail(CreditCardAccount aCca) {
         Map<String, String> map = new HashMap<>();
         map.put("ccaId", aCca.getId().toString());

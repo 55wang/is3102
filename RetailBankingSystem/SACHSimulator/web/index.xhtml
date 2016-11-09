@@ -55,7 +55,8 @@ and open the template in the editor.
                     <p:inputText value="#{sachManagedBean.fromCCBankCode}" />
                     <p:outputLabel value="To Bank Code:" />
                     <p:inputText value="#{sachManagedBean.partnerBankCode}" />
-
+                    <p:outputLabel value="Organization:" />
+                    <p:inputText value="#{sachManagedBean.organizationName}" />
 
                     <p:commandButton value="Send MBS Credit Card Payment" actionListener="#{sachManagedBean.sendMBSCCPayment}" />
                 </h:panelGrid>
