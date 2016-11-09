@@ -5,8 +5,7 @@
  */
 package common;
 
-import ejb.session.common.ChangePasswordSessionBean;
-import ejb.session.common.ChangePasswordSessionBeanRemote;
+import ejb.session.common.CustomerActivationSessionBeanRemote;
 import ejb.session.mainaccount.MainAccountSessionBeanRemote;
 import entity.customer.MainAccount;
 import java.io.Serializable;
@@ -23,7 +22,6 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import org.junit.FixMethodOrder;
 import org.junit.runners.MethodSorters;
-import util.exception.common.DuplicateMainAccountExistException;
 import util.exception.common.MainAccountNotExistException;
 import util.exception.common.UpdateMainAccountException;
 
@@ -32,30 +30,44 @@ import util.exception.common.UpdateMainAccountException;
  * @author VIN-S
  */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class ChangePasswordTest implements Serializable {
-    ChangePasswordSessionBeanRemote changePwdBean = lookupChangePasswordSessionBeanRemote();
-    
+public class CustomerActivationTest implements Serializable {
     MainAccountSessionBeanRemote mainBean = lookupMainAccountSessionBeanRemote();
+    
+    CustomerActivationSessionBeanRemote customerActivationSessionBean = lookupCustomerActivationSessionBeanRemote();
     
     private final String TEST_CASE_ID = "c1234567";
     
-    public ChangePasswordTest() {
+    public CustomerActivationTest() {
     }
     
     @Test
-    public void test01ChangeMainAccountPwd() throws UpdateMainAccountException, MainAccountNotExistException {
-        System.out.println("ChangePasswordTest.test01ChangeMainAccountPwd");   
+    public void test01getMainAccountByEmail() throws MainAccountNotExistException {
+        System.out.println("CustomerActivationTest.test01getMainAccountByEmail");   
+        MainAccount result = customerActivationSessionBean.getMainAccountByEmail("wangzhe.lynx@gmail.com");
+        assertNotNull(result);        
+    }
+    
+    @Test(expected=MainAccountNotExistException.class)
+    public void test02getMainAccountByEmailException() throws MainAccountNotExistException {
+        System.out.println("CustomerActivationTest.test01getMainAccountByEmail");   
+        MainAccount result = customerActivationSessionBean.getMainAccountByEmail("customer@merlionbank.com");
+        assertNotNull(result);    
+    }
+    
+    @Test
+    public void test03updateMainAccount() throws UpdateMainAccountException, MainAccountNotExistException {
+        System.out.println("CustomerActivationTest.test03updateMainAccount");   
         MainAccount ma = mainBean.getMainAccountByUserId(TEST_CASE_ID);
         ma.setUserID(TEST_CASE_ID);
-        MainAccount result = changePwdBean.changeMainAccountPwd(ma);
-        assertEquals(result, ma);
+        MainAccount result = mainBean.updateMainAccount(ma);
+        assertEquals(result, ma);  
     }
     
     @Test(expected=UpdateMainAccountException.class)
-    public void test02ChangeMainAccountPwdException() throws UpdateMainAccountException {
-        System.out.println("ChangePasswordTest.test01ChangeMainAccountPwdException");   
+    public void test04updateMainAccountException() throws UpdateMainAccountException {
+        System.out.println("CustomerActivationTest.test04updateMainAccountException");   
         MainAccount ma = new MainAccount();
-        MainAccount result = changePwdBean.changeMainAccountPwd(ma);
+        MainAccount result = mainBean.updateMainAccount(ma);
         assertEquals(result, ma);     
     }
     
@@ -80,10 +92,11 @@ public class ChangePasswordTest implements Serializable {
     //
     // @Test
     // public void hello() {}
-    private ChangePasswordSessionBeanRemote lookupChangePasswordSessionBeanRemote() {
+
+    private CustomerActivationSessionBeanRemote lookupCustomerActivationSessionBeanRemote() {
         try {
             Context c = new InitialContext();
-            return (ChangePasswordSessionBeanRemote) c.lookup("java:global/RetailBankingSystem/RetailBankingSystem-ejb/ChangePasswordSessionBean!ejb.session.common.ChangePasswordSessionBeanRemote");
+            return (CustomerActivationSessionBeanRemote) c.lookup("java:global/RetailBankingSystem/RetailBankingSystem-ejb/CustomerActivationSessionBean!ejb.session.common.CustomerActivationSessionBeanRemote");
         } catch (NamingException ne) {
             Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ne);
             throw new RuntimeException(ne);
