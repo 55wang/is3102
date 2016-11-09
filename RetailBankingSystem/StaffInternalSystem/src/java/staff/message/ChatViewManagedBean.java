@@ -27,6 +27,7 @@ import javax.ejb.EJB;
 import javax.faces.view.ViewScoped;
 import server.utilities.ColorUtils;
 import server.utilities.LoggingUtils;
+import util.exception.common.NoStaffAccountsExistException;
 import utils.RedirectUtils;
 import utils.SessionUtils;
 
@@ -77,8 +78,12 @@ public class ChatViewManagedBean implements Serializable {
     }
 
     public void showall() {
-        setStaffs(staffBean.getAllStaffs());
-        removeSelf();
+        try {
+            setStaffs(staffBean.getAllStaffs());
+            removeSelf();
+        } catch (NoStaffAccountsExistException e) {
+            staffs = new ArrayList<>();
+        }
     }
 
     public void newConversation(StaffAccount staff) {

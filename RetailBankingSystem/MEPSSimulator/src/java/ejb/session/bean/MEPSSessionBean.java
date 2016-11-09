@@ -9,7 +9,6 @@ import dto.TransactionDTO;
 import dto.TransactionSummaryDTO;
 import entity.SettlementAccount;
 import java.math.BigDecimal;
-import java.util.Date;
 import java.util.List;
 import javax.ejb.Asynchronous;
 import javax.ejb.Stateless;

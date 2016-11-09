@@ -8,7 +8,6 @@ package staff.setting;
 import ejb.session.staff.StaffAccountSessionBeanLocal;
 import ejb.session.utils.UtilsSessionBeanLocal;
 import entity.common.AuditLog;
-import entity.embedded.StaffInfo;
 import entity.staff.StaffAccount;
 import java.io.Serializable;
 import java.util.List;
@@ -19,6 +18,7 @@ import javax.faces.view.ViewScoped;
 import server.utilities.EnumUtils.Gender;
 import server.utilities.EnumUtils.Nationality;
 import server.utilities.CommonUtils;
+import util.exception.common.UpdateStaffAccountException;
 import utils.RedirectUtils;
 import utils.SessionUtils;
 
@@ -34,21 +34,21 @@ public class StaffProfileManagedBean implements Serializable {
     private StaffAccountSessionBeanLocal staffBean;
     @EJB
     private UtilsSessionBeanLocal utilsBean;
-    
+
     private StaffAccount staff = SessionUtils.getStaff();
     private Boolean editingPage = false;
     private Boolean profileEdited = false;
-    private StaffInfo staffInfo; 
     private String selectedGender;
     private String selectedNationality;
     private List<String> genderOptions = CommonUtils.getEnumList(Gender.class);
     private List<String> nationalityOptions = CommonUtils.getEnumList(Nationality.class);
+
     /**
      * Creates a new instance of StaffProfileManagedBean
      */
     public StaffProfileManagedBean() {
     }
-    
+
     @PostConstruct
     public void init() {
         AuditLog a = new AuditLog();
@@ -57,29 +57,35 @@ public class StaffProfileManagedBean implements Serializable {
         a.setFunctionInput("Getting all StaffProfileManagedBean");
         a.setStaffAccount(SessionUtils.getStaff());
         utilsBean.persist(a);
-        staffInfo = staff.getStaffInfo();
+
+        selectedGender = staff.getGender() == null ? null : staff.getGender().toString();
+        selectedNationality = staff.getNationality() == null ? null : staff.getNationality().toString();
     }
-    
-    public void goToEditPage (){
+
+    public void goToEditPage() {
         editingPage = true;
     }
-    
-    public void goToConfirmPage(){
+
+    public void goToConfirmPage() {
         editingPage = false;
         profileEdited = true;
+        staff.setGender(Gender.getEnum(selectedGender));
+        staff.setNationality(Nationality.getEnum(selectedNationality));
     }
-    
-    public void save(){
-        staffInfo.setGender(Gender.getEnum(selectedGender));
-        staffInfo.setNationality(Nationality.getEnum(selectedNationality));
-        staff.setStaffInfo(staffInfo);
-        StaffAccount result = staffBean.updateAccount(staff);
-        SessionUtils.setStaffAccount(result);
-        if (result != null) {
+
+    public void save() {
+        try {
+            staff.setGender(Gender.getEnum(selectedGender));
+            staff.setNationality(Nationality.getEnum(selectedNationality));
+            StaffAccount result = staffBean.updateAccount(staff);
+            SessionUtils.setStaffAccount(result);
             selectedGender = null;
             selectedNationality = null;
             RedirectUtils.redirect("staff_view_profile.xhtml");
+        } catch (UpdateStaffAccountException e) {
+            System.out.println("UpdateStaffAccountException StaffProfileManagedBean save()");
         }
+
     }
 
     /**
@@ -178,13 +184,5 @@ public class StaffProfileManagedBean implements Serializable {
      */
     public void setNationalityOptions(List<String> nationalityOptions) {
         this.nationalityOptions = nationalityOptions;
-    }
-
-    public StaffInfo getStaffInfo() {
-        return staffInfo;
-    }
-
-    public void setStaffInfo(StaffInfo staffInfo) {
-        this.staffInfo = staffInfo;
     }
 }

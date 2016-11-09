@@ -7,26 +7,21 @@ package init;
 
 import ejb.session.bean.FASTSessionBean;
 import entity.FastSettlement;
+import java.io.Serializable;
 import java.math.BigDecimal;
-import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import javax.ejb.LocalBean;
-import javax.ejb.Singleton;
-import javax.ejb.Startup;
+import javax.ejb.Stateless;
 
 /**
  *
  * @author qiuxiaqing
  */
-@Singleton
-@LocalBean
-@Startup
-public class FastBankAccountBuilder {
+@Stateless
+public class FastBankAccountBuilder implements Serializable {
 
     @EJB
     private FASTSessionBean fastBean;
 
-    @PostConstruct
     public void init() {
         System.out.println("FastBankAccountBuilder @PostConstruct");
         if (needInit()) {

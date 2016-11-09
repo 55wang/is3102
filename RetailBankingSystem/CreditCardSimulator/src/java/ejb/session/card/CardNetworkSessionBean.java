@@ -3,15 +3,17 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package init;
+package ejb.session.card;
 
-import javax.ejb.Local;
+import javax.ejb.Stateless;
 
 /**
  *
  * @author qiuxiaqing
  */
-@Local
-public interface SachBankAccountBuilderLocal {
-    
+@Stateless
+public class CardNetworkSessionBean {
+
+    // Add business logic below. (Right-click in editor and choose
+    // "Insert Code > Add Business Method")
 }

@@ -129,7 +129,7 @@ public class CustomerLoginManagedBean implements Serializable {
     public void forgotPassword() {
         MainAccount forgotAccount = null;
         try{
-            forgotAccount = mainAccountSessionBean.getMainAccountByEmail(findUsernameEmail);
+            forgotAccount = mainAccountSessionBean.getMainAccountByEmail(findPasswordEmail);
             emailServiceSessionBean.sendResetPwdLinkforForgottenCustomer(findPasswordEmail, forgotAccount);
             String msg = "Check your email and reset password.";
             MessageUtils.displayInfo(msg);

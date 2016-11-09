@@ -8,9 +8,11 @@ package mb.sach;
 import ejb.session.bean.SACHSessionBean;
 import entity.BillTransfer;
 import entity.PaymentTransfer;
+import init.SachBankAccountBuilder;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
@@ -22,6 +24,9 @@ import javax.faces.view.ViewScoped;
 @Named(value = "sachManagedBean")
 @ViewScoped
 public class SACHManagedBean implements Serializable {
+    
+    @EJB
+    private SachBankAccountBuilder builderBean;
 
     private String referenceNumber;
     private BigDecimal amount;
@@ -49,6 +54,11 @@ public class SACHManagedBean implements Serializable {
     private SACHSessionBean sachBean;
 
     public SACHManagedBean() {
+    }
+    
+    @PostConstruct
+    public void init() {
+        builderBean.init();
     }
 
     public void sendMBSNetSettlement() {
