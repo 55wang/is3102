@@ -10,6 +10,7 @@ import dto.TransactionSummaryDTO;
 import entity.BillTransfer;
 import entity.PaymentTransfer;
 import entity.SachSettlement;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -34,7 +35,10 @@ import javax.ws.rs.core.MediaType;
  * @author leiyang
  */
 @Stateless
-public class SACHSessionBean {
+public class SACHSessionBean implements Serializable {
+    
+    @PersistenceContext(unitName = "SACHSimulatorPU")
+    private EntityManager em;
 
     // all the urls put here
     private final String MEPS_SETTLEMENT = "https://localhost:8181/MEPSSimulator/meps/meps_settlement";
@@ -43,10 +47,7 @@ public class SACHSessionBean {
     private final String MBS_CC_PAYMENT = "https://localhost:8181/StaffInternalSystem/rest/mbs_receive_cc_payment";
     private final String MBS_GIRO_REQUEST = "https://localhost:8181/StaffInternalSystem/rest/mbs_receive_giro_request";
 
-    @PersistenceContext(unitName = "BillPaymentSimulatorPU")
-    private EntityManager em;
-
-    public List<SachSettlement> needInit() {
+    public List<SachSettlement> getAllSachSettlement() {
         Query q = em.createQuery("SELECT ss FROM SachSettlement ss");
         return q.getResultList();
     }
@@ -553,6 +554,18 @@ public class SACHSessionBean {
         calendar.set(Calendar.SECOND, 59);
         calendar.set(Calendar.MILLISECOND, 999);
         return calendar;
+    }
+
+    public void persist1(Object object) {
+        em.persist(object);
+    }
+
+    public void persist2(Object object) {
+        em.persist(object);
+    }
+
+    public void persist3(Object object) {
+        em.persist(object);
     }
 
 }

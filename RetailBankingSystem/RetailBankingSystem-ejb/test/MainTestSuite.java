@@ -16,6 +16,9 @@ import common.ChangePasswordTest;
 import common.CustomerActivationTest;
 import common.LoginTest;
 import common.MainAccountTest;
+import common.StaffAccountTest;
+import common.StaffRoleTest;
+import dams.DepositAccountTest;
 
 /**
  *
@@ -28,6 +31,11 @@ import common.MainAccountTest;
     CustomerCaseTest.class,
     // Main
     MainAccountTest.class,
+    StaffAccountTest.class,
+    StaffRoleTest.class,
+    // dams
+//    DepositAccountTest.class
+        
     ChangePasswordTest.class,
     CustomerActivationTest.class,
     LoginTest.class

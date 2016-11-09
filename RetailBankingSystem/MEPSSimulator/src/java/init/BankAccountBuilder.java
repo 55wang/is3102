@@ -7,26 +7,21 @@ package init;
 
 import ejb.session.bean.MEPSSessionBean;
 import entity.SettlementAccount;
+import java.io.Serializable;
 import java.math.BigDecimal;
-import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import javax.ejb.LocalBean;
-import javax.ejb.Singleton;
-import javax.ejb.Startup;
+import javax.ejb.Stateless;
 
 /**
  *
  * @author leiyang
  */
-@Singleton
-@LocalBean
-@Startup
-public class BankAccountBuilder {
+@Stateless
+public class BankAccountBuilder implements Serializable {
 
     @EJB
     private MEPSSessionBean mepsBean;
 
-    @PostConstruct
     public void init() {
         System.out.println("BankAccountBuilder @PostConstruct");
         if (needInit()) {

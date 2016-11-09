@@ -73,8 +73,10 @@ public class ExistingCustomerApplicationManagedBean implements Serializable {
     }
 
     public void initParameter() {
-        System.out.println("MarketingCampaign id is: " + getSelectedMC());
-        marketingCampaign = marketingCampaignSessionBean.getMarketingCampaign(Long.parseLong(getSelectedMC()));
+        if (selectedMC != null) {
+            System.out.println("MarketingCampaign id is: " + getSelectedMC());
+            marketingCampaign = marketingCampaignSessionBean.getMarketingCampaign(Long.parseLong(getSelectedMC()));
+        }
     }
 
     // public functions

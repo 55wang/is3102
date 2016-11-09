@@ -103,6 +103,8 @@ public class MainAccountSessionBean implements MainAccountSessionBeanLocal, Main
         Query q = em.createQuery("SELECT ma FROM MainAccount ma WHERE ma.customer.email = :email");
         
         q.setParameter("email", email);
+        
+        System.out.println("MainAccount Email is:" + email);
              
         try {
             List<MainAccount> accounts = q.getResultList();

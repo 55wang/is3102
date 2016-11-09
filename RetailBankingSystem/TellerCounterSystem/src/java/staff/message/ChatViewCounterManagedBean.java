@@ -25,6 +25,7 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.view.ViewScoped;
 import server.utilities.ColorUtils;
+import util.exception.common.NoStaffAccountsExistException;
 import utils.RedirectUtils;
 import utils.SessionUtils;
 
@@ -45,7 +46,8 @@ public class ChatViewCounterManagedBean implements Serializable {
     private List<Conversation> conversations = new ArrayList<>();
     private Conversation currentConversation;
 
-    public ChatViewCounterManagedBean() {}
+    public ChatViewCounterManagedBean() {
+    }
 
     @PostConstruct
     public void init() {
@@ -66,8 +68,12 @@ public class ChatViewCounterManagedBean implements Serializable {
     }
 
     public void showall() {
-        setStaffs(staffBean.getAllStaffs());
-        removeSelf();
+        try {
+            setStaffs(staffBean.getAllStaffs());
+            removeSelf();
+        } catch (NoStaffAccountsExistException e) {
+            System.out.println("NoStaffAccountsExistException ChatViewCounterManagedBean showall()");
+        }
     }
 
     public void newConversation(StaffAccount staff) {

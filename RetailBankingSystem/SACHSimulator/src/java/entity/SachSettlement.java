@@ -23,7 +23,6 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author qiuxiaqing
  */
 @Entity
-@XmlRootElement
 public class SachSettlement implements Serializable {
 
     @Id

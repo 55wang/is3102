@@ -17,6 +17,10 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
+import util.exception.common.NoRolesExistException;
+import util.exception.common.StaffRoleNotFoundException;
+import util.exception.common.UpdateStaffAccountException;
+import util.exception.common.UpdateStaffRoleException;
 import utils.MessageUtils;
 import utils.SessionUtils;
 
@@ -48,15 +52,19 @@ public class EditStaffManagedBean implements Serializable {
 
     public void init() {
         System.out.println("Staff id is: " + staffId);
-        roles = staffRoleSessionBean.getAllRoles();
-        staff = staffAccountSessionBean.getAccountByUsername(staffId);
-        selectedRoles = new String[roles.size()];
+        try {
+            roles = staffRoleSessionBean.getAllRoles();
+            staff = staffAccountSessionBean.getAccountByUsername(staffId);
+            selectedRoles = new String[roles.size()];
 
-        int index = 0;
-        for (Role r : staff.getRoles()) {
-            System.out.println(r.getRoleName());
-            selectedRoles[index] = r.getRoleName();
-            index++;
+            int index = 0;
+            for (Role r : staff.getRoles()) {
+                System.out.println(r.getRoleName());
+                selectedRoles[index] = r.getRoleName();
+                index++;
+            }
+        } catch (NoRolesExistException e) {
+            System.out.println("NoRolesExistException EditStaffManagedBean init()");
         }
 
         AuditLog a = new AuditLog();
@@ -69,23 +77,29 @@ public class EditStaffManagedBean implements Serializable {
 
     public void editStaff() {
 
-        // remove all first
-        for (Role r : staff.getRoles()) {
-            r.getStaffAccounts().remove(staff);
-            staffRoleSessionBean.updateRole(r);
-        }
-        staff.setRoles(new ArrayList<>());
-        staffAccountSessionBean.updateAccount(staff);
+        try {
 
-        for (String s : selectedRoles) {
-            Role r = staffRoleSessionBean.findRoleByName(s);
-            r.getStaffAccounts().add(staff);
-            staff.addRole(r);
-            staffRoleSessionBean.updateRole(r);
-        }
+            // remove all first
+            for (Role r : staff.getRoles()) {
+                r.getStaffAccounts().remove(staff);
+                staffRoleSessionBean.updateRole(r);
+            }
+            staff.setRoles(new ArrayList<>());
+            staffAccountSessionBean.updateAccount(staff);
 
-        staffAccountSessionBean.updateAccount(staff);
-        MessageUtils.displayInfo("Updated!");
+            for (String s : selectedRoles) {
+                Role r = staffRoleSessionBean.getRoleByName(s);
+                r.getStaffAccounts().add(staff);
+                staff.addRole(r);
+                staffRoleSessionBean.updateRole(r);
+            }
+
+            staffAccountSessionBean.updateAccount(staff);
+            MessageUtils.displayInfo("Updated!");
+
+        } catch (StaffRoleNotFoundException | UpdateStaffAccountException | UpdateStaffRoleException e) {
+            MessageUtils.displayInfo("Updated Failed!");
+        }
     }
 
     /**

@@ -129,7 +129,7 @@ public class CustomerLoginManagedBean implements Serializable {
     public void forgotPassword() {
         MainAccount forgotAccount = null;
         try{
-            forgotAccount = mainAccountSessionBean.getMainAccountByEmail(findUsernameEmail);
+            forgotAccount = mainAccountSessionBean.getMainAccountByEmail(findPasswordEmail);
         }catch(MainAccountNotExistException ex){
             System.out.println("forgotUserID.MainAccountNotExistException");
         }
