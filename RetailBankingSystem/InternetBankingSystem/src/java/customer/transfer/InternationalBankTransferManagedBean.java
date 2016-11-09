@@ -7,9 +7,9 @@ package customer.transfer;
 
 import ejb.session.bill.BillSessionBeanLocal;
 import ejb.session.bill.TransferSessionBeanLocal;
-import ejb.session.common.LoginSessionBeanLocal;
 import ejb.session.common.OTPSessionBeanLocal;
 import ejb.session.dams.CustomerDepositSessionBeanLocal;
+import ejb.session.mainaccount.MainAccountSessionBeanLocal;
 import ejb.session.webservice.WebserviceSessionBeanLocal;
 import entity.bill.BankEntity;
 import entity.bill.Payee;
@@ -29,6 +29,7 @@ import server.utilities.CommonUtils;
 import server.utilities.ConstantUtils;
 import server.utilities.EnumUtils;
 import server.utilities.GenerateAccountAndCCNumber;
+import util.exception.common.MainAccountNotExistException;
 import util.exception.dams.DepositAccountNotFoundException;
 import util.exception.dams.UpdateDepositAccountException;
 import utils.JSUtils;
@@ -44,7 +45,7 @@ import utils.SessionUtils;
 public class InternationalBankTransferManagedBean implements Serializable {
 
     @EJB
-    private LoginSessionBeanLocal loginBean;
+    private MainAccountSessionBeanLocal mainAccountSessionBean;
     @EJB
     private TransferSessionBeanLocal transferBean;
     @EJB
@@ -74,7 +75,11 @@ public class InternationalBankTransferManagedBean implements Serializable {
 
     @PostConstruct
     public void init() {
-        setMa(loginBean.getMainAccountByUserID(SessionUtils.getUserName()));
+        try{
+            ma = mainAccountSessionBean.getMainAccountByUserId(SessionUtils.getUserName());
+        }catch(MainAccountNotExistException ex){
+            System.out.println("init.MainAccountNotExistException");
+        }
         accounts = depositBean.getAllNonFixedCustomerAccounts(ma.getId());
         setPayees(transferBean.getPayeeFromUserIdWithType(getMa().getId(), EnumUtils.PayeeType.OVERSEAS));
         setPayeeId("New Receipiant");

@@ -6,11 +6,11 @@
 package init;
 
 import ejb.session.card.CardAcctSessionBeanLocal;
-import ejb.session.common.LoginSessionBeanLocal;
 import ejb.session.dams.CurrentAccountChequeSessionBeanLocal;
 import ejb.session.dams.CustomerDepositSessionBeanLocal;
 import ejb.session.dams.DepositProductSessionBeanLocal;
 import ejb.session.dams.InterestSessionBeanLocal;
+import ejb.session.mainaccount.MainAccountSessionBeanLocal;
 import entity.customer.MainAccount;
 import entity.dams.account.Cheque;
 import entity.dams.account.CustomerDepositAccount;
@@ -32,6 +32,7 @@ import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
 import server.utilities.ConstantUtils;
 import server.utilities.EnumUtils;
+import util.exception.common.MainAccountNotExistException;
 import util.exception.dams.DuplicateDepositAccountException;
 
 /**
@@ -53,7 +54,7 @@ public class EntityDAMSBuilder {
     @EJB
     private DepositProductSessionBeanLocal depositProductSessionBean;
     @EJB
-    private LoginSessionBeanLocal loginBean;
+    private MainAccountSessionBeanLocal mainAccountSessionBean;
 
     private Interest demoNormalInterestData;
     private List<Interest> demoRangeInterestData = new ArrayList<>();
@@ -66,9 +67,13 @@ public class EntityDAMSBuilder {
     private MainAccount demoMainAccount4;
 
     public CustomerDepositAccount initDAMS() {
-        demoMainAccount = loginBean.getMainAccountByUserID(ConstantUtils.DEMO_MAIN_ACCOUNT_USER_ID_1);
-        demoMainAccount3 = loginBean.getMainAccountByUserID(ConstantUtils.DEMO_MAIN_ACCOUNT_USER_ID_3);
-        demoMainAccount4 = loginBean.getMainAccountByUserID(ConstantUtils.DEMO_MAIN_ACCOUNT_USER_ID_4);
+        try{
+            demoMainAccount = mainAccountSessionBean.getMainAccountByUserId(ConstantUtils.DEMO_MAIN_ACCOUNT_USER_ID_1);
+            demoMainAccount3 = mainAccountSessionBean.getMainAccountByUserId(ConstantUtils.DEMO_MAIN_ACCOUNT_USER_ID_3);
+            demoMainAccount4 = mainAccountSessionBean.getMainAccountByUserId(ConstantUtils.DEMO_MAIN_ACCOUNT_USER_ID_4);
+        }catch(MainAccountNotExistException ex){
+            System.out.println("EntityDAMSBuilder.initDAMS.MainAccountNotExistException");
+        }
         initInterest();
         initDepositProducts();
         initDepositAccount4();
@@ -803,7 +808,12 @@ public class EntityDAMSBuilder {
             fixedAccount.setInterestRules(interestSessionBean.getFixedDepositAccountDefaultInterests());
             customerDepositSessionBean.createAccount(fixedAccount);
 
-            MainAccount secondMain = loginBean.getMainAccountByUserID(ConstantUtils.DEMO_MAIN_ACCOUNT_USER_ID_2);
+            MainAccount secondMain = null;
+            try{
+                secondMain = mainAccountSessionBean.getMainAccountByUserId(ConstantUtils.DEMO_MAIN_ACCOUNT_USER_ID_2);
+            }catch(MainAccountNotExistException ex){
+                System.out.println("EntityDAMSBuilder.initDepositAccount.MainAccountNotExistException");
+            }
             System.out.println(secondMain);
             System.out.println(secondMain.getCustomer());
             System.out.println(secondMain.getCustomer().getFullName());

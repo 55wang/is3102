@@ -6,8 +6,8 @@
 package customer.bill;
 
 import ejb.session.bill.BillSessionBeanLocal;
-import ejb.session.common.LoginSessionBeanLocal;
 import ejb.session.common.OTPSessionBeanLocal;
+import ejb.session.mainaccount.MainAccountSessionBeanLocal;
 import entity.bill.BillingOrg;
 import entity.bill.Organization;
 import entity.customer.MainAccount;
@@ -18,6 +18,7 @@ import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import server.utilities.ConstantUtils;
+import util.exception.common.MainAccountNotExistException;
 import utils.JSUtils;
 import utils.MessageUtils;
 import utils.SessionUtils;
@@ -29,11 +30,10 @@ import utils.SessionUtils;
 @Named(value = "manageBillOrgsManagedBean")
 @ViewScoped
 public class ManageBillOrgsManagedBean implements Serializable {
-
+    @EJB
+    private MainAccountSessionBeanLocal mainAccountSessionBean;
     @EJB
     private BillSessionBeanLocal billBean;
-    @EJB
-    private LoginSessionBeanLocal loginBean;
     @EJB
     private OTPSessionBeanLocal otpBean;
     
@@ -51,7 +51,11 @@ public class ManageBillOrgsManagedBean implements Serializable {
     @PostConstruct
     public void init() {
         setBillOrgsOptions(billBean.getActiveListOrganization());
-        ma = loginBean.getMainAccountByUserID(SessionUtils.getUserName());
+        try{
+            ma = mainAccountSessionBean.getMainAccountByUserId(SessionUtils.getUserName());
+        }catch(MainAccountNotExistException ex){
+            System.out.println("init.MainAccountNotExistException");
+        }
         addedBillOrgs = billBean.getBillingOrgMainAccountId(ma.getId());
     }
     

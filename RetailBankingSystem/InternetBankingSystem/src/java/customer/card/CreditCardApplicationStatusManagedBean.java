@@ -6,7 +6,7 @@
 package customer.card;
 
 import ejb.session.card.CreditCardOrderSessionBeanLocal;
-import ejb.session.common.LoginSessionBeanLocal;
+import ejb.session.mainaccount.MainAccountSessionBeanLocal;
 import entity.card.order.CreditCardOrder;
 import entity.customer.MainAccount;
 import java.io.Serializable;
@@ -17,6 +17,7 @@ import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import server.utilities.EnumUtils;
+import util.exception.common.MainAccountNotExistException;
 import utils.MessageUtils;
 import utils.SessionUtils;
 
@@ -29,7 +30,7 @@ import utils.SessionUtils;
 public class CreditCardApplicationStatusManagedBean implements Serializable {
 
     @EJB
-    private LoginSessionBeanLocal loginSessionBean;
+    private MainAccountSessionBeanLocal mainAccountSessionBean;
     @EJB
     private CreditCardOrderSessionBeanLocal creditCardOrderSessionBean;
 
@@ -78,7 +79,11 @@ public class CreditCardApplicationStatusManagedBean implements Serializable {
 
     @PostConstruct
     public void setApplications() {
-        this.ma = loginSessionBean.getMainAccountByUserID(SessionUtils.getUserName());
+        try{
+            ma = mainAccountSessionBean.getMainAccountByUserId(SessionUtils.getUserName());
+        }catch(MainAccountNotExistException ex){
+            System.out.println("setApplications.MainAccountNotExistException");
+        }
         this.applications = creditCardOrderSessionBean.getListCreditCardOrdersByMainIdAndNotCancelStatus(ma.getId());
     }
 }

@@ -105,6 +105,20 @@ public class MainAccountTest implements Serializable {
         assertNotNull(ma);
     }
     
+        @Test
+    public void test11getMainAccountByEmail() throws MainAccountNotExistException {
+        System.out.println("MainAccountTest.test11getMainAccountByEmail");   
+        MainAccount result = mainBean.getMainAccountByEmail("wangzhe.lynx@gmail.com");
+        assertNotNull(result);        
+    }
+    
+    @Test(expected=MainAccountNotExistException.class)
+    public void test12getMainAccountByEmailException() throws MainAccountNotExistException {
+        System.out.println("MainAccountTest.test12getMainAccountByEmailException");   
+        MainAccount result = mainBean.getMainAccountByEmail("customer@merlionbank.com");
+        assertNotNull(result);    
+    }
+    
     private MainAccountSessionBeanRemote lookupMainAccountSessionBeanRemote() {
         try {
             Context c = new InitialContext();

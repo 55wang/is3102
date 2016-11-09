@@ -5,7 +5,6 @@
  */
 package staff.loan;
 
-import ejb.session.common.LoginSessionBeanLocal;
 import ejb.session.common.NewCustomerSessionBeanLocal;
 import ejb.session.dams.CustomerDepositSessionBeanLocal;
 import ejb.session.dams.DepositProductSessionBeanLocal;
@@ -33,6 +32,7 @@ import server.utilities.DateUtils;
 import server.utilities.EnumUtils;
 import server.utilities.PincodeGenerationUtils;
 import util.exception.common.DuplicateMainAccountExistException;
+import util.exception.common.MainAccountNotExistException;
 import util.exception.common.UpdateMainAccountException;
 import util.exception.dams.DuplicateDepositAccountException;
 import utils.MessageUtils;
@@ -54,7 +54,7 @@ public class CreateLoanAccountManagedBean implements Serializable {
     @EJB
     private LoanPaymentSessionBeanLocal loanPaymentSessionBean;
     @EJB
-    private LoginSessionBeanLocal loginBean;
+    private MainAccountSessionBeanLocal mainAccountSessionBean;
     @EJB
     private NewCustomerSessionBeanLocal newCustomerBean;
     @EJB
@@ -92,7 +92,7 @@ public class CreateLoanAccountManagedBean implements Serializable {
     public void creatLoanAccount() {
         try {
             createOhterAccounts(currentApplication);
-            MainAccount ma = loginBean.getMainAccountByUserID(getMainAccountId());
+            MainAccount ma = mainAccountSessionBean.getMainAccountByUserId(getMainAccountId());
             CustomerDepositAccount cda = depositAccountBean.getDaytoDayAccountByMainAccount(ma);
             LoanAccount la = new LoanAccount();
             // mapping
@@ -128,6 +128,8 @@ public class CreateLoanAccountManagedBean implements Serializable {
         } catch (UpdateMainAccountException e) {
             System.out.println("UpdateMainAccountException thrown at CreateLoanAccountManagedBean creatLoanAccount()");
             MessageUtils.displayError("Loan Account Not Created!");
+        }catch(MainAccountNotExistException ex){
+            System.out.println("creatLoanAccount.initCase.MainAccountNotExistException");
         }
 
     }
@@ -135,7 +137,7 @@ public class CreateLoanAccountManagedBean implements Serializable {
     private void createOhterAccounts(LoanApplication la) {
         MainAccount ma = null;
         try {
-            ma = loginBean.getMainAccountByUserID(generateUserID(EnumUtils.IdentityType.NRIC, la.getIdentityNumber()));
+            ma = mainAccountSessionBean.getMainAccountByUserId(generateUserID(EnumUtils.IdentityType.NRIC, la.getIdentityNumber()));
         } catch (Exception e) {
             System.out.println("Main Account not found, creating new..");
         }

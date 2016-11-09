@@ -41,22 +41,8 @@ public class CustomerActivationTest implements Serializable {
     }
     
     @Test
-    public void test01getMainAccountByEmail() throws MainAccountNotExistException {
-        System.out.println("CustomerActivationTest.test01getMainAccountByEmail");   
-        MainAccount result = customerActivationSessionBean.getMainAccountByEmail("wangzhe.lynx@gmail.com");
-        assertNotNull(result);        
-    }
-    
-    @Test(expected=MainAccountNotExistException.class)
-    public void test02getMainAccountByEmailException() throws MainAccountNotExistException {
-        System.out.println("CustomerActivationTest.test01getMainAccountByEmail");   
-        MainAccount result = customerActivationSessionBean.getMainAccountByEmail("customer@merlionbank.com");
-        assertNotNull(result);    
-    }
-    
-    @Test
-    public void test03updateMainAccount() throws UpdateMainAccountException, MainAccountNotExistException {
-        System.out.println("CustomerActivationTest.test03updateMainAccount");   
+    public void test01updateMainAccount() throws UpdateMainAccountException, MainAccountNotExistException {
+        System.out.println("CustomerActivationTest.test01updateMainAccount");   
         MainAccount ma = mainBean.getMainAccountByUserId(TEST_CASE_ID);
         ma.setUserID(TEST_CASE_ID);
         MainAccount result = mainBean.updateMainAccount(ma);
@@ -64,8 +50,8 @@ public class CustomerActivationTest implements Serializable {
     }
     
     @Test(expected=UpdateMainAccountException.class)
-    public void test04updateMainAccountException() throws UpdateMainAccountException {
-        System.out.println("CustomerActivationTest.test04updateMainAccountException");   
+    public void test02updateMainAccountException() throws UpdateMainAccountException {
+        System.out.println("CustomerActivationTest.test02updateMainAccountException");   
         MainAccount ma = new MainAccount();
         MainAccount result = mainBean.updateMainAccount(ma);
         assertEquals(result, ma);     

@@ -6,9 +6,9 @@
 package customer.bill;
 
 import ejb.session.bill.BillSessionBeanLocal;
-import ejb.session.common.LoginSessionBeanLocal;
 import ejb.session.common.OTPSessionBeanLocal;
 import ejb.session.dams.CustomerDepositSessionBeanLocal;
+import ejb.session.mainaccount.MainAccountSessionBeanLocal;
 import entity.bill.GiroArrangement;
 import entity.bill.Organization;
 import entity.customer.MainAccount;
@@ -22,6 +22,7 @@ import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import server.utilities.ConstantUtils;
+import util.exception.common.MainAccountNotExistException;
 import util.exception.dams.DepositAccountNotFoundException;
 import utils.JSUtils;
 import utils.MessageUtils;
@@ -34,11 +35,10 @@ import utils.SessionUtils;
 @Named(value = "manageGIROArrangementManagedBean")
 @ViewScoped
 public class ManageGIROArrangementManagedBean implements Serializable {
-
+    @EJB
+    private MainAccountSessionBeanLocal mainAccountSessionBean;
     @EJB
     private BillSessionBeanLocal billBean;
-    @EJB
-    private LoginSessionBeanLocal loginBean;
     @EJB
     private CustomerDepositSessionBeanLocal depositBean;
     @EJB
@@ -62,7 +62,11 @@ public class ManageGIROArrangementManagedBean implements Serializable {
     @PostConstruct
     public void init() {
         setBillOrgsOptions(billBean.getActiveListOrganization());
-        setMa(loginBean.getMainAccountByUserID(SessionUtils.getUserName()));
+        try{
+            ma = mainAccountSessionBean.getMainAccountByUserId(SessionUtils.getUserName());
+        }catch(MainAccountNotExistException ex){
+            System.out.println("init.MainAccountNotExistException");
+        }
         setAddedGiroArrs(billBean.getGiroArrsByMainAccountId(getMa().getId()));
         accounts = depositBean.getAllNonFixedCustomerAccounts(ma.getId());
     }

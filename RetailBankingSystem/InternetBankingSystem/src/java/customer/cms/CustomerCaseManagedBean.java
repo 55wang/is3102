@@ -8,7 +8,7 @@ package customer.cms;
 import ejb.session.audit.AuditSessionBeanLocal;
 import ejb.session.cms.CustomerCaseSessionBeanLocal;
 import ejb.session.common.EmailServiceSessionBeanLocal;
-import ejb.session.common.LoginSessionBeanLocal;
+import ejb.session.mainaccount.MainAccountSessionBeanLocal;
 import ejb.session.staff.StaffAccountSessionBeanLocal;
 import entity.common.AuditLog;
 import entity.customer.CustomerCase;
@@ -44,6 +44,7 @@ import util.exception.cms.CancelCustomerCaseException;
 import util.exception.cms.CustomerCaseNotFoundByTitleException;
 import util.exception.cms.CustomerCaseNotFoundException;
 import util.exception.cms.DuplicateCaseExistException;
+import util.exception.common.MainAccountNotExistException;
 import utils.SessionUtils;
 import utils.MessageUtils;
 import utils.RedirectUtils;
@@ -57,7 +58,7 @@ import utils.RedirectUtils;
 public class CustomerCaseManagedBean implements Serializable {
 
     @EJB
-    private LoginSessionBeanLocal loginSessionBean;
+    private MainAccountSessionBeanLocal mainAccountSessionBean;
     @EJB
     private EmailServiceSessionBeanLocal emailServiceSessionBean;
     @EJB
@@ -97,7 +98,11 @@ public class CustomerCaseManagedBean implements Serializable {
     public void setMainAccount() {
         this.issueFieldList = CommonUtils.getEnumList(EnumUtils.IssueField.class);
         this.issueFieldList.remove(IssueField.CHARGEBACK.toString());
-        this.mainAccount = loginSessionBean.getMainAccountByUserID(SessionUtils.getUserName());
+        try{
+            mainAccount = mainAccountSessionBean.getMainAccountByUserId(SessionUtils.getUserName());
+        }catch(MainAccountNotExistException ex){
+            System.out.println("setMainAccount.MainAccountNotExistException");
+        }
         this.auditLogs = auditSessionBean.getAuditLogByCustomerID(SessionUtils.getUserName());
 
         try {

@@ -7,10 +7,10 @@ package customer.common;
 
 import ejb.session.common.EmailServiceSessionBeanLocal;
 import ejb.session.common.LoginSessionBeanLocal;
+import ejb.session.mainaccount.MainAccountSessionBeanLocal;
 import ejb.session.utils.UtilsSessionBeanLocal;
 import entity.common.AuditLog;
 import entity.customer.MainAccount;
-import entity.staff.StaffAccount;
 import java.io.Serializable;
 import java.util.Date;
 import javax.annotation.PostConstruct;
@@ -19,6 +19,7 @@ import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import server.utilities.EnumUtils;
 import server.utilities.HashPwdUtils;
+import util.exception.common.MainAccountNotExistException;
 import utils.MessageUtils;
 import utils.RedirectUtils;
 import utils.SessionUtils;
@@ -30,7 +31,8 @@ import utils.SessionUtils;
 @Named(value = "customerLoginManagedBean")
 @ViewScoped
 public class CustomerLoginManagedBean implements Serializable {
-
+    @EJB
+    private MainAccountSessionBeanLocal mainAccountSessionBean;
     @EJB
     private EmailServiceSessionBeanLocal emailServiceSessionBean;
     @EJB
@@ -109,7 +111,11 @@ public class CustomerLoginManagedBean implements Serializable {
 
     public void forgotUserID() {
         MainAccount forgotAccount = null;
-        forgotAccount = loginSessionBean.getMainAccountByEmail(findUsernameEmail);
+        try{
+            forgotAccount = mainAccountSessionBean.getMainAccountByEmail(findUsernameEmail);
+        }catch(MainAccountNotExistException ex){
+            System.out.println("forgotUserID.MainAccountNotExistException");
+        }
         if (forgotAccount != null) {
             emailServiceSessionBean.sendUserIDforForgottenCustomer(findUsernameEmail, forgotAccount);
             String msg = "User ID has been sent to your email.";
@@ -122,7 +128,11 @@ public class CustomerLoginManagedBean implements Serializable {
 
     public void forgotPassword() {
         MainAccount forgotAccount = null;
-        forgotAccount = loginSessionBean.getMainAccountByEmail(findPasswordEmail);
+        try{
+            forgotAccount = mainAccountSessionBean.getMainAccountByEmail(findUsernameEmail);
+        }catch(MainAccountNotExistException ex){
+            System.out.println("forgotUserID.MainAccountNotExistException");
+        }
         if (forgotAccount != null) {
             emailServiceSessionBean.sendResetPwdLinkforForgottenCustomer(findPasswordEmail, forgotAccount);
             String msg = "Check your email and reset password.";

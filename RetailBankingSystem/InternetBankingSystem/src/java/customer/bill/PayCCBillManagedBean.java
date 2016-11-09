@@ -6,12 +6,10 @@
 package customer.bill;
 
 import ejb.session.bill.BillSessionBeanLocal;
-import ejb.session.bill.TransferSessionBeanLocal;
-import ejb.session.common.LoginSessionBeanLocal;
 import ejb.session.common.OTPSessionBeanLocal;
 import ejb.session.dams.CustomerDepositSessionBeanLocal;
+import ejb.session.mainaccount.MainAccountSessionBeanLocal;
 import ejb.session.webservice.WebserviceSessionBeanLocal;
-import entity.bill.BillFundTransferRecord;
 import entity.bill.BillingOrg;
 import entity.bill.Organization;
 import entity.common.BillTransferRecord;
@@ -21,7 +19,6 @@ import entity.dams.account.DepositAccount;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -30,6 +27,7 @@ import javax.faces.view.ViewScoped;
 import server.utilities.ConstantUtils;
 import server.utilities.EnumUtils;
 import server.utilities.GenerateAccountAndCCNumber;
+import util.exception.common.MainAccountNotExistException;
 import util.exception.dams.DepositAccountNotFoundException;
 import util.exception.dams.UpdateDepositAccountException;
 import utils.JSUtils;
@@ -45,9 +43,7 @@ import utils.SessionUtils;
 public class PayCCBillManagedBean implements Serializable {
 
     @EJB
-    private LoginSessionBeanLocal loginBean;
-    @EJB
-    private TransferSessionBeanLocal transferBean;
+    private MainAccountSessionBeanLocal mainAccountSessionBean;
     @EJB
     private BillSessionBeanLocal billBean;
     @EJB
@@ -75,7 +71,11 @@ public class PayCCBillManagedBean implements Serializable {
 
     @PostConstruct
     public void init() {
-        setMa(loginBean.getMainAccountByUserID(SessionUtils.getUserName()));
+        try{
+            ma = mainAccountSessionBean.getMainAccountByUserId(SessionUtils.getUserName());
+        }catch(MainAccountNotExistException ex){
+            System.out.println("init.MainAccountNotExistException");
+        }
         setAccounts(depositBean.getAllNonFixedCustomerAccounts(ma.getId()));
         ccBillList = billBean.getCreditCardBillingMainAccountId(ma.getId());
         setBillOrgsOptions(billBean.getCreditCardOrganization());
