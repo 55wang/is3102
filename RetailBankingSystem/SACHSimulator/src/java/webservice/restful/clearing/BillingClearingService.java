@@ -72,7 +72,7 @@ public class BillingClearingService {
         bt.setReferenceNumber(referenceNumber);
         bt.setAmount(new BigDecimal(amount));
         bt.setPartnerBankCode(partnerBankCode);
-        bt.setPartnerBankAccount(partnerBankAccount);
+        bt.setToBankAccount(partnerBankAccount);
         bt.setShortCode(shortCode);
         bt.setFromBankCode(fromBankCode);
         bt.setOrganizationName(organizationName);
