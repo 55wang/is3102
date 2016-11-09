@@ -25,6 +25,7 @@ import javax.persistence.Query;
 import server.utilities.ConstantUtils;
 import server.utilities.DateUtils;
 import server.utilities.EnumUtils;
+import util.exception.dams.DepositAccountNotFoundException;
 
 /**
  *
@@ -81,29 +82,44 @@ public class TransferSessionBean implements TransferSessionBeanLocal {
 
     @Override
     public String transferFromAccountToAccount(String fromAcc, String toAcc, BigDecimal amount) {
-        DepositAccount fromAccount = depositBean.getAccountFromId(fromAcc);
-        DepositAccount toAccount = depositBean.getAccountFromId(toAcc);
-        if (fromAccount.getBalance().compareTo(amount) < 0) {
-            // not enough money
-            return "FAIL";
-        } else {
-            depositBean.transferFromAccount(fromAccount, amount);
-            depositBean.transferToAccount(toAccount, amount);
-            return "SUCCESS";
+
+        try {
+
+            DepositAccount fromAccount = depositBean.getAccountFromId(fromAcc);
+            DepositAccount toAccount = depositBean.getAccountFromId(toAcc);
+
+            if (fromAccount.getBalance().compareTo(amount) < 0) {
+                // not enough money
+                return "FAIL";
+            } else {
+                depositBean.transferFromAccount(fromAccount, amount);
+                depositBean.transferToAccount(toAccount, amount);
+                return "SUCCESS";
+            }
+
+        } catch (DepositAccountNotFoundException e) {
+            return "NOT FOUND";
         }
     }
 
     @Override
     public String transferFromAccountToCreditCard(String fromAcc, String ccNo, BigDecimal amount) {
-        DepositAccount fromAccount = depositBean.getAccountFromId(fromAcc);
-        if (fromAccount.getBalance().compareTo(amount) < 0) {
-            // not enough money
-            return "FAIL";
-        } else {
-            depositBean.ccSpendingFromAccount(fromAccount, amount);
-            cardBean.payCreditCardAccountBillByCardNumber(ccNo, amount);
-            return "SUCCESS";
+        try {
+
+            DepositAccount fromAccount = depositBean.getAccountFromId(fromAcc);
+            if (fromAccount.getBalance().compareTo(amount) < 0) {
+                // not enough money
+                return "FAIL";
+            } else {
+                depositBean.ccSpendingFromAccount(fromAccount, amount);
+                cardBean.payCreditCardAccountBillByCardNumber(ccNo, amount);
+                return "SUCCESS";
+            }
+
+        } catch (DepositAccountNotFoundException e) {
+            return "NOT FOUND";
         }
+
     }
 
     @Override
@@ -172,7 +188,7 @@ public class TransferSessionBean implements TransferSessionBeanLocal {
     }
 
     @Override
-    public List<Payee> getPayeeFromUserIdWithType(Long userId, EnumUtils.PayeeType type) {
+    public List<Payee> getPayeeFromUserIdWithType(String userId, EnumUtils.PayeeType type) {
         Query q = em.createQuery("SELECT p FROM Payee p WHERE p.mainAccount.id =:userId AND p.type = :inType");
         q.setParameter("userId", userId);
         q.setParameter("inType", type);

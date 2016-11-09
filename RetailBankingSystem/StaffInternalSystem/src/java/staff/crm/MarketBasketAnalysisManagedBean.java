@@ -10,7 +10,7 @@ import ejb.session.crm.MarketBasketAnalysisSessionBeanLocal;
 import entity.crm.AssociationRuleEntity;
 import entity.customer.Customer;
 import java.io.Serializable;
-import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import javax.annotation.PostConstruct;
@@ -40,6 +40,13 @@ public class MarketBasketAnalysisManagedBean implements Serializable {
     @PostConstruct
     public void init() {
         rules = marketBasketAnalysisSessionBean.getListAssociationRules();
+        for (Iterator<AssociationRuleEntity> iterator = rules.iterator(); iterator.hasNext();) {
+            AssociationRuleEntity rule = iterator.next();
+            if (rule.getAntecedent().size() > 2 || rule.getConsequent().size() > 2) {
+                // Remove the current element from the iterator and the list.
+                iterator.remove();
+            }
+        }
     }
 
     public void testGetListProductName() {
@@ -63,6 +70,15 @@ public class MarketBasketAnalysisManagedBean implements Serializable {
         //drop table and recreate new set of rules
         marketBasketAnalysisSessionBean.generateAssociationRules();
         rules = marketBasketAnalysisSessionBean.getListAssociationRules();
+
+        for (Iterator<AssociationRuleEntity> iterator = rules.iterator(); iterator.hasNext();) {
+            AssociationRuleEntity rule = iterator.next();
+            if (rule.getAntecedent().size() > 2 || rule.getConsequent().size() > 2) {
+                // Remove the current element from the iterator and the list.
+                iterator.remove();
+            }
+        }
+
     }
 
     public List<AssociationRuleEntity> getRules() {

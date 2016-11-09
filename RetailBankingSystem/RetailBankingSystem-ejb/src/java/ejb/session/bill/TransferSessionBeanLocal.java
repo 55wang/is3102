@@ -40,7 +40,7 @@ public interface TransferSessionBeanLocal {
     public Payee createPayee(Payee p);
     public String deletePayee(Payee p);
     public String deletePayeeById(Long id);
-    public List<Payee> getPayeeFromUserIdWithType(Long userId, PayeeType type);
+    public List<Payee> getPayeeFromUserIdWithType(String userId, PayeeType type);
     public Payee getPayeeById(Long id);
     
 }

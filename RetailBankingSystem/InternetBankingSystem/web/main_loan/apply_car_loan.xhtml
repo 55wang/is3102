@@ -54,9 +54,9 @@
                                     <h:outputText value="Date of Birth: " />
                                     <p:calendar value="#{carLoanApplicationManagedBean.birthDay}" navigator="true" yearRange="c-100:c+0" required="true" requiredMessage="DOB is required." 
                                                 pattern="yyyy-MM-dd" maxdate="#{carLoanApplicationManagedBean.currentDate}"/>
-                                    
-                                     
-                                     <h:outputText value="Email: " />
+
+
+                                    <h:outputText value="Email: " />
 
                                     <p:inputText required="true" label="email" size="40"
                                                  requiredMessage="Email address is required."
@@ -69,11 +69,11 @@
 
                                     <h:outputText value="Phone: " />
                                     <p:inputMask value="#{carLoanApplicationManagedBean.phoneNumber}" required="true"  requiredMessage="Phone is required." mask="99999999"/>
- 
+
                                 </h:panelGrid>
 
                                 <div class="register-form-button">
-                    
+
                                     <p:commandButton value="Next" actionListener="#{carLoanApplicationManagedBean.checkAge2()}" update="@form:msgs1"/>
                                 </div>
                             </p:panel>
@@ -93,7 +93,7 @@
                                     <h:outputText id="LTV" value="#{carLoanApplicationManagedBean.LTV}" styleClass="outputLabel">
                                         <f:convertNumber type="percent" minFractionDigits="4"/>
                                     </h:outputText>
-                                    
+
                                     <h:outputText value="Loan Tenure (up tp 7 years): " />
                                     <p:inputText value="#{carLoanApplicationManagedBean.carTenure}" required="true" requiredMessage="Loan tenure is required."/>
 
@@ -115,13 +115,13 @@
                         <p:tab id="l-info" title="Loan Information" >
                             <p:panel>
                                 <h:panelGrid columns="2" cellpadding="5px" columnClasses="label, value">
-                                    
+
                                     <h:outputText value="Car Loan Product: " />
                                     <h:selectOneMenu value="#{carLoanApplicationManagedBean.loanProductId}" required="true" requiredMessage="Tenure is required.">
                                         <f:selectItems value="#{carLoanApplicationManagedBean.carLoanProducts}" var="p" itemValue="#{p.id}" itemLabel="#{p.productName}" />
-                                        
+
                                     </h:selectOneMenu>
-                                    
+
                                     <h:outputText value="Maximum loan amount (S$):: " />
                                     <h:outputText value="#{carLoanApplicationManagedBean.maxCarLoanAmt}" styleClass="outputLabel">
                                         <f:convertNumber pattern="###00.00"/>
@@ -130,13 +130,13 @@
 
                                     <h:outputText value="Loan Amount (S$): " />
                                     <p:inputText value="#{carLoanApplicationManagedBean.loanAmount}" required="true" requiredMessage="Loan Amount is required." onchange="submit()" valueChangeListener="#{carLoanApplicationManagedBean.changeLoanAmt}"/>
-                                  
-                                    
+
+
                                     <h:outputText value="Estimated Monthly instalment (S$):: " />
                                     <h:outputText value="#{carLoanApplicationManagedBean.carLoanMonthlyInstalment}" styleClass="outputLabel">
                                         <f:convertNumber pattern="###00.00"/>
                                     </h:outputText>
-                                    
+
                                 </h:panelGrid>
 
                                 <div class="register-form-button">
@@ -156,8 +156,8 @@
 
                 </h:form>
             </div>   
-
-            <em:customerFooter></em:customerFooter>
+            <em:adsBanner advertismentTitle="#{customerHomeManagedBean.adsBannerCampaign.adsTitle}" advertismentType="#{customerHomeManagedBean.adsBannerCampaign.adsType}" advertismentInfo="#{customerHomeManagedBean.adsBannerCampaign.adsInfo}" extraAdvertismentInfo="#{customerHomeManagedBean.adsBannerCampaign.adsExtraInfo}" landingPageUrl="https://localhost:8181/InternetBankingSystem/landing_page/#{customerHomeManagedBean.adsBannerCampaign.landingPageName}" />
+            <em:customerMainFooter></em:customerMainFooter>
         </h:body>
     </f:view>
 

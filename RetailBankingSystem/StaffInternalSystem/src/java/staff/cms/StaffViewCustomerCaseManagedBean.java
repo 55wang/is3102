@@ -152,7 +152,7 @@ public class StaffViewCustomerCaseManagedBean implements Serializable {
     }
 
     public Boolean cardOperatorSimulator() {
-        return Math.random() < 0.5;
+        return Math.random() < 0.8;
     }
 
     public void approveChargeBack(CustomerCase chargeBackCase) {

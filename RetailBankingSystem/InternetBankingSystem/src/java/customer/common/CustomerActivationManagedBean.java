@@ -58,7 +58,7 @@ public class CustomerActivationManagedBean implements Serializable {
             try {
                 customerActivationSessionBean.updateAccountStatus(mainAccount);
                 loginSessionBean.loginAccount(mainAccount.getUserID(), mainAccount.getPassword());
-                SessionUtils.setUserId(Long.toString(mainAccount.getId()));
+                SessionUtils.setUserId(mainAccount.getId());
                 SessionUtils.setUserName(mainAccount.getUserID());
                 SessionUtils.setTokenAuthentication(false);
                 AuditLog a = new AuditLog();

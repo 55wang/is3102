@@ -17,6 +17,7 @@ import javax.ejb.EJB;
 import javax.faces.event.ActionEvent;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
+import util.exception.dams.DepositAccountNotFoundException;
 import utils.MessageUtils;
 import utils.SessionUtils;
 
@@ -54,12 +55,13 @@ public class CheckAccountBalanceManagedBean implements Serializable {
     }
     
     public void checkBalance(ActionEvent event) {
-        DepositAccount newAccount = bankAccountSessionBean.getAccountFromId(getAccountNumber());
-        if (newAccount == null) {
-            MessageUtils.displayError("Account Not Found!");
-        } else {
+        
+        try {
+            DepositAccount newAccount = bankAccountSessionBean.getAccountFromId(getAccountNumber());
             getDepositAccounts().add(newAccount);
             MessageUtils.displayInfo("Account Retrieved!");
+        } catch (DepositAccountNotFoundException e) {
+            MessageUtils.displayError("Account Not Found!");
         }
         
     }

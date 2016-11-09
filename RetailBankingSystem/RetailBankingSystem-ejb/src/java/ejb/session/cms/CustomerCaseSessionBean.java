@@ -5,11 +5,9 @@
  */
 package ejb.session.cms;
 
-import entity.common.TransactionRecord;
 import entity.customer.CustomerCase;
 import entity.staff.StaffAccount;
 import java.util.List;
-import javax.ejb.EJBException;
 import javax.ejb.Stateless;
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityManager;
@@ -62,7 +60,7 @@ public class CustomerCaseSessionBean implements CustomerCaseSessionBeanLocal, Cu
             em.persist(customerCase);
             return customerCase;
         } catch (EntityExistsException e) {
-            throw new DuplicateCaseExistException(e.getMessage());
+            throw new DuplicateCaseExistException("Catch Duplicate Customer Case!");
         }
 
     }
@@ -88,7 +86,7 @@ public class CustomerCaseSessionBean implements CustomerCaseSessionBeanLocal, Cu
     public CustomerCase getCaseById(String id) throws CustomerCaseNotFoundException {
 
         if (id == null) {
-            return null;
+            throw new CustomerCaseNotFoundException("Customer Case Not Found!");
         }
 
         try {

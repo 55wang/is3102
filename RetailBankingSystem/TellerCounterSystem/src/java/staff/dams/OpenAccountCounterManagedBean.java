@@ -37,6 +37,9 @@ import server.utilities.DateUtils;
 import server.utilities.EnumUtils;
 import server.utilities.EnumUtils.DepositAccountType;
 import server.utilities.PincodeGenerationUtils;
+import util.exception.common.DuplicateMainAccountExistException;
+import util.exception.common.UpdateMainAccountException;
+import util.exception.dams.DuplicateDepositAccountException;
 import utils.MessageUtils;
 import utils.SessionUtils;
 
@@ -107,13 +110,12 @@ public class OpenAccountCounterManagedBean implements Serializable {
     }
 
     public void retrieveMainAccount() {
-        
+
         try {
             mainAccount = loginSessionBean.getMainAccountByUserIC(getCustomerIC());
         } catch (Exception e) {
             mainAccount = null;
         }
-        
 
         if (mainAccount != null) {
             customer = mainAccount.getCustomer();
@@ -133,7 +135,9 @@ public class OpenAccountCounterManagedBean implements Serializable {
     }
 
     public Boolean isFixedDeposit() {
-        if (selectedProduct == null) return false;
+        if (selectedProduct == null) {
+            return false;
+        }
         DepositProduct dp = productBean.getDepositProductByName(selectedProduct);
         if (dp.getType() == DepositAccountType.FIXED) {
             return true;
@@ -141,14 +145,14 @@ public class OpenAccountCounterManagedBean implements Serializable {
             return false;
         }
     }
-    
+
     public Boolean initialDepositWithinRange() {
         DepositProduct dp = productBean.getDepositProductByName(selectedProduct);
         if (dp.getType() == DepositAccountType.FIXED) {
             FixedDepositAccountProduct fdp = new FixedDepositAccountProduct();
             if (dp instanceof FixedDepositAccountProduct) {
                 fdp = (FixedDepositAccountProduct) dp;
-            }  
+            }
             return initialDeposit.compareTo(fdp.getMinAmount()) >= 0 && initialDeposit.compareTo(fdp.getMaxAmount()) < 0;
         } else {
             return initialDeposit.compareTo(new BigDecimal(999999)) < 0;
@@ -156,66 +160,71 @@ public class OpenAccountCounterManagedBean implements Serializable {
     }
 
     public void openAccount() {
-        
-        if (!updateCounter(true, initialDeposit)) {
-            return;
-        }
-        
-        if (!initialDepositWithinRange()) {
-            MessageUtils.displayError("Not Within Initial Deposit Range!");
-        }
-        
-        
-        DepositProduct dp = productBean.getDepositProductByName(selectedProduct);
 
-        if (isNewCustomer) {
-            mainAccount.setStatus(EnumUtils.StatusType.PENDING);
-            mainAccount.setUserID(generateUserID(EnumUtils.IdentityType.NRIC, getCustomer().getIdentityNumber()));
-            String randomPwd = PincodeGenerationUtils.generatePwd();
-            mainAccount.setPassword(randomPwd);
-            mainAccount = mainAccountSessionBean.createMainAccount(mainAccount);
-            customer.setIncome(EnumUtils.Income.getEnum(selectedIncome));
-            customer.setNationality(EnumUtils.Nationality.getEnum(selectedNationality));
-            customer.setGender(EnumUtils.Gender.getEnum(selectedGender));
-            customer.setNationality(EnumUtils.Nationality.getEnum(selectedNationality));
-            customer.setEmploymentStatus(EnumUtils.EmploymentStatus.getEnum(selectedOccupation));
-            customer.setMainAccount(mainAccount);
-            customer = newCustomerSessionBean.createCustomer(getCustomer());
-            mainAccount.setCustomer(customer);
-            mainAccount = mainAccountSessionBean.updateMainAccount(mainAccount);
-            emailServiceSessionBean.sendActivationGmailForCustomer(getCustomer().getEmail(), randomPwd);
-        } else {
-            customer.setIncome(EnumUtils.Income.getEnum(selectedIncome));
-            customer.setNationality(EnumUtils.Nationality.getEnum(selectedNationality));
-            customer.setGender(EnumUtils.Gender.getEnum(selectedGender));
-            customer.setNationality(EnumUtils.Nationality.getEnum(selectedNationality));
-            customer.setEmploymentStatus(EnumUtils.EmploymentStatus.getEnum(selectedOccupation));
-            newCustomerSessionBean.updateCustomer(customer);
+        try {
+            if (!updateCounter(true, initialDeposit)) {
+                return;
+            }
+
+            if (!initialDepositWithinRange()) {
+                MessageUtils.displayError("Not Within Initial Deposit Range!");
+            }
+
+            DepositProduct dp = productBean.getDepositProductByName(selectedProduct);
+
+            if (isNewCustomer) {
+                mainAccount.setStatus(EnumUtils.StatusType.PENDING);
+                mainAccount.setUserID(generateUserID(EnumUtils.IdentityType.NRIC, getCustomer().getIdentityNumber()));
+                String randomPwd = PincodeGenerationUtils.generatePwd();
+                mainAccount.setPassword(randomPwd);
+                mainAccount = mainAccountSessionBean.createMainAccount(mainAccount);
+                customer.setIncome(EnumUtils.Income.getEnum(selectedIncome));
+                customer.setNationality(EnumUtils.Nationality.getEnum(selectedNationality));
+                customer.setGender(EnumUtils.Gender.getEnum(selectedGender));
+                customer.setNationality(EnumUtils.Nationality.getEnum(selectedNationality));
+                customer.setEmploymentStatus(EnumUtils.EmploymentStatus.getEnum(selectedOccupation));
+                customer.setMainAccount(mainAccount);
+                customer = newCustomerSessionBean.createCustomer(getCustomer());
+                mainAccount.setCustomer(customer);
+                mainAccount = mainAccountSessionBean.updateMainAccount(mainAccount);
+                emailServiceSessionBean.sendActivationGmailForCustomer(getCustomer().getEmail(), randomPwd);
+            } else {
+                customer.setIncome(EnumUtils.Income.getEnum(selectedIncome));
+                customer.setNationality(EnumUtils.Nationality.getEnum(selectedNationality));
+                customer.setGender(EnumUtils.Gender.getEnum(selectedGender));
+                customer.setNationality(EnumUtils.Nationality.getEnum(selectedNationality));
+                customer.setEmploymentStatus(EnumUtils.EmploymentStatus.getEnum(selectedOccupation));
+                newCustomerSessionBean.updateCustomer(customer);
+            }
+
+            DepositProduct product = productBean.getDepositProductByName(selectedProduct);
+
+            if (product.getType() == DepositAccountType.FIXED) {
+                CustomerFixedDepositAccount fda = new CustomerFixedDepositAccount();
+                fda.setMainAccount(mainAccount);
+                fda.setType(DepositAccountType.FIXED);
+                fda.setBalance(initialDeposit);
+                fda.setInterestRules(interestBean.getFixedDepositAccountDefaultInterests());
+                fda.setProduct(product);
+                fda.setMaturityDate(DateUtils.addYearsToDate(currentDate, years));
+                depositBean.createAccount(fda);
+            } else {
+                CustomerDepositAccount da = new CustomerDepositAccount();
+                da.setMainAccount(mainAccount);
+                da.setType(product.getType());
+                da.setBalance(initialDeposit);
+                da.setProduct(product);
+                depositBean.createAccount(da);
+            }
+
+            MessageUtils.displayInfo("Deposit Account Created!");
+        } catch (DuplicateMainAccountExistException | UpdateMainAccountException | DuplicateDepositAccountException e) {
+            System.out.println("DuplicateMainAccountExistException | UpdateMainAccountException | DuplicateDepositAccountException thrown at OpenAccountCounterManagedBean.java openAccount()");
+            MessageUtils.displayError("Error opening account!");
         }
-        
-        DepositProduct product = productBean.getDepositProductByName(selectedProduct);
-        
-        if (product.getType() == DepositAccountType.FIXED) {
-            CustomerFixedDepositAccount fda = new CustomerFixedDepositAccount();
-            fda.setMainAccount(mainAccount);
-            fda.setType(DepositAccountType.FIXED);
-            fda.setBalance(initialDeposit);
-            fda.setInterestRules(interestBean.getFixedDepositAccountDefaultInterests());
-            fda.setProduct(product);
-            fda.setMaturityDate(DateUtils.addYearsToDate(currentDate, years));
-            depositBean.createAccount(fda);
-        } else {
-            CustomerDepositAccount da = new CustomerDepositAccount();
-            da.setMainAccount(mainAccount);
-            da.setType(product.getType());
-            da.setBalance(initialDeposit);
-            da.setProduct(product);
-            depositBean.createAccount(da);
-        }
-        
-        MessageUtils.displayInfo("Deposit Account Created!");
+
     }
-    
+
     public Boolean updateCounter(Boolean isAdd, BigDecimal amount) {
         TellerCounter tc = SessionUtils.getTellerCounter();
         tc = counterBean.getTellerCounterById(tc.getId());
@@ -229,7 +238,7 @@ public class OpenAccountCounterManagedBean implements Serializable {
                 return false;
             }
         }
-        
+
         tc = counterBean.updateTellerCounter(tc);
         SessionUtils.setTellerCounter(tc);
 

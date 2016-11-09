@@ -8,8 +8,10 @@ package customer.common;
 import interceptor.audit.Audit;
 import ejb.session.common.ChangePasswordSessionBeanLocal;
 import ejb.session.common.LoginSessionBeanLocal;
+import ejb.session.crm.MarketingCampaignSessionBeanLocal;
 import ejb.session.utils.UtilsSessionBeanLocal;
 import entity.common.AuditLog;
+import entity.crm.AdsBannerCampaign;
 import entity.customer.Customer;
 import entity.customer.MainAccount;
 import java.io.Serializable;
@@ -19,6 +21,7 @@ import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import server.utilities.HashPwdUtils;
+import util.exception.common.UpdateMainAccountException;
 import utils.MessageUtils;
 import utils.SessionUtils;
 
@@ -36,6 +39,10 @@ public class CustomerHomeManagedBean implements Serializable {
     private LoginSessionBeanLocal loginSessionBean;
     @EJB
     private UtilsSessionBeanLocal utilsBean;
+    @EJB
+    MarketingCampaignSessionBeanLocal marketingCampaignSessionBean;
+
+    private AdsBannerCampaign adsBannerCampaign;
     private Customer customer;
     private String newPwd;
     private Date currentDate = new Date();
@@ -52,15 +59,16 @@ public class CustomerHomeManagedBean implements Serializable {
             AuditLog a = new AuditLog();
             a.setActivityLog("Log off at: " + new Date());
             a.setFunctionName("CustomerLogoutManagedBean logoutCustomer()");
-            a.setMainAccount((MainAccount) utilsBean.find(MainAccount.class, Long.parseLong(SessionUtils.getUserId())));
+            a.setMainAccount((MainAccount) utilsBean.find(MainAccount.class, SessionUtils.getUserId()));
             utilsBean.persist(a);
-            changePasswordSessionBean.changePwd(HashPwdUtils.hashPwd(newPwd), customer.getMainAccount());
+            customer.getMainAccount().setPassword(HashPwdUtils.hashPwd(newPwd));
+            changePasswordSessionBean.changeMainAccountPwd(customer.getMainAccount());
             String msg = "Successful! You have reset your password. ";
             MessageUtils.displayInfo(msg);
             return true;
-        } catch (Exception ex) {
+        } catch (UpdateMainAccountException umax) {
             String msg = "Something went wrong.";
-            System.out.print(ex);
+            System.out.print(umax);
             MessageUtils.displayError(msg);
             return false;
         }
@@ -72,7 +80,43 @@ public class CustomerHomeManagedBean implements Serializable {
 
     @PostConstruct
     public void setCustomer() {
-        this.customer = loginSessionBean.getCustomerByUserID(SessionUtils.getUserName());
+        System.out.println("CustomerHomeManagedBean().setCustomer()");
+        try{
+            String userID = SessionUtils.getUserName();
+            if(userID == null)
+                adsBannerCampaign = getDefaultAdsBannerCampaign();
+            else{
+                this.customer = loginSessionBean.getCustomerByUserID(SessionUtils.getUserName());
+                adsBannerCampaign = selectAdsBannerCampaign();
+
+                System.out.println("adsBannerCampaign.getAdsTitle(): "+adsBannerCampaign.getAdsTitle());
+                System.out.println("adsBannerCampaign.adstype: "+adsBannerCampaign.getAdsType());
+                System.out.println("adsBannerCampaign.adsinfo: "+adsBannerCampaign.getAdsInfo());
+                System.out.println("adsBannerCampaign.extrainfo: "+adsBannerCampaign.getAdsExtraInfo());
+                System.out.println("adsBannerCampaign.landing: "+adsBannerCampaign.getLandingPageName());
+            }
+        }catch(Exception ex){
+            adsBannerCampaign = getDefaultAdsBannerCampaign();
+        }
+    }
+
+    public AdsBannerCampaign selectAdsBannerCampaign() {
+        System.out.println("selectAdsBannerCampaign()");
+        if (getTargetedAdsBannerCampaign() != null) {
+            System.out.println("getTargetedAdsBannerCampaign()");
+            return getTargetedAdsBannerCampaign();
+        } else {
+            System.out.println("getDefaultAdsBannerCampaign()");
+            return getDefaultAdsBannerCampaign();
+        }
+    }
+
+    public AdsBannerCampaign getDefaultAdsBannerCampaign() {
+        return marketingCampaignSessionBean.getDefaultMarketingCampaign();
+    }
+
+    public AdsBannerCampaign getTargetedAdsBannerCampaign() {
+        return marketingCampaignSessionBean.getMarketingCampaignByCustomer(customer);
     }
 
     public String getNewPwd() {
@@ -89,6 +133,14 @@ public class CustomerHomeManagedBean implements Serializable {
 
     public void setCurrentDate(Date currentDate) {
         this.currentDate = currentDate;
+    }
+
+    public AdsBannerCampaign getAdsBannerCampaign() {
+        return adsBannerCampaign;
+    }
+
+    public void setAdsBannerCampaign(AdsBannerCampaign adsBannerCampaign) {
+        this.adsBannerCampaign = adsBannerCampaign;
     }
 
 }

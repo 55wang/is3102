@@ -70,6 +70,10 @@ public class CreateCustomerSegmentationManagedBean implements Serializable {
         System.out.println("setHashTag()");
         System.out.println("selectedAntecedent: " + selectedAntecedent);
 
+        if (!customerGroup.getHashTag().startsWith("#")) {
+            customerGroup.setHashTag("#"+customerGroup.getHashTag());
+        }
+        
         if (selectedAntecedent == null) {
             setHashTagCustomers = customerSegmentationSessionBean.getListFilterCustomersByRFMAndIncome(
                     customerGroup.getDepositRecency(),
@@ -139,6 +143,10 @@ public class CreateCustomerSegmentationManagedBean implements Serializable {
 
         try {
             customerSegmentationSessionBean.createCustomerGroup(customerGroup);
+            for (Customer c : filterCustomers) {
+                c.addCustomerGroup(customerGroup);
+                newCustomerSessionBean.updateCustomer(c);
+            }
             MessageUtils.displayInfo("Customer Group Created Successfully!");
         } catch (Exception ex) {
             System.out.println(ex);

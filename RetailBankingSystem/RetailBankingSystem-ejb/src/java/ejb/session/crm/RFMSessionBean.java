@@ -32,7 +32,7 @@ public class RFMSessionBean implements RFMSessionBeanLocal {
     private EntityManager em;
 
     @Override
-    public Long getDepositRecencyByCustomerId(Long Id) {
+    public Long getDepositRecencyByCustomerId(String Id) {
         System.out.println("--------getDepositRecencyByCustomerId("+Id+")--------");
         Date currentDate = new Date();
         Query q = em.createQuery("SELECT tr FROM TransactionRecord tr, Customer c, MainAccount m, DepositAccount da WHERE tr.fromAccount = da AND da.mainAccount = m AND m.customer = c AND c.id =:id ORDER BY tr.creationDate DESC");
@@ -55,7 +55,7 @@ public class RFMSessionBean implements RFMSessionBeanLocal {
     }
 
     @Override
-    public Long getDepositFrequencyByCustomerId(Long Id) {
+    public Long getDepositFrequencyByCustomerId(String Id) {
         System.out.println("--------getDepositFrequencyByCustomerId("+Id+")--------");
         Date currentDate = new Date();
         Date twelveMonthAgo = DateUtils.getLastNthBeginOfMonth(12);
@@ -78,7 +78,7 @@ public class RFMSessionBean implements RFMSessionBeanLocal {
     }
 
     @Override
-    public Long getDepositMonetaryByCustomerId(Long Id) {
+    public Long getDepositMonetaryByCustomerId(String Id) {
         System.out.println("--------getDepositMonetaryByCustomerId("+Id+")--------");
         Date currentDate = new Date();
         Date twelveMonthAgo = DateUtils.getLastNthBeginOfMonth(12);
@@ -113,7 +113,7 @@ public class RFMSessionBean implements RFMSessionBeanLocal {
     }
 
     @Override
-    public Long getCardRecencyByCustomerId(Long Id) {
+    public Long getCardRecencyByCustomerId(String Id) {
         System.out.println("--------getCardRecencyByCustomerId("+Id+")--------");
         Date currentDate = new Date();
         Query q = em.createQuery("SELECT ct FROM CardTransaction ct, Customer c, MainAccount m, CreditCardAccount cca WHERE ct.creditCardAccount = cca AND cca.mainAccount = m AND m.customer = c AND c.id =:id ORDER BY ct.createDate DESC");
@@ -136,7 +136,7 @@ public class RFMSessionBean implements RFMSessionBeanLocal {
     }
 
     @Override
-    public Long getCardFrequencyByCustomerId(Long Id) {
+    public Long getCardFrequencyByCustomerId(String Id) {
         System.out.println("--------getCardFrequencyByCustomerId("+Id+")--------");
         Date currentDate = new Date();
         Date twelveMonthAgo = DateUtils.getLastNthBeginOfMonth(12);
@@ -164,7 +164,7 @@ public class RFMSessionBean implements RFMSessionBeanLocal {
     }
 
     @Override
-    public Long getCardMonetaryByCustomerId(Long Id) {
+    public Long getCardMonetaryByCustomerId(String Id) {
         System.out.println("--------getCardMonetaryByCustomerId("+Id+")--------");
         Date currentDate = new Date();
         Date twelveMonthAgo = DateUtils.getLastNthBeginOfMonth(12);

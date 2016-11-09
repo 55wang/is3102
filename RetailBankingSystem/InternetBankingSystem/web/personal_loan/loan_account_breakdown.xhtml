@@ -28,41 +28,42 @@
                         <p:messages id="messagesStatus" redisplay="false" >
 
                             <p:dataTable value="#{loanAccountBreakdownManagedBean.breakdowns}" var="breakdown">
-                                
+
                                 <p:column headerText="Payment Date" sortBy="#{breakdown.schedulePaymentDate}">
                                     <h:outputText value="#{breakdown.schedulePaymentDate}">
                                         <f:convertDateTime pattern="MM/dd/yyyy" />
                                     </h:outputText>
                                 </p:column>
-                                
+
                                 <p:column headerText="Principal" sortBy="#{breakdown.principalPayment}">
                                     <h:outputText value="#{breakdown.principalPayment}">
                                         <f:convertNumber pattern="###00.00"/>
                                     </h:outputText>
                                 </p:column>
-                                
+
                                 <p:column headerText="Interest" sortBy="#{breakdown.interestPayment}">
                                     <h:outputText value="#{breakdown.interestPayment}">
                                         <f:convertNumber pattern="###00.00"/>
                                     </h:outputText>
                                 </p:column>
-                                
+
                                 <p:column headerText="Outstanding Principal after payment" sortBy="#{breakdown.outstandingPrincipalPayment}">
                                     <h:outputText value="#{breakdown.outstandingPrincipalPayment}">
                                         <f:convertNumber pattern="###00.00"/>
                                     </h:outputText>
                                 </p:column>
-                                
+
                                 <p:column headerText="Nth Month" sortBy="#{breakdown.nthMonth}">
                                     <h:outputText value="#{breakdown.nthMonth}"/>
                                 </p:column>
-                                
+
                             </p:dataTable>
 
                         </p:messages>
                     </p:panel>
                 </h:form>
             </div>
+            <em:adsBanner advertismentTitle="#{customerHomeManagedBean.adsBannerCampaign.adsTitle}" advertismentType="#{customerHomeManagedBean.adsBannerCampaign.adsType}" advertismentInfo="#{customerHomeManagedBean.adsBannerCampaign.adsInfo}" extraAdvertismentInfo="#{customerHomeManagedBean.adsBannerCampaign.adsExtraInfo}" landingPageUrl="https://localhost:8181/InternetBankingSystem/landing_page/#{customerHomeManagedBean.adsBannerCampaign.landingPageName}" />
             <em:customerFooter></em:customerFooter>
         </h:body>
     </f:view>

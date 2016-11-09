@@ -7,6 +7,7 @@ package customer.cms;
 
 import ejb.session.audit.AuditSessionBeanLocal;
 import ejb.session.cms.CustomerProfileSessionBeanLocal;
+import ejb.session.common.EmailServiceSessionBeanLocal;
 import ejb.session.utils.UtilsSessionBeanLocal;
 import entity.customer.Customer;
 import entity.common.AuditLog;
@@ -21,7 +22,9 @@ import server.utilities.EnumUtils.Income;
 import server.utilities.CommonUtils;
 import server.utilities.ConstantUtils;
 import server.utilities.DateUtils;
+import server.utilities.EnumUtils.Occupation;
 import util.exception.cms.CustomerNotExistException;
+import util.exception.cms.UpdateCustomerException;
 import utils.JSUtils;
 import utils.MessageUtils;
 import utils.RedirectUtils;
@@ -41,6 +44,8 @@ public class CustomerProfileManagedBean implements Serializable {
     private CustomerProfileSessionBeanLocal customerProfileSessionBean;
     @EJB
     private AuditSessionBeanLocal auditSessionBean;
+    @EJB
+    private EmailServiceSessionBeanLocal emailBean;
 
     private Customer customer;
     private List<AuditLog> auditLogs;
@@ -67,8 +72,14 @@ public class CustomerProfileManagedBean implements Serializable {
         }
         
         this.auditLogs = auditSessionBean.getAuditLogByCustomerID(SessionUtils.getUserName());
-        selectedIncome = customer.getIncome().toString();
-        age=DateUtils.calculateAge(customer.getBirthDay());
+        try{
+            selectedIncome = customer.getIncome().toString();
+            selectedOccupation = customer.getOccupation().toString();
+            age=DateUtils.calculateAge(customer.getBirthDay());
+        }catch(Exception ex){
+            selectedIncome = "";
+            selectedOccupation = "";
+        }
     }
 
     public void goToEditPage() {
@@ -82,6 +93,7 @@ public class CustomerProfileManagedBean implements Serializable {
 
     public void save() {
         customer.setIncome(Income.getEnum(selectedIncome));
+        customer.setOccupation(Occupation.getEnum(selectedOccupation));
         if (utilsSessionBean.checkUpdatedEmailIsUnique(customer) == false) {
             MessageUtils.displayInfo("Email is registered!");
 
@@ -89,11 +101,12 @@ public class CustomerProfileManagedBean implements Serializable {
             MessageUtils.displayInfo("Phone is registered!");
 
         } else {
-            Customer result = customerProfileSessionBean.saveProfile(customer);
-            if (result != null) {
+            try {
+                customerProfileSessionBean.updateCustomer(customer);
                 MessageUtils.displayInfo("Profile successfully updated!");
+                emailBean.sendUpdatedProfile(customer.getEmail());
                 RedirectUtils.redirect("view_profile.xhtml");
-            } else {
+            } catch (UpdateCustomerException e) {
                 MessageUtils.displayInfo("Update is unsuccessful, please check your input.");
             }
         }

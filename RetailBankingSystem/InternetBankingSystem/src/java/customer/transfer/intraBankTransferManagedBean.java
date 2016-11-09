@@ -25,6 +25,7 @@ import javax.faces.view.ViewScoped;
 import server.utilities.ConstantUtils;
 import server.utilities.EnumUtils;
 import server.utilities.GenerateAccountAndCCNumber;
+import util.exception.dams.DepositAccountNotFoundException;
 import utils.JSUtils;
 import utils.MessageUtils;
 import utils.SessionUtils;
@@ -75,6 +76,8 @@ public class intraBankTransferManagedBean implements Serializable {
             return;
         }
         
+        try {
+        
         DepositAccount fromAccount = depositBean.getAccountFromId(fromAccountNo);
         if (fromAccount != null && fromAccount.getBalance().compareTo(amount) < 0) {
             JSUtils.callJSMethod("PF('myWizard').back()");
@@ -122,6 +125,12 @@ public class intraBankTransferManagedBean implements Serializable {
             JSUtils.callJSMethod("PF('myWizard').back()");
             MessageUtils.displayError(ConstantUtils.TRANSFER_FAILED);
         }
+        
+        } catch (DepositAccountNotFoundException e) {
+            System.out.println("DepositAccountNotFoundException IntraBankTransferManagedBean transfer()");
+            JSUtils.callJSMethod("PF('myWizard').back()");
+            MessageUtils.displayError(ConstantUtils.TRANSFER_FAILED);
+        }
     }
     
     public void transferToPayee() {
@@ -130,6 +139,7 @@ public class intraBankTransferManagedBean implements Serializable {
             return;
         }
         
+        try {
         DepositAccount fromAccount = depositBean.getAccountFromId(fromAccountNo);
         if (fromAccount != null && fromAccount.getBalance().compareTo(amount) < 0) {
             JSUtils.callJSMethod("PF('myWizard').back()");
@@ -177,6 +187,12 @@ public class intraBankTransferManagedBean implements Serializable {
             MessageUtils.displayInfo(ConstantUtils.TRANSFER_SUCCESS);
             calculateTransferLimits();
         } else {
+            JSUtils.callJSMethod("PF('myWizard').back()");
+            MessageUtils.displayError(ConstantUtils.TRANSFER_FAILED);
+        }
+        
+        } catch (DepositAccountNotFoundException e) {
+            System.out.println("DepositAccountNotFoundException IntraBankTransferManagedBean transferToPayee");
             JSUtils.callJSMethod("PF('myWizard').back()");
             MessageUtils.displayError(ConstantUtils.TRANSFER_FAILED);
         }

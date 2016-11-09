@@ -6,6 +6,7 @@
 package staff.cms;
 
 import ejb.session.cms.CustomerProfileSessionBeanLocal;
+import ejb.session.common.EmailServiceSessionBeanLocal;
 import ejb.session.utils.UtilsSessionBeanLocal;
 import entity.common.AuditLog;
 import entity.customer.Customer;
@@ -24,6 +25,9 @@ import server.utilities.EnumUtils.MaritalStatus;
 import server.utilities.EnumUtils.Nationality;
 import server.utilities.CommonUtils;
 import server.utilities.ConstantUtils;
+import server.utilities.EnumUtils.Occupation;
+import util.exception.cms.CustomerNotExistException;
+import util.exception.cms.UpdateCustomerException;
 import utils.MessageUtils;
 import utils.RedirectUtils;
 import utils.SessionUtils;
@@ -35,12 +39,15 @@ import utils.SessionUtils;
 @Named(value = "staffCustomerInformationManagedBean")
 @ViewScoped
 public class StaffCustomerInformationManagedBean implements Serializable {
+
     @EJB
     private UtilsSessionBeanLocal utilsSessionBean;
     @EJB
     private UtilsSessionBeanLocal utilsBean;
     @EJB
     private CustomerProfileSessionBeanLocal customerProfileSessionBean;
+    @EJB
+    private EmailServiceSessionBeanLocal emailBean;
 
     private List<Customer> customers;
     private String searchText;
@@ -69,7 +76,7 @@ public class StaffCustomerInformationManagedBean implements Serializable {
      */
     public StaffCustomerInformationManagedBean() {
     }
-    
+
     /**
      * @param customers the customers to set
      */
@@ -83,15 +90,20 @@ public class StaffCustomerInformationManagedBean implements Serializable {
         a.setStaffAccount(SessionUtils.getStaff());
         utilsBean.persist(a);
     }
-    
+
     public void search() {
         if (searchText.isEmpty()) {
             setCustomers(getCustomerProfileSessionBean().retrieveActivatedCustomers());
         } else {
-            Customer c =  getCustomerProfileSessionBean().searchCustomerByIdentityNumber(searchText);
-            customers  = new ArrayList<Customer>();
-            customers.add(c);
-            setCustomers(customers);
+            try {
+                Customer c = getCustomerProfileSessionBean().searchCustomerByIdentityNumber(searchText);
+                customers = new ArrayList<>();
+                customers.add(c);
+                setCustomers(customers);
+            } catch (CustomerNotExistException e) {
+                customers = new ArrayList<>();
+                MessageUtils.displayInfo("No customer found!");
+            }
         }
     }
 
@@ -101,7 +113,8 @@ public class StaffCustomerInformationManagedBean implements Serializable {
         selectedCustomer.setIncome(Income.getEnum(selectedIncome));
         selectedCustomer.setMaritalStatus(MaritalStatus.getEnum(selectedMaritalStatus));
         selectedCustomer.setEducation(Education.getEnum(selectedEducation));
-       
+        selectedCustomer.setOccupation(Occupation.getEnum(selectedOccupation));
+
         if (utilsSessionBean.checkUpdatedEmailIsUnique(selectedCustomer) == false) {
             MessageUtils.displayInfo("Email is registered!");
 
@@ -109,12 +122,13 @@ public class StaffCustomerInformationManagedBean implements Serializable {
             MessageUtils.displayInfo("Phone is registered!");
 
         } else {
-            Customer result = customerProfileSessionBean.saveProfile(selectedCustomer);
-            if (result != null) {
+            try {
+                Customer result = customerProfileSessionBean.updateCustomer(selectedCustomer);
                 MessageUtils.displayInfo("Profile successfully updated!");
+                emailBean.sendUpdatedProfile(selectedCustomer.getEmail());
                 RedirectUtils.redirect("staff_view_customer.xhtml");
-            } else {
-                MessageUtils.displayInfo("Update is unsuccessful, please check your input.");
+            } catch (UpdateCustomerException e) {
+                MessageUtils.displayError("Update is unsuccessful, please check your input.");
             }
         }
     }
@@ -129,6 +143,9 @@ public class StaffCustomerInformationManagedBean implements Serializable {
         }
         if (customer.getIncome() != null) {
             setSelectedIncome(customer.getIncome().toString());
+        }
+        if (customer.getOccupation()!= null) {
+            setSelectedOccupation(customer.getOccupation().toString());
         }
         if (customer.getMaritalStatus() != null) {
             setSelectedMaritalStatus(customer.getMaritalStatus().toString());
@@ -146,7 +163,7 @@ public class StaffCustomerInformationManagedBean implements Serializable {
     public List<Customer> getCustomers() {
         return customers;
     }
-    
+
     /**
      * @return the searchText
      */

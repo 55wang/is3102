@@ -5,12 +5,9 @@
  */
 package ejb.session.wealth;
 
-import entity.fact.customer.SinglePortfolioFactTable;
-import entity.wealth.InvestmentPlan;
 import entity.wealth.Portfolio;
 import java.util.List;
 import javax.ejb.Local;
-import server.utilities.EnumUtils;
 
 
 
@@ -20,6 +17,6 @@ public interface PortfolioSessionBeanLocal {
     public Portfolio getPortfolioById(Long Id);
     public Portfolio createPortfolio(Portfolio p);
     public Portfolio updatePortfolio(Portfolio p);
-    public List<Portfolio> getListPortfoliosByCustomerId(Long Id);
+    public List<Portfolio> getListPortfoliosByCustomerId(String Id);
     public List<Double> getHoltWinterModel(double[] inputData);
 }

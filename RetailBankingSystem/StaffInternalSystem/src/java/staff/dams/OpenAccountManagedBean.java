@@ -23,6 +23,7 @@ import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import server.utilities.EnumUtils;
 import server.utilities.EnumUtils.DepositAccountType;
+import util.exception.dams.DuplicateDepositAccountException;
 import utils.MessageUtils;
 import utils.SessionUtils;
 
@@ -70,14 +71,14 @@ public class OpenAccountManagedBean implements Serializable {
         for (DepositAccount ba : accounts) {
             if (ba instanceof CustomerDepositAccount) {
                 if (ba.getType().equals(DepositAccountType.CURRENT)) {
-                    getCurrentAccounts().add((CustomerDepositAccount)ba);
+                    getCurrentAccounts().add((CustomerDepositAccount) ba);
                 } else if (ba.getType().equals(DepositAccountType.SAVING)) {
-                    getSavingAccounts().add((CustomerDepositAccount)ba);
+                    getSavingAccounts().add((CustomerDepositAccount) ba);
                 }
             } else {
-                getFixedDepositAccounts().add((CustomerFixedDepositAccount)ba);
+                getFixedDepositAccounts().add((CustomerFixedDepositAccount) ba);
             }
-            
+
         }
         AuditLog a = new AuditLog();
         a.setActivityLog("System user enter OpenAccountManagedBean");
@@ -88,30 +89,36 @@ public class OpenAccountManagedBean implements Serializable {
     }
 
     public void addAccount(ActionEvent event) {
-        addTransaction();
-        addDefaultInterest();
-        if (getAccountType().equals(getACCOUNT_TYPE_CURRENT())) {
-            if (customerDepositSessionBean.createAccount(getNewCurrentAccount()) != null) {
-                getCurrentAccounts().add(getNewCurrentAccount());
-                MessageUtils.displayInfo("Current Account Created");
+        try {
+
+            addTransaction();
+            addDefaultInterest();
+            if (getAccountType().equals(getACCOUNT_TYPE_CURRENT())) {
+                if (customerDepositSessionBean.createAccount(getNewCurrentAccount()) != null) {
+                    getCurrentAccounts().add(getNewCurrentAccount());
+                    MessageUtils.displayInfo("Current Account Created");
+                } else {
+                    MessageUtils.displayError("There's some error when creating account");
+                }
+            } else if (getAccountType().equals(getACCOUNT_TYPE_FIXED())) {
+                if (customerDepositSessionBean.createAccount(getNewFixedDepositAccount()) != null) {
+                    getFixedDepositAccounts().add(getNewFixedDepositAccount());
+                    MessageUtils.displayInfo("Fixed Deposit Account Created");
+                } else {
+                    MessageUtils.displayError("There's some error when creating account");
+                }
+            } else if (getAccountType().equals(getACCOUNT_TYPE_SAVING())) {
+                if (customerDepositSessionBean.createAccount(getNewSavingAccount()) != null) {
+                    getSavingAccounts().add(getNewSavingAccount());
+                    MessageUtils.displayInfo("Savings Account Created");
+                } else {
+                    MessageUtils.displayError("There's some error when creating account");
+                }
             } else {
                 MessageUtils.displayError("There's some error when creating account");
             }
-        } else if (getAccountType().equals(getACCOUNT_TYPE_FIXED())) {
-            if (customerDepositSessionBean.createAccount(getNewFixedDepositAccount()) != null) {
-                getFixedDepositAccounts().add(getNewFixedDepositAccount());
-                MessageUtils.displayInfo("Fixed Deposit Account Created");
-            } else {
-                MessageUtils.displayError("There's some error when creating account");
-            }
-        } else if (getAccountType().equals(getACCOUNT_TYPE_SAVING())) {
-            if (customerDepositSessionBean.createAccount(getNewSavingAccount()) != null) {
-                getSavingAccounts().add(getNewSavingAccount());
-                MessageUtils.displayInfo("Savings Account Created");
-            } else {
-                MessageUtils.displayError("There's some error when creating account");
-            }
-        } else {
+
+        } catch (DuplicateDepositAccountException e) {
             MessageUtils.displayError("There's some error when creating account");
         }
     }

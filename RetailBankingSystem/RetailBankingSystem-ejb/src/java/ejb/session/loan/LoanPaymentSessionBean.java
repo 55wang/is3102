@@ -26,6 +26,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import org.apache.commons.lang.time.DateUtils;
 import server.utilities.EnumUtils;
+import util.exception.dams.DepositAccountNotFoundException;
 
 /**
  *
@@ -271,44 +272,60 @@ public class LoanPaymentSessionBean implements LoanPaymentSessionBeanLocal {
 
     @Override
     public String loanRepaymentFromAccount(String loanAccountNumber, String depositAccountNumber, BigDecimal amount) {
-        DepositAccount fromAccount = depositBean.getAccountFromId(depositAccountNumber);
-        LoanAccount loanAccount = loanAccountBean.getLoanAccountByAccountNumber(loanAccountNumber);
-        if (fromAccount.getBalance().compareTo(amount) < 0) {
-            // not enough money
-            return "FAIL";
-        } else {
-            depositBean.transferFromAccount(fromAccount, amount);
-            BigDecimal outPrin = new BigDecimal(loanAccount.getOutstandingPrincipal());
-            if (amount.compareTo(outPrin) == 1) {
-                return "FAIL2";
+
+        try {
+            DepositAccount fromAccount = depositBean.getAccountFromId(depositAccountNumber);
+            LoanAccount loanAccount = loanAccountBean.getLoanAccountByAccountNumber(loanAccountNumber);
+            if (fromAccount.getBalance().compareTo(amount) < 0) {
+                // not enough money
+                return "FAIL";
+            } else {
+                depositBean.transferFromAccount(fromAccount, amount);
+                BigDecimal outPrin = new BigDecimal(loanAccount.getOutstandingPrincipal());
+                if (amount.compareTo(outPrin) == 1) {
+                    return "FAIL2";
+                }
+                if (amount.compareTo(new BigDecimal(10000)) == 1) {
+                    return "FAIL3";
+                }
+                loanAccountRepayment(loanAccountNumber, amount.doubleValue());
+                return "SUCCESS";
             }
-            if (amount.compareTo(new BigDecimal(10000)) == 1) {
-                return "FAIL3";
-            }
-            loanAccountRepayment(loanAccountNumber, amount.doubleValue());
-            return "SUCCESS";
+
+        } catch (DepositAccountNotFoundException e) {
+            System.out.println("DepositAccountNotFoundException LoanRepaymentSessionBean loanRepaymentFromAccount()");
+            return "FAIL0";
         }
+
     }
 
     @Override
     public String loanLumsumPaymentFromAccount(String loanAccountNumber, String depositAccountNumber, BigDecimal amount) {
-        DepositAccount fromAccount = depositBean.getAccountFromId(depositAccountNumber);
-        LoanAccount loanAccount = loanAccountBean.getLoanAccountByAccountNumber(loanAccountNumber);
-        System.out.println(fromAccount.getBalance());
-        if (fromAccount.getBalance().compareTo(amount) < 0) {
-            System.out.println("fail!"+amount);// not enough money
-            return "FAIL1";
-        } else {
-            System.out.println("success"+amount);
-            depositBean.transferFromAccount(fromAccount, amount);
-            BigDecimal outPrin = new BigDecimal(loanAccount.getOutstandingPrincipal());
-            if (amount.compareTo(outPrin) > 0) {
-                return "FAIL2";
+
+        try {
+
+            DepositAccount fromAccount = depositBean.getAccountFromId(depositAccountNumber);
+            LoanAccount loanAccount = loanAccountBean.getLoanAccountByAccountNumber(loanAccountNumber);
+            if (fromAccount.getBalance().compareTo(amount) < 0) {
+                // not enough money
+                return "FAIL1";
+            } else {
+                System.out.println("success"+amount);
+                depositBean.transferFromAccount(fromAccount, amount);
+                BigDecimal outPrin = new BigDecimal(loanAccount.getOutstandingPrincipal());
+                if (amount.compareTo(outPrin) == 1) {
+                    return "FAIL2";
+                }
+                LoanAccount la = loanAccountLumsumPayment(loanAccountNumber, amount.doubleValue());
+                futurePaymentBreakdown(la);
+                return "SUCCESS";
             }
-            LoanAccount la = loanAccountLumsumPayment(loanAccountNumber, amount.doubleValue());
-            futurePaymentBreakdown(la);
-            return "SUCCESS";
+
+        } catch (DepositAccountNotFoundException e) {
+            System.out.println("DepositAccountNotFoundException LoanRepaymentSessionBean loanLumsumPaymentFromAccount()");
+            return "FAIL0";
         }
+
     }
 
     @Override
@@ -368,7 +385,6 @@ public class LoanPaymentSessionBean implements LoanPaymentSessionBeanLocal {
             } else {
                 loanAccount.setAmountPaidBeforeDueDate(amount - loanAccount.getOverduePayment());
                 loanAccount.setOverduePayment(0.0);
-                
             }
         } else {
             System.out.println("Noooo");

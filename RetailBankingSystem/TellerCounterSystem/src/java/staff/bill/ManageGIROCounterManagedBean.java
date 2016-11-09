@@ -21,6 +21,7 @@ import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import server.utilities.ConstantUtils;
+import util.exception.dams.DepositAccountNotFoundException;
 import utils.JSUtils;
 import utils.MessageUtils;
 import utils.SessionUtils;
@@ -68,34 +69,42 @@ public class ManageGIROCounterManagedBean implements Serializable {
             setMainAccount(null);
             MessageUtils.displayError("Customer Main Account Not Found!");
         }
-        
+
     }
-    
+
     public void addGIROArrangement() {
-        
-        DepositAccount da = depositBean.getAccountFromId(getFromAccountNo());
-        Organization o = billBean.getOrganizationById(Long.parseLong(selectedBillId));
-        giroArr.setOrganization(o);
-        giroArr.setBillReference(referenceNumber);
-        giroArr.setMainAccount(mainAccount);
-        giroArr.setDepositAccount(da);
-        giroArr.setBillLimit(billLimit);
-        GiroArrangement result = billBean.createGiroArr(giroArr);
-        if (result != null) {
-            JSUtils.callJSMethod("PF('myWizard').next()");
-            addedGiroArrs.add(result);
-            MessageUtils.displayInfo(ConstantUtils.GIRO_SUCCESS);
-        } else {
+
+        try {
+
+            DepositAccount da = depositBean.getAccountFromId(getFromAccountNo());
+            Organization o = billBean.getOrganizationById(Long.parseLong(selectedBillId));
+            giroArr.setOrganization(o);
+            giroArr.setBillReference(referenceNumber);
+            giroArr.setMainAccount(mainAccount);
+            giroArr.setDepositAccount(da);
+            giroArr.setBillLimit(billLimit);
+            GiroArrangement result = billBean.createGiroArr(giroArr);
+            if (result != null) {
+                JSUtils.callJSMethod("PF('myWizard').next()");
+                addedGiroArrs.add(result);
+                MessageUtils.displayInfo(ConstantUtils.GIRO_SUCCESS);
+            } else {
+                JSUtils.callJSMethod("PF('myWizard').back()");
+                MessageUtils.displayError(ConstantUtils.GIRO_FAILED);
+            }
+
+        } catch (DepositAccountNotFoundException e) {
+            System.out.println("DepositAccountNotFoundException ManagedGIROCounterManagedBean.java addGIROArrangement()");
             JSUtils.callJSMethod("PF('myWizard').back()");
             MessageUtils.displayError(ConstantUtils.GIRO_FAILED);
         }
     }
-    
+
     public String getOrgName(String selectedBillId) {
         Organization o = billBean.getOrganizationById(Long.parseLong(selectedBillId));
         return o.getName();
     }
-    
+
     public void removeGIROArrangement(GiroArrangement g) {
         String result = billBean.deleteGiroArrById(g.getId());
         if (result.equals("SUCCESS")) {
@@ -105,10 +114,10 @@ public class ManageGIROCounterManagedBean implements Serializable {
             MessageUtils.displayError(ConstantUtils.GIRO_DELETE_FAILED);
         }
     }
-    
+
     public void onCellEdit(GiroArrangement g) {
         GiroArrangement result = billBean.updateGiroArr(g);
-         
+
         if (result != null) {
             MessageUtils.displayInfo(ConstantUtils.GIRO_LIMIT_SUCCESS);
         } else {

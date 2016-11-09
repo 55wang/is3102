@@ -8,6 +8,7 @@ package entity.crm;
 import entity.staff.StaffAccount;
 import java.io.Serializable;
 import java.util.Date;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -48,9 +49,9 @@ public abstract class MarketingCampaign implements Serializable {
     private Long clickCount = 0L; //when ads banner or email URL is clicked 
     private Long viewCount = 0L; //when landing page is visited
     
-    @ManyToOne
+    @ManyToOne()
     private StaffAccount staffAccount;
-    @OneToOne
+    @ManyToOne(cascade = {CascadeType.MERGE})
     private CustomerGroup customerGroup;
 
     public Long getId() {
@@ -85,7 +86,7 @@ public abstract class MarketingCampaign implements Serializable {
     public String toString() {
         return "entity.crm.MarketingCampaign[ id=" + id + " ]";
     }
-
+    
     public String getNameCampaign() {
         return nameCampaign;
     }

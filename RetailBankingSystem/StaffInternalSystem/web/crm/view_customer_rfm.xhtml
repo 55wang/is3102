@@ -18,7 +18,7 @@
             <div class="container" >
                 <h:form id="mainForm">
                     <div class="ui-g-12 ui-md-12 datatable-holder">
-                            <p:dataTable value="#{customerRFMManagedBean.customers}" var="customer" paginator="true" paginatorAlwaysVisible="true" class="datatable-main">
+                            <p:dataTable value="#{customerRFMManagedBean.customers}" var="customer" paginator="true" paginatorAlwaysVisible="true" class="datatable-main" rows="10" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="10,20,50">
                                 <f:facet name="header">
                                     Deposit RFM Dashboard
                                 </f:facet>
@@ -46,7 +46,7 @@
                             </p:dataTable>
                     </div>
                     <div class="ui-g-12 ui-md-12 datatable-holder">
-                        <p:dataTable value="#{customerRFMManagedBean.customers}" var="customer" paginator="true" paginatorAlwaysVisible="true" class="datatable-main">
+                        <p:dataTable value="#{customerRFMManagedBean.customers}" var="customer" paginator="true" paginatorAlwaysVisible="true" class="datatable-main" rows="10" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="10,20,50">
                             <f:facet name="header">
                                 Card RFM Dashboard
                             </f:facet>

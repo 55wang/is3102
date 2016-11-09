@@ -91,15 +91,16 @@
                     </td>
                 </tr>
             </table>
-            
-            <p:panel>
+
                 <div align="center">
-                    <button type="button" onclick="window.location.href='apply_deposit_account.xhtml'">Apply</button>
+                    <button type="button" onclick="window.location.href='apply_deposit_account.xhtml'" style="font-size: 50px; margin-bottom: 20px;">Apply</button>
                 </div>
-            </p:panel>
+
             
 
         </h:body>
+        <em:adsBanner advertismentTitle="#{customerHomeManagedBean.adsBannerCampaign.adsTitle}" advertismentType="#{customerHomeManagedBean.adsBannerCampaign.adsType}" advertismentInfo="#{customerHomeManagedBean.adsBannerCampaign.adsInfo}" extraAdvertismentInfo="#{customerHomeManagedBean.adsBannerCampaign.adsExtraInfo}" landingPageUrl="https://localhost:8181/InternetBankingSystem/landing_page/#{customerHomeManagedBean.adsBannerCampaign.landingPageName}" />
+        <em:customerMainFooter></em:customerMainFooter>
     </f:view>
 </html>
 

@@ -688,31 +688,32 @@ and open the template in the editor.
 /*ads banner*/
 .ads-banner-holder{    
     width: 90%;
-    height: 225px;
+    min-height: 195px;
     display: block;
     position: relative;
     bottom: 50px;
     line-height: 20px;
     margin: 0 auto;
     margin-top: 50px;
+    box-shadow: 0 5px 5px 0 rgba(0,0,0,0.30),0 3px 1px 0 rgba(0,0,0,0.23);
 }
 
 .deposit-holder{
     background: url("../resources/img/ads_banner/deposit_ads_banner.png");
-    background-size: contain;
+    background-size: cover;
     background-repeat: no-repeat;
 }
 
 .card-holder{
     background: url("../resources/img/ads_banner/card_ads_banner.png");
-    background-size: contain;
+    background-size: cover;
     background-repeat: no-repeat;
 }
 
 .ads-banner-holder a{
     display:block;
     width:100%;
-    height:225px;
+    min-height:195px;
     cursor: pointer;
 }
 

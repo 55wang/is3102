@@ -57,10 +57,10 @@ and open the template in the editor.
                                         <p:outputLabel value="#{intraBankTransferManagedBean.toName}"/>
                                         <p:outputLabel value="My initial " />
                                         <p:outputLabel value="#{intraBankTransferManagedBean.myInitial}"/>
-                                        
+
                                         <h2>Input Token Number</h2>
                                         <p:inputText value="#{intraBankTransferManagedBean.inputTokenString}" />
-                                        
+
                                         <p:commandButton  value="Back" type="button" onclick="PF('myWizard').back()" />
                                         <p:commandButton value="Transfer" action="#{intraBankTransferManagedBean.adhocTransfer}" update="@form"/> 
                                     </h:panelGrid>
@@ -85,6 +85,7 @@ and open the template in the editor.
                     </p:panel>
                 </h:form>
             </div>
+            <em:adsBanner advertismentTitle="#{customerHomeManagedBean.adsBannerCampaign.adsTitle}" advertismentType="#{customerHomeManagedBean.adsBannerCampaign.adsType}" advertismentInfo="#{customerHomeManagedBean.adsBannerCampaign.adsInfo}" extraAdvertismentInfo="#{customerHomeManagedBean.adsBannerCampaign.adsExtraInfo}" landingPageUrl="https://localhost:8181/InternetBankingSystem/landing_page/#{customerHomeManagedBean.adsBannerCampaign.landingPageName}" />
             <em:customerFooter></em:customerFooter>
         </h:body>
     </f:view>
