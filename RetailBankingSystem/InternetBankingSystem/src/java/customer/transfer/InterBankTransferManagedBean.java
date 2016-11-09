@@ -7,9 +7,9 @@ package customer.transfer;
 
 import ejb.session.bill.BillSessionBeanLocal;
 import ejb.session.bill.TransferSessionBeanLocal;
-import ejb.session.common.LoginSessionBeanLocal;
 import ejb.session.common.OTPSessionBeanLocal;
 import ejb.session.dams.CustomerDepositSessionBeanLocal;
+import ejb.session.mainaccount.MainAccountSessionBeanLocal;
 import ejb.session.webservice.WebserviceSessionBeanLocal;
 import entity.bill.BankEntity;
 import entity.bill.Payee;
@@ -29,6 +29,7 @@ import server.utilities.CommonUtils;
 import server.utilities.ConstantUtils;
 import server.utilities.EnumUtils;
 import server.utilities.GenerateAccountAndCCNumber;
+import util.exception.common.MainAccountNotExistException;
 import util.exception.dams.DepositAccountNotFoundException;
 import utils.JSUtils;
 import utils.MessageUtils;
@@ -43,7 +44,7 @@ import utils.SessionUtils;
 public class InterBankTransferManagedBean implements Serializable {
 
     @EJB
-    private LoginSessionBeanLocal loginBean;
+    private MainAccountSessionBeanLocal mainAccountSessionBean;
     @EJB
     private TransferSessionBeanLocal transferBean;
     @EJB
@@ -76,7 +77,11 @@ public class InterBankTransferManagedBean implements Serializable {
 
     @PostConstruct
     public void init() {
-        ma = loginBean.getMainAccountByUserID(SessionUtils.getUserName());
+        try{
+            ma = mainAccountSessionBean.getMainAccountByUserId(SessionUtils.getUserName());
+        }catch(MainAccountNotExistException ex){
+            System.out.println("init.MainAccountNotExistException");
+        }
         setAccounts(depositBean.getAllNonFixedCustomerAccounts(ma.getId()));
         setPayees(transferBean.getPayeeFromUserIdWithType(ma.getId(), EnumUtils.PayeeType.LOCAL));
         setBankList(billBean.getActiveListBankEntities());
@@ -152,7 +157,7 @@ public class InterBankTransferManagedBean implements Serializable {
     }
 
     public void transferFAST() {
-        transferMethod = "FAST";
+        transferMethod=  "FAST";
         transfer();
     }
 
@@ -192,7 +197,7 @@ public class InterBankTransferManagedBean implements Serializable {
         try {
 
             DepositAccount da = depositBean.getAccountFromId(fromAccountNo);
-            System.out.println("----------------FAST transfer clearing----------------");
+            System.out.println("----------------SACH transfer clearing----------------");
             TransferRecord tr = new TransferRecord();
             tr.setAccountNumber(payee.getAccountNumber());
             tr.setReferenceNumber(GenerateAccountAndCCNumber.generateReferenceNumber());

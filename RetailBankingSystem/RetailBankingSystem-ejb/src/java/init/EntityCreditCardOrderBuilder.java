@@ -11,6 +11,7 @@ import ejb.session.card.CardTransactionSessionBeanLocal;
 import ejb.session.card.CreditCardOrderSessionBeanLocal;
 import ejb.session.cms.CustomerProfileSessionBeanLocal;
 import ejb.session.common.LoginSessionBeanLocal;
+import ejb.session.mainaccount.MainAccountSessionBeanLocal;
 import ejb.session.utils.UtilsSessionBeanLocal;
 import entity.card.account.CardTransaction;
 import entity.card.account.CreditCardAccount;
@@ -26,6 +27,7 @@ import javax.ejb.Stateless;
 import server.utilities.ConstantUtils;
 import server.utilities.EnumUtils;
 import server.utilities.PincodeGenerationUtils;
+import util.exception.common.MainAccountNotExistException;
 
 /**
  *
@@ -44,14 +46,21 @@ public class EntityCreditCardOrderBuilder {
     @EJB
     private CardTransactionSessionBeanLocal cardTransactionSessionBean;
     @EJB
-    private LoginSessionBeanLocal loginBean;
+    private MainAccountSessionBeanLocal mainAccountSessionBean;
 
     public void initCreditCardOrder(RewardCardProduct demoRewardCardProduct, MileCardProduct demoMileCardProduct, PromoProduct demoPromoProduct) {
-         MainAccount demoMainAccount = loginBean.getMainAccountByUserID(ConstantUtils.DEMO_MAIN_ACCOUNT_USER_ID_1);
+
+         MainAccount demoMainAccount = null;
+        try{
+            demoMainAccount = mainAccountSessionBean.getMainAccountByUserId(ConstantUtils.DEMO_MAIN_ACCOUNT_USER_ID_1);
+        }catch(MainAccountNotExistException ex){
+            System.out.println("EntityCreditCardOrderBuilder.initCreditCardOrder.MainAccountNotExistException");
+        }
         //create an active cca and its cco
         CreditCardAccount cca = new CreditCardAccount();
         cca.setCreditCardProduct(demoRewardCardProduct);
         cca.setNameOnCard(demoMainAccount.getCustomer().getFullName());
+        cca.setCreditLimit(2000.0);
         cca.setCreditCardNum("5544498059996726");
         cca.setOutstandingAmount(1000.0);
         cca.setMerlionPoints(100000.0);
@@ -107,6 +116,7 @@ public class EntityCreditCardOrderBuilder {
         cca2.setCreditCardProduct(demoRewardCardProduct);
         cca2.setNameOnCard(demoMainAccount.getCustomer().getFullName());
         cca2.setCreditCardNum("5273076135089505");
+        cca2.setCreditLimit(20000.0);
         cca2.setOutstandingAmount(0.0);
         cca2.setMerlionPoints(100000.0);
         cca2.setCardStatus(EnumUtils.CardAccountStatus.PENDING);
@@ -126,6 +136,7 @@ public class EntityCreditCardOrderBuilder {
         cca3.setNameOnCard(demoMainAccount.getCustomer().getFullName());
         cca3.setCreditCardNum("5556336827217675");
         cca3.setOutstandingAmount(10000.0);
+        cca3.setCreditLimit(10000.0);
         cca3.setMerlionMiles(80000.0);
         cca3.setCardStatus(EnumUtils.CardAccountStatus.ACTIVE);
         cca3.setMainAccount(demoMainAccount);
@@ -143,7 +154,7 @@ public class EntityCreditCardOrderBuilder {
         cca4.setCreditCardProduct(demoMileCardProduct);
         cca4.setNameOnCard(demoMainAccount.getCustomer().getFullName());
         cca4.setCreditCardNum("5374943811149259");
-        cca4.setOutstandingAmount(500.0);
+        cca4.setOutstandingAmount(-500.0);
         cca4.setMerlionMiles(8000.0);
         cca4.setCardStatus(EnumUtils.CardAccountStatus.ACTIVE);
         cca4.setMainAccount(demoMainAccount);

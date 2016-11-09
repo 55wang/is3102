@@ -34,6 +34,7 @@ public class MEPSSessionBean {
     private final String SACH_INFORM_NET_SETTLEMENT = "https://localhost:8181/SACHSimulator/sach/sach_inform_settlement";
     private final String FAST_INFORM_NET_SETTLEMENT = "https://localhost:8181/FASTSimulator/fast/fast_inform_settlement";
     private final String MBS_NET_SETTLEMENT_PATH = "https://localhost:8181/StaffInternalSystem/rest/net_settlement";
+    private final String MBS_FAST_SETTLEMENT_PATH = "https://localhost:8181/StaffInternalSystem/rest/fast_settlement";
 
     @PersistenceContext(unitName = "MEPSSimulatorPU")
     private EntityManager em;
@@ -104,16 +105,29 @@ public class MEPSSessionBean {
         for (SettlementAccount sa : accounts) {
             if (sa.getBankCode().equals(citiToBankCode)) {
                 sa.setAmount(sa.getAmount().add(new BigDecimal(citiSettlementAmount)));
-            } 
+            }
             if (sa.getBankCode().equals(ocbcToBankCode)) {
                 sa.setAmount(sa.getAmount().add(new BigDecimal(ocbcSettlementAmount)));
-            } 
+            }
             if (sa.getBankCode().equals(citiFromBankCode)) {
                 sa.setAmount(sa.getAmount().subtract(new BigDecimal(citiSettlementAmount)));
             }
             if (sa.getBankCode().equals(ocbcFromBankCode)) {
                 sa.setAmount(sa.getAmount().subtract(new BigDecimal(ocbcSettlementAmount)));
-            } 
+            }
+        }
+        return accounts;
+    }
+    public List<SettlementAccount> updateSettlementAccountsBalanceByTransaction(String fromBankCode, String toBankCode, String netSettlementAmount) {
+        List<SettlementAccount> accounts = retrieveThreeSettlementAccounts("001", "005", "013");
+        for (SettlementAccount sa : accounts) {
+            if (sa.getBankCode().equals(fromBankCode)) {
+                sa.setAmount(sa.getAmount().subtract(new BigDecimal(netSettlementAmount)));
+            }
+            if (sa.getBankCode().equals(toBankCode)) {
+                sa.setAmount(sa.getAmount().add(new BigDecimal(netSettlementAmount)));
+            }
+          
         }
         return accounts;
     }
@@ -127,7 +141,7 @@ public class MEPSSessionBean {
         return q.getResultList();
     }
 
-    public void sendMBSNetSettlement(TransactionSummaryDTO transactionSummary){
+    public void sendMBSNetSettlement(TransactionSummaryDTO transactionSummary) {
         // send to mbs
 
         Client client = ClientBuilder.newClient();
@@ -145,8 +159,35 @@ public class MEPSSessionBean {
             System.out.println("FAIL");
         }
     }
-    
-    public void testMBS(){
+
+    public void sendMBSFastSettlement(String referenceNumber, String toBankCode, String toBankName, String netSettlementAmount) {
+        // send to mbs
+        Form form = new Form(); //bank info
+        form.param("referenceNumber", referenceNumber);
+        form.param("amount", netSettlementAmount);
+        form.param("toBankCode", toBankCode); // other bank
+        form.param("toBankName", toBankName); // other bank
+
+
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(MBS_FAST_SETTLEMENT_PATH);
+
+        // This is the response
+        JsonObject jsonString = target.request(MediaType.APPLICATION_JSON).post(Entity.entity(form, MediaType.APPLICATION_FORM_URLENCODED), JsonObject.class);
+
+        if (jsonString
+                != null && jsonString.getString(
+                        "error").equals("SUCCESS")) {
+
+            System.out.println(".");
+            System.out.println("[MEPS]");
+            System.out.println("Received response from MBS..");
+        } else {
+            System.out.println("FAIL");
+        }
+    }
+
+    public void testMBS() {
 
         // send to mbs
         System.out.println("Testing");
@@ -159,9 +200,12 @@ public class MEPSSessionBean {
         WebTarget target = client.target("https://localhost:8181/StaffInternalSystem/rest/test_json");
 
         // This is the response
-        JsonObject jsonString = target.request(MediaType.APPLICATION_JSON).post(Entity.entity(summary, MediaType.APPLICATION_JSON), JsonObject.class);
+        JsonObject jsonString = target.request(MediaType.APPLICATION_JSON).post(Entity.entity(summary, MediaType.APPLICATION_JSON), JsonObject.class
+        );
 
-        if (jsonString != null && jsonString.getString("error").equals("SUCCESS")) {
+        if (jsonString
+                != null && jsonString.getString(
+                        "error").equals("SUCCESS")) {
 
             System.out.println(".");
             System.out.println("[MEPS]");

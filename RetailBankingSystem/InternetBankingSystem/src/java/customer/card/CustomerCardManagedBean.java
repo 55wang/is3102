@@ -40,7 +40,9 @@ public class CustomerCardManagedBean implements Serializable {
     private EmailServiceSessionBeanLocal emailServiceSessionBean;
 
     private Customer customer;
-    private List<CreditCardAccount> ccas;
+    private List<CreditCardAccount> activeCcas;
+    private List<CreditCardAccount> pendingCcas;
+
     private List<CardTransaction> cardTransactions;
     private static CreditCardAccount cca;
     private Date currentDate = new Date();
@@ -49,6 +51,22 @@ public class CustomerCardManagedBean implements Serializable {
     private CardAcctSessionBeanLocal cardAcctSessionBean;
     @EJB
     private CustomerProfileSessionBeanLocal customerProfileSessionBean;
+
+    public Double displayOutstandingAmount(Double amount) {
+        if (amount >= 0.0) {
+            return amount;
+        } else {
+            return 0.0;
+        }
+    }
+
+    public Double retrieveCreditLimit(CreditCardAccount cca) {
+        if (cca.getOutstandingAmount() < 0.0) {
+            return cca.getCreditLimit() - cca.getOutstandingAmount();
+        } else {
+            return cca.getCreditLimit();
+        }
+    }
 
     public void sendCCTransactionDetail(CreditCardAccount aCca) {
         Map<String, String> map = new HashMap<>();
@@ -115,14 +133,14 @@ public class CustomerCardManagedBean implements Serializable {
     @PostConstruct
     public void setCustomer() {
         System.out.println("@POSTCONSTRUCT INIT CustomerCardManagedBean");
-        
+
         try {
             this.customer = customerProfileSessionBean.getCustomerByUserID(SessionUtils.getUserName());
         } catch (CustomerNotExistException e) {
             System.out.println("CustomerNotExistException @PostConstruct setCustomer()");
         }
-        
-        this.setCcas(cardAcctSessionBean.getListCreditCardAccountsByIdAndNotStatus(customer.getMainAccount().getId(), CardAccountStatus.CLOSED)); //that is not closed
+        this.setActiveCcas(cardAcctSessionBean.getAllActiveCreditCardAccountsByMainId(customer.getMainAccount().getId()));
+        this.setPendingCcas(cardAcctSessionBean.getListCreditCardAccountsInProcess());
     }
 
     public Customer getCustomer() {
@@ -139,14 +157,6 @@ public class CustomerCardManagedBean implements Serializable {
 
     public void setCardTransactions(List<CardTransaction> cardTransactions) {
         this.cardTransactions = cardTransactions;
-    }
-
-    public List<CreditCardAccount> getCcas() {
-        return ccas;
-    }
-
-    public void setCcas(List<CreditCardAccount> ccas) {
-        this.ccas = ccas;
     }
 
     /**
@@ -175,5 +185,33 @@ public class CustomerCardManagedBean implements Serializable {
      */
     public void setCurrentDate(Date currentDate) {
         this.currentDate = currentDate;
+    }
+
+    /**
+     * @return the activeCcas
+     */
+    public List<CreditCardAccount> getActiveCcas() {
+        return activeCcas;
+    }
+
+    /**
+     * @param activeCcas the activeCcas to set
+     */
+    public void setActiveCcas(List<CreditCardAccount> activeCcas) {
+        this.activeCcas = activeCcas;
+    }
+
+    /**
+     * @return the pendingCcas
+     */
+    public List<CreditCardAccount> getPendingCcas() {
+        return pendingCcas;
+    }
+
+    /**
+     * @param pendingCcas the pendingCcas to set
+     */
+    public void setPendingCcas(List<CreditCardAccount> pendingCcas) {
+        this.pendingCcas = pendingCcas;
     }
 }

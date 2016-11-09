@@ -5,10 +5,10 @@
  */
 package customer.transfer;
 
-import ejb.session.common.LoginSessionBeanLocal;
 import ejb.session.bill.TransferSessionBeanLocal;
 import ejb.session.common.OTPSessionBeanLocal;
 import ejb.session.dams.CustomerDepositSessionBeanLocal;
+import ejb.session.mainaccount.MainAccountSessionBeanLocal;
 import entity.customer.MainAccount;
 import entity.dams.account.DepositAccount;
 import java.io.Serializable;
@@ -20,6 +20,7 @@ import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import server.utilities.ConstantUtils;
+import util.exception.common.MainAccountNotExistException;
 import util.exception.dams.DepositAccountNotFoundException;
 import utils.JSUtils;
 import utils.MessageUtils;
@@ -34,7 +35,7 @@ import utils.SessionUtils;
 public class InterAccountTransferManagedBean implements Serializable {
 
     @EJB
-    private LoginSessionBeanLocal loginBean;
+    private MainAccountSessionBeanLocal mainAccountSessionBean;
     @EJB
     private TransferSessionBeanLocal transferBean;
     @EJB
@@ -55,7 +56,11 @@ public class InterAccountTransferManagedBean implements Serializable {
 
     @PostConstruct
     public void init() {
-        ma = loginBean.getMainAccountByUserID(SessionUtils.getUserName());
+        try{
+            ma = mainAccountSessionBean.getMainAccountByUserId(SessionUtils.getUserName());
+        }catch(MainAccountNotExistException ex){
+            System.out.println("init.MainAccountNotExistException");
+        }
         accounts = ma.getBankAcounts();
     }
 

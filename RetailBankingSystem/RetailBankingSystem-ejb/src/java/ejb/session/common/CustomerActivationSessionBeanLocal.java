@@ -7,7 +7,6 @@ package ejb.session.common;
 
 import entity.customer.MainAccount;
 import javax.ejb.Local;
-import util.exception.common.MainAccountNotExistException;
 import util.exception.common.UpdateMainAccountException;
 
 /**
@@ -16,6 +15,5 @@ import util.exception.common.UpdateMainAccountException;
  */
 @Local
 public interface CustomerActivationSessionBeanLocal {
-    public MainAccount getMainAccountByEmail(String email) throws MainAccountNotExistException;
     public MainAccount updateMainAccount(MainAccount ma) throws UpdateMainAccountException;
 }

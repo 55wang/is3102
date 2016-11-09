@@ -7,8 +7,8 @@ package webservice.restful.mobile.card;
 
 import ejb.session.card.CardAcctSessionBeanLocal;
 import ejb.session.card.CardTransactionSessionBeanLocal;
-import ejb.session.common.LoginSessionBeanLocal;
 import ejb.session.dams.MobileAccountSessionBeanLocal;
+import ejb.session.mainaccount.MainAccountSessionBeanLocal;
 import entity.card.account.CardTransaction;
 import entity.card.account.CreditCardAccount;
 import entity.customer.MainAccount;
@@ -41,7 +41,7 @@ public class MobileCardSummaryService {
     private UriInfo context;
 
     @EJB
-    private LoginSessionBeanLocal loginBean;
+    private MainAccountSessionBeanLocal mainAccountSessionBean;
     @EJB
     private MobileAccountSessionBeanLocal mobileBean;
     @EJB
@@ -60,7 +60,7 @@ public class MobileCardSummaryService {
         String jsonString;
         MainAccount ma;
         try {
-            ma = loginBean.getMainAccountByUserID(username);
+            ma = mainAccountSessionBean.getMainAccountByUserId(username);
         } catch (Exception e) {
             ErrorDTO err = new ErrorDTO();
             err.setCode(-1);

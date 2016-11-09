@@ -36,7 +36,9 @@ public class TransferFastService {
             @FormParam("amount") String amount,
             @FormParam("toBankCode") String toBankCode,
             @FormParam("fromBankCode") String fromBankCode,
+            @FormParam("fromBankName") String fromBankName,
             @FormParam("toBranchCode") String toBranchCode,
+            @FormParam("toBankName") String toBankName,
             @FormParam("accountNumber") String accountNumber,
             @FormParam("toName") String toName,
             @FormParam("fromName") String fromName,
@@ -60,13 +62,15 @@ public class TransferFastService {
         pt.setReferenceNumber(referenceNumber);
         pt.setAmount(new BigDecimal(amount));
         pt.setFromBankCode(fromBankCode);
+        pt.setFromBankName(fromBankName);
         pt.setToBankCode(toBankCode);
+        pt.setToBankName(toBankName);
         pt.setToBranchCode(toBranchCode);
         pt.setAccountNumber(accountNumber);
         pt.setToName(toName);
         pt.setFromName(fromName);
         pt.setMyInitial(myInitial);
-        pt.setSettled(false);
+        pt.setSettled(Boolean.FALSE);
         fastBean.persist(pt);
 
         fastBean.sendMEPS(pt);

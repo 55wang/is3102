@@ -6,7 +6,7 @@
 package init;
 
 import ejb.session.cms.CustomerCaseSessionBeanLocal;
-import ejb.session.common.LoginSessionBeanLocal;
+import ejb.session.mainaccount.MainAccountSessionBeanLocal;
 import ejb.session.staff.StaffAccountSessionBeanLocal;
 import entity.customer.CustomerCase;
 import entity.customer.Issue;
@@ -21,6 +21,7 @@ import javax.ejb.LocalBean;
 import server.utilities.ConstantUtils;
 import server.utilities.EnumUtils;
 import util.exception.cms.DuplicateCaseExistException;
+import util.exception.common.MainAccountNotExistException;
 
 /**
  *
@@ -35,10 +36,15 @@ public class EntityCaseBuilder {
     @EJB
     private StaffAccountSessionBeanLocal staffAccountSessionBean;
     @EJB
-    private LoginSessionBeanLocal loginBean;
+    private MainAccountSessionBeanLocal mainAccountSessionBean;
 
     public void initCase() {
-        MainAccount demoMainAccount = loginBean.getMainAccountByUserID(ConstantUtils.DEMO_MAIN_ACCOUNT_USER_ID_1);
+        MainAccount demoMainAccount = null;
+        try{
+            demoMainAccount = mainAccountSessionBean.getMainAccountByUserId(ConstantUtils.DEMO_MAIN_ACCOUNT_USER_ID_1);
+        }catch(MainAccountNotExistException ex){
+            System.out.println("EntityCaseBuilder.initCase.MainAccountNotExistException");
+        }
         StaffAccount sa = staffAccountSessionBean.getAccountByUsername(ConstantUtils.RELATIONSHIP_MANAGER_USERNAME);
         
         CustomerCase cc = new CustomerCase();

@@ -6,8 +6,8 @@
 package customer.common;
 
 import ejb.session.common.CustomerActivationSessionBeanLocal;
-import ejb.session.common.LoginSessionBeanLocal;
 import ejb.session.dams.CustomerDepositSessionBeanLocal;
+import ejb.session.mainaccount.MainAccountSessionBeanLocal;
 import ejb.session.utils.UtilsSessionBeanLocal;
 import entity.common.AuditLog;
 import entity.customer.MainAccount;
@@ -33,9 +33,8 @@ import utils.SessionUtils;
 @Named(value = "customerActivationManagedBean")
 @RequestScoped
 public class CustomerActivationManagedBean implements Serializable {
-
     @EJB
-    private LoginSessionBeanLocal loginSessionBean;
+    private MainAccountSessionBeanLocal mainAccountSessionBean;
     @EJB
     private CustomerActivationSessionBeanLocal customerActivationSessionBean;
     @EJB
@@ -56,7 +55,7 @@ public class CustomerActivationManagedBean implements Serializable {
         System.out.println(email);
         System.out.println(randomPwd);
         try{
-            mainAccount = customerActivationSessionBean.getMainAccountByEmail(email);
+            mainAccount = mainAccountSessionBean.getMainAccountByEmail(email);
         }catch(MainAccountNotExistException ex){
             System.out.println("CustomerActivationManagedBean.init.customerActivationSessionBean.getMainAccountByEmail:"+ex.toString());
         }
@@ -65,7 +64,6 @@ public class CustomerActivationManagedBean implements Serializable {
             try {
                 mainAccount.setStatus(EnumUtils.StatusType.ACTIVE);
                 customerActivationSessionBean.updateMainAccount(mainAccount);
-                loginSessionBean.loginAccount(mainAccount.getUserID(), mainAccount.getPassword());
                 SessionUtils.setUserId(mainAccount.getId());
                 SessionUtils.setUserName(mainAccount.getUserID());
                 SessionUtils.setTokenAuthentication(false);

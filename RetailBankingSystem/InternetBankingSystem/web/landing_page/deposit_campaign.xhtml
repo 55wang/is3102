@@ -46,12 +46,14 @@ and open the template in the editor.
                 </div>
                 <div class="marketing-third">
                     <div class="content">
-                        <h2>Our deposit options provide great flexibility</h2>
+                        <h2>Our deposit options provide great flexibility #{depositCampaignOneManagedBean.temp}</h2>
                         <p>Merlion Deposit enables customers to choose the best option that is suitable for themselves.</p>
                     </div>
                     <br/>
                     <div class="direct-button">
-                        <a href="#">APPLY NOW!</a>
+                        <h:form>
+                            <p:commandButton value="APPLY NOW!" action="#{depositCampaignOneManagedBean.clickApplyButton()}" />
+                        </h:form>
                     </div>
                 </div>
             </div>

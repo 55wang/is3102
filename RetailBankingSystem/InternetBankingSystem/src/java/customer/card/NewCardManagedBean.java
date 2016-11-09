@@ -11,12 +11,18 @@ import ejb.session.card.CreditCardOrderSessionBeanLocal;
 import ejb.session.cms.CustomerProfileSessionBeanLocal;
 import ejb.session.common.EmailServiceSessionBeanLocal;
 import ejb.session.common.NewCustomerSessionBeanLocal;
+import ejb.session.crm.MarketingCampaignSessionBeanLocal;
 import ejb.session.mainaccount.MainAccountSessionBeanLocal;
 import entity.card.account.CreditCardAccount;
 import entity.card.order.CreditCardOrder;
 import entity.card.product.CreditCardProduct;
+import entity.common.AuditLog;
+import entity.crm.CustomerGroup;
+import entity.crm.MarketingCampaign;
 import entity.customer.Customer;
 import entity.customer.MainAccount;
+import entity.staff.Role;
+import entity.staff.StaffAccount;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -63,6 +69,12 @@ public class NewCardManagedBean implements Serializable {
     @EJB
     private CreditCardOrderSessionBeanLocal creditCardOrderSessionBean;
 
+    @EJB
+    private MarketingCampaignSessionBeanLocal marketingCampaignSessionBean;
+
+    private String selectedMC;
+    private MarketingCampaign marketingCampaign;
+    
     private CreditCardOrder cco;
     private MainAccount ma;
     private Customer customer;
@@ -111,6 +123,11 @@ public class NewCardManagedBean implements Serializable {
             getProductNameOptions().add(ccp.getProductName());
         }
     }
+    
+     public void init() {
+        System.out.println("MarketingCampaign id is: " + getSelectedMC());
+        marketingCampaign = marketingCampaignSessionBean.getMarketingCampaign(Long.parseLong(getSelectedMC()));
+    }
 
     public NewCardManagedBean() {
     }
@@ -135,7 +152,6 @@ public class NewCardManagedBean implements Serializable {
         } catch (DuplicateMainAccountExistException e) {
             System.out.println("DuplicateMainAccountExistException thrown at NewCardManagedBean.java saveUpdatedCreditCardOrderForNewCustomer() ");
         }
-        
 
         cca.setCardStatus(CardAccountStatus.PENDING);
         cardAcctSessionBean.createCardAccount(cca);
@@ -159,7 +175,7 @@ public class NewCardManagedBean implements Serializable {
         ma.setUserID(CommonHelper.generateUserID(customer.getIdentityType(), customer.getIdentityNumber()));
         ma.setStatus(StatusType.NEW);
         ma.setCustomer(customer);
-        
+
         try {
             mainAccountSessionBean.updateMainAccount(ma);
         } catch (UpdateMainAccountException e) {
@@ -182,7 +198,7 @@ public class NewCardManagedBean implements Serializable {
         List<CreditCardAccount> ccas = existingCustomer.getMainAccount().getCreditCardAccounts();
         ccas.add(cca);
         existingCustomer.getMainAccount().setCreditCardAccounts(ccas);
-        
+
         try {
             mainAccountSessionBean.updateMainAccount(existingCustomer.getMainAccount());
         } catch (UpdateMainAccountException e) {
@@ -195,7 +211,7 @@ public class NewCardManagedBean implements Serializable {
         creditCardOrderSessionBean.createCardOrder(cco);
         cca.setCreditCardOrder(cco);
         cco.setCreditCardAccount(cca);
-        
+
         cardAcctSessionBean.updateCreditCardAccount(cca);
 
         cco.setMainAccount(existingCustomer.getMainAccount());
@@ -203,18 +219,29 @@ public class NewCardManagedBean implements Serializable {
         creditCardOrderSessionBean.updateCreditCardOrder(cco);
 
         emailServiceSessionBean.sendCreditCardApplicationNotice(existingCustomer.getEmail());
+
+        //update response if he is in the marketing campaign
+        for (CustomerGroup cg : existingCustomer.getCustomerGroups()) {
+            for (MarketingCampaign mc : cg.getMarketingCampaigns()) {
+                if (mc.equals(marketingCampaign)) {
+                    marketingCampaignSessionBean.addResponseCount(mc);
+                    System.out.println("marketing response count added");
+                }
+            }
+        }
+
         RedirectUtils.redirect("https://localhost:8181/InternetBankingSystem/personal_cards/credit_card_summary.xhtml");
 
     }
 
     public void setExistingCustomerForCardApplication() {
-        
+
         try {
             existingCustomer = customerProfileSessionBean.getCustomerByUserID(SessionUtils.getUserName());
         } catch (CustomerNotExistException e) {
             System.out.println("CustomerNotExistException NewCardManagedBean.java");
         }
-        
+
     }
 
     public CreditCardOrder getCco() {
@@ -556,5 +583,13 @@ public class NewCardManagedBean implements Serializable {
      */
     public void setSaluationOptions(List<String> saluationOptions) {
         this.saluationOptions = saluationOptions;
+    }
+
+    public String getSelectedMC() {
+        return selectedMC;
+    }
+
+    public void setSelectedMC(String selectedMC) {
+        this.selectedMC = selectedMC;
     }
 }

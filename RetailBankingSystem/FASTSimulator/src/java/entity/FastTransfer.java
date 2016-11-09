@@ -34,10 +34,12 @@ public class FastTransfer implements Serializable {
     private BigDecimal amount;
     private String toBankCode;
     private String toBranchCode;
+    private String toBankName;
     private String accountNumber;
     private String toName;
     private String fromName;
     private String fromBankCode;
+    private String fromBankName;
     private String myInitial;
     private Boolean settled;
 
@@ -193,6 +195,34 @@ public class FastTransfer implements Serializable {
      */
     public void setFromBankCode(String fromBankCode) {
         this.fromBankCode = fromBankCode;
+    }
+
+    /**
+     * @return the toBankName
+     */
+    public String getToBankName() {
+        return toBankName;
+    }
+
+    /**
+     * @param toBankName the toBankName to set
+     */
+    public void setToBankName(String toBankName) {
+        this.toBankName = toBankName;
+    }
+
+    /**
+     * @return the fromBankName
+     */
+    public String getFromBankName() {
+        return fromBankName;
+    }
+
+    /**
+     * @param fromBankName the fromBankName to set
+     */
+    public void setFromBankName(String fromBankName) {
+        this.fromBankName = fromBankName;
     }
 
 }

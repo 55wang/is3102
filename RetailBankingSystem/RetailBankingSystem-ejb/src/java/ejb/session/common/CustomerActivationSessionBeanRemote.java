@@ -16,6 +16,5 @@ import util.exception.common.UpdateMainAccountException;
  */
 @Remote
 public interface CustomerActivationSessionBeanRemote {
-    public MainAccount getMainAccountByEmail(String email) throws MainAccountNotExistException;
     public MainAccount updateMainAccount(MainAccount ma) throws UpdateMainAccountException;
 }

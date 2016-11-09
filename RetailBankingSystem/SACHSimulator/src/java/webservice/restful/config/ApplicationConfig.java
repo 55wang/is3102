@@ -33,6 +33,7 @@ public class ApplicationConfig extends Application {
         resources.add(filter.CORSFilter.class);
         resources.add(webservice.restful.clearing.BillingClearingService.class);
         resources.add(webservice.restful.clearing.InformSettlementService.class);
+        resources.add(webservice.restful.clearing.SWIFTTransferService.class);
         resources.add(webservice.restful.clearing.TransferClearingService.class);
     }
     
