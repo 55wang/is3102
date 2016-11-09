@@ -37,6 +37,7 @@ public class SimulatedCallManagedBean implements Serializable {
 
     private String transactionAmount;
     private String creditCardNumber;
+    private String referenceNum;
 
     /**
      * Creates a new instance of SimulatedCallManagedBean
@@ -165,7 +166,7 @@ public class SimulatedCallManagedBean implements Serializable {
     }
 
     public void sendSuccessAuthorization() {
-        cardTransactionSessionBean.sendSuccessAuthorization(transactionAmount, creditCardNumber);
+        cardTransactionSessionBean.sendSuccessAuthorization(transactionAmount, creditCardNumber, referenceNum);
     }
 
     private void sendSuccessClearing(String returnCode, String aCode) {
@@ -280,4 +281,13 @@ public class SimulatedCallManagedBean implements Serializable {
     public void setCreditCardNumber(String creditCardNumber) {
         this.creditCardNumber = creditCardNumber;
     }
+
+    public String getReferenceNum() {
+        return referenceNum;
+    }
+
+    public void setReferenceNum(String referenceNum) {
+        this.referenceNum = referenceNum;
+    }
+
 }
