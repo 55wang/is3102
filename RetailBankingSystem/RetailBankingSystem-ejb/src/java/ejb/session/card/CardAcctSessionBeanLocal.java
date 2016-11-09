@@ -28,6 +28,8 @@ public interface CardAcctSessionBeanLocal {
     get
     get list
     */
+    public List<DebitCardAccount> getListDebitCardAccountsByMainAccountId(String id);
+    public List<CreditCardAccount> getListCreditCardAccountsByMainId(String Id);
     public Date setOverDueDateAndMPD(CreditCardAccount cca);
     public CreditCardAccount createCardAccount(CreditCardAccount cca);
     public CreditCardAccount updateCreditCardAccount(CreditCardAccount cca);

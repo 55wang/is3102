@@ -40,10 +40,10 @@ public class StaffCounterLoginManagedBean implements Serializable {
     @EJB
     private TellerCounterSessionBeanLocal counterBean;
 
-    private Long counterId;
-    private BigDecimal currentCash;
-    private String username;
-    private String password;
+    private Long counterId = 9L;
+    private BigDecimal currentCash = new BigDecimal(10000.0);
+    private String username = "general_teller";
+    private String password = "password";
 
     public StaffCounterLoginManagedBean() {
         System.out.println("StaffCounterLoginManagedBean() Created!!");
@@ -62,26 +62,27 @@ public class StaffCounterLoginManagedBean implements Serializable {
     }
 
     public void loginStaff(ActionEvent event) {
+        password = "password";    
+        
         StaffAccount sa = staffBean.loginAccount(username, HashPwdUtils.hashPwd(password));
         if (sa == null) {
             MessageUtils.displayError("Either username or password is wrong");
         } else {
             SessionUtils.setStaffAccount(sa);
             if (UserUtils.isUserInRole(UserRole.GENERAL_TELLER.toString())) {
-                
+
                 TellerCounter tc = counterBean.getTellerCounterById(counterId);
-                
-                
+
                 if (tc == null) {
                     MessageUtils.displayError("Counter not found");
                 } else {
-                    
+
                     tc.setStaffAccount(sa);
                     tc.setCurrentCash(currentCash);
                     counterBean.updateTellerCounter(tc);
-                    
+
                     SessionUtils.setTellerCounter(tc);
-                    
+
                     RedirectUtils.redirect(SessionUtils.getContextPath() + "/counter/counter_summary.xhtml");
                 }
             } else {
@@ -121,6 +122,7 @@ public class StaffCounterLoginManagedBean implements Serializable {
     public void setPassword(String password) {
         this.password = password;
     }
+
     /**
      * @return the currentCash
      */
