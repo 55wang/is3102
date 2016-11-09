@@ -98,6 +98,19 @@ public class LoanAccountSessionBean implements LoanAccountSessionBeanLocal {
     }
     
     @Override
+    public List<LoanAccount> getSuspendedLoanAccountListByMainAccountId(String id) {
+        Query q = em.createQuery("SELECT l FROM LoanAccount l WHERE l.mainAccount.id = :mainAccountId AND l.loanAccountStatus =:inStatus");
+        q.setParameter("mainAccountId", id);
+        q.setParameter("inStatus", LoanAccountStatus.SUSPENDED);
+
+        try {
+            return q.getResultList();
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
+    @Override
     public LoanApplication createLoanApplication(LoanApplication loanApplication) {
         em.persist(loanApplication);
         return loanApplication;
