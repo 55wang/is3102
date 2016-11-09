@@ -29,6 +29,7 @@ import server.utilities.CommonUtils;
 import server.utilities.ConstantUtils;
 import util.exception.cms.CustomerCaseNotFoundException;
 import util.exception.cms.UpdateCaseException;
+import util.exception.common.NoStaffAccountsExistException;
 import utils.MessageUtils;
 import utils.RedirectUtils;
 import utils.SessionUtils;
@@ -226,8 +227,12 @@ public class StaffViewCustomerCaseCounterManagedBean implements Serializable {
     }
 
     public void showAllStaff() {
-        setStaffs(staffBean.getAllStaffs());
+        try {
+            setStaffs(staffBean.getAllStaffs());
         removeSelf();
+        } catch (NoStaffAccountsExistException e) {
+            System.out.println("NoStaffAccountsExistException StaffViewCustomerCaseCounterManagedBean showAllStaff()");
+        }
     }
 
     public void removeSelf() {

@@ -13,6 +13,9 @@ import org.junit.runners.Suite;
 
 import cms.*;
 import common.MainAccountTest;
+import common.StaffAccountTest;
+import common.StaffRoleTest;
+import dams.DepositAccountTest;
 
 /**
  *
@@ -24,7 +27,12 @@ import common.MainAccountTest;
     CustomerProfileTest.class, 
     CustomerCaseTest.class,
     // Main
-    MainAccountTest.class
+    MainAccountTest.class,
+    StaffAccountTest.class,
+    StaffRoleTest.class,
+    // dams
+//    DepositAccountTest.class
+        
 })
 public class MainTestSuite {
 

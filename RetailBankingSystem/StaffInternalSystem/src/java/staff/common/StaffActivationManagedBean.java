@@ -17,6 +17,7 @@ import javax.enterprise.context.RequestScoped;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.context.FacesContext;
 import server.utilities.EnumUtils;
+import util.exception.common.UpdateStaffAccountException;
 import utils.SessionUtils;
 
 /**
@@ -26,13 +27,13 @@ import utils.SessionUtils;
 @Named(value = "staffActivationManagedBean")
 @RequestScoped
 public class StaffActivationManagedBean implements Serializable {
-    
+
     @EJB
     private StaffAccountSessionBeanLocal staffBean;
     @EJB
     private UtilsSessionBeanLocal utilsBean;
-    
-    @ManagedProperty(value="#{param.email}")
+
+    @ManagedProperty(value = "#{param.email}")
     private String email;
     private Boolean valid;
     private StaffAccount staff;
@@ -40,30 +41,36 @@ public class StaffActivationManagedBean implements Serializable {
     /**
      * Creates a new instance of StaffActivationFManagedBean
      */
-    public StaffActivationManagedBean() {}
-    
+    public StaffActivationManagedBean() {
+    }
+
     @PostConstruct
     public void init() {
-        System.out.println("Login from activation");
-        email = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("email");
-        String randomPwd = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("code");
-        StaffAccount sa = staffBean.loginAccount(staffBean.getAccountByEmail(email).getUsername(), randomPwd);
-        if(sa != null ){
-            staff = sa;
-            valid = true;
-            System.out.println("Status updated");
-            sa.setStatus(EnumUtils.StatusType.ACTIVE);
-            staffBean.updateAccount(sa);
-            SessionUtils.setStaffAccount(sa);
+        try {
+            System.out.println("Login from activation");
+            email = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("email");
+            String randomPwd = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("code");
+            StaffAccount sa = staffBean.loginAccount(staffBean.getAccountByEmail(email).getUsername(), randomPwd);
+            if (sa != null) {
+                staff = sa;
+                valid = true;
+                System.out.println("Status updated");
+                sa.setStatus(EnumUtils.StatusType.ACTIVE);
+                staffBean.updateAccount(sa);
+                SessionUtils.setStaffAccount(sa);
+            } else {
+                valid = false;
+            }
+            AuditLog a = new AuditLog();
+            a.setActivityLog("System user enter create_customer_information.xhtml");
+            a.setFunctionName("StaffActivitionCaseManagedBean @PostConstruct init()");
+            a.setFunctionInput("Getting all activition");
+            a.setStaffAccount(SessionUtils.getStaff());
+            utilsBean.persist(a);
+        } catch (UpdateStaffAccountException e) {
+            System.out.println("UpdateStaffAccountException StaffActivationManagedBean init()");
         }
-        else
-            valid = false;
-        AuditLog a = new AuditLog();
-        a.setActivityLog("System user enter create_customer_information.xhtml");
-        a.setFunctionName("StaffActivitionCaseManagedBean @PostConstruct init()");
-        a.setFunctionInput("Getting all activition");
-        a.setStaffAccount(SessionUtils.getStaff());
-        utilsBean.persist(a);
+
     }
 
     /**

@@ -19,6 +19,7 @@ import javax.faces.view.ViewScoped;
 import server.utilities.EnumUtils.Gender;
 import server.utilities.EnumUtils.Nationality;
 import server.utilities.CommonUtils;
+import util.exception.common.UpdateStaffAccountException;
 import utils.RedirectUtils;
 import utils.SessionUtils;
 
@@ -34,21 +35,22 @@ public class StaffProfileManagedBean implements Serializable {
     private StaffAccountSessionBeanLocal staffBean;
     @EJB
     private UtilsSessionBeanLocal utilsBean;
-    
+
     private StaffAccount staff = SessionUtils.getStaff();
     private Boolean editingPage = false;
     private Boolean profileEdited = false;
-    private StaffInfo staffInfo; 
+    private StaffInfo staffInfo;
     private String selectedGender;
     private String selectedNationality;
     private List<String> genderOptions = CommonUtils.getEnumList(Gender.class);
     private List<String> nationalityOptions = CommonUtils.getEnumList(Nationality.class);
+
     /**
      * Creates a new instance of StaffProfileManagedBean
      */
     public StaffProfileManagedBean() {
     }
-    
+
     @PostConstruct
     public void init() {
         AuditLog a = new AuditLog();
@@ -59,27 +61,30 @@ public class StaffProfileManagedBean implements Serializable {
         utilsBean.persist(a);
         staffInfo = staff.getStaffInfo();
     }
-    
-    public void goToEditPage (){
+
+    public void goToEditPage() {
         editingPage = true;
     }
-    
-    public void goToConfirmPage(){
+
+    public void goToConfirmPage() {
         editingPage = false;
         profileEdited = true;
     }
-    
-    public void save(){
-        staffInfo.setGender(Gender.getEnum(selectedGender));
-        staffInfo.setNationality(Nationality.getEnum(selectedNationality));
-        staff.setStaffInfo(staffInfo);
-        StaffAccount result = staffBean.updateAccount(staff);
-        SessionUtils.setStaffAccount(result);
-        if (result != null) {
+
+    public void save() {
+        try {
+            staffInfo.setGender(Gender.getEnum(selectedGender));
+            staffInfo.setNationality(Nationality.getEnum(selectedNationality));
+            staff.setStaffInfo(staffInfo);
+            StaffAccount result = staffBean.updateAccount(staff);
+            SessionUtils.setStaffAccount(result);
             selectedGender = null;
             selectedNationality = null;
             RedirectUtils.redirect("staff_view_profile.xhtml");
+        } catch (UpdateStaffAccountException e) {
+            System.out.println("UpdateStaffAccountException StaffProfileManagedBean save()");
         }
+
     }
 
     /**

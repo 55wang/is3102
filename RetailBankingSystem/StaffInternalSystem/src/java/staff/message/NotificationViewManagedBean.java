@@ -25,6 +25,8 @@ import javax.faces.view.ViewScoped;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.primefaces.push.EventBus;
 import org.primefaces.push.EventBusFactory;
+import util.exception.common.NoRolesExistException;
+import util.exception.common.StaffRoleNotFoundException;
 import utils.MessageUtils;
 import utils.SessionUtils;
 
@@ -57,6 +59,7 @@ public class NotificationViewManagedBean implements Serializable {
     private List<Role> roles = new ArrayList<>();
     private Map<String, String> rolesOption = new HashMap<>();
     private String selectedRoleName;
+
     /**
      * Creates a new instance of NotificationViewManagedBean
      */
@@ -65,11 +68,19 @@ public class NotificationViewManagedBean implements Serializable {
 
     @PostConstruct
     public void init() {
+
         announcements = announcementBean.getAllAnnouncements(SessionUtils.getStaff().getRoles(), true);
-        setRoles(staffRoleSessionBean.getAllRoles());
-        for (Role r : roles) {
-            rolesOption.put(r.getRoleName(), r.getRoleName());
+
+        try {
+            setRoles(staffRoleSessionBean.getAllRoles());
+            for (Role r : roles) {
+                rolesOption.put(r.getRoleName(), r.getRoleName());
+            }
+        } catch (NoRolesExistException e) {
+            roles = new ArrayList<>();
+            rolesOption = new HashMap<>();
         }
+
         AuditLog a = new AuditLog();
         a.setActivityLog("System user enter NotificationViewManagedBean");
         a.setFunctionName("NotificationViewManagedBean @PostConstruct init()");
@@ -78,45 +89,50 @@ public class NotificationViewManagedBean implements Serializable {
         utilsBean.persist(a);
     }
 
-    public void send() { 
-        
-        if (isForStaff() && !forAllStaff && selectedRoleName!= null) {
-            newAnnouncement.setRole(staffRoleSessionBean.findRoleByName(selectedRoleName));
-        }
-            
-        newAnnouncement.setIsForStaff(isForStaff());   
+    public void send() {
 
-        
-        if (announcementBean.createAnnouncement(getNewAnnouncement())) {
-            announcements.add(0, newAnnouncement);
-            MessageUtils.displayInfo("New Announcement Added");
-        } else {
-            MessageUtils.displayInfo("Announcement already Added");
-        }
-        EventBus eventBus = EventBusFactory.getDefault().eventBus();
-        FacesMessage m = new FacesMessage(StringEscapeUtils.escapeHtml(newAnnouncement.getTitle()), StringEscapeUtils.escapeHtml(newAnnouncement.getContent()));
-        
-        if (!isForStaff()) {
-            System.out.println("Runs here and pushed to:" + CUSTOMER_NOTIFY_CHANNEL);
-            eventBus.publish(CUSTOMER_NOTIFY_CHANNEL, m);
-//            eventBus.publish(ROLE_NOTIFY_CHANNEL + UserRole.SUPER_ADMIN.toString(), m);
-        } else {
-            if (getForAllStaff() == false) {
-                eventBus.publish(ROLE_NOTIFY_CHANNEL + selectedRoleName, m);
-            } else {
-                eventBus.publish(STAFF_NOTIFY_CHANNEL, m);
+        try {
+            if (isForStaff() && !forAllStaff && selectedRoleName != null) {
+                newAnnouncement.setRole(staffRoleSessionBean.getRoleByName(selectedRoleName));
             }
+            
+            newAnnouncement.setIsForStaff(isForStaff());
+
+            if (announcementBean.createAnnouncement(getNewAnnouncement())) {
+                announcements.add(0, newAnnouncement);
+                MessageUtils.displayInfo("New Announcement Added");
+            } else {
+                MessageUtils.displayInfo("Announcement already Added");
+            }
+            EventBus eventBus = EventBusFactory.getDefault().eventBus();
+            FacesMessage m = new FacesMessage(StringEscapeUtils.escapeHtml(newAnnouncement.getTitle()), StringEscapeUtils.escapeHtml(newAnnouncement.getContent()));
+
+            if (!isForStaff()) {
+                System.out.println("Runs here and pushed to:" + CUSTOMER_NOTIFY_CHANNEL);
+                eventBus.publish(CUSTOMER_NOTIFY_CHANNEL, m);
+//            eventBus.publish(ROLE_NOTIFY_CHANNEL + UserRole.SUPER_ADMIN.toString(), m);
+            } else {
+                if (getForAllStaff() == false) {
+                    eventBus.publish(ROLE_NOTIFY_CHANNEL + selectedRoleName, m);
+                } else {
+                    eventBus.publish(STAFF_NOTIFY_CHANNEL, m);
+                }
+            }
+
+            setNewAnnouncement(new Announcement());
+            selectedRoleName = null;
+        } catch (StaffRoleNotFoundException e) {
+
         }
 
-        setNewAnnouncement(new Announcement());
-        selectedRoleName = null;
     }
-    
-    public Boolean isForStaff(){
-        if(annocementTarget.equals(annocementForStaff))
+
+    public Boolean isForStaff() {
+        if (annocementTarget.equals(annocementForStaff)) {
             return true;
-        else
+        } else {
             return false;
+        }
     }
 
     // Getter and Setters
@@ -235,5 +251,5 @@ public class NotificationViewManagedBean implements Serializable {
     public void setForAllCustomer(Boolean forAllCustomer) {
         this.forAllCustomer = forAllCustomer;
     }
-    
+
 }
