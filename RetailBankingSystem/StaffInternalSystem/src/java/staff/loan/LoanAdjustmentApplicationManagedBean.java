@@ -56,7 +56,7 @@ public class LoanAdjustmentApplicationManagedBean implements Serializable {
         loanAccountBean.updateLoanAdjustmentApplication(app);
         
         LoanAccount la = app.getLoanAccount();
-        Date newMaturityDate = DateUtils.addYearsToDate(la.getMaturityDate(), app.getTenure() - la.getTenure());
+        Date newMaturityDate = DateUtils.addYearsToDate(la.getPaymentStartDate(), app.getTenure());
         la.setTenure(app.getTenure());
         la.setMaturityDate(newMaturityDate);
         la.setMonthlyInstallment(loanPaymentSessionBean.calculateMonthlyInstallment(la));

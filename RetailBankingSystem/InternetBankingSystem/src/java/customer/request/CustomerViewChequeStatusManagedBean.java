@@ -35,7 +35,7 @@ public class CustomerViewChequeStatusManagedBean implements Serializable {
     
     @PostConstruct
     public void init() {
-        setCheques(chequeBean.getChequeByMainAccountId(Long.parseLong(SessionUtils.getUserId())));
+        setCheques(chequeBean.getChequeByMainAccountId(SessionUtils.getUserId()));
         System.out.println("Cheque length:" + cheques.size());
     }
 

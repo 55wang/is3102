@@ -46,7 +46,10 @@ public class LoanAccountSumaryManagedBean implements Serializable {
     public void init() {
         try{
             MainAccount ma = mainAccountSessionBean.getMainAccountByUserId(SessionUtils.getUserName());
-            loanAccounts = loanAccountBean.getActiveLoanAccountListByMainAccountId(ma.getId());
+            List<LoanAccount> activeAccounts = loanAccountBean.getActiveLoanAccountListByMainAccountId(ma.getId());
+            List<LoanAccount> suspendedAccounts = loanAccountBean.getSuspendedLoanAccountListByMainAccountId(ma.getId());
+            loanAccounts.addAll(suspendedAccounts);
+            loanAccounts.addAll(activeAccounts);
         }catch(MainAccountNotExistException ex){
             System.out.println("setMainAccount.MainAccountNotExistException");
         } 

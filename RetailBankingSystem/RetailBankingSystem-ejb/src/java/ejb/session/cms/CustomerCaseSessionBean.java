@@ -77,7 +77,7 @@ public class CustomerCaseSessionBean implements CustomerCaseSessionBeanLocal, Cu
             em.merge(customerCase);
             return customerCase;
         } catch (IllegalArgumentException e) {
-            throw new UpdateCaseException(e.getMessage());
+            throw new UpdateCaseException("Not an entity!");
         }
 
     }

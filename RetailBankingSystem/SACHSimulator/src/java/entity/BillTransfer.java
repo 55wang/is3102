@@ -22,7 +22,6 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author leiyang
  */
 @Entity
-@XmlRootElement
 public class BillTransfer implements Serializable {
 
     @Id
