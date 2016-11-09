@@ -30,7 +30,7 @@ and open the template in the editor.
                                     <h:panelGrid columns="2" cellpadding="5">
                                         <h:outputText value="Choose Your Deposit Account to transfer from: " />
                                         <p:selectOneMenu value="#{loanRepaymentManagedBean.fromAccountNo}" rendered="true" required="true">
-                                            <f:selectItems value="#{loanRepaymentManagedBean.depositAccounts}" var="a" itemValue="#{a.accountNumber}" itemLabel="#{a.product.name} #{a.accountNumber} #{a.balance.setScale(2)}" />
+                                            <f:selectItems value="#{loanRepaymentManagedBean.depositAccounts}" var="a" itemValue="#{a.accountNumber}" itemLabel="#{a.product.name} #{a.accountNumber} #{a.balance.setScale(2, RoundingMode.UP)}" />
                                         </p:selectOneMenu>
                                         <h:outputText value="Choose Your Loan Account to transfer to: " />
                                         <p:selectOneMenu value="#{loanRepaymentManagedBean.toLoanAccountNo}" rendered="true" required="true">

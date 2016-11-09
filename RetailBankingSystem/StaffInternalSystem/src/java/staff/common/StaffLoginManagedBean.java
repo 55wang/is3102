@@ -63,9 +63,9 @@ public class StaffLoginManagedBean implements Serializable {
 //        SessionUtils.setStaffAccount(sa);
 //        RedirectUtils.redirect(SessionUtils.getContextPath() + "/wealth/staff-view-investment-request.xhtml");
 
-        StaffAccount sa = staffBean.loginAccount("relationship_manager", HashPwdUtils.hashPwd("password"));
-        SessionUtils.setStaffAccount(sa);
-        RedirectUtils.redirect(SessionUtils.getContextPath() + "/crm/create_marketing_campaign.xhtml");
+//        StaffAccount sa = staffBean.loginAccount("relationship_manager", HashPwdUtils.hashPwd("password"));
+//        SessionUtils.setStaffAccount(sa);
+//        RedirectUtils.redirect(SessionUtils.getContextPath() + "/crm/create_marketing_campaign.xhtml");
 
     }
 

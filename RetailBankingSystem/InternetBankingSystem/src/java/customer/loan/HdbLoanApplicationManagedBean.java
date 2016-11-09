@@ -50,7 +50,7 @@ public class HdbLoanApplicationManagedBean implements Serializable {
     
     private Integer age;
     private Double monthlyIncome;
-    private String idNumber;
+    private String identificationNumber;
     private String lastName;
     private String firstName;
     private String phoneNumber;
@@ -141,7 +141,7 @@ public class HdbLoanApplicationManagedBean implements Serializable {
         
         LoanApplication newApplication = new LoanApplication();
         newApplication.setIdentityType(identityType);
-        newApplication.setIdentityNumber(idNumber);
+        newApplication.setIdentityNumber(getIdentificationNumber());
         newApplication.setEmail(email);
         newApplication.setBirthDay(birthday);
         newApplication.setAge(age);
@@ -195,20 +195,6 @@ public class HdbLoanApplicationManagedBean implements Serializable {
      */
     public void setMonthlyIncome(Double monthlyIncome) {
         this.monthlyIncome = monthlyIncome;
-    }
-
-    /**
-     * @return the idNumber
-     */
-    public String getIdNumber() {
-        return idNumber;
-    }
-
-    /**
-     * @param idNumber the idNumber to set
-     */
-    public void setIdNumber(String idNumber) {
-        this.idNumber = idNumber;
     }
 
     
@@ -471,6 +457,20 @@ public class HdbLoanApplicationManagedBean implements Serializable {
 
     public void setBirthday(Date birthday) {
         this.birthday = birthday;
+    }
+
+    /**
+     * @return the identificationNumber
+     */
+    public String getIdentificationNumber() {
+        return identificationNumber;
+    }
+
+    /**
+     * @param identificationNumber the identificationNumber to set
+     */
+    public void setIdentificationNumber(String identificationNumber) {
+        this.identificationNumber = identificationNumber;
     }
     
     
