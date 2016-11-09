@@ -41,6 +41,7 @@ import org.rosuda.REngine.Rserve.RserveException;
 import server.utilities.CommonUtils;
 import server.utilities.ConstantUtils;
 import server.utilities.EnumUtils;
+import util.exception.common.UpdateMainAccountException;
 
 /**
  *
@@ -74,166 +75,171 @@ public class EntityWealthBuilder {
     private String monthEndDate;
 
     public Portfolio initWealth(List<FinancialInstrument> allFinancialInstruments) {
-        //generate PortfolioModel table
-        constructPortfolioModel();
+        try {
 
-        MainAccount demoMainAccount = loginBean.getMainAccountByUserID(ConstantUtils.DEMO_MAIN_ACCOUNT_USER_ID_1);
-        demoMainAccount.getCustomer().setSavingPerMonth(500.0);
-        WealthManagementSubscriber wms = new WealthManagementSubscriber();
-        wms.setMainAccount(demoMainAccount);
-        wms.setRelationshipManager(staffAccountSessionBean.getAccountByUsername(ConstantUtils.RELATIONSHIP_MANAGER_USERNAME));
-        wms.setRiskToleranceLevel(EnumUtils.RiskToleranceLevel.ABOVE_AVERAGE_RISK_TOLERANCE);
-        wms.setRiskToleranceScore(31);
+            //generate PortfolioModel table
+            constructPortfolioModel();
 
-        wealthManegementSubscriberSessionBean.createWealthManagementSubscriber(wms);
-        demoMainAccount.setWealthManagementSubscriber(wms);
-        mainAccountSessionBean.updateMainAccount(demoMainAccount);
+            MainAccount demoMainAccount = loginBean.getMainAccountByUserID(ConstantUtils.DEMO_MAIN_ACCOUNT_USER_ID_1);
+            demoMainAccount.getCustomer().setSavingPerMonth(500.0);
+            WealthManagementSubscriber wms = new WealthManagementSubscriber();
+            wms.setMainAccount(demoMainAccount);
+            wms.setRelationshipManager(staffAccountSessionBean.getAccountByUsername(ConstantUtils.RELATIONSHIP_MANAGER_USERNAME));
+            wms.setRiskToleranceLevel(EnumUtils.RiskToleranceLevel.ABOVE_AVERAGE_RISK_TOLERANCE);
+            wms.setRiskToleranceScore(31);
 
-        InvestmentPlan investmentPlan = new InvestmentPlan();
-        investmentPlan.setAmountOfInvestment(10000);
-        List<FinancialInstrument> preferedInstruments = new ArrayList<FinancialInstrument>();
+            wealthManegementSubscriberSessionBean.createWealthManagementSubscriber(wms);
+            demoMainAccount.setWealthManagementSubscriber(wms);
+            mainAccountSessionBean.updateMainAccount(demoMainAccount);
+
+            InvestmentPlan investmentPlan = new InvestmentPlan();
+            investmentPlan.setAmountOfInvestment(10000);
+            List<FinancialInstrument> preferedInstruments = new ArrayList<>();
 //        List<FinancialInstrument> allFinancialInstruments = financialInstrumentSessionBean.getAllFinancialInstruments();
-        preferedInstruments.add(allFinancialInstruments.get(0));
-        preferedInstruments.add(allFinancialInstruments.get(2));
-        preferedInstruments.add(allFinancialInstruments.get(5));
-        preferedInstruments.add(allFinancialInstruments.get(7));
-        investmentPlan.setPreferedFinancialInstrument(preferedInstruments);
-        investmentPlan.setRemarks("test plan");
-        investmentPlan.setStatus(EnumUtils.InvestmentPlanStatus.PENDING);
-        investmentPlan.setWealthManagementSubscriber(wms);
-        investmentPlanSessionBean.createInvestmentPlan(investmentPlan);
-        List<InvestmentPlan> ips = wms.getInvestmentPlans();
-        ips.add(investmentPlan);
-        wms.setInvestmentPlans(ips);
-        wealthManegementSubscriberSessionBean.updateWealthManagementSubscriber(wms);
+            preferedInstruments.add(allFinancialInstruments.get(0));
+            preferedInstruments.add(allFinancialInstruments.get(2));
+            preferedInstruments.add(allFinancialInstruments.get(5));
+            preferedInstruments.add(allFinancialInstruments.get(7));
+            investmentPlan.setPreferedFinancialInstrument(preferedInstruments);
+            investmentPlan.setRemarks("test plan");
+            investmentPlan.setStatus(EnumUtils.InvestmentPlanStatus.PENDING);
+            investmentPlan.setWealthManagementSubscriber(wms);
+            investmentPlanSessionBean.createInvestmentPlan(investmentPlan);
+            List<InvestmentPlan> ips = wms.getInvestmentPlans();
+            ips.add(investmentPlan);
+            wms.setInvestmentPlans(ips);
+            wealthManegementSubscriberSessionBean.updateWealthManagementSubscriber(wms);
 
-        InvestmentPlan executedInvestmentPlan = new InvestmentPlan();
-        executedInvestmentPlan.setAmountOfInvestment(5000);
-        List<FinancialInstrument> preferedInstruments2 = new ArrayList<FinancialInstrument>();
-        preferedInstruments2.add(allFinancialInstruments.get(0));
-        preferedInstruments2.add(allFinancialInstruments.get(2));
-        preferedInstruments2.add(allFinancialInstruments.get(5));
-        preferedInstruments2.add(allFinancialInstruments.get(7));
-        executedInvestmentPlan.setPreferedFinancialInstrument(preferedInstruments2);
-        executedInvestmentPlan.setRemarks("test executed plan");
-        executedInvestmentPlan.setStatus(EnumUtils.InvestmentPlanStatus.EXECUTED);
-        executedInvestmentPlan.setWealthManagementSubscriber(wms);
-        Calendar cal = Calendar.getInstance();
-        Calendar xdate = (Calendar)cal.clone();
-        xdate.set(Calendar.DAY_OF_YEAR,cal.getTime().getDate() - 20 );   
-        executedInvestmentPlan.setExecutionDate(xdate.getTime());
-        investmentPlanSessionBean.createInvestmentPlan(executedInvestmentPlan);
-        List<InvestmentPlan> ips2 = wms.getInvestmentPlans();
-        ips2.add(executedInvestmentPlan);
-        wms.setInvestmentPlans(ips2);
-        wealthManegementSubscriberSessionBean.updateWealthManagementSubscriber(wms);
+            InvestmentPlan executedInvestmentPlan = new InvestmentPlan();
+            executedInvestmentPlan.setAmountOfInvestment(5000);
+            List<FinancialInstrument> preferedInstruments2 = new ArrayList<>();
+            preferedInstruments2.add(allFinancialInstruments.get(0));
+            preferedInstruments2.add(allFinancialInstruments.get(2));
+            preferedInstruments2.add(allFinancialInstruments.get(5));
+            preferedInstruments2.add(allFinancialInstruments.get(7));
+            executedInvestmentPlan.setPreferedFinancialInstrument(preferedInstruments2);
+            executedInvestmentPlan.setRemarks("test executed plan");
+            executedInvestmentPlan.setStatus(EnumUtils.InvestmentPlanStatus.EXECUTED);
+            executedInvestmentPlan.setWealthManagementSubscriber(wms);
+            Calendar cal = Calendar.getInstance();
+            Calendar xdate = (Calendar) cal.clone();
+            xdate.set(Calendar.DAY_OF_YEAR, cal.getTime().getDate() - 20);
+            executedInvestmentPlan.setExecutionDate(xdate.getTime());
+            investmentPlanSessionBean.createInvestmentPlan(executedInvestmentPlan);
+            List<InvestmentPlan> ips2 = wms.getInvestmentPlans();
+            ips2.add(executedInvestmentPlan);
+            wms.setInvestmentPlans(ips2);
+            wealthManegementSubscriberSessionBean.updateWealthManagementSubscriber(wms);
 
-        List<FinancialInstrumentAndWeight> suggestedFinancialInstruments = new ArrayList<FinancialInstrumentAndWeight>();
+            List<FinancialInstrumentAndWeight> suggestedFinancialInstruments = new ArrayList<>();
 
-        for (int i = 0; i < allFinancialInstruments.size(); i++) {
-            if (allFinancialInstruments.get(i).getName().equals(EnumUtils.FinancialInstrumentClass.CORPORATE_BONDS)) {
-                FinancialInstrumentAndWeight fiaw = new FinancialInstrumentAndWeight();
-                fiaw.setFi(allFinancialInstruments.get(i));
-                fiaw.setWeight(0.0);
-                suggestedFinancialInstruments.add(fiaw);
-            } else if (allFinancialInstruments.get(i).getName().equals(EnumUtils.FinancialInstrumentClass.DIVIDEND_GROWTH_STOCKS)) {
-                FinancialInstrumentAndWeight fiaw = new FinancialInstrumentAndWeight();
-                fiaw.setBuyingNumberOfShare(1800);
-                fiaw.setBuyingValuePerShare(1.0);
-                fiaw.setCurrentValuePerShare(1.1);
-                fiaw.setFi(allFinancialInstruments.get(i));
-                fiaw.setWeight(0.34);
-                suggestedFinancialInstruments.add(fiaw);
-            } else if (allFinancialInstruments.get(i).getName().equals(EnumUtils.FinancialInstrumentClass.EMERGING_MARKET_BONDS)) {
-                FinancialInstrumentAndWeight fiaw = new FinancialInstrumentAndWeight();
-                fiaw.setFi(allFinancialInstruments.get(i));
-                fiaw.setWeight(0.0);
-                suggestedFinancialInstruments.add(fiaw);
-            } else if (allFinancialInstruments.get(i).getName().equals(EnumUtils.FinancialInstrumentClass.EMERGING_MARKET_STOCKS)) {
-                FinancialInstrumentAndWeight fiaw = new FinancialInstrumentAndWeight();
-                fiaw.setBuyingNumberOfShare(0);
-                fiaw.setBuyingValuePerShare(0.0);
-                fiaw.setCurrentValuePerShare(0.0);
-                fiaw.setFi(allFinancialInstruments.get(i));
-                fiaw.setWeight(0.0);
-                suggestedFinancialInstruments.add(fiaw);
-            } else if (allFinancialInstruments.get(i).getName().equals(EnumUtils.FinancialInstrumentClass.FOREIGN_DEVELOPED_STOCKS)) {
-                FinancialInstrumentAndWeight fiaw = new FinancialInstrumentAndWeight();
-                fiaw.setBuyingNumberOfShare(175);
-                fiaw.setBuyingValuePerShare(2.0);
-                fiaw.setCurrentValuePerShare(2.0);
-                fiaw.setFi(allFinancialInstruments.get(i));
-                fiaw.setWeight(0.07);
-                suggestedFinancialInstruments.add(fiaw);
-            } else if (allFinancialInstruments.get(i).getName().equals(EnumUtils.FinancialInstrumentClass.MUNICIPAL_BONDS)) {
-                FinancialInstrumentAndWeight fiaw = new FinancialInstrumentAndWeight();
-                fiaw.setBuyingNumberOfShare(25);
-                fiaw.setBuyingValuePerShare(2.0);
-                fiaw.setCurrentValuePerShare(2.1);
-                fiaw.setFi(allFinancialInstruments.get(i));
-                fiaw.setWeight(0.01);
-                suggestedFinancialInstruments.add(fiaw);
-            } else if (allFinancialInstruments.get(i).getName().equals(EnumUtils.FinancialInstrumentClass.NATURAL_RESOURCES)) {
-                FinancialInstrumentAndWeight fiaw = new FinancialInstrumentAndWeight();
-                fiaw.setBuyingNumberOfShare(200);
-                fiaw.setBuyingValuePerShare(3.0);
-                fiaw.setCurrentValuePerShare(2.9);
-                fiaw.setFi(allFinancialInstruments.get(i));
-                fiaw.setWeight(0.12);
-                suggestedFinancialInstruments.add(fiaw);
-            } else if (allFinancialInstruments.get(i).getName().equals(EnumUtils.FinancialInstrumentClass.REAL_ESTATE)) {
-                FinancialInstrumentAndWeight fiaw = new FinancialInstrumentAndWeight();
-                fiaw.setBuyingNumberOfShare(30);
-                fiaw.setBuyingValuePerShare(5.0);
-                fiaw.setCurrentValuePerShare(4.8);
-                fiaw.setFi(allFinancialInstruments.get(i));
-                fiaw.setWeight(0.12);
-                suggestedFinancialInstruments.add(fiaw);
-            } else if (allFinancialInstruments.get(i).getName().equals(EnumUtils.FinancialInstrumentClass.TREASURY_INFLATION_PROTECTED_SECURITIES)) {
-                FinancialInstrumentAndWeight fiaw = new FinancialInstrumentAndWeight();
-                fiaw.setFi(allFinancialInstruments.get(i));
-                fiaw.setWeight(0.0);
-                suggestedFinancialInstruments.add(fiaw);
-            } else if (allFinancialInstruments.get(i).getName().equals(EnumUtils.FinancialInstrumentClass.US_GOVERNMENT_BONDS)) {
-                FinancialInstrumentAndWeight fiaw = new FinancialInstrumentAndWeight();
-                fiaw.setBuyingNumberOfShare(400);
-                fiaw.setBuyingValuePerShare(1.0);
-                fiaw.setCurrentValuePerShare(1.2);
-                fiaw.setFi(allFinancialInstruments.get(i));
-                fiaw.setWeight(0.08);
-                suggestedFinancialInstruments.add(fiaw);
-            } else if (allFinancialInstruments.get(i).getName().equals(EnumUtils.FinancialInstrumentClass.US_STOCKS)) {
-                FinancialInstrumentAndWeight fiaw = new FinancialInstrumentAndWeight();
-                fiaw.setBuyingNumberOfShare(550);
-                fiaw.setBuyingValuePerShare(3.0);
-                fiaw.setCurrentValuePerShare(3.5);
-                fiaw.setFi(allFinancialInstruments.get(i));
-                fiaw.setWeight(0.33);
-                suggestedFinancialInstruments.add(fiaw);
+            for (int i = 0; i < allFinancialInstruments.size(); i++) {
+                if (allFinancialInstruments.get(i).getName().equals(EnumUtils.FinancialInstrumentClass.CORPORATE_BONDS)) {
+                    FinancialInstrumentAndWeight fiaw = new FinancialInstrumentAndWeight();
+                    fiaw.setFi(allFinancialInstruments.get(i));
+                    fiaw.setWeight(0.0);
+                    suggestedFinancialInstruments.add(fiaw);
+                } else if (allFinancialInstruments.get(i).getName().equals(EnumUtils.FinancialInstrumentClass.DIVIDEND_GROWTH_STOCKS)) {
+                    FinancialInstrumentAndWeight fiaw = new FinancialInstrumentAndWeight();
+                    fiaw.setBuyingNumberOfShare(1800);
+                    fiaw.setBuyingValuePerShare(1.0);
+                    fiaw.setCurrentValuePerShare(1.1);
+                    fiaw.setFi(allFinancialInstruments.get(i));
+                    fiaw.setWeight(0.34);
+                    suggestedFinancialInstruments.add(fiaw);
+                } else if (allFinancialInstruments.get(i).getName().equals(EnumUtils.FinancialInstrumentClass.EMERGING_MARKET_BONDS)) {
+                    FinancialInstrumentAndWeight fiaw = new FinancialInstrumentAndWeight();
+                    fiaw.setFi(allFinancialInstruments.get(i));
+                    fiaw.setWeight(0.0);
+                    suggestedFinancialInstruments.add(fiaw);
+                } else if (allFinancialInstruments.get(i).getName().equals(EnumUtils.FinancialInstrumentClass.EMERGING_MARKET_STOCKS)) {
+                    FinancialInstrumentAndWeight fiaw = new FinancialInstrumentAndWeight();
+                    fiaw.setBuyingNumberOfShare(0);
+                    fiaw.setBuyingValuePerShare(0.0);
+                    fiaw.setCurrentValuePerShare(0.0);
+                    fiaw.setFi(allFinancialInstruments.get(i));
+                    fiaw.setWeight(0.0);
+                    suggestedFinancialInstruments.add(fiaw);
+                } else if (allFinancialInstruments.get(i).getName().equals(EnumUtils.FinancialInstrumentClass.FOREIGN_DEVELOPED_STOCKS)) {
+                    FinancialInstrumentAndWeight fiaw = new FinancialInstrumentAndWeight();
+                    fiaw.setBuyingNumberOfShare(175);
+                    fiaw.setBuyingValuePerShare(2.0);
+                    fiaw.setCurrentValuePerShare(2.0);
+                    fiaw.setFi(allFinancialInstruments.get(i));
+                    fiaw.setWeight(0.07);
+                    suggestedFinancialInstruments.add(fiaw);
+                } else if (allFinancialInstruments.get(i).getName().equals(EnumUtils.FinancialInstrumentClass.MUNICIPAL_BONDS)) {
+                    FinancialInstrumentAndWeight fiaw = new FinancialInstrumentAndWeight();
+                    fiaw.setBuyingNumberOfShare(25);
+                    fiaw.setBuyingValuePerShare(2.0);
+                    fiaw.setCurrentValuePerShare(2.1);
+                    fiaw.setFi(allFinancialInstruments.get(i));
+                    fiaw.setWeight(0.01);
+                    suggestedFinancialInstruments.add(fiaw);
+                } else if (allFinancialInstruments.get(i).getName().equals(EnumUtils.FinancialInstrumentClass.NATURAL_RESOURCES)) {
+                    FinancialInstrumentAndWeight fiaw = new FinancialInstrumentAndWeight();
+                    fiaw.setBuyingNumberOfShare(200);
+                    fiaw.setBuyingValuePerShare(3.0);
+                    fiaw.setCurrentValuePerShare(2.9);
+                    fiaw.setFi(allFinancialInstruments.get(i));
+                    fiaw.setWeight(0.12);
+                    suggestedFinancialInstruments.add(fiaw);
+                } else if (allFinancialInstruments.get(i).getName().equals(EnumUtils.FinancialInstrumentClass.REAL_ESTATE)) {
+                    FinancialInstrumentAndWeight fiaw = new FinancialInstrumentAndWeight();
+                    fiaw.setBuyingNumberOfShare(30);
+                    fiaw.setBuyingValuePerShare(5.0);
+                    fiaw.setCurrentValuePerShare(4.8);
+                    fiaw.setFi(allFinancialInstruments.get(i));
+                    fiaw.setWeight(0.12);
+                    suggestedFinancialInstruments.add(fiaw);
+                } else if (allFinancialInstruments.get(i).getName().equals(EnumUtils.FinancialInstrumentClass.TREASURY_INFLATION_PROTECTED_SECURITIES)) {
+                    FinancialInstrumentAndWeight fiaw = new FinancialInstrumentAndWeight();
+                    fiaw.setFi(allFinancialInstruments.get(i));
+                    fiaw.setWeight(0.0);
+                    suggestedFinancialInstruments.add(fiaw);
+                } else if (allFinancialInstruments.get(i).getName().equals(EnumUtils.FinancialInstrumentClass.US_GOVERNMENT_BONDS)) {
+                    FinancialInstrumentAndWeight fiaw = new FinancialInstrumentAndWeight();
+                    fiaw.setBuyingNumberOfShare(400);
+                    fiaw.setBuyingValuePerShare(1.0);
+                    fiaw.setCurrentValuePerShare(1.2);
+                    fiaw.setFi(allFinancialInstruments.get(i));
+                    fiaw.setWeight(0.08);
+                    suggestedFinancialInstruments.add(fiaw);
+                } else if (allFinancialInstruments.get(i).getName().equals(EnumUtils.FinancialInstrumentClass.US_STOCKS)) {
+                    FinancialInstrumentAndWeight fiaw = new FinancialInstrumentAndWeight();
+                    fiaw.setBuyingNumberOfShare(550);
+                    fiaw.setBuyingValuePerShare(3.0);
+                    fiaw.setCurrentValuePerShare(3.5);
+                    fiaw.setFi(allFinancialInstruments.get(i));
+                    fiaw.setWeight(0.33);
+                    suggestedFinancialInstruments.add(fiaw);
+                }
             }
+
+            executedInvestmentPlan.setSuggestedFinancialInstruments(suggestedFinancialInstruments);
+            executedInvestmentPlan.setSystemPredictReturn(0.053);
+            executedInvestmentPlan.setSystemPredictRisk(31);
+            executedInvestmentPlan.setRiskLevel(EnumUtils.InvestmentRiskLevel.ABOVE_AVERAGE_RISK);
+
+            Portfolio p = new Portfolio();
+            p.setStatus(EnumUtils.PortfolioStatus.BOUGHT);
+            portfolioSessionBean.createPortfolio(p);
+            p.setExecutedInvestmentPlan(executedInvestmentPlan);
+            p.setWealthManagementSubscriber(wms);
+            portfolioSessionBean.updatePortfolio(p);
+            executedInvestmentPlan.setPortfolio(p);
+            investmentPlanSessionBean.updateInvestmentPlan(executedInvestmentPlan);
+            List<Portfolio> ps = wms.getPortfolios();
+            ps.add(p);
+            wms.setPortfolios(ps);
+
+            wealthManegementSubscriberSessionBean.updateWealthManagementSubscriber(wms);
+
+            return p;
+        } catch (UpdateMainAccountException e) {
+            System.out.println("Exception at entityWealth builder");
+            return null;
         }
-
-        executedInvestmentPlan.setSuggestedFinancialInstruments(suggestedFinancialInstruments);
-        executedInvestmentPlan.setSystemPredictReturn(0.053);
-        executedInvestmentPlan.setSystemPredictRisk(31);
-        executedInvestmentPlan.setRiskLevel(EnumUtils.InvestmentRiskLevel.ABOVE_AVERAGE_RISK);
-
-        Portfolio p = new Portfolio();
-        p.setStatus(EnumUtils.PortfolioStatus.BOUGHT);
-        portfolioSessionBean.createPortfolio(p);
-        p.setExecutedInvestmentPlan(executedInvestmentPlan);
-        p.setWealthManagementSubscriber(wms);
-        portfolioSessionBean.updatePortfolio(p);
-        executedInvestmentPlan.setPortfolio(p);
-        investmentPlanSessionBean.updateInvestmentPlan(executedInvestmentPlan);
-        List<Portfolio> ps = wms.getPortfolios();
-        ps.add(p);
-        wms.setPortfolios(ps);
-        
-        wealthManegementSubscriberSessionBean.updateWealthManagementSubscriber(wms);
-        
-
-        return p;
     }
 
     public Portfolio initPortfolioFactTable2(MainAccount ma, List<FinancialInstrument> allFinancialInstruments) {
@@ -241,7 +247,7 @@ public class EntityWealthBuilder {
         //2nd portfolio
         InvestmentPlan executedInvestmentPlan = new InvestmentPlan();
         executedInvestmentPlan.setAmountOfInvestment(15000);
-        List<FinancialInstrument> preferedInstruments = new ArrayList<FinancialInstrument>();
+        List<FinancialInstrument> preferedInstruments = new ArrayList<>();
 //        List<FinancialInstrument> allFinancialInstruments = financialInstrumentSessionBean.getAllFinancialInstruments();
         preferedInstruments.add(allFinancialInstruments.get(0));
         preferedInstruments.add(allFinancialInstruments.get(2));
@@ -252,15 +258,14 @@ public class EntityWealthBuilder {
         executedInvestmentPlan.setStatus(EnumUtils.InvestmentPlanStatus.EXECUTED);
         executedInvestmentPlan.setWealthManagementSubscriber(ma.getWealthManagementSubscriber());
         Calendar cal = Calendar.getInstance();
-        Calendar xdate = (Calendar)cal.clone();
-        xdate.set(Calendar.DAY_OF_YEAR,cal.getTime().getDay() - 50 );   
+        Calendar xdate = (Calendar) cal.clone();
+        xdate.set(Calendar.DAY_OF_YEAR, cal.getTime().getDay() - 50);
         executedInvestmentPlan.setExecutionDate(xdate.getTime());
         investmentPlanSessionBean.createInvestmentPlan(executedInvestmentPlan);
         List<InvestmentPlan> ips3 = ma.getWealthManagementSubscriber().getInvestmentPlans();
         ips3.add(executedInvestmentPlan);
         ma.getWealthManagementSubscriber().setInvestmentPlans(ips3);
         wealthManegementSubscriberSessionBean.updateWealthManagementSubscriber(ma.getWealthManagementSubscriber());
-        
 
         List<FinancialInstrumentAndWeight> suggestedFinancialInstruments = new ArrayList<FinancialInstrumentAndWeight>();
 
@@ -365,11 +370,11 @@ public class EntityWealthBuilder {
         List<Portfolio> ps = ma.getWealthManagementSubscriber().getPortfolios();
         ps.add(p3);
         ma.getWealthManagementSubscriber().setPortfolios(ps);
-        
+
         ma.getWealthManagementSubscriber().setMonthlyAdvisoryFee(2.05);
         ma.getWealthManagementSubscriber().setAccumulatedAdvisoryFee(0.99);
         ma.getWealthManagementSubscriber().setAdvisoryFeeClearDate(p3.getExecutedInvestmentPlan().getExecutionDate());
-        
+
         wealthManegementSubscriberSessionBean.updateWealthManagementSubscriber(ma.getWealthManagementSubscriber());
 
         return p3;
@@ -464,7 +469,7 @@ public class EntityWealthBuilder {
         for (int i = 0; i < data.size(); i++) {
             FinancialInstrumentFactTable fif = new FinancialInstrumentFactTable();
             fif.setFi(financialInstrument);
-            
+
             JsonArray innerData = (JsonArray) data.getJsonArray(i);
             System.out.println(innerData.get(0) + " " + innerData.get(1));
 
@@ -513,7 +518,7 @@ public class EntityWealthBuilder {
         cEnd.set(Calendar.DAY_OF_MONTH, cEnd.getActualMaximum(Calendar.DAY_OF_MONTH));
         setMonthEndDate(new SimpleDateFormat("yyyy-MM-dd").format(cEnd.getTime()));
     }
-    
+
     public String getCurrentDate() {
         return currentDate;
     }

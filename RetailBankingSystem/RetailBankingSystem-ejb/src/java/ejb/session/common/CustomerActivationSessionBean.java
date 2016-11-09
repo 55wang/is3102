@@ -42,18 +42,17 @@ public class CustomerActivationSessionBean implements CustomerActivationSessionB
     }
     
     @Override
-    public Boolean updateAccountStatus(MainAccount mainAccount){
-        Long id = mainAccount.getId();
-       
+    public MainAccount updateAccountStatus(MainAccount mainAccount){
+        
         try{
+            String id = mainAccount.getId();
             MainAccount ma = (MainAccount) em.find(MainAccount.class , id); 
             ma.setStatus(EnumUtils.StatusType.ACTIVE);
             em.merge(ma);
             em.flush();
-            return true;
-        }
-        catch (Exception ex) {
-            return false;
+            return ma;
+        } catch (Exception ex) {
+            return null;
         }
     }
 }

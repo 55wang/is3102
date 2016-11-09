@@ -172,7 +172,7 @@ public class TransferSessionBean implements TransferSessionBeanLocal {
     }
 
     @Override
-    public List<Payee> getPayeeFromUserIdWithType(Long userId, EnumUtils.PayeeType type) {
+    public List<Payee> getPayeeFromUserIdWithType(String userId, EnumUtils.PayeeType type) {
         Query q = em.createQuery("SELECT p FROM Payee p WHERE p.mainAccount.id =:userId AND p.type = :inType");
         q.setParameter("userId", userId);
         q.setParameter("inType", type);

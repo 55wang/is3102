@@ -14,10 +14,7 @@ import ejb.session.utils.UtilsSessionBeanLocal;
 import entity.customer.Customer;
 import entity.customer.MainAccount;
 import entity.dams.account.CustomerDepositAccount;
-import entity.dams.account.DepositProduct;
 import java.io.Serializable;
-import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -36,6 +33,7 @@ import server.utilities.EnumUtils.Nationality;
 import server.utilities.EnumUtils.StatusType;
 import server.utilities.PincodeGenerationUtils;
 import server.utilities.CommonUtils;
+import util.exception.common.DuplicateMainAccountExistException;
 import utils.JSUtils;
 import utils.MessageUtils;
 import utils.RedirectUtils;
@@ -50,7 +48,7 @@ public class CustomerApplicationManagedBean implements Serializable {
 
     @EJB
     private UtilsSessionBeanLocal utilsSessionBean;
-    
+
     @EJB
     private MainAccountSessionBeanLocal mainAccountSessionBean;
 
@@ -81,7 +79,7 @@ public class CustomerApplicationManagedBean implements Serializable {
     private String selectedOccupation;
     private String selectedIncome;
     private Date currentDate = new Date();
-    
+
     private final DepositAccountType FIXED_DEPOSIT_PRODUCT = DepositAccountType.FIXED;
 
     /**
@@ -125,39 +123,45 @@ public class CustomerApplicationManagedBean implements Serializable {
 
     public void save() {
 
-        MainAccount mainAccount = new MainAccount();
-        mainAccount.setStatus(StatusType.PENDING);
-        mainAccount.setUserID(generateUserID(IdentityType.NRIC, customer.getIdentityNumber()));
-        String randomPwd = PincodeGenerationUtils.generatePwd();
-        mainAccount.setPassword(randomPwd);
-        mainAccount = mainAccountSessionBean.createMainAccount(mainAccount);
-
-        customer.setIncome(Income.getEnum(selectedIncome));
-        customer.setNationality(Nationality.getEnum(selectedNationality));
-        customer.setGender(Gender.getEnum(selectedGender));
-        customer.setMainAccount(mainAccount);
-        newCustomerSessionBean.createCustomer(customer);
-
-        CustomerDepositAccount depostiAccount = new CustomerDepositAccount();
-        depostiAccount.setMainAccount(mainAccount);
-        if (initialDepositAccount.equals(ConstantUtils.DEMO_CURRENT_DEPOSIT_PRODUCT_NAME)) {
-            depostiAccount.setType(DepositAccountType.CURRENT);
-        } else if (initialDepositAccount.equals(ConstantUtils.DEMO_CUSTOM_DEPOSIT_PRODUCT_NAME)) {
-            depostiAccount.setType(DepositAccountType.CUSTOM);
-        }
-
-        depostiAccount.setProduct(depositProductBean.getDepositProductByName(initialDepositAccount));
-
-        depositAccountBean.createAccount(depostiAccount);
-
         try {
-            emailServiceSessionBean.sendActivationGmailForCustomer(customer.getEmail(), randomPwd);
-            RedirectUtils.redirect("../common/register_successful.xhtml");
-        } catch (Exception ex) {
-            setEmailSuccessFlag((Boolean) false);
-        }
 
-//        emailServiceSessionBean.sendActivationEmailForCustomer(customer.getEmail());
+            MainAccount mainAccount = new MainAccount();
+            mainAccount.setStatus(StatusType.PENDING);
+            mainAccount.setUserID(generateUserID(IdentityType.NRIC, customer.getIdentityNumber()));
+            String randomPwd = PincodeGenerationUtils.generatePwd();
+            mainAccount.setPassword(randomPwd);
+
+            mainAccount = mainAccountSessionBean.createMainAccount(mainAccount);
+
+            customer.setIncome(Income.getEnum(selectedIncome));
+            customer.setNationality(Nationality.getEnum(selectedNationality));
+            customer.setGender(Gender.getEnum(selectedGender));
+            customer.setMainAccount(mainAccount);
+            newCustomerSessionBean.createCustomer(customer);
+
+            CustomerDepositAccount depostiAccount = new CustomerDepositAccount();
+            depostiAccount.setMainAccount(mainAccount);
+            if (initialDepositAccount.equals(ConstantUtils.DEMO_CURRENT_DEPOSIT_PRODUCT_NAME)) {
+                depostiAccount.setType(DepositAccountType.CURRENT);
+            } else if (initialDepositAccount.equals(ConstantUtils.DEMO_CUSTOM_DEPOSIT_PRODUCT_NAME)) {
+                depostiAccount.setType(DepositAccountType.CUSTOM);
+            }
+
+            depostiAccount.setProduct(depositProductBean.getDepositProductByName(initialDepositAccount));
+
+            depositAccountBean.createAccount(depostiAccount);
+
+            try {
+                emailServiceSessionBean.sendActivationGmailForCustomer(customer.getEmail(), randomPwd);
+                RedirectUtils.redirect("../common/register_successful.xhtml");
+            } catch (Exception ex) {
+                setEmailSuccessFlag((Boolean) false);
+            }
+
+        } catch (DuplicateMainAccountExistException e) {
+            System.out.println("DuplicateMainAccountExistException thrown at CustomerApplicationManagedBean.java save()");
+            MessageUtils.displayError("Not saved!");
+        }
     }
 
     public String onFlowProcess(FlowEvent event) {
@@ -270,6 +274,7 @@ public class CustomerApplicationManagedBean implements Serializable {
     public void setSelectedOccupation(String selectedOccupation) {
         this.selectedOccupation = selectedOccupation;
     }
+
     /**
      * @return the currentDate
      */

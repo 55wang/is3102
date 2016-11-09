@@ -19,6 +19,7 @@ import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import server.utilities.EnumUtils;
+import util.exception.common.MainAccountNotExistException;
 import utils.SessionUtils;
 
 /**
@@ -28,14 +29,14 @@ import utils.SessionUtils;
 @Named(value = "riskToleranceQuizManagedBean")
 @ViewScoped
 public class RiskToleranceQuizManagedBean implements Serializable {
+
     @EJB
     private StaffAccountSessionBeanLocal staffAccountSessionBean;
     @EJB
     private MainAccountSessionBeanLocal mainAccountSessionBean;
     @EJB
     private WealthManegementSubscriberSessionBeanLocal wealthManegementSubscriberSessionBean;
-    
-    
+
     private WealthManagementSubscriber wms;
     private MainAccount mainAccount;
     private Boolean retakeOrNot = false;
@@ -43,57 +44,64 @@ public class RiskToleranceQuizManagedBean implements Serializable {
     private List<Integer> riskScores = new ArrayList<Integer>();
     private int selectValue = 0;
     private Double savingAmount;
+
     /**
      * Creates a new instance of RiskToleranceQuizManagedBean
      */
     public RiskToleranceQuizManagedBean() {
     }
-    
+
     // Followed by @PostConstruct
     @PostConstruct
     public void init() {
-        setMainAccount(mainAccountSessionBean.getMainAccountByUserId(SessionUtils.getUserName()));
-        WealthManagementSubscriber newwms = mainAccount.getWealthManagementSubscriber();
-        if(newwms == null){
-            wms = new WealthManagementSubscriber();
-        }else{
-            setWms(mainAccount.getWealthManagementSubscriber());
+        try {
+            setMainAccount(mainAccountSessionBean.getMainAccountByUserId(SessionUtils.getUserName()));
+            WealthManagementSubscriber newwms = mainAccount.getWealthManagementSubscriber();
+            if (newwms == null) {
+                wms = new WealthManagementSubscriber();
+            } else {
+                setWms(mainAccount.getWealthManagementSubscriber());
+            }
+        } catch (MainAccountNotExistException e) {
+            System.out.println("MainAccountNotExistException thrown at RiskToleranceQuizManagedBean init()");
         }
+
     }
-    
-    public void retakeQuiz(){
+
+    public void retakeQuiz() {
         questionNumber = 1;
-        setRetakeOrNot(true);   
+        setRetakeOrNot(true);
     }
-    
-    public void back(){
+
+    public void back() {
         questionNumber--;
-        riskScores.remove(riskScores.size()-1);
+        riskScores.remove(riskScores.size() - 1);
         selectValue = 0;
     }
-    
-    public void next(){
+
+    public void next() {
         questionNumber++;
         riskScores.add(selectValue);
         selectValue = 0;
     }
-    
-    public void submit(){
+
+    public void submit() {
         System.out.println("submit button pressed: ");
         System.out.println(savingAmount);
         mainAccount.getCustomer().setSavingPerMonth(savingAmount);
         wms.setRiskToleranceScore(totalScore());
-        if(totalScore() < 18)
+        if (totalScore() < 18) {
             wms.setRiskToleranceLevel(EnumUtils.RiskToleranceLevel.LOW_RISK_TOLERANCE);
-        else if(totalScore() < 22)
+        } else if (totalScore() < 22) {
             wms.setRiskToleranceLevel(EnumUtils.RiskToleranceLevel.BELOW_AVERAGE_RISK_TOLERANCE);
-        else if(totalScore() < 28)
+        } else if (totalScore() < 28) {
             wms.setRiskToleranceLevel(EnumUtils.RiskToleranceLevel.AVERAGE_RISK_TOLERANCE);
-        else if(totalScore() < 32)
+        } else if (totalScore() < 32) {
             wms.setRiskToleranceLevel(EnumUtils.RiskToleranceLevel.ABOVE_AVERAGE_RISK_TOLERANCE);
-        else
+        } else {
             wms.setRiskToleranceLevel(EnumUtils.RiskToleranceLevel.HIGH_RISK_ROLERANCE);
-        
+        }
+
         wms.setMainAccount(mainAccount);
         StaffAccount rm = new StaffAccount();
         rm = staffAccountSessionBean.getAccountByUsername("relationship_manager");
@@ -103,18 +111,19 @@ public class RiskToleranceQuizManagedBean implements Serializable {
         rm.setWealthManagementSubscribers(wmsList);
         mainAccount.setWealthManagementSubscriber(wms);
         setWms(wealthManegementSubscriberSessionBean.updateWealthManagementSubscriber(wms));
-        
+
         setRetakeOrNot(false);
-    }   
-    
-    private Integer totalScore(){
-        System.out.println("riskscore size: "+riskScores.size());
+    }
+
+    private Integer totalScore() {
+        System.out.println("riskscore size: " + riskScores.size());
         int total = 0;
-        for(int i = 0; i < riskScores.size(); i++)
-            total+=riskScores.get(i);
+        for (int i = 0; i < riskScores.size(); i++) {
+            total += riskScores.get(i);
+        }
         return total;
     }
-    
+
     public WealthManagementSubscriber getWms() {
         return wms;
     }

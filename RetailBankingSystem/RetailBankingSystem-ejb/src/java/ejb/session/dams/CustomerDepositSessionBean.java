@@ -170,14 +170,14 @@ public class CustomerDepositSessionBean implements CustomerDepositSessionBeanLoc
     }
 
     @Override
-    public List<CustomerDepositAccount> getAllNonFixedCustomerAccounts(Long mainAccountId) {
+    public List<CustomerDepositAccount> getAllNonFixedCustomerAccounts(String mainAccountId) {
         Query q = em.createQuery("SELECT ba FROM CustomerDepositAccount ba WHERE ba.mainAccount.id =:mainAccountId");
         q.setParameter("mainAccountId", mainAccountId);
         return q.getResultList();
     }
 
     @Override
-    public List<CustomerFixedDepositAccount> getAllFixedCustomerAccounts(Long mainAccountId) {
+    public List<CustomerFixedDepositAccount> getAllFixedCustomerAccounts(String mainAccountId) {
         Query q = em.createQuery("SELECT ba FROM CustomerFixedDepositAccount ba WHERE ba.mainAccount.id =:mainAccountId");
         q.setParameter("mainAccountId", mainAccountId);
         return q.getResultList();

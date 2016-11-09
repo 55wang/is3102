@@ -31,101 +31,101 @@ import util.exception.cms.UpdateCustomerException;
  */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 
-    public class CustomerProfileTest implements Serializable{
+public class CustomerProfileTest implements Serializable {
+
     CustomerProfileSessionBeanRemote customerProfileSessionBean = lookupCustomerProfileSessionBeanRemote();
-    
-    
+
     private static String revertInfo;
     private static String TEST_ID;
-    
+
     public CustomerProfileTest() {
     }
-    
+
     @BeforeClass
     public static void setUpClass() {
     }
-    
+
     @AfterClass
     public static void tearDownClass() {
     }
-    
+
     @Before
     public void setUp() {
     }
-    
+
     @After
     public void tearDown() {
     }
-    
+
     @Test()
-    public void test01getCustomerByUserID() throws CustomerNotExistException{
-        System.out.println("CustomerProfileTest.test01getCustomerByID");   
+    public void test01getCustomerByUserID() throws CustomerNotExistException {
+        System.out.println("CustomerProfileTest.test01getCustomerByID");
         Customer result = customerProfileSessionBean.getCustomerByUserID("c1234567");
-        assertNotNull(result);        
+        assertNotNull(result);
     }
-    
-    @Test(expected=CustomerNotExistException.class)
+
+    @Test(expected = CustomerNotExistException.class)
     public void test02getCustomerByUserIDException() throws CustomerNotExistException {
-        System.out.println("CustomerProfileTest.test02getCustomerByUserIDException");   
+        System.out.println("CustomerProfileTest.test02getCustomerByUserIDException");
         Customer result = customerProfileSessionBean.getCustomerByUserID("c1234568");
-        assertNotNull(result);        
+        assertNotNull(result);
     }
-    
+
     @Test
     public void test03saveProfile() throws UpdateCustomerException, CustomerNotExistException {
         System.out.println("CustomerProfileTest.test03saveProfile");
         Customer tester = customerProfileSessionBean.getCustomerByUserID("c1234567");
-        revertInfo=tester.getLastname();
+        revertInfo = tester.getLastname();
         TEST_ID = tester.getId();
-        System.out.println("!!!"+revertInfo);
+        System.out.println("!!!" + revertInfo);
         tester.setLastname("test");
-        Customer result = customerProfileSessionBean.updateCustomer(tester);  
+        Customer result = customerProfileSessionBean.updateCustomer(tester);
         assertEquals(result, tester);
     }
-    
+
     @Test
     public void test04revertSaveProfile() throws UpdateCustomerException, CustomerNotExistException {
         System.out.println("CustomerProfileTest.test04revertSaveProfile");
         Customer tester = customerProfileSessionBean.getCustomerByUserID("c1234567");
-        System.out.println("!!!2"+revertInfo);
+        System.out.println("!!!2" + revertInfo);
         tester.setLastname(revertInfo);
-        Customer result = customerProfileSessionBean.updateCustomer(tester);  
+        Customer result = customerProfileSessionBean.updateCustomer(tester);
         assertNotNull(result);
     }
-    
+
     @Test
     public void test05retrieveActivatedCustomers() {
         System.out.println("CustomerProfileTest.test05retrieveActivatedCustomers");
         List<Customer> resultlist = customerProfileSessionBean.retrieveActivatedCustomers();
         assertNotNull(resultlist);
     }
-    
+
     @Test
     public void test07searchCustomerByIdentityNumber() throws CustomerNotExistException {
-        System.out.println("CustomerProfileTest.test07searchCustomerByIdentityNumber");   
+        System.out.println("CustomerProfileTest.test07searchCustomerByIdentityNumber");
         Customer tester = customerProfileSessionBean.searchCustomerByIdentityNumber("S1234567Z");
-        assertNotNull(tester);        
+        assertNotNull(tester);
     }
-    
-    @Test(expected=CustomerNotExistException.class)
+
+    @Test(expected = CustomerNotExistException.class)
     public void test08searchCustomerByIdentityNumberException() throws CustomerNotExistException {
-        System.out.println("CustomerProfileTest.test08searchCustomerByIdentityNumber");   
+        System.out.println("CustomerProfileTest.test08searchCustomerByIdentityNumber");
         Customer tester = customerProfileSessionBean.searchCustomerByIdentityNumber("S1234567X");
-        assertNotNull(tester);        
+        assertNotNull(tester);
     }
-    
+
     @Test
     public void test09getCustomerByID() throws CustomerNotExistException {
-        System.out.println("CustomerProfileTest.test09getCustomerByID");   
+        System.out.println("CustomerProfileTest.test09getCustomerByID");
         Customer tester = customerProfileSessionBean.getCustomerByID(TEST_ID);
-        assertNotNull(tester);        
+        assertNotNull(tester);
     }
-    
-    @Test(expected=CustomerNotExistException.class)
+
+    @Test(expected = CustomerNotExistException.class)
     public void test10getCustomerByIDException() throws CustomerNotExistException {
-        System.out.println("CustomerProfileTest.test10getCustomerByIDException");   
+        System.out.println("CustomerProfileTest.test10getCustomerByIDException");
         Customer tester = customerProfileSessionBean.getCustomerByID("123");
-        assertNotNull(tester);        
+        assertNotNull(tester);
     }
 
     // TODO add test methods here.
@@ -133,7 +133,6 @@ import util.exception.cms.UpdateCustomerException;
     //
     // @Test
     // public void hello() {}
-
     private CustomerProfileSessionBeanRemote lookupCustomerProfileSessionBeanRemote() {
         try {
             Context c = new InitialContext();
@@ -143,6 +142,5 @@ import util.exception.cms.UpdateCustomerException;
             throw new RuntimeException(ne);
         }
     }
-
 
 }

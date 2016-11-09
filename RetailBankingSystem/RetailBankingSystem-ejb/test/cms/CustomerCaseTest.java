@@ -37,7 +37,7 @@ import util.exception.cms.UpdateCaseException;
  */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 
-public class CustomerCaseTest implements Serializable{
+public class CustomerCaseTest implements Serializable {
     
     CustomerCaseSessionBeanRemote customerCaseSessionBean = lookupCustomerCaseSessionBeanRemote();
     StaffAccountSessionBeanRemote staffBean = lookupStaffAccountSessionBeanRemote();
@@ -98,7 +98,7 @@ public class CustomerCaseTest implements Serializable{
     }
     
     @Test(expected=UpdateCaseException.class)
-    public void test04updateCaseSaveException() throws UpdateCaseException, DuplicateCaseExistException {
+    public void test04updateCaseSaveException() throws UpdateCaseException {
         System.out.println("CustomerCaseTest.test04updateCaseSaveException");   
         CustomerCase testCase = new CustomerCase();
         CustomerCase result = customerCaseSessionBean.updateCase(testCase);
