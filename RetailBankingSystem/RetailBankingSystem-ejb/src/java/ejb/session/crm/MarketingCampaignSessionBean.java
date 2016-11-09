@@ -43,6 +43,11 @@ public class MarketingCampaignSessionBean implements MarketingCampaignSessionBea
     @Override
     public AdsBannerCampaign getMarketingCampaignByCustomer(Customer c) {
         System.out.println("getMarketingCampaignByCustomer()");
+        
+        Query q = em.createQuery("SELECT c FROM Customer c WHERE c.id =:inId");
+        q.setParameter("inId", c.getId());
+        c = (Customer) q.getSingleResult();
+        
         System.out.println("customerGroup size: " + c.getCustomerGroups().size());
         Set<AdsBannerCampaign> mcHashSet = new HashSet<>();
 

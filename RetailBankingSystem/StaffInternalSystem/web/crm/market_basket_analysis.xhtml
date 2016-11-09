@@ -26,16 +26,16 @@
                             <p:column headerText="Id">
                                 <h:outputText value="#{rule.id}" />
                             </p:column>
-                            <p:column headerText="Antecedent">
+                            <p:column headerText="Antecedent" sortBy="#{rule.antecedent}">
                                 <h:outputText value="#{rule.antecedent}" />
                             </p:column>
-                            <p:column headerText="Consequent">
+                            <p:column headerText="Consequent" sortBy="#{rule.consequent}">
                                 <h:outputText value="#{rule.consequent}"/>
                             </p:column>
-                            <p:column headerText="Confidence">
+                            <p:column headerText="Confidence" sortBy="#{rule.confidence}">
                                 <h:outputText value="#{rule.confidence}" />
                             </p:column>
-                            <p:column headerText="Lift">
+                            <p:column headerText="Lift" sortBy="#{rule.lift}">
                                 <h:outputText value="#{rule.lift}" />
                             </p:column>
                         </p:dataTable>

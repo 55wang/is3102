@@ -19,48 +19,52 @@
     <cc:implementation>
         <em:cssImport></em:cssImport>  
         <c:if test="#{cc.attrs.advertismentType == 'deposit'}">
-            <div class="ads-banner-holder deposit-holder">
-                <div class="deposit">
-                    <a href="#{cc.attrs.landingPageUrl}">
-                        <div class="ads-banner-title">
-                            <span>
-                                #{cc.attrs.advertismentTitle}
-                            </span>
-                        </div>
-                        <div class="ads-banner-info">
-                            <span>
-                                #{cc.attrs.advertismentInfo}
-                            </span>
-                        </div>
-                        <div class="ads-banner-extra-info">
-                            <span>
-                                #{cc.attrs.extraAdvertismentInfo}
-                            </span>
-                        </div>
-                    </a>
+            <div class="ads-banner-holder">
+                <div class="deposit-holder">
+                    <div class="deposit">
+                        <a href="#{cc.attrs.landingPageUrl}">
+                            <div class="ads-banner-title">
+                                <span>
+                                    #{cc.attrs.advertismentTitle}
+                                </span>
+                            </div>
+                            <div class="ads-banner-info">
+                                <span>
+                                    #{cc.attrs.advertismentInfo}
+                                </span>
+                            </div>
+                            <div class="ads-banner-extra-info">
+                                <span>
+                                    #{cc.attrs.extraAdvertismentInfo}
+                                </span>
+                            </div>
+                        </a>
+                    </div>
                 </div>
             </div>
         </c:if>
         <c:if test="#{cc.attrs.advertismentType == 'card'}">
-            <div class="ads-banner-holder card-holder">
-                <div class="card">
-                    <a href="#{cc.attrs.landingPageUrl}">
-                        <div class="ads-banner-title">
-                            <span>
-                                #{cc.attrs.advertismentTitle}
-                            </span>
-                        </div>
-                        <div class="ads-banner-info">
-                            <span>
-                                #{cc.attrs.advertismentInfo}
-                            </span>
-                        </div>
-                        <div class="ads-banner-extra-info">
-                            <span>
-                                #{cc.attrs.extraAdvertismentInfo}
-                            </span>
-                        </div>
-                    </a>
+            <div class="ads-banner-holder">
+                <div class="card-holder">
+                    <div class="card">
+                        <a href="#{cc.attrs.landingPageUrl}">
+                            <div class="ads-banner-title">
+                                <span>
+                                    #{cc.attrs.advertismentTitle}
+                                </span>
+                            </div>
+                            <div class="ads-banner-info">
+                                <span>
+                                    #{cc.attrs.advertismentInfo}
+                                </span>
+                            </div>
+                            <div class="ads-banner-extra-info">
+                                <span>
+                                    #{cc.attrs.extraAdvertismentInfo}
+                                </span>
+                            </div>
+                        </a>
+                    </div>
                 </div>
             </div>
         </c:if>    
