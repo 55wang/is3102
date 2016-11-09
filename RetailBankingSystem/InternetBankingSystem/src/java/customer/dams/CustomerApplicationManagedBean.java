@@ -34,6 +34,7 @@ import server.utilities.EnumUtils.StatusType;
 import server.utilities.PincodeGenerationUtils;
 import server.utilities.CommonUtils;
 import util.exception.common.DuplicateMainAccountExistException;
+import util.exception.dams.DuplicateDepositAccountException;
 import utils.JSUtils;
 import utils.MessageUtils;
 import utils.RedirectUtils;
@@ -158,8 +159,8 @@ public class CustomerApplicationManagedBean implements Serializable {
                 setEmailSuccessFlag((Boolean) false);
             }
 
-        } catch (DuplicateMainAccountExistException e) {
-            System.out.println("DuplicateMainAccountExistException thrown at CustomerApplicationManagedBean.java save()");
+        } catch (DuplicateMainAccountExistException | DuplicateDepositAccountException e) {
+            System.out.println("DuplicateMainAccountExistException | DuplicateDepositAccountException thrown at CustomerApplicationManagedBean.java save()");
             MessageUtils.displayError("Not saved!");
         }
     }

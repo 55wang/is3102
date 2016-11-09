@@ -28,6 +28,8 @@ import javax.faces.view.ViewScoped;
 import server.utilities.ConstantUtils;
 import server.utilities.EnumUtils;
 import server.utilities.GenerateAccountAndCCNumber;
+import util.exception.dams.DepositAccountNotFoundException;
+import util.exception.dams.UpdateDepositAccountException;
 import utils.JSUtils;
 import utils.MessageUtils;
 import utils.SessionUtils;
@@ -93,6 +95,9 @@ public class PayCCBillManagedBean implements Serializable {
             return;
         }
 
+        try {
+            
+        
         DepositAccount fromAccount = depositBean.getAccountFromId(fromAccountNo);
         if (fromAccount != null && fromAccount.getBalance().compareTo(amount) < 0) {
             JSUtils.callJSMethod("PF('myWizard').back()");
@@ -128,9 +133,16 @@ public class PayCCBillManagedBean implements Serializable {
             MessageUtils.displayInfo(ConstantUtils.TRANSFER_SUCCESS);
         }
 
+        } catch (DepositAccountNotFoundException e) {
+            System.out.println("DepositAccountNotFoundException PayCCBillManagedBean.java transfer()");
+            JSUtils.callJSMethod("PF('myWizard').back()");
+            MessageUtils.displayError(ConstantUtils.TRANSFER_FAILED);
+        }
     }
 
     private void transferClearing() {
+        try {
+            
         DepositAccount da = depositBean.getAccountFromId(fromAccountNo);
 
         System.out.println("----------------Bill Payment clearing----------------");
@@ -148,6 +160,11 @@ public class PayCCBillManagedBean implements Serializable {
         webserviceBean.billingClearingSACH(btr);
         da.removeBalance(amount);
         depositBean.updateAccount(da);
+        
+        } catch (DepositAccountNotFoundException | UpdateDepositAccountException e) {
+            System.out.println("DepositAccountNotFoundException | UpdateDepositAccountException PayCCBillManagedBean.java transfer()");
+            MessageUtils.displayError(ConstantUtils.TRANSFER_FAILED);
+        }
     }
 
     public String getBillName(String id) {

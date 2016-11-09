@@ -11,10 +11,8 @@ import ejb.session.common.LoginSessionBeanLocal;
 import ejb.session.counter.TellerCounterSessionBeanLocal;
 import ejb.session.dams.CustomerDepositSessionBeanLocal;
 import ejb.session.webservice.WebserviceSessionBeanLocal;
-import entity.bill.BankEntity;
 import entity.bill.Payee;
 import entity.common.TransferRecord;
-import entity.counter.TellerCounter;
 import entity.customer.MainAccount;
 import entity.dams.account.DepositAccount;
 import java.io.Serializable;
@@ -28,9 +26,9 @@ import server.utilities.CommonUtils;
 import server.utilities.ConstantUtils;
 import server.utilities.EnumUtils;
 import server.utilities.GenerateAccountAndCCNumber;
-import utils.JSUtils;
+import util.exception.dams.DepositAccountNotFoundException;
+import util.exception.dams.UpdateDepositAccountException;
 import utils.MessageUtils;
-import utils.SessionUtils;
 
 /**
  *
@@ -93,6 +91,8 @@ public class OverseasBankTransferCounterManagedBean implements Serializable {
     
     public void transfer() {
         
+        try {
+        
         DepositAccount fromAccount = depositBean.getAccountFromId(fromAccountNumber);
         if (fromAccount != null && fromAccount.getBalance().compareTo(amount) < 0) {
             MessageUtils.displayError(ConstantUtils.NOT_ENOUGH_BALANCE);
@@ -115,9 +115,16 @@ public class OverseasBankTransferCounterManagedBean implements Serializable {
             transferClearing();
             MessageUtils.displayInfo(ConstantUtils.TRANSFER_SUCCESS);
         }
+        
+        } catch (DepositAccountNotFoundException e) {
+            System.out.println("DepositAccountNotFoundException OverseasBankTransferCounterManagedBean transfer()");
+            MessageUtils.displayError(ConstantUtils.TRANSFER_FAILED);
+        }
     }
     
     private void transferClearing() {
+        try {
+            
         DepositAccount da = depositBean.getAccountFromId(fromAccountNumber);
         System.out.println("----------------SWIFT transfer messaging----------------");
         TransferRecord tr = new TransferRecord();
@@ -138,6 +145,11 @@ public class OverseasBankTransferCounterManagedBean implements Serializable {
         webserviceBean.transferSWIFT(tr);
         da.removeBalance(getAmount());
         depositBean.updateAccount(da);
+        
+        } catch (DepositAccountNotFoundException | UpdateDepositAccountException e) {
+            System.out.println("DepositAccountNotFoundException | UpdateDepositAccountException OverseasBankTransferCounterManagedBean transfer()");
+            MessageUtils.displayError(ConstantUtils.TRANSFER_FAILED);
+        }
     }
     
 

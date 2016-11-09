@@ -113,7 +113,7 @@ public class CustomerCaseTest implements Serializable {
     }
     
     @Test(expected=CustomerCaseNotFoundException.class)
-    public void test06searchCaseByIDExceotion() throws CustomerCaseNotFoundException {
+    public void test06searchCaseByIDException() throws CustomerCaseNotFoundException {
         System.out.println("CustomerCaseTest.test06searchCaseByIDExceotion");   
         CustomerCase testCase = customerCaseSessionBean.getCaseById("2");
         assertNotNull(testCase);    

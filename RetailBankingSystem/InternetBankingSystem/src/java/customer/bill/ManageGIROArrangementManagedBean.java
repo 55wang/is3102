@@ -22,6 +22,7 @@ import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import server.utilities.ConstantUtils;
+import util.exception.dams.DepositAccountNotFoundException;
 import utils.JSUtils;
 import utils.MessageUtils;
 import utils.SessionUtils;
@@ -33,7 +34,7 @@ import utils.SessionUtils;
 @Named(value = "manageGIROArrangementManagedBean")
 @ViewScoped
 public class ManageGIROArrangementManagedBean implements Serializable {
-    
+
     @EJB
     private BillSessionBeanLocal billBean;
     @EJB
@@ -42,7 +43,7 @@ public class ManageGIROArrangementManagedBean implements Serializable {
     private CustomerDepositSessionBeanLocal depositBean;
     @EJB
     private OTPSessionBeanLocal otpBean;
-    
+
     private String selectedBillId;
     private String referenceNumber;
     private String fromAccountNo;
@@ -52,11 +53,12 @@ public class ManageGIROArrangementManagedBean implements Serializable {
     private List<Organization> billOrgsOptions;
     private List<CustomerDepositAccount> accounts = new ArrayList<>();
     private List<GiroArrangement> addedGiroArrs;
-    
+
     private String inputTokenString;
-    
-    public ManageGIROArrangementManagedBean() {}
-    
+
+    public ManageGIROArrangementManagedBean() {
+    }
+
     @PostConstruct
     public void init() {
         setBillOrgsOptions(billBean.getActiveListOrganization());
@@ -64,36 +66,44 @@ public class ManageGIROArrangementManagedBean implements Serializable {
         setAddedGiroArrs(billBean.getGiroArrsByMainAccountId(getMa().getId()));
         accounts = depositBean.getAllNonFixedCustomerAccounts(ma.getId());
     }
-    
+
     public void addGIROArrangement() {
-        
+
         if (!checkOptAndProceed()) {
             return;
         }
-        
-        DepositAccount da = depositBean.getAccountFromId(getFromAccountNo());
-        Organization o = billBean.getOrganizationById(Long.parseLong(selectedBillId));
-        giroArr.setOrganization(o);
-        giroArr.setBillReference(referenceNumber);
-        giroArr.setMainAccount(getMa());
-        giroArr.setDepositAccount(da);
-        giroArr.setBillLimit(billLimit);
-        GiroArrangement result = billBean.createGiroArr(giroArr);
-        if (result != null) {
-            JSUtils.callJSMethod("PF('myWizard').next()");
-            addedGiroArrs.add(result);
-            MessageUtils.displayInfo(ConstantUtils.GIRO_SUCCESS);
-        } else {
+
+        try {
+
+            DepositAccount da = depositBean.getAccountFromId(getFromAccountNo());
+            Organization o = billBean.getOrganizationById(Long.parseLong(selectedBillId));
+            giroArr.setOrganization(o);
+            giroArr.setBillReference(referenceNumber);
+            giroArr.setMainAccount(getMa());
+            giroArr.setDepositAccount(da);
+            giroArr.setBillLimit(billLimit);
+            GiroArrangement result = billBean.createGiroArr(giroArr);
+            if (result != null) {
+                JSUtils.callJSMethod("PF('myWizard').next()");
+                addedGiroArrs.add(result);
+                MessageUtils.displayInfo(ConstantUtils.GIRO_SUCCESS);
+            } else {
+                JSUtils.callJSMethod("PF('myWizard').back()");
+                MessageUtils.displayError(ConstantUtils.GIRO_FAILED);
+            }
+
+        } catch (DepositAccountNotFoundException e) {
             JSUtils.callJSMethod("PF('myWizard').back()");
             MessageUtils.displayError(ConstantUtils.GIRO_FAILED);
         }
+
     }
-    
+
     public String getOrgName(String selectedBillId) {
         Organization o = billBean.getOrganizationById(Long.parseLong(selectedBillId));
         return o.getName();
     }
-    
+
     public void removeGIROArrangement(GiroArrangement g) {
         String result = billBean.deleteGiroArrById(g.getId());
         if (result.equals("SUCCESS")) {
@@ -103,23 +113,23 @@ public class ManageGIROArrangementManagedBean implements Serializable {
             MessageUtils.displayError(ConstantUtils.GIRO_DELETE_FAILED);
         }
     }
-    
+
     public void onCellEdit(GiroArrangement g) {
         GiroArrangement result = billBean.updateGiroArr(g);
-         
+
         if (result != null) {
             MessageUtils.displayInfo(ConstantUtils.GIRO_LIMIT_SUCCESS);
         } else {
             MessageUtils.displayInfo(ConstantUtils.GIRO_LIMIT_FAIL);
         }
     }
-    
+
     public void sendOpt() {
         System.out.println("sendOTP clicked, sending otp to: " + ma.getCustomer().getPhone());
         JSUtils.callJSMethod("PF('myWizard').next()");
         otpBean.generateOTP(ma.getCustomer().getPhone());
     }
-    
+
     private Boolean checkOptAndProceed() {
         if (inputTokenString == null || inputTokenString.isEmpty()) {
             MessageUtils.displayError("Please enter one time password!");
@@ -139,7 +149,6 @@ public class ManageGIROArrangementManagedBean implements Serializable {
     }
 
     // TODO: Change limit
-    
     /**
      * @return the selectedBillId
      */
@@ -265,7 +274,7 @@ public class ManageGIROArrangementManagedBean implements Serializable {
     public void setAccounts(List<CustomerDepositAccount> accounts) {
         this.accounts = accounts;
     }
-    
+
     /**
      * @return the inputTokenString
      */

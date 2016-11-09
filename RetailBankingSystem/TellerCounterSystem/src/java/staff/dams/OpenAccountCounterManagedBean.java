@@ -39,6 +39,7 @@ import server.utilities.EnumUtils.DepositAccountType;
 import server.utilities.PincodeGenerationUtils;
 import util.exception.common.DuplicateMainAccountExistException;
 import util.exception.common.UpdateMainAccountException;
+import util.exception.dams.DuplicateDepositAccountException;
 import utils.MessageUtils;
 import utils.SessionUtils;
 
@@ -217,8 +218,8 @@ public class OpenAccountCounterManagedBean implements Serializable {
             }
 
             MessageUtils.displayInfo("Deposit Account Created!");
-        } catch (DuplicateMainAccountExistException | UpdateMainAccountException e) {
-            System.out.println("DuplicateMainAccountExistException or UpdateMainAccountException thrown at OpenAccountCounterManagedBean.java openAccount()");
+        } catch (DuplicateMainAccountExistException | UpdateMainAccountException | DuplicateDepositAccountException e) {
+            System.out.println("DuplicateMainAccountExistException | UpdateMainAccountException | DuplicateDepositAccountException thrown at OpenAccountCounterManagedBean.java openAccount()");
             MessageUtils.displayError("Error opening account!");
         }
 

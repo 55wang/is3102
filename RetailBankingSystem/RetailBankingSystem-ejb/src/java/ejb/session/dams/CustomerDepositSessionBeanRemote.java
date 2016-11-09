@@ -12,7 +12,7 @@ import entity.dams.account.CustomerFixedDepositAccount;
 import entity.dams.account.DepositAccount;
 import java.math.BigDecimal;
 import java.util.List;
-import javax.ejb.Local;
+import javax.ejb.Remote;
 import util.exception.dams.DepositAccountNotFoundException;
 import util.exception.dams.DuplicateDepositAccountException;
 import util.exception.dams.UpdateDepositAccountException;
@@ -21,8 +21,9 @@ import util.exception.dams.UpdateDepositAccountException;
  *
  * @author leiyang
  */
-@Local
-public interface CustomerDepositSessionBeanLocal {
+@Remote
+public interface CustomerDepositSessionBeanRemote {
+    
     public DepositAccount getAccountFromId(String accountNumber) throws DepositAccountNotFoundException;
     public DepositAccount createAccount(DepositAccount account)  throws DuplicateDepositAccountException ;
     public DepositAccount updateAccount(DepositAccount account) throws UpdateDepositAccountException ;
@@ -48,5 +49,5 @@ public interface CustomerDepositSessionBeanLocal {
     public List<TransactionRecord> transactionRecordFromAccountNumber(String accountNumber);
     public TransactionRecord latestTransactionFromAccountNumber(String accountNumber);
     public CustomerDepositAccount updateCustomerDepositAccount(CustomerDepositAccount account);
-
+    
 }

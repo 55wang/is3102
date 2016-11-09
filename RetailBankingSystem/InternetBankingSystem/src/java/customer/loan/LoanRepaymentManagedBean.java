@@ -23,6 +23,7 @@ import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import server.utilities.ConstantUtils;
+import util.exception.dams.DepositAccountNotFoundException;
 import utils.JSUtils;
 import utils.MessageUtils;
 import utils.SessionUtils;
@@ -45,63 +46,70 @@ public class LoanRepaymentManagedBean implements Serializable {
     private LoanAccountSessionBeanLocal loanAccountBean;
     @EJB
     private OTPSessionBeanLocal otpBean;
-    
+
     private String fromAccountNo;
     private String toLoanAccountNo;
     private BigDecimal amount;
     private MainAccount ma;
     private List<CustomerDepositAccount> depositAccounts = new ArrayList<>();
     private List<LoanAccount> loanAccounts = new ArrayList<>();
-    
+
     private String inputTokenString;
-    
+
     /**
      * Creates a new instance of LoanRepaymentManagedBean
      */
     public LoanRepaymentManagedBean() {
     }
-    
+
     @PostConstruct
     public void init() {
         ma = loginBean.getMainAccountByUserID(SessionUtils.getUserName());
         depositAccounts = depositBean.getAllNonFixedCustomerAccounts(ma.getId());
         loanAccounts = loanAccountBean.getActiveLoanAccountListByMainAccountId(ma.getId());
     }
-    
+
     public void transfer() {
-        
+
         if (!checkOptAndProceed()) {
             return;
         }
-        
-        DepositAccount fromAccount = depositBean.getAccountFromId(getFromAccountNo());
-        if (fromAccount != null && fromAccount.getBalance().compareTo(getAmount()) < 0) {
-            JSUtils.callJSMethod("PF('myWizard').back()");
-            MessageUtils.displayError(ConstantUtils.NOT_ENOUGH_BALANCE);
-        }
-        //TODO: need another authentication
-        String result = loanPaymentBean.loanRepaymentFromAccount(toLoanAccountNo, getFromAccountNo(), getAmount());
-        if (result.equals("SUCCESS")) {
-            JSUtils.callJSMethod("PF('myWizard').next()");
-            MessageUtils.displayInfo(ConstantUtils.TRANSFER_SUCCESS);
-        } else if (result.equals("FAIL1")){
+
+        try {
+
+            DepositAccount fromAccount = depositBean.getAccountFromId(getFromAccountNo());
+            if (fromAccount != null && fromAccount.getBalance().compareTo(getAmount()) < 0) {
+                JSUtils.callJSMethod("PF('myWizard').back()");
+                MessageUtils.displayError(ConstantUtils.NOT_ENOUGH_BALANCE);
+            }
+            //TODO: need another authentication
+            String result = loanPaymentBean.loanRepaymentFromAccount(toLoanAccountNo, getFromAccountNo(), getAmount());
+            if (result.equals("SUCCESS")) {
+                JSUtils.callJSMethod("PF('myWizard').next()");
+                MessageUtils.displayInfo(ConstantUtils.TRANSFER_SUCCESS);
+            } else if (result.equals("FAIL1")) {
+                JSUtils.callJSMethod("PF('myWizard').back()");
+                MessageUtils.displayError(ConstantUtils.TRANSFER_FAILED);
+            } else if (result.equals("FAIL2")) {
+                JSUtils.callJSMethod("PF('myWizard').back()");
+                MessageUtils.displayError(ConstantUtils.TRANSFER_FAILED2);
+            } else {
+                JSUtils.callJSMethod("PF('myWizard').back()");
+                MessageUtils.displayError(ConstantUtils.TRANSFER_FAILED3);
+            }
+
+        } catch (DepositAccountNotFoundException e) {
             JSUtils.callJSMethod("PF('myWizard').back()");
             MessageUtils.displayError(ConstantUtils.TRANSFER_FAILED);
-        } else if(result.equals("FAIL2")){
-            JSUtils.callJSMethod("PF('myWizard').back()");
-            MessageUtils.displayError(ConstantUtils.TRANSFER_FAILED2);
-        } else{
-            JSUtils.callJSMethod("PF('myWizard').back()");
-            MessageUtils.displayError(ConstantUtils.TRANSFER_FAILED3);
         }
     }
-    
+
     public void sendOpt() {
         System.out.println("sendOTP clicked, sending otp to: " + ma.getCustomer().getPhone());
         JSUtils.callJSMethod("PF('myWizard').next()");
         otpBean.generateOTP(ma.getCustomer().getPhone());
     }
-    
+
     private Boolean checkOptAndProceed() {
         if (inputTokenString == null || inputTokenString.isEmpty()) {
             MessageUtils.displayError("Please enter one time password!");
@@ -189,7 +197,7 @@ public class LoanRepaymentManagedBean implements Serializable {
     public void setLoanAccounts(List<LoanAccount> loanAccounts) {
         this.loanAccounts = loanAccounts;
     }
-    
+
     /**
      * @return the inputTokenString
      */

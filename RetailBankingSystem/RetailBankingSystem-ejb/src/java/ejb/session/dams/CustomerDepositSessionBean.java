@@ -11,7 +11,6 @@ import entity.common.TransactionRecord;
 import entity.customer.MainAccount;
 import entity.dams.account.CustomerFixedDepositAccount;
 import entity.dams.account.DepositAccount;
-import entity.dams.account.MobileAccount;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Date;
@@ -26,6 +25,9 @@ import server.utilities.ConstantUtils;
 import server.utilities.DateUtils;
 import server.utilities.EnumUtils;
 import server.utilities.GenerateAccountAndCCNumber;
+import util.exception.dams.DepositAccountNotFoundException;
+import util.exception.dams.DuplicateDepositAccountException;
+import util.exception.dams.UpdateDepositAccountException;
 
 /**
  *
@@ -43,12 +45,27 @@ public class CustomerDepositSessionBean implements CustomerDepositSessionBeanLoc
     private CardAcctSessionBeanLocal cardBean;
 
     @Override
-    public DepositAccount getAccountFromId(String accountNumber) {
-        return em.find(DepositAccount.class, accountNumber);
+    public DepositAccount getAccountFromId(String accountNumber) throws DepositAccountNotFoundException {
+
+        if (accountNumber == null) {
+            throw new DepositAccountNotFoundException("Deposit Account Not Found!");
+        }
+
+        try {
+
+            DepositAccount da = em.find(DepositAccount.class, accountNumber);
+            if (da == null) {
+                throw new DepositAccountNotFoundException("Deposit Account Not Found!");
+            }
+            // REMARK: See if we need to check cancelstatus
+            return da;
+        } catch (IllegalArgumentException e) {
+            throw new DepositAccountNotFoundException("Deposit Account Not Found!");
+        }
     }
 
     @Override
-    public DepositAccount createAccount(DepositAccount account) {
+    public DepositAccount createAccount(DepositAccount account) throws DuplicateDepositAccountException {
         try {
             if (account.getBalance().compareTo(BigDecimal.ZERO) != 0) {
                 TransactionRecord t = new TransactionRecord();
@@ -60,7 +77,14 @@ public class CustomerDepositSessionBean implements CustomerDepositSessionBeanLoc
                 if (account instanceof CustomerDepositAccount) {
                     ((CustomerDepositAccount) account).setPreviousBalance(account.getBalance());
                 }
-                account.setAccountNumber(generateAccountNumber());
+                if (account.getAccountNumber() == null) {
+                    account.setAccountNumber(generateAccountNumber());
+                } else {
+                    DepositAccount c = em.find(DepositAccount.class, account.getAccountNumber());
+                    if (c != null) {
+                        throw new DuplicateDepositAccountException("Deposit Account already exist.");
+                    }
+                }
                 em.persist(account);
                 t.setFromAccount(account);
                 em.merge(t);
@@ -68,13 +92,20 @@ public class CustomerDepositSessionBean implements CustomerDepositSessionBeanLoc
                 if (account instanceof CustomerDepositAccount) {
                     ((CustomerDepositAccount) account).setPreviousBalance(account.getBalance());
                 }
-                account.setAccountNumber(generateAccountNumber());
+                if (account.getAccountNumber() == null) {
+                    account.setAccountNumber(generateAccountNumber());
+                } else {
+                    DepositAccount c = em.find(DepositAccount.class, account.getAccountNumber());
+                    if (c != null) {
+                        throw new DuplicateDepositAccountException("Deposit Account already exist.");
+                    }
+                }
                 em.persist(account);
             }
 
             return account;
         } catch (EntityExistsException e) {
-            return null;
+            throw new DuplicateDepositAccountException("Deposit Account already exist.");
         }
     }
 
@@ -101,15 +132,22 @@ public class CustomerDepositSessionBean implements CustomerDepositSessionBeanLoc
     }
 
     @Override
-    public DepositAccount updateAccount(DepositAccount account) {
+    public DepositAccount updateAccount(DepositAccount account) throws UpdateDepositAccountException {
+
         try {
+
+            if (account.getAccountNumber() == null) {
+                throw new UpdateDepositAccountException("Not an entity!");
+            }
+
             if (account.getStatus() == EnumUtils.StatusType.CLOSED) {
                 account.setCloseDate(new Date());
             }
+
             em.merge(account);
             return account;
-        } catch (EntityExistsException e) {
-            return null;
+        } catch (IllegalArgumentException e) {
+            throw new UpdateDepositAccountException("Not an entity!");
         }
     }
 
@@ -131,7 +169,7 @@ public class CustomerDepositSessionBean implements CustomerDepositSessionBeanLoc
         Query q = em.createQuery("SELECT ba FROM DepositAccount ba");
         return q.getResultList();
     }
-    
+
     @Override
     public List<DepositAccount> showAllActiveAccounts() {
         Query q = em.createQuery("SELECT ba FROM DepositAccount ba WHERE ba.status =:inStatus");
@@ -140,7 +178,7 @@ public class CustomerDepositSessionBean implements CustomerDepositSessionBeanLoc
     }
 
     @Override
-    public List<DepositAccount> getAllCustomerAccounts(Long mainAccountId) {
+    public List<DepositAccount> getAllCustomerAccounts(String mainAccountId) {
         Query q = em.createQuery("SELECT ba FROM DepositAccount ba WHERE ba.mainAccount.id =:mainAccountId AND ba.status <> :status");
         q.setParameter("mainAccountId", mainAccountId);
         q.setParameter("status", EnumUtils.StatusType.CLOSED);
@@ -459,17 +497,21 @@ public class CustomerDepositSessionBean implements CustomerDepositSessionBeanLoc
 
     @Override
     public String payCCBillFromAccount(String accountNumber, String ccNumber, BigDecimal amount) {
-        DepositAccount fromAccount = getAccountFromId(accountNumber);
-        if (fromAccount == null) {
+
+        try {
+            DepositAccount fromAccount = getAccountFromId(accountNumber);
+            
+            if (fromAccount.getBalance().compareTo(amount) < 0) {
+                return "Mobile Account Balance not enough. Please Top up first!";
+            } else {
+
+                cardBean.payCreditCardAccountBillByCardNumber(ccNumber, amount);
+                ccSpendingFromAccount(fromAccount, amount);
+
+                return "SUCCESS";
+            }
+        } catch (DepositAccountNotFoundException e) {
             return "Account not found";
-        } else if (fromAccount.getBalance().compareTo(amount) < 0) {
-            return "Mobile Account Balance not enough. Please Top up first!";
-        } else {
-
-            cardBean.payCreditCardAccountBillByCardNumber(ccNumber, amount);
-            ccSpendingFromAccount(fromAccount, amount);
-
-            return "SUCCESS";
         }
     }
 }

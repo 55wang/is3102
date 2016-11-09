@@ -34,6 +34,7 @@ import server.utilities.EnumUtils;
 import server.utilities.PincodeGenerationUtils;
 import util.exception.common.DuplicateMainAccountExistException;
 import util.exception.common.UpdateMainAccountException;
+import util.exception.dams.DuplicateDepositAccountException;
 import utils.MessageUtils;
 import utils.RedirectUtils;
 import utils.SessionUtils;
@@ -226,8 +227,8 @@ public class CreateLoanAccountManagedBean implements Serializable {
                 ma.setCustomer(customer);
                 mainAccountBean.updateMainAccount(ma);
             }
-        } catch (DuplicateMainAccountExistException | UpdateMainAccountException e) {
-            System.out.println(e.getMessage() + " thrown at CreateLoanAccountManagedBean createOtherAccounts() ");
+        } catch (DuplicateMainAccountExistException | UpdateMainAccountException | DuplicateDepositAccountException e) {
+            System.out.println("DuplicateMainAccountExistException | UpdateMainAccountException | DuplicateDepositAccountException thrown at CreateLoanAccountManagedBean createOtherAccounts() ");
         }
 
     }

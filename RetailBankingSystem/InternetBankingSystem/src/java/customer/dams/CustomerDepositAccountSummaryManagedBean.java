@@ -6,12 +6,10 @@
 package customer.dams;
 
 import ejb.session.dams.CustomerDepositSessionBeanLocal;
-import entity.common.AuditLog;
 import entity.dams.account.DepositAccount;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,6 +19,7 @@ import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import server.utilities.EnumUtils;
 import server.utilities.EnumUtils.StatusType;
+import util.exception.dams.UpdateDepositAccountException;
 import utils.JSUtils;
 import utils.MessageUtils;
 import utils.RedirectUtils;
@@ -49,7 +48,7 @@ public class CustomerDepositAccountSummaryManagedBean implements Serializable {
 
     @PostConstruct
     public void init() {
-        setAccounts(depositBean.getAllCustomerAccounts(Long.parseLong(SessionUtils.getUserId())));
+        setAccounts(depositBean.getAllCustomerAccounts(SessionUtils.getUserId()));
     }
 
     public void confirm() {
@@ -57,19 +56,21 @@ public class CustomerDepositAccountSummaryManagedBean implements Serializable {
     }
 
     public void closeAccount(DepositAccount da) {
-        System.out.println("Closing account");
-        if (da.getBalance().compareTo(BigDecimal.ZERO) == 0) {
-            da.setStatus(EnumUtils.StatusType.CLOSED);
-            DepositAccount result = depositBean.updateAccount(da);
-            if (result != null) {
+        try {
+            System.out.println("Closing account");
+            if (da.getBalance().compareTo(BigDecimal.ZERO) == 0) {
+                da.setStatus(EnumUtils.StatusType.CLOSED);
+                depositBean.updateAccount(da);
                 accounts.remove(da);
                 MessageUtils.displayInfo("Your account has been closed!");
             } else {
-                MessageUtils.displayInfo("Your account close failed! Please contact our staffs!");
+                MessageUtils.displayError("Make sure your account balance is zero before closure!");
             }
-        } else {
-            MessageUtils.displayError("Make sure your account balance is zero before closure!");
+        } catch (UpdateDepositAccountException e) {
+            System.out.println("UpdateDepositAccountException CustomerDepositAccountSummaryManagedBean closeAccount(da)");
+            MessageUtils.displayInfo("Your account close failed! Please contact our staffs!");
         }
+
     }
 
     public void viewTransaction(DepositAccount da) {

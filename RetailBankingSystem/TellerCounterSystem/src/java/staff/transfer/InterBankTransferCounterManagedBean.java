@@ -26,6 +26,7 @@ import server.utilities.CommonUtils;
 import server.utilities.ConstantUtils;
 import server.utilities.EnumUtils;
 import server.utilities.GenerateAccountAndCCNumber;
+import util.exception.dams.DepositAccountNotFoundException;
 import utils.MessageUtils;
 
 /**
@@ -101,6 +102,8 @@ public class InterBankTransferCounterManagedBean implements Serializable {
     
     public void transfer() {
         
+        try {
+        
         DepositAccount fromAccount = depositBean.getAccountFromId(fromAccountNumber);
         if (fromAccount != null && fromAccount.getBalance().compareTo(amount) < 0) {
             MessageUtils.displayError(ConstantUtils.NOT_ENOUGH_BALANCE);
@@ -125,6 +128,11 @@ public class InterBankTransferCounterManagedBean implements Serializable {
             transferClearing();
             MessageUtils.displayInfo(ConstantUtils.TRANSFER_SUCCESS);
         }
+        
+        } catch (DepositAccountNotFoundException e) {
+            System.out.println("DepositAccountNotFoundException InterBankTransferCounterManagedBean transfer");
+            MessageUtils.displayError(ConstantUtils.TRANSFER_FAILED);
+        }
     }
     
     public void transferIBG() {
@@ -138,6 +146,9 @@ public class InterBankTransferCounterManagedBean implements Serializable {
     }
     
     private void transferClearing() {
+        
+        try {
+            
         DepositAccount da = depositBean.getAccountFromId(fromAccountNumber);
         System.out.println("----------------FAST transfer clearing----------------");
         TransferRecord tr = new TransferRecord();
@@ -159,6 +170,11 @@ public class InterBankTransferCounterManagedBean implements Serializable {
             webserviceBean.transferClearingSACH(tr);
         }
         depositBean.transferFromAccount(da, amount);
+        
+        } catch (DepositAccountNotFoundException e) {
+            System.out.println("DepositAccountNotFoundException InterBankTransferCounterManagedBean transferClearing");
+            MessageUtils.displayError(ConstantUtils.TRANSFER_FAILED);
+        }
     }
     
 
