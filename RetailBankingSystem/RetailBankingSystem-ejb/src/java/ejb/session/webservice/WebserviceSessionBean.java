@@ -6,6 +6,7 @@
 package ejb.session.webservice;
 
 import ejb.session.bill.BillSessionBeanLocal;
+import entity.bill.BankEntity;
 import entity.bill.BillFundTransferRecord;
 import entity.common.BillTransferRecord;
 import entity.common.TransferRecord;
@@ -17,6 +18,7 @@ import javax.ejb.Stateless;
 import javax.json.JsonObject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
@@ -42,7 +44,7 @@ public class WebserviceSessionBean implements WebserviceSessionBeanLocal {
     private final String MEPS_SETTLEMENT_AGENCY = "https://localhost:8181/MEPSSimulator/meps/meps_settlement_agency";
     private final String SACH_TRANSFER_CLEARING = "https://localhost:8181/SACHSimulator/sach/sach_transfer_clearing";
     private final String SACH_BILLING_CLEARING = "https://localhost:8181/SACHSimulator/sach/sach_billing_clearing";
-    private final String SACH_SWIFT_TRANSFER = "https://localhost:8181/FASTSimulator/fast/sach_swift_transfer";
+    private final String SACH_SWIFT_TRANSFER = "https://localhost:8181/FASTSimulator/sach/sach_swift_transfer";
     private final String FAST_TRANSFER_CLEARING = "https://localhost:8181/FASTSimulator/fast/fast_transfer_clearing";
 
     @Asynchronous
@@ -118,7 +120,7 @@ public class WebserviceSessionBean implements WebserviceSessionBeanLocal {
 
         // This is the response
         JsonObject jsonString = target.request(MediaType.APPLICATION_JSON).post(Entity.entity(form, MediaType.APPLICATION_FORM_URLENCODED), JsonObject.class);
-        
+
         BillFundTransferRecord bft = new BillFundTransferRecord();
         bft.setReferenceNumber(tr.getReferenceNumber());
         bft.setAmount(tr.getAmount());
@@ -174,7 +176,7 @@ public class WebserviceSessionBean implements WebserviceSessionBeanLocal {
         bft.setCreationDate(new Date());
 
         billSessionBean.createBillFundTransferRecord(bft);
-        
+
         if (jsonString.getString("message").equals("SUCCESS")) {
             System.out.println(".");
             System.out.println("[MBS]:");
@@ -194,8 +196,10 @@ public class WebserviceSessionBean implements WebserviceSessionBeanLocal {
         form.param("referenceNumber", tr.getReferenceNumber());
         form.param("amount", tr.getAmount().toString());
         form.param("toBankCode", tr.getToBankCode()); // other bank
+        form.param("toBankName", findBankNameByBankCode(tr.getToBankCode())); // other bank
         form.param("toBranchCode", tr.getToBranchCode());
         form.param("fromBankCode", "001");
+        form.param("fromBankName", "Merlion Bank Singapore"); // other bank
         form.param("accountNumber", tr.getAccountNumber());
         form.param("toName", tr.getName());
         form.param("fromName", tr.getFromName());
@@ -277,5 +281,12 @@ public class WebserviceSessionBean implements WebserviceSessionBeanLocal {
 
     public void persist(Object object) {
         em.persist(object);
+    }
+
+    public String findBankNameByBankCode(String bankCode) {
+        Query q = em.createQuery("SELECT b FROM BankEntity b WHERE b.bankCode =:bankCode");
+        q.setParameter("bankCode", bankCode);
+        BankEntity be = (BankEntity) q.getSingleResult();
+        return be.getName();
     }
 }

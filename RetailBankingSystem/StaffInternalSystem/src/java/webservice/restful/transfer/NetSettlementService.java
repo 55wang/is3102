@@ -7,7 +7,6 @@ package webservice.restful.transfer;
 
 import ejb.session.bill.BillSessionBeanLocal;
 import ejb.session.card.CardTransactionSessionBeanLocal;
-import ejb.session.webservice.WebserviceSessionBeanLocal;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +17,6 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.ws.rs.Consumes;
-import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -37,8 +35,6 @@ public class NetSettlementService {
     @EJB
     private BillSessionBeanLocal billSessionBean;
 
-    @EJB
-    private WebserviceSessionBeanLocal webserviceBean;
 
     @POST
     @Produces(MediaType.APPLICATION_JSON)
@@ -54,7 +50,7 @@ public class NetSettlementService {
         String ocbcToBankName = transactionSummary.getOcbcToBankName();
         String ocbcSettlementAmount = transactionSummary.getOcbcSettlementAmount();
         String sentDate = transactionSummary.getDate();
-        List<String> mbsTransactions = new ArrayList<String>();
+        List<String> mbsTransactions = new ArrayList<>();
         for (TransactionDTO dto : transactionSummary.getTransactionSummary()) {
             mbsTransactions.add(dto.getReferenceNumber());
         }

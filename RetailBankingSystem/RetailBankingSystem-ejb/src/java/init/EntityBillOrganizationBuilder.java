@@ -39,7 +39,7 @@ public class EntityBillOrganizationBuilder {
             o.setType(EnumUtils.BillType.CLUBS);
             o.setName(clubsName[i]);
             o.setShortCode(clubsCode[i]);
-            o.setPartnerBankCode("002");
+            o.setPartnerBankCode("005");
             o.setPartnerBankAccount("1000001" + i);
             billBean.createOrganization(o);
         }
@@ -57,7 +57,7 @@ public class EntityBillOrganizationBuilder {
             o.setType(EnumUtils.BillType.EDU);
             o.setName(eduName[i]);
             o.setShortCode(eduCode[i]);
-            o.setPartnerBankCode("002");
+            o.setPartnerBankCode("005");
             o.setPartnerBankAccount("2000001" + i);
             billBean.createOrganization(o);
         }
@@ -71,7 +71,7 @@ public class EntityBillOrganizationBuilder {
             o.setType(EnumUtils.BillType.COUNCILS);
             o.setName(councilsName[i]);
             o.setShortCode(councilsCode[i]);
-            o.setPartnerBankCode("002");
+            o.setPartnerBankCode("005");
             o.setPartnerBankAccount("3000001" + i);
             billBean.createOrganization(o);
         }
@@ -86,7 +86,7 @@ public class EntityBillOrganizationBuilder {
             o.setType(EnumUtils.BillType.CARD);
             o.setName(cardName[i]);
             o.setShortCode(cardCode[i]);
-            o.setPartnerBankCode("002");
+            o.setPartnerBankCode("005");
             o.setPartnerBankAccount("4000001" + i);
             billBean.createOrganization(o);
         }
@@ -104,7 +104,7 @@ public class EntityBillOrganizationBuilder {
             o.setType(EnumUtils.BillType.UTIL);
             o.setName(utilsName[i]);
             o.setShortCode(utilsCode[i]);
-            o.setPartnerBankCode("002");
+            o.setPartnerBankCode("005");
             o.setPartnerBankAccount("5000001" + i);
             billBean.createOrganization(o);
         }
@@ -120,7 +120,7 @@ public class EntityBillOrganizationBuilder {
             o.setType(EnumUtils.BillType.GOV_AGEN);
             o.setName(gaName[i]);
             o.setShortCode(gaCode[i]);
-            o.setPartnerBankCode("002");
+            o.setPartnerBankCode("013");
             o.setPartnerBankAccount("6000001" + i);
             billBean.createOrganization(o);
         }
@@ -136,7 +136,7 @@ public class EntityBillOrganizationBuilder {
             o.setType(EnumUtils.BillType.NON_GOV_AGEN);
             o.setName(ngaName[i]);
             o.setShortCode(ngaCode[i]);
-            o.setPartnerBankCode("002");
+            o.setPartnerBankCode("013");
             o.setPartnerBankAccount("7000001" + i);
             billBean.createOrganization(o);
         }
@@ -157,7 +157,7 @@ public class EntityBillOrganizationBuilder {
             o.setType(EnumUtils.BillType.INSUR);
             o.setName(insurName[i]);
             o.setShortCode(insurCode[i]);
-            o.setPartnerBankCode("002");
+            o.setPartnerBankCode("013");
             o.setPartnerBankAccount("8000001" + i);
             billBean.createOrganization(o);
         }
@@ -171,7 +171,7 @@ public class EntityBillOrganizationBuilder {
             o.setType(EnumUtils.BillType.SECUR);
             o.setName(securName[i]);
             o.setShortCode(securCode[i]);
-            o.setPartnerBankCode("002");
+            o.setPartnerBankCode("013");
             o.setPartnerBankAccount("9000001" + i);
             billBean.createOrganization(o);
         }

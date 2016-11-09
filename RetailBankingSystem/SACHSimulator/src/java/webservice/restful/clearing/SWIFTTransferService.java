@@ -3,10 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package webservice.restful.transfer;
+package webservice.restful.clearing;
 
-import ejb.session.bean.FASTSessionBean;
-import entity.FastTransfer;
+import ejb.session.bean.SACHSessionBean;
+import entity.PaymentTransfer;
 import java.math.BigDecimal;
 import java.util.List;
 import javax.ejb.EJB;
@@ -18,7 +18,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import org.primefaces.json.JSONObject;
-import webservice.restful.transfer.MessageDTO;
+
 
 /**
  *
@@ -28,7 +28,7 @@ import webservice.restful.transfer.MessageDTO;
 public class SWIFTTransferService {
 
     @EJB
-    private FASTSessionBean fastBean;
+    private SACHSessionBean sachBean;
 
     @POST
     @Produces(MediaType.APPLICATION_JSON)
@@ -57,7 +57,7 @@ public class SWIFTTransferService {
 
         // makes payment to other bank
         // TODO: if needed, use a MAP to check net settlement to other banks
-        FastTransfer pt = new FastTransfer();
+        PaymentTransfer pt = new PaymentTransfer();
         pt.setReferenceNumber(referenceNumber);
         pt.setAmount(new BigDecimal(amount));
         pt.setFromBankCode(fromBankCode);
@@ -69,7 +69,7 @@ public class SWIFTTransferService {
         System.out.println(".");
         System.out.println("[SACH]");
         System.out.println("Sending fund transfer to delegating bank through MEPS: " + delegatingBank);
-        fastBean.sendMEPS(pt);
+//        sachBean.sendMEPS(pt);
 
         try {
             Thread.sleep(500); //1000 milliseconds is one second.

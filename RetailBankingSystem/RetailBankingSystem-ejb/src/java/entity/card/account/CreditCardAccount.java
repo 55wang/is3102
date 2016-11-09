@@ -107,6 +107,14 @@ public class CreditCardAccount implements Serializable {
     @OneToOne(cascade = {CascadeType.MERGE})
     private CreditCardOrder creditCardOrder;
 
+    public Double retrievePrePaidAmount() {
+        if (getOutstandingAmount() > 0.0) {
+            return 0.0;
+        } else {
+            return 0.0 - getOutstandingAmount();
+        }
+    }
+
     public Double getRemainingCreditLimit() {
         return getCreditLimit() - getCurrentMonthAmount();
     }

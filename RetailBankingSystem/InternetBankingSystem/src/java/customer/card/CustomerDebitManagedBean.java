@@ -64,15 +64,15 @@ public class CustomerDebitManagedBean implements Serializable {
     public void setCustomer() {
         System.out.println("@POSTCONSTRUCT INIT CustomerCardManagedBean");
         try {
-            
-        this.customer = customerProfileSessionBean.getCustomerByUserID(SessionUtils.getUserName());
-        this.setActiveDcas(cardAcctSessionBean.getListDebitCardAccountsByStatus(CardAccountStatus.ACTIVE));
-        this.setPendingDcas(cardAcctSessionBean.getListDebitCardAccountsInProcess()); //that is not closed
-        
+
+            this.customer = customerProfileSessionBean.getCustomerByUserID(SessionUtils.getUserName());
+            this.setActiveDcas(cardAcctSessionBean.getListDebitCardAccountsByStatus(CardAccountStatus.ACTIVE));
+            this.setPendingDcas(cardAcctSessionBean.getListDebitCardAccountsInProcess()); //that is not closed
+
         } catch (CustomerNotExistException e) {
             System.out.println("CustomerNotExistException @PostConstruct setCustomer()");
         }
-        
+
     }
 
     public Customer getCustomer() {
