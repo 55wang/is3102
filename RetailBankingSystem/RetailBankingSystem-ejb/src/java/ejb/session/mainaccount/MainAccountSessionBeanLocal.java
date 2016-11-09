@@ -7,6 +7,9 @@ package ejb.session.mainaccount;
 
 import entity.customer.MainAccount;
 import javax.ejb.Local;
+import util.exception.common.DuplicateMainAccountExistException;
+import util.exception.common.MainAccountNotExistException;
+import util.exception.common.UpdateMainAccountException;
 
 /**
  *
@@ -14,7 +17,7 @@ import javax.ejb.Local;
  */
 @Local
 public interface MainAccountSessionBeanLocal {
-    public MainAccount updateMainAccount(MainAccount ma);
-    public MainAccount getMainAccountByUserId(String userID);
-    public MainAccount createMainAccount(MainAccount ma);
+    public MainAccount createMainAccount(MainAccount ma) throws DuplicateMainAccountExistException ;
+    public MainAccount updateMainAccount(MainAccount ma) throws UpdateMainAccountException ;
+    public MainAccount getMainAccountByUserId(String userID) throws MainAccountNotExistException ;
 }

@@ -35,15 +35,15 @@ public interface BillSessionBeanLocal {
     public BillingOrg createBillingOrganization(BillingOrg o);
     public BillingOrg getBillingOrganizationById(Long id);
     public String deleteBillingOrganizationById(Long id);
-    public List<BillingOrg> getBillingOrgMainAccountId(Long id);
-    public List<BillingOrg> getCreditCardBillingMainAccountId(Long id);
+    public List<BillingOrg> getBillingOrgMainAccountId(String id);
+    public List<BillingOrg> getCreditCardBillingMainAccountId(String id);
     // giro
     public GiroArrangement createGiroArr(GiroArrangement o);
     public GiroArrangement updateGiroArr(GiroArrangement o);
     public GiroArrangement getGiroArrById(Long id);
     public GiroArrangement getGiroArrByReferenceNumberAndOrgCode(String referenceNumber, String shortCode);
     public String deleteGiroArrById(Long id);
-    public List<GiroArrangement> getGiroArrsByMainAccountId(Long id);
     public List<BillFundTransferRecord> updateTransactionStatusSettled(List<String> referenceNums);
     public BillFundTransferRecord createBillFundTransferRecord(BillFundTransferRecord o);
+    public List<GiroArrangement> getGiroArrsByMainAccountId(String id);
 }

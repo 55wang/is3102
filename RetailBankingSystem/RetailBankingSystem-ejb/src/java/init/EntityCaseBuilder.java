@@ -11,6 +11,7 @@ import ejb.session.staff.StaffAccountSessionBeanLocal;
 import entity.customer.CustomerCase;
 import entity.customer.Issue;
 import entity.customer.MainAccount;
+import entity.staff.StaffAccount;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -19,6 +20,7 @@ import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
 import server.utilities.ConstantUtils;
 import server.utilities.EnumUtils;
+import util.exception.cms.DuplicateCaseExistException;
 
 /**
  *
@@ -37,6 +39,8 @@ public class EntityCaseBuilder {
 
     public void initCase() {
         MainAccount demoMainAccount = loginBean.getMainAccountByUserID(ConstantUtils.DEMO_MAIN_ACCOUNT_USER_ID_1);
+        StaffAccount sa = staffAccountSessionBean.getAccountByUsername(ConstantUtils.RELATIONSHIP_MANAGER_USERNAME);
+        
         CustomerCase cc = new CustomerCase();
         Issue issue = new Issue();
         List<Issue> issues = new ArrayList<>();
@@ -52,10 +56,15 @@ public class EntityCaseBuilder {
         cc.setTitle("My Deposit Account has Some problems");
         cc.setCreateDate(new Date());
         cc.setMainAccount(demoMainAccount);
-        cc.setStaffAccount(staffAccountSessionBean.getAccountByUsername(ConstantUtils.SUPER_ADMIN_USERNAME));
+        cc.setStaffAccount(sa);
         cc.setCaseStatus(EnumUtils.CaseStatus.ONHOLD);
 
-        customerCaseSessionBean.saveCase(cc);
+        try {
+            customerCaseSessionBean.createCase(cc);
+        } catch (DuplicateCaseExistException e) {
+            System.out.println("DuplicateCaseExistException thrown at EntityCaseBuilder");
+        }
+        
 
         cc = new CustomerCase();
         issue = new Issue();
@@ -81,9 +90,14 @@ public class EntityCaseBuilder {
         cc.setTitle("Loan Problem");
         cc.setCreateDate(new Date());
         cc.setMainAccount(demoMainAccount);
-        cc.setStaffAccount(staffAccountSessionBean.getAccountByUsername(ConstantUtils.SUPER_ADMIN_USERNAME));
+        cc.setStaffAccount(sa);
         cc.setCaseStatus(EnumUtils.CaseStatus.ONHOLD);
 
-        customerCaseSessionBean.saveCase(cc);
+        try {
+            customerCaseSessionBean.createCase(cc);
+        } catch (DuplicateCaseExistException e) {
+            System.out.println("DuplicateCaseExistException thrown at EntityCaseBuilder");
+        }
+        
     }
 }

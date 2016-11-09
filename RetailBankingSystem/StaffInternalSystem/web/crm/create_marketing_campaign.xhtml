@@ -31,6 +31,9 @@
                                     <p:outputLabel for="emailCampaignLandingName" value="Landing Page Name: e.g. product_a" />
                                     <p:inputText id="emailCampaignLandingName" value="#{createMarketingCampaignManagedBean.emailMarketingCampaign.landingPageName}" />
 
+                                    <p:outputLabel for="emailCampaignSubject" value="Email Subject" />
+                                    <p:inputText id="emailCampaignSubject" value="#{createMarketingCampaignManagedBean.emailMarketingCampaign.subjectEmail}" />
+
                                     <p:outputLabel for="emailCampaignContent" value="Email Content" />
                                     <p:inputText id="emailCampaignContent" value="#{createMarketingCampaignManagedBean.emailMarketingCampaign.contentEmail}" />
 
@@ -52,9 +55,14 @@
                                     <p:inputText id="adsBannerCampaignDesc" value="#{createMarketingCampaignManagedBean.adsMarketingCampaign.description}" />
                                     <p:outputLabel for="adsBannerCampaignLandingName" value="Landing Page Name: e.g. product_a" />
                                     <p:inputText id="adsBannerCampaignLandingName" value="#{createMarketingCampaignManagedBean.adsMarketingCampaign.landingPageName}" />
-                                    <p:outputLabel for="adsBannerCampaignImage" value="Upload Image: " />
-                                    <p:inputText id="adsBannerCampaignImage" value="#{createMarketingCampaignManagedBean.adsMarketingCampaign.bannerImgFilename}" />
-
+                                    <p:outputLabel for="adsBannerCampaignTitle" value="Ads Title: " />
+                                    <p:inputText id="adsBannerCampaignTitle" value="#{createMarketingCampaignManagedBean.adsMarketingCampaign.adsTitle}" />
+                                    <p:outputLabel for="adsBannerCampaignAdsType" value="Ads Type: " />
+                                    <p:inputText id="adsBannerCampaignAdsType" value="#{createMarketingCampaignManagedBean.adsMarketingCampaign.adsType}" />
+                                    <p:outputLabel for="adsBannerCampaignAdsInfo" value="Ads Info: " />
+                                    <p:inputText id="adsBannerCampaignAdsInfo" value="#{createMarketingCampaignManagedBean.adsMarketingCampaign.adsInfo}" />
+                                    <p:outputLabel for="adsBannerCampaignAdsExtraInfo" value="Ads ExtraInfo: " />
+                                    <p:inputText id="adsBannerCampaignAdsExtraInfo" value="#{createMarketingCampaignManagedBean.adsMarketingCampaign.adsExtraInfo}" />
 
                                     <p:outputLabel value="Select Customer Group: " />
                                     <p:selectOneMenu value="#{createMarketingCampaignManagedBean.selectedCustomerGroupAdsBanner}" style="width:187px; height: 30px; line-height: 21px; top:10px" rendered="true" required="true">

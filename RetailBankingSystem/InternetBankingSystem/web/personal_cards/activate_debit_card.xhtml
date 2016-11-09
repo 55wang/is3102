@@ -16,45 +16,45 @@
             <em:customerHeader context="personal" userName="#{customerHomeManagedBean.customer.firstname }"></em:customerHeader>
             <em:customerNavBar context="personal" personalPage="cards" ></em:customerNavBar>
             <div class="customer_main_container">
-            <h:form id="mainForm">
+                <h:form id="mainForm">
 
-                <p:panel header="Activate your debit card" style="padding-top: 200px;margin-left: 70px; width:90%">
+                    <p:panel header="Activate your debit card" style="padding-top: 200px;margin-left: 70px; width:90%">
 
-                    <h:outputText value="Please enter:" style="margin-left: 240px; margin-top: 30px; font-weight:bolder"/>
-                    <p:growl id="growl" sticky="true" showDetail="true"/>
+                        <h:outputText value="Please enter:" style="margin-left: 240px; margin-top: 30px; font-weight:bolder"/>
+                        <p:growl id="growl" sticky="true" showDetail="true"/>
 
-                    <p:panelGrid columns="2" style="margin: auto; margin-top: 10px" >
+                        <p:panelGrid columns="2" style="margin: auto; margin-top: 10px" >
 
-                        <h:outputLabel for="identity number" value="NRIC/Passport number:" />
+                            <h:outputLabel for="identity number" value="NRIC/Passport number:" />
 
-                        <h:inputText value="#{cardActivationManagedBean.identityNumber}" style="width:81%" validatorMessage="Identity Number is invalid.">
-                            <f:validateRegex
-                                pattern="^[A-Za-z0-9]{9}$" />
-                        </h:inputText>
+                            <h:inputText value="#{cardActivationManagedBean.identityNumber}" style="width:81%" validatorMessage="Identity Number is invalid.">
+                                <f:validateRegex
+                                    pattern="^[A-Za-z0-9]{9}$" />
+                            </h:inputText>
 
-                        <h:outputLabel for="dob" value="DOB: " />
-                        <p:calendar value="#{cardActivationManagedBean.birthday}" navigator="true" yearRange="c-100:c+0" required="true" pattern="yyyy-MM-dd" requiredMessage="DOB is requiered"/>
+                            <h:outputLabel for="dob" value="DOB: " />
+                            <p:calendar value="#{cardActivationManagedBean.birthday}" navigator="true" yearRange="c-100:c+0" required="true" pattern="yyyy-MM-dd" requiredMessage="DOB is requiered"/>
 
-                        <h:outputLabel for="cardNumber" value="Card number: " />
-                        <p:inputMask value="#{cardActivationManagedBean.cardNumber}" required="true" requiredMessage="Montly Transaction Limit is required." style="width: 215px" validatorMessage="Invalid input." mask="9999999999999999"/> 
+                            <h:outputLabel for="cardNumber" value="Card number: " />
+                            <p:inputMask value="#{cardActivationManagedBean.cardNumber}" required="true" requiredMessage="Montly Transaction Limit is required." style="width: 215px" validatorMessage="Invalid input." mask="9999999999999999"/> 
 
-                        <h:outputLabel for="cvv" value="CVV: " />
-                        <p:inputMask  value="#{cardActivationManagedBean.cvv}" required="true" requiredMessage="Daily Transaction Limit is required." style="width: 215px" mask="999" />
+                            <h:outputLabel for="cvv" value="CVV: " />
+                            <p:inputMask  value="#{cardActivationManagedBean.cvv}" required="true" requiredMessage="Daily Transaction Limit is required." style="width: 215px" mask="999" />
 
 
-                    </p:panelGrid>
+                        </p:panelGrid>
 
-                    <p:commandButton style="margin-top:40px" class="h-center" value="Confirm" action="#{cardActivationManagedBean.activateDebitCard()}" update="growl"/>
+                        <p:commandButton style="margin-top:40px" class="h-center" value="Confirm" action="#{cardActivationManagedBean.activateDebitCard()}" update="growl"/>
 
-                </p:panel>
-            </h:form>
+                    </p:panel>
+                </h:form>
             </div>
             <!--            <p:panel><div align="center">
                              <button type="button" onclick="window.location.href='.../customer_card/apply_card_account.xhtml'">Apply</button>
                         </div>
                         </p:panel>-->
-
-        <em:customerFooter></em:customerFooter>
+            <em:adsBanner advertismentTitle="#{customerHomeManagedBean.adsBannerCampaign.adsTitle}" advertismentType="#{customerHomeManagedBean.adsBannerCampaign.adsType}" advertismentInfo="#{customerHomeManagedBean.adsBannerCampaign.adsInfo}" extraAdvertismentInfo="#{customerHomeManagedBean.adsBannerCampaign.adsExtraInfo}" landingPageUrl="https://localhost:8181/InternetBankingSystem/landing_page/#{customerHomeManagedBean.adsBannerCampaign.landingPageName}" />
+            <em:customerFooter></em:customerFooter>
         </h:body>
     </f:view>
 </html>

@@ -15,13 +15,16 @@ import entity.customer.MainAccount;
 import entity.loan.LoanApplication;
 import entity.loan.LoanProduct;
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.event.ValueChangeEvent;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
+import server.utilities.CommonUtils;
 import server.utilities.ConstantUtils;
 import server.utilities.EnumUtils;
 import utils.JSUtils;
@@ -51,11 +54,22 @@ public class PersonalLoanApplicationManagedBean implements Serializable {
     private Integer age;
     private Double monthlyIncome;
     private String idNumber;
+    private String firstName;
+    private String lastName;
     private String name;
     private String phoneNumber;
     private String email;
     private Double otherLoan = 0.0;
     private Double loanAmount;
+    private EnumUtils.Nationality nationality;
+    private EnumUtils.MaritalStatus maritalStatus;
+    private String address;
+    private String postalCode;
+    private Date birthday;
+    private EnumUtils.Industry industry;
+    private EnumUtils.Education education;
+    private EnumUtils.Gender gender;
+    private EnumUtils.EmploymentStatus employmentStatus;
     private Long loanProductId;
     private List<LoanProduct> personalLoanProducts = new ArrayList<>();
     
@@ -65,6 +79,16 @@ public class PersonalLoanApplicationManagedBean implements Serializable {
     private Double personalLoanAmt = 0.0;
     private Double personalLoanMonthlyInstalment;
     private String upperLimit;
+    private EnumUtils.LoanProductType productType;
+    private EnumUtils.IdentityType identityType;
+    private Date currentDate=new Date();
+    
+    
+    private List<String> identityTypeOptions = CommonUtils.getEnumList(EnumUtils.IdentityType.class);
+    private List<String> nationalityOptions = CommonUtils.getEnumList(EnumUtils.Nationality.class);
+    private List<String> genderOptions = CommonUtils.getEnumList(EnumUtils.Gender.class);
+    private List<String> occupationOptions = CommonUtils.getEnumList(EnumUtils.Occupation.class);
+    private List<String> incomeOptions = CommonUtils.getEnumList(EnumUtils.Income.class);
     LoanApplication existingApplication = new LoanApplication();
     /**
      * Creates a new instance of PersonalLoanApplicationManagedBean
@@ -82,6 +106,13 @@ public class PersonalLoanApplicationManagedBean implements Serializable {
         
     }
     
+     public void checkAge2(){
+        Long ageLong=(new Date().getTime() - this.getBirthday().getTime()) / (24 * 60 * 60 * 1000) / 365;
+        Integer age1=ageLong.intValue();
+        this.setAge(age1);
+        checkAge();
+}
+    
     public void checkAge(){
         if (getAge() < 21) {
             MessageUtils.displayError(ConstantUtils.NOT_ENOUGH_AGE);
@@ -94,6 +125,13 @@ public class PersonalLoanApplicationManagedBean implements Serializable {
         if((Double)e.getNewValue()>=10000.0)
             setUpperLimit("10x monthly income");
         else if((Double)e.getNewValue()<10000.0 && (Double)e.getNewValue()>=2000.0)
+            setUpperLimit("4x monthly income");
+    }
+     
+    public void updateUpperLimit(Customer customer){
+        if(customer.getActualIncome()>=10000.0)
+            setUpperLimit("10x monthly income");
+        else if (customer.getActualIncome()<10000.0 && customer.getActualIncome()>=2000.0)
             setUpperLimit("4x monthly income");
     }
     
@@ -110,26 +148,48 @@ public class PersonalLoanApplicationManagedBean implements Serializable {
         JSUtils.callJSMethod("PF('myWizard').next()");
     }
     
+
+    
     public void applyPersonalLoan() {
         if (loanAmount > personalLoanAmt) {
             MessageUtils.displayError(ConstantUtils.NOT_ENOUGH_LOAN_LIMIT);
             return;
         }
         
-        LoanApplication newApplication = new LoanApplication();
-        newApplication.setAge(age);
-        newApplication.setIdNumber(idNumber);
-        newApplication.setEmail(email);
-        newApplication.setIncome(monthlyIncome);
-        newApplication.setName(name);
-        newApplication.setOtherCommitment(otherLoan);
-        newApplication.setPhone(phoneNumber);
-        newApplication.setProductType(EnumUtils.LoanProductType.LOAN_PRODUCT_TYPE_PERSONAL);
-        newApplication.setRequestedAmount(loanAmount);
-        newApplication.setLoanProduct(loanProductBean.getLoanProductById(loanProductId));
-        newApplication.setLoanOfficer(staffAccountSessionBean.getAccountByUsername(ConstantUtils.LOAN_OFFICIER_USERNAME));
+        LoanApplication loanApplication1 = new LoanApplication();
+        loanApplication1.setIdentityType(EnumUtils.IdentityType.NRIC);
+        try {
+            loanApplication1.setBirthDay(birthday);
+        } catch (Exception ex) {
+        }
+        loanApplication1.setAge(age);
+        loanApplication1.setActualIncome(monthlyIncome);
+        loanApplication1.setFirstname(firstName);
+        loanApplication1.setLastname(lastName);
+        loanApplication1.setFullName(loanApplication1.getLastname()+loanApplication1.getFirstname());
+        loanApplication1.setEmail(email);
+        loanApplication1.setPhone(phoneNumber);
+        
+        loanApplication1.setNationality(nationality);
+        loanApplication1.setMaritalStatus(maritalStatus);
+        loanApplication1.setAddress(address);
+        loanApplication1.setPostalCode(postalCode);
+        loanApplication1.setIndustry(industry);
+        loanApplication1.setEducation(education);
+        loanApplication1.setEmploymentStatus(employmentStatus);
+        loanApplication1.setGender(gender);
+        
+        
+        loanApplication1.setIdentityNumber(idNumber);
+        loanApplication1.setIdentityType(identityType);
+        loanApplication1.setOtherCommitment(otherLoan);
+        loanApplication1.setRequestedAmount(personalLoanAmt);
+        loanApplication1.setProductType(EnumUtils.LoanProductType.LOAN_PRODUCT_TYPE_PERSONAL);
+        loanApplication1.setLoanProduct(loanProductBean.getLoanProductById(loanProductId));
+        loanApplication1.setTenure(loanApplication1.getLoanProduct().getTenure());
+        loanApplication1.setLoanOfficer(staffAccountSessionBean.getAccountByUsername(ConstantUtils.LOAN_OFFICIER_USERNAME));
         // ejb save and update
-        LoanApplication result = loanAccountBean.createLoanApplication(newApplication);
+        LoanApplication result = loanAccountBean.createLoanApplication(loanApplication1);
         if (result != null) {
             setApplicationNumber(result.getId());
             emailServiceSessionBean.sendLoanApplicationNoticeToStaff(result);
@@ -151,9 +211,13 @@ public class PersonalLoanApplicationManagedBean implements Serializable {
     public void save(Customer thisCustomer){
         
         existingApplication.setAge(thisCustomer.getAge());
-        existingApplication.setIdNumber(thisCustomer.getIdentityNumber());
+        existingApplication.setIdentityNumber(thisCustomer.getIdentityNumber());
         existingApplication.setEmail(thisCustomer.getEmail());
-        existingApplication.setName(thisCustomer.getLastname()+thisCustomer.getFirstname());
+        existingApplication.setPhone(thisCustomer.getPhone());
+        existingApplication.setFullName(thisCustomer.getLastname()+thisCustomer.getFirstname());
+        existingApplication.setIdentityNumber(thisCustomer.getIdentityNumber());
+        existingApplication.setActualIncome(thisCustomer.getActualIncome());
+        this.setMonthlyIncome(thisCustomer.getActualIncome());
         JSUtils.callJSMethod("PF('myWizard').next()");
     }
     
@@ -163,6 +227,7 @@ public class PersonalLoanApplicationManagedBean implements Serializable {
         existingApplication.setProductType(EnumUtils.LoanProductType.LOAN_PRODUCT_TYPE_PERSONAL);
         existingApplication.setRequestedAmount(loanAmount);
         existingApplication.setLoanProduct(loanProductBean.getLoanProductById(loanProductId));
+        existingApplication.setTenure(existingApplication.getLoanProduct().getTenure());
         existingApplication.setLoanOfficer(staffAccountSessionBean.getAccountByUsername(ConstantUtils.LOAN_OFFICIER_USERNAME));
         // ejb save and update
         LoanApplication result = loanAccountBean.createLoanApplication(existingApplication);
@@ -406,6 +471,161 @@ public class PersonalLoanApplicationManagedBean implements Serializable {
     public void setExistingApplication(LoanApplication existingApplication) {
         this.existingApplication = existingApplication;
     }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public EnumUtils.Nationality getNationality() {
+        return nationality;
+    }
+
+    public void setNationality(EnumUtils.Nationality nationality) {
+        this.nationality = nationality;
+    }
+
+    public EnumUtils.MaritalStatus getMaritalStatus() {
+        return maritalStatus;
+    }
+
+    public void setMaritalStatus(EnumUtils.MaritalStatus maritalStatus) {
+        this.maritalStatus = maritalStatus;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getPostalCode() {
+        return postalCode;
+    }
+
+    public void setPostalCode(String postalCode) {
+        this.postalCode = postalCode;
+    }
+
+    public EnumUtils.Industry getIndustry() {
+        return industry;
+    }
+
+    public void setIndustry(EnumUtils.Industry industry) {
+        this.industry = industry;
+    }
+
+    public EnumUtils.Education getEducation() {
+        return education;
+    }
+
+    public void setEducation(EnumUtils.Education education) {
+        this.education = education;
+    }
+
+    public EnumUtils.Gender getGender() {
+        return gender;
+    }
+
+    public void setGender(EnumUtils.Gender gender) {
+        this.gender = gender;
+    }
+
+    public EnumUtils.EmploymentStatus getEmploymentStatus() {
+        return employmentStatus;
+    }
+
+    public void setEmploymentStatus(EnumUtils.EmploymentStatus employmentStatus) {
+        this.employmentStatus = employmentStatus;
+    }
+
+    public EnumUtils.LoanProductType getProductType() {
+        return productType;
+    }
+
+    public void setProductType(EnumUtils.LoanProductType productType) {
+        this.productType = productType;
+    }
+
+    public EnumUtils.IdentityType getIdentityType() {
+        return identityType;
+    }
+
+    public void setIdentityType(EnumUtils.IdentityType identityType) {
+        this.identityType = identityType;
+    }
+
+    public List<String> getIdentityTypeOptions() {
+        return identityTypeOptions;
+    }
+
+    public void setIdentityTypeOptions(List<String> identityTypeOptions) {
+        this.identityTypeOptions = identityTypeOptions;
+    }
+
+    public List<String> getNationalityOptions() {
+        return nationalityOptions;
+    }
+
+    public void setNationalityOptions(List<String> nationalityOptions) {
+        this.nationalityOptions = nationalityOptions;
+    }
+
+    public List<String> getGenderOptions() {
+        return genderOptions;
+    }
+
+    public void setGenderOptions(List<String> genderOptions) {
+        this.genderOptions = genderOptions;
+    }
+
+    public List<String> getOccupationOptions() {
+        return occupationOptions;
+    }
+
+    public void setOccupationOptions(List<String> occupationOptions) {
+        this.occupationOptions = occupationOptions;
+    }
+
+    public List<String> getIncomeOptions() {
+        return incomeOptions;
+    }
+
+    public void setIncomeOptions(List<String> incomeOptions) {
+        this.incomeOptions = incomeOptions;
+    }
+
+    public Date getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(Date birthday) {
+        this.birthday = birthday;
+    }
+
+    public Date getCurrentDate() {
+        return currentDate;
+    }
+
+    public void setCurrentDate(Date currentDate) {
+        this.currentDate = currentDate;
+    }
+    
+    
+    
     
     
     

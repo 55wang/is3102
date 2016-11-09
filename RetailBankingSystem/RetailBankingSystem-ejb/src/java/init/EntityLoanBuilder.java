@@ -77,48 +77,108 @@ public class EntityLoanBuilder {
     
     private void initDemoLoanApplications() {
         LoanApplication loanApplication1 = new LoanApplication();
-        loanApplication1.setAge(21);
-        loanApplication1.setIncome(3000.0);
-        loanApplication1.setName("Lei Yang");
-        loanApplication1.setEmail("raymondlei90s@gmail.com");
-        loanApplication1.setPhone("94761895");
-        loanApplication1.setIdNumber("S9876543I");
-        loanApplication1.setOtherCommitment(0.0);
-        loanApplication1.setOtherHousingLoan(null);
+        loanApplication1.setIdentityType(EnumUtils.IdentityType.NRIC);
+        try {
+            loanApplication1.setBirthDay(new SimpleDateFormat("dd-MM-yyyy").parse("01-01-1993"));
+        } catch (Exception ex) {
+        }
+        loanApplication1.setAge(23);
+        loanApplication1.setActualIncome(3000.0);
+        loanApplication1.setFirstname("Yifan");
+        loanApplication1.setLastname("Chen");
+        loanApplication1.setFullName(loanApplication1.getLastname()+loanApplication1.getFirstname());
+        loanApplication1.setEmail("wangzhe.lynx@gmail.com");
+        loanApplication1.setPhone("81567758");
+        
+        loanApplication1.setNationality(EnumUtils.Nationality.SINGAPORE);
+        loanApplication1.setMaritalStatus(EnumUtils.MaritalStatus.SINGLE);
+        loanApplication1.setAddress("10 Punggol, 08-08");
+        loanApplication1.setPostalCode("654321");
+        loanApplication1.setIndustry(EnumUtils.Industry.RETAIL);
+        loanApplication1.setEducation(EnumUtils.Education.DIPLOMA);
+        loanApplication1.setEmploymentStatus(EnumUtils.EmploymentStatus.EMPLOYEE);
+        loanApplication1.setGender(EnumUtils.Gender.MALE);
+        
+        
+        loanApplication1.setIdentityNumber("S1234567Z");
+        loanApplication1.setOtherCommitment(906.17);
+        loanApplication1.setOtherHousingLoan(0);
         loanApplication1.setRequestedAmount(10000.0);
-        loanApplication1.setMarketValue(null);
+        loanApplication1.setMarketValue(30000.0);
+        loanApplication1.setTenure(1);
         loanApplication1.setProductType(EnumUtils.LoanProductType.LOAN_PRODUCT_TYPE_PERSONAL);
         loanApplication1.setLoanProduct(loanProductSessionBean.getLoanProductByProductName(ConstantUtils.DEMO_PERSONAL_LOAN_PRODUCT_NAME_12));
         loanApplication1.setLoanOfficer(staffAccountSessionBean.getAccountByUsername(ConstantUtils.LOAN_OFFICIER_USERNAME));
         loanApplication1 = loanAccountSessionBean.createLoanApplication(loanApplication1);
         
+        
         LoanApplication loanApplication2 = new LoanApplication();
-        loanApplication2.setAge(21);
-        loanApplication2.setIncome(3000.0);
-        loanApplication2.setName("Lei Yang");
-        loanApplication2.setEmail("raymondlei90s@gmail.com");
-        loanApplication2.setPhone("94761895");
-        loanApplication2.setIdNumber("S9876543I");
-        loanApplication2.setOtherCommitment(0.0);
-        loanApplication2.setOtherHousingLoan(null);
-        loanApplication2.setRequestedAmount(80000.0);
-        loanApplication2.setMarketValue(100000.0);
+        loanApplication2.setIdentityType(EnumUtils.IdentityType.NRIC);
+        try {
+            loanApplication2.setBirthDay(new SimpleDateFormat("dd-MM-yyyy").parse("01-01-1993"));
+        } catch (Exception ex) {
+        }
+        loanApplication2.setAge(23);
+        loanApplication2.setActualIncome(3000.0);
+        loanApplication2.setFirstname("Yifan");
+        loanApplication2.setLastname("Chen");
+        loanApplication2.setFullName(loanApplication1.getLastname()+" "+loanApplication1.getFirstname());
+        loanApplication2.setEmail("wangzh.lynx@gmail.com");
+        loanApplication2.setPhone("81567758");
+        
+        loanApplication2.setNationality(EnumUtils.Nationality.SINGAPORE);
+        loanApplication2.setMaritalStatus(EnumUtils.MaritalStatus.SINGLE);
+        loanApplication2.setAddress("10 Punggol, 08-08");
+        loanApplication2.setPostalCode("654321");
+        loanApplication2.setIndustry(EnumUtils.Industry.RETAIL);
+        loanApplication2.setEducation(EnumUtils.Education.DIPLOMA);
+        loanApplication2.setEmploymentStatus(EnumUtils.EmploymentStatus.EMPLOYEE);
+        loanApplication2.setGender(EnumUtils.Gender.MALE);
+        
+        
+        loanApplication2.setIdentityNumber("S1234567Z");
+        loanApplication2.setOtherCommitment(906.17);
+        loanApplication2.setOtherHousingLoan(0);
+        loanApplication2.setRequestedAmount(10000.0);
+        loanApplication2.setMarketValue(30000.0);
+        loanApplication2.setTenure(6);
+        
         loanApplication2.setProductType(EnumUtils.LoanProductType.LOAN_PRODUCT_TYPE_CAR);
         loanApplication2.setLoanProduct(loanProductSessionBean.getLoanProductByProductName(ConstantUtils.DEMO_CAR_LOAN_PRODUCT_NAME));
         loanApplication2.setLoanOfficer(staffAccountSessionBean.getAccountByUsername(ConstantUtils.LOAN_OFFICIER_USERNAME));
         loanApplication2 = loanAccountSessionBean.createLoanApplication(loanApplication2);
         
         LoanApplication loanApplication3 = new LoanApplication();
-        loanApplication3.setAge(21);
-        loanApplication3.setIncome(3000.0);
-        loanApplication3.setName("Lei Yang");
-        loanApplication3.setEmail("raymondlei90s@gmail.com");
-        loanApplication3.setPhone("94761895");
-        loanApplication3.setOtherCommitment(0.0);
-        loanApplication3.setOtherHousingLoan(0);
-        loanApplication3.setRequestedAmount(220000.0);
-        loanApplication3.setMarketValue(300000.0);
-        loanApplication3.setIdNumber("S9876543I");
+        loanApplication3.setIdentityType(EnumUtils.IdentityType.NRIC);
+        loanApplication3.setIdentityNumber("S2222222Z");
+        try {
+            loanApplication2.setBirthDay(new SimpleDateFormat("dd-MM-yyyy").parse("01-01-1983"));
+        } catch (Exception ex) {
+        }
+        loanApplication3.setAge(33);
+        loanApplication3.setActualIncome(6000.0);
+        loanApplication3.setFirstname("Wong");
+        loanApplication3.setLastname("Mary");
+        loanApplication3.setFullName(loanApplication3.getLastname()+" "+loanApplication3.getFirstname());
+        loanApplication3.setEmail("marry.wong@gmail.com");
+        loanApplication3.setPhone("82222222");
+        
+        loanApplication3.setNationality(EnumUtils.Nationality.SINGAPORE);
+        loanApplication3.setMaritalStatus(EnumUtils.MaritalStatus.MARRIED);
+        loanApplication3.setAddress("15 Punggol, 08-08");
+        loanApplication3.setPostalCode("654341");
+        loanApplication3.setIndustry(EnumUtils.Industry.BANKING_FINANCE);
+        loanApplication3.setEducation(EnumUtils.Education.UNIVERSITY);
+        loanApplication3.setEmploymentStatus(EnumUtils.EmploymentStatus.EMPLOYEE);
+        loanApplication3.setGender(EnumUtils.Gender.FEMALE);
+        
+        
+        loanApplication3.setOtherCommitment(1000.0);
+        loanApplication3.setOtherHousingLoan(1);
+        loanApplication3.setRequestedAmount(300000.0);;
+        loanApplication3.setMarketValue(600000.0);
+        loanApplication3.setTenure(20);
+       
         loanApplication3.setProductType(EnumUtils.LoanProductType.LOAN_PRODUCT_TYPE_HDB);
         loanApplication3.setLoanProduct(loanProductSessionBean.getLoanProductByProductName(ConstantUtils.DEMO_HDB_FIXED_LOAN_PRODUCT_NAME));
         loanApplication3.setLoanOfficer(staffAccountSessionBean.getAccountByUsername(ConstantUtils.LOAN_OFFICIER_USERNAME));

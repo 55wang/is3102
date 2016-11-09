@@ -43,12 +43,6 @@ public class CustomerDepositSessionBean implements CustomerDepositSessionBeanLoc
     private CardAcctSessionBeanLocal cardBean;
 
     @Override
-    public long showNumberOfAccounts() {
-        Query q = em.createQuery("SELECT COUNT(*) FROM DepositAccount");
-        return ((Long) q.getSingleResult()).longValue();
-    }
-
-    @Override
     public DepositAccount getAccountFromId(String accountNumber) {
         return em.find(DepositAccount.class, accountNumber);
     }
@@ -176,14 +170,14 @@ public class CustomerDepositSessionBean implements CustomerDepositSessionBeanLoc
     }
 
     @Override
-    public List<CustomerDepositAccount> getAllNonFixedCustomerAccounts(Long mainAccountId) {
+    public List<CustomerDepositAccount> getAllNonFixedCustomerAccounts(String mainAccountId) {
         Query q = em.createQuery("SELECT ba FROM CustomerDepositAccount ba WHERE ba.mainAccount.id =:mainAccountId");
         q.setParameter("mainAccountId", mainAccountId);
         return q.getResultList();
     }
 
     @Override
-    public List<CustomerFixedDepositAccount> getAllFixedCustomerAccounts(Long mainAccountId) {
+    public List<CustomerFixedDepositAccount> getAllFixedCustomerAccounts(String mainAccountId) {
         Query q = em.createQuery("SELECT ba FROM CustomerFixedDepositAccount ba WHERE ba.mainAccount.id =:mainAccountId");
         q.setParameter("mainAccountId", mainAccountId);
         return q.getResultList();

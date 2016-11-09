@@ -19,6 +19,9 @@
                 <h:form id="mainForm">
                     <p:panel header="List of Customer Group">
                         <p:dataTable value="#{createCustomerSegmentationManagedBean.customerGroups}" var="cg" >
+                            <p:column style="width:16px">
+                                <p:rowToggler />
+                            </p:column>
                             <p:column headerText="Customer Group ID">
                                 <h:outputText value="#{cg.id}" />
                             </p:column>
@@ -31,6 +34,46 @@
                             <p:column headerText="Group Size">
                                 <h:outputText value="#{cg.customers.size()}" />
                             </p:column>
+                            
+                            <p:rowExpansion>
+                                <p:dataTable value="#{cg}" var="cg1">
+                                    <p:column headerText="Deposit Recency">
+                                        <h:outputText value="#{cg1.depositRecency}" />
+                                    </p:column>
+                                    <p:column headerText="Deposit Frequency">
+                                        <h:outputText value="#{cg1.depositFrequency}" />
+                                    </p:column>
+                                    <p:column headerText="Deposit Monetary">
+                                        <h:outputText value="#{cg1.depositMonetary}" />
+                                    </p:column>
+                                    <p:column headerText="Card Recency">
+                                        <h:outputText value="#{cg1.cardRecency}" />
+                                    </p:column>
+                                    <p:column headerText="Card Frequency">
+                                        <h:outputText value="#{cg1.cardFrequency}" />
+                                    </p:column>
+                                    <p:column headerText="Deposit Monetary">
+                                        <h:outputText value="#{cg1.cardMonetary}" />
+                                    </p:column>
+                                    <p:column headerText="Income">
+                                        <h:outputText value="#{cg1.actualIncome}" />
+                                    </p:column>
+                                </p:dataTable>
+                                <p:dataTable value="#{cg.customers}" var="customer" rows="10" paginator="true" paginatorAlwaysVisible="true" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="10,20,50">
+                                    <p:column headerText="Customer ID">
+                                        <h:outputText value="#{customer.id}" />
+                                    </p:column>
+                                    <p:column headerText="Name">
+                                        <h:outputText value="#{customer.fullName}"/>
+                                    </p:column>
+                                    <p:column headerText="Email">
+                                        <h:outputText value="#{customer.email}" />
+                                    </p:column>
+                                    <p:column headerText="Phone">
+                                        <h:outputText value="#{customer.phone}" />
+                                    </p:column>
+                                </p:dataTable>
+                            </p:rowExpansion>
                         </p:dataTable>
                     </p:panel>
                     <div class="select-menu-holder">
@@ -38,14 +81,14 @@
                             <p:selectOneButton id="functionType" value="#{createCustomerSegmentationManagedBean.functionType}">
                                 <f:selectItem itemLabel="Create HashTag" itemValue="#{createCustomerSegmentationManagedBean.SET_HASH_TAG}" />
                                 <f:selectItem itemLabel="Create Customer Group" itemValue="#{createCustomerSegmentationManagedBean.CREATE_CUSTOMER_GROUP}" />
-                                <f:ajax render="@form" />
+                                <f:ajax  render="@form" />
                             </p:selectOneButton>
                         </p:panel>
                     </div>
 
                     <div class="ui-g-12 ui-md-5">
                         <p:separator/>
-                        <h:panelGrid columns="2" cellpadding="10">
+                        <h:panelGrid columns="2" cellpadding="10" id="input-panel">
                             <p:outputLabel for="GroupName" value="Group Name: " rendered="#{createCustomerSegmentationManagedBean.functionType == createCustomerSegmentationManagedBean.CREATE_CUSTOMER_GROUP}"/>
                             <p:inputText id="GroupName" value="#{createCustomerSegmentationManagedBean.customerGroup.groupName}" rendered="#{createCustomerSegmentationManagedBean.functionType == createCustomerSegmentationManagedBean.CREATE_CUSTOMER_GROUP}"/>
                             <p:outputLabel for="DepositRecency" value="Deposit Recency: " />
@@ -88,13 +131,13 @@
                             </div>
                             <div class="tag-cloud">
                                 <p:tagCloud model="#{createCustomerSegmentationManagedBean.model}">
-                                    <!--<p:ajax event="select" update="@form"  />-->
+                                    <p:ajax event="select" update="hashTag" listener="#{createCustomerSegmentationManagedBean.onSelect}"/>
                                 </p:tagCloud>
                             </div>
                         </div>
                     </div>
-                    <p:messages id="messagesStatus" redisplay="false" >
-                    </p:messages>
+                    <p:growl id="messagesStatus" redisplay="false" >
+                    </p:growl>
                     <!--To use jquery with javascript here-->
                     <h:outputScript library="primefaces" name="jquery/jquery.js" />
                     <script type="text/javascript" src="tagCloudRandomColor.js"></script>

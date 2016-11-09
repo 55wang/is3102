@@ -115,7 +115,7 @@ public class BillSessionBean implements BillSessionBeanLocal {
     }
 
     @Override
-    public List<BillingOrg> getBillingOrgMainAccountId(Long id) {
+    public List<BillingOrg> getBillingOrgMainAccountId(String id) {
         Query q = em.createQuery("SELECT bo FROM BillingOrg bo WHERE bo.mainAccount.id =:mainAccountId AND bo.organization.type !=:inType");
         q.setParameter("mainAccountId", id);
         q.setParameter("inType", EnumUtils.BillType.CARD);
@@ -123,7 +123,7 @@ public class BillSessionBean implements BillSessionBeanLocal {
     }
 
     @Override
-    public List<BillingOrg> getCreditCardBillingMainAccountId(Long id) {
+    public List<BillingOrg> getCreditCardBillingMainAccountId(String id) {
         Query q = em.createQuery("SELECT bo FROM BillingOrg bo WHERE bo.mainAccount.id =:mainAccountId AND bo.organization.type =:inType");
         q.setParameter("mainAccountId", id);
         q.setParameter("inType", EnumUtils.BillType.CARD);
@@ -168,7 +168,7 @@ public class BillSessionBean implements BillSessionBeanLocal {
     }
 
     @Override
-    public List<GiroArrangement> getGiroArrsByMainAccountId(Long id) {
+    public List<GiroArrangement> getGiroArrsByMainAccountId(String id) {
         Query q = em.createQuery("SELECT ga FROM GiroArrangement ga WHERE ga.mainAccount.id =:mainAccountId");
         q.setParameter("mainAccountId", id);
         return q.getResultList();

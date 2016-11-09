@@ -29,6 +29,9 @@ import server.utilities.CommonUtils;
 import utils.RedirectUtils;
 import server.utilities.EnumUtils.*;
 import server.utilities.CommonHelper;
+import util.exception.cms.CustomerNotExistException;
+import util.exception.common.DuplicateMainAccountExistException;
+import util.exception.common.UpdateMainAccountException;
 import utils.SessionUtils;
 
 /**
@@ -127,7 +130,12 @@ public class NewCardManagedBean implements Serializable {
         newCustomerSessionBean.createCustomer(customer);
 
         ma = new MainAccount();
-        mainAccountSessionBean.createMainAccount(ma);
+        try {
+            ma = mainAccountSessionBean.createMainAccount(ma);
+        } catch (DuplicateMainAccountExistException e) {
+            System.out.println("DuplicateMainAccountExistException thrown at NewCardManagedBean.java saveUpdatedCreditCardOrderForNewCustomer() ");
+        }
+        
 
         cca.setCardStatus(CardAccountStatus.PENDING);
         cardAcctSessionBean.createCardAccount(cca);
@@ -151,7 +159,12 @@ public class NewCardManagedBean implements Serializable {
         ma.setUserID(CommonHelper.generateUserID(customer.getIdentityType(), customer.getIdentityNumber()));
         ma.setStatus(StatusType.NEW);
         ma.setCustomer(customer);
-        mainAccountSessionBean.updateMainAccount(ma);
+        
+        try {
+            mainAccountSessionBean.updateMainAccount(ma);
+        } catch (UpdateMainAccountException e) {
+            System.out.println("UpdateMainAccountException thrown at NewCardManagedBean.java saveUpdatedCreditCardOrderForNewCustomer() ");
+        }
 
         emailServiceSessionBean.sendCreditCardApplicationNotice(customer.getEmail());
         RedirectUtils.redirect("/InternetBankingSystem/common/application_success.xhtml");
@@ -169,7 +182,12 @@ public class NewCardManagedBean implements Serializable {
         List<CreditCardAccount> ccas = existingCustomer.getMainAccount().getCreditCardAccounts();
         ccas.add(cca);
         existingCustomer.getMainAccount().setCreditCardAccounts(ccas);
-        mainAccountSessionBean.updateMainAccount(existingCustomer.getMainAccount());
+        
+        try {
+            mainAccountSessionBean.updateMainAccount(existingCustomer.getMainAccount());
+        } catch (UpdateMainAccountException e) {
+            System.out.println("UpdateMainAccountException thrown at NewCardManagedBean.java saveUpdatedCreditCardOrderForExistingCustomer() ");
+        }
 
         cca.setCreditCardProduct(newCardProductSessionBean.getCreditCardProductByProductName(selectedProductName));
 
@@ -190,7 +208,13 @@ public class NewCardManagedBean implements Serializable {
     }
 
     public void setExistingCustomerForCardApplication() {
-        existingCustomer = customerProfileSessionBean.getCustomerByUserID(SessionUtils.getUserName());
+        
+        try {
+            existingCustomer = customerProfileSessionBean.getCustomerByUserID(SessionUtils.getUserName());
+        } catch (CustomerNotExistException e) {
+            System.out.println("CustomerNotExistException NewCardManagedBean.java");
+        }
+        
     }
 
     public CreditCardOrder getCco() {

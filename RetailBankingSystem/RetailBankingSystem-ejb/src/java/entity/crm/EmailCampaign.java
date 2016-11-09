@@ -25,6 +25,7 @@ public class EmailCampaign extends MarketingCampaign implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
+    private String subjectEmail;
     private String contentEmail;
     private String senderEmailAddress;
 
@@ -75,6 +76,14 @@ public class EmailCampaign extends MarketingCampaign implements Serializable {
 
     public void setSenderEmailAddress(String senderEmailAddress) {
         this.senderEmailAddress = senderEmailAddress;
+    }
+
+    public String getSubjectEmail() {
+        return subjectEmail;
+    }
+
+    public void setSubjectEmail(String subjectEmail) {
+        this.subjectEmail = subjectEmail;
     }
     
 }

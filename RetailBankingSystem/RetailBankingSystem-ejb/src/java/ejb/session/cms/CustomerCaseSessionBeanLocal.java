@@ -6,10 +6,15 @@
 package ejb.session.cms;
 
 import entity.customer.CustomerCase;
-import entity.customer.MainAccount;
 import entity.staff.StaffAccount;
 import java.util.List;
 import javax.ejb.Local;
+import util.exception.cms.AllCustomerCaseException;
+import util.exception.cms.CancelCustomerCaseException;
+import util.exception.cms.CustomerCaseNotFoundByTitleException;
+import util.exception.cms.CustomerCaseNotFoundException;
+import util.exception.cms.DuplicateCaseExistException;
+import util.exception.cms.UpdateCaseException;
 
 /**
  *
@@ -17,11 +22,13 @@ import javax.ejb.Local;
  */
 @Local
 public interface CustomerCaseSessionBeanLocal {
-    public Boolean saveCase(CustomerCase customerCase);
-    public Boolean updateCase(CustomerCase customerCase);
-    public CustomerCase searchCaseByID(String id);
-    public List<CustomerCase> searchCaseByTitle(String title);
-    public Boolean cancelCase(Long id);
-    public List<CustomerCase> getAllCase();
+    
+    public CustomerCase createCase(CustomerCase customerCase) throws DuplicateCaseExistException ;
+    public CustomerCase updateCase(CustomerCase customerCase) throws UpdateCaseException;
+    public CustomerCase getCaseById(String id) throws CustomerCaseNotFoundException ;
+    public List<CustomerCase> getCaseByTitle(String title) throws CustomerCaseNotFoundByTitleException ;
+    public CustomerCase removeCase(String id) throws CancelCustomerCaseException;
+    public List<CustomerCase> getAllCase() throws AllCustomerCaseException ;
     public List<CustomerCase> getAllCaseUnderCertainStaff(StaffAccount staffAccount);
+    
 }

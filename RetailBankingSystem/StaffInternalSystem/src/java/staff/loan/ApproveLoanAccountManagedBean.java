@@ -23,6 +23,7 @@ import javax.faces.view.ViewScoped;
 import server.utilities.EnumUtils;
 import server.utilities.EnumUtils.LoanAccountStatus;
 import server.utilities.PincodeGenerationUtils;
+import util.exception.common.UpdateMainAccountException;
 import utils.MessageUtils;
 import utils.SessionUtils;
 
@@ -55,29 +56,34 @@ public class ApproveLoanAccountManagedBean implements Serializable {
     }
 
     public void approveLoanAccount(LoanAccount la) {
-        // change status
-        la.setLoanAccountStatus(EnumUtils.LoanAccountStatus.APPROVED);
-        la = loanAccountBean.updateLoanAccount(la);
+        try {
+            // change status
+            la.setLoanAccountStatus(EnumUtils.LoanAccountStatus.APPROVED);
+            la = loanAccountBean.updateLoanAccount(la);
 
-        // generate breakdown
-        List<LoanPaymentBreakdown> result = loanPaymentBean.futurePaymentBreakdown(la);
-        for (LoanPaymentBreakdown r : result) {
-            System.out.println(r.toString());
+            // generate breakdown
+            List<LoanPaymentBreakdown> result = loanPaymentBean.futurePaymentBreakdown(la);
+            for (LoanPaymentBreakdown r : result) {
+                System.out.println(r.toString());
+            }
+            // inform customer by email
+            System.out.println(la.getMainAccount().getCustomer().getEmail());
+            String randomPwd = PincodeGenerationUtils.generatePwd();
+            MainAccount mainAccount = la.getMainAccount();
+
+            if (mainAccount.getStatus() == EnumUtils.StatusType.PENDING) {
+                mainAccount.setPassword(randomPwd);
+                mainAccount = mainAccountBean.updateMainAccount(mainAccount);
+                emailBean.sendActivationGmailForCustomer(mainAccount.getCustomer().getEmail(), randomPwd);
+                emailBean.sendLoanApplicationApprovalNotice(la.getMainAccount().getCustomer().getEmail());
+            }
+
+            MessageUtils.displayInfo("Application Approved!");
+            myLoanAccounts.remove(la);
+        } catch (UpdateMainAccountException e) {
+            MessageUtils.displayError("Application not Approved! Some Error Occurred!");
+            System.out.println("UpdateMainAccountException thrown at ApproveLoanAccountManagedBean approveLoanAccount(la)");
         }
-        // inform customer by email
-        System.out.println(la.getMainAccount().getCustomer().getEmail());
-        String randomPwd = PincodeGenerationUtils.generatePwd();
-        MainAccount mainAccount = la.getMainAccount();
-
-        if (mainAccount.getStatus() == EnumUtils.StatusType.PENDING) {
-            mainAccount.setPassword(randomPwd);
-            mainAccount = mainAccountBean.updateMainAccount(mainAccount);
-            emailBean.sendActivationGmailForCustomer(mainAccount.getCustomer().getEmail(), randomPwd);
-            emailBean.sendLoanApplicationApprovalNotice(la.getMainAccount().getCustomer().getEmail());
-        }
-
-        MessageUtils.displayInfo("Application Approved!");
-        myLoanAccounts.remove(la);
     }
 
     public void rejectLoanAccount(LoanAccount la) {

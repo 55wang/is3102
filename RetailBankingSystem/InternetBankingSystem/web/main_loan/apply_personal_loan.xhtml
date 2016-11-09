@@ -24,38 +24,58 @@
                     <p:messages id="msgs"/>
                     <p:wizard widgetVar="myWizard" showNavBar="false">
 
-                        <p:tab id="p-info" title="Personal Information" >
+                        <p:tab id="p-info" title="Identity" >
                             <p:panel>
                                 <p:messages id="msgs1"/>
                                 <h:panelGrid columns="2" cellpadding="5px" columnClasses="label, value">
 
-                                    <h:outputText value="Your name: " />
-                                    <p:inputText value="#{personalLoanApplicationManagedBean.name}" required="true" requiredMessage="Name is required." validatorMessage="Invalid name.">
-                                        <f:validateLength minimum="2" />
-                                    </p:inputText>
+                                    <h:outputText value="Identity Type: " />
+                                    <p:selectOneMenu value="#{personalLoanApplicationManagedBean.identityType}" style="width:187px; height: 31px; line-height: 21px; top:8px" rendered="true" label="identityType" >
+                                        <f:selectItem itemLabel="Please select.." itemValue=""/>                                                    
+                                        <f:selectItems value="#{personalLoanApplicationManagedBean.identityTypeOptions}" />
+                                    </p:selectOneMenu>
 
-                                    <h:outputText value="ID Number: " />
-                                    <p:inputText value="#{personalLoanApplicationManagedBean.idNumber}" required="true" requiredMessage="ID Number is required." validatorMessage="Invalid identity number.">
+                                    <h:outputText value="Identity Number: " />
+                                    <p:inputText value="#{personalLoanApplicationManagedBean.idNumber}" required="true" requiredMessage="Identity number is required." validatorMessage="Invalid identity number.">
                                         <f:validateRegex
                                             pattern="^[A-Za-z0-9]{9}$" />
                                     </p:inputText>
 
+                                    <h:outputText value="Last Name: " />
+                                    <p:inputText value="#{personalLoanApplicationManagedBean.lastName}" required="true" requiredMessage="Last name is required." validatorMessage="Invalid last name.">
+                                        <f:validateLength minimum="2" />
+                                    </p:inputText>
+
+                                    <h:outputText value="First Name: " />
+                                    <p:inputText id="firstName" value="#{personalLoanApplicationManagedBean.firstName}" required="true" requiredMessage="First name is required." validatorMessage="Invalid first name.">
+                                        <f:validateLength minimum="2" />
+                                    </p:inputText>
+
+                                    <h:outputText value="Date of Birth: " />
+                                    <p:calendar value="#{personalLoanApplicationManagedBean.birthday}" navigator="true" yearRange="c-100:c+0" required="true" requiredMessage="DOB is required." 
+                                                pattern="yyyy-MM-dd" maxdate="#{personalLoanApplicationManagedBean.currentDate}"/>
+
                                     <h:outputText value="Age: " />
                                     <p:inputText value="#{personalLoanApplicationManagedBean.age}" required="true" requiredMessage="Age is required." />
 
-                                    <h:outputText value="Phone Number: " />
-                                    <p:inputText value="#{personalLoanApplicationManagedBean.phoneNumber}" required="true" requiredMessage="Phone number is required." />
+                                    <h:outputText value="Email: " />
 
-                                    <h:outputText value="Email Address: " />
-                                    <p:inputText value="#{personalLoanApplicationManagedBean.email}" required="true" requiredMessage="Email is required." validatorMessage="Invalid email format" >
-                                    <f:validateRegex
+                                    <p:inputText required="true" label="email" size="40"
+                                                 requiredMessage="Email address is required."
+                                                 validatorMessage="Invalid email format"
+                                                 value="#{personalLoanApplicationManagedBean.email}" style="width: 187px">
+
+                                        <f:validateRegex
                                             pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
                                     </p:inputText>
+
+                                    <h:outputText value="Phone: " />
+                                    <p:inputMask value="#{personalLoanApplicationManagedBean.phoneNumber}" required="true"  requiredMessage="Phone is required." mask="99999999"/>
 
                                 </h:panelGrid>
 
                                 <div class="register-form-button">
-                                    <p:commandButton value="Next" actionListener="#{personalLoanApplicationManagedBean.checkAge()}" update="@form:msgs1"/>
+                                    <p:commandButton value="Next" actionListener="#{personalLoanApplicationManagedBean.checkAge2()}" update="@form:msgs1"/>
                                 </div>
                             </p:panel>
                         </p:tab>
@@ -69,7 +89,7 @@
 
                                     <h:outputText id="upperLimitDescription" value="You can get up to" styleClass="outputLabel"/>
                                     <h:outputText id="upperLimit" value="#{personalLoanApplicationManagedBean.upperLimit}" styleClass="outputLabel"/>
-                                    
+
                                     <h:outputText value="Other monthly unsecured credit (S$): " />
                                     <p:inputText value="#{personalLoanApplicationManagedBean.otherLoan}" required="true" requiredMessage="Other financial commitment is required." />
 
@@ -107,7 +127,7 @@
                                     <h:outputText value="#{personalLoanApplicationManagedBean.personalLoanMonthlyInstalment}" styleClass="outputLabel">
                                         <f:convertNumber pattern="###00.00"/>
                                     </h:outputText>
-                                    
+
                                     <h:outputText value="Loan Amount: " />
                                     <p:inputText value="#{personalLoanApplicationManagedBean.loanAmount}" required="true" requiredMessage="Loan Amount is required." />
 
@@ -135,8 +155,8 @@
 
                 </h:form>
             </div>   
-
-            <em:customerFooter></em:customerFooter>
+            <em:adsBanner advertismentTitle="#{customerHomeManagedBean.adsBannerCampaign.adsTitle}" advertismentType="#{customerHomeManagedBean.adsBannerCampaign.adsType}" advertismentInfo="#{customerHomeManagedBean.adsBannerCampaign.adsInfo}" extraAdvertismentInfo="#{customerHomeManagedBean.adsBannerCampaign.adsExtraInfo}" landingPageUrl="https://localhost:8181/InternetBankingSystem/landing_page/#{customerHomeManagedBean.adsBannerCampaign.landingPageName}" />
+            <em:customerMainFooter></em:customerMainFooter>
         </h:body>
     </f:view>
 

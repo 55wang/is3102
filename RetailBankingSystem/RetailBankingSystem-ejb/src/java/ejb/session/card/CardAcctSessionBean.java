@@ -184,7 +184,7 @@ public class CardAcctSessionBean implements CardAcctSessionBeanLocal {
     }
 
     @Override
-    public List<CreditCardAccount> getAllActiveCreditCardAccountsByMainId(Long id) {
+    public List<CreditCardAccount> getAllActiveCreditCardAccountsByMainId(String id) {
         Query q = em.createQuery("SELECT cca FROM CreditCardAccount cca WHERE cca.CardStatus =:inStatus AND cca.mainAccount.id =:mainAccountId");
         q.setParameter("inStatus", CardAccountStatus.ACTIVE);
         q.setParameter("mainAccountId", id);
@@ -201,7 +201,7 @@ public class CardAcctSessionBean implements CardAcctSessionBeanLocal {
     }
 
     @Override
-    public List<CreditCardAccount> getListCreditCardAccountsByIdAndNotStatus(Long id, CardAccountStatus status) {
+    public List<CreditCardAccount> getListCreditCardAccountsByIdAndNotStatus(String id, CardAccountStatus status) {
         System.out.println("Status:" + status + " and id:" + id);
         Query q = em.createQuery("SELECT cca FROM CreditCardAccount cca WHERE cca.CardStatus != :inStatus AND cca.mainAccount.id =:id");
         q.setParameter("inStatus", status);
@@ -218,7 +218,7 @@ public class CardAcctSessionBean implements CardAcctSessionBeanLocal {
     }
 
     @Override
-    public List<DebitCardAccount> getListDebitCardAccountsByIdAndNotStatus(Long id, CardAccountStatus status) {
+    public List<DebitCardAccount> getListDebitCardAccountsByIdAndNotStatus(String id, CardAccountStatus status) {
         System.out.println("Status:" + status + " and id:" + id);
         Query q = em.createQuery("SELECT cca FROM DebitCardAccount cca WHERE cca.CardStatus != :inStatus AND cca.customerDepositAccount.mainAccount.id =:id");
         q.setParameter("inStatus", status);

@@ -18,9 +18,12 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
+import org.primefaces.event.SelectEvent;
 import org.primefaces.model.tagcloud.DefaultTagCloudItem;
 import org.primefaces.model.tagcloud.DefaultTagCloudModel;
+import org.primefaces.model.tagcloud.TagCloudItem;
 import org.primefaces.model.tagcloud.TagCloudModel;
+import utils.MessageUtils;
 
 /**
  *
@@ -61,13 +64,16 @@ public class CreateCustomerSegmentationManagedBean implements Serializable {
         customerGroups = customerSegmentationSessionBean.getListCustomerGroup();
         customerGroup = new CustomerGroup();
         createTagCloudModel();
-
     }
 
     public void setHashTag() {
         System.out.println("setHashTag()");
         System.out.println("selectedAntecedent: " + selectedAntecedent);
 
+        if (!customerGroup.getHashTag().startsWith("#")) {
+            customerGroup.setHashTag("#"+customerGroup.getHashTag());
+        }
+        
         if (selectedAntecedent == null) {
             setHashTagCustomers = customerSegmentationSessionBean.getListFilterCustomersByRFMAndIncome(
                     customerGroup.getDepositRecency(),
@@ -91,11 +97,17 @@ public class CreateCustomerSegmentationManagedBean implements Serializable {
             );
         }
 
-        System.out.println(setHashTagCustomers.size());
+        if (setHashTagCustomers.isEmpty()) {
+            MessageUtils.displayError("No Customer Meet the Requirements");
+        } else {
+            for (Customer c : setHashTagCustomers) {
+                c.setHashTag(customerGroup.getHashTag());
+                newCustomerSessionBean.updateCustomer(c);
+            }
 
-        for (Customer c : setHashTagCustomers) {
-            c.setHashTag(customerGroup.getHashTag());
-            newCustomerSessionBean.updateCustomer(c);
+            customerGroup.setHashTag("");
+
+            createTagCloudModel();
         }
 
     }
@@ -131,8 +143,14 @@ public class CreateCustomerSegmentationManagedBean implements Serializable {
 
         try {
             customerSegmentationSessionBean.createCustomerGroup(customerGroup);
+            for (Customer c : filterCustomers) {
+                c.addCustomerGroup(customerGroup);
+                newCustomerSessionBean.updateCustomer(c);
+            }
+            MessageUtils.displayInfo("Customer Group Created Successfully!");
         } catch (Exception ex) {
             System.out.println(ex);
+            MessageUtils.displayError("Customer Group Created Fail!");
         }
 
     }
@@ -145,7 +163,7 @@ public class CreateCustomerSegmentationManagedBean implements Serializable {
 
         for (HashMap.Entry<String, Long> entry : mapHashTagCount.entrySet()) {
             System.out.println("Key = " + entry.getKey() + ", Value = " + entry.getValue());
-            model.addTag(new DefaultTagCloudItem(entry.getKey(), entry.getValue().intValue()));
+            model.addTag(new DefaultTagCloudItem(entry.getKey(), "#", entry.getValue().intValue()));
         }
 
 //        model.addTag(new DefaultTagCloudItem("Transformers", 1));
@@ -178,12 +196,24 @@ public class CreateCustomerSegmentationManagedBean implements Serializable {
             if (part.length() != 0) {
 
                 Long value = tempMapHashTagCount.getOrDefault(part, 0L);
+
+                tempMapHashTagCount.put(part, ++value);
                 System.out.println(part + " " + value);
-                tempMapHashTagCount.put(part, value++);
             }
         }
 
         return tempMapHashTagCount;
+    }
+
+    public void onSelect(SelectEvent event) {
+        if (functionType.equals(CREATE_CUSTOMER_GROUP)) {
+            TagCloudItem item = (TagCloudItem) event.getObject();
+            if (customerGroup.getHashTag() == null || customerGroup.getHashTag().isEmpty()) {
+                customerGroup.setHashTag("#" + item.getLabel());
+            } else {
+                customerGroup.setHashTag(customerGroup.getHashTag() + "#" + item.getLabel());
+            }
+        }
     }
 
     public TagCloudModel getModel() {

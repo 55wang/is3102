@@ -6,6 +6,7 @@
 package staff.cms;
 
 import ejb.session.cms.CustomerProfileSessionBeanLocal;
+import ejb.session.common.EmailServiceSessionBeanLocal;
 import ejb.session.utils.UtilsSessionBeanLocal;
 import entity.common.AuditLog;
 import entity.customer.Customer;
@@ -24,6 +25,8 @@ import server.utilities.EnumUtils.MaritalStatus;
 import server.utilities.EnumUtils.Nationality;
 import server.utilities.CommonUtils;
 import server.utilities.ConstantUtils;
+import util.exception.cms.CustomerNotExistException;
+import util.exception.cms.UpdateCustomerException;
 import utils.MessageUtils;
 import utils.RedirectUtils;
 import utils.SessionUtils;
@@ -35,12 +38,15 @@ import utils.SessionUtils;
 @Named(value = "staffCustomerInformationCounterManagedBean")
 @ViewScoped
 public class StaffCustomerInformationCounterManagedBean implements Serializable {
+
     @EJB
     private UtilsSessionBeanLocal utilsSessionBean;
     @EJB
     private UtilsSessionBeanLocal utilsBean;
     @EJB
     private CustomerProfileSessionBeanLocal customerProfileSessionBean;
+    @EJB
+    private EmailServiceSessionBeanLocal emailBean;
 
     private List<Customer> customers = new ArrayList();
     private String searchText;
@@ -69,7 +75,7 @@ public class StaffCustomerInformationCounterManagedBean implements Serializable 
      */
     public StaffCustomerInformationCounterManagedBean() {
     }
-    
+
     /**
      * @param customers the customers to set
      */
@@ -82,15 +88,19 @@ public class StaffCustomerInformationCounterManagedBean implements Serializable 
         a.setStaffAccount(SessionUtils.getStaff());
         utilsBean.persist(a);
     }
-    
+
     public void search() {
         if (searchText.isEmpty()) {
             MessageUtils.displayInfo("Search text is empty!");
         } else {
-            Customer c =  customerProfileSessionBean.searchCustomerByIdentityNumber(searchText);
-            customers  = new ArrayList<>();
-            customers.add(c);
-            setCustomers(customers);
+            try {
+                Customer c = customerProfileSessionBean.searchCustomerByIdentityNumber(searchText);
+                customers = new ArrayList<>();
+                customers.add(c);
+                setCustomers(customers);
+            } catch (CustomerNotExistException e) {
+                MessageUtils.displayInfo("No customer found!");
+            }
         }
     }
 
@@ -100,7 +110,7 @@ public class StaffCustomerInformationCounterManagedBean implements Serializable 
         selectedCustomer.setIncome(Income.getEnum(selectedIncome));
         selectedCustomer.setMaritalStatus(MaritalStatus.getEnum(selectedMaritalStatus));
         selectedCustomer.setEducation(Education.getEnum(selectedEducation));
-       
+
         if (utilsSessionBean.checkUpdatedEmailIsUnique(selectedCustomer) == false) {
             MessageUtils.displayInfo("Email is registered!");
 
@@ -108,12 +118,13 @@ public class StaffCustomerInformationCounterManagedBean implements Serializable 
             MessageUtils.displayInfo("Phone is registered!");
 
         } else {
-            Customer result = customerProfileSessionBean.saveProfile(selectedCustomer);
-            if (result != null) {
+            try {
+                customerProfileSessionBean.updateCustomer(selectedCustomer);
                 MessageUtils.displayInfo("Profile successfully updated!");
+                emailBean.sendUpdatedProfile(selectedCustomer.getEmail());
                 RedirectUtils.redirect("staff_view_customer.xhtml");
-            } else {
-                MessageUtils.displayInfo("Update is unsuccessful, please check your input.");
+            } catch (UpdateCustomerException e) {
+                MessageUtils.displayError("Update is unsuccessful, please check your input.");
             }
         }
     }
@@ -145,7 +156,7 @@ public class StaffCustomerInformationCounterManagedBean implements Serializable 
     public List<Customer> getCustomers() {
         return customers;
     }
-    
+
     /**
      * @return the searchText
      */

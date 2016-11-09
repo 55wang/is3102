@@ -69,7 +69,7 @@ public class MarketBasketAnalysisSessionBean implements MarketBasketAnalysisSess
     
     //get all product name from a single customer
     @Override
-    public Set<String> getListProductNameByCustomerId(Long Id) {
+    public Set<String> getListProductNameByCustomerId(String Id) {
         Set<String> productNames = new HashSet<>();
         
         Query queryDepositProduct = em.createQuery("SELECT dp.name FROM DepositProduct dp, Customer c, MainAccount ma, DepositAccount da WHERE da.product = dp AND da.mainAccount = ma AND ma.customer = c AND c.id =:id");

@@ -27,10 +27,10 @@
                             <h:panelGrid columns="4" style="width:100%" cellpadding="5" class="border-bottom" >
 
                                 <h:outputText value="Customer Name:"/>
-                                <h:outputText value="#{createLoanAccountManagedBean.currentApplication.name}"/>
+                                <h:outputText value="#{createLoanAccountManagedBean.currentApplication.fullName}"/>
 
                                 <h:outputText value="ID Number:"/>
-                                <h:outputText value="#{createLoanAccountManagedBean.currentApplication.idNumber}"/>
+                                <h:outputText value="#{createLoanAccountManagedBean.currentApplication.identityNumber}"/>
 
                                 <h:outputText value="Email:"/>
                                 <h:outputText value="#{createLoanAccountManagedBean.currentApplication.email}"/> 
@@ -45,7 +45,7 @@
                                 <h:outputText value="#{createLoanAccountManagedBean.currentApplication.loanProduct.productName}"/> 
 
                                 <h:outputText value="Income:"/>
-                                <h:outputText value="#{createLoanAccountManagedBean.currentApplication.income}"/> 
+                                <h:outputText value="#{createLoanAccountManagedBean.currentApplication.actualIncome}"/> 
 
                                 <h:outputText value="Age:"/>
                                 <h:outputText value="#{createLoanAccountManagedBean.currentApplication.age}"/> 

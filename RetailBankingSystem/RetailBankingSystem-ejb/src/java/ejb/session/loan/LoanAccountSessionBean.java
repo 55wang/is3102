@@ -85,7 +85,7 @@ public class LoanAccountSessionBean implements LoanAccountSessionBeanLocal {
     }
     
     @Override
-    public List<LoanAccount> getActiveLoanAccountListByMainAccountId(Long id) {
+    public List<LoanAccount> getActiveLoanAccountListByMainAccountId(String id) {
         Query q = em.createQuery("SELECT l FROM LoanAccount l WHERE l.mainAccount.id = :mainAccountId AND l.loanAccountStatus =:inStatus");
         q.setParameter("mainAccountId", id);
         q.setParameter("inStatus", LoanAccountStatus.APPROVED);

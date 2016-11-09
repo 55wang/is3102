@@ -27,6 +27,7 @@ import server.utilities.EnumUtils.StatusType;
 import server.utilities.CommonUtils;
 import server.utilities.HashPwdUtils;
 import utils.MessageUtils;
+import utils.RedirectUtils;
 import utils.SessionUtils;
 
 /**
@@ -45,24 +46,22 @@ public class CreateStaffManagedBean implements Serializable {
     private EmailServiceSessionBeanLocal emailServiceSessionBean;
     @EJB
     private UtilsSessionBeanLocal utilsBean;
-   
-    
+
     private StaffAccount newStaff = new StaffAccount();
     private List<StaffAccount> staffs = new ArrayList<>();
     private List<Role> roles = new ArrayList<>();
     private String[] selectedRoles;
     private List<String> selectStatuses = CommonUtils.getEnumList(StatusType.class);
-    private String selectedRoleName;
-    private String cellSelectedRoleName;
     private String cellSelectedStatus;
-    
-    public CreateStaffManagedBean() {}
-    
+
+    public CreateStaffManagedBean() {
+    }
+
     @PostConstruct
     public void init() {
         setStaffs(staffAccountSessionBean.getAllStaffs());
         setRoles(staffRoleSessionBean.getAllRoles());
-        
+
         AuditLog a = new AuditLog();
         a.setActivityLog("System user enter create_role.xhtml");
         a.setFunctionName("CreateRoleManagedBean @PostConstruct init()");
@@ -70,70 +69,85 @@ public class CreateStaffManagedBean implements Serializable {
         a.setStaffAccount(SessionUtils.getStaff());
         utilsBean.persist(a);
     }
-    
+
     public void addStaff(ActionEvent event) {
         Boolean emailSuccessFlag = true;
         String randomPwd = HashPwdUtils.hashPwd(generatePwd());
-        
-        try{
+
+        try {
             emailServiceSessionBean.sendActivationGmailForStaff(newStaff.getEmail(), randomPwd);
-        }catch(Exception ex){
+        } catch (Exception ex) {
             emailSuccessFlag = false;
         } finally {
             if (emailSuccessFlag) {
-                Role r = staffRoleSessionBean.findRoleByName(getSelectedRoleName());
-                newStaff.addRole(r);
-                newStaff.setPassword(randomPwd);
+                for (String s : selectedRoles) {
+                    Role r = staffRoleSessionBean.findRoleByName(s);
+                    newStaff.addRole(r);
+                    newStaff.setPassword(randomPwd);
+                }
                 createAccount();
             } else {
                 MessageUtils.displayInfo("Add Staff Failed");
             }
         }
     }
-    
+
     // private function helper
     private void createAccount() {
         StaffAccount result = staffAccountSessionBean.createAccount(newStaff);
         if (result != null) {
+            for (String s : selectedRoles) {
+                Role r = staffRoleSessionBean.findRoleByName(s);
+                r.getStaffAccounts().add(result);
+                staffRoleSessionBean.updateRole(r);
+            }
             staffs.add(newStaff);
             newStaff = new StaffAccount();
-            MessageUtils.displayInfo("New Role Added");
+            MessageUtils.displayInfo("New Staff Added");
         } else {
             MessageUtils.displayInfo("Staff already Added");
         }
     }
     
+    public void editStaff(StaffAccount sa) {
+        Map<String, String> map = new HashMap<>();
+        map.put("staffId", sa.getUsername());
+        System.out.println("Editing staff:" + sa.getUsername());
+        String params = RedirectUtils.generateParameters(map);
+        RedirectUtils.redirect("edit_staff.xhtml" + params);
+    }
+
     public void onCellEdit(StaffAccount sa) {
-        if (cellSelectedRoleName != null) {
-            sa.addRole(staffRoleSessionBean.findRoleByName(getCellSelectedRoleName()));
-        } else if (cellSelectedStatus != null) {
+        
+        if (cellSelectedStatus != null) {
             sa.setStatus(StatusType.getEnum(cellSelectedStatus));
         } else {
             return;
         }
+
         StaffAccount result = staffAccountSessionBean.updateAccount(sa);
         if (result != null) {
-            cellSelectedRoleName = null;
             cellSelectedStatus = null;
             MessageUtils.displayInfo(sa.getFullName() + "'s Role Edited");
         } else {
             MessageUtils.displayInfo(sa.getFullName() + "'s Role Not Edited");
         }
+        
     }
-    
-    private String generatePwd(){
+
+    private String generatePwd() {
         int pwdLen = 10;
         SecureRandom rnd = new SecureRandom();
 
         String AB = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
         StringBuilder sb = new StringBuilder(pwdLen);
-        for( int i = 0; i < pwdLen; i++ ) 
-            sb.append( AB.charAt( rnd.nextInt(AB.length()) ) );
+        for (int i = 0; i < pwdLen; i++) {
+            sb.append(AB.charAt(rnd.nextInt(AB.length())));
+        }
         return sb.toString();
     }
-    
-    // Getter and Setter
 
+    // Getter and Setter
     /**
      * @return the newStaff
      */
@@ -174,34 +188,6 @@ public class CreateStaffManagedBean implements Serializable {
      */
     public void setRoles(List<Role> roles) {
         this.roles = roles;
-    }
-
-    /**
-     * @return the selectedRoleName
-     */
-    public String getSelectedRoleName() {
-        return selectedRoleName;
-    }
-
-    /**
-     * @param selectedRoleName the selectedRoleName to set
-     */
-    public void setSelectedRoleName(String selectedRoleName) {
-        this.selectedRoleName = selectedRoleName;
-    }
-
-    /**
-     * @return the cellSelectedRoleName
-     */
-    public String getCellSelectedRoleName() {
-        return cellSelectedRoleName;
-    }
-
-    /**
-     * @param cellSelectedRoleName the cellSelectedRoleName to set
-     */
-    public void setCellSelectedRoleName(String cellSelectedRoleName) {
-        this.cellSelectedRoleName = cellSelectedRoleName;
     }
 
     /**

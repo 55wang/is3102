@@ -18,8 +18,6 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
@@ -37,6 +35,7 @@ import server.utilities.EnumUtils.Industry;
 import server.utilities.EnumUtils.LoanProductType;
 import server.utilities.EnumUtils.MaritalStatus;
 import server.utilities.EnumUtils.Nationality;
+import server.utilities.EnumUtils.Occupation;
 import server.utilities.EnumUtils.PortfolioStatus;
 import server.utilities.EnumUtils.ResidentialStatus;
 import server.utilities.EnumUtils.ResidentialType;
@@ -44,10 +43,8 @@ import server.utilities.EnumUtils.ResidentialType;
 @Entity
 public class Customer implements Serializable {
 
-    private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
 
     //personal info
     private IdentityType identityType;
@@ -77,6 +74,7 @@ public class Customer implements Serializable {
     private Double actualIncome = 0.0;
     private Double savingPerMonth;
     private Gender gender;
+    private Occupation occupation;
 
     // credit
     private Double creditScore;
@@ -115,22 +113,16 @@ public class Customer implements Serializable {
     // mapping
     @OneToOne(cascade = {CascadeType.MERGE})
     private MainAccount mainAccount;
-    @ManyToOne
-    private CustomerGroup customerGroup;
-    @ManyToMany()
+    @ManyToMany(cascade = {CascadeType.MERGE})
     @JoinTable(name = "CustomerGroup_Customer_Bdi")
     private List<CustomerGroup> customerGroups = new ArrayList<>();
 
+    public void addCustomerGroup(CustomerGroup cg) {
+        customerGroups.add(cg);
+    }
+    
     public Long calcAge() {
         return ((new Date().getTime() - getBirthDay().getTime()) / (24 * 60 * 60 * 1000)) / 365;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getIdentityNumber() {
@@ -192,7 +184,7 @@ public class Customer implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
+        hash += (getId() != null ? getId().hashCode() : 0);
         return hash;
     }
 
@@ -203,7 +195,7 @@ public class Customer implements Serializable {
             return false;
         }
         Customer other = (Customer) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+        if ((this.getId() == null && other.getId() != null) || (this.getId() != null && !this.id.equals(other.id))) {
             return false;
         }
         return true;
@@ -211,7 +203,7 @@ public class Customer implements Serializable {
 
     @Override
     public String toString() {
-        return "entity.Customer[ id=" + id + " ]";
+        return "entity.Customer[ id=" + getId() + " ]";
     }
 
     public Double getTotalMortgageMonthlyInstallment() {
@@ -609,6 +601,17 @@ public class Customer implements Serializable {
     }
 
     /**
+     * @param occupation the gender to set
+     */
+    public Occupation getOccupation() {
+        return occupation;
+    }
+
+    public void setOccupation(Occupation occupation) {
+        this.occupation = occupation;
+    }
+
+    /**
      * @return the education
      */
     public Education getEducation() {
@@ -696,14 +699,6 @@ public class Customer implements Serializable {
 
     public void setIdentityType(IdentityType identityType) {
         this.identityType = identityType;
-    }
-
-    public CustomerGroup getCustomerGroup() {
-        return customerGroup;
-    }
-
-    public void setCustomerGroup(CustomerGroup customerGroup) {
-        this.customerGroup = customerGroup;
     }
 
     /**
@@ -919,6 +914,20 @@ public class Customer implements Serializable {
 
     public void setCustomerGroups(List<CustomerGroup> customerGroups) {
         this.customerGroups = customerGroups;
+    }
+
+    /**
+     * @return the id
+     */
+    public String getId() {
+        return id;
+    }
+
+    /**
+     * @param id the id to set
+     */
+    public void setId(String id) {
+        this.id = id;
     }
 
 }

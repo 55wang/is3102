@@ -3,16 +3,16 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package customer.cms;
+package staff.cms;
 
-import ejb.session.audit.AuditSessionBeanLocal;
 import ejb.session.cms.CustomerCaseSessionBeanLocal;
 import ejb.session.common.EmailServiceSessionBeanLocal;
 import ejb.session.common.LoginSessionBeanLocal;
-import entity.common.AuditLog;
+import ejb.session.staff.StaffAccountSessionBeanLocal;
 import entity.customer.CustomerCase;
 import entity.customer.Issue;
 import entity.customer.MainAccount;
+import entity.staff.StaffAccount;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -36,7 +36,12 @@ import org.primefaces.push.EventBusFactory;
 import server.utilities.EnumUtils;
 import server.utilities.EnumUtils.IssueField;
 import server.utilities.CommonUtils;
-import utils.SessionUtils;
+import server.utilities.ConstantUtils;
+import util.exception.cms.AllCustomerCaseException;
+import util.exception.cms.CancelCustomerCaseException;
+import util.exception.cms.CustomerCaseNotFoundByTitleException;
+import util.exception.cms.CustomerCaseNotFoundException;
+import util.exception.cms.DuplicateCaseExistException;
 import utils.MessageUtils;
 import utils.RedirectUtils;
 
@@ -47,23 +52,25 @@ import utils.RedirectUtils;
 @Named(value = "customerCaseCounterManagedBean")
 @ViewScoped
 public class CustomerCaseCounterManagedBean implements Serializable {
-    
+
     @EJB
     private LoginSessionBeanLocal loginSessionBean;
     @EJB
     private EmailServiceSessionBeanLocal emailServiceSessionBean;
     @EJB
     private CustomerCaseSessionBeanLocal customerCaseSessionBean;
-    
-    private MainAccount mainAccount; 
+    @EJB
+    private StaffAccountSessionBeanLocal staffBean;
+
+    private MainAccount mainAccount;
     private String customerIC;
     private CustomerCase customerCase = new CustomerCase();
-    private List<Issue> issues = new ArrayList<> ();
+    private List<Issue> issues = new ArrayList<>();
     private Issue newIssue = new Issue();
     private Boolean issuePage = false;
     private int numOfIssues = 0;
     private String directoryPath;
-    private String searchType="viewAllCases";
+    private String searchType = "viewAllCases";
     private String viewAllCases = "viewAllCases";
     private String searchByCaseID = "CaseID";
     private String searchByCaseTitle = "CaseTitle";
@@ -72,146 +79,172 @@ public class CustomerCaseCounterManagedBean implements Serializable {
     private String searchCaseID;
     private String searchCaseTitle;
     private List<String> issueFieldList;
-    
+
     private final static String NOTIFY_CHANNEL = "/notify";//TODO: notify to specific staff roll
+
     /**
      * Creates a new instance of CustomerCaseManagedBean
      */
     public CustomerCaseCounterManagedBean() {
     }
-    
+
     @PostConstruct
     public void setMainAccount() {
         this.issueFieldList = CommonUtils.getEnumList(EnumUtils.IssueField.class);
         this.issueFieldList.remove(IssueField.CHARGEBACK.toString());
-        this.allCaseList = customerCaseSessionBean.getAllCase();
+
+        try {
+            this.allCaseList = customerCaseSessionBean.getAllCase();
+        } catch (AllCustomerCaseException e) {
+            this.allCaseList = new ArrayList<>();
+        }
     }
-    
+
     public void retrieveMainAccount() {
         try {
             this.mainAccount = loginSessionBean.getMainAccountByUserIC(customerIC);
         } catch (Exception e) {
             this.mainAccount = null;
         }
-        
+
         MessageUtils.displayInfo("Customer Main Account Retrieved!");
     }
-    
-    public void goToIssuePage (){
+
+    public void goToIssuePage() {
         issuePage = true;
     }
-    
-    public void addIssue (){
+
+    public void addIssue() {
         issues.add(newIssue);
         newIssue.setCustomerCase(customerCase);
         newIssue = new Issue();
         issuePage = false;
         numOfIssues++;
     }
-    
-    public void saveCase(){
-        Date date = new Date();
-        customerCase.setCreateDate(date);
-        customerCase.setIssues(issues);
-        customerCase.setMainAccount(mainAccount);
-        mainAccount.addCase(customerCase);
-        try{
-            customerCaseSessionBean.saveCase(customerCase);
+
+    public void saveCase() {
+        try {
+
+            StaffAccount sa = staffBean.getAccountByUsername(ConstantUtils.RELATIONSHIP_MANAGER_USERNAME);
+
+            Date date = new Date();
+            customerCase.setCreateDate(date);
+            customerCase.setIssues(issues);
+            customerCase.setMainAccount(mainAccount);
+            customerCase.setStaffAccount(sa);
+            mainAccount.addCase(customerCase);
+
+            customerCaseSessionBean.createCase(customerCase);
+
+            try {
+                emailServiceSessionBean.sendNewCaseConfirmationToCustomer(mainAccount.getCustomer().getEmail(), customerCase);
+            } catch (Exception ex) {
+                System.out.println("CustoemrCaseManagedBean.saveCase: " + ex.toString());
+            }
+
+            System.out.println("CustoemrCaseManagedBean.saveCase.NewCaseNotification sending");
+            EventBus eventBus = EventBusFactory.getDefault().eventBus();
+            FacesMessage m = new FacesMessage("New Case", "A new case with ID " + customerCase.getId() + " has been created");
+            eventBus.publish(NOTIFY_CHANNEL, m);
+
             RedirectUtils.redirect("view_case.xhtml");
-            emailServiceSessionBean.sendNewCaseConfirmationToCustomer(mainAccount.getCustomer().getEmail(), customerCase);
-        }catch(Exception ex){
-            System.out.println("CustoemrCaseManagedBean.saveCase: " + ex.toString());
+
+        } catch (DuplicateCaseExistException e) {
+            System.out.println("DuplicateCaseExistException thrown at CustomerCaseCounterManagedBean.java");
         }
-            
-        System.out.println("CustoemrCaseManagedBean.saveCase.NewCaseNotification sending");
-        EventBus eventBus = EventBusFactory.getDefault().eventBus();
-        FacesMessage m = new FacesMessage("New Case", "A new case with ID " + customerCase.getId() + " has been created");
-        eventBus.publish(NOTIFY_CHANNEL, m);
     }
-    
-    public void removeIssue(String issueID){
-        for(int i = 0; i < issues.size(); i++){
-            if(issues.get(i).toString().equals(issueID))
+
+    public void removeIssue(String issueID) {
+        for (int i = 0; i < issues.size(); i++) {
+            if (issues.get(i).toString().equals(issueID)) {
                 issues.remove(i);
+            }
         }
     }
-    
-    public void uploadPhoto(FileUploadEvent e) throws IOException{
+
+    public void uploadPhoto(FileUploadEvent e) throws IOException {
         System.out.println("CustomerCaseManagedBean.uploadPhoto: start uploading");
-        UploadedFile uploadedPhoto=e.getFile();
+        UploadedFile uploadedPhoto = e.getFile();
         String filename = FilenameUtils.getName(uploadedPhoto.getFileName());
- 
-        byte[] bytes=null;
-        
-            if (uploadedPhoto!=null) {
-                ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext(); 
-                directoryPath = ec.getRealPath("//WEB-INF//files//");
-                bytes = uploadedPhoto.getContents();
-                String filepath = directoryPath+"/"+filename;
-                System.out.println("CustomerCaseManagedBean.uploadPhoto.filenAME: " + filepath);
-            try (FileOutputStream stream = new FileOutputStream((new File(directoryPath+"/"+filename)))) {
+
+        byte[] bytes = null;
+
+        if (uploadedPhoto != null) {
+            ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+            directoryPath = ec.getRealPath("//WEB-INF//files//");
+            bytes = uploadedPhoto.getContents();
+            String filepath = directoryPath + "/" + filename;
+            System.out.println("CustomerCaseManagedBean.uploadPhoto.filenAME: " + filepath);
+            try (FileOutputStream stream = new FileOutputStream((new File(directoryPath + "/" + filename)))) {
                 System.out.println("CustomerCaseManagedBean.uploadPhoto: start writing");
                 stream.write(bytes);
                 stream.flush();
                 newIssue.setAttachmentFileName(filename);
-            }catch(Exception ex){
+            } catch (Exception ex) {
                 System.out.println("CustomerCaseManagedBean.uploadPhoto: " + ex.toString());
-                }
             }
+        }
     }
-    
-    public void searchByIdFunction(){
+
+    public void searchByIdFunction() {
         searchResultList = null;
-        CustomerCase resultCase = customerCaseSessionBean.searchCaseByID(searchCaseID);
-        
-        if(resultCase == null){        
-            String msg = "Result not found!";
-            MessageUtils.displayInfo(msg);
-        }else{
-            searchResultList = new ArrayList<CustomerCase>();
+
+        try {
+            CustomerCase resultCase = customerCaseSessionBean.getCaseById(searchCaseID);
+            searchResultList = new ArrayList<>();
             searchResultList.add(resultCase);
-        }                
-    }
-    
-    public void searchByTitleFunction(){
-        searchResultList = null;
-        searchResultList = customerCaseSessionBean.searchCaseByTitle(searchCaseTitle);
-        
-        if(searchResultList.size() == 0){
+
+        } catch (CustomerCaseNotFoundException e) {
             String msg = "Result not found!";
             MessageUtils.displayInfo(msg);
-        }            
+        }
+
     }
-    
-    public void cancelCase(Long caseID){
-        if(customerCaseSessionBean.cancelCase(caseID)){
-            if(!searchType.equals("viewAllCases")){
-                for(int i=0; i<searchResultList.size();i++){
-                    if(Objects.equals(searchResultList.get(i).getId(), caseID)){
+
+    public void searchByTitleFunction() {
+        searchResultList = null;
+
+        try {
+            searchResultList = customerCaseSessionBean.getCaseByTitle(searchCaseTitle);
+        } catch (CustomerCaseNotFoundByTitleException e) {
+            String msg = "Result not found!";
+            MessageUtils.displayInfo(msg);
+        }
+
+    }
+
+    public void cancelCase(String caseID) {
+
+        try {
+
+            customerCaseSessionBean.removeCase(caseID);
+            if (!searchType.equals("viewAllCases")) {
+                for (int i = 0; i < searchResultList.size(); i++) {
+                    if (Objects.equals(searchResultList.get(i).getId(), caseID)) {
                         searchResultList.remove(i);
                         String msg = "Case cancel successfully!";
                         MessageUtils.displayInfo(msg);
                     }
                 }
             }
-            
-                for(int i=0; i<allCaseList.size();i++){
-                    if(Objects.equals(allCaseList.get(i).getId(), caseID)){
-                        allCaseList.remove(i);
-                        String msg = "Case cancel successfully!";
-                        MessageUtils.displayInfo(msg);
-                    }
+
+            for (int i = 0; i < allCaseList.size(); i++) {
+                if (Objects.equals(allCaseList.get(i).getId(), caseID)) {
+                    allCaseList.remove(i);
+                    String msg = "Case cancel successfully!";
+                    MessageUtils.displayInfo(msg);
                 }
-            
-        }else{
+            }
+
+        } catch (CancelCustomerCaseException e) {
             String msg = "Error!";
             MessageUtils.displayError(msg);
-        }       
-        
+        }
+
         emailServiceSessionBean.sendCancelCaseConfirmationToCustomer(mainAccount.getCustomer().getEmail(), customerCase);
     }
-    
-    public Boolean isChargeBackSelected(String issueFieldSelected){
+
+    public Boolean isChargeBackSelected(String issueFieldSelected) {
         return issueFieldSelected.equals("CHARGEBACK");
     }
 

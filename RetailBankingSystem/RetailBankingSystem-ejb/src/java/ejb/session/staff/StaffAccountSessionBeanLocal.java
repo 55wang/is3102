@@ -15,6 +15,7 @@ import javax.ejb.Local;
  */
 @Local
 public interface StaffAccountSessionBeanLocal {
+    public StaffAccount getAdminStaff();
     public StaffAccount loginAccount(String username, String password);
     public StaffAccount getAccountByUsername(String username);
     public StaffAccount getAccountByEmail(String email);

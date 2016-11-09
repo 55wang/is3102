@@ -5,6 +5,7 @@
  */
 package staff.crm;
 
+import ejb.session.common.EmailServiceSessionBeanLocal;
 import ejb.session.crm.CustomerSegmentationSessionBeanLocal;
 import ejb.session.crm.MarketingCampaignSessionBeanLocal;
 import ejb.session.staff.StaffAccountSessionBeanLocal;
@@ -12,6 +13,7 @@ import entity.crm.AdsBannerCampaign;
 import entity.crm.CustomerGroup;
 import entity.crm.EmailCampaign;
 import entity.crm.MarketingCampaign;
+import entity.customer.Customer;
 import entity.staff.StaffAccount;
 import java.io.Serializable;
 import java.util.List;
@@ -38,9 +40,11 @@ public class CreateMarketingCampaignManagedBean implements Serializable {
     StaffAccountSessionBeanLocal staffAccountSessionBean;
     @EJB
     CustomerSegmentationSessionBeanLocal customerSegmentationSessionBean;
+    @EJB
+    EmailServiceSessionBeanLocal emailServiceSessionBean;
 
     private EmailCampaign emailMarketingCampaign;
-    private AdsBannerCampaign AdsMarketingCampaign;
+    private AdsBannerCampaign adsMarketingCampaign;
     private StaffAccount sa = utils.SessionUtils.getStaff();
 
     private List<CustomerGroup> customerGroupOptions;
@@ -53,23 +57,20 @@ public class CreateMarketingCampaignManagedBean implements Serializable {
     @PostConstruct
     public void init() {
         emailMarketingCampaign = new EmailCampaign();
-        AdsMarketingCampaign = new AdsBannerCampaign();
+        adsMarketingCampaign = new AdsBannerCampaign();
 
         customerGroupOptions = customerSegmentationSessionBean.getListCustomerGroup();
     }
 
     public void addNewAdsBannerMarketingCampaign() {
         try {
-            AdsMarketingCampaign.setNameCampaign(AdsMarketingCampaign.getNameCampaign());
-            AdsMarketingCampaign.setTypeCampaign(EnumUtils.TypeMarketingCampaign.ADSBANNER);
-            AdsMarketingCampaign.setDescription(AdsMarketingCampaign.getDescription());
-            AdsMarketingCampaign.setLandingPageName(AdsMarketingCampaign.getLandingPageName());
-            AdsMarketingCampaign.setStaffAccount(sa);
+            adsMarketingCampaign.setTypeCampaign(EnumUtils.TypeMarketingCampaign.ADSBANNER);
+            adsMarketingCampaign.setStaffAccount(sa);
 
-            AdsMarketingCampaign.setCustomerGroup(customerSegmentationSessionBean.getCustomerGroup(selectedCustomerGroupAdsBanner));
-
-            marketingCampaignSessionBean.createMarketingCampaign(AdsMarketingCampaign);
-            sa.getMarketingCampaign().add(AdsMarketingCampaign);
+            adsMarketingCampaign.setCustomerGroup(customerSegmentationSessionBean.getCustomerGroup(selectedCustomerGroupAdsBanner));
+            adsMarketingCampaign.setNumOfTargetResponse((long)customerSegmentationSessionBean.getCustomerGroup(selectedCustomerGroupAdsBanner).getCustomers().size());
+            marketingCampaignSessionBean.createMarketingCampaign(adsMarketingCampaign);
+            sa.getMarketingCampaign().add(adsMarketingCampaign);
             staffAccountSessionBean.updateAccount(sa);
 
             RedirectUtils.redirect(ConstantUtils.STAFF_MC_VIEW_MARKETING_CAMPAIGNS);
@@ -95,12 +96,22 @@ public class CreateMarketingCampaignManagedBean implements Serializable {
             marketingCampaignSessionBean.createMarketingCampaign(emailMarketingCampaign);
             sa.getMarketingCampaign().add(emailMarketingCampaign);
             staffAccountSessionBean.updateAccount(sa);
+            
+            //send email
+            sendMassEmail();
+            
             RedirectUtils.redirect(ConstantUtils.STAFF_MC_VIEW_MARKETING_CAMPAIGNS);
 
         } catch (Exception ex) {
             System.out.println("createMarketingCampaignManagedBean.addNewEmailMarketingCampaign Error");
             System.out.println(ex);
             MessageUtils.displayError("Email Campaign Created Fail!");
+        }
+    }
+    
+    public void sendMassEmail() {
+        for (Customer c : emailMarketingCampaign.getCustomerGroup().getCustomers()){
+            emailServiceSessionBean.sendEmailMarketingCampaign(c.getEmail(), emailMarketingCampaign.getSubjectEmail(), emailMarketingCampaign.getContentEmail(), emailMarketingCampaign.getLandingPageName());
         }
     }
 
@@ -120,13 +131,6 @@ public class CreateMarketingCampaignManagedBean implements Serializable {
         this.sa = sa;
     }
 
-    public MarketingCampaign getAdsMarketingCampaign() {
-        return AdsMarketingCampaign;
-    }
-
-    public void setAdsMarketingCampaign(AdsBannerCampaign AdsMarketingCampaign) {
-        this.AdsMarketingCampaign = AdsMarketingCampaign;
-    }
 
     public List<CustomerGroup> getCustomerGroupOptions() {
         return customerGroupOptions;
@@ -150,6 +154,14 @@ public class CreateMarketingCampaignManagedBean implements Serializable {
 
     public void setSelectedCustomerGroupAdsBanner(Long selectedCustomerGroupAdsBanner) {
         this.selectedCustomerGroupAdsBanner = selectedCustomerGroupAdsBanner;
+    }
+
+    public AdsBannerCampaign getAdsMarketingCampaign() {
+        return adsMarketingCampaign;
+    }
+
+    public void setAdsMarketingCampaign(AdsBannerCampaign adsMarketingCampaign) {
+        this.adsMarketingCampaign = adsMarketingCampaign;
     }
 
 }

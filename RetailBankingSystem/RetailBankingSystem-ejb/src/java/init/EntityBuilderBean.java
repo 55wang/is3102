@@ -91,7 +91,14 @@ public class EntityBuilderBean {
 
     // Use Super Admin Account as a flag
     private Boolean needInit() {
-        StaffAccount sa = staffAccountSessionBean.getAccountByUsername(ConstantUtils.SUPER_ADMIN_USERNAME);
+        StaffAccount sa = null;
+        
+        try {
+            sa = staffAccountSessionBean.getAdminStaff();
+        } catch (Exception e) {
+            System.out.println("Super admin not found, init all data...");
+        }
+         
         return sa == null;
     }
 
@@ -118,13 +125,7 @@ public class EntityBuilderBean {
 //        entityFactBuilder.initSinglePortfolioFact(demoMainAccount, demoPortfolio);
 //        demoPortfolio = entityWealthBuilder.initPortfolioFactTable2(demoMainAccount, allFinancialInstruments);
 //        entityFactBuilder.initSinglePortfolioFact(demoMainAccount, demoPortfolio);
-//
 //        entityFactBuilder.initBankFact();
-           
-        entityCRMBuilder.initCustomerRFM();
-
-//        entityTellerCounterBuilder.init();
-
-
+//        entityCRMBuilder.initCustomerRFM();
     }
 }

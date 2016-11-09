@@ -11,8 +11,6 @@ import ejb.session.common.EmailServiceSessionBeanLocal;
 import entity.card.account.CardTransaction;
 import entity.card.account.CreditCardAccount;
 import entity.card.account.DebitCardAccount;
-import entity.card.product.MileCardProduct;
-import entity.card.product.RewardCardProduct;
 import entity.customer.Customer;
 import java.io.Serializable;
 import java.util.Date;
@@ -25,6 +23,7 @@ import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import server.utilities.EnumUtils;
 import server.utilities.EnumUtils.CardAccountStatus;
+import util.exception.cms.CustomerNotExistException;
 import utils.MessageUtils;
 import utils.RedirectUtils;
 import utils.SessionUtils;
@@ -116,7 +115,13 @@ public class CustomerCardManagedBean implements Serializable {
     @PostConstruct
     public void setCustomer() {
         System.out.println("@POSTCONSTRUCT INIT CustomerCardManagedBean");
-        this.customer = customerProfileSessionBean.getCustomerByUserID(SessionUtils.getUserName());
+        
+        try {
+            this.customer = customerProfileSessionBean.getCustomerByUserID(SessionUtils.getUserName());
+        } catch (CustomerNotExistException e) {
+            System.out.println("CustomerNotExistException @PostConstruct setCustomer()");
+        }
+        
         this.setCcas(cardAcctSessionBean.getListCreditCardAccountsByIdAndNotStatus(customer.getMainAccount().getId(), CardAccountStatus.CLOSED)); //that is not closed
     }
 

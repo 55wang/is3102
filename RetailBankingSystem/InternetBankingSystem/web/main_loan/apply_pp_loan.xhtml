@@ -29,33 +29,52 @@
                                 <p:messages id="msgs1"/>
                                 <h:panelGrid columns="2" cellpadding="5px" columnClasses="label, value">
 
-                                    <h:outputText value="Your name: " />
-                                    <p:inputText value="#{ppLoanApplicationManagedBean.name}" required="true" requiredMessage="Name is required." validatorMessage="Invalid name.">
-                                        <f:validateLength minimum="2" />
-                                    </p:inputText>
+                                    <h:outputText value="Identity Type: " />
+                                    <p:selectOneMenu value="#{ppLoanApplicationManagedBean.identityType}" style="width:187px; height: 31px; line-height: 21px; top:8px" rendered="true" label="identityType" >
+                                        <f:selectItem itemLabel="Please select.." itemValue=""/>                                                    
+                                        <f:selectItems value="#{ppLoanApplicationManagedBean.identityTypeOptions}" />
+                                    </p:selectOneMenu>
 
-                                    <h:outputText value="ID Number: " />
-                                    <p:inputText value="#{ppLoanApplicationManagedBean.idNumber}" required="true" requiredMessage="ID Number is required." validatorMessage="Invalid identity number.">
+                                    <h:outputText value="Identity Number: " />
+                                    <p:inputText value="#{ppLoanApplicationManagedBean.idNumber}" required="true" requiredMessage="Identity number is required." validatorMessage="Invalid identity number.">
                                         <f:validateRegex
                                             pattern="^[A-Za-z0-9]{9}$" />
                                     </p:inputText>
 
-                                    <h:outputText value="Age: " />
-                                    <p:inputText value="#{ppLoanApplicationManagedBean.age}" required="true" requiredMessage="Age is required." />
+                                    <h:outputText value="Last Name: " />
+                                    <p:inputText value="#{ppLoanApplicationManagedBean.lastName}" required="true" requiredMessage="Last name is required." validatorMessage="Invalid last name.">
+                                        <f:validateLength minimum="2" />
+                                    </p:inputText>
 
-                                    <h:outputText value="Phone Number: " />
-                                    <p:inputText value="#{ppLoanApplicationManagedBean.phoneNumber}" required="true" requiredMessage="Phone number is required." />
+                                    <h:outputText value="First Name: " />
+                                    <p:inputText id="firstName" value="#{ppLoanApplicationManagedBean.firstName}" required="true" requiredMessage="First name is required." validatorMessage="Invalid first name.">
+                                        <f:validateLength minimum="2" />
+                                    </p:inputText>
 
-                                    <h:outputText value="Email Address: " />
-                                    <p:inputText value="#{ppLoanApplicationManagedBean.email}" required="true" requiredMessage="Email is required." validatorMessage="Invalid email format" >
-                                    <f:validateRegex
+                                    <h:outputText value="Date of Birth: " />
+                                    <p:calendar value="#{ppLoanApplicationManagedBean.birthday}" navigator="true" yearRange="c-100:c+0" required="true" requiredMessage="DOB is required." 
+                                                pattern="yyyy-MM-dd" maxdate="#{ppLoanApplicationManagedBean.currentDate}"/>
+
+
+                                    <h:outputText value="Email: " />
+
+                                    <p:inputText required="true" label="email" size="40"
+                                                 requiredMessage="Email address is required."
+                                                 validatorMessage="Invalid email format"
+                                                 value="#{ppLoanApplicationManagedBean.email}" style="width: 187px">
+
+                                        <f:validateRegex
                                             pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
                                     </p:inputText>
+
+                                    <h:outputText value="Phone: " />
+                                    <p:inputMask value="#{ppLoanApplicationManagedBean.phoneNumber}" required="true"  requiredMessage="Phone is required." mask="99999999"/>
+
 
                                 </h:panelGrid>
 
                                 <div class="register-form-button">
-                                    <p:commandButton value="Next" actionListener="#{ppLoanApplicationManagedBean.checkAge()}" update="@form:msgs1"/>
+                                    <p:commandButton value="Next" actionListener="#{ppLoanApplicationManagedBean.checkAge2()}" update="@form:msgs1"/>
                                 </div>
                             </p:panel>
                         </p:tab>
@@ -108,19 +127,19 @@
                                     <h:outputText value="#{ppLoanApplicationManagedBean.maxMarketValue}" styleClass="outputLabel">
                                         <f:convertNumber pattern="###00.00"/>
                                     </h:outputText>
-                                    
+
                                     <h:outputText value="Tenure: " />
                                     <p:inputText value="#{ppLoanApplicationManagedBean.housingTenure}" required="true" requiredMessage="Tenure is required." />
-                                    
+
                                     <h:outputText value="Loan Amount: " />
                                     <p:inputText value="#{ppLoanApplicationManagedBean.loanAmount}" required="true" requiredMessage="Loan Amount is required." onchange="submit()" valueChangeListener="#{ppLoanApplicationManagedBean.changeMarketValue}"/>
-             
+
                                     <h:outputText value="Market Value: " />
                                     <h:outputText value="#{ppLoanApplicationManagedBean.marketValue}" styleClass="outputLabel">
                                         <f:convertNumber pattern="###00.00"/>
                                     </h:outputText>
 
-                                    
+
                                     <h:outputText value="Choose a loan term: " />
                                     <p:selectOneMenu value="#{ppLoanApplicationManagedBean.loanProductId}" rendered="true" required="true">
                                         <f:selectItems value="#{ppLoanApplicationManagedBean.ppLoanProducts}" var="p" itemValue="#{p.id}" itemLabel="#{p.productName} #{p.tenure}" />
@@ -145,8 +164,8 @@
 
                 </h:form>
             </div>   
-
-            <em:customerFooter></em:customerFooter>
+            <em:adsBanner advertismentTitle="#{customerHomeManagedBean.adsBannerCampaign.adsTitle}" advertismentType="#{customerHomeManagedBean.adsBannerCampaign.adsType}" advertismentInfo="#{customerHomeManagedBean.adsBannerCampaign.adsInfo}" extraAdvertismentInfo="#{customerHomeManagedBean.adsBannerCampaign.adsExtraInfo}" landingPageUrl="https://localhost:8181/InternetBankingSystem/landing_page/#{customerHomeManagedBean.adsBannerCampaign.landingPageName}" />
+            <em:customerMainFooter></em:customerMainFooter>
         </h:body>
     </f:view>
 

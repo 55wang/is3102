@@ -21,7 +21,7 @@ import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import server.utilities.EnumUtils;
 import server.utilities.EnumUtils.CardAccountStatus;
-import server.utilities.CommonUtils;
+import util.exception.cms.CustomerNotExistException;
 import utils.RedirectUtils;
 import utils.SessionUtils;
 
@@ -63,9 +63,16 @@ public class CustomerDebitManagedBean implements Serializable {
     @PostConstruct
     public void setCustomer() {
         System.out.println("@POSTCONSTRUCT INIT CustomerCardManagedBean");
+        try {
+            
         this.customer = customerProfileSessionBean.getCustomerByUserID(SessionUtils.getUserName());
         this.setActiveDcas(cardAcctSessionBean.getListDebitCardAccountsByStatus(CardAccountStatus.ACTIVE));
         this.setPendingDcas(cardAcctSessionBean.getListDebitCardAccountsInProcess()); //that is not closed
+        
+        } catch (CustomerNotExistException e) {
+            System.out.println("CustomerNotExistException @PostConstruct setCustomer()");
+        }
+        
     }
 
     public Customer getCustomer() {

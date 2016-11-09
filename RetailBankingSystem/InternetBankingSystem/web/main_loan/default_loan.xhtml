@@ -15,26 +15,26 @@
         <h:body>
             <em:customerHeader context="main" userName="Log in"></em:customerHeader>
             <em:customerNavBar context="main" mainPage="mainLoans"></em:customerNavBar>
-            
+
             <div class="customer_main_container">
                 <p:panel header="Loans">
                     <h:form id="mainForm">                        
                         <p:messages id="messagesStatus" redisplay="false">
-                            
+
                             <h1>Check Loan Application</h1>
-                            
+
                             <a href="https://localhost:8181/InternetBankingSystem/main_loan/check_loan_application.xhtml">Check Loan Application</a>
-                            
+
                             <h1>Loan Calculator</h1>
-                            
+
                             <a href="https://localhost:8181/InternetBankingSystem/main_loan/car_calculator.xhtml">Car Calculator</a>
                             <br/><br/>
                             <a href="https://localhost:8181/InternetBankingSystem/main_loan/hdb_calculator.xhtml">HDB Calculator</a>
                             <br/><br/>
                             <a href="https://localhost:8181/InternetBankingSystem/main_loan/pp_calculator.xhtml">Private House Calculator</a>
-                            
+
                             <h1>Apply Loans</h1>
-                            
+
                             <a href="https://localhost:8181/InternetBankingSystem/main_loan/apply_personal_loan.xhtml">Apply Personal Loan</a>
                             <br/><br/>
                             <a href="https://localhost:8181/InternetBankingSystem/main_loan/apply_car_loan.xhtml">Apply Car Loan</a>
@@ -51,6 +51,7 @@
                     </h:form>
                 </p:panel>              
             </div>
+            <em:adsBanner advertismentTitle="#{customerHomeManagedBean.adsBannerCampaign.adsTitle}" advertismentType="#{customerHomeManagedBean.adsBannerCampaign.adsType}" advertismentInfo="#{customerHomeManagedBean.adsBannerCampaign.adsInfo}" extraAdvertismentInfo="#{customerHomeManagedBean.adsBannerCampaign.adsExtraInfo}" landingPageUrl="https://localhost:8181/InternetBankingSystem/landing_page/#{customerHomeManagedBean.adsBannerCampaign.landingPageName}" />
             <em:customerMainFooter></em:customerMainFooter>
         </h:body>
     </f:view>

@@ -23,8 +23,11 @@ public class AdsBannerCampaign extends MarketingCampaign implements Serializable
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
-    private String bannerImgFilename;
-
+    private String adsTitle;
+    private String adsType;
+    private String adsInfo;
+    private String adsExtraInfo;
+    
     public Long getId() {
         return id;
     }
@@ -58,12 +61,36 @@ public class AdsBannerCampaign extends MarketingCampaign implements Serializable
         return "entity.crm[ id=" + id + " ]";
     }
 
-    public String getBannerImgFilename() {
-        return bannerImgFilename;
+    public String getAdsTitle() {
+        return adsTitle;
     }
 
-    public void setBannerImgFilename(String bannerImgFilename) {
-        this.bannerImgFilename = bannerImgFilename;
+    public void setAdsTitle(String adsTitle) {
+        this.adsTitle = adsTitle;
     }
-    
+
+    public String getAdsInfo() {
+        return adsInfo;
+    }
+
+    public void setAdsInfo(String adsInfo) {
+        this.adsInfo = adsInfo;
+    }
+
+    public String getAdsExtraInfo() {
+        return adsExtraInfo;
+    }
+
+    public void setAdsExtraInfo(String adsExtraInfo) {
+        this.adsExtraInfo = adsExtraInfo;
+    }
+
+    public String getAdsType() {
+        return adsType;
+    }
+
+    public void setAdsType(String adsType) {
+        this.adsType = adsType;
+    }
+
 }

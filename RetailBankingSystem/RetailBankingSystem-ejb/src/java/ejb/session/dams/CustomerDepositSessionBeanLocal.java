@@ -20,7 +20,6 @@ import javax.ejb.Local;
  */
 @Local
 public interface CustomerDepositSessionBeanLocal {
-    public long showNumberOfAccounts();
     public DepositAccount getAccountFromId(String accountNumber);
     public DepositAccount createAccount(DepositAccount account);
     public DepositAccount updateAccount(DepositAccount account);
@@ -28,8 +27,8 @@ public interface CustomerDepositSessionBeanLocal {
     public List<DepositAccount> showAllActiveAccounts();
     public List<DepositAccount> getAllCustomerAccounts(Long mainAccountId);
     public CustomerDepositAccount getDaytoDayAccountByMainAccount(MainAccount ma);
-    public List<CustomerDepositAccount> getAllNonFixedCustomerAccounts(Long mainAccountId);
-    public List<CustomerFixedDepositAccount> getAllFixedCustomerAccounts(Long mainAccountId);
+    public List<CustomerDepositAccount> getAllNonFixedCustomerAccounts(String mainAccountId);
+    public List<CustomerFixedDepositAccount> getAllFixedCustomerAccounts(String mainAccountId);
     public String depositIntoAccount(String accountNumber, BigDecimal depositAmount);
     public String withdrawFromAccount(String accountNumber, BigDecimal depositAmount);
     public DepositAccount transferFromAccount(DepositAccount account, BigDecimal amount);

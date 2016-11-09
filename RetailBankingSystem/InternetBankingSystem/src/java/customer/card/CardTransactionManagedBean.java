@@ -20,6 +20,7 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
+import util.exception.cms.CustomerNotExistException;
 import utils.RedirectUtils;
 import utils.SessionUtils;
 
@@ -59,7 +60,12 @@ public class CardTransactionManagedBean implements Serializable {
     @PostConstruct
     public void setCustomer() {
         System.out.println("@POSTCONSTRUCT INIT CustomerCardManagedBean");
-        this.customer = customerProfileSessionBean.getCustomerByUserID(SessionUtils.getUserName());
+        try {
+            this.customer = customerProfileSessionBean.getCustomerByUserID(SessionUtils.getUserName());
+        } catch (CustomerNotExistException e) {
+            System.out.println("CustomerNotExistException @PostConstruct setCustomer()");
+        }
+        
     }
 
     public Customer getCustomer() {
