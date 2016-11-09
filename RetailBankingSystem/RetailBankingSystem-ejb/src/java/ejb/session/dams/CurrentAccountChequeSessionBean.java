@@ -23,7 +23,7 @@ public class CurrentAccountChequeSessionBean implements CurrentAccountChequeSess
     private EntityManager em;
     
     @Override
-    public List<Cheque> getChequeByMainAccountId(Long mainAccountId) {
+    public List<Cheque> getChequeByMainAccountId(String mainAccountId) {
         Query q = em.createQuery("SELECT c FROM Cheque c WHERE c.account.mainAccount.id = :mainAccountId");
         q.setParameter("mainAccountId", mainAccountId);
         return q.getResultList();

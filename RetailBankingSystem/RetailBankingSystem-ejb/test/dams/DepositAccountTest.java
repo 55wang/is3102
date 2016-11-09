@@ -102,7 +102,7 @@ public class DepositAccountTest implements Serializable {
     
     @Test(expected=DepositAccountNotFoundException.class)
     public void test06getDepositAccountByAccountNumberException() throws DepositAccountNotFoundException {
-        System.out.println("CustomerCaseTest.test06searchCaseByIDExceotion");   
+        System.out.println("DepositAccountTest.test06getDepositAccountByAccountNumberException");   
         DepositAccount da = depositBean.getAccountFromId("2");
         assertNotNull(da); 
     }

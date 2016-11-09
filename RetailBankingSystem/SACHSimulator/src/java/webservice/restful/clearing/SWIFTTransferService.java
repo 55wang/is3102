@@ -7,6 +7,7 @@ package webservice.restful.clearing;
 
 import ejb.session.bean.SACHSessionBean;
 import entity.PaymentTransfer;
+import entity.SachSettlement;
 import java.math.BigDecimal;
 import java.util.List;
 import javax.ejb.EJB;
@@ -18,7 +19,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import org.primefaces.json.JSONObject;
-
 
 /**
  *
@@ -65,18 +65,42 @@ public class SWIFTTransferService {
         pt.setFromName(fromName);
         pt.setMyInitial(myInitial);
         pt.setSettled(false);
-
+        sachBean.persist(pt);
         System.out.println(".");
         System.out.println("[SACH]");
         System.out.println("Sending fund transfer to delegating bank through MEPS: " + delegatingBank);
-//        sachBean.sendMEPS(pt);
+        List<SachSettlement> bankAccounts = sachBean.getSettlements();
+
+        System.out.println("Current net settlement:");
+        for (SachSettlement s : bankAccounts) {
+            if (s.getAmount().compareTo(BigDecimal.ZERO) == -1) {
+                System.out.println(".       " + s.getToBankCode() + " " + s.getToBankName() + " to " + s.getFromBankCode() + " " + s.getFromBankName() + ": " + s.getAmount().setScale(4).toString());
+            } else {
+                System.out.println(".       " + s.getFromBankCode() + " " + s.getFromBankName() + " to " + s.getToBankCode() + " " + s.getToBankName() + ": " + s.getAmount().setScale(4).toString());
+
+            }
+        }
+        System.out.println("Updating net settlement...");
+        sachBean.updateNetSettlement(pt);
+
+        List<SachSettlement> updatedbankAccounts = sachBean.getSettlements();
+
+        System.out.println("Updated net settlement:");
+        for (SachSettlement s : updatedbankAccounts) {
+            if (s.getAmount().compareTo(BigDecimal.ZERO) == -1) {
+                System.out.println(".       " + s.getToBankCode() + " " + s.getToBankName() + " to " + s.getFromBankCode() + " " + s.getFromBankName() + ": " + s.getAmount().setScale(4).toString());
+            } else {
+                System.out.println(".       " + s.getFromBankCode() + " " + s.getFromBankName() + " to " + s.getToBankCode() + " " + s.getToBankName() + ": " + s.getAmount().setScale(4).toString());
+
+            }
+        }
 
         try {
             Thread.sleep(500); //1000 milliseconds is one second.
         } catch (InterruptedException ex) {
             Thread.currentThread().interrupt();
         }
-        
+
         System.out.println(".");
         System.out.println("[SACH]");
         System.out.println("Sending SWIFT code to delegating bank..:" + delegatingBank);

@@ -3,15 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package init;
+package ejb.session.timer;
 
 import javax.ejb.Local;
 
 /**
  *
- * @author qiuxiaqing
+ * @author litong
  */
 @Local
-public interface SachBankAccountBuilderLocal {
+public interface LoanBatchProcessingSessionBeanLocal {
     
 }

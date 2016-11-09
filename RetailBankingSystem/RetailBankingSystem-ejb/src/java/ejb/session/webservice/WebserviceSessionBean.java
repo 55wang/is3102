@@ -44,7 +44,7 @@ public class WebserviceSessionBean implements WebserviceSessionBeanLocal {
     private final String MEPS_SETTLEMENT_AGENCY = "https://localhost:8181/MEPSSimulator/meps/meps_settlement_agency";
     private final String SACH_TRANSFER_CLEARING = "https://localhost:8181/SACHSimulator/sach/sach_transfer_clearing";
     private final String SACH_BILLING_CLEARING = "https://localhost:8181/SACHSimulator/sach/sach_billing_clearing";
-    private final String SACH_SWIFT_TRANSFER = "https://localhost:8181/FASTSimulator/sach/sach_swift_transfer";
+    private final String SACH_SWIFT_TRANSFER = "https://localhost:8181/SACHSimulator/sach/sach_swift_transfer";
     private final String FAST_TRANSFER_CLEARING = "https://localhost:8181/FASTSimulator/fast/fast_transfer_clearing";
 
     @Asynchronous
@@ -211,7 +211,18 @@ public class WebserviceSessionBean implements WebserviceSessionBeanLocal {
 
         // This is the response
         JsonObject jsonString = target.request(MediaType.APPLICATION_JSON).post(Entity.entity(form, MediaType.APPLICATION_FORM_URLENCODED), JsonObject.class);
+        
+        BillFundTransferRecord bft = new BillFundTransferRecord();
+        bft.setReferenceNumber(tr.getReferenceNumber());
+        bft.setAmount(tr.getAmount());
+        bft.setToBankCode(tr.getToBankCode());
+        bft.setToBankAccount(tr.getAccountNumber());
+        bft.setFromBankCode("001");
+        bft.setSettled(Boolean.FALSE);
+        bft.setCreationDate(new Date());
 
+        billSessionBean.createBillFundTransferRecord(bft);
+        
         try {
             Thread.sleep(1000);                 //1000 milliseconds is one second.
         } catch (InterruptedException ex) {
@@ -262,6 +273,16 @@ public class WebserviceSessionBean implements WebserviceSessionBeanLocal {
 
         // This is the response
         JsonObject jsonString = target.request(MediaType.APPLICATION_JSON).post(Entity.entity(form, MediaType.APPLICATION_FORM_URLENCODED), JsonObject.class);
+
+        BillFundTransferRecord bft = new BillFundTransferRecord();
+        bft.setReferenceNumber(tr.getReferenceNumber());
+        bft.setAmount(tr.getAmount());
+        bft.setToBankCode("005");
+        bft.setFromBankCode("001");
+        bft.setSettled(Boolean.FALSE);
+        bft.setCreationDate(new Date());
+
+        billSessionBean.createBillFundTransferRecord(bft);
 
         try {
             Thread.sleep(1000);                 //1000 milliseconds is one second.

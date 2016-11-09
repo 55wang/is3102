@@ -7,6 +7,7 @@ package ejb.session.bean;
 
 import entity.FastSettlement;
 import entity.FastTransfer;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +29,7 @@ import javax.ws.rs.core.MediaType;
  * @author leiyang
  */
 @Stateless
-public class FASTSessionBean {
+public class FASTSessionBean implements Serializable {
 
     private final String MEPS_FAST_SETTLEMENT = "https://localhost:8181/MEPSSimulator/meps/meps_fast_settlement";
 

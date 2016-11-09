@@ -8,6 +8,10 @@ package ejb.session.staff;
 import entity.staff.StaffAccount;
 import java.util.List;
 import javax.ejb.Local;
+import util.exception.common.DuplicateStaffAccountException;
+import util.exception.common.NoStaffAccountsExistException;
+import util.exception.common.StaffAccountNotExistException;
+import util.exception.common.UpdateStaffAccountException;
 
 /**
  *
@@ -15,13 +19,16 @@ import javax.ejb.Local;
  */
 @Local
 public interface StaffAccountSessionBeanLocal {
+    
     public StaffAccount getAdminStaff();
     public StaffAccount loginAccount(String username, String password);
     public StaffAccount getAccountByUsername(String username);
     public StaffAccount getAccountByEmail(String email);
-    public StaffAccount createAccount(StaffAccount sa);
-    public StaffAccount updateAccount(StaffAccount sa);
-    public List<StaffAccount> getAllStaffs();
-    public StaffAccount getStaffById(String id);
+    public StaffAccount createAccount(StaffAccount sa) throws DuplicateStaffAccountException;
+    public StaffAccount updateAccount(StaffAccount sa) throws UpdateStaffAccountException;
+    public List<StaffAccount> getAllStaffs() throws NoStaffAccountsExistException;
+    public StaffAccount getStaffById(String id) throws StaffAccountNotExistException ;
     public List<StaffAccount> searchStaffByUsernameOrName(String searchText);
+    public StaffAccount removeStaffAccount(String id);
+    
 }

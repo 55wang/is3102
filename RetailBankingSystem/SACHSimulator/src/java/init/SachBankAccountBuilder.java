@@ -7,26 +7,27 @@ package init;
 
 import ejb.session.bean.SACHSessionBean;
 import entity.SachSettlement;
+import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
+import javax.ejb.Stateless;
 
 /**
  *
  * @author qiuxiaqing
  */
-@Singleton
-@LocalBean
-@Startup
-public class SachBankAccountBuilder {
+@Stateless
+public class SachBankAccountBuilder implements Serializable {
 
     @EJB
     private SACHSessionBean sachBean;
 
-    @PostConstruct
+    
     public void init() {
         System.out.println("SachBankAccountBuilder @PostConstruct");
         if (needInit()) {
@@ -37,7 +38,8 @@ public class SachBankAccountBuilder {
     }
 
     private Boolean needInit() {
-        return sachBean.needInit().isEmpty();
+        List<SachSettlement> result = sachBean.getAllSachSettlement();
+        return result == null || result.isEmpty();
     }
 
     private void buildEntities() {

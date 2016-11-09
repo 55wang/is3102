@@ -8,9 +8,11 @@ package mb.sach;
 import ejb.session.bean.SACHSessionBean;
 import entity.BillTransfer;
 import entity.PaymentTransfer;
+import init.SachBankAccountBuilder;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
@@ -22,11 +24,14 @@ import javax.faces.view.ViewScoped;
 @Named(value = "sachManagedBean")
 @ViewScoped
 public class SACHManagedBean implements Serializable {
+    
+    @EJB
+    private SachBankAccountBuilder builderBean;
 
     private String referenceNumber;
     private BigDecimal amount;
     private String toBankCode = "001";
-    private String fromBankCode = "002";
+    private String fromBankCode = "005";
     private String accountNumber;
     private String toName;
     private String fromName;
@@ -35,7 +40,7 @@ public class SACHManagedBean implements Serializable {
     private String ccNumber;
     private BigDecimal ccAmount;
     private String partnerBankCode = "001";
-    private String fromCCBankCode = "002";
+    private String fromCCBankCode = "005";
     private String organizationName = "Merlion Bank";
 
     private String referenceNumber1;
@@ -49,6 +54,11 @@ public class SACHManagedBean implements Serializable {
     private SACHSessionBean sachBean;
 
     public SACHManagedBean() {
+    }
+    
+    @PostConstruct
+    public void init() {
+        builderBean.init();
     }
 
     public void sendMBSNetSettlement() {
@@ -104,13 +114,14 @@ public class SACHManagedBean implements Serializable {
     public void sendMBSCCPayment() {
         System.out.println("----------------Bill Transfer to MBS----------------");
         BillTransfer bt = new BillTransfer();
-        bt.setReferenceNumber(getReferenceNumber2());
+        bt.setReferenceNumber(referenceNumber2);
         bt.setBillReferenceNumber(ccNumber);
         bt.setAmount(ccAmount);
-        bt.setPartnerBankCode(getPartnerBankCode());
+        bt.setPartnerBankCode(partnerBankCode);
         bt.setFromBankCode(fromCCBankCode);
+        bt.setOrganizationName(organizationName);
         bt.setSettled(false);
-
+        System.out.println(bt);
         sachBean.sendMBSCCPaymentSettlement(bt);
     }
 

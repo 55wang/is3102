@@ -16,7 +16,7 @@ import javax.ejb.Local;
 @Local
 public interface CurrentAccountChequeSessionBeanLocal {
     // If Cheque status change to transfered, withdraw from the deposit account
-    public List<Cheque> getChequeByMainAccountId(Long mainAccountId);
+    public List<Cheque> getChequeByMainAccountId(String mainAccountId);
     public Cheque createCheque(Cheque c);
     public Cheque updateCheque(Cheque c);
 }

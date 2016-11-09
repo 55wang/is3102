@@ -26,6 +26,12 @@ import javax.faces.view.ViewScoped;
 import server.utilities.EnumUtils.StatusType;
 import server.utilities.CommonUtils;
 import server.utilities.HashPwdUtils;
+import util.exception.common.DuplicateStaffAccountException;
+import util.exception.common.NoRolesExistException;
+import util.exception.common.NoStaffAccountsExistException;
+import util.exception.common.StaffRoleNotFoundException;
+import util.exception.common.UpdateStaffAccountException;
+import util.exception.common.UpdateStaffRoleException;
 import utils.MessageUtils;
 import utils.RedirectUtils;
 import utils.SessionUtils;
@@ -59,8 +65,12 @@ public class CreateStaffManagedBean implements Serializable {
 
     @PostConstruct
     public void init() {
-        setStaffs(staffAccountSessionBean.getAllStaffs());
-        setRoles(staffRoleSessionBean.getAllRoles());
+        try {
+            staffs = staffAccountSessionBean.getAllStaffs();
+            roles = staffRoleSessionBean.getAllRoles();
+        } catch (NoRolesExistException | NoStaffAccountsExistException e) {
+            System.out.println("NoRolesExistException | NoStaffAccountsExistException CreateStaffManagedBean init()");
+        }
 
         AuditLog a = new AuditLog();
         a.setActivityLog("System user enter create_role.xhtml");
@@ -80,12 +90,19 @@ public class CreateStaffManagedBean implements Serializable {
             emailSuccessFlag = false;
         } finally {
             if (emailSuccessFlag) {
-                for (String s : selectedRoles) {
-                    Role r = staffRoleSessionBean.findRoleByName(s);
-                    newStaff.addRole(r);
-                    newStaff.setPassword(randomPwd);
+
+                try {
+                    for (String s : selectedRoles) {
+                        Role r = staffRoleSessionBean.getRoleByName(s);
+                        newStaff.addRole(r);
+                        newStaff.setPassword(randomPwd);
+                    }
+                    createAccount();
+                } catch (StaffRoleNotFoundException e) {
+                    System.out.println("StaffRoleNotFoundException CreateStaffManagedBean addStaff");
+                    MessageUtils.displayInfo("Add Staff Failed");
                 }
-                createAccount();
+
             } else {
                 MessageUtils.displayInfo("Add Staff Failed");
             }
@@ -94,21 +111,28 @@ public class CreateStaffManagedBean implements Serializable {
 
     // private function helper
     private void createAccount() {
-        StaffAccount result = staffAccountSessionBean.createAccount(newStaff);
-        if (result != null) {
-            for (String s : selectedRoles) {
-                Role r = staffRoleSessionBean.findRoleByName(s);
-                r.getStaffAccounts().add(result);
-                staffRoleSessionBean.updateRole(r);
+
+        try {
+            StaffAccount result = staffAccountSessionBean.createAccount(newStaff);
+            if (result != null) {
+                for (String s : selectedRoles) {
+                    Role r = staffRoleSessionBean.getRoleByName(s);
+                    r.getStaffAccounts().add(result);
+                    staffRoleSessionBean.updateRole(r);
+                }
+                staffs.add(newStaff);
+                newStaff = new StaffAccount();
+                MessageUtils.displayInfo("New Staff Added");
+            } else {
+                MessageUtils.displayInfo("Staff already Added");
             }
-            staffs.add(newStaff);
-            newStaff = new StaffAccount();
-            MessageUtils.displayInfo("New Staff Added");
-        } else {
+        } catch (DuplicateStaffAccountException | UpdateStaffRoleException | StaffRoleNotFoundException e) {
+            System.out.println("DuplicateStaffAccountException | UpdateStaffRoleException | StaffRoleNotFoundException CreateStaffManagedBean createAccount()");
             MessageUtils.displayInfo("Staff already Added");
         }
+
     }
-    
+
     public void editStaff(StaffAccount sa) {
         Map<String, String> map = new HashMap<>();
         map.put("staffId", sa.getUsername());
@@ -118,21 +142,22 @@ public class CreateStaffManagedBean implements Serializable {
     }
 
     public void onCellEdit(StaffAccount sa) {
-        
+
         if (cellSelectedStatus != null) {
             sa.setStatus(StatusType.getEnum(cellSelectedStatus));
         } else {
             return;
         }
 
-        StaffAccount result = staffAccountSessionBean.updateAccount(sa);
-        if (result != null) {
+        try {
+            StaffAccount result = staffAccountSessionBean.updateAccount(sa);
             cellSelectedStatus = null;
             MessageUtils.displayInfo(sa.getFullName() + "'s Role Edited");
-        } else {
+        } catch (UpdateStaffAccountException e) {
+            System.out.println("UpdateStaffAccountException CreateStaffManagedBean onCellEdit");
             MessageUtils.displayInfo(sa.getFullName() + "'s Role Not Edited");
         }
-        
+
     }
 
     private String generatePwd() {

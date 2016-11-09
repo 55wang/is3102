@@ -6,6 +6,12 @@
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     <!--shift + ctrl + F, format-->
     <f:view>
+
+        <f:metadata>
+            <f:viewParam name="selectedMC" value="#{existingCustomerApplicationManagedBean.selectedMC}" />
+            <f:viewAction action="#{existingCustomerApplicationManagedBean.initParameter()}"></f:viewAction>
+        </f:metadata>
+
         <h:head>
             <title>Existing_Apply</title>
             <em:cssImport></em:cssImport>

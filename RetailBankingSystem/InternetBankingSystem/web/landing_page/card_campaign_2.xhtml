@@ -45,12 +45,14 @@ and open the template in the editor.
                 </div>
                 <div class="marketing-third">
                     <div class="content">
-                        <h2>Our cards bring much more benefits than you think</h2>
+                        <h2>Our cards bring much more benefits than you think #{cardCampaignTwoManagedBean.temp}</h2>
                         <p>Merlion Bank mile credit card enables customers to redeem from a large number of airlines with both local and oversea spending.</p>
                     </div>
                     <br/>
                     <div class="direct-button">
-                        <a href="#">APPLY NOW!</a>
+                        <h:form>
+                            <p:commandButton value="APPLY NOW!" action="#{cardCampaignTwoManagedBean.clickApplyButton()}" />
+                        </h:form>
                     </div>
                 </div>
             </div>

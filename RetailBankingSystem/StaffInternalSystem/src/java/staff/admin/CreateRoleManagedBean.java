@@ -17,6 +17,8 @@ import javax.ejb.EJB;
 import javax.faces.event.ActionEvent;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
+import util.exception.common.DuplicateStaffRoleException;
+import util.exception.common.NoRolesExistException;
 import utils.MessageUtils;
 import utils.SessionUtils;
 
@@ -30,20 +32,27 @@ public class CreateRoleManagedBean implements Serializable {
 
     @EJB
     private StaffRoleSessionBeanLocal staffRoleSessionBean;
-    
+
     @EJB
     private UtilsSessionBeanLocal utilsBean;
-    
+
     private String roleName;
     private List<Role> roles = new ArrayList<>();
     private Role newRole = new Role();
-    
-    public CreateRoleManagedBean() {}
-    
+
+    public CreateRoleManagedBean() {
+    }
+
     @PostConstruct
     public void init() {
-        setRoles(staffRoleSessionBean.getAllRoles());
+        try {
+            roles = staffRoleSessionBean.getAllRoles();
+        } catch (NoRolesExistException e) {
+            System.out.println("NoRolesExistException CreateRoleManagedBean");
+            roles = new ArrayList<>();
+        }
         
+
         AuditLog a = new AuditLog();
         a.setActivityLog("System user enter create_role.xhtml");
         a.setFunctionName("CreateRoleManagedBean @PostConstruct init()");
@@ -51,24 +60,26 @@ public class CreateRoleManagedBean implements Serializable {
         a.setStaffAccount(SessionUtils.getStaff());
         utilsBean.persist(a);
     }
-    
+
     public void addRole(ActionEvent event) {
-        Role temp = staffRoleSessionBean.addRole(newRole);
-        
+
         AuditLog a = new AuditLog();
         a.setActivityLog("System user add role");
         a.setFunctionName("CreateRoleManagedBean addRole()");
-        
-        if (temp != null) {
+
+        try {
+            Role temp = staffRoleSessionBean.createRole(newRole);
+
             roles.add(temp);
             newRole = new Role();
             a.setFunctionOutput("SUCCESS");
             MessageUtils.displayInfo("New Role Added");
-        } else {
+
+        } catch (DuplicateStaffRoleException e) {
             a.setFunctionOutput("FAIL");
             MessageUtils.displayInfo("Role already Added");
         }
-        
+        utilsBean.persist(a);
     }
 
     /**

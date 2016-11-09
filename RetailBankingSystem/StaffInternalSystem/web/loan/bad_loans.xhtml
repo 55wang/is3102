@@ -27,6 +27,9 @@
                                 <h:outputText value="Status:"/>
                                 <h:outputText value="#{badLoan.loanAccountStatus}"/>
                                 
+                                <h:outputText value="Loan Account Number:"/>
+                                <h:outputText value="#{badLoan.accountNumber}"/>
+                                
                                 <h:outputText value="Customer Name:"/>
                                 <h:outputText value="#{badLoan.mainAccount.customer.fullName}"/>
 
@@ -51,11 +54,18 @@
                                 <h:outputText value="Loan Amount:"/>
                                 <h:outputText value="#{badLoan.principal}"/> 
                                 
+                                <h:outputText value="Loan Monthly Instalment:"/>
+                                <h:outputText value="#{badLoan.monthlyInstallment}">
+                                    <f:convertNumber pattern="###00.00"/>
+                                </h:outputText>
+                                
                                 <h:outputText value="Tenure:"/>
                                 <h:outputText value="#{badLoan.tenure}"/> 
                                 
                                 <h:outputText value="Overdue Amount:"/>
-                                <h:outputText value="#{badLoan.overduePayment}"/> 
+                                <h:outputText value="#{badLoan.overduePayment}">
+                                    <f:convertNumber pattern="###00.00"/>
+                                </h:outputText>
                                 
 
                             </h:panelGrid>

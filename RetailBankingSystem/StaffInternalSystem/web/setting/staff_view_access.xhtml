@@ -20,9 +20,9 @@
                     <c:forEach items="#{staffViewAccessManagedBean.roles}" var="role">
                         <h:panelGrid columns="2" cellpadding="5">
                             <h:outputText value="Your Role: " />
-                            <h:outputText value="#{staffViewAccessManagedBean.role.roleName}" />
+                            <h:outputText value="#{role.roleName}" />
                             <h:outputText value="Role Description: " />
-                            <h:outputText value="#{staffViewAccessManagedBean.role.description}" />
+                            <h:outputText value="#{role.description}" />
                         </h:panelGrid>
                     </c:forEach>
                 </p:panel>

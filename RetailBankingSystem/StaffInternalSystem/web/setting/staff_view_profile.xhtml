@@ -28,25 +28,25 @@
                                         <h:outputText id="name" value="#{staffProfileManagedBean.staff.lastName}  #{staffProfileManagedBean.staff.firstName}"/>
 
                                         <h:outputLabel for="gender" value="Gender: " />
-                                        <h:outputText id="gender" value="#{staffProfileManagedBean.staff.staffInfo.gender}"/>                               
+                                        <h:outputText id="gender" value="#{staffProfileManagedBean.staff.gender}"/>                               
 
                                         <h:outputLabel for="natioanlity" value="Nationality: " />
-                                        <h:outputText id="nationality" value="#{staffProfileManagedBean.staff.staffInfo.nationality}"/>
+                                        <h:outputText id="nationality" value="#{staffProfileManagedBean.staff.nationality}"/>
 
                                         <h:outputLabel for="mobileNumber" value="Mobile number: " />
-                                        <h:outputText id="mobileNumber" value="#{staffProfileManagedBean.staff.staffInfo.phone}"/>
+                                        <h:outputText id="mobileNumber" value="#{staffProfileManagedBean.staff.phone}"/>
 
                                         <h:outputLabel for="email" value="Email: " />
                                         <h:outputText id="email" value="#{staffProfileManagedBean.staff.email}"/>
 
                                         <h:outputLabel for="address" value="Address: " />
-                                        <h:outputText id="address" value="#{staffProfileManagedBean.staff.staffInfo.address}"/>
+                                        <h:outputText id="address" value="#{staffProfileManagedBean.staff.address}"/>
 
                                         <h:outputLabel for="postalCode" value="Postal Code: " />
-                                        <h:outputText id="postalCode" value="#{staffProfileManagedBean.staff.staffInfo.postalCode}"/>
+                                        <h:outputText id="postalCode" value="#{staffProfileManagedBean.staff.postalCode}"/>
 
                                         <h:outputLabel for="birthday" value="DOB: "/> 
-                                        <h:outputText id="birthday" value="#{staffProfileManagedBean.staff.staffInfo.birthDay}">  <f:convertDateTime pattern="dd/MM/yyyy" />    </h:outputText>
+                                        <h:outputText id="birthday" value="#{staffProfileManagedBean.staff.birthDay}">  <f:convertDateTime pattern="dd/MM/yyyy" />    </h:outputText>
 
                                     </h:panelGrid>
                                     <h:panelGrid columns="3" cellpadding="5">
@@ -80,19 +80,19 @@
                                         </p:selectOneMenu>  
 
                                         <h:outputLabel for="mobileNumber" value="Mobile number: " />
-                                        <p:inputText id="mobileNumber" value="#{staffProfileManagedBean.staffInfo.phone}" required="true"/>
+                                        <p:inputText id="mobileNumber" value="#{staffProfileManagedBean.staff.phone}" required="true"/>
 
                                         <h:outputLabel for="email" value="Email: " />
                                         <p:inputText id="email" value="#{staffProfileManagedBean.staff.email}" required ="true"/>
 
                                         <h:outputLabel for="address" value="Address: " />
-                                        <p:inputTextarea id="address" value="#{staffProfileManagedBean.staffInfo.address}" required ="true"/>
+                                        <p:inputTextarea id="address" value="#{staffProfileManagedBean.staff.address}" required ="true"/>
 
                                         <h:outputLabel for="postalCode" value="Postal Code: " />
-                                        <p:inputText id="postalCode" value="#{staffProfileManagedBean.staffInfo.postalCode}" required ="true"/>
+                                        <p:inputText id="postalCode" value="#{staffProfileManagedBean.staff.postalCode}" required ="true"/>
 
                                         <p:outputLabel for="birthday" value="DOB:" />
-                                        <p:calendar id="birthday" value="#{staffProfileManagedBean.staffInfo.birthDay}" />
+                                        <p:calendar id="birthday" value="#{staffProfileManagedBean.staff.birthDay}" />
 
                                         <p:commandButton value="Next" action="#{staffProfileManagedBean.goToConfirmPage}" update="@form"/>
 

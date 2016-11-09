@@ -116,7 +116,11 @@ public class CreditCardAccount implements Serializable {
     }
 
     public Double getRemainingCreditLimit() {
-        return getCreditLimit() - getCurrentMonthAmount();
+        if (getOutstandingAmount() > 0.0) {
+            return getCreditLimit() - getCurrentMonthAmount();
+        } else {
+            return getCreditLimit() - getCurrentMonthAmount() - getOutstandingAmount();
+        }
     }
 
     public Double calculateMinPayDue() {
