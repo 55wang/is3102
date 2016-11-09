@@ -7,7 +7,7 @@ package ejb.session.common;
 
 import entity.customer.Customer;
 import entity.customer.MainAccount;
-import javax.ejb.Local;
+import javax.ejb.Remote;
 import util.exception.cms.CustomerNotExistException;
 import util.exception.common.LoginFailException;
 import util.exception.common.MainAccountNotExistException;
@@ -16,8 +16,8 @@ import util.exception.common.MainAccountNotExistException;
  *
  * @author wang
  */
-@Local
-public interface LoginSessionBeanLocal {
+@Remote
+public interface LoginSessionBeanRemote {
     public MainAccount loginAccount(String username, String password) throws LoginFailException; 
     public Customer getCustomerByUserID(String userID) throws CustomerNotExistException;
     public MainAccount getMainAccountByUserIC(String userIC) throws MainAccountNotExistException;

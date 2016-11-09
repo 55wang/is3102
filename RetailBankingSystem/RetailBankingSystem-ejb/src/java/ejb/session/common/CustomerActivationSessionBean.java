@@ -5,16 +5,10 @@
  */
 package ejb.session.common;
 
-import entity.customer.Customer;
 import entity.customer.MainAccount;
-import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
-import server.utilities.EnumUtils;
-import util.exception.common.MainAccountNotExistException;
 import util.exception.common.UpdateMainAccountException;
 
 /**
@@ -28,23 +22,7 @@ public class CustomerActivationSessionBean implements CustomerActivationSessionB
 
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")
-    @Override
-    public MainAccount getMainAccountByEmail(String email) throws MainAccountNotExistException{
-        Query q = em.createQuery("SELECT ma FROM MainAccount ma WHERE ma.customer.email = :email");
-        
-        q.setParameter("email", email);
-             
-        try {
-            List<MainAccount> accounts = q.getResultList();
-            if (accounts != null && !accounts.isEmpty() && accounts.size() == 1) {
-                return accounts.get(0);
-            } else {
-                throw new MainAccountNotExistException("Main Account not found with email:" + email);
-            }
-        } catch (NoResultException ex) {
-            throw new MainAccountNotExistException("Main Account not found with email:" + email);
-        }
-    }
+    
     
     @Override
     public MainAccount updateMainAccount(MainAccount ma) throws UpdateMainAccountException {

@@ -6,9 +6,9 @@
 package customer.bill;
 
 import ejb.session.bill.TransferSessionBeanLocal;
-import ejb.session.common.LoginSessionBeanLocal;
 import ejb.session.common.OTPSessionBeanLocal;
 import ejb.session.dams.CustomerDepositSessionBeanLocal;
+import ejb.session.mainaccount.MainAccountSessionBeanLocal;
 import entity.card.account.CreditCardAccount;
 import entity.customer.MainAccount;
 import entity.dams.account.CustomerDepositAccount;
@@ -22,6 +22,7 @@ import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import server.utilities.ConstantUtils;
+import util.exception.common.MainAccountNotExistException;
 import util.exception.dams.DepositAccountNotFoundException;
 import utils.JSUtils;
 import utils.MessageUtils;
@@ -36,7 +37,7 @@ import utils.SessionUtils;
 public class PayMerlionCreditCardBillManagedBean implements Serializable {
 
     @EJB
-    private LoginSessionBeanLocal loginBean;
+    private MainAccountSessionBeanLocal mainAccountSessionBean;
     @EJB
     private TransferSessionBeanLocal transferBean;
     @EJB
@@ -58,7 +59,11 @@ public class PayMerlionCreditCardBillManagedBean implements Serializable {
 
     @PostConstruct
     public void init() {
-        ma = loginBean.getMainAccountByUserID(SessionUtils.getUserName());
+        try{
+            ma = mainAccountSessionBean.getMainAccountByUserId(SessionUtils.getUserName());
+        }catch(MainAccountNotExistException ex){
+            System.out.println("init.MainAccountNotExistException");
+        }
         depositAccounts = depositBean.getAllNonFixedCustomerAccounts(ma.getId());
         setCreditCardAccounts(ma.getCreditCardAccounts());
     }

@@ -97,4 +97,22 @@ public class MainAccountSessionBean implements MainAccountSessionBeanLocal, Main
             throw new MainAccountNotExistException("Main Account not found with ID:" + userID);
         }
     }
+    
+    @Override
+    public MainAccount getMainAccountByEmail(String email) throws MainAccountNotExistException{
+        Query q = em.createQuery("SELECT ma FROM MainAccount ma WHERE ma.customer.email = :email");
+        
+        q.setParameter("email", email);
+             
+        try {
+            List<MainAccount> accounts = q.getResultList();
+            if (accounts != null && !accounts.isEmpty() && accounts.size() == 1) {
+                return accounts.get(0);
+            } else {
+                throw new MainAccountNotExistException("Main Account not found with email:" + email);
+            }
+        } catch (NoResultException ex) {
+            throw new MainAccountNotExistException("Main Account not found with email:" + email);
+        }
+    }
 }

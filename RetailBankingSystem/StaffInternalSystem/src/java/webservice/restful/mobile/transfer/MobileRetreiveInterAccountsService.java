@@ -5,14 +5,12 @@
  */
 package webservice.restful.mobile.transfer;
 
-import ejb.session.common.LoginSessionBeanLocal;
 import ejb.session.dams.CustomerDepositSessionBeanLocal;
 import ejb.session.dams.MobileAccountSessionBeanLocal;
+import ejb.session.mainaccount.MainAccountSessionBeanLocal;
 import entity.customer.MainAccount;
 import entity.dams.account.CustomerDepositAccount;
-import entity.dams.account.CustomerFixedDepositAccount;
 import entity.dams.account.MobileAccount;
-import entity.loan.LoanAccount;
 import java.math.RoundingMode;
 import java.util.List;
 import javax.ejb.EJB;
@@ -41,7 +39,7 @@ public class MobileRetreiveInterAccountsService {
     private UriInfo context;
 
     @EJB
-    private LoginSessionBeanLocal loginBean;
+    private MainAccountSessionBeanLocal mainAccountSessionBean;
     @EJB
     private CustomerDepositSessionBeanLocal depositBean;
     @EJB
@@ -58,7 +56,7 @@ public class MobileRetreiveInterAccountsService {
         String jsonString;
         MainAccount ma;
         try {
-            ma = loginBean.getMainAccountByUserID(username);
+            ma = mainAccountSessionBean.getMainAccountByUserId(username);
         } catch (Exception e) {
             ErrorDTO err = new ErrorDTO();
             err.setCode(-1);
