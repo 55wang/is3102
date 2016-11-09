@@ -25,6 +25,7 @@ import server.utilities.EnumUtils.MaritalStatus;
 import server.utilities.EnumUtils.Nationality;
 import server.utilities.CommonUtils;
 import server.utilities.ConstantUtils;
+import server.utilities.EnumUtils.Occupation;
 import util.exception.cms.CustomerNotExistException;
 import util.exception.cms.UpdateCustomerException;
 import utils.MessageUtils;
@@ -100,6 +101,7 @@ public class StaffCustomerInformationManagedBean implements Serializable {
                 customers.add(c);
                 setCustomers(customers);
             } catch (CustomerNotExistException e) {
+                customers = new ArrayList<>();
                 MessageUtils.displayInfo("No customer found!");
             }
         }
@@ -111,6 +113,7 @@ public class StaffCustomerInformationManagedBean implements Serializable {
         selectedCustomer.setIncome(Income.getEnum(selectedIncome));
         selectedCustomer.setMaritalStatus(MaritalStatus.getEnum(selectedMaritalStatus));
         selectedCustomer.setEducation(Education.getEnum(selectedEducation));
+        selectedCustomer.setOccupation(Occupation.getEnum(selectedOccupation));
 
         if (utilsSessionBean.checkUpdatedEmailIsUnique(selectedCustomer) == false) {
             MessageUtils.displayInfo("Email is registered!");
@@ -140,6 +143,9 @@ public class StaffCustomerInformationManagedBean implements Serializable {
         }
         if (customer.getIncome() != null) {
             setSelectedIncome(customer.getIncome().toString());
+        }
+        if (customer.getOccupation()!= null) {
+            setSelectedOccupation(customer.getOccupation().toString());
         }
         if (customer.getMaritalStatus() != null) {
             setSelectedMaritalStatus(customer.getMaritalStatus().toString());

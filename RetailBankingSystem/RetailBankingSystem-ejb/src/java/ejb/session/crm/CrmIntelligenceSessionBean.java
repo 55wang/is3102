@@ -40,7 +40,8 @@ public class CrmIntelligenceSessionBean implements CrmIntelligenceSessionBeanLoc
     public Long getDepositChurnCustomer(Date startDate, Date endDate){
         System.out.println("");
         System.out.println("---------getDepositChurnCustomer---------");
-        Query q = em.createQuery("SELECT c FROM Customer c, MainAccount m WHERE c.mainAccount = m AND EXISTS (SELECT d FROM DepositAccount d WHERE d.mainAccount = m)");
+        Query q = em.createQuery("SELECT c FROM Customer c, MainAccount m WHERE c.mainAccount = m AND EXISTS (SELECT d FROM DepositAccount d WHERE d.mainAccount = m AND d.status =:closedStatus)");
+        q.setParameter("closedStatus", StatusType.CLOSED);
         List<Customer> customers = q.getResultList();
         Long counter = 0L;
         System.out.println("Number of Customer Who has Deposit Account: " + customers.size());
@@ -62,7 +63,8 @@ public class CrmIntelligenceSessionBean implements CrmIntelligenceSessionBeanLoc
     public Long getCardChurnCustomer(Date startDate, Date endDate){
         System.out.println("");
         System.out.println("---------getCardChurnCustomer---------");
-        Query q = em.createQuery("SELECT c FROM Customer c, MainAccount m WHERE c.mainAccount = m AND EXISTS (SELECT cca FROM CreditCardAccount cca WHERE cca.mainAccount = m)");
+        Query q = em.createQuery("SELECT c FROM Customer c, MainAccount m WHERE c.mainAccount = m AND EXISTS (SELECT cca FROM CreditCardAccount cca WHERE cca.mainAccount = m AND cca.CardStatus =:closedStatus)");
+        q.setParameter("closedStatus", CardAccountStatus.CLOSED);
         List<Customer> customers = q.getResultList();
         Long counter = 0L;
         System.out.println("Number of Customer Who has Credit Card Account: " + customers.size());
@@ -84,7 +86,8 @@ public class CrmIntelligenceSessionBean implements CrmIntelligenceSessionBeanLoc
     public Long getLoanChurnCustomer(Date startDate, Date endDate){
         System.out.println("");
         System.out.println("---------getLoanChurnCustomer---------");
-        Query q = em.createQuery("SELECT c FROM Customer c, MainAccount m WHERE c.mainAccount = m AND EXISTS (SELECT la FROM LoanAccount la WHERE la.mainAccount = m)");
+        Query q = em.createQuery("SELECT c FROM Customer c, MainAccount m WHERE c.mainAccount = m AND EXISTS (SELECT la FROM LoanAccount la WHERE la.mainAccount = m AND la.loanAccountStatus =:closedStatus)");
+        q.setParameter("closedStatus", LoanAccountStatus.CLOSED);
         List<Customer> customers = q.getResultList();
         Long counter = 0L;
         System.out.println("Number of Customer Who has Loan Account: " + customers.size());
@@ -106,7 +109,8 @@ public class CrmIntelligenceSessionBean implements CrmIntelligenceSessionBeanLoc
     public Long getWealthChurnCustomer(Date startDate, Date endDate){
         System.out.println("");
         System.out.println("---------getWealthChurnCustomer---------");
-        Query q = em.createQuery("SELECT c FROM Customer c, MainAccount m WHERE c.mainAccount = m AND EXISTS (SELECT ip FROM InvestmentPlan ip WHERE ip.wealthManagementSubscriber.mainAccount = m)");
+        Query q = em.createQuery("SELECT c FROM Customer c, MainAccount m WHERE c.mainAccount = m AND EXISTS (SELECT ip FROM InvestmentPlan ip WHERE ip.wealthManagementSubscriber.mainAccount = m AND ip.status =:terminatedStatus)");
+        q.setParameter("terminatedStatus", InvestmentPlanStatus.TERMINATED);
         List<Customer> customers = q.getResultList();
         Long counter = 0L;
         System.out.println("Number of Customer Who has Investment Plan: " + customers.size());

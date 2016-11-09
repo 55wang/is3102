@@ -33,7 +33,7 @@
                                     <h:outputLabel for="gender" value="Gender: " />
                                     <h:outputText id="gender" value="#{customerProfileManagedBean.customer.gender.toString()}"/>                               
 
-                                    <h:outputLabel for="natioanlity" value="Nationality: " />
+                                    <h:outputLabel for="nationality" value="Nationality: " />
                                     <h:outputText id="nationality" value="#{customerProfileManagedBean.customer.nationality.toString()}"/>
 
                                     <h:outputLabel for="mobileNumber" value="Mobile number (for OTP): " />
@@ -49,7 +49,7 @@
                                     <h:outputText id="postalCode" value="#{customerProfileManagedBean.customer.postalCode}"/>
 
                                     <h:outputLabel for="occupation" value="Occupation: " />
-                                    <h:outputText id="occupation" value="#{customerProfileManagedBean.selectedOccupation}"/>
+                                    <h:outputText id="occupation" value="#{customerProfileManagedBean.customer.occupation}"/>
 
                                     <h:outputLabel for="birthday" value="DOB: "/> 
                                     <h:outputText id="birthday" value="#{customerProfileManagedBean.customer.birthDay}">  <f:convertDateTime pattern="dd/MM/yyyy" />    </h:outputText>
@@ -82,14 +82,14 @@
                                     <h:outputLabel for="gender" value="Gender: " />
                                     <h:outputText id="gender" value="#{customerProfileManagedBean.customer.gender.toString()}"/>                               
 
-                                    <h:outputLabel for="natioanlity" value="Nationality: " />
+                                    <h:outputLabel for="nationality" value="Nationality: " />
                                     <h:outputText id="nationality" value="#{customerProfileManagedBean.customer.nationality.toString()}"/>
 
                                     <h:outputLabel for="mobileNumber" value="Mobile number (for OTP): " />
                                     <p:inputMask id="mobileNumber" value="#{customerProfileManagedBean.customer.phone}" required="true" mask="99999999" style="width: 215px" />
 
                                     <h:outputLabel for="email" value="Email: " />
-                                    <p:inputText required="true" label="email" size="40"
+                                    <p:inputText id="email" required="true" label="email" size="40"
                                                  requiredMessage="Please enter your email address."
                                                  validatorMessage="Invalid email format"
                                                  value="#{customerProfileManagedBean.customer.email}" style="width: 215px">
