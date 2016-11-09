@@ -130,14 +130,11 @@ public class CustomerLoginManagedBean implements Serializable {
         MainAccount forgotAccount = null;
         try{
             forgotAccount = mainAccountSessionBean.getMainAccountByEmail(findUsernameEmail);
-        }catch(MainAccountNotExistException ex){
-            System.out.println("forgotUserID.MainAccountNotExistException");
-        }
-        if (forgotAccount != null) {
             emailServiceSessionBean.sendResetPwdLinkforForgottenCustomer(findPasswordEmail, forgotAccount);
             String msg = "Check your email and reset password.";
             MessageUtils.displayInfo(msg);
-        } else {
+        } catch(MainAccountNotExistException ex) {
+            System.out.println("forgotUserID.MainAccountNotExistException");
             String msg = "The email is not registered.";
             MessageUtils.displayError(msg);
         }

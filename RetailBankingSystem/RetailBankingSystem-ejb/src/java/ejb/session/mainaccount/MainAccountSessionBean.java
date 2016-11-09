@@ -106,12 +106,14 @@ public class MainAccountSessionBean implements MainAccountSessionBeanLocal, Main
              
         try {
             List<MainAccount> accounts = q.getResultList();
-            if (accounts != null && !accounts.isEmpty() && accounts.size() == 1) {
+            System.out.println(accounts);
+            if (!accounts.isEmpty()) {
                 return accounts.get(0);
             } else {
                 throw new MainAccountNotExistException("Main Account not found with email:" + email);
             }
         } catch (NoResultException ex) {
+            System.out.println("Catch");
             throw new MainAccountNotExistException("Main Account not found with email:" + email);
         }
     }

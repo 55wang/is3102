@@ -96,7 +96,7 @@ public class LoanAccountSessionBean implements LoanAccountSessionBeanLocal {
             return null;
         }
     }
-
+    
     @Override
     public LoanApplication createLoanApplication(LoanApplication loanApplication) {
         em.persist(loanApplication);
