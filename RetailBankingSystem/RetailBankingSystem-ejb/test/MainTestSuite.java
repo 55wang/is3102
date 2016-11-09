@@ -13,6 +13,7 @@ import org.junit.runners.Suite;
 
 import cms.*;
 import common.ChangePasswordTest;
+import common.CustomerActivationTest;
 import common.MainAccountTest;
 
 /**
@@ -26,7 +27,8 @@ import common.MainAccountTest;
     CustomerCaseTest.class,
     // Main
     MainAccountTest.class,
-    ChangePasswordTest.class
+    ChangePasswordTest.class,
+    CustomerActivationTest.class
 })
 public class MainTestSuite {
 
