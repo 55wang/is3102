@@ -284,31 +284,53 @@ public class SACHSessionBean {
     }
 
     public void updateNetSettlementAddBill(BillTransfer br) {
-        List<SachSettlement> settlements = getSettlements();
-
-        if (settlements.isEmpty()) {
-            System.out.println("Entity builder failed");
+        
+        Query q = em.createQuery("SELECT ss FROM SachSettlement ss WHERE ss.fromBankCode =:fromBankCode AND ss.toBankCode =:toBankCode");
+        q.setParameter("fromBankCode", br.getFromBankCode());
+        q.setParameter("toBankCode", br.getPartnerBankCode());
+        List<SachSettlement> result = q.getResultList();
+        for (SachSettlement s : result) {
+            System.out.println("adding settlement");
+            s.setAmount(s.getAmount().add(br.getAmount()));
+            em.merge(s);
         }
-        System.out.println(settlements.size());
-        for (SachSettlement s : settlements) {
-
-            System.out.println(s);
-            System.out.println(br);
-            if (br.getFromBankCode().equals(s.getFromBankCode()) && br.getPartnerBankCode().equals(s.getToBankCode())) {
-                System.out.println("adding settlement");
-                s.setAmount(s.getAmount().add(br.getAmount()));
-                em.merge(s);
-                System.out.println(s);
-            }
-            System.out.println("before removing settlement");
-            if (br.getFromBankCode().equals(s.getToBankCode()) && br.getPartnerBankAccount().equals(s.getFromBankCode())) {
-                System.out.println("removing settlement");
-                s.setAmount(s.getAmount().subtract(br.getAmount()));
-                em.merge(s);
-                System.out.println(s);
-            }
+        
+        q = em.createQuery("SELECT ss FROM SachSettlement ss WHERE ss.fromBankCode =:fromBankCode AND ss.toBankCode =:toBankCode");
+        q.setParameter("fromBankCode", br.getPartnerBankCode());
+        q.setParameter("toBankCode", br.getFromBankCode());
+        result = q.getResultList();
+        for (SachSettlement s : result) {
+            System.out.println("adding settlement");
+            s.setAmount(s.getAmount().subtract(br.getAmount()));
+            em.merge(s);
         }
-        System.out.println("End of updateNetSettlementAddBill");
+        
+        
+//        List<SachSettlement> settlements = getSettlements();
+//
+//        if (settlements.isEmpty()) {
+//            System.out.println("Entity builder failed");
+//        }
+//        System.out.println(settlements.size());
+//        for (SachSettlement s : settlements) {
+//
+//            System.out.println(s);
+//            System.out.println(br);
+//            if (br.getFromBankCode().equals(s.getFromBankCode()) && br.getPartnerBankCode().equals(s.getToBankCode())) {
+//                System.out.println("adding settlement");
+//                s.setAmount(s.getAmount().add(br.getAmount()));
+//                em.merge(s);
+//                System.out.println(s);
+//            }
+//            System.out.println("before removing settlement");
+//            if (br.getFromBankCode().equals(s.getToBankCode()) && br.getPartnerBankAccount().equals(s.getFromBankCode())) {
+//                System.out.println("removing settlement");
+//                s.setAmount(s.getAmount().subtract(br.getAmount()));
+//                em.merge(s);
+//                System.out.println(s);
+//            }
+//        }
+//        System.out.println("End of updateNetSettlementAddBill");
     }
 
     @Asynchronous
@@ -430,7 +452,7 @@ public class SACHSessionBean {
 
         System.out.println("Updating net settlement...");
         System.out.println(bt);
-//        updateNetSettlementAddBill(bt);
+        updateNetSettlementAddBill(bt);
 
         List<SachSettlement> updatedbankAccounts = getSettlements();
 

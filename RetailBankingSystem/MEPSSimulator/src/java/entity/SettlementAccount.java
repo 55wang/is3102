@@ -24,7 +24,7 @@ public class SettlementAccount implements Serializable {
     @Id
     private String bankCode;
     private String name;
-    @Column(precision=30, scale=20)
+    @Column(precision=18, scale=4)
     private BigDecimal amount;
     @Temporal(value = TemporalType.TIMESTAMP)
     private Date creationDate = new Date();

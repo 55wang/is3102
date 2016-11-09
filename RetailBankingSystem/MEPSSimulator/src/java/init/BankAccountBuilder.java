@@ -47,6 +47,7 @@ public class BankAccountBuilder {
     }
 
     private void buildEntities() {
+        
         SettlementAccount sach = new SettlementAccount();
         sach.setBankCode("000");
         sach.setAmount(BigDecimal.ZERO);
@@ -92,8 +93,7 @@ public class BankAccountBuilder {
             "THE ROTAL BANK OF SCOTLAND N.V.",
             "UNITED OVERSEAS BANK LTD"
         };
-        String[] bankCodes = {
-            "020", "002", "003", "004", "005", "006", "007", "008", "009", "010", "011", "012", "013", "014", "015", "016", "017", "018", "019",};
+        String[] bankCodes = {"020", "002", "003", "004", "005", "006", "007", "008", "009", "010", "011", "012", "013", "014", "015", "016", "017", "018", "019"};
 
         for (int i = 0; i < bankNames.length; i++) {
             SettlementAccount other = new SettlementAccount();
