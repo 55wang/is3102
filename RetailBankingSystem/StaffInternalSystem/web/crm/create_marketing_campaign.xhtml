@@ -57,8 +57,11 @@
                                     <p:inputText id="adsBannerCampaignLandingName" value="#{createMarketingCampaignManagedBean.adsMarketingCampaign.landingPageName}" />
                                     <p:outputLabel for="adsBannerCampaignTitle" value="Ads Title: " />
                                     <p:inputText id="adsBannerCampaignTitle" value="#{createMarketingCampaignManagedBean.adsMarketingCampaign.adsTitle}" />
-                                    <p:outputLabel for="adsBannerCampaignAdsType" value="Ads Type: " />
-                                    <p:inputText id="adsBannerCampaignAdsType" value="#{createMarketingCampaignManagedBean.adsMarketingCampaign.adsType}" />
+                                    <p:outputLabel value="Ads Type: " />
+                                    <p:selectOneMenu value="#{createMarketingCampaignManagedBean.adsMarketingCampaign.adsType}" style="width:187px; height: 30px; line-height: 21px; top:10px" rendered="true" required="true">
+                                        <f:selectItems value="#{createMarketingCampaignManagedBean.adsTypeOptions}" />
+                                    </p:selectOneMenu>
+
                                     <p:outputLabel for="adsBannerCampaignAdsInfo" value="Ads Info: " />
                                     <p:inputText id="adsBannerCampaignAdsInfo" value="#{createMarketingCampaignManagedBean.adsMarketingCampaign.adsInfo}" />
                                     <p:outputLabel for="adsBannerCampaignAdsExtraInfo" value="Ads ExtraInfo: " />

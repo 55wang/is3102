@@ -10,6 +10,7 @@ import entity.crm.MarketingCampaign;
 import entity.customer.Customer;
 import java.util.List;
 import javax.ejb.Local;
+import javax.persistence.Query;
 
 /**
  *
@@ -24,4 +25,7 @@ public interface MarketingCampaignSessionBeanLocal {
     public MarketingCampaign getMarketingCampaign(Long Id);
     public MarketingCampaign createMarketingCampaign(MarketingCampaign mc);
     public MarketingCampaign updateMarketingCampaign(MarketingCampaign mc);
+    public Long addViewCount(MarketingCampaign mc);
+    public Long addClickCount(MarketingCampaign mc);
+    public Long addResponseCount(MarketingCampaign mc);
 }
