@@ -21,6 +21,7 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
+import server.utilities.CommonUtils;
 import server.utilities.ConstantUtils;
 import server.utilities.EnumUtils;
 import utils.MessageUtils;
@@ -50,6 +51,8 @@ public class CreateMarketingCampaignManagedBean implements Serializable {
     private List<CustomerGroup> customerGroupOptions;
     private Long selectedCustomerGroupEmail;
     private Long selectedCustomerGroupAdsBanner;
+    private List<String> adsTypeOptions = CommonUtils.getEnumList(EnumUtils.AdsType.class);
+    private String selectedAdsType;
 
     public CreateMarketingCampaignManagedBean() {
     }
@@ -58,20 +61,25 @@ public class CreateMarketingCampaignManagedBean implements Serializable {
     public void init() {
         emailMarketingCampaign = new EmailCampaign();
         adsMarketingCampaign = new AdsBannerCampaign();
-
+        adsMarketingCampaign.setAdsType(EnumUtils.AdsType.DEPOSIT.toString());
         customerGroupOptions = customerSegmentationSessionBean.getListCustomerGroup();
     }
 
     public void addNewAdsBannerMarketingCampaign() {
         try {
             adsMarketingCampaign.setTypeCampaign(EnumUtils.TypeMarketingCampaign.ADSBANNER);
+            
             adsMarketingCampaign.setStaffAccount(sa);
 
-            adsMarketingCampaign.setCustomerGroup(customerSegmentationSessionBean.getCustomerGroup(selectedCustomerGroupAdsBanner));
+            CustomerGroup cg = customerSegmentationSessionBean.getCustomerGroup(selectedCustomerGroupAdsBanner);
+            adsMarketingCampaign.setCustomerGroup(cg);
             adsMarketingCampaign.setNumOfTargetResponse((long)customerSegmentationSessionBean.getCustomerGroup(selectedCustomerGroupAdsBanner).getCustomers().size());
             marketingCampaignSessionBean.createMarketingCampaign(adsMarketingCampaign);
             sa.getMarketingCampaign().add(adsMarketingCampaign);
             staffAccountSessionBean.updateAccount(sa);
+            
+            cg.getMarketingCampaigns().add(adsMarketingCampaign);
+            customerSegmentationSessionBean.updateCustomerGroup(cg);
 
             RedirectUtils.redirect(ConstantUtils.STAFF_MC_VIEW_MARKETING_CAMPAIGNS);
 
@@ -162,6 +170,22 @@ public class CreateMarketingCampaignManagedBean implements Serializable {
 
     public void setAdsMarketingCampaign(AdsBannerCampaign adsMarketingCampaign) {
         this.adsMarketingCampaign = adsMarketingCampaign;
+    }
+
+    public String getSelectedAdsType() {
+        return selectedAdsType;
+    }
+
+    public void setSelectedAdsType(String selectedAdsType) {
+        this.selectedAdsType = selectedAdsType;
+    }
+
+    public List<String> getAdsTypeOptions() {
+        return adsTypeOptions;
+    }
+
+    public void setAdsTypeOptions(List<String> adsTypeOptions) {
+        this.adsTypeOptions = adsTypeOptions;
     }
 
 }

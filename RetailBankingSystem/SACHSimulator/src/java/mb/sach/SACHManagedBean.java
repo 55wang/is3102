@@ -26,7 +26,7 @@ public class SACHManagedBean implements Serializable {
     private String referenceNumber;
     private BigDecimal amount;
     private String toBankCode = "001";
-    private String fromBankCode = "002";
+    private String fromBankCode = "005";
     private String accountNumber;
     private String toName;
     private String fromName;
@@ -35,10 +35,12 @@ public class SACHManagedBean implements Serializable {
     private String ccNumber;
     private BigDecimal ccAmount;
     private String partnerBankCode = "001";
-    private String fromCCBankCode = "002";
+    private String fromCCBankCode = "005";
     private String organizationName = "Merlion Bank";
 
     private String referenceNumber1;
+    private String referenceNumber2;
+
     private String billReferenceNumber;
     private String shortCode;
     private BigDecimal billAmount;
@@ -94,7 +96,7 @@ public class SACHManagedBean implements Serializable {
         pt.setToName(getToName());
         pt.setFromName(getFromName());
         pt.setMyInitial(getMyInitial());
-        pt.setSettled(true);
+        pt.setSettled(false);
 
         sachBean.sendMBSPaymentTransfer(pt);
     }
@@ -102,13 +104,14 @@ public class SACHManagedBean implements Serializable {
     public void sendMBSCCPayment() {
         System.out.println("----------------Bill Transfer to MBS----------------");
         BillTransfer bt = new BillTransfer();
-        bt.setReferenceNumber(ccNumber);
+        bt.setReferenceNumber(referenceNumber2);
+        bt.setBillReferenceNumber(ccNumber);
         bt.setAmount(ccAmount);
-        bt.setPartnerBankCode(getPartnerBankCode());
-        bt.setOrganizationName(getOrganizationName());
+        bt.setPartnerBankCode(partnerBankCode);
         bt.setFromBankCode(fromCCBankCode);
-        bt.setSettled(true);
-
+        bt.setOrganizationName(organizationName);
+        bt.setSettled(false);
+        System.out.println(bt);
         sachBean.sendMBSCCPaymentSettlement(bt);
     }
 
@@ -360,5 +363,19 @@ public class SACHManagedBean implements Serializable {
      */
     public void setFromCCBankCode(String fromCCBankCode) {
         this.fromCCBankCode = fromCCBankCode;
+    }
+
+    /**
+     * @return the referenceNumber2
+     */
+    public String getReferenceNumber2() {
+        return referenceNumber2;
+    }
+
+    /**
+     * @param referenceNumber2 the referenceNumber2 to set
+     */
+    public void setReferenceNumber2(String referenceNumber2) {
+        this.referenceNumber2 = referenceNumber2;
     }
 }

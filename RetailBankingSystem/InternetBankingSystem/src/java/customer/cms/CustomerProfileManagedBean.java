@@ -72,9 +72,14 @@ public class CustomerProfileManagedBean implements Serializable {
         }
         
         this.auditLogs = auditSessionBean.getAuditLogByCustomerID(SessionUtils.getUserName());
-        selectedIncome = customer.getIncome().toString();
-        selectedOccupation = customer.getOccupation().toString();
-        age=DateUtils.calculateAge(customer.getBirthDay());
+        try{
+            selectedIncome = customer.getIncome().toString();
+            selectedOccupation = customer.getOccupation().toString();
+            age=DateUtils.calculateAge(customer.getBirthDay());
+        }catch(Exception ex){
+            selectedIncome = "";
+            selectedOccupation = "";
+        }
     }
 
     public void goToEditPage() {

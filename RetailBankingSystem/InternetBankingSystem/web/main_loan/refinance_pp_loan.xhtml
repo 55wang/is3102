@@ -18,7 +18,7 @@
 
             <em:cssImport></em:cssImport>
             <div class="customer_main_container">
-                <h1> Apply for Private House Loan</h1>
+                <h1> Refinance Private House Loan</h1>
                 <h:form>
                     <p:growl id="growl" sticky="true" showDetail="true"/>
                     <p:messages id="msgs"/>
@@ -28,12 +28,6 @@
                             <p:panel>
                                 <p:messages id="msgs1"/>
                                 <h:panelGrid columns="2" cellpadding="5px" columnClasses="label, value">
-
-                                    <h:outputText value="Identity Type: " />
-                                    <p:selectOneMenu value="#{ppLoanApplicationManagedBean.identityType}" style="width:187px; height: 31px; line-height: 21px; top:8px" rendered="true" label="identityType" >
-                                        <f:selectItem itemLabel="Please select.." itemValue=""/>                                                    
-                                        <f:selectItems value="#{ppLoanApplicationManagedBean.identityTypeOptions}" />
-                                    </p:selectOneMenu>
 
                                     <h:outputText value="Identity Number: " />
                                     <p:inputText value="#{ppLoanApplicationManagedBean.idNumber}" required="true" requiredMessage="Identity number is required." validatorMessage="Invalid identity number.">
@@ -54,11 +48,9 @@
                                     <h:outputText value="Date of Birth: " />
                                     <p:calendar value="#{ppLoanApplicationManagedBean.birthday}" navigator="true" yearRange="c-100:c+0" required="true" requiredMessage="DOB is required." 
                                                 pattern="yyyy-MM-dd" maxdate="#{ppLoanApplicationManagedBean.currentDate}"/>
-
-                                    <h:outputText value="Age: " />
-                                    <p:inputText value="#{ppLoanApplicationManagedBean.age}" required="true" requiredMessage="Age is required." />
-
-                                    <h:outputText value="Email: " />
+                                    
+                                    
+                                     <h:outputText value="Email: " />
 
                                     <p:inputText required="true" label="email" size="40"
                                                  requiredMessage="Email address is required."

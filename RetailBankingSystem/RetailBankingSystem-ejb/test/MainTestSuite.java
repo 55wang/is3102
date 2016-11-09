@@ -12,6 +12,9 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
 import cms.*;
+import common.ChangePasswordTest;
+import common.CustomerActivationTest;
+import common.LoginTest;
 import common.MainAccountTest;
 import common.StaffAccountTest;
 import common.StaffRoleTest;
@@ -33,6 +36,9 @@ import dams.DepositAccountTest;
     // dams
 //    DepositAccountTest.class
         
+    ChangePasswordTest.class,
+    CustomerActivationTest.class,
+    LoginTest.class
 })
 public class MainTestSuite {
 

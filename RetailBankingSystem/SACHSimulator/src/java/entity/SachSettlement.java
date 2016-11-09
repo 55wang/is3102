@@ -62,8 +62,10 @@ public class SachSettlement implements Serializable {
 
     @Override
     public String toString() {
-        return "SachSettlement{" + "id=" + id + '}';
+        return "SachSettlement{" + "id=" + id + ", fromBankCode=" + fromBankCode + ", toBankCode=" + toBankCode + ", creationDate=" + creationDate + ", amount=" + amount + ", toBankName=" + toBankName + ", fromBankName=" + fromBankName + '}';
     }
+
+    
 
     public BigDecimal getAmount() {
         return amount;

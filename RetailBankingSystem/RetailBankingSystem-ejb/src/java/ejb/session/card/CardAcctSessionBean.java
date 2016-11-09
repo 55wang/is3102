@@ -184,6 +184,16 @@ public class CardAcctSessionBean implements CardAcctSessionBeanLocal {
     }
 
     @Override
+    public List<CreditCardAccount> getListCreditCardAccountsInProcess() {
+        Query q = em.createQuery("SELECT cca FROM CreditCardAccount cca WHERE cca.CardStatus = :inStatus1 OR cca.CardStatus = :inStatus2 OR cca.CardStatus = :inStatus3");
+        q.setParameter("inStatus1", CardAccountStatus.APPROVED);
+        q.setParameter("inStatus2", CardAccountStatus.PENDING);
+        q.setParameter("inStatus3", CardAccountStatus.ISSUED);
+
+        return q.getResultList();
+    }
+
+    @Override
     public List<CreditCardAccount> getAllActiveCreditCardAccountsByMainId(String id) {
         Query q = em.createQuery("SELECT cca FROM CreditCardAccount cca WHERE cca.CardStatus =:inStatus AND cca.mainAccount.id =:mainAccountId");
         q.setParameter("inStatus", CardAccountStatus.ACTIVE);
@@ -230,6 +240,16 @@ public class CardAcctSessionBean implements CardAcctSessionBeanLocal {
     public List<DebitCardAccount> getListDebitCardAccountsByStatus(CardAccountStatus status) {
         Query q = em.createQuery("SELECT cca FROM DebitCardAccount cca WHERE cca.CardStatus = :inStatus");
         q.setParameter("inStatus", status);
+        return q.getResultList();
+    }
+
+    @Override
+    public List<DebitCardAccount> getListDebitCardAccountsInProcess() {
+        Query q = em.createQuery("SELECT cca FROM DebitCardAccount cca WHERE cca.CardStatus = :inStatus1 OR cca.CardStatus = :inStatus2 OR cca.CardStatus = :inStatus3");
+        q.setParameter("inStatus1", CardAccountStatus.APPROVED);
+        q.setParameter("inStatus2", CardAccountStatus.PENDING);
+        q.setParameter("inStatus3", CardAccountStatus.ISSUED);
+
         return q.getResultList();
     }
 
@@ -318,10 +338,11 @@ public class CardAcctSessionBean implements CardAcctSessionBeanLocal {
             DebitCardAccount dca = new DebitCardAccount();
             dca.setCreditCardNum(generateAccountNumber());
             dca.setCvv(server.utilities.CommonHelper.generateRandom(true, 3));
-            dca.setCardStatus(EnumUtils.CardAccountStatus.APPROVED);
+            dca.setCardStatus(EnumUtils.CardAccountStatus.ACTIVE);
             Calendar cal = Calendar.getInstance();
             dca.setCreationDate(cal.getTime());
             cal.set(Calendar.YEAR, 2);
+            dca.setCardNetwork(EnumUtils.CardNetwork.VISA);
             dca.setValidDate(cal.getTime());
             dca.setNameOnCard(da.getMainAccount().getCustomer().getFullName());
             dca.setCustomerDepositAccount((CustomerDepositAccount) da);

@@ -21,10 +21,18 @@
             <em:customerNavBar context="personal" personalPage="home" ></em:customerNavBar>
             <div class="customer_main_container">
                 <h:form id="mainForm">
-                    <p:panel header="Breakdown for account #{loanAccountBreakdownManagedBean.accountId}">
-                        <h2>Monthly installment is #{loanAccountBreakdownManagedBean.loanAccount.monthlyInstallment}</h2>
+                    <p:panel header="Breakdown for account S$ #{loanAccountBreakdownManagedBean.accountId}">
+                        <h2>Monthly installment is 
+                            <h:outputText value="#{loanAccountBreakdownManagedBean.loanAccount.monthlyInstallment}">
+                                <f:convertNumber pattern="###00.00"/>
+                            </h:outputText>
+                        </h2>
                         <h2>Amount paid before next due date is #{loanAccountBreakdownManagedBean.loanAccount.amountPaidBeforeDueDate}</h2>
-                        <h2>Late payment is #{loanAccountBreakdownManagedBean.loanAccount.overduePayment}</h2>
+                        <h2>Late payment is S$
+                            <h:outputText value="#{loanAccountBreakdownManagedBean.loanAccount.overduePayment}">
+                                <f:convertNumber pattern="###00.00"/>
+                            </h:outputText>
+                        </h2>
                         <p:messages id="messagesStatus" redisplay="false" >
 
                             <p:dataTable value="#{loanAccountBreakdownManagedBean.breakdowns}" var="breakdown">

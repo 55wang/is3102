@@ -73,7 +73,6 @@ public class MEPSSettlementService {
         }
 
         System.out.println("Received POST http meps_settlement");
-        System.out.println(citiFromBankCode);
         List<SettlementAccount> bankAccounts = mepsBean.retrieveThreeSettlementAccounts(citiFromBankCode, citiToBankCode, ocbcToBankCode);
         System.out.println("Current Bank Account Balance:");
         for (SettlementAccount s : bankAccounts) {

@@ -20,4 +20,5 @@ public interface MainAccountSessionBeanLocal {
     public MainAccount createMainAccount(MainAccount ma) throws DuplicateMainAccountExistException ;
     public MainAccount updateMainAccount(MainAccount ma) throws UpdateMainAccountException ;
     public MainAccount getMainAccountByUserId(String userID) throws MainAccountNotExistException ;
+    public MainAccount getMainAccountByEmail(String email) throws MainAccountNotExistException;
 }

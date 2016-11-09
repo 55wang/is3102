@@ -6,8 +6,11 @@
 package customer.dams;
 
 import ejb.session.common.NewCustomerSessionBeanLocal;
+import ejb.session.crm.MarketingCampaignSessionBeanLocal;
 import ejb.session.dams.CustomerDepositSessionBeanLocal;
 import ejb.session.dams.DepositProductSessionBeanLocal;
+import entity.crm.CustomerGroup;
+import entity.crm.MarketingCampaign;
 import entity.customer.Customer;
 import entity.customer.MainAccount;
 import entity.dams.account.CustomerDepositAccount;
@@ -41,6 +44,11 @@ public class ExistingCustomerApplicationManagedBean implements Serializable {
     private CustomerDepositSessionBeanLocal depositAccountBean;
     @EJB
     private DepositProductSessionBeanLocal depositProductBean;
+    @EJB
+    private MarketingCampaignSessionBeanLocal marketingCampaignSessionBean;
+
+    private String selectedMC;
+    private MarketingCampaign marketingCampaign;
 
     private Customer customer = new Customer();
     private String initialDepositAccount;
@@ -64,6 +72,11 @@ public class ExistingCustomerApplicationManagedBean implements Serializable {
         initProductOptions();
     }
 
+    public void initParameter() {
+        System.out.println("MarketingCampaign id is: " + getSelectedMC());
+        marketingCampaign = marketingCampaignSessionBean.getMarketingCampaign(Long.parseLong(getSelectedMC()));
+    }
+
     // public functions
     public void save(Customer thisCustomer) {
         try {
@@ -78,6 +91,16 @@ public class ExistingCustomerApplicationManagedBean implements Serializable {
 
             depositAccountBean.createAccount(depostiAccount);
 
+            //update response if he is in the marketing campaign
+            for (CustomerGroup cg : thisCustomer.getCustomerGroups()) {
+                for (MarketingCampaign mc : cg.getMarketingCampaigns()) {
+                    if (mc.equals(marketingCampaign)) {
+                        marketingCampaignSessionBean.addResponseCount(mc);
+                        System.out.println("marketing response count added");
+                    }
+                }
+            }
+
             MessageUtils.displayInfo("Your deposit account application is successful!");
         } catch (Exception ex) {
             System.out.println("Error" + ex.getMessage());
@@ -89,7 +112,6 @@ public class ExistingCustomerApplicationManagedBean implements Serializable {
         return event.getNewStep();
     }
 
-
     // private functions
     private void initProductOptions() {
         for (DepositAccountProduct p : currentDepositProducts) {
@@ -99,7 +121,7 @@ public class ExistingCustomerApplicationManagedBean implements Serializable {
             getProductOptions().add(p.getName());
         }
     }
-    
+
     private DepositAccountType getType(String name) {
         for (DepositAccountProduct p : currentDepositProducts) {
             if (name.equals(p.getName())) {
@@ -113,7 +135,6 @@ public class ExistingCustomerApplicationManagedBean implements Serializable {
         }
         return DepositAccountType.CURRENT;
     }
-            
 
     // Getter and Setter
     public Customer getCustomer() {
@@ -123,7 +144,7 @@ public class ExistingCustomerApplicationManagedBean implements Serializable {
     public void setCustomer(Customer customer) {
         this.customer = customer;
     }
-    
+
     /**
      * @return the initialDepositAccount
      */
@@ -164,6 +185,22 @@ public class ExistingCustomerApplicationManagedBean implements Serializable {
      */
     public void setProductOptions(List<String> productOptions) {
         this.productOptions = productOptions;
+    }
+
+    public String getSelectedMC() {
+        return selectedMC;
+    }
+
+    public void setSelectedMC(String selectedMC) {
+        this.selectedMC = selectedMC;
+    }
+
+    public MarketingCampaign getMarketingCampaign() {
+        return marketingCampaign;
+    }
+
+    public void setMarketingCampaign(MarketingCampaign marketingCampaign) {
+        this.marketingCampaign = marketingCampaign;
     }
 
 }

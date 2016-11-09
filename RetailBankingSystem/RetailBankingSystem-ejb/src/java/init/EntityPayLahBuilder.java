@@ -5,14 +5,15 @@
  */
 package init;
 
-import ejb.session.common.LoginSessionBeanLocal;
 import ejb.session.dams.MobileAccountSessionBeanLocal;
+import ejb.session.mainaccount.MainAccountSessionBeanLocal;
 import entity.customer.MainAccount;
 import entity.dams.account.MobileAccount;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
 import server.utilities.ConstantUtils;
+import util.exception.common.MainAccountNotExistException;
 
 /**
  *
@@ -23,15 +24,19 @@ import server.utilities.ConstantUtils;
 public class EntityPayLahBuilder {
 
     @EJB
-    private LoginSessionBeanLocal loginBean;
+    private MainAccountSessionBeanLocal mainAccountSessionBean;
     
     @EJB
     private MobileAccountSessionBeanLocal mobileBean;
     
     public void initPayLahDemoData() {
-        MainAccount ma1 = loginBean.getMainAccountByUserID(ConstantUtils.DEMO_MAIN_ACCOUNT_USER_ID_1);
-        MobileAccount m1 = mobileBean.createMobileAccount(ma1);
-        MainAccount ma2 = loginBean.getMainAccountByUserID(ConstantUtils.DEMO_MAIN_ACCOUNT_USER_ID_2);
-        MobileAccount m2 = mobileBean.createMobileAccount(ma2);
+        try{
+            MainAccount ma1 = mainAccountSessionBean.getMainAccountByUserId(ConstantUtils.DEMO_MAIN_ACCOUNT_USER_ID_1);
+            MobileAccount m1 = mobileBean.createMobileAccount(ma1);
+            MainAccount ma2 = mainAccountSessionBean.getMainAccountByUserId(ConstantUtils.DEMO_MAIN_ACCOUNT_USER_ID_2);
+            MobileAccount m2 = mobileBean.createMobileAccount(ma2);
+        }catch (MainAccountNotExistException ex) {
+            System.out.println("EntityPayLahBuilder.initPayLahDemoData.MainAccountNotExistException");
+        }
     }
 }

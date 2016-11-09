@@ -6,6 +6,7 @@
 package ejb.session.bill;
 
 import entity.bill.BankEntity;
+import entity.bill.BillFundTransferRecord;
 import entity.bill.BillingOrg;
 import entity.bill.GiroArrangement;
 import entity.bill.Organization;
@@ -42,5 +43,7 @@ public interface BillSessionBeanLocal {
     public GiroArrangement getGiroArrById(Long id);
     public GiroArrangement getGiroArrByReferenceNumberAndOrgCode(String referenceNumber, String shortCode);
     public String deleteGiroArrById(Long id);
+    public List<BillFundTransferRecord> updateTransactionStatusSettled(List<String> referenceNums);
+    public BillFundTransferRecord createBillFundTransferRecord(BillFundTransferRecord o);
     public List<GiroArrangement> getGiroArrsByMainAccountId(String id);
 }

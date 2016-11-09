@@ -5,11 +5,11 @@
  */
 package customer.loan;
 
-import ejb.session.common.LoginSessionBeanLocal;
 import ejb.session.common.OTPSessionBeanLocal;
 import ejb.session.dams.CustomerDepositSessionBeanLocal;
 import ejb.session.loan.LoanAccountSessionBeanLocal;
 import ejb.session.loan.LoanPaymentSessionBeanLocal;
+import ejb.session.mainaccount.MainAccountSessionBeanLocal;
 import entity.customer.MainAccount;
 import entity.dams.account.CustomerDepositAccount;
 import entity.dams.account.DepositAccount;
@@ -23,6 +23,7 @@ import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import server.utilities.ConstantUtils;
+import util.exception.common.MainAccountNotExistException;
 import util.exception.dams.DepositAccountNotFoundException;
 import utils.JSUtils;
 import utils.MessageUtils;
@@ -37,7 +38,7 @@ import utils.SessionUtils;
 public class LoanRepaymentManagedBean implements Serializable {
 
     @EJB
-    private LoginSessionBeanLocal loginBean;
+    private MainAccountSessionBeanLocal mainAccountSessionBean;
     @EJB
     private CustomerDepositSessionBeanLocal depositBean;
     @EJB
@@ -64,7 +65,11 @@ public class LoanRepaymentManagedBean implements Serializable {
 
     @PostConstruct
     public void init() {
-        ma = loginBean.getMainAccountByUserID(SessionUtils.getUserName());
+        try{
+            ma = mainAccountSessionBean.getMainAccountByUserId(SessionUtils.getUserName());
+        }catch(MainAccountNotExistException ex){
+            System.out.println("setMainAccount.MainAccountNotExistException");
+        }
         depositAccounts = depositBean.getAllNonFixedCustomerAccounts(ma.getId());
         loanAccounts = loanAccountBean.getActiveLoanAccountListByMainAccountId(ma.getId());
     }

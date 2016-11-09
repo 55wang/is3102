@@ -6,7 +6,7 @@
 package interceptor.audit;
 
 import ejb.session.audit.AuditSessionBeanLocal;
-import ejb.session.common.LoginSessionBeanLocal;
+import ejb.session.mainaccount.MainAccountSessionBeanLocal;
 import entity.common.AuditLog;
 import entity.customer.MainAccount;
 import java.io.Serializable;
@@ -17,6 +17,7 @@ import javax.ejb.EJB;
 import javax.interceptor.AroundInvoke;
 import javax.interceptor.Interceptor;
 import javax.interceptor.InvocationContext;
+import util.exception.common.MainAccountNotExistException;
 import utils.AuditUtils;
 import utils.SessionUtils;
 
@@ -31,7 +32,7 @@ public class AuditInterceptor implements Serializable {
     @EJB
     AuditSessionBeanLocal auditSessionBean;
     @EJB
-    private LoginSessionBeanLocal loginSessionBean;
+    private MainAccountSessionBeanLocal mainAccountSessionBean;
 
     @AroundInvoke
     public Object intercept(InvocationContext context) throws Exception {
@@ -75,10 +76,12 @@ public class AuditInterceptor implements Serializable {
         MainAccount ma = null;
         try {
             if (SessionUtils.getUserName()!= null) {
-                ma = loginSessionBean.getMainAccountByUserID(SessionUtils.getUserName());
+                ma = mainAccountSessionBean.getMainAccountByUserId(SessionUtils.getUserName());
             }
         } catch (NullPointerException ex) {
             System.out.println("Null Pointer");
+        }catch(MainAccountNotExistException ex){
+            System.out.println("intercept.MainAccountNotExistException");
         }
 
 //        System.out.println("AuditInterceptor: ....has returned " + result);

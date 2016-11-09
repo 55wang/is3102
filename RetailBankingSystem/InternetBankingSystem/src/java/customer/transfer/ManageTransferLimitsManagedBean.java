@@ -6,8 +6,8 @@
 package customer.transfer;
 
 import ejb.session.bill.TransferSessionBeanLocal;
-import ejb.session.common.LoginSessionBeanLocal;
 import ejb.session.common.OTPSessionBeanLocal;
+import ejb.session.mainaccount.MainAccountSessionBeanLocal;
 import entity.customer.MainAccount;
 import entity.customer.TransferLimits;
 import java.io.Serializable;
@@ -19,6 +19,7 @@ import javax.faces.view.ViewScoped;
 import server.utilities.CommonUtils;
 import server.utilities.ConstantUtils;
 import server.utilities.EnumUtils;
+import util.exception.common.MainAccountNotExistException;
 import utils.JSUtils;
 import utils.MessageUtils;
 import utils.SessionUtils;
@@ -32,7 +33,7 @@ import utils.SessionUtils;
 public class ManageTransferLimitsManagedBean implements Serializable {
 
     @EJB
-    private LoginSessionBeanLocal loginBean;
+    private MainAccountSessionBeanLocal mainAccountSessionBean;
     @EJB
     private TransferSessionBeanLocal transferBean;
     @EJB
@@ -59,7 +60,11 @@ public class ManageTransferLimitsManagedBean implements Serializable {
     @PostConstruct
     public void init() {
         System.out.println("manageTransferLimitsManagedBean @PostConstruct");
-        ma = loginBean.getMainAccountByUserID(SessionUtils.getUserName());
+        try{
+            ma = mainAccountSessionBean.getMainAccountByUserId(SessionUtils.getUserName());
+        }catch(MainAccountNotExistException ex){
+            System.out.println("init.MainAccountNotExistException");
+        }
         transferLimits = ma.getTransferLimits();
         newIntraBankLimit = transferLimits.getDailyIntraBankLimit().toString();
         newInterBankLimit = transferLimits.getDailyInterBankLimit().toString();
