@@ -21,17 +21,17 @@
                     <p:panel header="Credit Card Applications">
                         <p:messages id="messagesStatus" redisplay="false" >
                             <h:outputText value="Input Bureau CreditScore: "></h:outputText>
-                                <p:selectOneMenu value="#{cardViewCreditApplicationManagedBean.bureauCreditScore}" style="width:10px; height: 31px; line-height: 21px; top:8px" rendered="true" required="true">
-                                    <f:selectItem itemLabel="AA" itemValue="AA" />
-                                    <f:selectItem itemLabel="BB" itemValue="BB" />
-                                    <f:selectItem itemLabel="CC" itemValue="CC" />
-                                    <f:selectItem itemLabel="DD" itemValue="DD" />
-                                    <f:selectItem itemLabel="EE" itemValue="EE" />
-                                    <f:selectItem itemLabel="FF" itemValue="FF" />
-                                    <f:selectItem itemLabel="GG" itemValue="GG" />
-                                    <f:selectItem itemLabel="HH" itemValue="HH" />
-                                </p:selectOneMenu>
-                            
+                            <p:selectOneMenu value="#{cardViewCreditApplicationManagedBean.bureauCreditScore}" style="width:10px; height: 31px; line-height: 21px; top:8px" rendered="true" required="true">
+                                <f:selectItem itemLabel="AA" itemValue="AA" />
+                                <f:selectItem itemLabel="BB" itemValue="BB" />
+                                <f:selectItem itemLabel="CC" itemValue="CC" />
+                                <f:selectItem itemLabel="DD" itemValue="DD" />
+                                <f:selectItem itemLabel="EE" itemValue="EE" />
+                                <f:selectItem itemLabel="FF" itemValue="FF" />
+                                <f:selectItem itemLabel="GG" itemValue="GG" />
+                                <f:selectItem itemLabel="HH" itemValue="HH" />
+                            </p:selectOneMenu>
+
                             <h:panelGrid columns="2" cellpadding="5" style="margin-top: 20px">
 
                                 <p:dataTable value="#{cardViewCreditApplicationManagedBean.ccos}" var="cco" >
@@ -71,7 +71,6 @@
 
                                         </p:panelGrid>
 
-
                                     </p:rowExpansion>
 
 
@@ -88,6 +87,8 @@
                                         <p:commandButton value="Reject" action="#{cardViewCreditApplicationManagedBean.rejectOrder(cco)}" icon="ui-icon-close" update="@form" />
                                     </p:column>
                                 </p:dataTable>
+                                <br />
+                                <p:chart type="bar" model="#{cardViewCreditApplicationManagedBean.creditScoreBarModel}" style="height:300px"/>
                             </h:panelGrid>
                         </p:messages>
                     </p:panel>
