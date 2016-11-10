@@ -29,6 +29,7 @@ public class CardViewCreditCardAccountManagedBean implements Serializable {
     EmailServiceSessionBeanLocal emailServiceSessionBean;
     
     private List<CreditCardAccount> ccas;
+    private Double paidAmount;
 
     public CardViewCreditCardAccountManagedBean() {
     }
@@ -39,7 +40,7 @@ public class CardViewCreditCardAccountManagedBean implements Serializable {
     }
 
     public void demoPaidMPD() {
-        ccas = cardAcctSessionBean.updateListDemoPaidMPD();
+        ccas = cardAcctSessionBean.updateListDemoPaidMPD(paidAmount);
     }
 
     public void demoPaidOutstandingAmount() {
@@ -94,6 +95,14 @@ public class CardViewCreditCardAccountManagedBean implements Serializable {
         String content = "https://localhost:8181/InternetBankingSystem/personal_request/cc_estatement_55444980599967262016_10_10.pdf";
         emailServiceSessionBean.sendEmailCreditCardEStatement(cca.getMainAccount().getCustomer().getEmail(), subject, content);
         
+    }
+
+    public Double getPaidAmount() {
+        return paidAmount;
+    }
+
+    public void setPaidAmount(Double paidAmount) {
+        this.paidAmount = paidAmount;
     }
 
 }
