@@ -83,14 +83,13 @@ public class CardViewCreditApplicationManagedBean implements Serializable {
         distribution.set("Bureau Score", 0);
         creditScoreBarModel.addSeries(distribution);
 
-        creditScoreBarModel.setTitle("Bar Chart");
+        creditScoreBarModel.setTitle("Credit Score Distribution");
         creditScoreBarModel.setLegendPosition("ne");
 
         Axis xAxis = creditScoreBarModel.getAxis(AxisType.X);
-        xAxis.setLabel("Gender");
 
         Axis yAxis = creditScoreBarModel.getAxis(AxisType.Y);
-        yAxis.setLabel("Births");
+
         yAxis.setMin(0);
         yAxis.setMax(200);
     }
@@ -303,6 +302,8 @@ public class CardViewCreditApplicationManagedBean implements Serializable {
                 distribution.set("Bureau Score", 0);
             }
             System.out.println("calculated bureau credit score");
+            creditScoreBarModel.setTitle("Credit Score Distribution");
+            creditScoreBarModel.setLegendPosition("ne");
             creditScoreBarModel.addSeries(distribution);
             return creditScore;
         } catch (Exception ex) {
