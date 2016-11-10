@@ -20,6 +20,7 @@ import javax.ejb.Local;
 @Local
 public interface EmailServiceSessionBeanLocal {
     
+    public void sendEmailCreditCardEStatement(String recipient, String subject, String content);
     public void sendEmailMarketingCampaign(String recipient, String subject, String content, String landingPage);
     public void sendCreditCardActivationGmailForCustomer(String recipient, String pwd, String ccNumber, String ccv, String userName);
     public void sendCreditCardApplicationRejectionToCustomers(String recipient);

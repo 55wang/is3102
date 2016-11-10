@@ -16,6 +16,10 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.Dependent;
+import javax.smartcardio.CardChannel;
+import static nfcCardDevice.NfcDevice.initializeDevice;
+import static nfcCardDevice.NfcDevice.readCard;
+import static nfcCardDevice.NfcDevice.writeCard;
 import server.utilities.EnumUtils;
 import utils.MessageUtils;
 import utils.SessionUtils;
@@ -65,16 +69,15 @@ public class CardIssueManagedBean {
         boolean writeStatus = false;
 
         try {
-            /*
-             CardChannel channel = initializeDevice();
-             writeCard(channel, ccNum); //32 digit
-             if (readCard(channel).equals(ccNum)) {
-             System.out.println("read card to confirm success");
-             writeStatus = true;
-             } else {
-             writeStatus = false;
-             }
-             */
+
+            CardChannel channel = initializeDevice();
+            writeCard(channel, ccNum); //32 digit
+            if (readCard(channel).equals(ccNum)) {
+                System.out.println("read card to confirm success");
+                writeStatus = true;
+            } else {
+                writeStatus = false;
+            }
             writeStatus = true;
 
         } catch (Exception ex) {
@@ -104,7 +107,7 @@ public class CardIssueManagedBean {
         boolean writeStatus = false;
 
         try {
-            /*
+            
              CardChannel channel = initializeDevice();
              writeCard(channel, ccNum); //32 digit
              if (readCard(channel).equals(ccNum)) {
@@ -113,8 +116,8 @@ public class CardIssueManagedBean {
              } else {
              writeStatus = false;
              }
-             */
-            writeStatus = true;
+             
+//            writeStatus = true;
 
         } catch (Exception ex) {
             System.out.println("error" + ex);

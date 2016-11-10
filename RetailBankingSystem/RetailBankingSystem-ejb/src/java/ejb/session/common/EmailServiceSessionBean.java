@@ -41,6 +41,29 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
 
     @Asynchronous
     @Override
+    public void sendEmailCreditCardEStatement(String recipient, String subject, String content) {
+        Session session = getSession();
+
+        try {
+
+            Message message = new MimeMessage(session);
+            message.setFrom(new InternetAddress("merlionbanking@gmail.com"));
+            message.setRecipients(Message.RecipientType.TO,
+                    InternetAddress.parse(recipient));
+            message.setSubject(subject);
+            message.setText("Your E-statment is ready at this link: " + content);
+
+            Transport.send(message);
+
+            System.out.println("Email send out successfully");
+
+        } catch (MessagingException e) {
+            System.out.println(e);
+        }
+    }
+
+    @Asynchronous
+    @Override
     public void sendEmailMarketingCampaign(String recipient, String subject, String content, String landingPage) {
         Session session = getSession();
 
@@ -51,7 +74,7 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
             message.setRecipients(Message.RecipientType.TO,
                     InternetAddress.parse(recipient));
             message.setSubject(subject);
-            message.setText(content + "\n Apply at this link: "+"https://localhost:8181/InternetBankingSystem/landing_page/" + landingPage);
+            message.setText(content + "\n Apply at this link: " + "https://localhost:8181/InternetBankingSystem/landing_page/" + landingPage);
 
             Transport.send(message);
 
@@ -636,8 +659,8 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
                     InternetAddress.parse("merlionbanking@gmail.com"));
             message.setSubject("New Loan Application Submitted");
             message.setText("Hi, there is a new loan application.\n"
-                    + "  Applicant Name: " + lp.getFullName()+ "\n"
-                    + "  Applicant Income: " + lp.getActualIncome()+ "\n"
+                    + "  Applicant Name: " + lp.getFullName() + "\n"
+                    + "  Applicant Income: " + lp.getActualIncome() + "\n"
                     + "  Product Type: " + lp.getProductType() + "\n"
                     + "  Product Name: " + lp.getLoanProduct().getProductName() + "\n"
                     + "  Requested Amount: " + lp.getRequestedAmount() + "\n"

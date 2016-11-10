@@ -6,6 +6,7 @@
 package staff.card;
 
 import ejb.session.card.CardAcctSessionBeanLocal;
+import ejb.session.common.EmailServiceSessionBeanLocal;
 import entity.card.account.CreditCardAccount;
 import java.io.Serializable;
 import java.util.List;
@@ -24,7 +25,9 @@ public class CardViewCreditCardAccountManagedBean implements Serializable {
 
     @EJB
     CardAcctSessionBeanLocal cardAcctSessionBean;
-
+    @EJB
+    EmailServiceSessionBeanLocal emailServiceSessionBean;
+    
     private List<CreditCardAccount> ccas;
 
     public CardViewCreditCardAccountManagedBean() {
@@ -53,6 +56,7 @@ public class CardViewCreditCardAccountManagedBean implements Serializable {
             cardAcctSessionBean.addCurrentMonthAmountToOutstandingAmount(cca);
             cardAcctSessionBean.setOverDueDateAndMPD(cca);
         }
+        demoSendEStatement();
     }
 
     public void demoSendEStatement() {
@@ -85,6 +89,11 @@ public class CardViewCreditCardAccountManagedBean implements Serializable {
         System.out.println("min pay due: " + cca.getMinPayDue());
         System.out.println("interest amount: " + cca.getInterestAmount());
         System.out.println("overdue date: " + cca.getOverDueDate());
+        
+        String subject = "eStatement ready for online viewing";
+        String content = "https://localhost:8181/InternetBankingSystem/personal_request/cc_estatement_55444980599967262016_10_10.pdf";
+        emailServiceSessionBean.sendEmailCreditCardEStatement(cca.getMainAccount().getCustomer().getEmail(), subject, content);
+        
     }
 
 }
