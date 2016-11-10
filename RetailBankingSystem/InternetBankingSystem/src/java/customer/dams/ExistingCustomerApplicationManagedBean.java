@@ -94,11 +94,13 @@ public class ExistingCustomerApplicationManagedBean implements Serializable {
             depositAccountBean.createAccount(depostiAccount);
 
             //update response if he is in the marketing campaign
-            for (CustomerGroup cg : thisCustomer.getCustomerGroups()) {
-                for (MarketingCampaign mc : cg.getMarketingCampaigns()) {
-                    if (mc.equals(marketingCampaign)) {
-                        marketingCampaignSessionBean.addResponseCount(mc);
-                        System.out.println("marketing response count added");
+            if (marketingCampaign != null) {
+                for (CustomerGroup cg : thisCustomer.getCustomerGroups()) {
+                    for (MarketingCampaign mc : cg.getMarketingCampaigns()) {
+                        if (mc.equals(marketingCampaign)) {
+                            marketingCampaignSessionBean.addResponseCount(mc);
+                            System.out.println("marketing response count added");
+                        }
                     }
                 }
             }

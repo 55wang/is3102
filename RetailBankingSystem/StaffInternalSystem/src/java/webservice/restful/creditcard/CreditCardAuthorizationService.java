@@ -66,10 +66,10 @@ public class CreditCardAuthorizationService {
     }
 
     private Boolean checkAbnormalAction(String ccAmount) {
-        System.out.println(ccAmount);
+        System.out.println("Checking abnormal transaction...");
+
         Double amount = Double.parseDouble(ccAmount);
-        System.out.println(amount > 1000);
-        return amount > 1000;
+        return amount > 100000;
     }
 
     // check authorization, check creditcard, check valiation
@@ -88,12 +88,12 @@ public class CreditCardAuthorizationService {
         // get value from form
         System.out.println(". ");
         System.out.println("[MBS]");
-        System.out.println("Received transaction from VISA:");
+        System.out.println("Received transaction request from VISA:");
 
         System.out.println(".        Reference Num: " + referenceNum);
         System.out.println(".        Credit Card number: " + ccNumber);
         System.out.println(".        Transaction Amount: " + ccAmount);
-        System.out.println(".        From Bank Code: " + fromBankCode);
+        System.out.println(".        Fund to Bank Code: " + fromBankCode);
         System.out.println("Authorizing with ccTcode: " + ccTcode);
         System.out.println("Authorizing with ccDescription: " + ccDescription);
         // return value
@@ -112,7 +112,6 @@ public class CreditCardAuthorizationService {
         boolean validCreditLimit = false;
 
         if (!checkAbnormalAction(ccAmount)) {
-            System.out.println("Retrieving card: " + ccNumber);
             CreditCardAccount thisAccount = null;
             try {
                 thisAccount = ccBean.getCreditCardAccountByCardNumber(ccNumber);
@@ -120,7 +119,6 @@ public class CreditCardAuthorizationService {
                 System.out.println("No account retrieved");
             }
 
-            System.out.println(thisAccount);
             if (thisAccount != null) {
                 System.out.println("Validating daily transaction limit...");
 
@@ -204,7 +202,6 @@ public class CreditCardAuthorizationService {
         System.out.println("Sending back result with single code: " + c.getAuthorizationCode());
 
         String jsonString = new JSONObject(c).toString();
-        System.out.println(jsonString);
         return Response.ok(jsonString, MediaType.APPLICATION_JSON).build();
     }
 

@@ -99,11 +99,16 @@ public class CreateMarketingCampaignManagedBean implements Serializable {
             emailMarketingCampaign.setLandingPageName(emailMarketingCampaign.getLandingPageName());
             emailMarketingCampaign.setStaffAccount(sa);
 
-            emailMarketingCampaign.setCustomerGroup(customerSegmentationSessionBean.getCustomerGroup(selectedCustomerGroupEmail));
-
+            CustomerGroup cg = customerSegmentationSessionBean.getCustomerGroup(selectedCustomerGroupEmail);
+            emailMarketingCampaign.setCustomerGroup(cg);
+            emailMarketingCampaign.setNumOfTargetResponse((long)customerSegmentationSessionBean.getCustomerGroup(selectedCustomerGroupEmail).getCustomers().size());
             marketingCampaignSessionBean.createMarketingCampaign(emailMarketingCampaign);
+
             sa.getMarketingCampaign().add(emailMarketingCampaign);
             staffAccountSessionBean.updateAccount(sa);
+            
+            cg.getMarketingCampaigns().add(emailMarketingCampaign);
+            customerSegmentationSessionBean.updateCustomerGroup(cg);
             
             //send email
             sendMassEmail();

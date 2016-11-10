@@ -9,6 +9,7 @@ import ejb.session.bean.MEPSSessionBean;
 import entity.SettlementAccount;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
@@ -21,7 +22,8 @@ public class BankAccountBuilder implements Serializable {
 
     @EJB
     private MEPSSessionBean mepsBean;
-
+    
+    @PostConstruct
     public void init() {
         System.out.println("BankAccountBuilder @PostConstruct");
         if (needInit()) {
@@ -36,13 +38,15 @@ public class BankAccountBuilder implements Serializable {
         try {
             result = mepsBean.find("000");
         } catch (Exception e) {
+            System.out.println(true);
+
             return true;
         }
         return result == null;
     }
 
     private void buildEntities() {
-        
+
         SettlementAccount sach = new SettlementAccount();
         sach.setBankCode("000");
         sach.setAmount(BigDecimal.ZERO);
@@ -61,7 +65,6 @@ public class BankAccountBuilder implements Serializable {
         mbs.setAmount(new BigDecimal(50000000));//initial 50m
         mbs.setName("Merlion Bank Singapore");//001
         mepsBean.persist(mbs);
-
 
         initBankEntities();
     }
