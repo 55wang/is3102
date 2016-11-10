@@ -5,6 +5,7 @@
  */
 package ejb.session.timer;
 
+import ejb.session.loan.LoanReminderSessionBeanLocal;
 import java.util.Date;
 import javax.annotation.Resource;
 import javax.ejb.EJB;
@@ -27,6 +28,10 @@ public class AutomaticTimerSessionBean {
     
     @EJB
     private DAMSBatchProcessingSessionBean damsBean;
+    @EJB 
+    private LoanReminderSessionBeanLocal loanReminderBean;
+    @EJB
+    private LoanBatchProcessingSessionBean loanBean;
     
     // REMARK: Rules: http://docs.oracle.com/javaee/6/tutorial/doc/bnboy.html
     
@@ -49,6 +54,13 @@ public class AutomaticTimerSessionBean {
     {
         System.out.println("Perform Beginning of Day Tasks: " + new Date());
         damsBean.calculateDailyInterest(); // TESTED
+        loanReminderBean.remindLatePaymentPenaltyForAllActiveCustomers(new Date());
+        loanReminderBean.remindLoanPaymentForAllActiveCustomers(new Date());
+        loanReminderBean.remindBadLoanForLoanOfficer();
+        loanBean.accumulateOverduePayment();
+        loanBean.calculateOverduePayment();
+        
+        
     }
     
     @Schedule(year = "*", month = "*", dayOfMonth = "Last", dayOfWeek = "*",  hour = "9", minute = "0", second = "0")
