@@ -674,7 +674,7 @@ public class EnumUtils {
     public enum IdentityType {
 
         NRIC("NRIC"),
-        PASSPORT("Passport");
+        PASSPORT("PASSPORT");
 
         private String value;
 
