@@ -95,7 +95,13 @@ public class CardViewCreditApplicationManagedBean implements Serializable {
             cardAcctSessionBean.updateCreditCardAccount(cco.getCreditCardAccount());
 
             MainAccount mainAccount = cco.getMainAccount();
-            mainAccount.setStatus(EnumUtils.StatusType.PENDING);
+
+            if (mainAccount.getStatus() == EnumUtils.StatusType.NEW) {
+                mainAccount.setStatus(EnumUtils.StatusType.PENDING);
+            } else if (mainAccount.getStatus() == EnumUtils.StatusType.NEW) {
+                //do nothing
+            }
+
             String randomPwd = CommonHelper.generatePwd();
             mainAccount.setPassword(randomPwd);
             mainAccountSessionBean.updateMainAccount(mainAccount);
