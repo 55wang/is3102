@@ -67,6 +67,13 @@ public class ReceiveGIROPaymentRequest {
 
         // REMARK: EJB do the business logics
         GiroArrangement ga = billBean.getGiroArrByReferenceNumberAndOrgCode(billReferenceNumber, shortCode);
+        DepositAccount da = ga.getDepositAccount();
+        if (da.getBalance().compareTo(new BigDecimal(amount))<0){
+            ErrorDTO err = new ErrorDTO();
+            err.setCode(-1);
+            err.setError("Account Not Enough Balance");
+            return Response.ok(new JSONObject(err).toString(), MediaType.APPLICATION_JSON).build();
+        }
         if (ga == null) {
             // REMARK: Return failed message
             ErrorDTO err = new ErrorDTO();
@@ -93,7 +100,6 @@ public class ReceiveGIROPaymentRequest {
             btr.setReferenceNumber(referenceNumber);
 
             serviceBean.billingClearingSACH(btr);
-            DepositAccount da = ga.getDepositAccount();
             depositBean.payBillFromAccount(da, new BigDecimal(amount));
             
             BillFundTransferRecord bft = new BillFundTransferRecord();
