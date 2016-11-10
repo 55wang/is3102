@@ -18,6 +18,7 @@ import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import server.utilities.CommonUtils;
 import server.utilities.EnumUtils;
+import utils.JSUtils;
 import utils.MessageUtils;
 import utils.RedirectUtils;
 import utils.SessionUtils;
@@ -40,6 +41,7 @@ public class ApplyDebitCardAccountManagedBean implements Serializable {
     private List<String> accountOptions = new ArrayList<>();
     private List<String> cardNetworkOptions = CommonUtils.getEnumList(EnumUtils.CardNetwork.class);
     private String selectedAccountNumber;
+    private Boolean agreedTerm = false;
 
     /**
      * Creates a new instance of ApplyDebitCardAccountManagedBean
@@ -56,6 +58,11 @@ public class ApplyDebitCardAccountManagedBean implements Serializable {
     }
 
     public void applyDebitCard() {
+        if (!agreedTerm) {
+            MessageUtils.displayError("Your must agree to the terms first!");
+            return;
+        }
+ 
         System.out.println("card account session bean called");
         CustomerDepositAccount selectedAccount = getSelectedAccount();
         if (selectedAccount != null) {
@@ -138,6 +145,20 @@ public class ApplyDebitCardAccountManagedBean implements Serializable {
      */
     public void setSelectedCardNetwork(String selectedCardNetwork) {
         this.selectedCardNetwork = selectedCardNetwork;
+    }
+
+    /**
+     * @return the agreedTerm
+     */
+    public Boolean getAgreedTerm() {
+        return agreedTerm;
+    }
+
+    /**
+     * @param agreedTerm the agreedTerm to set
+     */
+    public void setAgreedTerm(Boolean agreedTerm) {
+        this.agreedTerm = agreedTerm;
     }
 
 }
