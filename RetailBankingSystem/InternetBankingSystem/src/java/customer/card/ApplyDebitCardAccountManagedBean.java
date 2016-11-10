@@ -76,7 +76,6 @@ public class ApplyDebitCardAccountManagedBean implements Serializable {
                 depositBean.updateCustomerDepositAccount(selectedAccount);
                 cardAcctSessionBean.updateDebitAccount(result);
                 MessageUtils.displayInfo("Your application is successful!");
-                RedirectUtils.redirect("/InternetBankingSystem/personal_cards/debit_card_summary.xhtml");
             }
         }
         System.out.println("ended");

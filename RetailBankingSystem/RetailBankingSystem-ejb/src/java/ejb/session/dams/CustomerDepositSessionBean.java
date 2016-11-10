@@ -252,7 +252,7 @@ public class CustomerDepositSessionBean implements CustomerDepositSessionBeanLoc
         t.setActionType(EnumUtils.TransactionType.TRANSFER);
         t.setAmount(amount);
         t.setCredit(Boolean.TRUE);
-        t.setFromAccount(account);
+        t.setToAccount(account);
         t.setReferenceNumber(generateReferenceNumber());
         account.addTransaction(t);
         account.addBalance(amount);
@@ -295,6 +295,7 @@ public class CustomerDepositSessionBean implements CustomerDepositSessionBeanLoc
         if (res == -1) {
             return null;
         } else {
+            System.out.println("Updateing account transferFromAccount");
             TransactionRecord t = new TransactionRecord();
             t.setActionType(EnumUtils.TransactionType.TRANSFER);
             t.setAmount(amount);
@@ -456,7 +457,7 @@ public class CustomerDepositSessionBean implements CustomerDepositSessionBeanLoc
 
     @Override
     public DepositAccount creditInterestAccount(DepositAccount account) {
-        BigDecimal interestAmount = account.getCumulatedInterest().getCummulativeAmount().setScale(20, RoundingMode.HALF_UP);
+        BigDecimal interestAmount = account.getCumulatedInterest().getCummulativeAmount();
         System.out.println("Interest Amount: " + interestAmount + " and greater than 0.001: " + interestAmount.compareTo(new BigDecimal(0.001)));
         if (interestAmount.compareTo(new BigDecimal(0.001)) < 0) {
             return null;

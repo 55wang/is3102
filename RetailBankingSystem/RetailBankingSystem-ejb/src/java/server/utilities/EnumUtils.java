@@ -674,7 +674,7 @@ public class EnumUtils {
     public enum IdentityType {
 
         NRIC("NRIC"),
-        PASSPORT("Passport");
+        PASSPORT("PASSPORT");
 
         private String value;
 
@@ -1057,7 +1057,8 @@ public class EnumUtils {
         FINANCIAL_ANALYST("Financial Analyst"),
         PRODUCT_MANAGER("Product Manager"),
         SUPER_ADMIN("Super Admin"),
-        RELATIONSHIP_MANAGER("Relationship Manager");
+        RELATIONSHIP_MANAGER("Relationship Manager"),
+        CARD_MANAGER("Card Manager");;
 
         private String value;
 

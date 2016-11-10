@@ -54,7 +54,7 @@ public class MobileInitPayLahService {
             p.setWalletLimit("999.00");//placeholder
             p.setNoNewReq("" + requests.size());
             BigDecimal limit = mobileBean.dailyTransferLimitLeft(mobileAccount.getAccountNumber());
-            p.setTransferLimit(limit.setScale(2).toString());
+            p.setTransferLimit(limit.setScale(2, RoundingMode.UP).toString());
             if (t != null) {
                 p.setTransferType(t.getActionType().toString());
                 p.setTransferAmount(t.getAmount().setScale(2, RoundingMode.UP).toString());

@@ -21,9 +21,8 @@ and open the template in the editor.
             <em:customerHeader context="main" userName="Log in"></em:customerHeader>
             <em:customerNavBar context="main" mainPage="mainDeposit" ></em:customerNavBar>
 
-            <div style="margin-top: 200px;margin-left: 70px;position: absolute"> 
-                <h1>Time Deposit</h1> 
-                <p:panel style="width: 750px">
+            <div class="customer_main_container">
+                <p:panel header="Time Deposit">
                     <p:panelGrid columns="#{displayFixedDepositProductManagedBean.colSize}">
                         <f:facet name="header">
                             <p:row>
@@ -44,8 +43,10 @@ and open the template in the editor.
                         <button style="margin-left: 50px" type="button" onclick="window.location.href = '../common/customer_login.xhtml'">Existing customer Login</button>
                     </div>
 
-                </p:panel></div>
+                </p:panel>
+            </div>
         </h:body>
+        <em:publicity></em:publicity>
         <em:adsBanner advertismentTitle="#{customerHomeManagedBean.adsBannerCampaign.adsTitle}" advertismentType="#{customerHomeManagedBean.adsBannerCampaign.adsType}" advertismentInfo="#{customerHomeManagedBean.adsBannerCampaign.adsInfo}" extraAdvertismentInfo="#{customerHomeManagedBean.adsBannerCampaign.adsExtraInfo}" landingPageUrl="https://localhost:8181/InternetBankingSystem/landing_page/#{customerHomeManagedBean.adsBannerCampaign.landingPageName}" />
         <em:customerMainFooter></em:customerMainFooter>
     </f:view>

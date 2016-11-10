@@ -21,7 +21,7 @@
                         <h:panelGrid columns="2" cellpadding="5">
                             
                             <h:selectOneMenu value="#{interestDemoManagedBean.selectedDepositAccount}" required="true">
-                                <f:selectItems value="#{interestDemoManagedBean.availableDepositAccount}" />
+                                <f:selectItems value="#{interestDemoManagedBean.availableDepositAccount}" var="a" itemValue="#{a.accountNumber}" itemLabel="#{a.product.name} #{a.accountNumber}" />
                             </h:selectOneMenu>
                             
                             <p:commandButton value="Change" update="@form" actionListener="#{interestDemoManagedBean.changeAccount}" />
@@ -102,9 +102,6 @@
 
                     <p:panel header="Transactions">
                         <p:dataTable id="transactions" value="#{interestDemoManagedBean.showingAccount.transactions}" var="transaction">
-                            <p:column headerText="Id" sortBy="#{transaction.id}">
-                                <h:outputText value="#{transaction.id}"/>
-                            </p:column>
                             <c:if test="#{transaction.fromAccount != null}">
                                 <p:column headerText="From" sortBy="#{transaction.fromAccount.accountNumber}">
                                     <h:outputText value="#{transaction.fromAccount.accountNumber}"/>

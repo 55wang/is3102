@@ -47,7 +47,7 @@ public class FastSettlementService {
         System.out.println("[MBS]");
         System.out.println("Received Net Settlement Broadcast from MEPS:");
 
-        System.out.println(".       Net Settlement to " + toBankCode + " " + toBankName + ": " + new BigDecimal(netSettlementAmount).setScale(4).toString());
+        System.out.println(".       Net Settlement to " + toBankCode + " " + toBankName + ": " + new BigDecimal(netSettlementAmount).toString());
 
         System.out.println("Settled Transactions:");
         for (String tr : mbsTransactions) {

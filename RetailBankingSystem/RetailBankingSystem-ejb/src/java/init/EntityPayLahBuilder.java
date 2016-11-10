@@ -33,7 +33,7 @@ public class EntityPayLahBuilder {
         try{
             MainAccount ma1 = mainAccountSessionBean.getMainAccountByUserId(ConstantUtils.DEMO_MAIN_ACCOUNT_USER_ID_1);
             MobileAccount m1 = mobileBean.createMobileAccount(ma1);
-            MainAccount ma2 = mainAccountSessionBean.getMainAccountByUserId(ConstantUtils.DEMO_MAIN_ACCOUNT_USER_ID_2);
+            MainAccount ma2 = mainAccountSessionBean.getMainAccountByUserId(ConstantUtils.DEMO_MAIN_ACCOUNT_USER_ID_0);
             MobileAccount m2 = mobileBean.createMobileAccount(ma2);
         }catch (MainAccountNotExistException ex) {
             System.out.println("EntityPayLahBuilder.initPayLahDemoData.MainAccountNotExistException");

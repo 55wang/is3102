@@ -109,7 +109,7 @@ public class InternationalBankTransferManagedBean implements Serializable {
                 return;
             }
 
-            BigDecimal currentTransferLimit = new BigDecimal(transferLimitLeft);
+            BigDecimal currentTransferLimit = new BigDecimal(getTransferLimitLeft());
             if (currentTransferLimit.compareTo(amount) < 0) {
                 JSUtils.callJSMethod("PF('myWizard').back()");
                 MessageUtils.displayError(ConstantUtils.EXCEED_TRANSFER_LIMIT);
@@ -196,12 +196,12 @@ public class InternationalBankTransferManagedBean implements Serializable {
             tr.setFromAccount(da);
             tr.setType(EnumUtils.PayeeType.OVERSEAS);
             tr.setActionType(EnumUtils.TransactionType.TRANSFER);
-            webserviceBean.transferSWIFT(tr);
-            da.removeBalance(getAmount());
-            depositBean.updateAccount(da);
+            transferBean.createTransferRecord(tr);
+            depositBean.transferFromAccount(da, amount);
+            
             calculateTransferLimits();
-
-        } catch (DepositAccountNotFoundException | UpdateDepositAccountException e) {
+            webserviceBean.transferSWIFT(tr);
+        } catch (DepositAccountNotFoundException e) {
             System.out.println("DepositAccountNotFoundException | UpdateDepositAccountException transferClearing()");
             MessageUtils.displayError(ConstantUtils.TRANSFER_FAILED);
         }
@@ -210,7 +210,7 @@ public class InternationalBankTransferManagedBean implements Serializable {
     private void calculateTransferLimits() {
         BigDecimal todayTransferAmount = transferBean.getTodayBankTransferAmount(ma, EnumUtils.PayeeType.OVERSEAS);
         BigDecimal currentTransferLimit = new BigDecimal(ma.getTransferLimits().getDailyInterBankLimit().toString());
-        transferLimitLeft = currentTransferLimit.subtract(todayTransferAmount).setScale(2).toString();
+        setTransferLimitLeft(currentTransferLimit.subtract(todayTransferAmount).toString());
     }
 
     /**
@@ -351,5 +351,19 @@ public class InternationalBankTransferManagedBean implements Serializable {
      */
     public void setInputTokenString(String inputTokenString) {
         this.inputTokenString = inputTokenString;
+    }
+
+    /**
+     * @return the transferLimitLeft
+     */
+    public String getTransferLimitLeft() {
+        return transferLimitLeft;
+    }
+
+    /**
+     * @param transferLimitLeft the transferLimitLeft to set
+     */
+    public void setTransferLimitLeft(String transferLimitLeft) {
+        this.transferLimitLeft = transferLimitLeft;
     }
 }

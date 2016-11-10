@@ -6,6 +6,7 @@
 package staff.bill;
 
 import ejb.session.bill.BillSessionBeanLocal;
+import ejb.session.bill.TransferSessionBeanLocal;
 import ejb.session.common.LoginSessionBeanLocal;
 import ejb.session.dams.CustomerDepositSessionBeanLocal;
 import ejb.session.webservice.WebserviceSessionBeanLocal;
@@ -25,7 +26,6 @@ import server.utilities.ConstantUtils;
 import server.utilities.EnumUtils;
 import server.utilities.GenerateAccountAndCCNumber;
 import util.exception.dams.DepositAccountNotFoundException;
-import util.exception.dams.UpdateDepositAccountException;
 import utils.MessageUtils;
 
 /**
@@ -44,6 +44,8 @@ public class PayOtherCreditCardBillCounterManagedBean implements Serializable {
     private WebserviceSessionBeanLocal webserviceBean;
     @EJB
     private BillSessionBeanLocal billBean;
+    @EJB
+    private TransferSessionBeanLocal transferBean;
 
     private String selectedBillId;
     private Long selectedBillOrgId;
@@ -143,10 +145,10 @@ public class PayOtherCreditCardBillCounterManagedBean implements Serializable {
             btr.setShortCode(billingOrg.getOrganization().getShortCode());
             btr.setReferenceNumber(GenerateAccountAndCCNumber.generateReferenceNumber());
             btr.setActionType(EnumUtils.TransactionType.CCSPENDING);
+            transferBean.createBillTransferRecord(btr);
+            depositBean.payBillFromAccount(da, amount);
             webserviceBean.billingClearingSACH(btr);
-            da.removeBalance(amount);
-            depositBean.updateAccount(da);
-        } catch (DepositAccountNotFoundException | UpdateDepositAccountException e) {
+        } catch (DepositAccountNotFoundException e) {
             System.out.println("DepositAccountNotFoundException | UpdateDepositAccountException PayOtherCreditCardBillCounterManagedBean transfer()");
             MessageUtils.displayError(ConstantUtils.TRANSFER_FAILED);
         }

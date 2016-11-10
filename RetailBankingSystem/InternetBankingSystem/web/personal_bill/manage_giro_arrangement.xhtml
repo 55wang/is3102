@@ -41,7 +41,7 @@ and open the template in the editor.
                                         <h:inputText value="#{manageGIROArrangementManagedBean.billLimit}" required="true" />
                                         <h:outputText value="Choose Your Account to transfer from: " />
                                         <p:selectOneMenu value="#{manageGIROArrangementManagedBean.fromAccountNo}" rendered="true" required="true">
-                                            <f:selectItems value="#{manageGIROArrangementManagedBean.accounts}" var="a" itemValue="#{a.accountNumber}" itemLabel="#{a.product.name} #{a.accountNumber} #{a.balance.setScale(2)}" />
+                                            <f:selectItems value="#{manageGIROArrangementManagedBean.accounts}" var="a" itemValue="#{a.accountNumber}" itemLabel="#{a.product.name} #{a.accountNumber} #{a.balance}" />
                                         </p:selectOneMenu>
                                     </h:panelGrid>
                                     <p:commandButton  value="Next" actionListener="#{manageGIROArrangementManagedBean.sendOpt()}" update="@form" />

@@ -6,11 +6,13 @@
 package landing;
 
 import ejb.session.cms.CustomerProfileSessionBeanLocal;
+import ejb.session.crm.MarketingCampaignSessionBeanLocal;
 import entity.crm.CustomerGroup;
 import entity.crm.MarketingCampaign;
 import entity.customer.Customer;
 import java.io.Serializable;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -29,6 +31,8 @@ public class CardCampaignTwoManagedBean extends MarketingCampaignAbstractBean im
 
     @EJB
     private CustomerProfileSessionBeanLocal customerProfileSessionBean;
+    @EJB
+    private MarketingCampaignSessionBeanLocal marketingCampaignSessionBean;
 
     private Customer existingCustomer;
     private final String landingURL = "card_campaign_2.xhtml";
@@ -48,14 +52,20 @@ public class CardCampaignTwoManagedBean extends MarketingCampaignAbstractBean im
             existingCustomer = customerProfileSessionBean.getCustomerByUserID(SessionUtils.getUserName());
             System.out.println("existingCustomer: " + existingCustomer.getFullName());
 
-            for (CustomerGroup cg : existingCustomer.getCustomerGroups()) {
-                for (MarketingCampaign mc : cg.getMarketingCampaigns()) {
-                    if (landingURL.equals(mc.getLandingPageName())) {
-                        super.addClickCount(mc);
-                        selectedMC = mc.getId().toString();
-                    }
-                }
+//            for (CustomerGroup cg : existingCustomer.getCustomerGroups()) {
+//                for (MarketingCampaign mc : cg.getMarketingCampaigns()) {
+//                    if (landingURL.equals(mc.getLandingPageName())) {
+//                        super.addClickCount(mc);
+//                        selectedMC = mc.getId().toString();
+//                    }
+//                }
+//            }
+            List<MarketingCampaign> mcs = marketingCampaignSessionBean.getListMarketingCampaigns();
+            for (MarketingCampaign mc : mcs) {
+                super.addClickCount(mc);
+                selectedMC = mc.getId().toString();
             }
+
             Map<String, String> map = new HashMap<>();
             map.put("selectedMC", selectedMC);
             String params = RedirectUtils.generateParameters(map);

@@ -84,7 +84,7 @@ public class CustomerCardManagedBean implements Serializable {
 
     public void terminateCreditCard(CreditCardAccount aCca) {
         System.out.println("in viewTerminatePage");
-        if (aCca.getOutstandingAmount() > 0) {
+        if (aCca.getOutstandingAmount() > 0 || aCca.getCurrentMonthAmount() >0) {
             MessageUtils.displayError("Card cannot be terminiated due to outstanding balance.");
         } else {
             cardAcctSessionBean.updateCardAccountStatus(aCca, CardAccountStatus.CLOSED);

@@ -39,7 +39,7 @@
                                     <h:inputText value="#{manageGIROCounterManagedBean.billLimit}" />
                                     <h:outputText value="Choose Your Account to transfer from: " />
                                     <p:selectOneMenu value="#{manageGIROCounterManagedBean.fromAccountNo}" rendered="true" >
-                                        <f:selectItems value="#{manageGIROCounterManagedBean.accounts}" var="a" itemValue="#{a.accountNumber}" itemLabel="#{a.product.name} #{a.accountNumber} #{a.balance.setScale(2)}" />
+                                        <f:selectItems value="#{manageGIROCounterManagedBean.accounts}" var="a" itemValue="#{a.accountNumber}" itemLabel="#{a.product.name} #{a.accountNumber} #{a.balance}" />
                                     </p:selectOneMenu>
 
                                     <p:commandButton value="Add" icon="ui-icon-plus" update="@form" actionListener="#{manageGIROCounterManagedBean.addGIROArrangement()}" />

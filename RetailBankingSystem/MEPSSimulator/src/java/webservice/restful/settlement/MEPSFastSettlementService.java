@@ -50,13 +50,13 @@ public class MEPSFastSettlementService {
         System.out.println(".");
         System.out.println("[MEPS]:");
         System.out.println("Received FAST Settlement from SACH:");
-        System.out.println(".       " + fromBankCode + " " + fromBankName + " to " + toBankCode + " " + toBankName + ": " + new BigDecimal(netSettlementAmount).setScale(4).toString());
+        System.out.println(".       " + fromBankCode + " " + fromBankName + " to " + toBankCode + " " + toBankName + ": " + new BigDecimal(netSettlementAmount));
 
         System.out.println("Received POST http meps_settlement");
         List<SettlementAccount> bankAccounts = mepsBean.retrieveThreeSettlementAccounts("001", "005", "013");
         System.out.println("Current Bank Account Balance:");
         for (SettlementAccount s : bankAccounts) {
-            System.out.println(".       " + s.getBankCode() + " " + s.getName() + ": " + s.getAmount().setScale(4).toString());
+            System.out.println(".       " + s.getBankCode() + " " + s.getName() + ": " + s.getAmount().toString());
         }
 
         System.out.println(".");
@@ -68,7 +68,7 @@ public class MEPSFastSettlementService {
 
         System.out.println("Bank Accounts Balance Updated:");
         for (SettlementAccount s : updatedankAccounts) {
-            System.out.println(".       " + s.getBankCode() + " " + s.getName() + ": " + s.getAmount().setScale(4).toString());
+            System.out.println(".       " + s.getBankCode() + " " + s.getName() + ": " + s.getAmount().toString());
         }
 
         System.out.println("Sending back meps_settlement response");

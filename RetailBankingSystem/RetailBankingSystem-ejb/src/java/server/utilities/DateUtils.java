@@ -23,7 +23,7 @@ public class DateUtils {
         Calendar calendar = getCalendarForNextNthYear(n);
         return calendar.getTime();
     }
-    
+
     public static Date getLastNthBeginOfMonth(Integer n) {
         Calendar calendar = getCalendarForLastNthMonth(n);
         calendar.set(Calendar.DAY_OF_MONTH,
@@ -60,6 +60,13 @@ public class DateUtils {
         Calendar calendar = getCalendarForNow();
         calendar.set(Calendar.DAY_OF_MONTH,
                 calendar.getActualMinimum(Calendar.DAY_OF_MONTH));
+        setTimeToBeginningOfDay(calendar);
+        return calendar.getTime();
+    }
+
+    public static Date getMidOfMonth() {
+        Calendar calendar = getCalendarForNow();
+        calendar.set(Calendar.DAY_OF_MONTH, 15);
         setTimeToBeginningOfDay(calendar);
         return calendar.getTime();
     }
@@ -103,7 +110,7 @@ public class DateUtils {
         calendar.add(Calendar.MONTH, -n);
         return calendar;
     }
-    
+
     public static Calendar getCalendarForNextNthYear(Integer n) {
         Calendar calendar = GregorianCalendar.getInstance();
         calendar.setTime(new Date());
@@ -191,8 +198,8 @@ public class DateUtils {
             return extraDays - dayTwo.get(Calendar.DAY_OF_YEAR) + dayOneOriginalYearDays;
         }
     }
-    
-    public static int calculateAge(Date birthday){
+
+    public static int calculateAge(Date birthday) {
         int ageDiff = yearDifference(birthday, new Date());
         Calendar cal = Calendar.getInstance();
         Calendar now = Calendar.getInstance();
@@ -209,12 +216,10 @@ public class DateUtils {
             }
         }
         return ageDiff - 1;
-        
-            
+
     }
 
     //date2-date1
-
     public static int dayDifferenceWithSign(Date date1, Date date2) {
         int dayDifference = dayDifference(date1, date2);
         if (date1.before(date2)) {
@@ -292,7 +297,7 @@ public class DateUtils {
         SimpleDateFormat dt1 = new SimpleDateFormat("dd/MM/yyyy");
         return dt1.format(date);
     }
-    
+
     public static EnumUtils.Month getStringMonth(Integer month) {
         if (month == 0) {
             return EnumUtils.Month.JANUARY;
@@ -322,17 +327,17 @@ public class DateUtils {
             return null;
         }
     }
-    
-    public static Date randomDate(){
+
+    public static Date randomDate() {
         Random random = new Random();
         int minDay = (int) LocalDate.of(2015, 1, 1).toEpochDay();
         int maxDay = (int) LocalDate.of(2016, 11, 07).toEpochDay();
         long randomDay = minDay + random.nextInt(maxDay - minDay);
-        
+
         LocalDate randomLocalDate = LocalDate.ofEpochDay(randomDay);
-        
+
         Date date = Date.from(randomLocalDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
         return date;
     }
-    
+
 }

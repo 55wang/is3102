@@ -10,6 +10,7 @@ import entity.common.PayMeRequest;
 import entity.common.TransactionRecord;
 import entity.dams.account.MobileAccount;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import javax.ejb.EJB;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
@@ -53,7 +54,7 @@ public class MobileRequestService {
             BigDecimal actualAmount = new BigDecimal(amount);
             // payme request
             PayMeRequest pmr = new PayMeRequest();
-            pmr.setAmount(actualAmount);
+            pmr.setAmount(actualAmount.setScale(2, RoundingMode.UP));
             pmr.setFromAccount(fromMobileAccount);
             pmr.setToAccount(toMobileAccount);
             pmr.setRemark(remark);

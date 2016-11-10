@@ -6,11 +6,8 @@
 package init;
 
 import ejb.session.card.CardAcctSessionBeanLocal;
-import ejb.session.card.CardProductSessionBeanLocal;
 import ejb.session.card.CardTransactionSessionBeanLocal;
 import ejb.session.card.CreditCardOrderSessionBeanLocal;
-import ejb.session.cms.CustomerProfileSessionBeanLocal;
-import ejb.session.common.LoginSessionBeanLocal;
 import ejb.session.mainaccount.MainAccountSessionBeanLocal;
 import ejb.session.utils.UtilsSessionBeanLocal;
 import entity.card.account.CardTransaction;
@@ -97,7 +94,7 @@ public class EntityCreditCardOrderBuilder {
 
         cardTransaction = new CardTransaction();
         cardTransaction.setCardTransactionStatus(EnumUtils.CardTransactionStatus.PENDINGTRANSACTION);
-        cardTransaction.setAmount(11000.0);
+        cardTransaction.setAmount(96.32);
         cardTransaction.setIsCredit(true);
         cardTransaction.setTransactionCode("MST");
         cardTransaction.setTransactionDescription("Microsoft SERVICE USD7800.50");

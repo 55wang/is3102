@@ -196,6 +196,7 @@ and open the template in the editor.
     cursor: pointer;
     box-sizing: border-box;
     background-image: url("../resources/img/nav-background.png");
+    background-size: cover;
     border-bottom:1px solid #eee;
 }
 #customer-index-navbar ul li:hover {
@@ -254,6 +255,7 @@ and open the template in the editor.
     text-align: center;
     box-sizing: border-box;
     background-image: url("../resources/img/nav-background.png");
+    background-size: cover;
     border-bottom:1px solid #eee;
     font-size: 24px;
 }
@@ -519,6 +521,8 @@ and open the template in the editor.
     z-index: 999;
     display: block;
     clear: both;
+    position:fixed;
+    bottom:0;
 }
 
 .footer .footer-links {
@@ -687,7 +691,7 @@ and open the template in the editor.
 /* end of wealth */
 /*ads banner*/
 .ads-banner-holder{    
-    width: 90%;
+    width: 80%;
     min-height: 195px;
     display: block;
     position: relative;
@@ -700,14 +704,14 @@ and open the template in the editor.
 
 .deposit-holder{
     background: url("../resources/img/ads_banner/deposit_ads_banner.png");
-    background-size: cover;
-    background-repeat: no-repeat;
+    background-size: contain;
+    background-repeat: round;
 }
 
 .card-holder{
     background: url("../resources/img/ads_banner/card_ads_banner.png");
-    background-size: cover;
-    background-repeat: no-repeat;
+    background-size: contain;
+    background-repeat: round;
 }
 
 .ads-banner-holder a{
@@ -729,51 +733,65 @@ and open the template in the editor.
 
 .ads-banner-holder .deposit .ads-banner-title{
     position: absolute;
-    top:15%;
+    top:50px;
     left: 15%;
     font-size: 3.5vw;
 }
 
 .ads-banner-holder .deposit .ads-banner-info{
     position: absolute;
-    top:30%;
+    top:95px;
     left: 15%;
     font-size: 1.8vw;
 }
 
 .ads-banner-holder .deposit .ads-banner-extra-info{
     position: absolute;
-    top:40%;
+    top:125px;
     left: 15%;
     font-size: 1vw;
 }
 
 .ads-banner-holder .card .ads-banner-title{
     position: absolute;
-    top:12%;
+    top:25px;
     left: 21%;
-    font-size: 3.2vw;
+    font-size: 2.8vw;
 }
 
 .ads-banner-holder .card .ads-banner-info{
     position: absolute;
     width: 30%;
-    top:30%;
+    top:75px;
     left: 45%;
-    font-size: 1.8vw;
+    font-size: 1.5vw;
 }
 
 .ads-banner-holder .card .ads-banner-extra-info{
     position: absolute;
-    top:18%;
+    top:45px;
     left: 45%;
     font-size: 1vw;
 }
 /*end of ads banner*/
+.publicity-holder{
+    width: 80%;
+    min-height: 180px;
+    display: block;
+    position: relative;
+    bottom: 30px;
+    margin: 0 auto;
+    margin-top: 20px;
+    box-shadow: 0 5px 5px 0 rgba(0,0,0,0.30),0 3px 1px 0 rgba(0,0,0,0.23);
+}
+
+.publicity-holder img{
+    width:100%;
+}
 /*dashboard*/
 .customer-dashboard{
     background: white;
-    width: 95%;
+    width: 98%;
     padding: 1em !important;
     box-shadow: 0 5px 5px 0 rgba(0,0,0,0.30),0 3px 1px 0 rgba(0,0,0,0.23);
     display: block;
@@ -877,7 +895,11 @@ and open the template in the editor.
 }
 
 .customer-dashboard .advertisment-holder{
-    width: 60%;
+    width: 100%;
+}
+
+.customer-dashboard .advertisment-holder img{
+    width: 100%;
 }
 /*end of dashboard*/
 /*landing_page*/
@@ -943,7 +965,6 @@ and open the template in the editor.
     width:80%;
     padding-top:180px;
     height: 100%;
-    min-height: 65vh;
 }
 
 .h-center {

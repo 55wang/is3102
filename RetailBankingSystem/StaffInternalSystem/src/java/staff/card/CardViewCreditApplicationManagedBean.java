@@ -22,6 +22,10 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
+import org.primefaces.model.chart.Axis;
+import org.primefaces.model.chart.AxisType;
+import org.primefaces.model.chart.BarChartModel;
+import org.primefaces.model.chart.ChartSeries;
 import server.utilities.EnumUtils;
 import server.utilities.CommonHelper;
 import util.exception.common.UpdateMainAccountException;
@@ -49,6 +53,8 @@ public class CardViewCreditApplicationManagedBean implements Serializable {
     @EJB
     private UtilsSessionBeanLocal utilsBean;
 
+    private BarChartModel creditScoreBarModel;
+
     private List<CreditCardOrder> ccos;
     private String bureauCreditScore;
 
@@ -64,6 +70,28 @@ public class CardViewCreditApplicationManagedBean implements Serializable {
         a.setStaffAccount(SessionUtils.getStaff());
         utilsBean.persist(a);
         ccos = creditCardOrderSessionBean.getListCreditCardOrdersByApplicationStatus(EnumUtils.CardApplicationStatus.PENDING);
+        createBarModel();
+    }
+
+    private void createBarModel() {
+        creditScoreBarModel = new BarChartModel();
+        ChartSeries distribution = new ChartSeries();
+        distribution.setLabel("Credit Score");
+        distribution.set("Income", 0);
+        distribution.set("Age", 0);
+        distribution.set("Education", 0);
+        distribution.set("Bureau Score", 0);
+        creditScoreBarModel.addSeries(distribution);
+
+        creditScoreBarModel.setTitle("Credit Score Distribution");
+        creditScoreBarModel.setLegendPosition("ne");
+
+        Axis xAxis = creditScoreBarModel.getAxis(AxisType.X);
+
+        Axis yAxis = creditScoreBarModel.getAxis(AxisType.Y);
+
+        yAxis.setMin(0);
+        yAxis.setMax(200);
     }
 
     public void approveOrder(CreditCardOrder cco) {
@@ -95,7 +123,13 @@ public class CardViewCreditApplicationManagedBean implements Serializable {
             cardAcctSessionBean.updateCreditCardAccount(cco.getCreditCardAccount());
 
             MainAccount mainAccount = cco.getMainAccount();
-            mainAccount.setStatus(EnumUtils.StatusType.PENDING);
+
+            if (mainAccount.getStatus() == EnumUtils.StatusType.NEW) {
+                mainAccount.setStatus(EnumUtils.StatusType.PENDING);
+            } else if (mainAccount.getStatus() == EnumUtils.StatusType.NEW) {
+                //do nothing
+            }
+
             String randomPwd = CommonHelper.generatePwd();
             mainAccount.setPassword(randomPwd);
             mainAccountSessionBean.updateMainAccount(mainAccount);
@@ -149,8 +183,11 @@ public class CardViewCreditApplicationManagedBean implements Serializable {
      display both creditbureascore and own system calculated score.
      */
     public double calculateCreditLvl(CreditCardOrder cco, String creditBureauScore) {
-        try {
+        creditScoreBarModel = new BarChartModel();
 
+        ChartSeries distribution = new ChartSeries();
+        distribution.setLabel("Credit Score");
+        try {
             System.out.println("inside calculateCreditLvl");
             System.out.println(creditBureauScore);
             System.out.println(cco.getApplicationStatus());
@@ -159,16 +196,26 @@ public class CardViewCreditApplicationManagedBean implements Serializable {
             EnumUtils.Income income = cco.getMainAccount().getCustomer().getIncome();
             if (income.equals(EnumUtils.Income.BELOW_2000)) {
                 creditScore += 5;
+                distribution.set("Income", 5);
             } else if (income.equals(EnumUtils.Income.FROM_2000_TO_4000)) {
                 creditScore += 10;
+                distribution.set("Income", 10);
             } else if (income.equals(EnumUtils.Income.FROM_4000_TO_6000)) {
                 creditScore += 20;
+                distribution.set("Income", 20);
+                // SomeVariable:String += "Income from 333-333 : creditscore = 11"
             } else if (income.equals(EnumUtils.Income.FROM_6000_TO_8000)) {
                 creditScore += 40;
+                distribution.set("Income", 40);
             } else if (income.equals(EnumUtils.Income.FROM_8000_TO_10000)) {
                 creditScore += 60;
+                distribution.set("Income", 60);
             } else if (income.equals(EnumUtils.Income.OVER_10000)) {
                 creditScore += 80;
+                distribution.set("Income", 80);
+            } else {
+                creditScore += 0;
+                distribution.set("Income", 0);
             }
 
             System.out.println("calculated income");
@@ -177,10 +224,16 @@ public class CardViewCreditApplicationManagedBean implements Serializable {
             Long age = getAge(birthday, now);
             if (age < 50) {
                 creditScore += 25;
+                distribution.set("Age", 25);
             } else if (age >= 50 && age < 60) {
                 creditScore += 10;
+                distribution.set("Age", 10);
             } else if (age >= 60) {
                 creditScore += 0;
+                distribution.set("Age", 0);
+            } else {
+                creditScore += 0;
+                distribution.set("Age", 0);
             }
             System.out.println("calculated age");
 //
@@ -198,45 +251,65 @@ public class CardViewCreditApplicationManagedBean implements Serializable {
             EnumUtils.Education education = cco.getMainAccount().getCustomer().getEducation();
             if (education.equals(EnumUtils.Education.POSTGRAD)) {
                 creditScore += 50;
+                distribution.set("Education", 50);
             } else if (education.equals(EnumUtils.Education.UNIVERSITY)) {
                 creditScore += 40;
+                distribution.set("Education", 40);
             } else if (education.equals(EnumUtils.Education.DIPLOMA)) {
                 creditScore += 30;
+                distribution.set("Education", 30);
             } else if (education.equals(EnumUtils.Education.A_LEVEL)) {
                 creditScore += 25;
+                distribution.set("Education", 25);
             } else if (education.equals(EnumUtils.Education.TECHNICAL)) {
                 creditScore += 10;
+                distribution.set("Education", 10);
             } else if (education.equals(EnumUtils.Education.SECONDARY)) {
                 creditScore += 5;
+                distribution.set("Education", 5);
             } else if (education.equals(EnumUtils.Education.OTHERS)) {
                 creditScore += 0;
+                distribution.set("Education", 0);
             }
             System.out.println("calculated education");
 //        AA, BB, CC, DD, EE, FF, GG, HH, HX, HZ, GX, BX, CX
             if (creditBureauScore.equals("AA")) {
                 creditScore += 100;
+                distribution.set("Bureau Score", 100);
             } else if (creditBureauScore.equals("BB")) {
                 creditScore += 90;
+                distribution.set("Bureau Score", 90);
             } else if (creditBureauScore.equals("CC")) {
                 creditScore += 80;
+                distribution.set("Bureau Score", 80);
             } else if (creditBureauScore.equals("DD")) {
                 creditScore += 70;
+                distribution.set("Bureau Score", 70);
             } else if (creditBureauScore.equals("EE")) {
                 creditScore += 50;
+                distribution.set("Bureau Score", 50);
             } else if (creditBureauScore.equals("FF")) {
                 creditScore += 30;
+                distribution.set("Bureau Score", 30);
             } else if (creditBureauScore.equals("GG")) {
                 creditScore += 20;
+                distribution.set("Bureau Score", 20);
             } else if (creditBureauScore.equals("HH")) {
                 creditScore += 10;
+                distribution.set("Bureau Score", 10);
             } else {
                 creditScore += 0;
+                distribution.set("Bureau Score", 0);
             }
             System.out.println("calculated bureau credit score");
+            creditScoreBarModel.setTitle("Credit Score Distribution");
+            creditScoreBarModel.setLegendPosition("ne");
+            creditScoreBarModel.addSeries(distribution);
             return creditScore;
         } catch (Exception ex) {
             System.out.println("error in credit score");
         }
+        creditScoreBarModel.addSeries(distribution);
         return 0;
 
     }
@@ -265,6 +338,14 @@ public class CardViewCreditApplicationManagedBean implements Serializable {
 
     public void setBureauCreditScore(String bureauCreditScore) {
         this.bureauCreditScore = bureauCreditScore;
+    }
+
+    public BarChartModel getCreditScoreBarModel() {
+        return creditScoreBarModel;
+    }
+
+    public void setCreditScoreBarModel(BarChartModel creditScoreBarModel) {
+        this.creditScoreBarModel = creditScoreBarModel;
     }
 
 }

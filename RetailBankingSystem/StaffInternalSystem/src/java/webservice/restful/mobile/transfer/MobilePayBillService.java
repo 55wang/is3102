@@ -6,6 +6,7 @@
 package webservice.restful.mobile.transfer;
 
 import ejb.session.bill.BillSessionBeanLocal;
+import ejb.session.bill.TransferSessionBeanLocal;
 import ejb.session.dams.CustomerDepositSessionBeanLocal;
 import ejb.session.webservice.WebserviceSessionBeanLocal;
 import entity.bill.BillingOrg;
@@ -13,6 +14,7 @@ import entity.common.BillTransferRecord;
 import entity.common.TransactionRecord;
 import entity.dams.account.DepositAccount;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import javax.ejb.EJB;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
@@ -43,6 +45,8 @@ public class MobilePayBillService {
     private CustomerDepositSessionBeanLocal depositBean;
     @EJB
     private WebserviceSessionBeanLocal webserviceBean;
+    @EJB
+    private TransferSessionBeanLocal transferBean;
 
     @POST
     @Produces(MediaType.APPLICATION_JSON)
@@ -82,13 +86,13 @@ public class MobilePayBillService {
             btr.setReferenceNumber(GenerateAccountAndCCNumber.generateReferenceNumber());
             btr.setActionType(EnumUtils.TransactionType.BILL);
             System.out.println("Bill Payment clearing");
+            transferBean.createBillTransferRecord(btr);
+            depositBean.transferFromAccount(da, transferAmount);
             webserviceBean.billingClearingSACH(btr);
-            da.removeBalance(transferAmount);
-            depositBean.updateAccount(da);
 
             TransactionRecord record = depositBean.latestTransactionFromAccountNumber(fromAccountNumber);
             TransferDTO t = new TransferDTO();
-            t.setTransferAmount(record.getAmount().setScale(2).toString());
+            t.setTransferAmount(record.getAmount().setScale(2, RoundingMode.UP).toString());
             t.setReferenceNumber(record.getReferenceNumber());
             t.setTransferType(record.getActionType().toString());
             t.setTransferDate(DateUtils.readableDate(record.getCreationDate()));
@@ -96,7 +100,7 @@ public class MobilePayBillService {
             jsonString = new JSONObject(t).toString();
             return Response.ok(jsonString, MediaType.APPLICATION_JSON).build();
 
-        } catch (DepositAccountNotFoundException | UpdateDepositAccountException e) {
+        } catch (DepositAccountNotFoundException e) {
             ErrorDTO err = new ErrorDTO();
             err.setCode(-2);
             err.setError("Account Not Found");
