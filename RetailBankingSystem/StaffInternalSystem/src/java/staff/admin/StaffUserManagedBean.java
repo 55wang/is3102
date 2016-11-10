@@ -16,6 +16,7 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.ejb.EJB;
+import server.utilities.ConstantUtils;
 import server.utilities.EnumUtils;
 import server.utilities.LoggingUtils;
 import utils.SessionUtils;
@@ -34,6 +35,7 @@ public class StaffUserManagedBean implements Serializable {
 
     private String SUPER_ADMIN = EnumUtils.UserRole.SUPER_ADMIN.toString();
     private String LOAN_OFFICER = EnumUtils.UserRole.LOAN_OFFICIER.toString();
+    private final String IP_ADDRESS = ConstantUtils.ipAddress;
     
     @PostConstruct
     public void init() {
@@ -101,5 +103,12 @@ public class StaffUserManagedBean implements Serializable {
      */
     public void setLOAN_OFFICER(String LOAN_OFFICER) {
         this.LOAN_OFFICER = LOAN_OFFICER;
+    }
+
+    /**
+     * @return the IP_ADDRESS
+     */
+    public String getIP_ADDRESS() {
+        return IP_ADDRESS;
     }
 }

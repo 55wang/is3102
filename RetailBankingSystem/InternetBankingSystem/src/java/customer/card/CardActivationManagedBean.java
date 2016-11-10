@@ -14,6 +14,7 @@ import javax.inject.Named;
 import javax.enterprise.context.Dependent;
 import javax.faces.view.ViewScoped;
 import javax.validation.constraints.NotNull;
+import server.utilities.ConstantUtils;
 import utils.MessageUtils;
 import utils.RedirectUtils;
 
@@ -51,7 +52,7 @@ public class CardActivationManagedBean implements Serializable {
                 Thread.sleep(200);
             } catch (Exception e) {
             }
-            RedirectUtils.redirect("https://localhost:8181/InternetBankingSystem/personal_cards/activation_success.xhtml");
+            RedirectUtils.redirect("https://" + ConstantUtils.ipAddress +":8181/InternetBankingSystem/personal_cards/activation_success.xhtml");
 
         }
 
@@ -67,7 +68,7 @@ public class CardActivationManagedBean implements Serializable {
                 Thread.sleep(200);
             } catch (Exception e) {
             }
-            RedirectUtils.redirect("https://localhost:8181/InternetBankingSystem/personal_cards/activation_success.xhtml");
+            RedirectUtils.redirect("https://" + ConstantUtils.ipAddress +":8181/InternetBankingSystem/personal_cards/activation_success.xhtml");
 
         }
 
