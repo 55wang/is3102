@@ -67,6 +67,8 @@ public class EntityStaffBuilder {
         productManagerRole = staffRoleSessionBean.createRole(productManagerRole);
         Role relationshipManagerRole = new Role(EnumUtils.UserRole.RELATIONSHIP_MANAGER.toString());
         relationshipManagerRole = staffRoleSessionBean.createRole(relationshipManagerRole);
+        Role cardManagerRole = new Role(EnumUtils.UserRole.CARD_MANAGER.toString());
+        cardManagerRole = staffRoleSessionBean.createRole(cardManagerRole);
 
         StaffAccount superAdminAccount = new StaffAccount();
         superAdminAccount.setUsername(ConstantUtils.SUPER_ADMIN_USERNAME);
@@ -179,6 +181,20 @@ public class EntityStaffBuilder {
         relationshipManagerRole.setStaffAccounts(staffAccounts8);
         staffAccountSessionBean.createAccount(relationshipManagerAccount);
         staffRoleSessionBean.updateRole(relationshipManagerRole);
+        
+        StaffAccount cardManagerAccount = new StaffAccount();
+        cardManagerAccount.setUsername(ConstantUtils.CARD_MANAGER);
+        cardManagerAccount.setPassword(ConstantUtils.STAFF_DEMO_PASSWORD);
+        cardManagerAccount.setFirstName("Card");
+        cardManagerAccount.setLastName("Manager");
+        cardManagerAccount.setEmail("card_manager@merlionbank.com");
+        cardManagerAccount.setStatus(EnumUtils.StatusType.ACTIVE);
+        cardManagerAccount.addRole(cardManagerRole);
+        List<StaffAccount> staffAccounts9 = new ArrayList<>();
+        staffAccounts9.add(cardManagerAccount);
+        relationshipManagerRole.setStaffAccounts(staffAccounts9);
+        staffAccountSessionBean.createAccount(cardManagerAccount);
+        staffRoleSessionBean.updateRole(cardManagerRole);
         
         } catch (DuplicateStaffAccountException | DuplicateStaffRoleException | UpdateStaffRoleException e) {
             System.out.println("DuplicateStaffAccountException | DuplicateStaffRoleException | UpdateStaffRoleException EntityStaffBuilder");

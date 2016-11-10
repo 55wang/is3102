@@ -19,6 +19,10 @@ and open the template in the editor.
     background-image: url("https://download.jqueryui.com/themeroller/images/ui-icons_cc0000_256x240.png") !important;
 }
 
+.ui-chkbox-icon.ui-icon{
+    background-image: url("https://download.jqueryui.com/themeroller/images/ui-icons_cc0000_256x240.png") !important;
+}
+
 .ui-widget{
     font-size: 15px;
 }
