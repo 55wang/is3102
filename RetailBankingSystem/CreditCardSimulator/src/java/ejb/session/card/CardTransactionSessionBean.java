@@ -39,7 +39,7 @@ import utils.OTPUtils;
 @Stateless
 public class CardTransactionSessionBean implements CardTransactionSessionBeanLocal {
     
-    public final String ipAddress = "localhost";
+    public final String ipAddress = "192.168.0.103";
 
     private final String CLEARING_PATH = "https://" + ipAddress +":8181/StaffInternalSystem/rest/credit_card_clearing";
     private final String AUTHORIZATION_PATH = "https://" + ipAddress +":8181/StaffInternalSystem/rest/credit_card_authorization";

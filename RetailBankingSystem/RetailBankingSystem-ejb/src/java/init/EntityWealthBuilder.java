@@ -387,7 +387,7 @@ public class EntityWealthBuilder {
             /* Create a connection to Rserve instance running
              * on default port 6311
              */
-            connection = new RConnection(ConstantUtils.ipAddress, 6311);
+            connection = new RConnection("localhost", 6311);
 
             String prependingPath = CommonUtils.getPrependFolderName();
 

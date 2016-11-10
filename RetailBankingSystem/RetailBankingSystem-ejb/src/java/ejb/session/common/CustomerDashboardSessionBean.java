@@ -64,30 +64,42 @@ public class CustomerDashboardSessionBean implements CustomerDashboardSessionBea
     //Amount
     @Override
     public Double getCustomerTotalDepositAmountByMainAccountUserId(String userID){
-        Query q = em.createQuery("SELECT SUM(da.balance) FROM DepositAccount da, MainAccount ma WHERE da.mainAccount = ma AND ma.userID =:userID AND da.status = :activeStatus");
-        q.setParameter("userID", userID);
-        q.setParameter("activeStatus", StatusType.ACTIVE);
-        BigDecimal tempTotalInvest = (BigDecimal) q.getSingleResult();
-        return tempTotalInvest.doubleValue();
+        try{
+            Query q = em.createQuery("SELECT SUM(da.balance) FROM DepositAccount da, MainAccount ma WHERE da.mainAccount = ma AND ma.userID =:userID AND da.status = :activeStatus");
+            q.setParameter("userID", userID);
+            q.setParameter("activeStatus", StatusType.ACTIVE);
+            BigDecimal tempTotalInvest = (BigDecimal) q.getSingleResult();
+            return tempTotalInvest.doubleValue();
+        }catch(Exception ex){
+            return 0.0;
+        }
     }
     
     @Override
     public Double getCustomerTotalLoanAmountByMainAccountUserId(String userID){
-        Query q = em.createQuery("SELECT SUM(la.principal) FROM LoanAccount la, MainAccount ma WHERE la.mainAccount = ma AND ma.userID =:userID AND la.loanAccountStatus = :activeStatus");
-        q.setParameter("userID", userID);
-        q.setParameter("activeStatus", LoanAccountStatus.APPROVED);
-        return (Double) q.getSingleResult();
+        try{
+            Query q = em.createQuery("SELECT SUM(la.principal) FROM LoanAccount la, MainAccount ma WHERE la.mainAccount = ma AND ma.userID =:userID AND la.loanAccountStatus = :activeStatus");
+            q.setParameter("userID", userID);
+            q.setParameter("activeStatus", LoanAccountStatus.APPROVED);
+            return (Double) q.getSingleResult();
+        }catch(Exception ex){
+            return 0.0;
+        }
     }
     
     @Override
     public Double getCustomerTotalCreditCardAmountByMainAccountUserId(String userID){
-        Query q1 = em.createQuery("SELECT SUM(cca.outstandingAmount) FROM CreditCardAccount cca, MainAccount ma WHERE cca.mainAccount = ma AND ma.userID =:userID AND cca.CardStatus = :activeStatus");
-        q1.setParameter("userID", userID);
-        q1.setParameter("activeStatus", EnumUtils.CardAccountStatus.ACTIVE);
-        Query q2 = em.createQuery("SELECT SUM(cca.currentMonthAmount) FROM CreditCardAccount cca, MainAccount ma WHERE cca.mainAccount = ma AND ma.userID =:userID AND cca.CardStatus = :activeStatus");
-        q2.setParameter("userID", userID);
-        q2.setParameter("activeStatus", EnumUtils.CardAccountStatus.ACTIVE);
-        return (Double) q1.getSingleResult() + (Double) q2.getSingleResult();
+        try{
+            Query q1 = em.createQuery("SELECT SUM(cca.outstandingAmount) FROM CreditCardAccount cca, MainAccount ma WHERE cca.mainAccount = ma AND ma.userID =:userID AND cca.CardStatus = :activeStatus");
+            q1.setParameter("userID", userID);
+            q1.setParameter("activeStatus", EnumUtils.CardAccountStatus.ACTIVE);
+            Query q2 = em.createQuery("SELECT SUM(cca.currentMonthAmount) FROM CreditCardAccount cca, MainAccount ma WHERE cca.mainAccount = ma AND ma.userID =:userID AND cca.CardStatus = :activeStatus");
+            q2.setParameter("userID", userID);
+            q2.setParameter("activeStatus", EnumUtils.CardAccountStatus.ACTIVE);
+            return (Double) q1.getSingleResult() + (Double) q2.getSingleResult();
+        }catch(Exception ex){
+            return 0.0;
+        }
     }
     
     @Override

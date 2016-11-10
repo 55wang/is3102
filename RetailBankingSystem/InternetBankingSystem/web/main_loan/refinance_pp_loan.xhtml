@@ -28,7 +28,18 @@
                             <p:panel>
                                 <p:messages id="msgs1"/>
                                 <h:panelGrid columns="2" cellpadding="5px" columnClasses="label, value">
+                                    <h:outputText value="Loan Category: " />
+                                    <p:selectOneMenu value="#{ppLoanApplicationManagedBean.category}" style="width:187px; height: 31px; line-height: 21px; top:8px" rendered="true" label="identityType" >
+                                        <f:selectItem itemLabel="Please select.." itemValue=""/>                                                    
+                                        <f:selectItems value="#{ppLoanApplicationManagedBean.categoryOptions}" />
+                                    </p:selectOneMenu>
 
+                                    <h:outputText value="Identity Type: " />
+                                    <p:selectOneMenu value="#{ppLoanApplicationManagedBean.identityType}" style="width:187px; height: 31px; line-height: 21px; top:8px" rendered="true" label="identityType" >
+                                        <f:selectItem itemLabel="Please select.." itemValue=""/>                                                    
+                                        <f:selectItems value="#{ppLoanApplicationManagedBean.identityTypeOptions}" />
+                                    </p:selectOneMenu>
+                                    
                                     <h:outputText value="Identity Number: " />
                                     <p:inputText value="#{ppLoanApplicationManagedBean.idNumber}" required="true" requiredMessage="Identity number is required." validatorMessage="Invalid identity number.">
                                         <f:validateRegex

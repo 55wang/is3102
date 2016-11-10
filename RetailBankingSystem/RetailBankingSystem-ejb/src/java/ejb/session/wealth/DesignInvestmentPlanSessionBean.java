@@ -160,7 +160,7 @@ public class DesignInvestmentPlanSessionBean implements DesignInvestmentPlanSess
             /* Create a connection to Rserve instance running
              * on default port 6311
              */
-            connection = new RConnection(ConstantUtils.ipAddress, 6311);
+            connection = new RConnection("localhost", 6311);
 
             String prependingPath = CommonUtils.getPrependFolderName();
             connection.eval("source('" + prependingPath + "ConstructPortfolioModel.R')");

@@ -41,14 +41,16 @@ public class SimulatedCallManagedBean implements Serializable {
     @EJB
     CardTransactionSessionBeanLocal cardTransactionSessionBean;
 
+    private final String ipAddress = "192.168.0.103";
+    
     private String name = "Credit Card Simulator - Send Card Transaction";
     private String transactionAmount;
     private String creditCardNumber;
     private String referenceNum;
     private String requestBankCode;
-    private final String AUTHORIZATION_PATH = "https://localhost:8181/StaffInternalSystem/rest/credit_card_authorization";
-    private final String CLEARING_PATH = "https://localhost:8181/StaffInternalSystem/rest/credit_card_clearing";
-    private final String SETTLEMENT_PATH = "https://localhost:8181/StaffInternalSystem/rest/credit_card_settlement";
+    private final String AUTHORIZATION_PATH = "https://"+ipAddress+":8181/StaffInternalSystem/rest/credit_card_authorization";
+    private final String CLEARING_PATH = "https://"+ipAddress+":8181/StaffInternalSystem/rest/credit_card_clearing";
+    private final String SETTLEMENT_PATH = "https://"+ipAddress+":8181/StaffInternalSystem/rest/credit_card_settlement";
 
     private List<VisaCardTransaction> vcts;
     

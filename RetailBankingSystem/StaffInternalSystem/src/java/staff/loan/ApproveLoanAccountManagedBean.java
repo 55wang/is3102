@@ -145,23 +145,23 @@ public class ApproveLoanAccountManagedBean implements Serializable {
             }
             System.out.println("calculated age");
 
-            EnumUtils.Education education = la.getMainAccount().getCustomer().getEducation();
-            if (education.equals(EnumUtils.Education.POSTGRAD)) {
-                creditScore += 50;
-            } else if (education.equals(EnumUtils.Education.UNIVERSITY)) {
-                creditScore += 40;
-            } else if (education.equals(EnumUtils.Education.DIPLOMA)) {
-                creditScore += 30;
-            } else if (education.equals(EnumUtils.Education.A_LEVEL)) {
-                creditScore += 25;
-            } else if (education.equals(EnumUtils.Education.TECHNICAL)) {
-                creditScore += 10;
-            } else if (education.equals(EnumUtils.Education.SECONDARY)) {
-                creditScore += 5;
-            } else if (education.equals(EnumUtils.Education.OTHERS)) {
-                creditScore += 0;
-            }
-            System.out.println("calculated education");
+//            EnumUtils.Education education = la.getMainAccount().getCustomer().getEducation();
+//            if (education.equals(EnumUtils.Education.POSTGRAD)) {
+//                creditScore += 50;
+//            } else if (education.equals(EnumUtils.Education.UNIVERSITY)) {
+//                creditScore += 40;
+//            } else if (education.equals(EnumUtils.Education.DIPLOMA)) {
+//                creditScore += 30;
+//            } else if (education.equals(EnumUtils.Education.A_LEVEL)) {
+//                creditScore += 25;
+//            } else if (education.equals(EnumUtils.Education.TECHNICAL)) {
+//                creditScore += 10;
+//            } else if (education.equals(EnumUtils.Education.SECONDARY)) {
+//                creditScore += 5;
+//            } else if (education.equals(EnumUtils.Education.OTHERS)) {
+//                creditScore += 0;
+//            }
+//            System.out.println("calculated education");
 //        AA, BB, CC, DD, EE, FF, GG, HH, HX, HZ, GX, BX, CX
             if (creditBureauScore.equals("AA")) {
                 creditScore += 100;

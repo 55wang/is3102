@@ -10,7 +10,7 @@ package server.utilities;
  * @author leiyang
  */
 public class ConstantUtils {
-    public static final String ipAddress = "localhost"; //192.168.10.101
+    public static final String ipAddress = "192.168.0.103"; //192.168.10.101
     public static final String DELIMITER = "``";
     
     public static final Integer ACCOUNT_NUBMER_LENGTH = 11;

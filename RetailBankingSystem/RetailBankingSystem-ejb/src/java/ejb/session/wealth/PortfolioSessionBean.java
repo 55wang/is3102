@@ -37,7 +37,7 @@ public class PortfolioSessionBean implements PortfolioSessionBeanLocal {
         RConnection connection = null;
         double[] result = new double[5];
         try {
-            connection = new RConnection(ConstantUtils.ipAddress, 6311);
+            connection = new RConnection("localhost", 6311);
 
             String prependingPath = CommonUtils.getPrependFolderName();
             connection.assign("inputTSData", inputData);
