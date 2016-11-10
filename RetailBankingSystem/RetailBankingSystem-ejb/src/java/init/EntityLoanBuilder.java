@@ -102,6 +102,7 @@ public class EntityLoanBuilder {
         loanApplication1.setEducation(EnumUtils.Education.DIPLOMA);
         loanApplication1.setEmploymentStatus(EnumUtils.EmploymentStatus.EMPLOYEE);
         loanApplication1.setGender(EnumUtils.Gender.MALE);
+        loanApplication1.setCategory("New");
 
         loanApplication1.setIdentityNumber("S1234567Z");
         loanApplication1.setOtherCommitment(906.17);
@@ -136,6 +137,7 @@ public class EntityLoanBuilder {
         loanApplication2.setEducation(EnumUtils.Education.DIPLOMA);
         loanApplication2.setEmploymentStatus(EnumUtils.EmploymentStatus.EMPLOYEE);
         loanApplication2.setGender(EnumUtils.Gender.MALE);
+        loanApplication2.setCategory("Refinance");
 
         loanApplication2.setIdentityNumber("S1234567Z");
         loanApplication2.setOtherCommitment(906.17);
@@ -163,6 +165,7 @@ public class EntityLoanBuilder {
         loanApplication3.setFullName(loanApplication3.getLastname() + " " + loanApplication3.getFirstname());
         loanApplication3.setEmail("marry.wong@gmail.com");
         loanApplication3.setPhone("82222222");
+        loanApplication3.setCategory("New");
 
         loanApplication3.setNationality(EnumUtils.Nationality.SINGAPORE);
         loanApplication3.setMaritalStatus(EnumUtils.MaritalStatus.MARRIED);

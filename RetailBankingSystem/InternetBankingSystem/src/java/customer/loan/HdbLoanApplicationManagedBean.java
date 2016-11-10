@@ -14,6 +14,7 @@ import entity.loan.LoanApplication;
 import entity.loan.LoanProduct;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -74,7 +75,8 @@ public class HdbLoanApplicationManagedBean implements Serializable {
     private Date currentDate=new Date();
     
     private List<String> identityTypeOptions = CommonUtils.getEnumList(EnumUtils.IdentityType.class);
-    
+    private List<String> categoryOptions = Arrays.asList("New","Refinance");
+    private String category;
     /**
      * Creates a new instance of HdbLoanApplicationManagedBean
      */
@@ -157,6 +159,7 @@ public class HdbLoanApplicationManagedBean implements Serializable {
         newApplication.setMarketValue(marketValue);
         newApplication.setLoanProduct(loanProductBean.getLoanProductById(loanProductId));
         newApplication.setTenure(tenure);
+        newApplication.setCategory(category);
         newApplication.setLoanOfficer(staffAccountSessionBean.getAccountByUsername(ConstantUtils.LOAN_OFFICIER_USERNAME));
         // ejb save and update
         LoanApplication result = loanAccountBean.createLoanApplication(newApplication);
@@ -472,7 +475,21 @@ public class HdbLoanApplicationManagedBean implements Serializable {
     public void setIdentificationNumber(String identificationNumber) {
         this.identificationNumber = identificationNumber;
     }
-    
-    
-    
+
+    public List<String> getCategoryOptions() {
+        return categoryOptions;
+    }
+
+    public void setCategoryOptions(List<String> categoryOptions) {
+        this.categoryOptions = categoryOptions;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+  
 }

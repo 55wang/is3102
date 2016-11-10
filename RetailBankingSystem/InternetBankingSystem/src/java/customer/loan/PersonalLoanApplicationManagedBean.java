@@ -17,6 +17,7 @@ import entity.loan.LoanProduct;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -90,6 +91,7 @@ public class PersonalLoanApplicationManagedBean implements Serializable {
     private List<String> occupationOptions = CommonUtils.getEnumList(EnumUtils.Occupation.class);
     private List<String> incomeOptions = CommonUtils.getEnumList(EnumUtils.Income.class);
     LoanApplication existingApplication = new LoanApplication();
+    
     /**
      * Creates a new instance of PersonalLoanApplicationManagedBean
      */
@@ -178,7 +180,7 @@ public class PersonalLoanApplicationManagedBean implements Serializable {
         loanApplication1.setEducation(education);
         loanApplication1.setEmploymentStatus(employmentStatus);
         loanApplication1.setGender(gender);
-        
+        loanApplication1.setCategory("New");
         
         loanApplication1.setIdentityNumber(idNumber);
         loanApplication1.setIdentityType(identityType);
@@ -224,12 +226,12 @@ public class PersonalLoanApplicationManagedBean implements Serializable {
     
     public void existingApplyPersonalLoan(){
         existingApplication.setOtherCommitment(otherLoan);
-        existingApplication.setPhone(phoneNumber);
         existingApplication.setProductType(EnumUtils.LoanProductType.LOAN_PRODUCT_TYPE_PERSONAL);
         existingApplication.setRequestedAmount(loanAmount);
         existingApplication.setLoanProduct(loanProductBean.getLoanProductById(loanProductId));
         existingApplication.setTenure(existingApplication.getLoanProduct().getTenure());
         existingApplication.setLoanOfficer(staffAccountSessionBean.getAccountByUsername(ConstantUtils.LOAN_OFFICIER_USERNAME));
+        existingApplication.setCategory("New");
         // ejb save and update
         LoanApplication result = loanAccountBean.createLoanApplication(existingApplication);
         if (result != null) {
@@ -624,10 +626,6 @@ public class PersonalLoanApplicationManagedBean implements Serializable {
     public void setCurrentDate(Date currentDate) {
         this.currentDate = currentDate;
     }
-    
-    
-    
-    
-    
-    
+
+
 }
