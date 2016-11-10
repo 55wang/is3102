@@ -216,7 +216,7 @@ public class intraBankTransferManagedBean implements Serializable {
     private void calculateTransferLimits() {
         BigDecimal todayTransferAmount = transferBean.getTodayBankTransferAmount(ma, EnumUtils.PayeeType.MERLION);
         BigDecimal currentTransferLimit = new BigDecimal(ma.getTransferLimits().getDailyInterBankLimit().toString());
-        transferLimitLeft = currentTransferLimit.subtract(todayTransferAmount).setScale(2).toString();
+        transferLimitLeft = currentTransferLimit.subtract(todayTransferAmount).toString();
     }
     
     private Boolean checkOptAndProceed() {

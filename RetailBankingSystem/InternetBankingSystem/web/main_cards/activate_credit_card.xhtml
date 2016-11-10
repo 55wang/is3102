@@ -17,7 +17,7 @@
             <em:customerNavBar context="main" mainPage="mainCards" ></em:customerNavBar>
 
             <h:form id="mainForm">
-                <div style="padding-top: 180px;margin-left: 12%; width:76%">
+                <div class="customer_main_container">
                     <p:panel header="Activate your credit card">
 
                         <h:outputText value="Please enter:" style="margin-left: 250px; margin-top: 30px; font-weight:bolder"/>
@@ -55,6 +55,7 @@
                              <button type="button" onclick="window.location.href='.../customer_card/apply_card_account.xhtml'">Apply</button>
                         </div>
                         </p:panel>-->
+            <em:publicity></em:publicity>
             <em:adsBanner advertismentTitle="#{customerHomeManagedBean.adsBannerCampaign.adsTitle}" advertismentType="#{customerHomeManagedBean.adsBannerCampaign.adsType}" advertismentInfo="#{customerHomeManagedBean.adsBannerCampaign.adsInfo}" extraAdvertismentInfo="#{customerHomeManagedBean.adsBannerCampaign.adsExtraInfo}" landingPageUrl="https://localhost:8181/InternetBankingSystem/landing_page/#{customerHomeManagedBean.adsBannerCampaign.landingPageName}" />
             <em:customerMainFooter></em:customerMainFooter>
         </h:body>

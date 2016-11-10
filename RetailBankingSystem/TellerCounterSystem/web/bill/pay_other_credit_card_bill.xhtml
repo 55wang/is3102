@@ -31,7 +31,7 @@
 
                                     <h:outputText value="Deposit Account to Pay from: " />
                                     <p:selectOneMenu value="#{payOtherCreditCardBillCounterManagedBean.fromAccountNumber}" rendered="true" required="true">
-                                        <f:selectItems value="#{payOtherCreditCardBillCounterManagedBean.depositAccounts}" var="a" itemValue="#{a.accountNumber}" itemLabel="#{a.product.name} #{a.accountNumber} #{a.balance.setScale(2)}" />
+                                        <f:selectItems value="#{payOtherCreditCardBillCounterManagedBean.depositAccounts}" var="a" itemValue="#{a.accountNumber}" itemLabel="#{a.product.name} #{a.accountNumber} #{a.balance}" />
                                     </p:selectOneMenu>
 
                                     <h:outputText value="Paying To: " />

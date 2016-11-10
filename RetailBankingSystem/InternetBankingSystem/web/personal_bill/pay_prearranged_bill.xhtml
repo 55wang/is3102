@@ -30,7 +30,7 @@ and open the template in the editor.
                                     <h:panelGrid columns="2" cellpadding="5">
                                         <h:outputText value="Choose Your Account to transfer from: " />
                                         <p:selectOneMenu value="#{payBillManagedBean.fromAccountNo}" rendered="true" required="true">
-                                            <f:selectItems value="#{payBillManagedBean.accounts}" var="a" itemValue="#{a.accountNumber}" itemLabel="#{a.product.name} #{a.accountNumber} #{a.balance.setScale(2)}" />
+                                            <f:selectItems value="#{payBillManagedBean.accounts}" var="a" itemValue="#{a.accountNumber}" itemLabel="#{a.product.name} #{a.accountNumber} #{a.balance}" />
                                         </p:selectOneMenu>
                                         <h:outputText value="Credit Card Bill to transfer to " />
                                         <p:selectOneMenu value="#{payBillManagedBean.ccBillOrgId}" rendered="true" required="true">

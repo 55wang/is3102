@@ -59,16 +59,16 @@ public class MEPSSettlementService {
         System.out.println("[MEPS]:");
         System.out.println("Received Net Settlement from SACH:");
         if (new BigDecimal(citiSettlementAmount).compareTo(BigDecimal.ZERO) == -1) {
-            System.out.println(".       " + citiToBankCode + " " + citiToBankName + " to " + citiFromBankCode + " " + citiFromBankName + ": " + new BigDecimal(citiSettlementAmount).setScale(4).toString());
+            System.out.println(".       " + citiToBankCode + " " + citiToBankName + " to " + citiFromBankCode + " " + citiFromBankName + ": " + new BigDecimal(citiSettlementAmount).toString());
         } else if (new BigDecimal(citiSettlementAmount).compareTo(BigDecimal.ZERO) == 1) {
-            System.out.println(".       " + citiFromBankCode + " " + citiFromBankName + " to " + citiToBankCode + " " + citiToBankName + ": " + new BigDecimal(citiSettlementAmount).setScale(4).toString());
+            System.out.println(".       " + citiFromBankCode + " " + citiFromBankName + " to " + citiToBankCode + " " + citiToBankName + ": " + new BigDecimal(citiSettlementAmount).toString());
         } else {
         }
 
         if (new BigDecimal(ocbcSettlementAmount).compareTo(BigDecimal.ZERO) == -1) {
-            System.out.println(".       " + ocbcToBankCode + " " + ocbcToBankName + " to " + ocbcFromBankCode + " " + ocbcFromBankName + ": " + new BigDecimal(ocbcSettlementAmount).setScale(4).toString());
+            System.out.println(".       " + ocbcToBankCode + " " + ocbcToBankName + " to " + ocbcFromBankCode + " " + ocbcFromBankName + ": " + new BigDecimal(ocbcSettlementAmount).toString());
         } else if (new BigDecimal(ocbcSettlementAmount).compareTo(BigDecimal.ZERO) == 1) {
-            System.out.println(".       " + ocbcFromBankCode + " " + ocbcFromBankName + " to " + ocbcToBankCode + " " + ocbcToBankName + ": " + new BigDecimal(ocbcSettlementAmount).setScale(4).toString());
+            System.out.println(".       " + ocbcFromBankCode + " " + ocbcFromBankName + " to " + ocbcToBankCode + " " + ocbcToBankName + ": " + new BigDecimal(ocbcSettlementAmount).toString());
         } else {
         }
 
@@ -76,7 +76,7 @@ public class MEPSSettlementService {
         List<SettlementAccount> bankAccounts = mepsBean.retrieveThreeSettlementAccounts(citiFromBankCode, citiToBankCode, ocbcToBankCode);
         System.out.println("Current Bank Account Balance:");
         for (SettlementAccount s : bankAccounts) {
-            System.out.println(".       " + s.getBankCode() + " " + s.getName() + ": " + s.getAmount().setScale(4).toString());
+            System.out.println(".       " + s.getBankCode() + " " + s.getName() + ": " + s.getAmount().toString());
         }
 
         System.out.println(".");
@@ -88,7 +88,7 @@ public class MEPSSettlementService {
 
         System.out.println("Bank Accounts Balance Updated:");
         for (SettlementAccount s : updatedankAccounts) {
-            System.out.println(".       " + s.getBankCode() + " " + s.getName() + ": " + s.getAmount().setScale(4).toString());
+            System.out.println(".       " + s.getBankCode() + " " + s.getName() + ": " + s.getAmount().toString());
         }
 
         System.out.println("Sending back meps_settlement response");

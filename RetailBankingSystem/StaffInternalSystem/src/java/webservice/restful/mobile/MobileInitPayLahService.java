@@ -50,14 +50,14 @@ public class MobileInitPayLahService {
             TransactionRecord t = mobileBean.latestTransactionFromMobileAccount(mobileAccount);
             System.out.println(t == null);
             InitPayLahDTO p = new InitPayLahDTO();
-            p.setBalance(mobileAccount.getBalance().setScale(2, RoundingMode.UP).toString());
+            p.setBalance(mobileAccount.getBalance().toString());
             p.setWalletLimit("999.00");//placeholder
             p.setNoNewReq("" + requests.size());
             BigDecimal limit = mobileBean.dailyTransferLimitLeft(mobileAccount.getAccountNumber());
-            p.setTransferLimit(limit.setScale(2).toString());
+            p.setTransferLimit(limit.toString());
             if (t != null) {
                 p.setTransferType(t.getActionType().toString());
-                p.setTransferAmount(t.getAmount().setScale(2, RoundingMode.UP).toString());
+                p.setTransferAmount(t.getAmount().toString());
                 p.setTransferDate(DateUtils.readableDate(t.getCreationDate()));
                 p.setTransferAccount("Wallet - " + mobileAccount.getPhoneNumber());
             } else {

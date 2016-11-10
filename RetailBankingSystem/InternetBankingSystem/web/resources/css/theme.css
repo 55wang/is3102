@@ -754,22 +754,22 @@ and open the template in the editor.
 
 .ads-banner-holder .card .ads-banner-title{
     position: absolute;
-    top:12%;
+    top:25px;
     left: 21%;
-    font-size: 3.2vw;
+    font-size: 2.8vw;
 }
 
 .ads-banner-holder .card .ads-banner-info{
     position: absolute;
     width: 30%;
-    top:30%;
+    top:75px;
     left: 45%;
-    font-size: 1.8vw;
+    font-size: 1.5vw;
 }
 
 .ads-banner-holder .card .ads-banner-extra-info{
     position: absolute;
-    top:18%;
+    top:45px;
     left: 45%;
     font-size: 1vw;
 }

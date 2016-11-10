@@ -16,11 +16,11 @@
         <h:body>
             <em:customerHeader context="main" userName="Log in"></em:customerHeader>
             <em:customerNavBar context="main" mainPage="mainDeposit"></em:customerNavBar>
-            
-            <table style="margin-left: 70px" align="center">
+            <div class="customer_main_container">
+            <table align="center">
                 <tr>
                     <td>
-                        <p:panel id="Currentaccount" header="Current Account"  style="margin-top:200px;margin-bottom:20px;width: 500px">
+                        <p:panel id="Currentaccount" header="Current Account"  style="margin-bottom:20px;">
                             <h:panelGrid columns="2" cellpadding="10">
                                 <p:graphicImage library="img" style="width: 300px;height: 200px" name="bank-image.jpg" />
                                 <h:outputText
@@ -38,7 +38,7 @@
                     <td style="column-width: 20px">
                     </td>
                     <td>
-                        <p:panel id="Savingsaccount" header="Savings Account" style="margin-top:200px;margin-bottom:20px;width: 500px">
+                        <p:panel id="Savingsaccount" header="Savings Account" style="margin-bottom:20px;">
                             <h:panelGrid columns="2" cellpadding="10">
                                 <p:graphicImage library="img" style="width: 300px;height: 200px" name="deposit.jpg" />
                                 <h:outputText
@@ -93,12 +93,13 @@
             </table>
 
                 <div align="center">
-                    <button type="button" onclick="window.location.href='apply_deposit_account.xhtml'" style="font-size: 50px; margin-bottom: 20px;">Apply</button>
+                    <button type="button" onclick="window.location.href='apply_deposit_account.xhtml'" style="font-size: 40px; margin-bottom: 20px; background: #c00; color:white;width:300px">Apply</button>
                 </div>
 
-            
+            </div>
 
         </h:body>
+        <em:publicity></em:publicity>
         <em:adsBanner advertismentTitle="#{customerHomeManagedBean.adsBannerCampaign.adsTitle}" advertismentType="#{customerHomeManagedBean.adsBannerCampaign.adsType}" advertismentInfo="#{customerHomeManagedBean.adsBannerCampaign.adsInfo}" extraAdvertismentInfo="#{customerHomeManagedBean.adsBannerCampaign.adsExtraInfo}" landingPageUrl="https://localhost:8181/InternetBankingSystem/landing_page/#{customerHomeManagedBean.adsBannerCampaign.landingPageName}" />
         <em:customerMainFooter></em:customerMainFooter>
     </f:view>
