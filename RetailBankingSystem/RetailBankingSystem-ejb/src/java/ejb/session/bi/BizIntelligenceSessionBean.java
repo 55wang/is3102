@@ -121,7 +121,7 @@ public class BizIntelligenceSessionBean implements BizIntelligenceSessionBeanLoc
     @Override
     public Double getBankLoanInterestEarned(Date endDate) {
         try{
-            Query q = em.createQuery("SELECT SUM(l.interestAccrued) FROM LoanRepaymentRecord l WHERE l.transactionDate <= :endDate" );
+            Query q = em.createQuery("SELECT SUM(l.interestAccrued) FROM LoanRepaymentRecord l, LoanAccount la WHERE l.transactionDate <= :endDate AND l.loanAccount = la AND la.creationDate <= :endDate" );
             q.setParameter("endDate", endDate);
             return (Double) q.getSingleResult();
         }catch(Exception ex){
@@ -131,7 +131,7 @@ public class BizIntelligenceSessionBean implements BizIntelligenceSessionBeanLoc
     @Override
     public Double getBankLoanInterestUnearned(Date endDate) {
         try{
-            Query q = em.createQuery("SELECT SUM(l.interestPayment) FROM LoanPaymentBreakdown l WHERE l.schedulePaymentDate <= :endDate" );
+            Query q = em.createQuery("SELECT SUM(l.interestPayment) FROM LoanPaymentBreakdown l, LoanAccount la WHERE l.schedulePaymentDate <= :endDate AND l.loanAccount = la AND la.creationDate <= :endDate" );
             q.setParameter("endDate", endDate);
             return (Double) q.getSingleResult();
         }catch(Exception ex){

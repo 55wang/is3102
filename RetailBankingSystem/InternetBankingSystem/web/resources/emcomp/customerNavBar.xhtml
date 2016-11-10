@@ -21,16 +21,16 @@
                 <div id="customer-index-navbar">
                     <ul class="header-navigation">
                         <li id="header-overview" class="#{cc.attrs.mainPage == 'index' ? 'active' : ''}" value="Home">
-                            <a href="https://localhost:8181/InternetBankingSystem/index.xhtml">Home</a>
+                            <a href="https://#{customerInfoManagedBean.IP_ADDRESS}:8181/InternetBankingSystem/index.xhtml">Home</a>
                         </li>
                         <li id="header-overview" class="#{cc.attrs.mainPage == 'mainDeposit' ? 'active' : ''}" value="Deposit">
-                            <a href="https://localhost:8181/InternetBankingSystem/main_deposit/default.xhtml">Deposit</a>
+                            <a href="https://#{customerInfoManagedBean.IP_ADDRESS}:8181/InternetBankingSystem/main_deposit/default.xhtml">Deposit</a>
                         </li>
                         <li id="header-overview" class="#{cc.attrs.mainPage == 'mainCards' ? 'active' : ''}" value="Card">
-                            <a href="https://localhost:8181/InternetBankingSystem/main_cards/default.xhtml">Cards</a>
+                            <a href="https://#{customerInfoManagedBean.IP_ADDRESS}:8181/InternetBankingSystem/main_cards/default.xhtml">Cards</a>
                         </li>
                         <li id="header-overview" class="#{cc.attrs.mainPage == 'mainLoans' ? 'active' : ''}" value="Loan">
-                            <a href="https://localhost:8181/InternetBankingSystem/main_loan/default_loan.xhtml">Loans</a>
+                            <a href="https://#{customerInfoManagedBean.IP_ADDRESS}:8181/InternetBankingSystem/main_loan/default_loan.xhtml">Loans</a>
                         </li>
                         <li id="header-overview" class="#{cc.attrs.mainPage == 'mainInvest' ? 'active' : ''}" value="Invest">
                             <a href="#">Invest</a>

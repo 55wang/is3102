@@ -27,6 +27,7 @@ import javax.ws.rs.core.Form;
 import javax.ws.rs.core.MediaType;
 import protocal.swift.MT103;
 import protocal.swift.SwiftMessage;
+import server.utilities.ConstantUtils;
 
 /**
  *
@@ -41,11 +42,11 @@ public class WebserviceSessionBean implements WebserviceSessionBeanLocal {
     @PersistenceContext(unitName = "RetailBankingSystem-ejbPU")
     private EntityManager em;
 
-    private final String MEPS_SETTLEMENT_AGENCY = "https://localhost:8181/MEPSSimulator/meps/meps_settlement_agency";
-    private final String SACH_TRANSFER_CLEARING = "https://localhost:8181/SACHSimulator/sach/sach_transfer_clearing";
-    private final String SACH_BILLING_CLEARING = "https://localhost:8181/SACHSimulator/sach/sach_billing_clearing";
-    private final String SACH_SWIFT_TRANSFER = "https://localhost:8181/SACHSimulator/sach/sach_swift_transfer";
-    private final String FAST_TRANSFER_CLEARING = "https://localhost:8181/FASTSimulator/fast/fast_transfer_clearing";
+    private final String MEPS_SETTLEMENT_AGENCY = "https://" + ConstantUtils.ipAddress + ":8181/MEPSSimulator/meps/meps_settlement_agency";
+    private final String SACH_TRANSFER_CLEARING = "https://" + ConstantUtils.ipAddress + ":8181/SACHSimulator/sach/sach_transfer_clearing";
+    private final String SACH_BILLING_CLEARING = "https://" + ConstantUtils.ipAddress + ":8181/SACHSimulator/sach/sach_billing_clearing";
+    private final String SACH_SWIFT_TRANSFER = "https://" + ConstantUtils.ipAddress + ":8181/SACHSimulator/sach/sach_swift_transfer";
+    private final String FAST_TRANSFER_CLEARING = "https://" + ConstantUtils.ipAddress + ":8181/FASTSimulator/fast/fast_transfer_clearing";
 
     @Asynchronous
     @Override

@@ -31,7 +31,8 @@ import javax.ws.rs.core.MediaType;
 @Stateless
 public class FASTSessionBean implements Serializable {
 
-    private final String MEPS_FAST_SETTLEMENT = "https://localhost:8181/MEPSSimulator/meps/meps_fast_settlement";
+    private final String ipAddress = "localhost";
+    private final String MEPS_FAST_SETTLEMENT = "https://" + ipAddress +":8181/MEPSSimulator/meps/meps_fast_settlement";
 
     @PersistenceContext(unitName = "FASTSimulatorPU")
     private EntityManager em;

@@ -59,7 +59,6 @@ public class SimulatedCallManagedBean implements Serializable {
     }
     
 
-    
     @PostConstruct
     public void init() {
         System.out.println("SimulatedCallManagedBean @PostConstruct");

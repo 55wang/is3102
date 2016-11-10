@@ -12,6 +12,7 @@ import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
 import java.util.List;
+import server.utilities.ConstantUtils;
 import server.utilities.EnumUtils;
 import utils.SessionUtils;
 import utils.UserUtils;
@@ -25,6 +26,7 @@ import utils.UserUtils;
 public class StaffUserCounterManagedBean implements Serializable {
 
     private String GENERAL_TELLER = EnumUtils.UserRole.GENERAL_TELLER.toString();
+    private final String IP_ADDRESS = ConstantUtils.ipAddress;
     
     /**
      * Creates a new instance of StaffUserManagedBean
@@ -64,5 +66,12 @@ public class StaffUserCounterManagedBean implements Serializable {
      */
     public void setGENERAL_TELLER(String GENERAL_TELLER) {
         this.GENERAL_TELLER = GENERAL_TELLER;
+    }
+
+    /**
+     * @return the IP_ADDRESS
+     */
+    public String getIP_ADDRESS() {
+        return IP_ADDRESS;
     }
 }

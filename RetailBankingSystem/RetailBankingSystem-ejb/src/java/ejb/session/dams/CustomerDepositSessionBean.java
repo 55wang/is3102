@@ -333,7 +333,7 @@ public class CustomerDepositSessionBean implements CustomerDepositSessionBeanLoc
             return null;
         } else {
             TransactionRecord t = new TransactionRecord();
-            t.setCreationDate(DateUtils.randomDate());
+            t.setCreationDate(new Date());
             t.setActionType(EnumUtils.TransactionType.DEPOSIT);
             t.setAmount(depositAmount);
             t.setCredit(Boolean.TRUE);

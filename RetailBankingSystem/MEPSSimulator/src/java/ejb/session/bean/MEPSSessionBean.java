@@ -29,11 +29,13 @@ import javax.ws.rs.core.MediaType;
  */
 @Stateless
 public class MEPSSessionBean {
+    
+    private final String ipAddress = "localhost";
 
-    private final String SACH_INFORM_NET_SETTLEMENT = "https://localhost:8181/SACHSimulator/sach/sach_inform_settlement";
-    private final String FAST_INFORM_NET_SETTLEMENT = "https://localhost:8181/FASTSimulator/fast/fast_inform_settlement";
-    private final String MBS_NET_SETTLEMENT_PATH = "https://localhost:8181/StaffInternalSystem/rest/net_settlement";
-    private final String MBS_FAST_SETTLEMENT_PATH = "https://localhost:8181/StaffInternalSystem/rest/fast_settlement";
+    private final String SACH_INFORM_NET_SETTLEMENT = "https://"+ipAddress+":8181/SACHSimulator/sach/sach_inform_settlement";
+    private final String FAST_INFORM_NET_SETTLEMENT = "https://"+ipAddress+":8181/FASTSimulator/fast/fast_inform_settlement";
+    private final String MBS_NET_SETTLEMENT_PATH = "https://"+ipAddress+":8181/StaffInternalSystem/rest/net_settlement";
+    private final String MBS_FAST_SETTLEMENT_PATH = "https://"+ipAddress+":8181/StaffInternalSystem/rest/fast_settlement";
 
     @PersistenceContext(unitName = "MEPSSimulatorPU")
     private EntityManager em;
@@ -196,7 +198,7 @@ public class MEPSSessionBean {
         summary.getTransactionSummary().add(dto);
 
         Client client = ClientBuilder.newClient();
-        WebTarget target = client.target("https://localhost:8181/StaffInternalSystem/rest/test_json");
+        WebTarget target = client.target("https://"+ipAddress+":8181/StaffInternalSystem/rest/test_json");
 
         // This is the response
         JsonObject jsonString = target.request(MediaType.APPLICATION_JSON).post(Entity.entity(summary, MediaType.APPLICATION_JSON), JsonObject.class
