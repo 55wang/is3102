@@ -186,15 +186,14 @@ public class CardTransactionSessionBean implements CardTransactionSessionBeanLoc
     @Override
     public boolean validateCreditCardDailyTransactionLimit(CreditCardAccount creditCard, double requestAmount) {
         List<CardTransaction> dailyTransactions = getListDailyTransactionsByCreditCardAccount(creditCard);
-        System.out.println(dailyTransactions);
         double dailyAmount = 0.0;
         for (CardTransaction ct : dailyTransactions) {
             dailyAmount += ct.getAmount();
         }
-
-        System.out.println("Daily amount is: " + dailyAmount);
-        System.out.println("Request amount is: " + requestAmount);
-        System.out.println("Daily Limit is: " + creditCard.getTransactionDailyLimit());
+        System.out.println("Checking daily transation limit:");
+        System.out.println(".     Daily amount spent is: " + dailyAmount);
+        System.out.println(".     Request amount is: " + requestAmount);
+        System.out.println(".     Daily Limit is: " + creditCard.getTransactionDailyLimit());
         if ((dailyAmount + requestAmount) > creditCard.getTransactionDailyLimit()) {
             return false;
         }
@@ -210,10 +209,10 @@ public class CardTransactionSessionBean implements CardTransactionSessionBeanLoc
         for (CardTransaction ct : monthlyTransactions) {
             monthlyAmount += ct.getAmount();
         }
-
-        System.out.println("Monthly amount is: " + monthlyAmount);
-        System.out.println("Request amount is: " + requestAmount);
-        System.out.println("Monthly limit is: " + creditCard.getTransactionMonthlyLimit());
+        System.out.println("Checking daily transation limit:");
+        System.out.println(".     Monthly amount spent is: " + monthlyAmount);
+        System.out.println(".     Request amount is: " + requestAmount);
+        System.out.println(".     Monthly limit is: " + creditCard.getTransactionMonthlyLimit());
         if ((monthlyAmount + requestAmount) > creditCard.getTransactionMonthlyLimit()) {
             return false;
         }
@@ -222,9 +221,8 @@ public class CardTransactionSessionBean implements CardTransactionSessionBeanLoc
 
     @Override
     public boolean validateCreditLimit(CreditCardAccount creditCard, Double requestAmount) {
-        System.out.println(requestAmount);
-        System.out.println(creditCard.getRemainingCreditLimit());
-
+        System.out.println("Checking credit limit:");
+        System.out.println(".     Remaining credit limit is: " + creditCard.getRemainingCreditLimit());
         if (requestAmount < creditCard.getRemainingCreditLimit()) {
             return true;
         } else {

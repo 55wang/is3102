@@ -123,14 +123,14 @@ public class EntityBuilderBean {
         entityTellerCounterBuilder.init();
 
         //wealth
-
-        List<FinancialInstrument> allFinancialInstruments = entityWealthBuilder.allFinancialInstrument();
-        demoPortfolio = entityWealthBuilder.initWealth(allFinancialInstruments);
-        entityFactBuilder.initSinglePortfolioFact(demoMainAccount, demoPortfolio);
-        demoPortfolio = entityWealthBuilder.initPortfolioFactTable2(demoMainAccount, allFinancialInstruments);
-        entityFactBuilder.initSinglePortfolioFact(demoMainAccount, demoPortfolio);
-        entityFactBuilder.initBankFact();
-        entityCRMBuilder.initCustomerRFM();
+//
+//        List<FinancialInstrument> allFinancialInstruments = entityWealthBuilder.allFinancialInstrument();
+//        demoPortfolio = entityWealthBuilder.initWealth(allFinancialInstruments);
+//        entityFactBuilder.initSinglePortfolioFact(demoMainAccount, demoPortfolio);
+//        demoPortfolio = entityWealthBuilder.initPortfolioFactTable2(demoMainAccount, allFinancialInstruments);
+//        entityFactBuilder.initSinglePortfolioFact(demoMainAccount, demoPortfolio);
+//        entityFactBuilder.initBankFact();
+//        entityCRMBuilder.initCustomerRFM();
     }
 
     public void persist(Object object) {
