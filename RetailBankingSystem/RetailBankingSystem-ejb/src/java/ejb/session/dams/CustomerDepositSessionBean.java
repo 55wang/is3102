@@ -295,6 +295,7 @@ public class CustomerDepositSessionBean implements CustomerDepositSessionBeanLoc
         if (res == -1) {
             return null;
         } else {
+            System.out.println("Updateing account transferFromAccount");
             TransactionRecord t = new TransactionRecord();
             t.setActionType(EnumUtils.TransactionType.TRANSFER);
             t.setAmount(amount);
