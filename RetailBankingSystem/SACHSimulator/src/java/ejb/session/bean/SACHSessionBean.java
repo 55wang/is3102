@@ -184,7 +184,7 @@ public class SACHSessionBean implements Serializable {
         summary.setOcbcSettlementAmount(settlements.get(1).getAmount().setScale(4).toString());
         summary.setDate(new Date().toString());
 
-        System.out.println("----------------Bill Transfer to MBS----------------");
+        System.out.println("----------------SACH Settlement to MBS----------------");
         System.out.println("[SACH]:");
         System.out.println("Sending Net Settlement Amount to MEPS...");
 
@@ -197,7 +197,7 @@ public class SACHSessionBean implements Serializable {
 
         if (jsonString.getString("message").equals("SUCCESS")) {
             System.out.println(".");
-            System.out.println("[MPES]");
+            System.out.println("[SACH]");
             System.out.println("Received successful response from MEPS");
 
         } else {

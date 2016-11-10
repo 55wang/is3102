@@ -30,13 +30,12 @@ public class CardTransactionSessionBean implements CardTransactionSessionBeanLoc
 
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")
-    
     @Override
     public CardTransaction updateCardTransaction(CardTransaction ct) {
         em.merge(ct);
         return ct;
     }
-    
+
     @Override
     public Boolean createCardTransaction(CardTransaction ct) {
         try {
@@ -65,7 +64,7 @@ public class CardTransactionSessionBean implements CardTransactionSessionBeanLoc
         q.setParameter("inVisaId", visaId);
         return (CardTransaction) q.getSingleResult();
     }
-    
+
     @Override
     public CardTransaction getLatestCardTransactionByCcaId(Long ccaId) {
         Query q = em.createQuery("SELECT ct FROM CardTransaction ct WHERE ct.id =:inCcaId ORDER BY ct.createDate DESC");
@@ -118,7 +117,7 @@ public class CardTransactionSessionBean implements CardTransactionSessionBeanLoc
 
         return q.getResultList();
     }
-    
+
     @Override
     public List<CardTransaction> getTransactionByCCNumberAndStartDateAndEndDate(String ccNumber, Date startDate, Date endDate) {
 
@@ -126,7 +125,7 @@ public class CardTransactionSessionBean implements CardTransactionSessionBeanLoc
         Query q = em.createQuery("SELECT ct FROM CardTransaction ct WHERE ct.creditCardAccount.creditCardNum =:ccNumber AND "
                 + "ct.updateDate BETWEEN :startDate AND :endDate"
         );
-        
+
         q.setParameter("ccNumber", ccNumber);
         q.setParameter("startDate", startDate);
         q.setParameter("endDate", endDate);
@@ -187,15 +186,14 @@ public class CardTransactionSessionBean implements CardTransactionSessionBeanLoc
     @Override
     public boolean validateCreditCardDailyTransactionLimit(CreditCardAccount creditCard, double requestAmount) {
         List<CardTransaction> dailyTransactions = getListDailyTransactionsByCreditCardAccount(creditCard);
-        System.out.println(dailyTransactions);
         double dailyAmount = 0.0;
         for (CardTransaction ct : dailyTransactions) {
             dailyAmount += ct.getAmount();
         }
-
-        System.out.println("Daily amount is: " + dailyAmount);
-        System.out.println("Request amount is: " + requestAmount);
-        System.out.println("Daily Limit is: " + creditCard.getTransactionDailyLimit());
+        System.out.println("Checking daily transation limit:");
+        System.out.println(".     Daily amount spent is: " + dailyAmount);
+        System.out.println(".     Request amount is: " + requestAmount);
+        System.out.println(".     Daily Limit is: " + creditCard.getTransactionDailyLimit());
         if ((dailyAmount + requestAmount) > creditCard.getTransactionDailyLimit()) {
             return false;
         }
@@ -211,13 +209,25 @@ public class CardTransactionSessionBean implements CardTransactionSessionBeanLoc
         for (CardTransaction ct : monthlyTransactions) {
             monthlyAmount += ct.getAmount();
         }
-
-        System.out.println("Monthly amount is: " + monthlyAmount);
-        System.out.println("Request amount is: " + requestAmount);
-        System.out.println("Monthly limit is: " + creditCard.getTransactionMonthlyLimit());
+        System.out.println("Checking daily transation limit:");
+        System.out.println(".     Monthly amount spent is: " + monthlyAmount);
+        System.out.println(".     Request amount is: " + requestAmount);
+        System.out.println(".     Monthly limit is: " + creditCard.getTransactionMonthlyLimit());
         if ((monthlyAmount + requestAmount) > creditCard.getTransactionMonthlyLimit()) {
             return false;
         }
         return true;
+    }
+
+    @Override
+    public boolean validateCreditLimit(CreditCardAccount creditCard, Double requestAmount) {
+        System.out.println("Checking credit limit:");
+        System.out.println(".     Remaining credit limit is: " + creditCard.getRemainingCreditLimit());
+        if (requestAmount < creditCard.getRemainingCreditLimit()) {
+            return true;
+        } else {
+            return false;
+        }
+
     }
 }

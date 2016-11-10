@@ -7,6 +7,7 @@ package ejb.session.crm;
 
 import entity.crm.AdsBannerCampaign;
 import entity.crm.CustomerGroup;
+import entity.crm.EmailCampaign;
 import entity.crm.MarketingCampaign;
 import entity.customer.Customer;
 import java.util.HashSet;
@@ -49,27 +50,35 @@ public class MarketingCampaignSessionBean implements MarketingCampaignSessionBea
         c = (Customer) q.getSingleResult();
 
         System.out.println("customerGroup size: " + c.getCustomerGroups().size());
-        Set<AdsBannerCampaign> mcHashSet = new HashSet<>();
+        Set<AdsBannerCampaign> adsMcHashSet = new HashSet<>();
+        Set<EmailCampaign> emailMcHashSet = new HashSet<>();
 
         for (CustomerGroup cg : c.getCustomerGroups()) {
             if (!cg.getMarketingCampaigns().isEmpty()) {
                 System.out.println("!cg.getMarketingCampaigns() size: " + cg.getMarketingCampaigns().size());
                 for (MarketingCampaign mc : cg.getMarketingCampaigns()) {
-                    mcHashSet.add((AdsBannerCampaign) mc);
-                    System.out.println("mc added into hashset");
+                    if (mc instanceof AdsBannerCampaign) {
+                        adsMcHashSet.add((AdsBannerCampaign) mc);
+                        System.out.println("mc added into adshashset");
+                    } else if (mc instanceof EmailCampaign) {
+                        emailMcHashSet.add((EmailCampaign) mc);
+                        System.out.println("mc added into emailhashset");
+                    }
+
                 }
             }
         }
-        System.out.println("marketing campaign size: " + mcHashSet.size());
+        System.out.println("ads marketing campaign size: " + adsMcHashSet.size());
+        System.out.println("email marketing campaign size: " + emailMcHashSet.size());
 
-        int size = mcHashSet.size();
+        int size = adsMcHashSet.size();
         if (size > 0) {
             int item = new Random().nextInt(size);
             int i = 0;
-            for (AdsBannerCampaign mc : mcHashSet) {
+            for (AdsBannerCampaign mc : adsMcHashSet) {
                 if (i == item) {
                     System.out.println("return mc" + mc.getId());
-                    return mc;
+                    return (AdsBannerCampaign) mc;
                 }
                 i = i + 1;
             }

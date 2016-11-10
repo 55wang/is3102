@@ -22,6 +22,8 @@ public interface CreditCardOrderSessionBeanLocal {
 
     public List<CreditCardOrder> getListCreditCardOrdersByNotCancelStatus();
 
+    public List<CreditCardOrder> getListCreditCardOrdersByMainId(String mainAccountId);
+
     public List<CreditCardOrder> getListCreditCardOrdersByMainIdAndNotCancelStatus(String mainAccountId);
 
     public CreditCardOrder getCreditCardOrderById(Long ccoId);

@@ -61,4 +61,10 @@
         </user-data-constraint>
     </security-constraint>
     <!-- End of SSL/HTTPS security constraint -->
+    <ejb-local-ref>
+        <ejb-ref-name>BillSessionBean</ejb-ref-name>
+        <ejb-ref-type>Session</ejb-ref-type>
+        <local>ejb.session.bill.BillSessionBeanLocal</local>
+        <ejb-link>RetailBankingSystem-ejb.jar#BillSessionBean</ejb-link>
+    </ejb-local-ref>
 </web-app>

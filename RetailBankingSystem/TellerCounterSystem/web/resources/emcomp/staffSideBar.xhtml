@@ -75,7 +75,18 @@
                     </c:if>
                     
                     <c:if test="#{cc.attrs.top == 'card'}">
-                        
+                        <li class="side-menu-item #{cc.attrs.side == 'cardApplication' ? 'active' : ''}">
+                            <h:link outcome="card_application" value="Card Application" />
+                        </li>
+                        <li class="side-menu-item #{cc.attrs.side == 'terminateDebit' ? 'active' : ''}">
+                            <h:link outcome="terminate_debit_card" value="Debit Card" />
+                        </li>
+                        <li class="side-menu-item #{cc.attrs.side == 'terminateCredit' ? 'active' : ''}">
+                            <h:link outcome="terminate_credit_card" value="Credit Card" />
+                        </li>
+                        <li class="side-menu-item #{cc.attrs.side == 'eStatement' ? 'active' : ''}">
+                            <h:link outcome="e_statement" value="E Statement" />
+                        </li>
                     </c:if>
 
                     <c:if test="#{cc.attrs.top == 'bill'}">

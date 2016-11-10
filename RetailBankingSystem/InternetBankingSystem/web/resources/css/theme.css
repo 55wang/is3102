@@ -770,6 +770,116 @@ and open the template in the editor.
     font-size: 1vw;
 }
 /*end of ads banner*/
+/*dashboard*/
+.customer-dashboard{
+    background: white;
+    width: 95%;
+    padding: 1em !important;
+    box-shadow: 0 5px 5px 0 rgba(0,0,0,0.30),0 3px 1px 0 rgba(0,0,0,0.23);
+    display: block;
+    overflow: auto;
+    margin-bottom: 30px;
+}
+
+.customer-dashboard .header-holder img{
+    position: relative;
+    top:3px;
+    width:25px;
+}
+
+.customer-dashboard .header-holder h1{
+    -webkit-margin-before: 0em;
+    -webkit-margin-after: 0em;
+    -webkit-margin-start: 0px;
+    -webkit-margin-end: 0px;
+}
+
+.customer-dashboard .customer-highlight-holder{
+    position: relative;
+    min-height: 100px;
+}
+
+.customer-dashboard .color-1{
+        background: #5bc0de;
+}
+
+.customer-dashboard .color-2{
+        background: #f4b04f;
+}
+
+.customer-dashboard .color-3{
+        background: #57c097;
+}
+
+.customer-dashboard .color-4{
+        background: #857198;
+}
+
+.customer-dashboard .customer-highlight-holder .amount-holder{
+    position: absolute;
+    top:20px;
+    left:10%;
+    color: white;
+    font-size: 40px;
+}
+
+.customer-dashboard .customer-highlight-holder .label-holder{
+    position: absolute;
+    top:60px;
+    left:12%;
+    color: white;
+    font-size: 8px;
+}
+
+.customer-dashboard .customer-highlight-holder .icon-holder{
+    position:absolute;
+    right: 10px;
+    top:15px;
+    z-index: 1;
+}
+
+.customer-dashboard .customer-highlight-holder .icon-holder img{
+    width: 80px;
+}
+
+.customer-dashboard .annocement-holder{
+    position: relative;
+    min-height: 300px;
+}
+
+.customer-dashboard .annocement-holder .title-holder{
+    padding-top:8px;
+    background-color: #3d4a5d;
+    color: white;
+    font-size: 24px;
+    text-align: center;
+    height:35px;
+}
+
+.customer-dashboard .annocement-holder .content-holder{
+    padding: 8px;
+    background-color: #eee;
+    height:260px;
+}
+
+.customer-dashboard .annocement-holder .content-holder .content{
+    padding-top: 8px;
+}
+
+.customer-dashboard .annocement-holder .content-holder .header{
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.customer-dashboard .annocement-holder .content-holder .date{
+    position:absolute;
+    bottom: 10px;
+}
+
+.customer-dashboard .advertisment-holder{
+    width: 60%;
+}
+/*end of dashboard*/
 /*landing_page*/
 .deposit-landing-page .marketing-first{
     background: url("../resources/img/landing_page/deposit_landing_bg.jpg");
@@ -799,19 +909,22 @@ and open the template in the editor.
     box-shadow: 0 10px 10px 0 rgba(0,0,0,0.30),0 6px 3px 0 rgba(0,0,0,0.23);
 }
 
-.marketing-third .direct-button a{
-    padding-top: 20px;
+.marketing-third .direct-button .ui-button{
+    padding-top: 5px;
     font-size: 40px;
     display:block;
     width:100%;
     height:50px;
     cursor: pointer;
+    background-color: #57bc62 !important;
+    border-bottom: 2px solid #57bc62 !important;
 }
 
-.marketing-third .direct-button a:-webkit-any-link{
-    color: white;
-    text-decoration: none;
+.marketing-third .direct-button .ui-state-hover{
+    box-shadow: none !important;
+    border: none !important;
 }
+
 /*end of landing page*/
 /* general */
 .container {

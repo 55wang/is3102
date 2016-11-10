@@ -32,4 +32,6 @@ public interface CardTransactionSessionBeanLocal {
      public boolean validateCreditCardDailyTransactionLimit(CreditCardAccount creditCard, double requestAmount);
      public boolean validateCreditCardMonthlyTransactionLimit(CreditCardAccount creditCard, double requestAmount);
      public CardTransaction updateCardTransaction(CardTransaction ct);
+     public boolean validateCreditLimit(CreditCardAccount creditCard, Double requestAmount);
+
 }

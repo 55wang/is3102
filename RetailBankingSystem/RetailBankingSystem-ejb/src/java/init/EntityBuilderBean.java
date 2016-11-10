@@ -32,6 +32,8 @@ import server.utilities.ConstantUtils;
 @LocalBean
 @Startup
 public class EntityBuilderBean {
+    @EJB
+    private EntityAnnouncementBuilderBean entityAnnouncementBuilderBean;
 
     // builders
     @EJB
@@ -116,6 +118,8 @@ public class EntityBuilderBean {
         entityCaseBuilder.initCase();
         entityBillOrgBuilder.initBillOrganization();
         entityPayLahBuilder.initPayLahDemoData();
+        entityAnnouncementBuilderBean.initAnnouncement();
+        
         entityTellerCounterBuilder.init();
 
         //wealth

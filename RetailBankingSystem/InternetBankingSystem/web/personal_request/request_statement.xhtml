@@ -29,7 +29,7 @@ and open the template in the editor.
                         <h:panelGrid columns="2" cellpadding="5">
                             <h:outputText value="Choose Account: " />
                             <p:selectOneMenu value="#{requestManagedBean.fromAccountNo}" rendered="true" required="true">
-                                <f:selectItems value="#{requestManagedBean.accounts}" var="a" itemValue="#{a.accountNumber}" itemLabel="#{a.product.name} #{a.accountNumber} #{a.balance.setScale(2)}" />
+                                <f:selectItems value="#{requestManagedBean.accounts}" var="a" itemValue="#{a.accountNumber}" itemLabel="#{a.product.name} #{a.accountNumber} #{a.balance}" />
                             </p:selectOneMenu>
                             <h:outputText value="Select Month: " />
                             <p:selectOneMenu value="#{requestManagedBean.selectedMonth}" rendered="true" required="true">

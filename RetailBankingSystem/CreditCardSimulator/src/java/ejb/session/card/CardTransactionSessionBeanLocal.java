@@ -6,6 +6,7 @@
 package ejb.session.card;
 
 import entity.VisaCardTransaction;
+import entity.VisaSettlement;
 import java.util.List;
 import javax.ejb.Local;
 
@@ -16,7 +17,7 @@ import javax.ejb.Local;
 @Local
 public interface CardTransactionSessionBeanLocal {
 
-    public void sendSuccessAuthorization(String transactionAmount, String creditCardNumber);
+    public void sendSuccessAuthorization(String transactionAmount, String creditCardNumber, String referenceNum, String requestBankCode);
 
     public List<VisaCardTransaction> getListVisaCardTransactions();
 
@@ -25,5 +26,9 @@ public interface CardTransactionSessionBeanLocal {
     public Double calculateNetSettlement();
 
     public VisaCardTransaction updateVisaCardTransactionSettledStatusById(Long Id);
+
+    public VisaSettlement persistSettlement(VisaSettlement vs);
+
+    public void sendMEPSNetSettlement();
 
 }

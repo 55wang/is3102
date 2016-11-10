@@ -10,14 +10,143 @@
         <h:head>
             <title>Merlion Bank</title>
             <em:cssImport></em:cssImport>
+            <script>
+                function customExtender () {
+                   this.cfg.grid = {
+                      background: '#FFF' //Set background to white
+                   };
+                 }
+            </script>
         </h:head>
         <h:body>
             <em:customerHeader context="personal" userName="#{customerHomeManagedBean.customer.firstname }"></em:customerHeader>
             <em:customerNavBar context="personal" personalPage="home"></em:customerNavBar>
             <div class="customer_main_container">
-                <p:panel header="My Home"></p:panel>
-            </div>
-            
+                <div class="customer-dashboard">
+                    <div class="ui-g-12 ui-md-12">
+                        <div class="header-holder">
+                            <div class="header">
+                                <h1>
+                                    <img src="../resources/img/dashboard/customer_dashboard.png"/>
+                                    Dashboard
+                                </h1>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    <div class="ui-g-12 ui-md-3">
+                        <div class="customer-highlight-holder color-1">
+                            <div class="ui-g-12 ui-md-3 ui-lg-10">
+                                <div class="amount-holder">
+                                    <h:outputText value="#{customerDashboardManagedBean.customerDepositAccountNumber}"/>
+                                </div>
+                                <div class="label-holder">
+                                    <span>
+                                        Number of Deposit Accounts
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="ui-g-12 ui-md-3 ui-lg-2">
+                                <div class="icon-holder">
+                                    <img src="../resources/img/dashboard/deposit_icon.png"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ui-g-12 ui-md-3">
+                        <div class="customer-highlight-holder color-2">
+                            <div class="ui-g-12 ui-md-3 ui-lg-10">
+                                <div class="amount-holder">
+                                    <h:outputText value="#{customerDashboardManagedBean.customerLoanAccountNumber}"/>
+                                </div>
+                                <div class="label-holder">
+                                    <span>
+                                        Number of Loan Accounts
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="ui-g-12 ui-md-3 ui-lg-2">
+                                <div class="icon-holder">
+                                    <img src="../resources/img/dashboard/loan_icon.png"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ui-g-12 ui-md-3">
+                        <div class="customer-highlight-holder color-3">
+                            <div class="ui-g-12 ui-md-3 ui-lg-10">
+                                <div class="amount-holder">
+                                    <h:outputText value="#{customerDashboardManagedBean.customerCreditCardAccountNumber}"/>
+                                </div>
+                                <div class="label-holder">
+                                    <span>
+                                        Number of Credit Card Accounts
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="ui-g-12 ui-md-3 ui-lg-2">
+                                <div class="icon-holder">
+                                    <img src="../resources/img/dashboard/card_icon.png"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ui-g-12 ui-md-3">
+                        <div class="customer-highlight-holder color-4">
+                            <div class="ui-g-12 ui-md-3 ui-lg-10">
+                                <div class="amount-holder">
+                                    <h:outputText value="#{customerDashboardManagedBean.customerExecutedInvestmentPlanNumber}"/>
+                                </div>
+                                <div class="label-holder">
+                                    <span>
+                                        Number of Executed Investment Plans
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="ui-g-12 ui-md-3 ui-lg-2">
+                                <div class="icon-holder">
+                                    <img src="../resources/img/dashboard/wealth_icon.png"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ui-g-12 ui-md-5">
+                        <div class="annocement-holder">
+                            <div class="title-holder">
+                                Announcement
+                            </div>
+                            <div class="content-holder">
+                                <div class="header">
+                                    <h:outputText value="#{customerDashboardManagedBean.latestAnnouncement.title}"/>
+                                </div>
+                                <div class="content">
+                                    <h:outputText value="#{customerDashboardManagedBean.latestAnnouncement.content}"/>
+                                </div>
+                                <div class="date">
+                                    <h:outputText value="#{customerDashboardManagedBean.latestAnnouncement.creationDate}">
+                                        <f:convertDateTime pattern="yyyy-MM-dd"/>
+                                    </h:outputText>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ui-g-12 ui-md-7">
+                        <div class="chart-holder">
+                            <p:chart type="bar" model="#{customerDashboardManagedBean.customerAcctBarModel}" style="height:320px;"/>     
+                        </div>
+                    </div>
+                    <div class="ui-g-12 ui-md-8">
+                        <div class="calendar-holder">
+                            <p:schedule value="#{customerDashboardManagedBean.lazyEventModel}" />
+                        </div>
+                    </div>
+                    <div class="ui-g-12 ui-md-4">
+                        <div class="advertisment-holder">
+                            <img src="../resources/img/dashboard/advertisment.png"/>
+                        </div>
+                    </div>
+                </div>             
+            </div>           
             <em:adsBanner advertismentTitle="#{customerHomeManagedBean.adsBannerCampaign.adsTitle}" advertismentType="#{customerHomeManagedBean.adsBannerCampaign.adsType}" advertismentInfo="#{customerHomeManagedBean.adsBannerCampaign.adsInfo}" extraAdvertismentInfo="#{customerHomeManagedBean.adsBannerCampaign.adsExtraInfo}" landingPageUrl="https://localhost:8181/InternetBankingSystem/landing_page/#{customerHomeManagedBean.adsBannerCampaign.landingPageName}" />
             <em:customerFooter></em:customerFooter>
         </h:body>

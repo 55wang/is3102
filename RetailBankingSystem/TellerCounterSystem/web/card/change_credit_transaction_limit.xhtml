@@ -1,0 +1,58 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:em="http://xmlns.jcp.org/jsf/composite/emcomp"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <!--shift + ctrl + F, format-->
+    <f:view>
+        <h:head>
+            <title>MBS Counter</title>
+            <em:cssImport></em:cssImport>
+        </h:head>
+        <h:body>
+            <em:staffNavBar context="card"></em:staffNavBar>
+            <em:staffSideBar top="card" side="cardApplication"></em:staffSideBar>
+            <div class="container">
+                <h:form id="mainForm">
+                    <p:panel header="View Card Application">
+                        <p:messages id="messagesStatus" redisplay="false" >
+
+                            <p:panelGrid columns="2" style="margin: auto; margin-top: 30px" >
+
+                                <h:outputLabel for="name" value="Credit Card Number: " />
+                                <h:outputText  value="#{tellerCreditCardManagedBean.cca.creditCardProduct.productName}"/>
+
+
+                                <h:outputLabel for="cardNumber" value="Card Number: " />
+                                <h:outputText  value="#{tellerCreditCardManagedBean.cca.creditCardNum}"/>
+
+                                <h:outputLabel for="monthlyTransactionLimit" value="Monthly transaction limit: " />
+                                <p:inputNumber id="daily" value="#{tellerCreditCardManagedBean.cca.transactionMonthlyLimit}" required="true" requiredMessage="Montly Transaction Limit is required." style="width: 215px" validatorMessage="Invalid input."/> 
+
+                                <h:outputLabel for="monthlyTransactionLimit" value="Daily transaction limit: " />
+                                <p:inputNumber  value="#{tellerCreditCardManagedBean.cca.transactionDailyLimit}" required="true" requiredMessage="Daily Transaction Limit is required." style="width: 215px" />
+
+
+                            </p:panelGrid>
+
+                            <p:commandButton style="margin-top:40px" class="h-center" value="Confirm" action="#{tellerCreditCardManagedBean.updateTransactionLimit()}" update="@form:messagesStatus">
+                                <p:confirm header="Confirmation" message="Confirm your change?" icon="ui-icon-alert" />
+                                <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                                    <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                                    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                                </p:confirmDialog>
+                            </p:commandButton>
+
+                        </p:messages>
+                    </p:panel>
+                </h:form>
+            </div>
+        </h:body>
+    </f:view>
+
+
+</html>
+

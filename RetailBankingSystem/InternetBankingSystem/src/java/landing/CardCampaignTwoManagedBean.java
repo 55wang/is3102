@@ -53,7 +53,6 @@ public class CardCampaignTwoManagedBean extends MarketingCampaignAbstractBean im
                     if (landingURL.equals(mc.getLandingPageName())) {
                         super.addClickCount(mc);
                         selectedMC = mc.getId().toString();
-                        break;
                     }
                 }
             }

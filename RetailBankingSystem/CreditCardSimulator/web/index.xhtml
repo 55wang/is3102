@@ -18,13 +18,18 @@ and open the template in the editor.
         <h:body style="background-color: #f9f9f9">
             <h1>Credit Card Simulator - Send Card Transaction</h1>
             <h:form id="formMain">
-                <h:outputText value="Credit Card Number: " />
-                <h:inputText value="#{simulatedCallManagedBean.creditCardNumber}">
-                </h:inputText><br />
-                <h:outputText value="Transaction Amount: " />
-                <h:inputText required="true" value="#{simulatedCallManagedBean.transactionAmount}">
-                </h:inputText>
-                <p:commandButton id="success" value="Send Transaction" actionListener="#{simulatedCallManagedBean.sendSuccessAuthorization}" update="@form"/>
+                <h:panelGrid columns="2" cellpadding="5">
+                    <h:outputText value="Credit Card Number: " />
+                    <h:inputText value="#{simulatedCallManagedBean.creditCardNumber}">
+                    </h:inputText>
+                    <h:outputText value="Transaction Amount: " />
+                    <h:inputText required="true" value="#{simulatedCallManagedBean.transactionAmount}"/>
+                    <h:outputText value="Transaction Reference Number: " />
+                    <h:inputText required="true" value="#{simulatedCallManagedBean.referenceNum}"/>
+                        <h:outputText value="Request Bank Code: " />
+                    <h:inputText required="true" value="#{simulatedCallManagedBean.requestBankCode}"/>
+                    <p:commandButton id="success" value="Send Transaction" actionListener="#{simulatedCallManagedBean.sendSuccessAuthorization}" update="@form"/>
+                </h:panelGrid>
             </h:form>
 
             <div class="container">
@@ -52,7 +57,7 @@ and open the template in the editor.
 
                                 </p:dataTable>
                             </h:panelGrid>
-                            <p:commandButton value="EOD SETTLEMENT" action="#{simulatedCallManagedBean.sendEODSettlement()}" icon="ui-icon-check" update="@form" />
+                            <p:commandButton value="EOD SETTLEMENT" action="#{simulatedCallManagedBean.sendMEPSSettlement()}" icon="ui-icon-check" update="@form" />
 
                         </p:messages>
                     </p:panel>

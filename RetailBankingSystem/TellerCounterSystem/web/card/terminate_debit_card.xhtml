@@ -1,0 +1,73 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:em="http://xmlns.jcp.org/jsf/composite/emcomp"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <!--shift + ctrl + F, format-->
+    <f:view>
+        <h:head>
+            <title>MBS Counter</title>
+            <em:cssImport></em:cssImport>
+        </h:head>
+        <h:body>
+            <em:staffNavBar context="card"></em:staffNavBar>
+            <em:staffSideBar top="card" side="terminateDebit"></em:staffSideBar>
+            <div class="container">
+                <h:form id="mainForm">
+                    <p:panel header="Terminate Debit Card Account">
+                        <p:messages id="messagesStatus" redisplay="false" >
+
+                            <h:panelGrid columns="2" cellpadding="5">
+                                <h:outputLabel value="Customer IC: " />
+                                <h:inputText value="#{tellerDebitCardManagedBean.customerIC}"/>
+                                <p:commandButton value="Retrieve" action="#{tellerDebitCardManagedBean.retrieveMainAccount}" update="@form"/>
+
+                            </h:panelGrid>
+
+                            <h:panelGrid columns="2" cellpadding="5">
+                                <c:if test="#{tellerDebitCardManagedBean.mainAccount != null}">
+
+                                        <h:panelGrid columns="2" cellpadding="5">
+                                            <p:dataTable var="dca" value="#{tellerDebitCardManagedBean.activeDcas}">
+                                                <p:column headerText="Debit Card Number">
+                                                    <h:outputText value="#{dca.creditCardNum}" />
+                                                </p:column>
+
+                                                <p:column headerText="Card Type">
+                                                    <h:outputText value="#{dca.cardNetwork}" />
+                                                </p:column>
+
+                                                <p:column headerText="Card Type">
+                                                    <h:outputText value="#{dca.cardStatus}" />
+                                                </p:column>
+
+                                                <p:column headerText="Action">
+                                                    <p:commandButton value="Cancel" action="#{tellerDebitCardManagedBean.terminateDebitCard(dca)}" update="@form">
+                                                        <p:confirm header="Confirmation" message="Are you sure you want to close your account?" icon="ui-icon-alert" />
+                                                        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                                                            <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                                                            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                                                        </p:confirmDialog>
+                                                    </p:commandButton>
+                                                </p:column>
+                                            </p:dataTable>
+
+                                        </h:panelGrid>
+
+
+                                </c:if>
+
+                            </h:panelGrid>
+                        </p:messages>
+                    </p:panel>
+                </h:form>
+            </div>
+        </h:body>
+    </f:view>
+
+
+</html>
+

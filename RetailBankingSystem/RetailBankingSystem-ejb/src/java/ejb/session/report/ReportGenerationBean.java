@@ -141,6 +141,87 @@ public class ReportGenerationBean implements ReportGenerationBeanLocal  {
         return true;
     }
     
+    @Override
+    public boolean generateMonthlyDepositAccountTransactionReportCounter(String accountNumber, Date startDate, Date endDate) {
+//        String filePath = "/Users/litong/Documents/IS3102/is3102/RetailBankingSystem/InternetBankingSystem/src/java/report/testReport.jrxml";
+
+        //Load Driver
+        String systemUser = System.getProperty("user.name");
+        String prependingPath = "";
+        if (systemUser.equals("wang")) {
+            prependingPath = "/Users/wang/NEW_IS3102/";
+        } else if (systemUser.equals("litong")) {
+            prependingPath = "/Users/litong/Documents/IS3102/";
+        } else if (systemUser.equals("leiyang")) {
+            prependingPath = "/Users/leiyang/Desktop/IS3102/workspace/";
+        } else if (systemUser.equals("syx")) {
+
+        } else if (systemUser.equals("xiaqing")) {
+
+        } else if (systemUser.equals("yifan")) {
+
+        }
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+        } catch (Exception ex) {
+        }
+        List<TransactionRecord> rawList = transferBean.getTransactionRecordByAccountNumberStartDateEndDate(accountNumber, startDate, endDate);
+        ArrayList<TransactionDTO> dataList = getTransactionDTOList(rawList);
+        System.out.println(dataList);
+        JRBeanCollectionDataSource beanColDataSource = new JRBeanCollectionDataSource(dataList);
+
+        Map parameters = new HashMap();
+        try {
+            JasperReport jr = JasperCompileManager.compileReport(prependingPath+"is3102/RetailBankingSystem/RetailBankingSystem-ejb/src/java/ejb/session/report/deposit_account_report.jrxml");
+            JasperPrint jp = JasperFillManager.fillReport(jr, parameters, beanColDataSource);
+            JasperExportManager.exportReportToPdfFile(jp, prependingPath+"is3102/RetailBankingSystem/TellerCounterSystem/web/card/estatement_"+accountNumber+ DateUtils.getYearNumber(endDate)+ "_" + DateUtils.getMonthNumber(startDate) + "_" + DateUtils.getMonthNumber(endDate) +".pdf");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return true;
+    }
+    
+    @Override
+    public boolean generateMonthlyCreditCardAccountTransactionReportCounter(String accountNumber, Date startDate, Date endDate) {
+//        String filePath = "/Users/litong/Documents/IS3102/is3102/RetailBankingSystem/InternetBankingSystem/src/java/report/testReport.jrxml";
+
+        //Load Driver
+        String systemUser = System.getProperty("user.name");
+        String prependingPath = "";
+        if (systemUser.equals("wang")) {
+            prependingPath = "/Users/wang/NEW_IS3102/";
+        } else if (systemUser.equals("litong")) {
+            prependingPath = "/Users/litong/Documents/IS3102/";
+        } else if (systemUser.equals("leiyang")) {
+            prependingPath = "/Users/leiyang/Desktop/IS3102/workspace/";
+        } else if (systemUser.equals("syx")) {
+
+        } else if (systemUser.equals("xiaqing")) {
+
+        } else if (systemUser.equals("yifan")) {
+
+        }
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+        } catch (Exception ex) {
+        }
+        System.out.println("generateMonthlyCreditCardAccountTransactionReport");
+        List<CardTransaction> rawList = cardTransactionBean.getTransactionByCCNumberAndStartDateAndEndDate(accountNumber, startDate, endDate);
+        ArrayList<TransactionDTO> dataList = getCardTransactionDTOList(rawList);
+        System.out.println(dataList);
+        JRBeanCollectionDataSource beanColDataSource = new JRBeanCollectionDataSource(dataList);
+
+        Map parameters = new HashMap();
+        try {
+            JasperReport jr = JasperCompileManager.compileReport(prependingPath+"is3102/RetailBankingSystem/RetailBankingSystem-ejb/src/java/ejb/session/report/credit_card_report.jrxml");
+            JasperPrint jp = JasperFillManager.fillReport(jr, parameters, beanColDataSource);
+            JasperExportManager.exportReportToPdfFile(jp, prependingPath+"is3102/RetailBankingSystem/TellerCounterSystem/web/card/cc_estatement_"+accountNumber+ DateUtils.getYearNumber(endDate)+ "_" + DateUtils.getMonthNumber(startDate) + "_" + DateUtils.getMonthNumber(endDate) +".pdf");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return true;
+    }
+    
     private ArrayList<TransactionDTO> getCardTransactionDTOList(List<CardTransaction> transactions) {
         ArrayList<TransactionDTO> transactionList = new ArrayList<>();
         for (CardTransaction t : transactions) {

@@ -12,11 +12,11 @@ and open the template in the editor.
 
     <f:view>
         <h:head>
-            <title>SACH Simulator</title>
+            <title>MEPS Simulator</title>
             <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
         </h:head>
         <h:body style="background-color: #f9f9f9">
-            <h1>MEPS Simulator - Settlement</h1>
+            <h1>#{testJSONManagedBean.name}</h1>
             
             <h:form>
                 <p:commandButton value="Test" actionListener="#{testJSONManagedBean.testClick()}" />
