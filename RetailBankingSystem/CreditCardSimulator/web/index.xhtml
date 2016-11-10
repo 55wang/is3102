@@ -26,6 +26,8 @@ and open the template in the editor.
                     <h:inputText required="true" value="#{simulatedCallManagedBean.transactionAmount}"/>
                     <h:outputText value="Transaction Reference Number: " />
                     <h:inputText required="true" value="#{simulatedCallManagedBean.referenceNum}"/>
+                        <h:outputText value="Request Bank Code: " />
+                    <h:inputText required="true" value="#{simulatedCallManagedBean.requestBankCode}"/>
                     <p:commandButton id="success" value="Send Transaction" actionListener="#{simulatedCallManagedBean.sendSuccessAuthorization}" update="@form"/>
                 </h:panelGrid>
             </h:form>
@@ -55,7 +57,7 @@ and open the template in the editor.
 
                                 </p:dataTable>
                             </h:panelGrid>
-                            <p:commandButton value="EOD SETTLEMENT" action="#{simulatedCallManagedBean.sendEODSettlement()}" icon="ui-icon-check" update="@form" />
+                            <p:commandButton value="EOD SETTLEMENT" action="#{simulatedCallManagedBean.sendMEPSSettlement()}" icon="ui-icon-check" update="@form" />
 
                         </p:messages>
                     </p:panel>

@@ -30,49 +30,45 @@
                             <h:panelGrid columns="2" cellpadding="5">
                                 <c:if test="#{tellerCreditCardManagedBean.mainAccount != null}">
 
-                                    <div class="customer_main_container">
+                                    <h:panelGrid columns="2" cellpadding="5">
+                                        <p:dataTable value="#{tellerCreditCardManagedBean.activeCcas}" var="cca" >
+                                            <p:column headerText="Product" style="width: 15%">
+                                                <h:outputText value="#{cca.creditCardProduct.productName}" />
+                                            </p:column>
+                                            <p:column headerText="Credit Card Number" style="width: 18%">
+                                                <h:outputText value="#{cca.creditCardNum}" />
+                                            </p:column>
 
+                                            <p:column headerText="Credit Limit"  >
+                                                <h:outputText value="#{tellerCreditCardManagedBean.retrieveCreditLimit(cca)}" />
+                                            </p:column>
 
-                                        <h:panelGrid columns="2" cellpadding="5">
-                                            <p:dataTable value="#{tellerCreditCardManagedBean.activeCcas}" var="cca" >
-                                                <p:column headerText="Product" style="width: 15%">
-                                                    <h:outputText value="#{cca.creditCardProduct.productName}" />
-                                                </p:column>
-                                                <p:column headerText="Credit Card Number" style="width: 18%">
-                                                    <h:outputText value="#{cca.creditCardNum}" />
-                                                </p:column>
+                                            <p:column headerText="Current Month Spending">
+                                                <h:outputText value="#{cca.currentMonthAmount}" />
+                                            </p:column>
 
-                                                <p:column headerText="Credit Limit"  >
-                                                    <h:outputText value="#{tellerCreditCardManagedBean.retrieveCreditLimit(cca)}" />
-                                                </p:column>
+                                            <p:column headerText="Outstanding Balance">
+                                                <h:outputText value="#{tellerCreditCardManagedBean.displayOutstandingAmount(cca.outstandingAmount)}" />
+                                            </p:column>
 
-                                                <p:column headerText="Current Month Spending">
-                                                    <h:outputText value="#{cca.currentMonthAmount}" />
-                                                </p:column>
+                                            <p:column headerText="Status">
+                                                <h:outputText value="#{cca.cardStatus}" />
+                                            </p:column>
 
-                                                <p:column headerText="Outstanding Balance">
-                                                    <h:outputText value="#{tellerCreditCardManagedBean.displayOutstandingAmount(cca.outstandingAmount)}" />
-                                                </p:column>
+                                            <p:column headerText="Action" style="width: 17%">
+                                                <p:commandButton value="Delete" action="#{tellerCreditCardManagedBean.terminateCreditCard(cca)}" style="width:100%; margin-top:5px; height: 30px ">
+                                                    <p:confirm header="Confirmation" message="Are you sure you want to close your account?" icon="ui-icon-alert" />
+                                                    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                                                        <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                                                        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                                                    </p:confirmDialog>
+                                                </p:commandButton>
+                                            </p:column>
 
-                                                <p:column headerText="Status">
-                                                    <h:outputText value="#{cca.cardStatus}" />
-                                                </p:column>
+                                        </p:dataTable>
 
-                                                <p:column headerText="Action" style="width: 17%">
-                                                    <p:commandButton value="Delete" action="#{tellerCreditCardManagedBean.terminateCreditCard(cca)}" style="width:100%; margin-top:5px; height: 30px ">
-                                                        <p:confirm header="Confirmation" message="Are you sure you want to close your account?" icon="ui-icon-alert" />
-                                                        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
-                                                            <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
-                                                            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
-                                                        </p:confirmDialog>
-                                                    </p:commandButton>
-                                                </p:column>
+                                    </h:panelGrid>
 
-                                            </p:dataTable>
-
-                                        </h:panelGrid>
-
-                                    </div>
                                 </c:if>
 
                             </h:panelGrid>

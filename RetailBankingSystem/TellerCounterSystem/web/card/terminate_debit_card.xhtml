@@ -30,7 +30,6 @@
                             <h:panelGrid columns="2" cellpadding="5">
                                 <c:if test="#{tellerDebitCardManagedBean.mainAccount != null}">
 
-                                    <div class="customer_main_container">
                                         <h:panelGrid columns="2" cellpadding="5">
                                             <p:dataTable var="dca" value="#{tellerDebitCardManagedBean.activeDcas}">
                                                 <p:column headerText="Debit Card Number">
@@ -57,8 +56,6 @@
                                             </p:dataTable>
 
                                         </h:panelGrid>
-
-                                    </div>
 
 
                                 </c:if>
