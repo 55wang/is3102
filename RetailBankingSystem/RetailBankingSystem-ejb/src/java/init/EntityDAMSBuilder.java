@@ -888,6 +888,46 @@ public class EntityDAMSBuilder {
             return null;
         }
     }
+    
+    //For customer 0
+    private void initDepositAccount0() {
+
+        try {
+            MainAccount ma0 = mainAccountSessionBean.getMainAccountByUserId(ConstantUtils.DEMO_MAIN_ACCOUNT_USER_ID_0);
+            CustomerDepositAccount customAccount = new CustomerDepositAccount();
+            customAccount.setType(EnumUtils.DepositAccountType.CUSTOM);
+            customAccount.setStatus(EnumUtils.StatusType.ACTIVE);
+            customAccount.setProduct(depositProductSessionBean.getDepositProductByName(ConstantUtils.DEMO_CUSTOM_DEPOSIT_PRODUCT_NAME));
+            customAccount.setBalance(new BigDecimal(10000.0000));
+            customAccount.setMainAccount(ma0);
+
+            DepositAccount dp = customerDepositSessionBean.createAccount(customAccount);
+            initTransactions(dp);
+            initCheques(dp);
+            cardAcctSessionBean.createDebitAccount(customAccount);
+
+            CustomerDepositAccount savingAccount = new CustomerDepositAccount();
+            savingAccount.setType(EnumUtils.DepositAccountType.SAVING);
+            savingAccount.setStatus(EnumUtils.StatusType.ACTIVE);
+            savingAccount.setProduct(depositProductSessionBean.getDepositProductByName(ConstantUtils.DEMO_SAVING1_DEPOSIT_PRODUCT_NAME));
+            savingAccount.setBalance(new BigDecimal(20000.0000));
+            savingAccount.setMainAccount(ma0);
+            customerDepositSessionBean.createAccount(savingAccount);
+            cardAcctSessionBean.createDebitAccount(savingAccount);
+
+            CustomerDepositAccount currentAccount = new CustomerDepositAccount();
+            currentAccount.setType(EnumUtils.DepositAccountType.SAVING);
+            currentAccount.setStatus(EnumUtils.StatusType.ACTIVE);
+            currentAccount.setProduct(depositProductSessionBean.getDepositProductByName(ConstantUtils.DEMO_CURRENT_DEPOSIT_PRODUCT_NAME));
+            currentAccount.setBalance(new BigDecimal(10000.0000));
+            currentAccount.setMainAccount(ma0);
+            customerDepositSessionBean.createAccount(currentAccount);
+            cardAcctSessionBean.createDebitAccount(currentAccount);
+
+        } catch (DuplicateDepositAccountException | MainAccountNotExistException e) {
+            System.out.println("DuplicateDepositAccountException");
+        }
+    }
 
     //For customer 4
     private void initDepositAccount4() {
