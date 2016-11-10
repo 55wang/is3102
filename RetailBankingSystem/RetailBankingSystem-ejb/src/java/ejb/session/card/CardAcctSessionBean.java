@@ -46,10 +46,9 @@ public class CardAcctSessionBean implements CardAcctSessionBeanLocal {
     }
 
     @Override
-    public List<CreditCardAccount> updateListDemoPaidMPD() {
+    public List<CreditCardAccount> updateListDemoPaidMPD(Double paidAmount) {
         //set MPD = 0 and deduct outstanding
         //assume paid amount is $60
-        Double paidAmount = 60.0;
 
         //need to change, retrieve cca by accountId and deduct instead of all accounts
         List<CreditCardAccount> ccas = getListCreditCardAccountsByActiveOrFreezeCardStatus();
@@ -143,8 +142,10 @@ public class CardAcctSessionBean implements CardAcctSessionBeanLocal {
 
     @Override
     public Double addInterestToOutStandingAmount(CreditCardAccount cca) {
-        cca.setOutstandingAmount(cca.getOutstandingAmount() + cca.calculateCurrentMonthlyInterest());
-        updateCreditCardAccount(cca);
+        if (cca.calculateCurrentMonthlyInterest() >= 0) {
+            cca.setOutstandingAmount(cca.getOutstandingAmount() + cca.calculateCurrentMonthlyInterest());
+            updateCreditCardAccount(cca);
+        }
         return cca.getOutstandingAmount();
     }
 

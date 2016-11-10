@@ -34,7 +34,7 @@ public interface CardAcctSessionBeanLocal {
     public CreditCardAccount createCardAccount(CreditCardAccount cca);
     public CreditCardAccount updateCreditCardAccount(CreditCardAccount cca);
     public List<CreditCardAccount> updateListDemoPaidOutstandingAmountCcas();
-    public List<CreditCardAccount> updateListDemoPaidMPD();
+    public List<CreditCardAccount> updateListDemoPaidMPD(Double paidAmount);
     public List<CreditCardAccount> calculateDueCreditCardAccount();
     public CreditCardAccount updateCardAccountStatus(CreditCardAccount cca, EnumUtils.CardAccountStatus status);
     public CreditCardAccount updateCardAcctTransactionDailyLimit(CreditCardAccount cca, double newDailyLimit);

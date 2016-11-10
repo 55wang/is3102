@@ -69,18 +69,21 @@
                             <p:fieldset legend="Cut Off Trigger" style="margin-bottom:20px; border: 1px solid #ccc;">
                                 <h:panelGrid columns="2" cellpadding="5">
                                     <p:commandButton value="DEMO CUT OFF" action="#{cardViewCreditCardAccountManagedBean.demoCutOffTimer()}" icon="ui-icon-check" update="@form" />
-                                    <p:commandButton value="DEMO SEND E-STATEMENT" action="#{cardViewCreditCardAccountManagedBean.demoSendEStatement()}" icon="ui-icon-check" update="@form" />
+                                    <!--<p:commandButton value="DEMO SEND E-STATEMENT" action="#{cardViewCreditCardAccountManagedBean.demoSendEStatement()}" icon="ui-icon-check" update="@form" />-->
                                 </h:panelGrid>
                             </p:fieldset>
                             <p:fieldset legend="Payment Trigger" style="margin-bottom:20px; border: 1px solid #ccc;">
-                                <h:panelGrid columns="2" cellpadding="5">
-                                    <p:commandButton value="DEMO DUE DAY" action="#{cardViewCreditCardAccountManagedBean.demoDueDayTimer()}" icon="ui-icon-check" update="@form" />
+                                <h:panelGrid columns="1" cellpadding="5">
+                                    <h:inputText value="#{cardViewCreditCardAccountManagedBean.paidAmount}"></h:inputText>
                                     <p:commandButton value="DEMO PAID MPD ONLY" action="#{cardViewCreditCardAccountManagedBean.demoPaidMPD()}" icon="ui-icon-check" update="@form" />
+                                    <p:commandButton value="DEMO PAID FULL AMOUNT" action="#{cardViewCreditCardAccountManagedBean.demoPaidOutstandingAmount()}" icon="ui-icon-check" update="@form" />
+                                    
                                 </h:panelGrid>
                             </p:fieldset>
                             <p:fieldset legend="Due Day Trigger" style="margin-bottom:20px; border: 1px solid #ccc;">
                                 <h:panelGrid columns="2" cellpadding="5">
-                                    <p:commandButton value="DEMO PAID FULL AMOUNT" action="#{cardViewCreditCardAccountManagedBean.demoPaidOutstandingAmount()}" icon="ui-icon-check" update="@form" />
+                                    <p:commandButton value="DEMO DUE DAY" action="#{cardViewCreditCardAccountManagedBean.demoDueDayTimer()}" icon="ui-icon-check" update="@form" />
+
                                 </h:panelGrid>
                             </p:fieldset>
                         </p:messages>
