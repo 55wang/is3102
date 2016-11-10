@@ -202,10 +202,10 @@ public class ViewCustomerOverviewManagedBean implements Serializable {
         bankTotalLoanAcct = bizIntelligenceSessionBean.getBankTotalNewLoanAcct(startDate, endDate);
         bankTotalExecutedPortfolio = bizIntelligenceSessionBean.getBankNewExecutedPortfolio(startDate, endDate);
 
-        series1.set("Deposit Service", bankTotalDepositAcct);
-        series2.set("Card Service", bankTotalCardAcct);
-        series3.set("Loan Service", bankTotalLoanAcct);
-        series4.set("Portfolio Service", bankTotalExecutedPortfolio);
+        series1.set("", bankTotalDepositAcct);
+        series2.set("", bankTotalCardAcct);
+        series3.set("", bankTotalLoanAcct);
+        series4.set("", bankTotalExecutedPortfolio);
 
         model.addSeries(series1);
         model.addSeries(series2);

@@ -20,31 +20,30 @@ and open the template in the editor.
         <h:body>
             <em:customerHeader context="main" userName="Log in"></em:customerHeader>
             <em:customerNavBar context="main" mainPage="mainDeposit"></em:customerNavBar>
-
-            <div style="margin-top: 200px;margin-left: 70px;position:absolute">
+            <div class="customer_main_container">
                 <h:form>
-                    <h1>Merlion Unique Account</h1>
-                    <p:growl id="msgs" showDetail="true" />
-
                     <c:forEach items="#{displayCustomDepositProductManagedBean.customDepositProducts}" var="customProduct">
-                        <c:forEach items="#{customProduct.baseInterest}" var="normalInterest">
-                            <p:panel id="base" header="#{normalInterest.getName()}" >
+                        <p:panel header="Merlion Unique Account">
+                            <p:growl id="msgs" showDetail="true" />
+                            <c:forEach items="#{customProduct.baseInterest}" var="normalInterest">
+                                <h1> #{normalInterest.getName()}</h1>
                                 <h:outputText value="#{normalInterest.getDescription()}"/>
-                            </p:panel>
-                        </c:forEach>
-                        <c:forEach items="#{customProduct.conditionalInterest}" var="conditionlInterest">
-                            <p:panel id="bonus1" header="#{conditionlInterest.name}" >
+
+                            </c:forEach>
+                            <c:forEach items="#{customProduct.conditionalInterest}" var="conditionlInterest">
+                                <h1> #{conditionlInterest.name} </h1>
                                 <h:outputText value="#{conditionlInterest.description}" />
-                            </p:panel>
-                        </c:forEach>
+                            </c:forEach>
+                            <div style="margin-top: 30px">
+                                <button style="margin-left: 130px" type="button" onclick="window.location.href = 'apply_deposit_account.xhtml'">New Customer Apply</button>
+                                <button style="margin-left: 50px" type="button" onclick="window.location.href = '../common/customer_login.xhtml'">Existing customer Login</button>
+                            </div>
+                        </p:panel>
                     </c:forEach>
-                    <div style="margin-top: 30px">
-                        <button style="margin-left: 130px" type="button" onclick="window.location.href = 'apply_deposit_account.xhtml'">New Customer Apply</button>
-                        <button style="margin-left: 50px" type="button" onclick="window.location.href = '../common/customer_login.xhtml'">Existing customer Login</button>
-                    </div>
                 </h:form>
             </div>
         </h:body>
+        <em:publicity></em:publicity>
         <em:adsBanner advertismentTitle="#{customerHomeManagedBean.adsBannerCampaign.adsTitle}" advertismentType="#{customerHomeManagedBean.adsBannerCampaign.adsType}" advertismentInfo="#{customerHomeManagedBean.adsBannerCampaign.adsInfo}" extraAdvertismentInfo="#{customerHomeManagedBean.adsBannerCampaign.adsExtraInfo}" landingPageUrl="https://localhost:8181/InternetBankingSystem/landing_page/#{customerHomeManagedBean.adsBannerCampaign.landingPageName}" />
         <em:customerMainFooter></em:customerMainFooter>
     </f:view>
