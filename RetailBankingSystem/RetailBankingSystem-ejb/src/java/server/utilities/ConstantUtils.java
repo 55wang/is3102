@@ -48,6 +48,7 @@ public class ConstantUtils {
     
     public static final String DEMO_LOAN_COMMON_INTEREST_NAME = "SIBOR Interest";
     
+    public static final String DEMO_MAIN_ACCOUNT_USER_ID_0 = "c7654321";
     public static final String DEMO_MAIN_ACCOUNT_USER_ID_1 = "c1234567";
     public static final String DEMO_MAIN_ACCOUNT_USER_ID_2 = "c0000002";
     public static final String DEMO_MAIN_ACCOUNT_USER_ID_3 = "c0000003";

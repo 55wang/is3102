@@ -252,7 +252,7 @@ public class CustomerDepositSessionBean implements CustomerDepositSessionBeanLoc
         t.setActionType(EnumUtils.TransactionType.TRANSFER);
         t.setAmount(amount);
         t.setCredit(Boolean.TRUE);
-        t.setFromAccount(account);
+        t.setToAccount(account);
         t.setReferenceNumber(generateReferenceNumber());
         account.addTransaction(t);
         account.addBalance(amount);
