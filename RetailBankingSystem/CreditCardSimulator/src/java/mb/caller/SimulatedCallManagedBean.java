@@ -7,6 +7,7 @@ package mb.caller;
 
 import ejb.session.card.CardTransactionSessionBeanLocal;
 import entity.VisaCardTransaction;
+import init.CardEntityBuilderBean;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,32 +35,35 @@ import utils.NfcDevice;
 @Named(value = "simulatedCallManagedBean")
 @ViewScoped
 public class SimulatedCallManagedBean implements Serializable {
+    
+    @EJB
+    CardEntityBuilderBean cardEntityBuilderBean;
+    @EJB
+    CardTransactionSessionBeanLocal cardTransactionSessionBean;
 
+    private String name = "Credit Card Simulator - Send Card Transaction";
     private String transactionAmount;
     private String creditCardNumber;
     private String referenceNum;
     private String requestBankCode;
+    private final String AUTHORIZATION_PATH = "https://localhost:8181/StaffInternalSystem/rest/credit_card_authorization";
+    private final String CLEARING_PATH = "https://localhost:8181/StaffInternalSystem/rest/credit_card_clearing";
+    private final String SETTLEMENT_PATH = "https://localhost:8181/StaffInternalSystem/rest/credit_card_settlement";
 
+    private List<VisaCardTransaction> vcts;
+    
     /**
      * Creates a new instance of SimulatedCallManagedBean
      */
     public SimulatedCallManagedBean() {
     }
-
-    private final String ipAddress = "localhost";
-    private final String AUTHORIZATION_PATH = "https://" + ipAddress +":8181/StaffInternalSystem/rest/credit_card_authorization";
-    private final String CLEARING_PATH = "https://" + ipAddress +":8181/StaffInternalSystem/rest/credit_card_clearing";
-    private final String SETTLEMENT_PATH = "https://" + ipAddress +":8181/StaffInternalSystem/rest/credit_card_settlement";
-
-    private List<VisaCardTransaction> vcts;
-
-    @EJB
-    CardTransactionSessionBeanLocal cardTransactionSessionBean;
+    
 
     @PostConstruct
     public void init() {
-        System.out.println("SimulatedCallManagedBean");
-        vcts = cardTransactionSessionBean.getListVisaCardTransactions();
+        System.out.println("SimulatedCallManagedBean @PostConstruct");
+        cardEntityBuilderBean.init();
+        setVcts(cardTransactionSessionBean.getListVisaCardTransactions());
     }
 
     public void sendEODSettlement() {
@@ -84,7 +88,7 @@ public class SimulatedCallManagedBean implements Serializable {
         form.param("visaIds", listIds.toString());
 
         Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(SETTLEMENT_PATH);
+        WebTarget target = client.target(getSETTLEMENT_PATH());
 
         // This is the response
         JsonObject jsonString = target.request(MediaType.APPLICATION_JSON).post(Entity.entity(form, MediaType.APPLICATION_FORM_URLENCODED), JsonObject.class);
@@ -127,7 +131,7 @@ public class SimulatedCallManagedBean implements Serializable {
             System.out.println("Requesting amount 600");
             // Start calling
             Client client = ClientBuilder.newClient();
-            WebTarget target = client.target(AUTHORIZATION_PATH);
+            WebTarget target = client.target(getAUTHORIZATION_PATH());
 
             // This is the response
             JsonObject jsonString = target.request(MediaType.APPLICATION_JSON).post(Entity.entity(form, MediaType.APPLICATION_FORM_URLENCODED), JsonObject.class);
@@ -157,7 +161,7 @@ public class SimulatedCallManagedBean implements Serializable {
 
             // Start calling
             Client client = ClientBuilder.newClient();
-            WebTarget target = client.target(AUTHORIZATION_PATH);
+            WebTarget target = client.target(getAUTHORIZATION_PATH());
 
             // This is the response
             JsonObject jsonString = target.request(MediaType.APPLICATION_JSON).post(Entity.entity(form, MediaType.APPLICATION_FORM_URLENCODED), JsonObject.class);
@@ -172,7 +176,7 @@ public class SimulatedCallManagedBean implements Serializable {
     }
 
     public void sendSuccessAuthorization() {
-        cardTransactionSessionBean.sendSuccessAuthorization(transactionAmount, creditCardNumber, referenceNum, requestBankCode);
+        cardTransactionSessionBean.sendSuccessAuthorization(getTransactionAmount(), getCreditCardNumber(), getReferenceNum(), getRequestBankCode());
     }
 
     private void sendSuccessClearing(String returnCode, String aCode) {
@@ -184,18 +188,18 @@ public class SimulatedCallManagedBean implements Serializable {
             form.param("token", returnCode);
             form.param("aCode", aCode);
             form.param("ccNumber", ccNum);
-            form.param("ccAmount", transactionAmount); // 500 is daily limit and 1000 for monthly limist, current out standing is 800
+            form.param("ccAmount", getTransactionAmount()); // 500 is daily limit and 1000 for monthly limist, current out standing is 800
             form.param("ccTcode", "MDS");
             form.param("ccDescription", "Test Success Clearing");
 
             System.out.println("Calling bank to check credit card transaction");
             System.out.println("Credit Card number " + ccNum);
-            System.out.println("Requesting amount " + transactionAmount);
+            System.out.println("Requesting amount " + getTransactionAmount());
             System.out.println("Requesting with token:" + returnCode);
 
             // Start calling
             Client client = ClientBuilder.newClient();
-            WebTarget target = client.target(CLEARING_PATH);
+            WebTarget target = client.target(getCLEARING_PATH());
 
             // This is the response
             JsonObject jsonString = target.request(MediaType.APPLICATION_JSON).post(Entity.entity(form, MediaType.APPLICATION_FORM_URLENCODED), JsonObject.class);
@@ -216,7 +220,7 @@ public class SimulatedCallManagedBean implements Serializable {
         List<String> allString = new ArrayList<>();
         Client client = ClientBuilder.newClient();
 
-        WebTarget target = client.target(AUTHORIZATION_PATH + "?accountNumber=123456789");// Mapped by @QueryParam("accountNumber") 
+        WebTarget target = client.target(getAUTHORIZATION_PATH() + "?accountNumber=123456789");// Mapped by @QueryParam("accountNumber") 
 
         // @Get request
         JsonArray response = target.request(MediaType.APPLICATION_JSON).get(JsonArray.class);
@@ -234,7 +238,7 @@ public class SimulatedCallManagedBean implements Serializable {
 
         // Start calling
         Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(AUTHORIZATION_PATH);
+        WebTarget target = client.target(getAUTHORIZATION_PATH());
 
         // This is the response
         JsonObject jsonString = target.request(MediaType.APPLICATION_JSON).post(Entity.entity(form, MediaType.APPLICATION_FORM_URLENCODED), JsonObject.class);
@@ -308,6 +312,41 @@ public class SimulatedCallManagedBean implements Serializable {
      */
     public void setRequestBankCode(String requestBankCode) {
         this.requestBankCode = requestBankCode;
+    }
+
+    /**
+     * @return the AUTHORIZATION_PATH
+     */
+    public String getAUTHORIZATION_PATH() {
+        return AUTHORIZATION_PATH;
+    }
+
+    /**
+     * @return the CLEARING_PATH
+     */
+    public String getCLEARING_PATH() {
+        return CLEARING_PATH;
+    }
+
+    /**
+     * @return the SETTLEMENT_PATH
+     */
+    public String getSETTLEMENT_PATH() {
+        return SETTLEMENT_PATH;
+    }
+
+    /**
+     * @return the name
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * @param name the name to set
+     */
+    public void setName(String name) {
+        this.name = name;
     }
 
 }
