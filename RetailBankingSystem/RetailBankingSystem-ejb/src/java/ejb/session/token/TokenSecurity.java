@@ -27,8 +27,8 @@ public class TokenSecurity implements TokenSecurityLocal {
            
         System.out.println(tokens.toString());
 
-//        return tokens.stream().anyMatch((token) -> (token.contains(tokenString)));
-        return true;
+        return tokens.stream().anyMatch((token) -> (token.contains(tokenString)));
+//        return true;
     }
 
     // Add business logic below. (Right-click in editor and choose
