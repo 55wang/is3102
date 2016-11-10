@@ -75,8 +75,18 @@ public class DeisgnInvestmentPlanManagedBean implements Serializable{
     public void init() {
         requestPlanID = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("plan");
         requestPlan = investmentPlanSessionBean.getInvestmentPlanById(Long.parseLong(requestPlanID));
-        requestPlan = designInvestmentPlanSessionBean.generateSuggestedInvestmentPlan(requestPlan);
-        suggestedFinancialInstruments = requestPlan.getSuggestedFinancialInstruments();
+            
+        try{
+            suggestedFinancialInstruments = requestPlan.getSuggestedFinancialInstruments(); 
+            if(suggestedFinancialInstruments.isEmpty()){
+                requestPlan = designInvestmentPlanSessionBean.generateSuggestedInvestmentPlan(requestPlan); 
+                suggestedFinancialInstruments = requestPlan.getSuggestedFinancialInstruments(); 
+            }
+        }catch(Exception ex){
+            requestPlan = designInvestmentPlanSessionBean.generateSuggestedInvestmentPlan(requestPlan); 
+            suggestedFinancialInstruments = requestPlan.getSuggestedFinancialInstruments(); 
+        }
+      
         wms = requestPlan.getWealthManagementSubscriber();   
         toleranceScore = wms.getRiskToleranceScore();
         updateRiskLevel();

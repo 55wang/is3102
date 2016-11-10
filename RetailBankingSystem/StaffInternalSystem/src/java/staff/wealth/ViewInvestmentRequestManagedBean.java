@@ -90,26 +90,26 @@ public class ViewInvestmentRequestManagedBean implements Serializable {
         //change to execute status
         //create portfolio 
         WealthManagementSubscriber wms = ip.getWealthManagementSubscriber();
-        wms.setMonthlyAdvisoryFee(calculateAccumulatedAdvisoryFee(wms));
-        wms.setAdvisoryFeeClearDate(new Date());
-        wms.setAccumulatedAdvisoryFee(Double.NaN);
+        
         Portfolio p = new Portfolio();
         p.setExecutedInvestmentPlan(ip);
         p.setWealthManagementSubscriber(wms);
         portfolioSessionBean.createPortfolio(p);
 
         ip.setStatus(EnumUtils.InvestmentPlanStatus.EXECUTED);
+        ip.setExecutionDate(new Date());
         ip.setPortfolio(p);
-        investmentPlanSessionBean.updateInvestmentPlan(ip);
+        ip=investmentPlanSessionBean.updateInvestmentPlan(ip);
         
-            
+        wms.setAccumulatedAdvisoryFee(calculateAccumulatedAdvisoryFee(wms));
+        wms.setMonthlyAdvisoryFee(calculateCharge(wms));
+        wms.setAdvisoryFeeClearDate(new Date());
         wealthManegementSubscriberSessionBean.updateWealthManagementSubscriber(wms);
-
+        
         RedirectUtils.redirect("staff-update-executed-investment-plan.xhtml?port=" + p.getId());
     }
     
-    private Double calculateCharge(InvestmentPlan ip){
-        WealthManagementSubscriber wms = ip.getWealthManagementSubscriber();
+    private Double calculateCharge(WealthManagementSubscriber wms){
         List<InvestmentPlan> ips = wms.getInvestmentPlans();
         Integer totalInvest = 0;
         for(int i = 0; i < ips.size(); i++){
@@ -117,7 +117,7 @@ public class ViewInvestmentRequestManagedBean implements Serializable {
                 totalInvest += ips.get(i).getAmountOfInvestment();
             }
         }
-        return (totalInvest + ip.getAmountOfInvestment() -10000)*0.0025*30/365;
+        return (totalInvest -10000)*0.0025*30/365;
     }
     
     private Double calculateAccumulatedAdvisoryFee(WealthManagementSubscriber wms){
