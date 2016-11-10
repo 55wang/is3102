@@ -7,11 +7,10 @@ package landing;
 
 import ejb.session.cms.CustomerProfileSessionBeanLocal;
 import ejb.session.crm.MarketingCampaignSessionBeanLocal;
-import entity.crm.CustomerGroup;
 import entity.crm.MarketingCampaign;
 import entity.customer.Customer;
 import java.io.Serializable;
-import javax.annotation.PostConstruct;
+import java.util.List;
 import javax.ejb.EJB;
 import utils.SessionUtils;
 
@@ -36,12 +35,16 @@ public abstract class MarketingCampaignAbstractBean implements Serializable {
             existingCustomer = customerProfileSessionBean.getCustomerByUserID(SessionUtils.getUserName());
             System.out.println("existingCustomer: " + existingCustomer.getFullName());
 
-            for (CustomerGroup cg : existingCustomer.getCustomerGroups()) {
-                for (MarketingCampaign mc : cg.getMarketingCampaigns()) {
-                    if (landingURL.equals(mc.getLandingPageName())) {
-                        addViewCount(mc);
-                    }
-                }
+//            for (CustomerGroup cg : existingCustomer.getCustomerGroups()) {
+//                for (MarketingCampaign mc : cg.getMarketingCampaigns()) {
+//                    if (landingURL.equals(mc.getLandingPageName())) {
+//                        addViewCount(mc);
+//                    }
+//                }
+//            }
+            List<MarketingCampaign> mcs = marketingCampaignSessionBean.getListMarketingCampaigns();
+            for (MarketingCampaign mc : mcs) {
+                addViewCount(mc);
             }
 
         } catch (Exception ex) {

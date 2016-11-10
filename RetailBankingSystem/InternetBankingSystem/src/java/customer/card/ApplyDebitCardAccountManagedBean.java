@@ -59,7 +59,7 @@ public class ApplyDebitCardAccountManagedBean implements Serializable {
 
     public void applyDebitCard() {
         if (!agreedTerm) {
-            MessageUtils.displayError("Your must agree to the terms first!");
+            MessageUtils.displayError("Please read and agree to the Terms and Conditions first!");
             return;
         }
  

@@ -38,6 +38,8 @@ import server.utilities.CommonHelper;
 import util.exception.cms.CustomerNotExistException;
 import util.exception.common.DuplicateMainAccountExistException;
 import util.exception.common.UpdateMainAccountException;
+import utils.JSUtils;
+import utils.MessageUtils;
 import utils.SessionUtils;
 
 /**
@@ -80,6 +82,7 @@ public class NewCardManagedBean implements Serializable {
     private Customer customer;
     private Customer existingCustomer;
     private CreditCardAccount cca;
+    private Boolean agreeTerm = false;
 
     private List<String> productNameOptions = new ArrayList<>();
 
@@ -133,6 +136,14 @@ public class NewCardManagedBean implements Serializable {
 
         }
 
+    }
+
+    public void goToNext() {
+        if (!agreeTerm) {
+            MessageUtils.displayError("Please read and agree to the Terms and Conditions first!");
+        }else {
+            JSUtils.callJSMethod("PF('myWizard').next();");
+        }
     }
 
     public NewCardManagedBean() {
@@ -599,5 +610,19 @@ public class NewCardManagedBean implements Serializable {
 
     public void setSelectedMC(String selectedMC) {
         this.selectedMC = selectedMC;
+    }
+
+    /**
+     * @return the agreeTerm
+     */
+    public Boolean getAgreeTerm() {
+        return agreeTerm;
+    }
+
+    /**
+     * @param agreeTerm the agreeTerm to set
+     */
+    public void setAgreeTerm(Boolean agreeTerm) {
+        this.agreeTerm = agreeTerm;
     }
 }

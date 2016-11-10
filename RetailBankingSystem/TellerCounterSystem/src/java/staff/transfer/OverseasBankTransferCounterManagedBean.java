@@ -142,11 +142,13 @@ public class OverseasBankTransferCounterManagedBean implements Serializable {
         tr.setFromAccount(da);
         tr.setType(EnumUtils.PayeeType.OVERSEAS);
         tr.setActionType(EnumUtils.TransactionType.TRANSFER);
-        webserviceBean.transferSWIFT(tr);
-        da.removeBalance(getAmount());
-        depositBean.updateAccount(da);
+        transferBean.createTransferRecord(tr);
+        depositBean.transferFromAccount(da, amount);
         
-        } catch (DepositAccountNotFoundException | UpdateDepositAccountException e) {
+        webserviceBean.transferSWIFT(tr);
+        
+        
+        } catch (DepositAccountNotFoundException e) {
             System.out.println("DepositAccountNotFoundException | UpdateDepositAccountException OverseasBankTransferCounterManagedBean transfer()");
             MessageUtils.displayError(ConstantUtils.TRANSFER_FAILED);
         }

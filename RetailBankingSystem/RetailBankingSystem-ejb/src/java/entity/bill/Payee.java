@@ -46,6 +46,11 @@ public class Payee implements Serializable {
     // mapping
     @ManyToOne(cascade = CascadeType.MERGE)
     private MainAccount mainAccount;
+
+    @Override
+    public String toString() {
+        return "Payee{" + "id=" + id + ", createDate=" + createDate + ", swiftCode=" + swiftCode + ", bankCode=" + bankCode + ", branchCode=" + branchCode + ", bankAddress=" + bankAddress + ", name=" + name + ", type=" + type + ", accountNumber=" + accountNumber + ", fromName=" + fromName + ", myInitial=" + myInitial + ", mainAccount=" + mainAccount + '}';
+    }
     
     // Getters and setters
     public Long getId() {

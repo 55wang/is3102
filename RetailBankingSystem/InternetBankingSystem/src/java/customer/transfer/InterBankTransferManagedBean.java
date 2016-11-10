@@ -112,7 +112,7 @@ public class InterBankTransferManagedBean implements Serializable {
                 return;
             }
 
-            BigDecimal currentTransferLimit = new BigDecimal(transferLimitLeft);
+            BigDecimal currentTransferLimit = new BigDecimal(getTransferLimitLeft());
             System.out.println(currentTransferLimit);
             System.out.println(amount);
             System.out.println(currentTransferLimit.compareTo(amount));
@@ -139,6 +139,7 @@ public class InterBankTransferManagedBean implements Serializable {
                 }
             } else {
                 payee = transferBean.getPayeeById(Long.parseLong(payeeId));
+                System.out.println(payee);
                 transferClearing();
                 JSUtils.callJSMethod("PF('myWizard').next()");
                 MessageUtils.displayInfo(ConstantUtils.TRANSFER_SUCCESS);
@@ -195,7 +196,6 @@ public class InterBankTransferManagedBean implements Serializable {
 
     private void transferClearing() {
         try {
-
             DepositAccount da = depositBean.getAccountFromId(fromAccountNo);
             System.out.println("----------------SACH transfer clearing----------------");
             TransferRecord tr = new TransferRecord();
@@ -211,14 +211,16 @@ public class InterBankTransferManagedBean implements Serializable {
             tr.setFromAccount(da);
             tr.setType(EnumUtils.PayeeType.LOCAL);
             tr.setActionType(EnumUtils.TransactionType.TRANSFER);
+            transferBean.createTransferRecord(tr);
+            
+            depositBean.transferFromAccount(da, amount);
+            calculateTransferLimits();
+            
             if (transferMethod.equals("FAST")) {
                 webserviceBean.transferClearingFAST(tr);
             } else {
                 webserviceBean.transferClearingSACH(tr);
             }
-            depositBean.transferFromAccount(da, amount);
-            calculateTransferLimits();
-
         } catch (DepositAccountNotFoundException e) {
             MessageUtils.displayError(ConstantUtils.TRANSFER_FAILED);
         }
@@ -227,7 +229,7 @@ public class InterBankTransferManagedBean implements Serializable {
     private void calculateTransferLimits() {
         BigDecimal todayTransferAmount = transferBean.getTodayBankTransferAmount(ma, EnumUtils.PayeeType.LOCAL);
         BigDecimal currentTransferLimit = new BigDecimal(ma.getTransferLimits().getDailyIntraBankLimit().toString());
-        transferLimitLeft = currentTransferLimit.subtract(todayTransferAmount).toString();
+        setTransferLimitLeft(currentTransferLimit.subtract(todayTransferAmount).toString());
     }
 
     /**

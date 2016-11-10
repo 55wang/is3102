@@ -92,10 +92,12 @@ public class MobileInterBankTransferService {
             tr.setFromAccount(da);
             tr.setType(EnumUtils.PayeeType.LOCAL);
             tr.setActionType(EnumUtils.TransactionType.TRANSFER);
+            transferBean.createTransferRecord(tr);
+            depositBean.transferFromAccount(da, amount);
 
             System.out.println("FAST transfer clearing");
             webserviceBean.transferClearingFAST(tr);
-            depositBean.transferFromAccount(da, amount);
+            
 
             JSONObject jo = new JSONObject();
             TransactionRecord result = depositBean.latestTransactionFromAccountNumber(fromAccountNumber);

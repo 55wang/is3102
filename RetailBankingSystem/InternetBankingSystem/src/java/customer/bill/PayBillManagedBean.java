@@ -6,6 +6,7 @@
 package customer.bill;
 
 import ejb.session.bill.BillSessionBeanLocal;
+import ejb.session.bill.TransferSessionBeanLocal;
 import ejb.session.common.OTPSessionBeanLocal;
 import ejb.session.dams.CustomerDepositSessionBeanLocal;
 import ejb.session.mainaccount.MainAccountSessionBeanLocal;
@@ -46,6 +47,8 @@ public class PayBillManagedBean implements Serializable {
     private MainAccountSessionBeanLocal mainAccountSessionBean;
     @EJB
     private BillSessionBeanLocal billBean;
+    @EJB
+    private TransferSessionBeanLocal transferBean;
     @EJB
     private CustomerDepositSessionBeanLocal depositBean;
     @EJB
@@ -150,11 +153,11 @@ public class PayBillManagedBean implements Serializable {
         btr.setShortCode(bo.getOrganization().getShortCode());
         btr.setReferenceNumber(GenerateAccountAndCCNumber.generateReferenceNumber());
         btr.setActionType(EnumUtils.TransactionType.BILL);
+        transferBean.createBillTransferRecord(btr);
+        depositBean.payBillFromAccount(da, amount);
         webserviceBean.billingClearingSACH(btr);
-        da.removeBalance(amount);
-        depositBean.updateAccount(da);
 
-        } catch (DepositAccountNotFoundException | UpdateDepositAccountException e) {
+        } catch (DepositAccountNotFoundException e) {
             System.out.println("DepositAccountNotFoundException | UpdateDepositAccountException PayBillMangedBean.java transfer()");
             MessageUtils.displayError(ConstantUtils.TRANSFER_FAILED);
         }
