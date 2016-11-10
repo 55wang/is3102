@@ -50,7 +50,7 @@ public class MobilePayOwnCCNormalService {
         if (result.equals("SUCCESS")) {
             TransactionRecord record = depositBean.latestTransactionFromAccountNumber(fromAccountNumber);
             TransferDTO t = new TransferDTO();
-            t.setTransferAmount(record.getAmount().setScale(2, RoundingMode.UP).toString());
+            t.setTransferAmount(record.getAmount().toString());
             t.setReferenceNumber(record.getReferenceNumber());
             t.setTransferType(record.getActionType().toString());
             t.setTransferDate(DateUtils.readableDate(record.getCreationDate()));

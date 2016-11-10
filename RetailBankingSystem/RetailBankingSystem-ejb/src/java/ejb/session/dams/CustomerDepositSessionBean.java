@@ -456,7 +456,7 @@ public class CustomerDepositSessionBean implements CustomerDepositSessionBeanLoc
 
     @Override
     public DepositAccount creditInterestAccount(DepositAccount account) {
-        BigDecimal interestAmount = account.getCumulatedInterest().getCummulativeAmount().setScale(20, RoundingMode.HALF_UP);
+        BigDecimal interestAmount = account.getCumulatedInterest().getCummulativeAmount();
         System.out.println("Interest Amount: " + interestAmount + " and greater than 0.001: " + interestAmount.compareTo(new BigDecimal(0.001)));
         if (interestAmount.compareTo(new BigDecimal(0.001)) < 0) {
             return null;

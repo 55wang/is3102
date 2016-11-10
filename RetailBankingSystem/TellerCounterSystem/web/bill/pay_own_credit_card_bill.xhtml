@@ -31,7 +31,7 @@
                                     
                                     <h:outputText value="Deposit Account to transfer from: " />
                                     <p:selectOneMenu value="#{payOwnBankCreditCardBillCounterManagedBean.fromAccountNo}" rendered="true" required="true">
-                                        <f:selectItems value="#{payOwnBankCreditCardBillCounterManagedBean.depositAccounts}" var="a" itemValue="#{a.accountNumber}" itemLabel="#{a.product.name} #{a.accountNumber} #{a.balance.setScale(2)}" />
+                                        <f:selectItems value="#{payOwnBankCreditCardBillCounterManagedBean.depositAccounts}" var="a" itemValue="#{a.accountNumber}" itemLabel="#{a.product.name} #{a.accountNumber} #{a.balance}" />
                                     </p:selectOneMenu>
                                     <h:outputText value="Credit Card Account to transfer to: " />
                                     <p:selectOneMenu value="#{payOwnBankCreditCardBillCounterManagedBean.toCreditCardNo}" rendered="true" required="true">
