@@ -53,7 +53,7 @@ public class MobilePayOwnCCService {
         if (result.equals("SUCCESS")) {
             TransactionRecord record = mobileBean.latestTransactionFromMobileNumber(mobileNumber);
             TransferDTO t = new TransferDTO();
-            t.setTransferAmount(record.getAmount().toString());
+            t.setTransferAmount(record.getAmount().setScale(2, RoundingMode.UP).toString());
             t.setReferenceNumber(record.getReferenceNumber());
             t.setTransferType(record.getActionType().toString());
             t.setTransferDate(DateUtils.readableDate(record.getCreationDate()));
