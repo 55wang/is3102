@@ -437,7 +437,7 @@ and open the template in the editor.
 
 .bi-container .date-holder .date-icon img{
     padding-left: 25%;
-    width:63%;
+    width:33%;
     height:63%;
 }
 
@@ -636,7 +636,7 @@ and open the template in the editor.
 
 .crm-container .date-holder .date-icon img{
     padding-left: 25%;
-    width:63%;
+    width:33%;
     height:63%;
 }
 
@@ -912,3 +912,17 @@ and open the template in the editor.
     cursor: pointer;
     background: #c00;
 }
+
+.ui-selectcheckboxmenu-header .ui-selectcheckboxmenu-close{
+    background: #c00 !important;
+}
+
+.ui-selectcheckboxmenu .ui-selectcheckboxmenu-trigger{
+    background: #c00 !important;
+}
+
+.ui-chkbox .ui-chkbox-box .ui-icon
+{
+    background-image: url("https://download.jqueryui.com/themeroller/images/ui-icons_c00_256x240.png") !important;
+}
+
