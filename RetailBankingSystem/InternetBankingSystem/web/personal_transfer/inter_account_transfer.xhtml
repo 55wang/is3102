@@ -32,11 +32,11 @@ and open the template in the editor.
                                     <h:panelGrid columns="2" cellpadding="5">
                                         <h:outputText value="Choose Your Account to transfer from: " />
                                         <p:selectOneMenu value="#{interAccountTransferManagedBean.fromAccountNo}" rendered="true" required="true">
-                                            <f:selectItems value="#{interAccountTransferManagedBean.accounts}" var="a" itemValue="#{a.accountNumber}" itemLabel="#{a.product.name} #{a.accountNumber} #{a.balance.setScale(2)}" />
+                                            <f:selectItems value="#{interAccountTransferManagedBean.accounts}" var="a" itemValue="#{a.accountNumber}" itemLabel="#{a.product.name} #{a.accountNumber} #{a.balance}" />
                                         </p:selectOneMenu>
                                         <h:outputText value="Choose Your Account to transfer to " />
                                         <p:selectOneMenu value="#{interAccountTransferManagedBean.toAccountNo}" rendered="true" required="true">
-                                            <f:selectItems value="#{interAccountTransferManagedBean.accounts}" var="a" itemValue="#{a.accountNumber}" itemLabel="#{a.product.name} #{a.accountNumber} #{a.balance.setScale(2)}" />
+                                            <f:selectItems value="#{interAccountTransferManagedBean.accounts}" var="a" itemValue="#{a.accountNumber}" itemLabel="#{a.product.name} #{a.accountNumber} #{a.balance}" />
                                         </p:selectOneMenu>
                                         <p:outputLabel for="amount" value="Amount S$: " />
                                         <p:inputText id="amount" value="#{interAccountTransferManagedBean.amount}"/>
