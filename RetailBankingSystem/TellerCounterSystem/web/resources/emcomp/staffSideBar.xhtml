@@ -84,9 +84,9 @@
                         <li class="side-menu-item #{cc.attrs.side == 'terminateCredit' ? 'active' : ''}">
                             <h:link outcome="terminate_credit_card" value="Credit Card" />
                         </li>
-                        
-                        
-                        
+                        <li class="side-menu-item #{cc.attrs.side == 'eStatement' ? 'active' : ''}">
+                            <h:link outcome="e_statement" value="E Statement" />
+                        </li>
                     </c:if>
 
                     <c:if test="#{cc.attrs.top == 'bill'}">
