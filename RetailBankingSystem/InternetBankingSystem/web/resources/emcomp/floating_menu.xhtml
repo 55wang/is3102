@@ -52,9 +52,9 @@ and open the template in the editor.
                                     </h:commandButton>
                                     <h:commandButton style="margin-top: 20px;margin-left: 20px;width: 180px;height: 60px" value="Contact us" />
                     --> 
-                    <div style="margin-top:60px;margin-left: 40px"><h2><a href="https://localhost:8181/InternetBankingSystem/common/customer_login.xhtml" style="text-decoration: none">Login</a></h2>
+                    <div style="margin-top:60px;margin-left: 40px"><h2><a href="https://#{customerInfoManagedBean.IP_ADDRESS}:8181/InternetBankingSystem/common/customer_login.xhtml" style="text-decoration: none">Login</a></h2>
                         <c:if test="#{cc.attrs.context == 'credit'}">
-                            <h2><a href="https://localhost:8181/InternetBankingSystem/main_cards/apply_card_account.xhtml" style="text-decoration: none">Apply now</a></h2>
+                            <h2><a href="https://#{customerInfoManagedBean.IP_ADDRESS}:8181/InternetBankingSystem/main_cards/apply_card_account.xhtml" style="text-decoration: none">Apply now</a></h2>
                         </c:if>
                         <h2><a href="#" style="text-decoration: none">Contact us</a></h2>
                     </div>

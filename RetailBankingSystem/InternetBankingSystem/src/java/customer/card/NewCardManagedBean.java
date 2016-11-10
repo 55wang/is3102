@@ -35,6 +35,7 @@ import server.utilities.CommonUtils;
 import utils.RedirectUtils;
 import server.utilities.EnumUtils.*;
 import server.utilities.CommonHelper;
+import server.utilities.ConstantUtils;
 import util.exception.cms.CustomerNotExistException;
 import util.exception.common.DuplicateMainAccountExistException;
 import util.exception.common.UpdateMainAccountException;
@@ -238,7 +239,7 @@ public class NewCardManagedBean implements Serializable {
             }
         }
 
-        RedirectUtils.redirect("https://localhost:8181/InternetBankingSystem/personal_cards/credit_card_summary.xhtml");
+        RedirectUtils.redirect("https://" + ConstantUtils.ipAddress +":8181/InternetBankingSystem/personal_cards/credit_card_summary.xhtml");
 
     }
 

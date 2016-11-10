@@ -51,7 +51,7 @@ public class EmailServiceSessionBean implements EmailServiceSessionBeanLocal {
             message.setRecipients(Message.RecipientType.TO,
                     InternetAddress.parse(recipient));
             message.setSubject(subject);
-            message.setText(content + "\n Apply at this link: "+"https://localhost:8181/InternetBankingSystem/landing_page/" + landingPage);
+            message.setText(content + "\n Apply at this link: "+"https://" + ConstantUtils.ipAddress + ":8181/InternetBankingSystem/landing_page/" + landingPage);
 
             Transport.send(message);
 
