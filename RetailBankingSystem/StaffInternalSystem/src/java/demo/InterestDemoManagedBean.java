@@ -6,6 +6,7 @@
 package demo;
 
 import BatchProcess.InterestAccrualSessionBeanLocal;
+import ejb.session.dams.CustomerDepositSessionBeanLocal;
 import ejb.session.dams.InterestSessionBeanLocal;
 import ejb.session.mainaccount.MainAccountSessionBeanLocal;
 import entity.customer.MainAccount;
@@ -48,6 +49,8 @@ public class InterestDemoManagedBean implements Serializable {
     private InterestSessionBeanLocal interestSessionBean;
     @EJB
     private InterestAccrualSessionBeanLocal interestAccrualSessionBean;
+    @EJB
+    private CustomerDepositSessionBeanLocal depositBean;
 
     private List<Integer> colIndex = new ArrayList<>();
     private List<Integer> rowIndex = new ArrayList<>();
@@ -57,7 +60,7 @@ public class InterestDemoManagedBean implements Serializable {
     private MainAccount demoAccount;
     private DepositAccount showingAccount;
     private String selectedDepositAccount;
-    private Map<String, String> availableDepositAccount = new HashMap<>();
+    private List<DepositAccount> availableDepositAccount = new ArrayList<>();
 
     // Display Current interests with the account
     private List<Interest> normalInterests;
@@ -85,8 +88,9 @@ public class InterestDemoManagedBean implements Serializable {
     private void initDemoAccount() {
         try {
             setDemoAccount(mainAccountSessionBean.getMainAccountByUserId(ConstantUtils.DEMO_MAIN_ACCOUNT_USER_ID_1));
-            for (DepositAccount da : demoAccount.getBankAcounts()) {
-                availableDepositAccount.put(da.getAccountNumber(), da.getAccountNumber());
+            availableDepositAccount = depositBean.getAllCustomerAccounts(demoAccount.getId());
+            if (availableDepositAccount.size() > 0) {
+                selectedDepositAccount = availableDepositAccount.get(0).getAccountNumber();
             }
         } catch (MainAccountNotExistException e) {
             System.out.println("MainAccountNotExistException at InterestDemoManagedBean");
@@ -105,7 +109,7 @@ public class InterestDemoManagedBean implements Serializable {
     public BigDecimal getTotalInterest(DepositAccount account) {
         System.out.println("getTotalInterest starting: account balance:" + account.getBalance());
         // TODO: Seperate from fixed deposit account
-        BigDecimal totalInterest = BigDecimal.ZERO.setScale(4, RoundingMode.UP);
+        BigDecimal totalInterest = BigDecimal.ZERO;
 
         System.out.println("Current cumulated interest amount:" + account.getCumulatedInterest().getCummulativeAmount());
         for (int i = 0; i < 30; i++) {
@@ -284,19 +288,6 @@ public class InterestDemoManagedBean implements Serializable {
         this.selectedDepositAccount = selectedDepositAccount;
     }
 
-    /**
-     * @return the availableDepositAccount
-     */
-    public Map<String, String> getAvailableDepositAccount() {
-        return availableDepositAccount;
-    }
-
-    /**
-     * @param availableDepositAccount the availableDepositAccount to set
-     */
-    public void setAvailableDepositAccount(Map<String, String> availableDepositAccount) {
-        this.availableDepositAccount = availableDepositAccount;
-    }
 
     /**
      * @return the colIndex
@@ -352,5 +343,19 @@ public class InterestDemoManagedBean implements Serializable {
      */
     public void setColSize(Integer colSize) {
         this.colSize = colSize;
+    }
+
+    /**
+     * @return the availableDepositAccount
+     */
+    public List<DepositAccount> getAvailableDepositAccount() {
+        return availableDepositAccount;
+    }
+
+    /**
+     * @param availableDepositAccount the availableDepositAccount to set
+     */
+    public void setAvailableDepositAccount(List<DepositAccount> availableDepositAccount) {
+        this.availableDepositAccount = availableDepositAccount;
     }
 }
