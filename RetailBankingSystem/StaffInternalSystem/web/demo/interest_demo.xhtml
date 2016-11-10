@@ -21,7 +21,7 @@
                         <h:panelGrid columns="2" cellpadding="5">
                             
                             <h:selectOneMenu value="#{interestDemoManagedBean.selectedDepositAccount}" required="true">
-                                <f:selectItems value="#{interestDemoManagedBean.availableDepositAccount}" />
+                                <f:selectItems value="#{interestDemoManagedBean.availableDepositAccount}" var="a" itemValue="#{a.accountNumber}" itemLabel="#{a.product.name} #{a.accountNumber}" />
                             </h:selectOneMenu>
                             
                             <p:commandButton value="Change" update="@form" actionListener="#{interestDemoManagedBean.changeAccount}" />

@@ -26,7 +26,7 @@ public class ConstantUtils {
     public static final String DEMO_CUSTOM_DEPOSIT_PRODUCT_NAME = "Merlion Account";
     public static final String DEMO_SAVING1_DEPOSIT_PRODUCT_NAME = "Monthly Savings Account";
     public static final String DEMO_SAVING2_DEPOSIT_PRODUCT_NAME = "Bonus+Savings";
-    public static final String DEMO_CURRENT_DEPOSIT_PRODUCT_NAME = "MBS Current Account";
+    public static final String DEMO_CURRENT_DEPOSIT_PRODUCT_NAME = "MBS Day to Day Account";
     public static final String DEMO_FIXED_DEPOSIT_PRODUCT_NAME = "Time Deposit";
     // LOAN
     // Personal loan

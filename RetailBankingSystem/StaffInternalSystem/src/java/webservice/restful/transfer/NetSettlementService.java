@@ -59,15 +59,15 @@ public class NetSettlementService {
         System.out.println("Received Net Settlement Broadcast from MEPS:");
 
         if (new BigDecimal(citiSettlementAmount).compareTo(BigDecimal.ZERO) == -1) {
-            System.out.println(".       Net Settlement from " + citiToBankCode + " " + citiToBankName + ": " + new BigDecimal(citiSettlementAmount).abs().setScale(4).toString());
+            System.out.println(".       Net Settlement from " + citiToBankCode + " " + citiToBankName + ": " + new BigDecimal(citiSettlementAmount).abs().toString());
         } else if (new BigDecimal(citiSettlementAmount).compareTo(BigDecimal.ZERO) == 1) {
-            System.out.println(".       Net Settlement to " + citiToBankCode + " " + citiToBankName + ": " + new BigDecimal(citiSettlementAmount).abs().setScale(4).toString());
+            System.out.println(".       Net Settlement to " + citiToBankCode + " " + citiToBankName + ": " + new BigDecimal(citiSettlementAmount).abs().toString());
         } else {
         }
         if (new BigDecimal(ocbcSettlementAmount).compareTo(BigDecimal.ZERO) == -1) {
-            System.out.println(".       Net Settlement from " + ocbcToBankCode + " " + ocbcToBankName + ": " + new BigDecimal(ocbcSettlementAmount).abs().setScale(4).toString());
+            System.out.println(".       Net Settlement from " + ocbcToBankCode + " " + ocbcToBankName + ": " + new BigDecimal(ocbcSettlementAmount).abs().toString());
         } else if (new BigDecimal(ocbcSettlementAmount).compareTo(BigDecimal.ZERO) == 1) {
-            System.out.println(".       Net Settlement to " + ocbcToBankCode + " " + ocbcToBankName + ": " + new BigDecimal(ocbcSettlementAmount).abs().setScale(4).toString());
+            System.out.println(".       Net Settlement to " + ocbcToBankCode + " " + ocbcToBankName + ": " + new BigDecimal(ocbcSettlementAmount).abs().toString());
         } else {
         }
 

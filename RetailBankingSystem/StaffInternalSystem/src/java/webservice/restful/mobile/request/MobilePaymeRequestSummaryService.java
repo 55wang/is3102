@@ -67,7 +67,7 @@ public class MobilePaymeRequestSummaryService {
             dto.setToAccountNumber(p.getToAccount().getAccountNumber());
             dto.setFromName(p.getFromAccount().getMainAccount().getCustomer().getFullName());
             dto.setToName(p.getToAccount().getMainAccount().getCustomer().getFullName());
-            dto.setRequestAmount(p.getAmount().setScale(2, RoundingMode.UP).toString());
+            dto.setRequestAmount(p.getAmount().toString());
             dto.setRequestDate(DateUtils.readableDate(p.getCreationDate()));
             dto.setRequestPaid(p.getPaid().toString());
             dto.setRequestRemark(p.getRemark());
@@ -81,7 +81,7 @@ public class MobilePaymeRequestSummaryService {
             dto.setToAccountNumber(p.getToAccount().getAccountNumber());
             dto.setFromName(p.getFromAccount().getMainAccount().getCustomer().getFullName());
             dto.setToName(p.getToAccount().getMainAccount().getCustomer().getFullName());
-            dto.setRequestAmount(p.getAmount().setScale(2, RoundingMode.UP).toString());
+            dto.setRequestAmount(p.getAmount().toString());
             dto.setRequestDate(DateUtils.readableDate(p.getCreationDate()));
             dto.setRequestPaid(p.getPaid().toString());
             dto.setRequestRemark(p.getRemark());
