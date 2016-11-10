@@ -47,7 +47,7 @@ public class intraBankTransferManagedBean implements Serializable {
     private CustomerDepositSessionBeanLocal depositBean;
     @EJB
     private OTPSessionBeanLocal otpBean;
-    
+
     private String fromAccountNo;
     private String payeeId;
     private String transferLimitLeft;
@@ -58,167 +58,171 @@ public class intraBankTransferManagedBean implements Serializable {
     private List<CustomerDepositAccount> accounts = new ArrayList<>();
     private List<Payee> payees = new ArrayList<>();
     private MainAccount ma;
-    
+
     private String inputTokenString;
-    
-    public intraBankTransferManagedBean() {}
-    
+
+    public intraBankTransferManagedBean() {
+    }
+
     @PostConstruct
     public void init() {
-        try{
+        try {
             ma = mainAccountSessionBean.getMainAccountByUserId(SessionUtils.getUserName());
-        }catch(MainAccountNotExistException ex){
+        } catch (MainAccountNotExistException ex) {
             System.out.println("init.MainAccountNotExistException");
         }
         payees = transferBean.getPayeeFromUserIdWithType(ma.getId(), EnumUtils.PayeeType.MERLION);
         accounts = depositBean.getAllNonFixedCustomerAccounts(ma.getId());
         calculateTransferLimits();
     }
-    
+
     public void adhocTransfer() {
-        
+
         if (!checkOptAndProceed()) {
             return;
         }
-        
+
         try {
-        
-        DepositAccount fromAccount = depositBean.getAccountFromId(fromAccountNo);
-        if (fromAccount != null && fromAccount.getBalance().compareTo(amount) < 0) {
-            JSUtils.callJSMethod("PF('myWizard').back()");
-            MessageUtils.displayError(ConstantUtils.NOT_ENOUGH_BALANCE);
-            return;
-        }
-        
-        BigDecimal currentTransferLimit = new BigDecimal(transferLimitLeft);
-        if (currentTransferLimit.compareTo(amount) < 0) {
-            JSUtils.callJSMethod("PF('myWizard').back()");
-            MessageUtils.displayError(ConstantUtils.EXCEED_TRANSFER_LIMIT);
-            return;
-        }
-        
-        try {
-            DepositAccount da = depositBean.getAccountFromId(getToAccountNo());
-            if (da == null) {
+
+            DepositAccount fromAccount = depositBean.getAccountFromId(fromAccountNo);
+            if (fromAccount != null && fromAccount.getBalance().compareTo(amount) < 0) {
+                JSUtils.callJSMethod("PF('myWizard').back()");
+                MessageUtils.displayError(ConstantUtils.NOT_ENOUGH_BALANCE);
+                return;
+            }
+
+            BigDecimal currentTransferLimit = new BigDecimal(transferLimitLeft);
+            if (currentTransferLimit.compareTo(amount) < 0) {
+                JSUtils.callJSMethod("PF('myWizard').back()");
+                MessageUtils.displayError(ConstantUtils.EXCEED_TRANSFER_LIMIT);
+                return;
+            }
+
+            try {
+                DepositAccount da = depositBean.getAccountFromId(getToAccountNo());
+                if (da == null) {
+                    MessageUtils.displayError(ConstantUtils.TRANSFER_ACCOUNT_NOT_FOUND);
+                    return;
+                }
+            } catch (Exception e) {
                 MessageUtils.displayError(ConstantUtils.TRANSFER_ACCOUNT_NOT_FOUND);
                 return;
             }
-        } catch (Exception e) {
-            MessageUtils.displayError(ConstantUtils.TRANSFER_ACCOUNT_NOT_FOUND);
-            return;
-        }
-        TransferRecord tr = new TransferRecord();
-        
-        tr.setAccountNumber(getToAccountNo());
-        tr.setReferenceNumber(GenerateAccountAndCCNumber.generateReferenceNumber());
-        tr.setAmount(amount);
-        tr.setName(getToName());
-        tr.setMyInitial(getMyInitial());
-        tr.setFromName(ma.getCustomer().getFullName());
-        tr.setFromAccount(fromAccount);
-        DepositAccount toAccount = depositBean.getAccountFromId(getToAccountNo());
-        tr.setToAccount(toAccount);
-        tr.setType(EnumUtils.PayeeType.MERLION);
-        tr.setActionType(EnumUtils.TransactionType.TRANSFER);
-        transferBean.createTransferRecord(tr);
-        
-        String result = transferBean.transferFromAccountToAccount(getFromAccountNo(), getToAccountNo(), getAmount());
-        if (result.equals("SUCCESS")) {
-            JSUtils.callJSMethod("PF('myWizard').next()");
-            MessageUtils.displayInfo(ConstantUtils.TRANSFER_SUCCESS);
-        } else {
-            JSUtils.callJSMethod("PF('myWizard').back()");
-            MessageUtils.displayError(ConstantUtils.TRANSFER_FAILED);
-        }
-        
+            TransferRecord tr = new TransferRecord();
+
+            tr.setAccountNumber(getToAccountNo());
+            tr.setReferenceNumber(GenerateAccountAndCCNumber.generateReferenceNumber());
+            tr.setAmount(amount);
+            tr.setName(getToName());
+            tr.setMyInitial(getMyInitial());
+            tr.setFromName(ma.getCustomer().getFullName());
+            tr.setFromAccount(fromAccount);
+            DepositAccount toAccount = depositBean.getAccountFromId(getToAccountNo());
+            tr.setToAccount(toAccount);
+            tr.setType(EnumUtils.PayeeType.MERLION);
+            tr.setActionType(EnumUtils.TransactionType.TRANSFER);
+            transferBean.createTransferRecord(tr);
+
+            String result = transferBean.transferFromAccountToAccount(getFromAccountNo(), getToAccountNo(), getAmount());
+            if (result.equals("SUCCESS")) {
+                JSUtils.callJSMethod("PF('myWizard').next()");
+                MessageUtils.displayInfo(ConstantUtils.TRANSFER_SUCCESS);
+            } else {
+                JSUtils.callJSMethod("PF('myWizard').back()");
+                MessageUtils.displayError(ConstantUtils.TRANSFER_FAILED);
+            }
+
         } catch (DepositAccountNotFoundException e) {
             System.out.println("DepositAccountNotFoundException IntraBankTransferManagedBean transfer()");
             JSUtils.callJSMethod("PF('myWizard').back()");
             MessageUtils.displayError(ConstantUtils.TRANSFER_FAILED);
         }
     }
-    
+
     public void transferToPayee() {
-        
+
         if (!checkOptAndProceed()) {
             return;
         }
-        
+
         try {
-        DepositAccount fromAccount = depositBean.getAccountFromId(fromAccountNo);
-        if (fromAccount != null && fromAccount.getBalance().compareTo(amount) < 0) {
-            JSUtils.callJSMethod("PF('myWizard').back()");
-            MessageUtils.displayError(ConstantUtils.NOT_ENOUGH_BALANCE);
-            return;
-        }
-        
-        BigDecimal currentTransferLimit = new BigDecimal(transferLimitLeft);
-        if (currentTransferLimit.compareTo(amount) < 0) {
-            JSUtils.callJSMethod("PF('myWizard').back()");
-            MessageUtils.displayError(ConstantUtils.EXCEED_TRANSFER_LIMIT);
-            return;
-        }
-        
-        Payee payee = transferBean.getPayeeById(Long.parseLong(getPayeeId()));
-        
-        try {
-            DepositAccount da = depositBean.getAccountFromId(payee.getAccountNumber());
-            if (da == null) {
+            DepositAccount fromAccount = depositBean.getAccountFromId(fromAccountNo);
+            if (fromAccount != null && fromAccount.getBalance().compareTo(amount) < 0) {
+                JSUtils.callJSMethod("PF('myWizard').back()");
+                MessageUtils.displayError(ConstantUtils.NOT_ENOUGH_BALANCE);
+                return;
+            }
+
+            BigDecimal currentTransferLimit = new BigDecimal(transferLimitLeft);
+            if (currentTransferLimit.compareTo(amount) < 0) {
+                JSUtils.callJSMethod("PF('myWizard').back()");
+                MessageUtils.displayError(ConstantUtils.EXCEED_TRANSFER_LIMIT);
+                return;
+            }
+
+            Payee payee = transferBean.getPayeeById(Long.parseLong(getPayeeId()));
+
+            try {
+                DepositAccount da = depositBean.getAccountFromId(payee.getAccountNumber());
+                if (da == null) {
+                    MessageUtils.displayError(ConstantUtils.TRANSFER_ACCOUNT_NOT_FOUND);
+                    return;
+                }
+            } catch (Exception e) {
                 MessageUtils.displayError(ConstantUtils.TRANSFER_ACCOUNT_NOT_FOUND);
                 return;
             }
-        } catch (Exception e) {
-            MessageUtils.displayError(ConstantUtils.TRANSFER_ACCOUNT_NOT_FOUND);
-            return;
-        }
-        //TODO: need another authentication
-        TransferRecord tr = new TransferRecord();
-        
-        tr.setAccountNumber(payee.getAccountNumber());
-        tr.setReferenceNumber(GenerateAccountAndCCNumber.generateReferenceNumber());
-        tr.setAmount(amount);
-        tr.setName(payee.getName());
-        tr.setMyInitial(payee.getMyInitial());
-        tr.setFromName(payee.getFromName());
-        tr.setFromAccount(fromAccount);
-        DepositAccount toAccount = depositBean.getAccountFromId(payee.getAccountNumber());
-        tr.setToAccount(toAccount);
-        tr.setType(EnumUtils.PayeeType.MERLION);
-        transferBean.createTransferRecord(tr);
-        
-        String result = transferBean.transferFromAccountToAccount(getFromAccountNo(), payee.getAccountNumber(), getAmount());
-        if (result.equals("SUCCESS")) {
-            JSUtils.callJSMethod("PF('myWizard').next()");
-            MessageUtils.displayInfo(ConstantUtils.TRANSFER_SUCCESS);
-            calculateTransferLimits();
-        } else {
-            JSUtils.callJSMethod("PF('myWizard').back()");
-            MessageUtils.displayError(ConstantUtils.TRANSFER_FAILED);
-        }
-        
+            //TODO: need another authentication
+            TransferRecord tr = new TransferRecord();
+
+            tr.setAccountNumber(payee.getAccountNumber());
+            tr.setReferenceNumber(GenerateAccountAndCCNumber.generateReferenceNumber());
+            tr.setAmount(amount);
+            tr.setName(payee.getName());
+            tr.setMyInitial(payee.getMyInitial());
+            tr.setFromName(payee.getFromName());
+            tr.setFromAccount(fromAccount);
+            DepositAccount toAccount = depositBean.getAccountFromId(payee.getAccountNumber());
+            tr.setToAccount(toAccount);
+            tr.setType(EnumUtils.PayeeType.MERLION);
+            tr.setActionType(EnumUtils.TransactionType.TRANSFER);
+            transferBean.createTransferRecord(tr);
+
+            String result = transferBean.transferFromAccountToAccount(getFromAccountNo(), payee.getAccountNumber(), getAmount());
+            if (result.equals("SUCCESS")) {
+                JSUtils.callJSMethod("PF('myWizard').next()");
+                MessageUtils.displayInfo(ConstantUtils.TRANSFER_SUCCESS);
+                calculateTransferLimits();
+            } else {
+                JSUtils.callJSMethod("PF('myWizard').back()");
+                MessageUtils.displayError(ConstantUtils.TRANSFER_FAILED);
+            }
+
         } catch (DepositAccountNotFoundException e) {
             System.out.println("DepositAccountNotFoundException IntraBankTransferManagedBean transferToPayee");
             JSUtils.callJSMethod("PF('myWizard').back()");
             MessageUtils.displayError(ConstantUtils.TRANSFER_FAILED);
         }
     }
-    
-    
-    
+
     public void sendOpt() {
         System.out.println("sendOTP clicked, sending otp to: " + ma.getCustomer().getPhone());
         JSUtils.callJSMethod("PF('myWizard').next()");
         otpBean.generateOTP(ma.getCustomer().getPhone());
-        Payee payee = transferBean.getPayeeById(Long.parseLong(getPayeeId()));
-        toAccountNo = payee.getAccountNumber();
+
+        if (payeeId != null) {
+            Payee payee = transferBean.getPayeeById(Long.parseLong(getPayeeId()));
+            toAccountNo = payee.getAccountNumber();
+        }
+
     }
-    
+
     private void calculateTransferLimits() {
         BigDecimal todayTransferAmount = transferBean.getTodayBankTransferAmount(ma, EnumUtils.PayeeType.MERLION);
         BigDecimal currentTransferLimit = new BigDecimal(ma.getTransferLimits().getDailyInterBankLimit().toString());
         transferLimitLeft = currentTransferLimit.subtract(todayTransferAmount).toString();
     }
-    
+
     private Boolean checkOptAndProceed() {
         if (inputTokenString == null || inputTokenString.isEmpty()) {
             MessageUtils.displayError("Please enter one time password!");
