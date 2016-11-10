@@ -50,10 +50,15 @@ public class CustomerDashboardSessionBean implements CustomerDashboardSessionBea
     
     @Override
     public Long getCustomerTotalExecutedInvestmentPlanByMainAccountUserId(String userID){
-        Query q = em.createQuery("SELECT COUNT(ip.id) FROM InvestmentPlan ip, MainAccount ma WHERE ip.wealthManagementSubscriber.mainAccount = ma AND ma.userID =:userID AND ip.status = :executedStatus");
-        q.setParameter("userID", userID);
-        q.setParameter("executedStatus", InvestmentPlanStatus.EXECUTED);
-        return (Long) q.getSingleResult();
+        try{
+            Query q = em.createQuery("SELECT COUNT(ip.id) FROM InvestmentPlan ip, MainAccount ma WHERE ip.wealthManagementSubscriber.mainAccount = ma AND ma.userID =:userID AND ip.status = :executedStatus");
+            q.setParameter("userID", userID);
+            q.setParameter("executedStatus", InvestmentPlanStatus.EXECUTED);
+            return (Long) q.getSingleResult();
+        }catch(Exception ex){
+            System.out.println("Not Wealth Management Subscriber.");
+            return 0L;
+        }
     }
     
     //Amount
@@ -87,11 +92,16 @@ public class CustomerDashboardSessionBean implements CustomerDashboardSessionBea
     
     @Override
     public Double getCustomerTotalExecutedInvestmentAmountByMainAccountUserId(String userID){
-        Query q = em.createQuery("SELECT SUM(ip.amountOfInvestment) FROM InvestmentPlan ip, MainAccount ma WHERE ip.wealthManagementSubscriber.mainAccount = ma AND ma.userID =:userID AND ip.status = :executedStatus");
-        q.setParameter("userID", userID);
-        q.setParameter("executedStatus", InvestmentPlanStatus.EXECUTED);
-        Long investAmount = (Long) q.getSingleResult();
-        return investAmount.doubleValue();
+        try{
+            Query q = em.createQuery("SELECT SUM(ip.amountOfInvestment) FROM InvestmentPlan ip, MainAccount ma WHERE ip.wealthManagementSubscriber.mainAccount = ma AND ma.userID =:userID AND ip.status = :executedStatus");
+            q.setParameter("userID", userID);
+            q.setParameter("executedStatus", InvestmentPlanStatus.EXECUTED);
+            Long investAmount = (Long) q.getSingleResult();
+            return investAmount.doubleValue();
+        }catch(Exception ex){
+            System.out.println("Not Wealth Management Subscriber.");
+            return 0.0;
+        }
     }
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")

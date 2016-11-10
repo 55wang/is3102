@@ -65,11 +65,7 @@ public class StaffLoginManagedBean implements Serializable {
             MessageUtils.displayError("Either username or password is wrong");
         } else {
             SessionUtils.setStaffAccount(sa);
-            if (UserUtils.isUserInRole(UserRole.SUPER_ADMIN.toString())) {
-                RedirectUtils.redirect(SessionUtils.getContextPath() + "/admin/create_interest.xhtml");
-            } else {
-                RedirectUtils.redirect(SessionUtils.getContextPath() + "/message/notification.xhtml");
-            }
+            RedirectUtils.redirect(SessionUtils.getContextPath() + "/bi/deposit_loan.xhtml");
         }
     }
 
