@@ -74,7 +74,7 @@ public class NewCardManagedBean implements Serializable {
 
     private String selectedMC;
     private MarketingCampaign marketingCampaign;
-    
+
     private CreditCardOrder cco;
     private MainAccount ma;
     private Customer customer;
@@ -123,10 +123,16 @@ public class NewCardManagedBean implements Serializable {
             getProductNameOptions().add(ccp.getProductName());
         }
     }
-    
-     public void init() {
-        System.out.println("MarketingCampaign id is: " + getSelectedMC());
-        marketingCampaign = marketingCampaignSessionBean.getMarketingCampaign(Long.parseLong(getSelectedMC()));
+
+    public void init() {
+        try {
+            System.out.println("MarketingCampaign id is: " + getSelectedMC());
+            marketingCampaign = marketingCampaignSessionBean.getMarketingCampaign(Long.parseLong(getSelectedMC()));
+        } catch (Exception ex) {
+            System.out.println("init(): " + ex);
+
+        }
+
     }
 
     public NewCardManagedBean() {
@@ -221,11 +227,13 @@ public class NewCardManagedBean implements Serializable {
         emailServiceSessionBean.sendCreditCardApplicationNotice(existingCustomer.getEmail());
 
         //update response if he is in the marketing campaign
-        for (CustomerGroup cg : existingCustomer.getCustomerGroups()) {
-            for (MarketingCampaign mc : cg.getMarketingCampaigns()) {
-                if (mc.equals(marketingCampaign)) {
-                    marketingCampaignSessionBean.addResponseCount(mc);
-                    System.out.println("marketing response count added");
+        if (marketingCampaign != null) {
+            for (CustomerGroup cg : existingCustomer.getCustomerGroups()) {
+                for (MarketingCampaign mc : cg.getMarketingCampaigns()) {
+                    if (mc.equals(marketingCampaign)) {
+                        marketingCampaignSessionBean.addResponseCount(mc);
+                        System.out.println("marketing response count added");
+                    }
                 }
             }
         }

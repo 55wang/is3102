@@ -54,7 +54,6 @@ public class DepositCampaignOneManagedBean extends MarketingCampaignAbstractBean
                     if (landingURL.equals(mc.getLandingPageName())) {
                         super.addClickCount(mc);
                         selectedMC = mc.getId().toString();
-                        break;
                     }
                 }
             }

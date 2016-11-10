@@ -21,6 +21,8 @@ import javax.faces.view.ViewScoped;
 @ViewScoped
 public class testJSONManagedBean implements Serializable {
 
+    private String name = "MEPS Simulator";
+    
     @EJB
     private MEPSSessionBean mepsBean;
     @EJB
@@ -40,6 +42,20 @@ public class testJSONManagedBean implements Serializable {
     public void testClick() {
         System.out.println("GG");
         mepsBean.testMBS();
+    }
+
+    /**
+     * @return the name
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * @param name the name to set
+     */
+    public void setName(String name) {
+        this.name = name;
     }
     
 }

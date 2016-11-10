@@ -38,6 +38,7 @@ public class SimulatedCallManagedBean implements Serializable {
     private String transactionAmount;
     private String creditCardNumber;
     private String referenceNum;
+    private String requestBankCode;
 
     /**
      * Creates a new instance of SimulatedCallManagedBean
@@ -105,6 +106,10 @@ public class SimulatedCallManagedBean implements Serializable {
          */
     }
 
+    public void sendMEPSSettlement() {
+        cardTransactionSessionBean.sendMEPSNetSettlement();
+    }
+
     public void sendFailedDailyAuhorization() {
         String ccNum = readCardCCNumber();
 
@@ -166,7 +171,7 @@ public class SimulatedCallManagedBean implements Serializable {
     }
 
     public void sendSuccessAuthorization() {
-        cardTransactionSessionBean.sendSuccessAuthorization(transactionAmount, creditCardNumber, referenceNum);
+        cardTransactionSessionBean.sendSuccessAuthorization(transactionAmount, creditCardNumber, referenceNum, requestBankCode);
     }
 
     private void sendSuccessClearing(String returnCode, String aCode) {
@@ -288,6 +293,20 @@ public class SimulatedCallManagedBean implements Serializable {
 
     public void setReferenceNum(String referenceNum) {
         this.referenceNum = referenceNum;
+    }
+
+    /**
+     * @return the requestBankCode
+     */
+    public String getRequestBankCode() {
+        return requestBankCode;
+    }
+
+    /**
+     * @param requestBankCode the requestBankCode to set
+     */
+    public void setRequestBankCode(String requestBankCode) {
+        this.requestBankCode = requestBankCode;
     }
 
 }

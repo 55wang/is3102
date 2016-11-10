@@ -352,7 +352,7 @@ public class CardAcctSessionBean implements CardAcctSessionBeanLocal {
             DebitCardAccount dca = new DebitCardAccount();
             dca.setCreditCardNum(generateAccountNumber());
             dca.setCvv(server.utilities.CommonHelper.generateRandom(true, 3));
-            dca.setCardStatus(EnumUtils.CardAccountStatus.ACTIVE);
+            dca.setCardStatus(EnumUtils.CardAccountStatus.APPROVED);
             Calendar cal = Calendar.getInstance();
             dca.setCreationDate(cal.getTime());
             cal.set(Calendar.YEAR, 2);

@@ -17,13 +17,13 @@ public class TransactionSummaryDTO {
     private List<TransactionDTO> transactionSummary = new ArrayList<>();
     private String citiToBankCode;
     private String citiToBankName;
-    private String citiFromBankCode;
-    private String citiFromBankName;
+    private String citiFromBankCode = "001";
+    private String citiFromBankName = "Merlion Bank Singapore";
     private String citiSettlementAmount;
     private String ocbcToBankCode;
     private String ocbcToBankName;
-    private String ocbcFromBankCode;
-    private String ocbcFromBankName;
+    private String ocbcFromBankCode = "001";
+    private String ocbcFromBankName="Merlion Bank Singapore";
     private String ocbcSettlementAmount;
     private String date;
 
