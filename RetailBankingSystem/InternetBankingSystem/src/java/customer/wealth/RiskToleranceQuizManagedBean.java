@@ -86,32 +86,48 @@ public class RiskToleranceQuizManagedBean implements Serializable {
     }
 
     public void submit() {
-        System.out.println("submit button pressed: ");
-        System.out.println(savingAmount);
-        mainAccount.getCustomer().setSavingPerMonth(savingAmount);
-        wms.setRiskToleranceScore(totalScore());
-        if (totalScore() < 18) {
-            wms.setRiskToleranceLevel(EnumUtils.RiskToleranceLevel.LOW_RISK_TOLERANCE);
-        } else if (totalScore() < 22) {
-            wms.setRiskToleranceLevel(EnumUtils.RiskToleranceLevel.BELOW_AVERAGE_RISK_TOLERANCE);
-        } else if (totalScore() < 28) {
-            wms.setRiskToleranceLevel(EnumUtils.RiskToleranceLevel.AVERAGE_RISK_TOLERANCE);
-        } else if (totalScore() < 32) {
-            wms.setRiskToleranceLevel(EnumUtils.RiskToleranceLevel.ABOVE_AVERAGE_RISK_TOLERANCE);
-        } else {
-            wms.setRiskToleranceLevel(EnumUtils.RiskToleranceLevel.HIGH_RISK_ROLERANCE);
+        if(!retakeOrNot){
+            System.out.println("submit button pressed: ");
+            System.out.println(savingAmount);
+            mainAccount.getCustomer().setSavingPerMonth(savingAmount);
+            wms.setRiskToleranceScore(totalScore());
+            if (totalScore() < 18) {
+                wms.setRiskToleranceLevel(EnumUtils.RiskToleranceLevel.LOW_RISK_TOLERANCE);
+            } else if (totalScore() < 22) {
+                wms.setRiskToleranceLevel(EnumUtils.RiskToleranceLevel.BELOW_AVERAGE_RISK_TOLERANCE);
+            } else if (totalScore() < 28) {
+                wms.setRiskToleranceLevel(EnumUtils.RiskToleranceLevel.AVERAGE_RISK_TOLERANCE);
+            } else if (totalScore() < 32) {
+                wms.setRiskToleranceLevel(EnumUtils.RiskToleranceLevel.ABOVE_AVERAGE_RISK_TOLERANCE);
+            } else {
+                wms.setRiskToleranceLevel(EnumUtils.RiskToleranceLevel.HIGH_RISK_ROLERANCE);
+            }
+
+            wms.setMainAccount(mainAccount);
+            StaffAccount rm = new StaffAccount();
+            rm = staffAccountSessionBean.getAccountByUsername("relationship_manager");
+            wms.setRelationshipManager(rm);
+            List<WealthManagementSubscriber> wmsList = rm.getWealthManagementSubscribers();
+            wmsList.add(wms);
+            rm.setWealthManagementSubscribers(wmsList);
+            mainAccount.setWealthManagementSubscriber(wms);
+            setWms(wealthManegementSubscriberSessionBean.updateWealthManagementSubscriber(wms));
+        }else{
+            wms.setRiskToleranceScore(totalScore());
+            if (totalScore() < 18) {
+                wms.setRiskToleranceLevel(EnumUtils.RiskToleranceLevel.LOW_RISK_TOLERANCE);
+            } else if (totalScore() < 22) {
+                wms.setRiskToleranceLevel(EnumUtils.RiskToleranceLevel.BELOW_AVERAGE_RISK_TOLERANCE);
+            } else if (totalScore() < 28) {
+                wms.setRiskToleranceLevel(EnumUtils.RiskToleranceLevel.AVERAGE_RISK_TOLERANCE);
+            } else if (totalScore() < 32) {
+                wms.setRiskToleranceLevel(EnumUtils.RiskToleranceLevel.ABOVE_AVERAGE_RISK_TOLERANCE);
+            } else {
+                wms.setRiskToleranceLevel(EnumUtils.RiskToleranceLevel.HIGH_RISK_ROLERANCE);
+            }
+            wms = wealthManegementSubscriberSessionBean.updateWealthManagementSubscriber(wms);
         }
-
-        wms.setMainAccount(mainAccount);
-        StaffAccount rm = new StaffAccount();
-        rm = staffAccountSessionBean.getAccountByUsername("relationship_manager");
-        wms.setRelationshipManager(rm);
-        List<WealthManagementSubscriber> wmsList = rm.getWealthManagementSubscribers();
-        wmsList.add(wms);
-        rm.setWealthManagementSubscribers(wmsList);
-        mainAccount.setWealthManagementSubscriber(wms);
-        setWms(wealthManegementSubscriberSessionBean.updateWealthManagementSubscriber(wms));
-
+        
         setRetakeOrNot(false);
     }
 

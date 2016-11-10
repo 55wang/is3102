@@ -46,7 +46,7 @@ and open the template in the editor.
                                             <p:selectOneMenu id="type" value="#{payCCBillManagedBean.newCcBillOrgId}">
                                                 <f:selectItems value="#{payCCBillManagedBean.billOrgsOptions}" var="b" itemValue="#{b.id.toString()}" itemLabel="#{b.name}"/>
                                             </p:selectOneMenu>
-                                            <h:outputText value="Bill Reference Number: " />
+                                            <h:outputText value="Credit Card Number: " />
                                             <h:inputText value="#{payCCBillManagedBean.referenceNumber}" required="true" />
                                         </c:if>
                                         <p:outputLabel for="amount" value="Amount: " />
