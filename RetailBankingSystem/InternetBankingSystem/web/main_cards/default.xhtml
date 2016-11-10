@@ -15,10 +15,10 @@
         <h:body>
             <em:customerHeader context="main" userName="Log in"></em:customerHeader>
             <em:customerNavBar context="main" mainPage="mainCards"></em:customerNavBar>
-            
-            <table align="center" style="margin-left: 70px">
+            <div class="customer_main_container">
+            <table align="center">
                 <tr>
-                    <td><p:panel id="DebitCard" header="Debit Card"  style="margin-top:170px;margin-bottom:20px;width: 500px">
+                    <td><p:panel id="DebitCard" header="Debit Card"  style="height:400px;margin-bottom:20px;">
                             <h:panelGrid columns="2" cellpadding="10">
                                 <p:graphicImage library="img" style="width: 300px;height: 200px" name="debit card.jpeg" />
                                 <h:outputText
@@ -28,7 +28,7 @@
 
                         </p:panel></td>
                     <td style="column-width: 20px"></td>
-                    <td><p:panel id="CreditCard" header="Credit Card" style="margin-top:200px;margin-bottom:20px;width: 500px">
+                    <td><p:panel id="CreditCard" header="Credit Card" style="height:400px;margin-bottom:20px;">
                             <h:panelGrid columns="2" cellpadding="10">
                                 <p:graphicImage style="width: 300px;height: 200px" library="img" name="credit-card.jpg" />
                                 <h:outputText
@@ -47,8 +47,10 @@
                  <button type="button" onclick="window.location.href='.../customer_card/apply_card_account.xhtml'">Apply</button>
             </div>
             </p:panel>-->
+            </div>
         </h:body>
-        <em:adsBanner advertismentTitle="#{customerHomeManagedBean.adsBannerCampaign.adsTitle}" advertismentType="#{customerHomeManagedBean.adsBannerCampaign.adsType}" advertismentInfo="#{customerHomeManagedBean.adsBannerCampaign.adsInfo}" extraAdvertismentInfo="#{customerHomeManagedBean.adsBannerCampaign.adsExtraInfo}" landingPageUrl="https://localhost:8181/InternetBankingSystem/landing_page/#{customerHomeManagedBean.adsBannerCampaign.landingPageName}" />
+        <em:publicity></em:publicity>
+        <em:adsBanner advertismentTitle="#{customerHomeManagedBean.adsBannerCampaign.adsTitle}" advertismentType="#{customerHomeManagedBean.adsBannerCampaign.adsType}" advertismentInfo="#{customerHomeManagedBean.adsBannerCampaign.adsInfo}" extraAdvertismentInfo="#{customerHomeManagedBean.adsBannerCampaign.adsExtraInfo}" landingPageUrl="https://#{customerInfoManagedBean.IP_ADDRESS}:8181/InternetBankingSystem/landing_page/#{customerHomeManagedBean.adsBannerCampaign.landingPageName}" />
         <em:customerMainFooter></em:customerMainFooter>
     </f:view>
 </html>

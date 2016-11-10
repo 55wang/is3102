@@ -74,9 +74,6 @@ public class InterestDemoManagedBean implements Serializable {
     @PostConstruct
     public void init() {
         initDemoAccount();
-        if (!demoAccount.getBankAcounts().isEmpty()) {
-            setShowingAccount(getDemoAccount().getBankAcounts().get(0));
-        }
         initInterests();
     }
 
@@ -89,8 +86,11 @@ public class InterestDemoManagedBean implements Serializable {
         try {
             setDemoAccount(mainAccountSessionBean.getMainAccountByUserId(ConstantUtils.DEMO_MAIN_ACCOUNT_USER_ID_1));
             availableDepositAccount = depositBean.getAllCustomerAccounts(demoAccount.getId());
+            System.out.println(demoAccount);
+            System.out.println(availableDepositAccount.size());
             if (availableDepositAccount.size() > 0) {
                 selectedDepositAccount = availableDepositAccount.get(0).getAccountNumber();
+                setShowingAccount(getDemoAccount().getBankAcounts().get(0));
             }
         } catch (MainAccountNotExistException e) {
             System.out.println("MainAccountNotExistException at InterestDemoManagedBean");
@@ -154,17 +154,17 @@ public class InterestDemoManagedBean implements Serializable {
     private void initTimeRangeDisplay() {
         Set<Integer> set = new HashSet<>();
         for (TimeRangeInterest i : timeRangeInterests) {
-            System.out.println("ID: " + i.getId() + " StartMonth: " + i.getStartMonth());
+//            System.out.println("ID: " + i.getId() + " StartMonth: " + i.getStartMonth());
             set.add(i.getStartMonth());
         }
-        System.out.println("Before sort");
+//        System.out.println("Before sort");
         Collections.sort(timeRangeInterests);
-        System.out.println("Set is size: " + set.size());
+//        System.out.println("Set is size: " + set.size());
         Integer col = set.size();
         Integer row = timeRangeInterests.size() / col;
-        System.out.println("Col: " + col + " Row: " + row);
+//        System.out.println("Col: " + col + " Row: " + row);
         formatedInterests = new TimeRangeInterest[row][col];
-
+        
         Integer counter = 0;
         for (int i = 0; i < formatedInterests.length; i++) {
             for (int j = 0; j < formatedInterests[i].length; j++) {
@@ -172,9 +172,9 @@ public class InterestDemoManagedBean implements Serializable {
                 counter++;
             }
         }
-
+        
         System.out.println(formatedInterests);
-
+        
         for (int i = 0; i <= col; i++) {
             getColIndex().add(i);
         }
@@ -186,20 +186,20 @@ public class InterestDemoManagedBean implements Serializable {
     }
 
     public String getDisplayCell(Integer row, Integer col) {
-        System.out.println("Row is: " + row + " Col is: " + col);
+//        System.out.println("Row is: " + row + " Col is: " + col);
         if (row == 0 && col == 0) {
             return "";
         } else if (row == 0) {
-            TimeRangeInterest cell = getFormatedInterests()[row][col - 1];
+            TimeRangeInterest cell = formatedInterests[row][col - 1];
             return cell.getStartMonth() + "~" + cell.getEndMonth() + "mth";
         } else if (col == 0) {
-            TimeRangeInterest cell = getFormatedInterests()[row - 1][col];
+            TimeRangeInterest cell = formatedInterests[row - 1][col];
             if (cell.getMinimum().equals(BigDecimal.ZERO)) {
                 return "First $" + cell.getMaximum();
             }
             return "$" + cell.getMinimum().intValue() + " ~ $" + cell.getMaximum().intValue();
         } else {
-            TimeRangeInterest cell = getFormatedInterests()[row - 1][col - 1];
+            TimeRangeInterest cell = formatedInterests[row - 1][col - 1];
             return cell.getPercentage().toString().substring(0, 6);
         }
     }

@@ -22,10 +22,9 @@ and open the template in the editor.
             <em:customerHeader context="main" userName="Log in"></em:customerHeader>
             <em:customerNavBar context="main" mainPage="mainDeposit"></em:customerNavBar>
             <h:form>
-                <div style="margin-top: 200px;margin-left: 70px;position: absolute"> 
+                <div class="customer_main_container">
                     <c:forEach items="#{displayCurrentDepositProductManagedBean.currentDepositProducts}" var="currentProduct">
-                        <h1>#{currentProduct.name}</h1>
-                        <p:panel style="width: 550px">
+                        <p:panel header="#{currentProduct.name}">
                             <p:panelGrid columns="2" style="width: 500px">
                                 <f:facet name="header">
                                     <p:row>
@@ -39,18 +38,17 @@ and open the template in the editor.
                                     </h:outputText>
                                 </c:forEach>
                             </p:panelGrid>
+                            <div style="margin-top: 30px">
+                                <button style="margin-left: 130px" type="button" onclick="window.location.href = 'apply_deposit_account.xhtml'">New Customer Apply</button>
+                                <button style="margin-left: 50px" type="button" onclick="window.location.href = '../common/customer_login.xhtml'">Existing customer Login</button>
+                            </div>
                         </p:panel>
                     </c:forEach>
-
-                    <div style="margin-top: 30px">
-                        <button style="margin-left: 130px" type="button" onclick="window.location.href = 'apply_deposit_account.xhtml'">New Customer Apply</button>
-                        <button style="margin-left: 50px" type="button" onclick="window.location.href = '../common/customer_login.xhtml'">Existing customer Login</button>
-                    </div>
                 </div>
             </h:form>
-
         </h:body>
-        <em:adsBanner advertismentTitle="#{customerHomeManagedBean.adsBannerCampaign.adsTitle}" advertismentType="#{customerHomeManagedBean.adsBannerCampaign.adsType}" advertismentInfo="#{customerHomeManagedBean.adsBannerCampaign.adsInfo}" extraAdvertismentInfo="#{customerHomeManagedBean.adsBannerCampaign.adsExtraInfo}" landingPageUrl="https://localhost:8181/InternetBankingSystem/landing_page/#{customerHomeManagedBean.adsBannerCampaign.landingPageName}" />
+        <em:publicity></em:publicity>
+        <em:adsBanner advertismentTitle="#{customerHomeManagedBean.adsBannerCampaign.adsTitle}" advertismentType="#{customerHomeManagedBean.adsBannerCampaign.adsType}" advertismentInfo="#{customerHomeManagedBean.adsBannerCampaign.adsInfo}" extraAdvertismentInfo="#{customerHomeManagedBean.adsBannerCampaign.adsExtraInfo}" landingPageUrl="https://#{customerInfoManagedBean.IP_ADDRESS}:8181/InternetBankingSystem/landing_page/#{customerHomeManagedBean.adsBannerCampaign.landingPageName}" />
         <em:customerMainFooter></em:customerMainFooter>
     </f:view>
 </html>

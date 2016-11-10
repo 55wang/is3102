@@ -102,9 +102,6 @@
 
                     <p:panel header="Transactions">
                         <p:dataTable id="transactions" value="#{interestDemoManagedBean.showingAccount.transactions}" var="transaction">
-                            <p:column headerText="Id" sortBy="#{transaction.referenceNumber}">
-                                <h:outputText value="#{transaction.referenceNumber}"/>
-                            </p:column>
                             <c:if test="#{transaction.fromAccount != null}">
                                 <p:column headerText="From" sortBy="#{transaction.fromAccount.accountNumber}">
                                     <h:outputText value="#{transaction.fromAccount.accountNumber}"/>

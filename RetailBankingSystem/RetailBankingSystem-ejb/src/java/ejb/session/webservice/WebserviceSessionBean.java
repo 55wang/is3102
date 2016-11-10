@@ -27,6 +27,7 @@ import javax.ws.rs.core.Form;
 import javax.ws.rs.core.MediaType;
 import protocal.swift.MT103;
 import protocal.swift.SwiftMessage;
+import server.utilities.ConstantUtils;
 
 /**
  *
@@ -41,11 +42,11 @@ public class WebserviceSessionBean implements WebserviceSessionBeanLocal {
     @PersistenceContext(unitName = "RetailBankingSystem-ejbPU")
     private EntityManager em;
 
-    private final String MEPS_SETTLEMENT_AGENCY = "https://localhost:8181/MEPSSimulator/meps/meps_settlement_agency";
-    private final String SACH_TRANSFER_CLEARING = "https://localhost:8181/SACHSimulator/sach/sach_transfer_clearing";
-    private final String SACH_BILLING_CLEARING = "https://localhost:8181/SACHSimulator/sach/sach_billing_clearing";
-    private final String SACH_SWIFT_TRANSFER = "https://localhost:8181/SACHSimulator/sach/sach_swift_transfer";
-    private final String FAST_TRANSFER_CLEARING = "https://localhost:8181/FASTSimulator/fast/fast_transfer_clearing";
+    private final String MEPS_SETTLEMENT_AGENCY = "https://" + ConstantUtils.ipAddress + ":8181/MEPSSimulator/meps/meps_settlement_agency";
+    private final String SACH_TRANSFER_CLEARING = "https://" + ConstantUtils.ipAddress + ":8181/SACHSimulator/sach/sach_transfer_clearing";
+    private final String SACH_BILLING_CLEARING = "https://" + ConstantUtils.ipAddress + ":8181/SACHSimulator/sach/sach_billing_clearing";
+    private final String SACH_SWIFT_TRANSFER = "https://" + ConstantUtils.ipAddress + ":8181/SACHSimulator/sach/sach_swift_transfer";
+    private final String FAST_TRANSFER_CLEARING = "https://" + ConstantUtils.ipAddress + ":8181/FASTSimulator/fast/fast_transfer_clearing";
 
     @Asynchronous
     @Override
@@ -103,6 +104,7 @@ public class WebserviceSessionBean implements WebserviceSessionBeanLocal {
     public void transferClearingSACH(TransferRecord tr) {
         System.out.println("[MBS]:");
         System.out.println("Generating IBG transfer...");
+        
         Form form = new Form(); //bank info
         form.param("referenceNumber", tr.getReferenceNumber());
         form.param("amount", tr.getAmount().toString());
@@ -135,7 +137,7 @@ public class WebserviceSessionBean implements WebserviceSessionBeanLocal {
             System.out.println(".");
             System.out.println("[MBS]:");
             System.out.println("Received response from SACH...");
-            em.persist(tr);
+            
         } else {
             System.out.println("FAIL");
         }
@@ -146,6 +148,7 @@ public class WebserviceSessionBean implements WebserviceSessionBeanLocal {
     public void billingClearingSACH(BillTransferRecord btr) {
         System.out.println("[MBS]:");
         System.out.println("Generating payment instruction...");
+
         Form form = new Form(); //bank info
         form.param("referenceNumber", btr.getReferenceNumber());
         form.param("amount", btr.getAmount().toString());
@@ -181,7 +184,7 @@ public class WebserviceSessionBean implements WebserviceSessionBeanLocal {
             System.out.println(".");
             System.out.println("[MBS]:");
             System.out.println("Received response from SACH...");
-            em.persist(btr);
+            
         } else {
             System.out.println("FAIL");
         }
@@ -192,6 +195,7 @@ public class WebserviceSessionBean implements WebserviceSessionBeanLocal {
     public void transferClearingFAST(TransferRecord tr) {
         System.out.println("[MBS]:");
         System.out.println("Generating FAST transfer...");
+        
         Form form = new Form(); //bank info
         form.param("referenceNumber", tr.getReferenceNumber());
         form.param("amount", tr.getAmount().toString());
@@ -233,7 +237,6 @@ public class WebserviceSessionBean implements WebserviceSessionBeanLocal {
             System.out.println(".");
             System.out.println("[MBS]:");
             System.out.println("Received response from SACH...");
-            em.persist(tr);
         } else {
             System.out.println("FAIL");
         }
@@ -255,7 +258,6 @@ public class WebserviceSessionBean implements WebserviceSessionBeanLocal {
         sm.setMessageType("103");
         sm.setMessage(message.toString());
         System.out.println(sm.toString());
-        em.persist(tr);
 
         Form form = new Form(); //bank info
         form.param("referenceNumber", tr.getReferenceNumber());
@@ -294,7 +296,6 @@ public class WebserviceSessionBean implements WebserviceSessionBeanLocal {
             System.out.println(".");
             System.out.println("[MBS]:");
             System.out.println("Received response from SACH...");
-            em.persist(tr);
         } else {
             System.out.println("FAIL");
         }

@@ -35,9 +35,12 @@ import server.utilities.CommonUtils;
 import utils.RedirectUtils;
 import server.utilities.EnumUtils.*;
 import server.utilities.CommonHelper;
+import server.utilities.ConstantUtils;
 import util.exception.cms.CustomerNotExistException;
 import util.exception.common.DuplicateMainAccountExistException;
 import util.exception.common.UpdateMainAccountException;
+import utils.JSUtils;
+import utils.MessageUtils;
 import utils.SessionUtils;
 
 /**
@@ -80,6 +83,7 @@ public class NewCardManagedBean implements Serializable {
     private Customer customer;
     private Customer existingCustomer;
     private CreditCardAccount cca;
+    private Boolean agreeTerm = false;
 
     private List<String> productNameOptions = new ArrayList<>();
 
@@ -133,6 +137,14 @@ public class NewCardManagedBean implements Serializable {
 
         }
 
+    }
+
+    public void goToNext() {
+        if (!agreeTerm) {
+            MessageUtils.displayError("Please read and agree to the Terms and Conditions first!");
+        }else {
+            JSUtils.callJSMethod("PF('myWizard').next();");
+        }
     }
 
     public NewCardManagedBean() {
@@ -238,7 +250,7 @@ public class NewCardManagedBean implements Serializable {
             }
         }
 
-        RedirectUtils.redirect("https://localhost:8181/InternetBankingSystem/personal_cards/credit_card_summary.xhtml");
+        RedirectUtils.redirect("https://" + ConstantUtils.ipAddress +":8181/InternetBankingSystem/personal_cards/credit_card_summary.xhtml");
 
     }
 
@@ -599,5 +611,19 @@ public class NewCardManagedBean implements Serializable {
 
     public void setSelectedMC(String selectedMC) {
         this.selectedMC = selectedMC;
+    }
+
+    /**
+     * @return the agreeTerm
+     */
+    public Boolean getAgreeTerm() {
+        return agreeTerm;
+    }
+
+    /**
+     * @param agreeTerm the agreeTerm to set
+     */
+    public void setAgreeTerm(Boolean agreeTerm) {
+        this.agreeTerm = agreeTerm;
     }
 }

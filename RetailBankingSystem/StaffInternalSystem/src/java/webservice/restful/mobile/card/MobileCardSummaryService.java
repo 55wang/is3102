@@ -75,7 +75,7 @@ public class MobileCardSummaryService {
             MobileAccount mobileAccount = mobileBean.getMobileAccountByUserId(ma.getUserID());
             // request to set up mobile password
             AccountDTO mobileAccountDTO = new AccountDTO();
-            mobileAccountDTO.setAccountBalance(mobileAccount.getBalance().toString());
+            mobileAccountDTO.setAccountBalance(mobileAccount.getBalance().setScale(2, RoundingMode.UP).toString());
             mobileAccountDTO.setAccountName("Mobile Account");
             mobileAccountDTO.setAccountNumber(mobileAccount.getAccountNumber());
             mobileAccountDTO.setAccountType("MOBILE");

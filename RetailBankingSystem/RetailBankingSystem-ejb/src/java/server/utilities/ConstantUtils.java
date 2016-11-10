@@ -10,7 +10,7 @@ package server.utilities;
  * @author leiyang
  */
 public class ConstantUtils {
-    public static final String ipAddress = "127.0.0.1"; //192.168.10.101
+    public static final String ipAddress = "localhost"; //192.168.10.101
     public static final String DELIMITER = "``";
     
     public static final Integer ACCOUNT_NUBMER_LENGTH = 11;
@@ -64,6 +64,7 @@ public class ConstantUtils {
     public static final String LOAN_OFFICIER_USERNAME = "loan_officer";
     public static final String PRODUCT_MANAGER_USERNAME = "product_manager";
     public static final String RELATIONSHIP_MANAGER_USERNAME = "relationship_manager";
+    public static final String CARD_MANAGER = "card_manager";
     public static final String STAFF_DEMO_PASSWORD = HashPwdUtils.hashPwd("password");
     
     // Redirect path

@@ -52,7 +52,7 @@
                         </h:panelGrid>
 
                         <h:panelGrid columns="2">
-                            <p:selectBooleanCheckbox value="#{applyDebitCardAccountManagedBean.agreedTerm}" />
+                            <p:selectBooleanCheckbox value="#{applyDebitCardAccountManagedBean.agreedTerm}"/>
                             <h:outputText value="I acknowledge and agree to the above. " />
                         </h:panelGrid>
 
@@ -63,7 +63,7 @@
                     </p:panel>
                 </h:form>
             </div>
-            <em:adsBanner advertismentTitle="#{customerHomeManagedBean.adsBannerCampaign.adsTitle}" advertismentType="#{customerHomeManagedBean.adsBannerCampaign.adsType}" advertismentInfo="#{customerHomeManagedBean.adsBannerCampaign.adsInfo}" extraAdvertismentInfo="#{customerHomeManagedBean.adsBannerCampaign.adsExtraInfo}" landingPageUrl="https://localhost:8181/InternetBankingSystem/landing_page/#{customerHomeManagedBean.adsBannerCampaign.landingPageName}" />
+            <em:adsBanner advertismentTitle="#{customerHomeManagedBean.adsBannerCampaign.adsTitle}" advertismentType="#{customerHomeManagedBean.adsBannerCampaign.adsType}" advertismentInfo="#{customerHomeManagedBean.adsBannerCampaign.adsInfo}" extraAdvertismentInfo="#{customerHomeManagedBean.adsBannerCampaign.adsExtraInfo}" landingPageUrl="https://#{customerInfoManagedBean.IP_ADDRESS}:8181/InternetBankingSystem/landing_page/#{customerHomeManagedBean.adsBannerCampaign.landingPageName}" />
             <em:customerFooter></em:customerFooter>
         </h:body>
     </f:view>

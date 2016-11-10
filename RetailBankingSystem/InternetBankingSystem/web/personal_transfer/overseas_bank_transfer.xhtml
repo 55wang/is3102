@@ -25,7 +25,7 @@ and open the template in the editor.
                 <h:form>
                     <!--TODO: payee-->
                     <p:panel header="Transfer to Overseas Bank Account">
-                        <h2>Daily transfer limit left: #{interBankTransferManagedBean.transferLimitLeft}</h2>
+                        <h2>Daily transfer limit left: #{internationalBankTransferManagedBean.transferLimitLeft}</h2>
                         <p:messages id="message" redisplay="false" >
                             <p:wizard widgetVar="myWizard" showNavBar="false">
 
@@ -36,7 +36,7 @@ and open the template in the editor.
                                         <p:selectOneMenu value="#{internationalBankTransferManagedBean.payeeId}" rendered="true" required="true">
                                             <f:selectItem itemValue="New Receipiant" itemLabel="New Receipiant" />
                                             <c:if test="#{internationalBankTransferManagedBean.payees.size() > 0 }">
-                                                <f:selectItems value="#{internationalBankTransferManagedBean.payees}" var="p" itemValue="#{p.id.toString()}" itemLabel="#{p.name} - #{internationalBankTransferManagedBean.getBankName(p.bankCode)} #{p.accountNumber}" />
+                                                <f:selectItems value="#{internationalBankTransferManagedBean.payees}" var="p" itemValue="#{p.id.toString()}" itemLabel="#{p.name} - #{p.accountNumber}" />
                                             </c:if>
                                             <f:ajax render="@form" listener="#{internationalBankTransferManagedBean.changePayee}" />
                                         </p:selectOneMenu>
@@ -140,7 +140,7 @@ and open the template in the editor.
                     </p:panel>
                 </h:form>
             </div>
-            <em:adsBanner advertismentTitle="#{customerHomeManagedBean.adsBannerCampaign.adsTitle}" advertismentType="#{customerHomeManagedBean.adsBannerCampaign.adsType}" advertismentInfo="#{customerHomeManagedBean.adsBannerCampaign.adsInfo}" extraAdvertismentInfo="#{customerHomeManagedBean.adsBannerCampaign.adsExtraInfo}" landingPageUrl="https://localhost:8181/InternetBankingSystem/landing_page/#{customerHomeManagedBean.adsBannerCampaign.landingPageName}" />
+            <em:adsBanner advertismentTitle="#{customerHomeManagedBean.adsBannerCampaign.adsTitle}" advertismentType="#{customerHomeManagedBean.adsBannerCampaign.adsType}" advertismentInfo="#{customerHomeManagedBean.adsBannerCampaign.adsInfo}" extraAdvertismentInfo="#{customerHomeManagedBean.adsBannerCampaign.adsExtraInfo}" landingPageUrl="https://#{customerInfoManagedBean.IP_ADDRESS}:8181/InternetBankingSystem/landing_page/#{customerHomeManagedBean.adsBannerCampaign.landingPageName}" />
             <em:customerFooter></em:customerFooter>
         </h:body>
     </f:view>

@@ -164,12 +164,16 @@ public class InterBankTransferCounterManagedBean implements Serializable {
         tr.setFromAccount(da);
         tr.setType(EnumUtils.PayeeType.LOCAL);
         tr.setActionType(EnumUtils.TransactionType.TRANSFER);
+        transferBean.createTransferRecord(tr);
+        depositBean.transferFromAccount(da, amount);
+        
+        
         if (transferMethod.equals("FAST")) {
             webserviceBean.transferClearingFAST(tr);
         } else {
             webserviceBean.transferClearingSACH(tr);
         }
-        depositBean.transferFromAccount(da, amount);
+        
         
         } catch (DepositAccountNotFoundException e) {
             System.out.println("DepositAccountNotFoundException InterBankTransferCounterManagedBean transferClearing");

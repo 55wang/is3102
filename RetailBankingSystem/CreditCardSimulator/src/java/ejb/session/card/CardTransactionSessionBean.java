@@ -38,10 +38,12 @@ import utils.OTPUtils;
  */
 @Stateless
 public class CardTransactionSessionBean implements CardTransactionSessionBeanLocal {
+    
+    public final String ipAddress = "localhost";
 
-    private final String CLEARING_PATH = "https://localhost:8181/StaffInternalSystem/rest/credit_card_clearing";
-    private final String AUTHORIZATION_PATH = "https://localhost:8181/StaffInternalSystem/rest/credit_card_authorization";
-    private final String MEPS_SETTLEMENT = "https://localhost:8181/MEPSSimulator/meps/meps_settlement";
+    private final String CLEARING_PATH = "https://" + ipAddress +":8181/StaffInternalSystem/rest/credit_card_clearing";
+    private final String AUTHORIZATION_PATH = "https://" + ipAddress +":8181/StaffInternalSystem/rest/credit_card_authorization";
+    private final String MEPS_SETTLEMENT = "https://" + ipAddress +":8181/MEPSSimulator/meps/meps_settlement";
 
     @PersistenceContext(unitName = "CreditCardSimulatorPU")
     private EntityManager em;

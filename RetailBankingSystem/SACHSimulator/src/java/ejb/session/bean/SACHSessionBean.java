@@ -40,12 +40,13 @@ public class SACHSessionBean implements Serializable {
     @PersistenceContext(unitName = "SACHSimulatorPU")
     private EntityManager em;
 
+    private final String ipAddress = "localhost";
     // all the urls put here
-    private final String MEPS_SETTLEMENT = "https://localhost:8181/MEPSSimulator/meps/meps_settlement";
-    private final String MBS_NET_SETTLEMENT_PATH = "https://localhost:8181/StaffInternalSystem/rest/net_settlement";
-    private final String MBS_TRANSFER_PAYMENT = "https://localhost:8181/StaffInternalSystem/rest/mbs_receive_transfer_payment";
-    private final String MBS_CC_PAYMENT = "https://localhost:8181/StaffInternalSystem/rest/mbs_receive_cc_payment";
-    private final String MBS_GIRO_REQUEST = "https://localhost:8181/StaffInternalSystem/rest/mbs_receive_giro_request";
+    private final String MEPS_SETTLEMENT = "https://" + ipAddress + ":8181/MEPSSimulator/meps/meps_settlement";
+    private final String MBS_NET_SETTLEMENT_PATH = "https://" + ipAddress + ":8181/StaffInternalSystem/rest/net_settlement";
+    private final String MBS_TRANSFER_PAYMENT = "https://" + ipAddress + ":8181/StaffInternalSystem/rest/mbs_receive_transfer_payment";
+    private final String MBS_CC_PAYMENT = "https://" + ipAddress + ":8181/StaffInternalSystem/rest/mbs_receive_cc_payment";
+    private final String MBS_GIRO_REQUEST = "https://" + ipAddress + ":8181/StaffInternalSystem/rest/mbs_receive_giro_request";
 
     public List<SachSettlement> getAllSachSettlement() {
         Query q = em.createQuery("SELECT ss FROM SachSettlement ss");

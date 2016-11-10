@@ -37,8 +37,8 @@ and open the template in the editor.
                     Center
                 </p:layoutUnit>
             </p:layout>-->
-            <div style="margin-top: 200px;position: absolute;margin-left: 70px">
-                <h1>Savings Account</h1>
+            <div class="customer_main_container">
+                <p:panel header="Savings Account">
                 <p:tabView orientation="left">
                     <c:forEach items="#{displaySavingsDepositProductManagedBean.savingsDepositProducts}" var="savingProduct">
                         <p:tab title="#{savingProduct.name}">
@@ -56,9 +56,11 @@ and open the template in the editor.
                         </p:tab>
                     </c:forEach>
                 </p:tabView>
+                </p:panel>
             </div>
         </h:body>
-        <em:adsBanner advertismentTitle="#{customerHomeManagedBean.adsBannerCampaign.adsTitle}" advertismentType="#{customerHomeManagedBean.adsBannerCampaign.adsType}" advertismentInfo="#{customerHomeManagedBean.adsBannerCampaign.adsInfo}" extraAdvertismentInfo="#{customerHomeManagedBean.adsBannerCampaign.adsExtraInfo}" landingPageUrl="https://localhost:8181/InternetBankingSystem/landing_page/#{customerHomeManagedBean.adsBannerCampaign.landingPageName}" />
+        <em:publicity></em:publicity>
+        <em:adsBanner advertismentTitle="#{customerHomeManagedBean.adsBannerCampaign.adsTitle}" advertismentType="#{customerHomeManagedBean.adsBannerCampaign.adsType}" advertismentInfo="#{customerHomeManagedBean.adsBannerCampaign.adsInfo}" extraAdvertismentInfo="#{customerHomeManagedBean.adsBannerCampaign.adsExtraInfo}" landingPageUrl="https://#{customerInfoManagedBean.IP_ADDRESS}:8181/InternetBankingSystem/landing_page/#{customerHomeManagedBean.adsBannerCampaign.landingPageName}" />
         <em:customerMainFooter></em:customerMainFooter>
     </f:view>
 </html>

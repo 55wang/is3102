@@ -295,6 +295,7 @@ public class CustomerDepositSessionBean implements CustomerDepositSessionBeanLoc
         if (res == -1) {
             return null;
         } else {
+            System.out.println("Updateing account transferFromAccount");
             TransactionRecord t = new TransactionRecord();
             t.setActionType(EnumUtils.TransactionType.TRANSFER);
             t.setAmount(amount);
@@ -332,7 +333,7 @@ public class CustomerDepositSessionBean implements CustomerDepositSessionBeanLoc
             return null;
         } else {
             TransactionRecord t = new TransactionRecord();
-            t.setCreationDate(DateUtils.randomDate());
+            t.setCreationDate(new Date());
             t.setActionType(EnumUtils.TransactionType.DEPOSIT);
             t.setAmount(depositAmount);
             t.setCredit(Boolean.TRUE);

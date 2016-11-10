@@ -79,7 +79,7 @@ public class MobileAccountHistoryService {
             List<TransactionRecord> records = depositBean.transactionRecordFromAccountNumber(accountNumber);
             for (TransactionRecord r : records) {
                 TransferHistoryDTO dto = new TransferHistoryDTO();
-                dto.setTransferAmount(r.getAmount().toString());
+                dto.setTransferAmount(r.getAmount().setScale(2, RoundingMode.UP).toString());
                 dto.setTransferCredit(r.getCredit() == null || r.getCredit() ? "CREDIT" : "DEBIT");
                 dto.setTransferType(r.getActionType().toString());
                 dto.setTransferDate(DateUtils.readableDate(r.getCreationDate()));
