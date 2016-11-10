@@ -24,16 +24,9 @@
                                     <p:column headerText="Debit Card Number">
                                         <h:outputText value="#{dca.creditCardNum}" />
                                     </p:column>
-                                        <p:column headerText="Status">
-                                    <h:outputText value="#{dca.cardStatus}" />
-                                </p:column>
 
                                     <p:column headerText="Card Type">
-                                        <h:outputText value="#{dca.cardNetwork}" />
-                                    </p:column>
-
-                                    <p:column headerText="Status">
-                                        <h:outputText value="#{dca.cardStatus}" />
+                                        <h:outputText value="#{dca.cardNetwork} Debit Card" />
                                     </p:column>
 
                                     <p:column headerText="Action">
@@ -68,6 +61,10 @@
                             <p:dataTable var="dca" value="#{customerDebitManagedBean.pendingDcas}">
                                 <p:column headerText="Debit Card Number">
                                     <h:outputText value="#{dca.creditCardNum}" />
+                                </p:column>
+                                
+                                <p:column headerText="Card Type">
+                                    <h:outputText value="#{dca.cardNetwork} Debit Card"/>
                                 </p:column>
 
                                 <p:column headerText="Status">

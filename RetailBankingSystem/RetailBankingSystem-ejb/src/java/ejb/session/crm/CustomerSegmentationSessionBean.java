@@ -5,6 +5,7 @@
  */
 package ejb.session.crm;
 
+import ejb.session.dams.CustomerDepositSessionBeanLocal;
 import entity.card.account.CreditCardAccount;
 import entity.card.product.CreditCardProduct;
 import entity.crm.CustomerGroup;
@@ -14,13 +15,18 @@ import entity.dams.account.DepositProduct;
 import entity.loan.LoanAccount;
 import entity.loan.LoanProduct;
 import java.util.List;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import server.utilities.EnumUtils;
+import server.utilities.EnumUtils.DepositAccountType;
 
 @Stateless
 public class CustomerSegmentationSessionBean implements CustomerSegmentationSessionBeanLocal {
+    @EJB
+    private CustomerDepositSessionBeanLocal customerDepositSessionBean;
 
     @PersistenceContext(unitName = "RetailBankingSystem-ejbPU")
     private EntityManager em;
@@ -59,29 +65,38 @@ public class CustomerSegmentationSessionBean implements CustomerSegmentationSess
     
     private Customer checkCustomerHasAndOnlyHasAntecedent(Customer c, String antecedent){
         Boolean hasTheProduct = false;
-        List<DepositAccount> das = c.getMainAccount().getBankAcounts();
-            for(int j = 0; j < das.size(); j++){
-                DepositProduct dp = das.get(j).getProduct();
-                if(dp.getName().equals(antecedent))
-                    hasTheProduct = true;
-                else
-                    return null;
+        System.out.println("antecedent" + antecedent);
+            List<DepositAccount> das = c.getMainAccount().getBankAcounts();
+            if(!das.isEmpty()){
+                for(int j = 0; j < das.size(); j++){
+                    if(das.get(j).getType() != DepositAccountType.MOBILE){
+                        DepositProduct dp = das.get(j).getProduct();
+                        if(dp.getName().equals(antecedent))
+                            hasTheProduct = true;
+                        else
+                            return null;
+                    }
+                }
             }
             List<LoanAccount> las = c.getMainAccount().getLoanAccounts();
-            for(int j = 0; j < las.size(); j++){
-                LoanProduct lp = las.get(j).getLoanProduct();
-                if(lp.getProductName().equals(antecedent))
-                    hasTheProduct = true;
-                else
-                    return null;
+            if(!las.isEmpty()){
+                for(int j = 0; j < las.size(); j++){
+                    LoanProduct lp = las.get(j).getLoanProduct();
+                    if(lp.getProductName().equals(antecedent))
+                        hasTheProduct = true;
+                    else
+                        return null;
+                }
             }
             List<CreditCardAccount> ccas = c.getMainAccount().getCreditCardAccounts();
-            for(int j = 0; j < ccas.size(); j++){
-                CreditCardProduct ccp = ccas.get(j).getCreditCardProduct();
-                if(ccp.getProductName().equals(antecedent))
-                    hasTheProduct = true;
-                else
-                    return null;
+            if(!ccas.isEmpty()){
+                for(int j = 0; j < ccas.size(); j++){
+                    CreditCardProduct ccp = ccas.get(j).getCreditCardProduct();
+                    if(ccp.getProductName().equals(antecedent))
+                        hasTheProduct = true;
+                    else
+                        return null;
+                }
             }
         if(hasTheProduct)
             return c;

@@ -82,7 +82,7 @@
                                         <h:outputText value="#{cco.mainAccount.customer.creditScore}" />
                                     </p:column>
                                     <p:column headerText="Action">
-                                        <p:commandButton value="Credit Score" action="#{cardViewCreditApplicationManagedBean.calculateCreditScore(cco)}" icon="ui-icon-lightbulb" update="mainForm" />
+                                        <p:commandButton value="Credit Score" action="#{cardViewCreditApplicationManagedBean.calculateCreditScore(cco)}" icon="ui-icon-lightbulb" update="@form" />
                                         <p:commandButton value="Approve" action="#{cardViewCreditApplicationManagedBean.approveOrder(cco)}" icon="ui-icon-check" update="@form" />
                                         <p:commandButton value="Reject" action="#{cardViewCreditApplicationManagedBean.rejectOrder(cco)}" icon="ui-icon-close" update="@form" />
                                     </p:column>

@@ -35,7 +35,7 @@ public class MarketingCampaignSessionBean implements MarketingCampaignSessionBea
         abc.setAdsTitle("MBS Deposit!");
         abc.setAdsType("deposit");
         abc.setAdsInfo("Merlion Account, the more you save, the more you gain.");
-        abc.setAdsExtraInfo("Provide interest rate as high as 2.5%.");
+        abc.setAdsExtraInfo("Provide the best interest rate that you can imagine.");
         abc.setLandingPageName("deposit_campaign.xhtml");
 
         return abc;

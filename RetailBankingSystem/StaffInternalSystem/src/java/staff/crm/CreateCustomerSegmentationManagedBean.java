@@ -147,6 +147,7 @@ public class CreateCustomerSegmentationManagedBean implements Serializable {
                 c.addCustomerGroup(customerGroup);
                 newCustomerSessionBean.updateCustomer(c);
             }
+            customerGroups = customerSegmentationSessionBean.getListCustomerGroup();
             MessageUtils.displayInfo("Customer Group Created Successfully!");
         } catch (Exception ex) {
             System.out.println(ex);
