@@ -175,13 +175,13 @@ public class SACHSessionBean implements Serializable {
         summary.setCitiFromBankName(settlements.get(0).getFromBankName());
         summary.setCitiToBankCode(settlements.get(0).getToBankCode());
         summary.setCitiToBankName(settlements.get(0).getToBankName());
-        summary.setCitiSettlementAmount(settlements.get(0).getAmount().setScale(4).toString());
+        summary.setCitiSettlementAmount(settlements.get(0).getAmount().toString());
 
         summary.setOcbcFromBankCode(settlements.get(1).getFromBankCode());
         summary.setOcbcFromBankName(settlements.get(1).getFromBankName());
         summary.setOcbcToBankCode(settlements.get(1).getToBankCode());
         summary.setOcbcToBankName(settlements.get(1).getToBankName());
-        summary.setOcbcSettlementAmount(settlements.get(1).getAmount().setScale(4).toString());
+        summary.setOcbcSettlementAmount(settlements.get(1).getAmount().toString());
         summary.setDate(new Date().toString());
 
         System.out.println("----------------SACH Settlement to MBS----------------");
@@ -385,9 +385,9 @@ public class SACHSessionBean implements Serializable {
         System.out.println("Current net settlement:");
         for (SachSettlement s : bankAccounts) {
             if (s.getAmount().compareTo(BigDecimal.ZERO) == -1) {
-                System.out.println(".       " + s.getToBankCode() + " " + s.getToBankName() + " to " + s.getFromBankCode() + " " + s.getFromBankName() + ": " + s.getAmount().abs().setScale(4).toString());
+                System.out.println(".       " + s.getToBankCode() + " " + s.getToBankName() + " to " + s.getFromBankCode() + " " + s.getFromBankName() + ": " + s.getAmount().abs().toString());
             } else {
-                System.out.println(".       " + s.getFromBankCode() + " " + s.getFromBankName() + " to " + s.getToBankCode() + " " + s.getToBankName() + ": " + s.getAmount().abs().setScale(4).toString());
+                System.out.println(".       " + s.getFromBankCode() + " " + s.getFromBankName() + " to " + s.getToBankCode() + " " + s.getToBankName() + ": " + s.getAmount().abs().toString());
 
             }
         }
@@ -400,9 +400,9 @@ public class SACHSessionBean implements Serializable {
         System.out.println("Updated net settlement:");
         for (SachSettlement s : updatedbankAccounts) {
             if (s.getAmount().compareTo(BigDecimal.ZERO) == -1) {
-                System.out.println(".       " + s.getToBankCode() + " " + s.getToBankName() + " to " + s.getFromBankCode() + " " + s.getFromBankName() + ": " + s.getAmount().abs().setScale(4).toString());
+                System.out.println(".       " + s.getToBankCode() + " " + s.getToBankName() + " to " + s.getFromBankCode() + " " + s.getFromBankName() + ": " + s.getAmount().abs().toString());
             } else {
-                System.out.println(".       " + s.getFromBankCode() + " " + s.getFromBankName() + " to " + s.getToBankCode() + " " + s.getToBankName() + ": " + s.getAmount().abs().setScale(4).toString());
+                System.out.println(".       " + s.getFromBankCode() + " " + s.getFromBankName() + " to " + s.getToBankCode() + " " + s.getToBankName() + ": " + s.getAmount().abs().toString());
 
             }
         }
@@ -444,9 +444,9 @@ public class SACHSessionBean implements Serializable {
         System.out.println("Current net settlement:");
         for (SachSettlement s : bankAccounts) {
             if (s.getAmount().compareTo(BigDecimal.ZERO) == -1) {
-                System.out.println(".       " + s.getToBankCode() + " " + s.getToBankName() + " to " + s.getFromBankCode() + " " + s.getFromBankName() + ": " + s.getAmount().abs().setScale(4).toString());
+                System.out.println(".       " + s.getToBankCode() + " " + s.getToBankName() + " to " + s.getFromBankCode() + " " + s.getFromBankName() + ": " + s.getAmount().abs().toString());
             } else {
-                System.out.println(".       " + s.getFromBankCode() + " " + s.getFromBankName() + " to " + s.getToBankCode() + " " + s.getToBankName() + ": " + s.getAmount().abs().setScale(4).toString());
+                System.out.println(".       " + s.getFromBankCode() + " " + s.getFromBankName() + " to " + s.getToBankCode() + " " + s.getToBankName() + ": " + s.getAmount().abs().toString());
 
             }
         }
@@ -460,9 +460,9 @@ public class SACHSessionBean implements Serializable {
         System.out.println("Updated net settlement:");
         for (SachSettlement s : updatedbankAccounts) {
             if (s.getAmount().compareTo(BigDecimal.ZERO) == -1) {
-                System.out.println(".       " + s.getToBankCode() + " " + s.getToBankName() + " to " + s.getFromBankCode() + " " + s.getFromBankName() + ": " + s.getAmount().abs().setScale(4).toString());
+                System.out.println(".       " + s.getToBankCode() + " " + s.getToBankName() + " to " + s.getFromBankCode() + " " + s.getFromBankName() + ": " + s.getAmount().abs().toString());
             } else {
-                System.out.println(".       " + s.getFromBankCode() + " " + s.getFromBankName() + " to " + s.getToBankCode() + " " + s.getToBankName() + ": " + s.getAmount().abs().setScale(4).toString());
+                System.out.println(".       " + s.getFromBankCode() + " " + s.getFromBankName() + " to " + s.getToBankCode() + " " + s.getToBankName() + ": " + s.getAmount().abs().toString());
 
             }
         }

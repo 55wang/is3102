@@ -26,7 +26,7 @@
 
                                 <p:outputLabel value="Service Charge: " />
                                 <p:selectOneMenu value="#{counterChargeFeeManagedBean.selectedService}" rendered="true" required="true">
-                                        <f:selectItems value="#{counterChargeFeeManagedBean.charges}" var="sc" itemValue="#{sc.name}" itemLabel="#{sc.name} #{a.charges.setScale(2)}" />
+                                        <f:selectItems value="#{counterChargeFeeManagedBean.charges}" var="sc" itemValue="#{sc.name}" itemLabel="#{sc.name} #{a.charges}" />
                                     </p:selectOneMenu>
 
                                 <p:commandButton value="Charge" icon="ui-icon-plus" update="@form" actionListener="#{counterChargeFeeManagedBean.chargeFee}" />
@@ -42,7 +42,7 @@
                                 <h:outputText value="#{sc.name}"></h:outputText>
                             </p:column>
                             <p:column headerText="Charge Amount(S$)" sortBy="#{sc.charges}">
-                                <h:outputText value="#{sc.charges.setScale(2)}" />
+                                <h:outputText value="#{sc.charges}" />
                             </p:column>
 
                         </p:dataTable>
