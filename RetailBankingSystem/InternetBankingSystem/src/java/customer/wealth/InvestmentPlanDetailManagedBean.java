@@ -313,11 +313,16 @@ public class InvestmentPlanDetailManagedBean implements Serializable{
         horizontalBarModel = new HorizontalBarChartModel();
  
         ChartSeries buyingvalue = new ChartSeries();
-        buyingvalue.setLabel("Total Value");
-        buyingvalue.set(new SimpleDateFormat("yyyy-MM-dd").format(investmentPlan.getSoldDate()), investmentPlan.getPortfolio().getTotalCurrentValue());
-         buyingvalue.set(new SimpleDateFormat("yyyy-MM-dd").format(investmentPlan.getExecutionDate()), investmentPlan.getPortfolio().getTotalBuyingValue());
- 
+        buyingvalue.setLabel("Buying Value");
+        buyingvalue.set(new SimpleDateFormat("yyyy-MM-dd").format(investmentPlan.getExecutionDate()), investmentPlan.getPortfolio().getTotalBuyingValue());
+        
+        ChartSeries soldvalue = new ChartSeries();
+        soldvalue.setLabel("Sold Value");
+        soldvalue.set(new SimpleDateFormat("yyyy-MM-dd").format(investmentPlan.getSoldDate()), investmentPlan.getPortfolio().getTotalCurrentValue());
+        
+        
         horizontalBarModel.addSeries(buyingvalue);
+        horizontalBarModel.addSeries(soldvalue);
          
         horizontalBarModel.setTitle("Investment Plan");
         horizontalBarModel.setLegendPosition("e");

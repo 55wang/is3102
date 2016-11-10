@@ -121,6 +121,8 @@ public class RequestInvestmentPlanManagedBean implements Serializable {
         newInvestmenPlan.setPreferedFinancialInstrument(targetFI);
         newInvestmenPlan.setWealthManagementSubscriber(wms);
         newInvestmenPlan.setStatus(EnumUtils.InvestmentPlanStatus.PENDING);
+        List<InvestmentPlan> ips = wms.getInvestmentPlans();
+        ips.add(newInvestmenPlan);
         calculateCharge();
 
         wealthManegementSubscriberSessionBean.updateWealthManagementSubscriber(wms);
