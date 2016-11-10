@@ -35,6 +35,7 @@ public class AutomaticTimerSessionBean {
     {
         System.out.println("Perform Beginning of Month Tasks with 10min delay: " + new Date());
         // TODO: Perform tasks at begining of month
+        damsBean.generateLastMonthEStatement();
     }
     
     @Schedule(year = "*", month = "*", dayOfMonth = "Last", dayOfWeek = "*",  hour = "*", minute = "*", second = "*")
