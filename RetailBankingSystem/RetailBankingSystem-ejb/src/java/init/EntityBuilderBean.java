@@ -123,7 +123,7 @@ public class EntityBuilderBean {
         entityTellerCounterBuilder.init();
 
         //wealth
-//
+
 //        List<FinancialInstrument> allFinancialInstruments = entityWealthBuilder.allFinancialInstrument();
 //        demoPortfolio = entityWealthBuilder.initWealth(allFinancialInstruments);
 //        entityFactBuilder.initSinglePortfolioFact(demoMainAccount, demoPortfolio);
@@ -131,9 +131,5 @@ public class EntityBuilderBean {
 //        entityFactBuilder.initSinglePortfolioFact(demoMainAccount, demoPortfolio);
 //        entityFactBuilder.initBankFact();
 //        entityCRMBuilder.initCustomerRFM();
-    }
-
-    public void persist(Object object) {
-        em.persist(object);
     }
 }

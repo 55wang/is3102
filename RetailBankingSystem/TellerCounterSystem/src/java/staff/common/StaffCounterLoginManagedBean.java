@@ -40,10 +40,10 @@ public class StaffCounterLoginManagedBean implements Serializable {
     @EJB
     private TellerCounterSessionBeanLocal counterBean;
 
-    private Long counterId = 9L;
-    private BigDecimal currentCash = new BigDecimal(10000.0);
-    private String username = "general_teller";
-    private String password = "password";
+    private Long counterId;
+    private BigDecimal currentCash;
+    private String username;
+    private String password;
 
     public StaffCounterLoginManagedBean() {
         System.out.println("StaffCounterLoginManagedBean() Created!!");
@@ -62,7 +62,6 @@ public class StaffCounterLoginManagedBean implements Serializable {
     }
 
     public void loginStaff(ActionEvent event) {
-        password = "password";    
         
         StaffAccount sa = staffBean.loginAccount(username, HashPwdUtils.hashPwd(password));
         if (sa == null) {

@@ -909,19 +909,22 @@ and open the template in the editor.
     box-shadow: 0 10px 10px 0 rgba(0,0,0,0.30),0 6px 3px 0 rgba(0,0,0,0.23);
 }
 
-.marketing-third .direct-button a{
-    padding-top: 20px;
+.marketing-third .direct-button .ui-button{
+    padding-top: 5px;
     font-size: 40px;
     display:block;
     width:100%;
     height:50px;
     cursor: pointer;
+    background-color: #57bc62 !important;
+    border-bottom: 2px solid #57bc62 !important;
 }
 
-.marketing-third .direct-button a:-webkit-any-link{
-    color: white;
-    text-decoration: none;
+.marketing-third .direct-button .ui-state-hover{
+    box-shadow: none !important;
+    border: none !important;
 }
+
 /*end of landing page*/
 /* general */
 .container {

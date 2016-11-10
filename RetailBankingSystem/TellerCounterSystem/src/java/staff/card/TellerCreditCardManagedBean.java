@@ -37,6 +37,8 @@ public class TellerCreditCardManagedBean implements Serializable {
     private EmailServiceSessionBeanLocal emailServiceSessionBean;
     @EJB
     private LoginSessionBeanLocal loginBean;
+    @EJB
+    private CardAcctSessionBeanLocal cardAcctSessionBean;
 
     private Customer customer;
     private List<CreditCardAccount> activeCcas;
@@ -47,9 +49,6 @@ public class TellerCreditCardManagedBean implements Serializable {
     private Date currentDate = new Date();
     private String customerIC;
     private MainAccount mainAccount;
-
-    @EJB
-    private CardAcctSessionBeanLocal cardAcctSessionBean;
 
     public void retrieveMainAccount() {
         try {
