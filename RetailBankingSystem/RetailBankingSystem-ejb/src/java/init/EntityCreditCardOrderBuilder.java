@@ -62,6 +62,8 @@ public class EntityCreditCardOrderBuilder {
         cca.setCvv("123");
         cca.setOutstandingAmount(1000.0);
         cca.setMerlionPoints(100000.0);
+        cca.setTransactionDailyLimit(2000.0);
+        cca.setTransactionMonthlyLimit(20000.0);
         cca.setCardStatus(EnumUtils.CardAccountStatus.ACTIVE);
         cca.setMainAccount(demoMainAccount);
         cca = cardAcctSessionBean.createCardAccount(cca);
@@ -119,6 +121,8 @@ public class EntityCreditCardOrderBuilder {
         cca2.setOutstandingAmount(0.0);
         cca2.setMerlionPoints(100000.0);
         cca2.setCurrentMonthAmount(400.0);
+        cca2.setTransactionDailyLimit(1000.0);
+        cca2.setTransactionMonthlyLimit(20000.0);
         cca2.setCardStatus(EnumUtils.CardAccountStatus.ACTIVE);
         cca2.setMainAccount(demoMainAccount);
         cardAcctSessionBean.createCardAccount(cca2);
@@ -140,6 +144,8 @@ public class EntityCreditCardOrderBuilder {
         cca3.setCreditLimit(10000.0);
         cca3.setMerlionMiles(80000.0);
         cca3.setCurrentMonthAmount(1000.0);
+        cca3.setTransactionDailyLimit(10000.0);
+        cca3.setTransactionMonthlyLimit(30000.0);
         cca3.setCardStatus(EnumUtils.CardAccountStatus.ACTIVE);
         cca3.setMainAccount(demoMainAccount);
         cca3 = cardAcctSessionBean.createCardAccount(cca3);
@@ -158,8 +164,10 @@ public class EntityCreditCardOrderBuilder {
         cca4.setCreditCardNum("5374943811149259");
         cca4.setCvv("123");
         cca4.setOutstandingAmount(-500.0);
-        cca3.setCreditLimit(10000.0);
+        cca4.setCreditLimit(10000.0);
         cca4.setMerlionMiles(8000.0);
+        cca4.setTransactionDailyLimit(10000.0);
+        cca4.setTransactionMonthlyLimit(30000.0);
         cca4.setCardStatus(EnumUtils.CardAccountStatus.ACTIVE);
         cca4.setMainAccount(demoMainAccount);
         cca4 = cardAcctSessionBean.createCardAccount(cca4);
