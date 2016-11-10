@@ -5,6 +5,8 @@
  */
 package ejb.session.timer;
 
+
+import ejb.session.loan.LoanReminderSessionBeanLocal;
 import ejb.session.card.CardAcctSessionBeanLocal;
 import ejb.session.report.ReportGenerationBeanLocal;
 import entity.card.account.CreditCardAccount;
@@ -36,9 +38,12 @@ public class AutomaticTimerSessionBean {
     private ReportGenerationBeanLocal reportGenerationBean;
     @EJB
     private SinglePortfolioFactTimerSessionBeanLocal singlePortfolioFactTimerSessionBean;
-    
     @EJB
     private DAMSBatchProcessingSessionBean damsBean;
+    @EJB 
+    private LoanReminderSessionBeanLocal loanReminderBean;
+    @EJB
+    private LoanBatchProcessingSessionBean loanBean;
     @EJB
     private BankFactTimerSessionBeanLocal bankFactTimerSessionBean;
 
@@ -71,6 +76,13 @@ public class AutomaticTimerSessionBean {
     public void beginDayTasks(Timer timer) {
         System.out.println("Perform Beginning of Day Tasks: " + new Date());
         damsBean.calculateDailyInterest(); // TESTED
+        loanReminderBean.remindLatePaymentPenaltyForAllActiveCustomers(new Date());
+        loanReminderBean.remindLoanPaymentForAllActiveCustomers(new Date());
+        loanReminderBean.remindBadLoanForLoanOfficer();
+        loanBean.accumulateOverduePayment();
+        loanBean.calculateOverduePayment();
+        
+        
     }
 
     @Schedule(year = "*", month = "*", dayOfMonth = "Last", dayOfWeek = "*", hour = "9", minute = "0", second = "0")

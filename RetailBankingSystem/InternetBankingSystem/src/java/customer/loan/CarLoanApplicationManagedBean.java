@@ -14,6 +14,7 @@ import entity.loan.LoanApplication;
 import entity.loan.LoanProduct;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -73,6 +74,7 @@ public class CarLoanApplicationManagedBean implements Serializable {
     private Date birthDay;
     private EnumUtils.IdentityType identityType;
     private Date currentDate=new Date();
+    
     
     private List<String> identityTypeOptions = CommonUtils.getEnumList(EnumUtils.IdentityType.class);
 
@@ -158,6 +160,7 @@ public class CarLoanApplicationManagedBean implements Serializable {
         newApplication.setMarketValue(carOpenMarketValue);
         newApplication.setTenure(carTenure);
         newApplication.setLoanProduct(loanProductBean.getLoanProductById(loanProductId));
+        newApplication.setCategory("New");
         newApplication.setLoanOfficer(staffAccountSessionBean.getAccountByUsername(ConstantUtils.LOAN_OFFICIER_USERNAME));
         // ejb save and update
         LoanApplication result = loanAccountBean.createLoanApplication(newApplication);
@@ -482,6 +485,7 @@ public class CarLoanApplicationManagedBean implements Serializable {
     private Object getBirthday() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
     
   
 }

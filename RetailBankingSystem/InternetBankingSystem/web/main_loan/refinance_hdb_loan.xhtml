@@ -28,6 +28,12 @@
                             <p:panel>
                                 <p:messages id="msgs1"/>
                                 <h:panelGrid columns="2" cellpadding="5px" columnClasses="label, value">
+                                    
+                                    <h:outputText value="Loan Category: " />
+                                    <p:selectOneMenu value="#{hdbLoanApplicationManagedBean.category}" style="width:187px; height: 31px; line-height: 21px; top:8px" rendered="true" label="identityType" >
+                                        <f:selectItem itemLabel="Please select.." itemValue=""/>                                                    
+                                        <f:selectItems value="#{hdbLoanApplicationManagedBean.categoryOptions}" />
+                                    </p:selectOneMenu>
 
                                     <h:outputText value="Identity Type: " />
                                     <p:selectOneMenu value="#{hdbLoanApplicationManagedBean.identityType}" style="width:187px; height: 31px; line-height: 21px; top:8px" rendered="true" label="identityType" >

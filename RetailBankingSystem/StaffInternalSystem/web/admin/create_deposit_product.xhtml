@@ -91,18 +91,15 @@
                                     <p:inputText id="savingProductWaivedMonths" value="#{createDepositProductManagedBean.savingProduct.waivedMonths}" required="true"/>
                                 </c:if>
 
-                                <!--Not showing fixed deposit-->
+                                <p:outputLabel value="Product Interests " />
+                                <p:selectCheckboxMenu value="#{createDepositProductManagedBean.selectedInterests}" label="Interests" filter="true" filterMatchMode="startsWith" required="true">
+                                    <f:selectItems value="#{createDepositProductManagedBean.selectInterests}"/>
+                                </p:selectCheckboxMenu>
 
-                                <c:if test="#{createDepositProductManagedBean.productType != createDepositProductManagedBean.PRODUCT_TYPE_FIXED}">
-                                    <p:outputLabel for="productInterests" value="Product Interests " />
-                                    <p:selectCheckboxMenu id="productInterests" value="#{createDepositProductManagedBean.selectedInterests}" label="Interests" filter="true" filterMatchMode="startsWith" required="true">
-                                        <f:selectItems value="#{createDepositProductManagedBean.selectInterests}"/>
-                                    </p:selectCheckboxMenu>
-                                </c:if>
-
-                                <p:commandButton value="Create" icon="ui-icon-plus" update="@form" actionListener="#{createDepositProductManagedBean.addProduct}" />
+                                
                             </h:panelGrid>
                         </p:messages>
+                        <p:commandButton value="Create" icon="ui-icon-plus" update="@form" actionListener="#{createDepositProductManagedBean.addProduct}" />
                     </p:panel>
                 </h:form>
 

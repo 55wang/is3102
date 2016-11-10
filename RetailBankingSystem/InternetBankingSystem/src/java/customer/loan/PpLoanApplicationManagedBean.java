@@ -14,6 +14,7 @@ import entity.loan.LoanApplication;
 import entity.loan.LoanProduct;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -71,6 +72,9 @@ public class PpLoanApplicationManagedBean implements Serializable {
     private Double LTV;
     private EnumUtils.IdentityType identityType;
     private Date currentDate=new Date();
+    
+    private List<String> categoryOptions = Arrays.asList("New","Refinance");
+    private String category;
     
     
     private List<String> identityTypeOptions = CommonUtils.getEnumList(EnumUtils.IdentityType.class);
@@ -155,6 +159,7 @@ public class PpLoanApplicationManagedBean implements Serializable {
         newApplication.setProductType(EnumUtils.LoanProductType.LOAN_PRODUCT_TYPE_PRIVATE_HOUSE);
         newApplication.setRequestedAmount(loanAmount);
         newApplication.setMarketValue(marketValue);
+        newApplication.setCategory(category);
         newApplication.setTenure(housingTenure);
         newApplication.setLoanProduct(loanProductBean.getLoanProductById(loanProductId));
         newApplication.setLoanOfficer(staffAccountSessionBean.getAccountByUsername(ConstantUtils.LOAN_OFFICIER_USERNAME));
@@ -461,6 +466,22 @@ public class PpLoanApplicationManagedBean implements Serializable {
 
     public void setIdentityTypeOptions(List<String> identityTypeOptions) {
         this.identityTypeOptions = identityTypeOptions;
+    }
+
+    public List<String> getCategoryOptions() {
+        return categoryOptions;
+    }
+
+    public void setCategoryOptions(List<String> categoryOptions) {
+        this.categoryOptions = categoryOptions;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
     
     
