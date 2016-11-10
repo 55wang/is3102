@@ -6,11 +6,12 @@
 package init;
 
 import ejb.session.card.CardTransactionSessionBeanLocal;
+import entity.VisaCardTransaction;
 import entity.VisaSettlement;
+import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import javax.ejb.Singleton;
-import javax.ejb.Startup;
+import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
@@ -19,8 +20,7 @@ import javax.persistence.Query;
  *
  * @author wang
  */
-@Singleton
-@Startup
+@Stateless
 public class CardEntityBuilderBean {
     @EJB
     private CardTransactionSessionBeanLocal cardTransactionSessionBean;
@@ -28,7 +28,6 @@ public class CardEntityBuilderBean {
     @PersistenceContext(unitName = "CreditCardSimulatorPU")
     private EntityManager em;
 
-    @PostConstruct
     public void init() {
         if (needInit()) {
             buildEntities();
@@ -38,15 +37,15 @@ public class CardEntityBuilderBean {
     // Use Super Admin Account as a flag
     private Boolean needInit() {
 
-        Long result;
+        List<VisaCardTransaction> result;
         try {
-            Query q = em.createNativeQuery("SELECT count(*) FROM VisaCardTransaction");
-            result = (Long) q.getSingleResult();
+            Query q = em.createQuery("SELECT v FROM VisaCardTransaction v");
+            result = q.getResultList();
         } catch (Exception ex) {
-            result = 0L;
+            return true;
         }
 
-        return result == 0L;
+        return result.isEmpty();
     }
 
     private void buildEntities() {

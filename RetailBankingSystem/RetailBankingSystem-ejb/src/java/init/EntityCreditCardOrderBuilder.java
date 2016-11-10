@@ -102,7 +102,7 @@ public class EntityCreditCardOrderBuilder {
         cardTransactionSessionBean.createCardAccountTransaction(cca, cardTransaction);
 
         CreditCardOrder cco = new CreditCardOrder();
-        cco.setApplicationStatus(EnumUtils.CardApplicationStatus.APPROVED);
+        cco.setApplicationStatus(EnumUtils.CardApplicationStatus.ISSUED);
         cco.setCreditCardAccount(cca);
         cco.setMainAccount(demoMainAccount);
         creditCardOrderSessionBean.createCardOrder(cco);
@@ -118,12 +118,13 @@ public class EntityCreditCardOrderBuilder {
         cca2.setCreditLimit(20000.0);
         cca2.setOutstandingAmount(0.0);
         cca2.setMerlionPoints(100000.0);
-        cca2.setCardStatus(EnumUtils.CardAccountStatus.PENDING);
+        cca2.setCurrentMonthAmount(400.0);
+        cca2.setCardStatus(EnumUtils.CardAccountStatus.ACTIVE);
         cca2.setMainAccount(demoMainAccount);
         cardAcctSessionBean.createCardAccount(cca2);
 
         CreditCardOrder cco2 = new CreditCardOrder();
-        cco2.setApplicationStatus(EnumUtils.CardApplicationStatus.PENDING);
+        cco2.setApplicationStatus(EnumUtils.CardApplicationStatus.ISSUED);
         cco2.setCreditCardAccount(cca2);
         cco2.setMainAccount(demoMainAccount);
         creditCardOrderSessionBean.createCardOrder(cco2);
@@ -138,12 +139,13 @@ public class EntityCreditCardOrderBuilder {
         cca3.setOutstandingAmount(10000.0);
         cca3.setCreditLimit(10000.0);
         cca3.setMerlionMiles(80000.0);
+        cca3.setCurrentMonthAmount(1000.0);
         cca3.setCardStatus(EnumUtils.CardAccountStatus.ACTIVE);
         cca3.setMainAccount(demoMainAccount);
         cca3 = cardAcctSessionBean.createCardAccount(cca3);
 
         CreditCardOrder cco3 = new CreditCardOrder();
-        cco3.setApplicationStatus(EnumUtils.CardApplicationStatus.PENDING);
+        cco3.setApplicationStatus(EnumUtils.CardApplicationStatus.ISSUED);
         cco3.setCreditCardAccount(cca3);
         cco3.setMainAccount(demoMainAccount);
         creditCardOrderSessionBean.createCardOrder(cco3);
@@ -156,18 +158,57 @@ public class EntityCreditCardOrderBuilder {
         cca4.setCreditCardNum("5374943811149259");
         cca4.setCvv("123");
         cca4.setOutstandingAmount(-500.0);
+        cca3.setCreditLimit(10000.0);
         cca4.setMerlionMiles(8000.0);
         cca4.setCardStatus(EnumUtils.CardAccountStatus.ACTIVE);
         cca4.setMainAccount(demoMainAccount);
         cca4 = cardAcctSessionBean.createCardAccount(cca4);
 
         CreditCardOrder cco4 = new CreditCardOrder();
-        cco4.setApplicationStatus(EnumUtils.CardApplicationStatus.APPROVED);
+        cco4.setApplicationStatus(EnumUtils.CardApplicationStatus.ISSUED);
         cco4.setCreditCardAccount(cca4);
         cco4.setMainAccount(demoMainAccount);
         creditCardOrderSessionBean.createCardOrder(cco4);
         cca4.setCreditCardOrder(cco4);
         cardAcctSessionBean.updateCreditCardAccount(cca4);
+
+        CreditCardAccount cca5 = new CreditCardAccount();
+        cca5.setCreditCardProduct(demoMileCardProduct);
+        cca5.setNameOnCard(demoMainAccount.getCustomer().getFullName());
+        cca5.setCreditCardNum("5284664778591619");
+        cca5.setCvv("123");
+        cca5.setOutstandingAmount(0.0);
+        cca5.setMerlionMiles(0.0);
+        cca5.setCardStatus(EnumUtils.CardAccountStatus.APPROVED);
+        cca5.setMainAccount(demoMainAccount);
+        cca5 = cardAcctSessionBean.createCardAccount(cca5);
+
+        CreditCardOrder cco5 = new CreditCardOrder();
+        cco5.setApplicationStatus(EnumUtils.CardApplicationStatus.APPROVED);
+        cco5.setCreditCardAccount(cca5);
+        cco5.setMainAccount(demoMainAccount);
+        creditCardOrderSessionBean.createCardOrder(cco5);
+        cca5.setCreditCardOrder(cco5);
+        cardAcctSessionBean.updateCreditCardAccount(cca5);
+
+        CreditCardAccount cca6 = new CreditCardAccount();
+        cca6.setCreditCardProduct(demoMileCardProduct);
+        cca6.setNameOnCard(demoMainAccount.getCustomer().getFullName());
+        cca6.setCreditCardNum("5192045480332388");
+        cca6.setCvv("123");
+        cca6.setOutstandingAmount(0.0);
+        cca6.setMerlionMiles(0.0);
+        cca6.setCardStatus(EnumUtils.CardAccountStatus.PENDING);
+        cca6.setMainAccount(demoMainAccount);
+        cca6 = cardAcctSessionBean.createCardAccount(cca6);
+
+        CreditCardOrder cco6 = new CreditCardOrder();
+        cco6.setApplicationStatus(EnumUtils.CardApplicationStatus.PENDING);
+        cco6.setCreditCardAccount(cca6);
+        cco6.setMainAccount(demoMainAccount);
+        creditCardOrderSessionBean.createCardOrder(cco6);
+        cca5.setCreditCardOrder(cco6);
+        cardAcctSessionBean.updateCreditCardAccount(cca6);
 
     }
 }

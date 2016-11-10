@@ -45,6 +45,7 @@ public class LoanApplication implements Serializable {
     private String fullName;
     private String phone;
     private String email;
+    private String Category;
     
     
     // general info
@@ -456,6 +457,14 @@ public class LoanApplication implements Serializable {
 
     public void setTenure(Integer tenure) {
         this.tenure = tenure;
+    }
+
+    public String getCategory() {
+        return Category;
+    }
+
+    public void setCategory(String Category) {
+        this.Category = Category;
     }
 
     
